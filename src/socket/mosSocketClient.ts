@@ -13,7 +13,7 @@ export default class MosSocketClient extends EventEmitter {
   private _description: string
   private _client: Socket
   private _shouldBeConnected: boolean = false
-  private _connected: boolean
+  private __connected: boolean
   private _lastConnectionAttempt: number
   private _reconnectAttempt: number = 0
   private _connectionAttemptTimer: NodeJS.Timer
@@ -22,7 +22,7 @@ export default class MosSocketClient extends EventEmitter {
   private _commandTimeout: number = 10000
 
   /** */
-  public constructor (host: string, port: number, description: SocketType) {
+  constructor (host: string, port: number, description: SocketType) {
     super()
     this._host = host
     this._port = port
@@ -30,24 +30,24 @@ export default class MosSocketClient extends EventEmitter {
   }
 
   /** */
-  public set autoReconnect (autoReconnect: boolean) {
+  set autoReconnect (autoReconnect: boolean) {
     this._autoReconnect = autoReconnect
   }
 
   /** */
-  public set autoReconnectInterval (autoReconnectInterval: number) {
+  set autoReconnectInterval (autoReconnectInterval: number) {
     this._reconnectDelay = autoReconnectInterval
   }
 
   /** */
-  public set autoReconnectAttempts (autoReconnectAttempts: number) {
+  set autoReconnectAttempts (autoReconnectAttempts: number) {
     this._reconnectAttempts = autoReconnectAttempts
   }
 
   /** */
-  public connect (): void {
+  connect (): void {
 		// prevents manipulation of active socket
-    if (!this.connected) {
+    if (!this._connected) {
 			// throthling attempts
       if (!this._lastConnectionAttempt || (Date.now() - this._lastConnectionAttempt) >= this._reconnectDelay) { // !_lastReconnectionAttempt (means first attempt) OR time > _reconnectionDelay since last attempt
 				// recereates client if new attempt
@@ -81,12 +81,12 @@ export default class MosSocketClient extends EventEmitter {
   }
 
   /** */
-  public disconnect (): void {
+  disconnect (): void {
     this.dispose()
   }
 
   /** */
-  public get host (): string {
+  get host (): string {
     if (this._client) {
       return this._host
     }
@@ -94,7 +94,7 @@ export default class MosSocketClient extends EventEmitter {
   }
 
   /** */
-  public get port (): number {
+  get port (): number {
     if (this._client) {
       return this._port
     }
@@ -102,7 +102,7 @@ export default class MosSocketClient extends EventEmitter {
   }
 
   /** */
-  public dispose (): void {
+  dispose (): void {
     this._shouldBeConnected = false
     this._clearConnectionAttemptTimer()
     if (this._client) {
@@ -116,23 +116,23 @@ export default class MosSocketClient extends EventEmitter {
   /**
    * convenience wrapper to expose all logging calls to parent object
    */
-  public log (args: any): void {
+  log (args: any): void {
     console.log(args)
   }
 
   /** */
-  private set connected (connected: boolean) {
-    this._connected = connected === true
+  private set _connected (connected: boolean) {
+    this.__connected = connected === true
     this.emit(SocketConnectionStatus.CONNECTED)
   }
 
   /** */
-  private get connected (): boolean {
-    return this._connected
+  private get _connected (): boolean {
+    return this.__connected
   }
 
   /** */
-  public executeCommand (): void {
+  executeCommand (): void {
     let commandString: string = ''
 
     global.clearTimeout(this._commandTimeoutTimer)
@@ -152,7 +152,7 @@ export default class MosSocketClient extends EventEmitter {
           return
         }
 				// new attempt if not allready connected
-        if (!this.connected) {
+        if (!this._connected) {
           this._reconnectAttempt++
           this.connect()
         }
@@ -178,7 +178,7 @@ export default class MosSocketClient extends EventEmitter {
   /** */
   private _onConnected () {
     this._clearConnectionAttemptTimer()
-    this.connected = true
+    this._connected = true
   }
 
   /** */
@@ -194,7 +194,7 @@ export default class MosSocketClient extends EventEmitter {
 
   /** */
   private _onClose (hadError: boolean) {
-    this.connected = false
+    this._connected = false
     if (hadError) {
       this.log('Socket closed with error')
     } else {
