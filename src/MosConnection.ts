@@ -1,4 +1,4 @@
-import ConnectionConfig from './config/ConnectionConfig'
+import ConnectionConfig from './config/connectionConfig'
 import MosSocketClient from './socket/mosSocketClient'
 import MosSocketServer from './socket/mosSocketServer'
 
