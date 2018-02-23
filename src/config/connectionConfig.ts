@@ -24,8 +24,6 @@ export default class ConnectionConfig {
     '6': boolean,
     '7': boolean
   }
-  compliancyCheck: boolean = false
-
 	// machineInfo: {
 	// 	manufacturer: "SuperFly.tv",
 	//     model: 	"YAAS"
@@ -39,5 +37,4 @@ export default class ConnectionConfig {
 	//     <mosRev>2.8.2</mosRev>
 	//     */
 	// }
-
 }

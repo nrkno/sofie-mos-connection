@@ -106,7 +106,7 @@ export default class MosSocketClient extends EventEmitter {
     this._shouldBeConnected = false
     this._clearConnectionAttemptTimer()
     if (this._client) {
-      this._client.once('close', () => { this.emit(SocketConnectionStatus.DESTROYED) })
+      this._client.once('close', () => { this.emit(SocketConnectionStatus.DISPOSED) })
       this._client.end()
       this._client.destroy()
       delete this._client
