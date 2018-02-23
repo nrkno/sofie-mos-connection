@@ -1,1 +1,1 @@
-export type SocketType = 'LOWER' | 'UPPER' | 'QUERY'
+export type SocketType = 'Lower' | 'Upper' | 'Query'

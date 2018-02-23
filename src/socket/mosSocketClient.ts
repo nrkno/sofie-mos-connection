@@ -1,4 +1,4 @@
-import * as net from 'net'
+import {Socket} from 'net'
 import * as EventEmitter from 'events'
 import {SocketType} from './socketType'
 import {SocketConnectionStatus} from './mosSocketEvents'
@@ -11,7 +11,7 @@ export default class MosSocketClient extends EventEmitter {
   private _reconnectAttempts: number = 0
 
   private _description: string
-  private _client: net.Socket
+  private _client: Socket
   private _shouldBeConnected: boolean = false
   private _connected: boolean
   private _lastConnectionAttempt: number
