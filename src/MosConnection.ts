@@ -21,7 +21,6 @@ export default class MosConnection {
   private _upperSocketBuddy: MosSocketServer
   private _querySocketBuddy: MosSocketServer
 
-  private _hasBuddy: boolean
   private _lastSeen: number
   private _lastSeenBuddy: number
   private _lastSeenTimeout: Timer
@@ -42,9 +41,14 @@ export default class MosConnection {
     this._upperSocket.on(SocketServerConnectionStatus.ALIVE, () => this.lastSeen = Date.now())
     this._querySocket.on(SocketServerConnectionStatus.ALIVE, () => this.lastSeen = Date.now())
 
+    // connects Lower-port socket client
+    this._lowerSocket.on(SocketConnectionStatus.CONNECTED, () => {
+      this._sendHeartBeat('primary')
+    })
+    this._lowerSocket.connect()
+
     // creates socket- clients and server for Buddy connection, if configured
     if (this._conf.ncsBuddy !== undefined) {
-      this._hasBuddy = true
       this._lowerSocketBuddy = new MosSocketClient(this._conf.ncsBuddy.host, MosConnection.PORT_LOWER, 'Lower')
       this._upperSocketBuddy = new MosSocketServer(MosConnection.PORT_UPPER, 'Upper')
       this._querySocketBuddy = new MosSocketServer(MosConnection.PORT_QUERY, 'Query')
@@ -53,13 +57,13 @@ export default class MosConnection {
       this._lowerSocketBuddy.on(SocketConnectionStatus.ALIVE, () => this.lastSeenBuddy = Date.now())
       this._upperSocketBuddy.on(SocketServerConnectionStatus.ALIVE, () => this.lastSeenBuddy = Date.now())
       this._querySocketBuddy.on(SocketServerConnectionStatus.ALIVE, () => this.lastSeenBuddy = Date.now())
-    }
 
-    // connects Lower-port socket client
-    this._lowerSocket.on(SocketConnectionStatus.CONNECTED, () => {
-      this.sendLowerCommand(new HeartBeat())
-    })
-    this._lowerSocket.connect()
+      // connects Lower-port socket client
+      this._lowerSocketBuddy.on(SocketConnectionStatus.CONNECTED, () => {
+        this._sendHeartBeat('buddy')
+      })
+      this._lowerSocketBuddy.connect()
+    }
   }
 
   /** */
@@ -76,7 +80,7 @@ export default class MosConnection {
     clearTimeout(this._lastSeenTimeout)
     delete this._lastSeenTimeout
 
-    this._lastSeenTimeout = setTimeout(() => { this._sendHeartBeat() }, MosConnection.KEEP_ALIVE_INTERVAL)
+    this._lastSeenTimeout = setTimeout(() => { this._sendHeartBeat('primary') }, MosConnection.KEEP_ALIVE_INTERVAL)
   }
 
   /** */
@@ -86,21 +90,29 @@ export default class MosConnection {
     clearTimeout(this._lastSeenTimeoutBuddy)
     delete this._lastSeenTimeoutBuddy
 
-    this._lastSeenTimeoutBuddy = setTimeout(() => { this._sendHeartBeat(true) }, MosConnection.KEEP_ALIVE_INTERVAL)
+    this._lastSeenTimeoutBuddy = setTimeout(() => { this._sendHeartBeat('buddy') }, MosConnection.KEEP_ALIVE_INTERVAL)
   }
 
   /** */
-  private _sendHeartBeat (isBuddy: boolean = false) {
-    console.log('timeout for', isBuddy)
+  private _sendHeartBeat (server: 'primary' | 'buddy') {
+    console.log('timeout for', server)
 
     // @todo: log that we needed to send heartbeat, respond if it doesn't come back within reason
 
-    if (!isBuddy) {
+    let heartbeat = new HeartBeat()
+
+    if (server === 'primary') {
       // is primary
       delete this._lastSeenTimeout
-    }else {
+      heartbeat.ncsID = this._conf.ncs.ncsID
+      heartbeat.mosID = this._conf.mosID
+      this._lowerSocket.executeCommand(heartbeat)
+    }else if (this._conf.ncsBuddy !== undefined && server === 'buddy') {
       // is buddy
       delete this._lastSeenTimeoutBuddy
+      heartbeat.ncsID = this._conf.ncsBuddy.ncsID
+      heartbeat.mosID = this._conf.mosID
+      this._lowerSocket.executeCommand(heartbeat)
     }
   }
 }
