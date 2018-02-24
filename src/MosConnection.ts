@@ -77,6 +77,8 @@ export class MosConnection {
 	set lastSeen (timestamp: number) {
 		this._lastSeen = timestamp
 
+		console.log(this._lastSeen, this._lastSeenBuddy)
+
 		clearTimeout(this._lastSeenTimeout)
 		delete this._lastSeenTimeout
 
