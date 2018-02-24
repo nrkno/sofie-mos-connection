@@ -3,16 +3,10 @@ export default class ConnectionConfig {
   ncs: {
     ncsID: string,
     host: string,
-    portUpper: number,
-    portLower: number,
-    portQuery: number
   }
   ncsBuddy: {
     ncsID: string,
     host: string,
-    portUpper: number,
-    portLower: number,
-    portQuery: number
   } | undefined
   profiles: {
     '0': boolean,
