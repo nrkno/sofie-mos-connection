@@ -1,5 +1,4 @@
 import * as XMLBuilder from 'xmlbuilder'
-// import {XMLElementOrXMLNode} from 'xmlbuilder'
 import MosTime from './../dataTypes/mosTime'
 import MosMessage from './MosMessage'
 

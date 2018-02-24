@@ -1,11 +1,11 @@
 export enum SocketConnectionStatus {
-    CONNECTED = 'socketconnectionstatusconnected',
-    DISCONNECTED = 'socketconnectionstatusdisconnected',
-    DISPOSED = 'socketconnectionstatusdestroyed',
-    TIMEOUT = 'socketconnectionstatustimeout'
+  CONNECTED = 'socketconnectionstatusconnected',
+  DISCONNECTED = 'socketconnectionstatusdisconnected',
+  DISPOSED = 'socketconnectionstatusdestroyed',
+  TIMEOUT = 'socketconnectionstatustimeout'
 }
 
 export enum SocketServerConnectionStatus {
-    LISTENING = 'socketserverconnectionstatuslistening',
-    DISPOSED = 'socketserverconnectionstatusdestroyed'
+  LISTENING = 'socketserverconnectionstatuslistening',
+  DISPOSED = 'socketserverconnectionstatusdestroyed'
 }

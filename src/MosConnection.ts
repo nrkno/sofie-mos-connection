@@ -26,10 +26,12 @@ export default class MosConnection {
 
     this._conf = conf
 
+    // creates socket- clients and server
     this._lowerSocket = new MosSocketClient(this._conf.ncs.host, MosConnection.PORT_LOWER, 'Lower')
     this._upperSocket = new MosSocketServer(MosConnection.PORT_UPPER, 'Upper')
     this._querySocket = new MosSocketServer(MosConnection.PORT_QUERY, 'Query')
 
+    // creates socket- clients and server for Buddy connection, if configured
     if (this._conf.ncsBuddy !== undefined) {
       this._hasBuddy = true
       this._lowerBuddySocket = new MosSocketClient(this._conf.ncsBuddy.host, MosConnection.PORT_LOWER, 'Lower')
@@ -37,10 +39,10 @@ export default class MosConnection {
       this._queryBuddySocket = new MosSocketServer(MosConnection.PORT_QUERY, 'Query')
     }
 
+    // connects Lower-port socket client
     this._lowerSocket.on(SocketConnectionStatus.CONNECTED, () => {
       this.sendLowerCommand(new HeartBeat())
     })
-
     this._lowerSocket.connect()
   }
 

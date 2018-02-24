@@ -136,7 +136,9 @@ export default class MosSocketClient extends EventEmitter {
 
   /** */
   executeCommand (message: MosMessage): void {
-    message.prepare()
+
+    message.prepare() // @todo, is prepared? is sent already? logic needed
+
     let buf = iconv.encode(message.toString(), 'utf16-be')
 
     global.clearTimeout(this._commandTimeoutTimer)
