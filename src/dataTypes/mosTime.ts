@@ -2,7 +2,7 @@ import {pad} from './../utils/Utils'
 
 export class MosTime {
 
-	private static timestampRegex = /(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)([,\.](\d{3}))?(([+-Z])([:\d]+)?)?/
+	private static timestampRegex = /(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)([,\.](\d{3}))?(([+-Z])([:\d]+)?)?/i
 
 	private _time: Date
 
@@ -34,13 +34,11 @@ export class MosTime {
 				let tzSign = match[10]
 				let tzTime = match[11]
 
-				let dateStr = yy + '-' + mm + '-' + dd + 'T' + hh + ':' + ii + ':' + ss +
-					(ms ? '.' + ms : '') +
-					(tzSign === 'Z' ? tzSign : tzTime + pad(tzTime, 5))
+				let dateStr = `${yy}-${mm}-${dd}T${hh}:${ii}:${ss}${(ms ? '.' + ms : '')}${tzSign === 'Z' ? tzSign : tzTime ? tzSign + pad(tzTime, 5) : ''}`
 
 				time = new Date(dateStr)
 				if (isNaN(time.getTime())) {
-					throw new Error('Invalid timestamp')
+					throw new Error(`Invalid timestamp: "${timestamp}"`)
 				}
 			} else {
 				// received Date object
