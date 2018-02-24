@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig.base",
   "exclude": [
-    "node_modules/**",
-    "src/**/*spec.ts"
+    "node_modules/**"
   ]
 }

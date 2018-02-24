@@ -41,10 +41,9 @@
     "build:browser-cjs": "rollup -c config/exports/rollup.config.js -f cjs -o build/browser/index.cjs.js",
     "build:resolve-sourcemaps": "sorcery -i build/browser/index.js && sorcery -i build/browser/index.cjs.js",
     "build:tests": "trash test && node config/exports/build-tests.js",
-    "lint": "tslint --project . --type-check src/**/*.ts",
+    "lint": "tslint --project tsconfig.jest.json --config tslint.json",
     "unit": "jest --coverage",
-    "check-coverage": "nyc check-coverage --lines 100 --functions 100 --branches 100",
-    "test": "yarn lint && yarn unit && yarn check-coverage",
+    "test": "yarn lint && yarn unit",
     "watch": "jest --watch",
     "cov": "yarn unit && yarn html-coverage && opn coverage/index.html",
     "html-coverage": "nyc report --reporter=html",
@@ -78,7 +77,6 @@
   "devDependencies": {
     "@types/jest": "^22.1.3",
     "@types/node": "^8.0.4",
-    "ava": "^0.21.0",
     "browserify": "^14.1.0",
     "codecov": "^2.2.0",
     "concurrently": "^3.4.0",
@@ -124,13 +122,6 @@
     "exclude": [
       "**/*.spec.js",
       "build/browser/**"
-    ]
-  },
-  "ava": {
-    "source": [
-      "test/**/*.js",
-      "build/**/*.js",
-      "!build/**/*.spec.js"
     ]
   },
   "dependencies": {
