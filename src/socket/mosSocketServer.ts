@@ -1,5 +1,5 @@
 import * as net from 'net'
-import * as EventEmitter from 'events'
+import { EventEmitter } from 'events'
 import {SocketType} from './socketType'
 import {SocketServerConnectionStatus} from './mosSocketEvents'
 import SocketConnection from './socketConnection'
@@ -93,6 +93,9 @@ export default class MosSocketServer extends EventEmitter {
 
   /** */
   private _registerSocketClient (socket: net.Socket) {
+
+    // keep track of all servr, all connctons, filter actibity pr. server
+
     this._connections.push(new SocketConnection(this.i, socket))
   }
 

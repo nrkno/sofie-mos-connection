@@ -1,25 +1,31 @@
 import ConnectionConfig from './config/connectionConfig'
 import MosSocketClient from './socket/mosSocketClient'
 import MosSocketServer from './socket/mosSocketServer'
-import {SocketConnectionStatus} from './socket/mosSocketEvents'
+import {SocketConnectionStatus, SocketServerConnectionStatus} from './socket/mosSocketEvents'
 import MosMessage from './mosModel/MosMessage'
 import HeartBeat from './mosModel/0_heartBeat'
+import Timer = NodeJS.Timer
 
 export default class MosConnection {
   static PORT_LOWER: number = 10540
   static PORT_UPPER: number = 10541
   static PORT_QUERY: number = 10542
+  static KEEP_ALIVE_INTERVAL: number = 5000 // time in ms between last sign of server being alive, before sending heartbeat
 
   private _conf: ConnectionConfig
 
   private _lowerSocket: MosSocketClient
   private _upperSocket: MosSocketServer
   private _querySocket: MosSocketServer
-  private _lowerBuddySocket: MosSocketClient
-  private _upperBuddySocket: MosSocketServer
-  private _queryBuddySocket: MosSocketServer
+  private _lowerSocketBuddy: MosSocketClient
+  private _upperSocketBuddy: MosSocketServer
+  private _querySocketBuddy: MosSocketServer
 
   private _hasBuddy: boolean
+  private _lastSeen: number
+  private _lastSeenBuddy: number
+  private _lastSeenTimeout: Timer
+  private _lastSeenTimeoutBuddy: Timer
 
   /** */
   constructor (conf: ConnectionConfig) {
@@ -31,12 +37,22 @@ export default class MosConnection {
     this._upperSocket = new MosSocketServer(MosConnection.PORT_UPPER, 'Upper')
     this._querySocket = new MosSocketServer(MosConnection.PORT_QUERY, 'Query')
 
+    // logs any sign on the primary server being alive for heartbeat throtling and failover management
+    this._lowerSocket.on(SocketConnectionStatus.ALIVE, () => this.lastSeen = Date.now())
+    this._upperSocket.on(SocketServerConnectionStatus.ALIVE, () => this.lastSeen = Date.now())
+    this._querySocket.on(SocketServerConnectionStatus.ALIVE, () => this.lastSeen = Date.now())
+
     // creates socket- clients and server for Buddy connection, if configured
     if (this._conf.ncsBuddy !== undefined) {
       this._hasBuddy = true
-      this._lowerBuddySocket = new MosSocketClient(this._conf.ncsBuddy.host, MosConnection.PORT_LOWER, 'Lower')
-      this._upperBuddySocket = new MosSocketServer(MosConnection.PORT_UPPER, 'Upper')
-      this._queryBuddySocket = new MosSocketServer(MosConnection.PORT_QUERY, 'Query')
+      this._lowerSocketBuddy = new MosSocketClient(this._conf.ncsBuddy.host, MosConnection.PORT_LOWER, 'Lower')
+      this._upperSocketBuddy = new MosSocketServer(MosConnection.PORT_UPPER, 'Upper')
+      this._querySocketBuddy = new MosSocketServer(MosConnection.PORT_QUERY, 'Query')
+
+      // logs any sign on the buddy server being alive for heartbeat throtling and failover management
+      this._lowerSocketBuddy.on(SocketConnectionStatus.ALIVE, () => this.lastSeenBuddy = Date.now())
+      this._upperSocketBuddy.on(SocketServerConnectionStatus.ALIVE, () => this.lastSeenBuddy = Date.now())
+      this._querySocketBuddy.on(SocketServerConnectionStatus.ALIVE, () => this.lastSeenBuddy = Date.now())
     }
 
     // connects Lower-port socket client
@@ -51,5 +67,40 @@ export default class MosConnection {
     message.ncsID = this._conf.ncs.ncsID
     message.mosID = this._conf.mosID
     this._lowerSocket.executeCommand(message)
+  }
+
+  /** */
+  set lastSeen (timestamp: number) {
+    this._lastSeen = timestamp
+
+    clearTimeout(this._lastSeenTimeout)
+    delete this._lastSeenTimeout
+
+    this._lastSeenTimeout = setTimeout(() => { this._sendHeartBeat() }, MosConnection.KEEP_ALIVE_INTERVAL)
+  }
+
+  /** */
+  set lastSeenBuddy (timestamp: number) {
+    this._lastSeenBuddy = timestamp
+
+    clearTimeout(this._lastSeenTimeoutBuddy)
+    delete this._lastSeenTimeoutBuddy
+
+    this._lastSeenTimeoutBuddy = setTimeout(() => { this._sendHeartBeat(true) }, MosConnection.KEEP_ALIVE_INTERVAL)
+  }
+
+  /** */
+  private _sendHeartBeat (isBuddy: boolean = false) {
+    console.log('timeout for', isBuddy)
+
+    // @todo: log that we needed to send heartbeat, respond if it doesn't come back within reason
+
+    if (!isBuddy) {
+      // is primary
+      delete this._lastSeenTimeout
+    }else {
+      // is buddy
+      delete this._lastSeenTimeoutBuddy
+    }
   }
 }

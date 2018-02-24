@@ -1,9 +1,9 @@
 import {Socket} from 'net'
-import * as EventEmitter from 'events'
-import * as iconv from 'iconv-lite'
+import { EventEmitter } from 'events'
 import {SocketType} from './socketType'
 import {SocketConnectionStatus} from './mosSocketEvents'
 import MosMessage from '../mosModel/MosMessage'
+const iconv = require('iconv-lite')
 
 export default class MosSocketClient extends EventEmitter {
   private _host: string
@@ -183,12 +183,14 @@ export default class MosSocketClient extends EventEmitter {
 
   /** */
   private _onConnected () {
+    this.emit(SocketConnectionStatus.ALIVE)
     this._clearConnectionAttemptTimer()
     this._connected = true
   }
 
   /** */
   private _onData (data: string ) {
+    this.emit(SocketConnectionStatus.ALIVE)
     data = Buffer.from(data, 'ucs2').toString()
     console.log(`LOWER Received: ${data}`)
   }
