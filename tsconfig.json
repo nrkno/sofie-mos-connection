@@ -19,7 +19,6 @@
     },
     "declaration": true,
     "importHelpers": true,
-    "inlineSourceMap": true,
     "listFiles": false,
     "traceResolution": false,
     "pretty": true,
@@ -35,7 +34,8 @@
     "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules/**"
+    "node_modules/**",
+    "src/**/*spec.ts"
   ],
   "compileOnSave": false
 }
