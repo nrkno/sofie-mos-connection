@@ -48,7 +48,8 @@
     "changelog": "standard-version",
     "release": "yarn reset && yarn test && yarn docs:publish && yarn changelog",
     "reset": "git clean -dfx && git reset --hard && yarn",
-    "ci": "yarn test"
+	"ci": "yarn test",
+	"validate:dependencies": "nsp check"
   },
   "scripts-info": {
     "info": "Display information about the scripts",
@@ -77,6 +78,7 @@
     "jest": "^22.4.2",
     "mkdirp": "^0.5.1",
     "npm-scripts-info": "^0.3.6",
+    "nsp": "^3.2.1",
     "nyc": "^11.0.3",
     "opn-cli": "^3.1.0",
     "sleep-ms": "^2.0.1",
