@@ -3,6 +3,7 @@ import MosSocketClient from './socket/mosSocketClient'
 import MosSocketServer from './socket/mosSocketServer'
 import {SocketConnectionStatus} from './socket/mosSocketEvents'
 import MosMessage from './mosModel/MosMessage'
+import HeartBeat from './mosModel/0_heartBeat'
 
 export default class MosConnection {
   static PORT_LOWER: number = 10540
@@ -39,7 +40,14 @@ export default class MosConnection {
     this._lowerSocket.on(SocketConnectionStatus.CONNECTED, () => {
       this.sendLowerCommand(new HeartBeat())
     })
+
+    this._lowerSocket.connect()
   }
 
+  /** */
+  sendLowerCommand (message: MosMessage) {
+    message.ncsID = this._conf.ncs.ncsID
+    message.mosID = this._conf.mosID
+    this._lowerSocket.executeCommand(message)
   }
 }

@@ -131,6 +131,10 @@
     ]
   },
   "dependencies": {
-    "tslib": "^1.6.0"
+    "@types/xml2js": "^0.4.2",
+    "@types/xmlbuilder": "^0.0.32",
+    "tslib": "^1.6.0",
+    "xml2js": "^0.4.19",
+    "xmlbuilder": "^9.0.7"
   }
 }
