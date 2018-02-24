@@ -1,4 +1,12 @@
 
+
+
+import {MosConnection} from "../index"
+
 test('Simple test', () => {
-	expect(2).toBe(2)
+	
+	var myMosC = new MosConnection({
+	})
+
+	expect(myMosC).toBeInstanceOf(MosConnection)
 })
