@@ -1,30 +1,30 @@
 export default class ConnectionConfig {
-  mosID: string
-  ncs: {
-    ncsID: string,
-    host: string,
-    portUpper: number,
-    portLower: number,
-    portQuery: number
-  }
-  ncsBuddy: {
-    ncsID: string,
-    host: string,
-    portUpper: number,
-    portLower: number,
-    portQuery: number
-  } | undefined
-  profiles: {
-    '0': boolean,
-    '1': boolean,
-    '2': boolean,
-    '3': boolean,
-    '4': boolean,
-    '5': boolean,
-    '6': boolean,
-    '7': boolean
-  }
-  compliancyCheck: boolean = false
+	mosID: string
+	ncs: {
+		ncsID: string,
+		host: string,
+		portUpper: number,
+		portLower: number,
+		portQuery: number
+	}
+	ncsBuddy: {
+		ncsID: string,
+		host: string,
+		portUpper: number,
+		portLower: number,
+		portQuery: number
+	} | undefined
+	profiles: {
+		'0': boolean,
+		'1': boolean,
+		'2': boolean,
+		'3': boolean,
+		'4': boolean,
+		'5': boolean,
+		'6': boolean,
+		'7': boolean
+	}
+	compliancyCheck: boolean = false
 
 	// machineInfo: {
 	// 	manufacturer: "SuperFly.tv",
