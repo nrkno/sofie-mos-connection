@@ -21,8 +21,8 @@ export class MosConnection {
 	private _upperSocketBuddy: MosSocketServer
 	private _querySocketBuddy: MosSocketServer
 
-	// private _lastSeen: number
-	// private _lastSeenBuddy: number
+	private _lastSeen: number
+	private _lastSeenBuddy: number
 	private _lastSeenTimeout: Timer
 	private _lastSeenTimeoutBuddy: Timer
 
