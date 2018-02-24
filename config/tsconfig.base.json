@@ -1,5 +1,5 @@
 {
-  "extends": "./config/tsconfig.strict",
+  "extends": "./tsconfig.strict",
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
@@ -10,11 +10,11 @@
     "baseUrl": ".",
     "paths": {
       "*": [
-        "node_modules/*",
-        "src/types/*"
+        "../node_modules/*",
+        "../src/types/*"
       ],
       "typescript-starter": [
-        "src/index.ts"
+        "../src/index.ts"
       ]
     },
     "declaration": true,
@@ -31,7 +31,7 @@
     ]
   },
   "include": [
-    "src/**/*.ts"
+    "../src/**/*.ts"
   ],
   "compileOnSave": false
 }
