@@ -63,7 +63,7 @@ export default class MosSocketServer extends EventEmitter {
   /** */
   private _listen (): void {
     // prevents manipulation of active socket
-    if (!this._server.listening) {
+    if (this._server && !this._server.listening) {
       // recereates server if new attempt
       if (this._server) {
         this._server.close()

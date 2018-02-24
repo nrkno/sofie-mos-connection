@@ -2,21 +2,21 @@ export default class ConnectionConfig {
   mosID: string
   ncs: {
     ncsID: string,
-    host: string,
+    host: string
   }
-  ncsBuddy: {
+  ncsBuddy?: {
     ncsID: string,
-    host: string,
-  } | undefined
+    host: string
+  }
   profiles: {
-    '0': boolean,
-    '1': boolean,
-    '2': boolean,
-    '3': boolean,
-    '4': boolean,
-    '5': boolean,
-    '6': boolean,
-    '7': boolean
+    '0'?: boolean,
+    '1'?: boolean,
+    '2'?: boolean,
+    '3'?: boolean,
+    '4'?: boolean,
+    '5'?: boolean,
+    '6'?: boolean,
+    '7'?: boolean
   }
 	// machineInfo: {
 	// 	manufacturer: "SuperFly.tv",

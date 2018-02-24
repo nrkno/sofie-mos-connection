@@ -1,7 +1,9 @@
 import {Socket} from 'net'
 import * as EventEmitter from 'events'
+import * as iconv from 'iconv-lite'
 import {SocketType} from './socketType'
 import {SocketConnectionStatus} from './mosSocketEvents'
+import MosMessage from '../mosModel/MosMessage'
 
 export default class MosSocketClient extends EventEmitter {
   private _host: string
@@ -59,15 +61,16 @@ export default class MosSocketClient extends EventEmitter {
 
 				// (re)creates client, either on first run or new attempt
         if (!this._client) {
-          this._client = new net.Socket()
+          this._client = new Socket()
           this._client.on('close', (hadError: boolean) => this._onClose(hadError))
           this._client.on('connect', () => this._onConnected())
-          this._client.on('data', (data: Buffer) => this._onData(data))
+          this._client.on('data', (data: string) => this._onData(data))
           this._client.on('error', (error: Error) => this._onError(error))
         }
 
 				// connects
         this.log(`Socket ${this._description} attempting connection`)
+        this._client.setEncoding('ucs2')
         this._client.connect(this._port, this._host)
         this._shouldBeConnected = true
         this._lastConnectionAttempt = Date.now()
@@ -132,14 +135,15 @@ export default class MosSocketClient extends EventEmitter {
   }
 
   /** */
-  executeCommand (): void {
-    let commandString: string = ''
+  executeCommand (message: MosMessage): void {
+    message.prepare()
+    let buf = iconv.encode(message.toString(), 'utf16-be')
 
     global.clearTimeout(this._commandTimeoutTimer)
     this._commandTimeoutTimer = global.setTimeout(() => this._onCommandTimeout(), this._commandTimeout)
-    this._client.write(commandString)
+    this._client.write(buf, 'ucs2')
 
-    this.log(`MOS command sent from ${this._description} : ${commandString}`)
+    this.log(`MOS command sent from ${this._description} : ${buf}\r\nbytes sent: ${this._client.bytesWritten}`)
   }
 
   /** */
@@ -182,8 +186,9 @@ export default class MosSocketClient extends EventEmitter {
   }
 
   /** */
-  private _onData (data: Buffer ) {
-    console.log(`Data received: ${data}`)
+  private _onData (data: string ) {
+    data = Buffer.from(data, 'ucs2').toString()
+    console.log(`LOWER Received: ${data}`)
   }
 
   /** */

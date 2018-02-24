@@ -63,7 +63,7 @@ export default class MosTime {
     this._time = time
   }
   toString (): string {
-    let ISOstring: string = this._time.toISOString()
+    let ISOstring = this._time.toISOString()
 
     // remove last character (timezone identificator), to be MOS time format compliant
     return ISOstring.slice(0, -1)
