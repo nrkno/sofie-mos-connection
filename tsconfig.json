@@ -1,27 +1,35 @@
 {
   "extends": "./config/tsconfig.strict",
   "compilerOptions": {
-    "target": "es6",
-    "outDir": "build/main",
-    "rootDir": "src",
-    "moduleResolution": "node",
     "module": "commonjs",
+    "target": "es6",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "src/types/*"
+      ],
+      "typescript-starter": [
+        "src/index.ts"
+      ]
+    },
     "declaration": true,
     "importHelpers": true,
     "inlineSourceMap": true,
     "listFiles": false,
     "traceResolution": false,
     "pretty": true,
-    "lib" : [
+    "lib": [
       "es6"
     ],
-    "types" : [
-      "node"
-    ],
-    "baseUrl": ".", // required for "paths"
-    "paths": {
-      "typescript-starter": ["src/index.ts"] // write tests without relative paths
-    }
+    "types": [
+      "node",
+      "jest"
+    ]
   },
   "include": [
     "src/**/*.ts"
