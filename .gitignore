@@ -8,3 +8,5 @@ coverage
 *.log
 
 wallaby.conf.js
+
+.DS_Store
