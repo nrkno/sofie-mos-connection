@@ -27,7 +27,7 @@ export default abstract class MosMessage {
     let xml = XMLBuilder.create('mos', undefined, undefined, {
       headless: true
     })
-    xml.ele('ncsID', this.mosID)
+    xml.ele('ncsID', this.ncsID)
     xml.ele('mosID', this.mosID)
     xml.ele('messageID', this.messageID)
     xml.importDocument(this.messageXMLBlocks)

@@ -66,7 +66,7 @@ export default class MosTime {
     let ISOstring = this._time.toISOString()
 
     // remove last character (timezone identificator), to be MOS time format compliant
-    return ISOstring.slice(0, -1)
+    return ISOstring.slice(0, -5)
   }
   getTime (): number {
     return this._time.getTime()
