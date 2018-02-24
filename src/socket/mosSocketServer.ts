@@ -1,10 +1,10 @@
 import * as net from 'net'
-import { EventEmitter } from 'events'
+import {EventEmitter} from 'events'
 import {SocketType} from './socketType'
 import {SocketServerConnectionStatus} from './mosSocketEvents'
-import SocketConnection from './socketConnection'
+import {SocketConnection} from './socketConnection'
 
-export default class MosSocketServer extends EventEmitter {
+export class MosSocketServer extends EventEmitter {
   private _port: number
 
   private _description: string

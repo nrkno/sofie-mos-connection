@@ -1,6 +1,6 @@
 import {Socket} from 'net'
 
-export default class SocketConnection {
+export class SocketConnection {
 
   id: number
   socket: Socket

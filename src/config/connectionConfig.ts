@@ -1,4 +1,4 @@
-export default class ConnectionConfig {
+export class ConnectionConfig {
   mosID: string
   ncs: {
     ncsID: string,

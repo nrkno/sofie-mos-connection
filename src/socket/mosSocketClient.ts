@@ -1,11 +1,11 @@
 import {Socket} from 'net'
-import { EventEmitter } from 'events'
+import {EventEmitter} from 'events'
 import {SocketType} from './socketType'
 import {SocketConnectionStatus} from './mosSocketEvents'
-import MosMessage from '../mosModel/MosMessage'
+import {MosMessage} from '../mosModel/MosMessage'
 const iconv = require('iconv-lite')
 
-export default class MosSocketClient extends EventEmitter {
+export class MosSocketClient extends EventEmitter {
   private _host: string
   private _port: number
   private _autoReconnect: boolean = true

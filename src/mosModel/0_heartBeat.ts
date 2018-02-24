@@ -1,8 +1,8 @@
 import * as XMLBuilder from 'xmlbuilder'
-import MosTime from './../dataTypes/mosTime'
-import MosMessage from './MosMessage'
+import {MosTime} from './../dataTypes/mosTime'
+import {MosMessage} from './MosMessage'
 
-export default class HeartBeat extends MosMessage {
+export class HeartBeat extends MosMessage {
 
   time: MosTime
 

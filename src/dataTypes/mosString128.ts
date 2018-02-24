@@ -1,4 +1,4 @@
-export default class MosString128 {
+export class MosString128 {
 
   private _str: string
 

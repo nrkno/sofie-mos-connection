@@ -4,7 +4,7 @@ function pad (n: string, width: number, z?: string): string {
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n
 }
 
-export default class MosTime {
+export class MosTime {
 
   private _time: Date
 

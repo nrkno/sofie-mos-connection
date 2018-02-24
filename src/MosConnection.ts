@@ -1,12 +1,12 @@
-import ConnectionConfig from './config/connectionConfig'
-import MosSocketClient from './socket/mosSocketClient'
-import MosSocketServer from './socket/mosSocketServer'
+import {ConnectionConfig} from './config/connectionConfig'
+import {MosSocketClient} from './socket/mosSocketClient'
+import {MosSocketServer} from './socket/mosSocketServer'
 import {SocketConnectionStatus, SocketServerConnectionStatus} from './socket/mosSocketEvents'
-import MosMessage from './mosModel/MosMessage'
-import HeartBeat from './mosModel/0_heartBeat'
+import {MosMessage} from './mosModel/MosMessage'
+import {HeartBeat} from './mosModel/0_heartBeat'
 import Timer = NodeJS.Timer
 
-export default class MosConnection {
+export class MosConnection {
   static PORT_LOWER: number = 10540
   static PORT_UPPER: number = 10541
   static PORT_QUERY: number = 10542

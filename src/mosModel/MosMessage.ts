@@ -1,6 +1,6 @@
 import * as XMLBuilder from 'xmlbuilder'
 
-export default abstract class MosMessage {
+export abstract class MosMessage {
 
   private static MAX_MESSAGE_ID = Math.pow(2, 31) - 2
   private static _messageID: number = 1
