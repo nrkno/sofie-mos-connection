@@ -42,7 +42,7 @@
     "build:resolve-sourcemaps": "sorcery -i build/browser/index.js && sorcery -i build/browser/index.cjs.js",
     "build:tests": "trash test && node config/exports/build-tests.js",
     "lint": "tslint --project . --type-check src/**/*.ts",
-    "unit": "yarn build && yarn build:tests && nyc ava",
+    "unit": "jest",
     "check-coverage": "nyc check-coverage --lines 100 --functions 100 --branches 100",
     "test": "yarn lint && yarn unit && yarn check-coverage",
     "watch": "yarn build && yarn build:tests -- --no-browser && concurrently -r --kill-others \"npm run --silent build:main -- -w\" \"npm run --silent build:tests -- -w --no-browser\" \"sleepms 2000 && ava --watch\"",
@@ -76,6 +76,7 @@
     "node": ">=4.5"
   },
   "devDependencies": {
+    "@types/jest": "^22.1.3",
     "@types/node": "^8.0.4",
     "ava": "^0.21.0",
     "browserify": "^14.1.0",
@@ -84,6 +85,7 @@
     "cpx": "^1.5.0",
     "gh-pages": "^1.0.0",
     "hash.js": "^1.0.3",
+    "jest": "^22.4.2",
     "mkdirp": "^0.5.1",
     "npm-scripts-info": "^0.3.6",
     "nyc": "^11.0.3",
@@ -98,6 +100,7 @@
     "sorcery": "^0.10.0",
     "standard-version": "^4.0.0",
     "trash-cli": "^1.4.0",
+    "ts-jest": "^22.0.4",
     "tslint": "^5.4.3",
     "tslint-config-standard": "^6.0.1",
     "typedoc": "^0.8.0",
