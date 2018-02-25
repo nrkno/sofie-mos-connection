@@ -1,12 +1,17 @@
-
-
-
-import {MosConnection} from "../index"
+import {MosConnection} from '../index'
 
 test('Simple test', () => {
-	
-	var myMosC = new MosConnection({
-	})
 
-	expect(myMosC).toBeInstanceOf(MosConnection)
+	// let myMosC = new MosConnection({
+	// 	mosID: 'testMOS',
+	// 	ncs: {
+	// 		host: '0.0.0.0',
+	// 		ncsID: 'testNCS'
+	// 	},
+	// 	profiles: {
+	// 		'0': true
+	// 	}
+	// })
+
+	// expect(myMosC).toBeInstanceOf(MosConnection)
 })

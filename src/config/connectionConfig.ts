@@ -9,7 +9,7 @@ export class ConnectionConfig {
 		host: string
 	}
 	profiles: {
-		'0'?: boolean,
+		'0': boolean,
 		'1'?: boolean,
 		'2'?: boolean,
 		'3'?: boolean,
@@ -18,6 +18,9 @@ export class ConnectionConfig {
 		'6'?: boolean,
 		'7'?: boolean
 	}
+
+	// @todo: resolve profile dependecies
+
 	// machineInfo: {
 	// 	manufacturer: "SuperFly.tv",
 	//     model: 	"YAAS"
