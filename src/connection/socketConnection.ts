@@ -1,13 +1,20 @@
-import {Socket} from 'net'
+import {Socket} from 'net';
 
 /** */
-export class SocketConnection {
+export interface IConnection {
+  id: number
+  connectionID: ConnectionType
+  socket: Socket
+}
 
-	socket: Socket
+/** */
+export interface IIncomingConnection extends IConnection {
+  
+}
 
-	constructor (socket: Socket) {
-		this.socket = socket
-	}
+/** */
+export interface IOutgoingConnection extends IConnection {
+
 }
 
 /** */
@@ -29,4 +36,6 @@ export enum SocketServerEvent {
 }
 
 /** */
-export type SocketType = 'Lower' | 'Upper' | 'Query'
+export type ConnectionType = IncomingConnectionType | OutgoingConnectionType
+export type IncomingConnectionType = 'upper' | 'query'
+export type  OutgoingConnectionType = 'lower'

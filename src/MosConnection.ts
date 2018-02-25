@@ -1,21 +1,19 @@
-import {Socket} from 'net'
 import { ConnectionConfig, ProfilesSupport } from './config/connectionConfig'
 import { MosSocketServer } from './connection/mosSocketServer'
-import { SocketConnectionEvent } from './connection/socketConnection'
 import { ConnectionManager } from './connection/connectionManager'
-
 import { IMosConnection } from './api'
 
+
 export class MosConnection implements IMosConnection {
-	static PORT_LOWER: number = 10540
-	static PORT_UPPER: number = 10541
-	static PORT_QUERY: number = 10542
+	static CONNECTION_PORT_LOWER: number = 10540
+	static CONNECTION_PORT_UPPER: number = 10541
+	static CONNECTION_PORT_QUERY: number = 10542
 
 	public isListening: Promise<boolean[]>
 
 	private _conf: ConnectionConfig
 
-	private _connections: ConnectionManager = new ConnectionManager()
+	private _connectionManager: ConnectionManager = new ConnectionManager()
 	private _upperSocketServer: MosSocketServer
 	private _querySocketServer: MosSocketServer
 
@@ -76,13 +74,8 @@ export class MosConnection implements IMosConnection {
 
 		// setup two socket servers, then resolve with their listening statuses
 		return new Promise((outerResolve) => {
-			this._upperSocketServer = new MosSocketServer(MosConnection.PORT_UPPER, 'upper')
-			this._upperSocketServer.on(SocketConnectionEvent.REGISTER, (e: {id: number, socket: Socket}) => this._connections.register(e.id, e.socket, 'incoming'))
-			this._upperSocketServer.on(SocketConnectionEvent.UNREGISTER, (e: {id: number}) => this._connections.unregister(e.id, 'incoming'))
-
-			this._querySocketServer = new MosSocketServer(MosConnection.PORT_QUERY, 'query')
-			this._querySocketServer.on(SocketConnectionEvent.REGISTER, (e: {id: number, socket: Socket}) => this._connections.register(e.id, e.socket, 'incoming'))
-			this._querySocketServer.on(SocketConnectionEvent.UNREGISTER, (e: {id: number}) => this._connections.unregister(e.id, 'incoming'))
+			this._upperSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_UPPER, 'upper', this._connectionManager)
+			this._querySocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_QUERY, 'query', this._connectionManager)
 
 			Promise.all(
 				[

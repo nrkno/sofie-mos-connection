@@ -1,19 +1,26 @@
 import {Server, Socket, createServer} from 'net'
 import {EventEmitter} from 'events'
+import { ConnectionManager } from './connectionManager';
+import { IncomingConnectionType } from './socketConnection';
 
 export class MosSocketServer extends EventEmitter {
 
 	private _port: number
-	private _description: string
+	private _description: IncomingConnectionType
+	private _connectionManager: ConnectionManager
 	private _server: Server
-	private _clients: Socket[] = [] // @todo: lifetime/relation between this and connectionmanager??????
 
 	/** */
-	constructor (port: number, description: 'upper' | 'query') {
+	constructor (port: number, description: IncomingConnectionType, connectionManager: ConnectionManager) {
 		super()
 		this._port = port
 		this._description = description
+		this._connectionManager = connectionManager
+
 		this._server = createServer()
+		this._server.once('connection', (socket: Socket) => this._onClientConnection(socket))
+		this._server.once('close', () => this._onServerClose())
+		this._server.once('error', (error) => this._onServerError(error))
 	}
 
 	/** */
@@ -53,12 +60,12 @@ export class MosSocketServer extends EventEmitter {
 			let closePromises: Promise<void>[] = []
 
 			// close clients
-			this._clients.forEach(client => {
+			this._connectionManager.getSocketsFor(this._description).forEach(socket => {
 				closePromises.push(
 					new Promise((resolve) => {
-						client.on('close', resolve)
-						client.end()
-						client.destroy()
+						socket._client.on('close', resolve)
+						socket._client.end()
+						socket._client.destroy()
 					})
 				)
 			})
@@ -71,7 +78,26 @@ export class MosSocketServer extends EventEmitter {
 				})
 			)
 
-			Promise.all(closePromises).then(() => outerResolve)
+			Promise.all(closePromises).then(() => outerResolve())
 		})
+
+	}
+	
+	/** */
+	private _onClientConnection (socket: Socket) {
+		this._connectionManager.register(new IncomingConnection(socket, this._description))
+		console.log('Connected:', socket)
+	}
+	
+	/** */
+	private _onServerError (error: Error) {
+		// @todo: implement
+		console.log('Server error:', error)
+	}
+	
+	/** */
+	private _onServerClose () {
+		// @todo: implement
+		console.log(`Server closed: "${this._description}", on port ${this._port}`)
 	}
 }
