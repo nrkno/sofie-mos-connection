@@ -8,7 +8,7 @@ export class MosString128 {
 	}
 
 	/** */
-	toString (): string {
+	toString(): string {
 		return this._str
 	}
 

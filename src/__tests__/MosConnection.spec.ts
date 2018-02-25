@@ -34,10 +34,12 @@ describe('MosConnection API', () => {
 				// CHECK THAT THE PORTS ARE OPEN AND CAN BE CONNCETED TO
 			})
 		}else {
-			expect(mos.isListening).rejects.toBe(false)
+			expect(mos.isListening).rejects.toBe("Mos connection is not listening for connections. \"Config.acceptsConnections\" is \"false\"")
 		}
 
 		// close sockets after test
-		mos.isListening.then(() => mos.dispose())
+		mos.isListening
+			.then(() => mos.dispose())
+			.catch(() => mos.dispose())
 	})
 })

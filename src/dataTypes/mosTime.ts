@@ -63,7 +63,7 @@ export class MosTime {
 	}
 
 	/** */
-	toString (): string {
+	toString(): string {
 		if (!this._timezoneDeclaration) {
 			return moment.utc(this._time).format(`YYYY-MM-DDTHH:mm:ss,SSS${this._timezoneZuluIndicator.length ? '##!!##' : 'Z'}`).replace('+00:00', '').replace('##!!##', this._timezoneZuluIndicator)
 		}else {
@@ -72,7 +72,7 @@ export class MosTime {
 	}
 
 	/** */
-	getTime (): number {
+	getTime(): number {
 		return this._time.getTime()
 	}
 
