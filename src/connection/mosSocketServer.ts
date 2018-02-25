@@ -1,99 +1,77 @@
-import * as net from 'net'
+import {Server, Socket, createServer} from 'net'
 import {EventEmitter} from 'events'
-import {SocketType, SocketServerConnectionStatus} from './socketConnection'
-import {SocketConnection} from './socketConnection'
 
 export class MosSocketServer extends EventEmitter {
+
 	private _port: number
-
 	private _description: string
-	private _server: net.Server
+	private _server: Server
+	private _clients: Socket[] = [] // @todo: lifetime/relation between this and connectionmanager??????
 
-	private _connections: SocketConnection[]
-
-  /** */
-	constructor (port: number, description: SocketType) {
+	/** */
+	constructor (port: number, description: 'upper' | 'query') {
 		super()
 		this._port = port
 		this._description = description
-		this._listen()
+		this._server = createServer()
 	}
 
-  /** */
-	get port (): number {
-		if (this._server) {
-			return this._port
-		}
-		return this._port
-	}
+	/** */
+	listen (): Promise<boolean> {
+		return	new Promise((resolve, reject) => {
 
-  /** */
-	get socketConnections (): SocketConnection[] {
-		return this._connections
-	}
-
-  /** */
-	dispose (): void {
-	// @TODO JALLA SHIT
-		this._server.once('close', () => {
-			this.emit(SocketServerConnectionStatus.DISPOSED)
-			delete this._server
-		})
-
-		// close all connections
-		// this._connections.forEach((connection) => {
-		// 	connection.socket.end()
-		// })
-	}
-
-  /**
-   * convenience wrapper to expose all logging calls to parent object
-   */
-	log (args: any): void {
-		console.log(args)
-	}
-
-  /** */
-	private _listen (): void {
-	// prevents manipulation of active socket
-		if (this._server && !this._server.listening) {
-		// recereates server if new attempt
-			if (this._server) {
-				this._server.close()
-				this._server.removeAllListeners()
-				delete this._server
+			// already listening
+			if (this._server.listening) {
+				resolve(true)
+				return
 			}
 
-		// (re)creates client, either on first run or new attempt
-			if (!this._server) {
-				this._server = net.createServer()
-				this._server.on('connection', (socket: net.Socket) => this._registerSocketClient(socket))
-				this._server.on('error', (error) => this._onError(error))
-				this._server.on('listening', () => this._onListening())
+			// handles listening-listeners and cleans up
+			let handleListeningStatus = (e?: Error) => {
+				this._server.removeListener('listening', handleListeningStatus)
+				this._server.removeListener('close', handleListeningStatus)
+				this._server.removeListener('error', handleListeningStatus)
+				if (this._server.listening) {
+					resolve(true)
+				}else {
+					reject(e || false)
+				}
 			}
 
-		// connects
-			this.log(`Server ${this._description} attempting to listen`)
+			// listens and handles error and events
+			this._server.once('listening', handleListeningStatus)
+			this._server.once('close', handleListeningStatus)
+			this._server.once('error', handleListeningStatus)
+
 			this._server.listen(this._port)
-		}
+		})
 	}
 
-  /** */
-	private _onError (error: Error) {
-	// dispatch error!!!!!
-		this.log(`Socket event error: ${error.message}`)
-	}
+	/** */
+	dispose (): Promise<void > {
+		return	new Promise((outerResolve) => {
+			let closePromises: Promise<void>[] = []
 
-  /** */
-	private _registerSocketClient (socket: net.Socket) {
+			// close clients
+			this._clients.forEach(client => {
+				closePromises.push(
+					new Promise((resolve) => {
+						client.on('close', resolve)
+						client.end()
+						client.destroy()
+					})
+				)
+			})
 
-	// keep track of all servr, all connctons, filter actibity pr. server
+			// close server
+			closePromises.push(
+				new Promise((resolve) => {
+					this._server.on('close', resolve)
+					this._server.close()
+				})
+			)
 
-		this._connections.push(new SocketConnection(socket))
-	}
-
-  /** */
-	private _onListening () {
-		this.emit(SocketServerConnectionStatus.LISTENING)
+			Promise.all(closePromises).then(() => outerResolve)
+		})
 	}
 }

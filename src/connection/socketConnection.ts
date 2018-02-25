@@ -11,19 +11,21 @@ export class SocketConnection {
 }
 
 /** */
-export enum SocketConnectionStatus {
-  CONNECTED = 'socketconnectionstatusconnected',
-  DISCONNECTED = 'socketconnectionstatusdisconnected',
-  DISPOSED = 'socketconnectionstatusdestroyed',
-  TIMEOUT = 'socketconnectionstatustimeout',
-  ALIVE= 'socketconnectionstatusalive'
+export enum SocketConnectionEvent {
+  CONNECTED = 'eventsocketconnectionconnected',
+  DISCONNECTED = 'eventsocketconnectiondisconnected',
+  DISPOSED = 'eventsocketconnectiondisposed',
+  TIMEOUT = 'eventsocketconnectiontimeout',
+  ALIVE = 'eventsocketconnectionalive',
+  REGISTER = 'eventsocketconnectionregister',
+  UNREGISTER = 'eventsocketconnectionunregister'
 }
 
 /** */
-export enum SocketServerConnectionStatus {
-  LISTENING = 'socketserverconnectionstatuslistening',
-  DISPOSED = 'socketserverconnectionstatusdestroyed',
-  ALIVE= 'socketserverconnectionstatusalive'
+export enum SocketServerEvent {
+  LISTENING = 'eventsocketserverlistening',
+  DISPOSED = 'eventsocketserverdisposed',
+  ALIVE = 'eventsocketserveralive'
 }
 
 /** */
