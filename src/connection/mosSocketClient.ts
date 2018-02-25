@@ -1,6 +1,6 @@
 import {Socket} from 'net'
 import {EventEmitter} from 'events'
-import {SocketType, SocketConnectionStatus} from './socketConnection'
+import {SocketType} from './socketConnection'
 import {MosMessage} from '../mosModel/MosMessage'
 const iconv = require('iconv-lite')
 
@@ -62,9 +62,9 @@ export class MosSocketClient extends EventEmitter {
 				if (!this._client) {
 					this._client = new Socket()
 					this._client.on('close', (hadError: boolean) => this._onClose(hadError))
-					this._client.on('connect', () => this._onConnected())
-					this._client.on('data', (data: string) => this._onData(data))
-					this._client.on('error', (error: Error) => this._onError(error))
+					this._client.on('connect', this._onConnected)
+					this._client.on('data', this._onData)
+					this._client.on('error', this._onError)
 				}
 
 				// connects
@@ -77,7 +77,7 @@ export class MosSocketClient extends EventEmitter {
 
 			// sets timer to retry when needed
 			if (!this._connectionAttemptTimer) {
-				this._connectionAttemptTimer = global.setInterval(() => this._autoReconnectionAttempt(), this._reconnectDelay)
+				this._connectionAttemptTimer = global.setInterval(this._autoReconnectionAttempt, this._reconnectDelay)
 			}
 		}
 	}
@@ -141,7 +141,7 @@ export class MosSocketClient extends EventEmitter {
 		let buf = iconv.encode(message.toString(), 'utf16-be')
 
 		global.clearTimeout(this._commandTimeoutTimer)
-		this._commandTimeoutTimer = global.setTimeout(() => this._onCommandTimeout(), this._commandTimeout)
+		this._commandTimeoutTimer = global.setTimeout(this._onCommandTimeout, this._commandTimeout)
 		this._client.write(buf, 'ucs2')
 
 		this.log(`MOS command sent from ${this._description} : ${buf}\r\nbytes sent: ${this._client.bytesWritten}`)

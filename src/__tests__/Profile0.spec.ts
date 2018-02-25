@@ -5,14 +5,14 @@ import { ConnectionConfig } from '../config/connectionConfig'
 describe('MosConnection API', () => {
 	let mos = new MosConnection(new ConnectionConfig({
 		mosID: 'jestMOS',
-		acceptsConnections: true,
+		acceptsConnections: false,
 		profiles: {
 			'0': true,
 			'1': true
 		}
 	}))
 
-	test('Public methods', async () => {
+	test('Public methods', () => {
 		expect(mos.getProfiles()).toMatchObject({
 			'0': true,
 			'1': true
@@ -20,7 +20,7 @@ describe('MosConnection API', () => {
 	})
 })
 
-// test('Mos profile 0', async () => {
+// test('Mos profile 0', () => {
 
 // 	// Test test:
 // 	const mos = new MosConnection( new ConnectionConfig({
@@ -42,7 +42,7 @@ describe('MosConnection API', () => {
 // 	mos.onConnection(onConnection)
 
 // 	// Connect to ENPS:
-// 	await mos.connect({
+// 	mos.connect({
 // 		ncs: {
 // 			ncsID: 'MYTESTSERVER',
 // 			host: '127.0.0.1'

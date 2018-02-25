@@ -1,15 +1,30 @@
 import {Socket} from 'net'
+import { ConnectionType, IConnection } from './socketConnection';
 
 export class ConnectionManager {
 
-	/** */
-	register (id: number, socket: Socket, direction: 'incoming' | 'outgoing') {
-		console.log ( 'register connection', id, socket, direction)
+	private _connections: {[socketID: string]: {[socketID: string]: IConnection}} = {
+		lower: {},
+		upper: {},
+		query: {}
 	}
 
 	/** */
-	unregister (id: number, direction: 'incoming' | 'outgoing') {
-		console.log ( 'unregister connection', id, direction)
+	register (socket: IConnection) {
+		this._connections[socket.connectionID][socket.id] = socket
+	}
 
+	/** */
+	unregister (socket: IConnection) {
+		delete this._connections[socket.connectionID][socket.id]
+	}
+
+	/** */
+	getSocketsFor(connectionID: ConnectionType): IConnection[] {
+		let sockets: IConnection[] = []
+		for(let i in this._connections[connectionID]) {
+			sockets.push(this._connections[connectionID][i])
+		}
+		return sockets
 	}
 }
