@@ -1,7 +1,6 @@
 import {Socket} from 'net'
 import {EventEmitter} from 'events'
-import {SocketType} from './socketType'
-import {SocketConnectionStatus} from './mosSocketEvents'
+import {SocketType, SocketConnectionStatus} from './socketConnection'
 import {MosMessage} from '../mosModel/MosMessage'
 const iconv = require('iconv-lite')
 

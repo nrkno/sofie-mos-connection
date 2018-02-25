@@ -1,7 +1,6 @@
 import * as net from 'net'
 import {EventEmitter} from 'events'
-import {SocketType} from './socketType'
-import {SocketServerConnectionStatus} from './mosSocketEvents'
+import {SocketType, SocketServerConnectionStatus} from './socketConnection'
 import {SocketConnection} from './socketConnection'
 
 export class MosSocketServer extends EventEmitter {
@@ -11,7 +10,6 @@ export class MosSocketServer extends EventEmitter {
 	private _server: net.Server
 
 	private _connections: SocketConnection[]
-	private _i: number = 0
 
   /** */
 	constructor (port: number, description: SocketType) {
@@ -35,11 +33,6 @@ export class MosSocketServer extends EventEmitter {
 	}
 
   /** */
-	get i (): number {
-		return this._i++
-	}
-
-  /** */
 	dispose (): void {
 	// @TODO JALLA SHIT
 		this._server.once('close', () => {
@@ -47,10 +40,10 @@ export class MosSocketServer extends EventEmitter {
 			delete this._server
 		})
 
-	// close all connections
-		this._connections.forEach((connection) => {
-			connection.socket.end()
-		})
+		// close all connections
+		// this._connections.forEach((connection) => {
+		// 	connection.socket.end()
+		// })
 	}
 
   /**
@@ -96,7 +89,7 @@ export class MosSocketServer extends EventEmitter {
 
 	// keep track of all servr, all connctons, filter actibity pr. server
 
-		this._connections.push(new SocketConnection(this.i, socket))
+		this._connections.push(new SocketConnection(socket))
 	}
 
   /** */
