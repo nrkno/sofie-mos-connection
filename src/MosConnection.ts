@@ -4,7 +4,9 @@ import { MosSocketServer } from './connection/mosSocketServer'
 import { SocketConnectionEvent } from './connection/socketConnection'
 import { ConnectionManager } from './connection/connectionManager'
 
-export class MosConnection {
+import { IMosConnection } from './api'
+
+export class MosConnection implements IMosConnection {
 	static PORT_LOWER: number = 10540
 	static PORT_UPPER: number = 10541
 	static PORT_QUERY: number = 10542
