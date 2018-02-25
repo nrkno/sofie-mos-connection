@@ -1,41 +1,21 @@
-
-import {MosConnection} from "../MosConnection"
-
-
-test('Mos profile 0', async () => {
-
-	// Test test:
-	const mos = new MosConnection({
-		acceptConnections: true, // default:true
-		acceptConnectionFrom: ['127.0.0.1'],
-		
+import {MosConnection} from '../MosConnection'
+import { ConnectionConfig } from '../config/connectionConfig'
+describe('MosConnection API', () => {
+	let mos = new MosConnection(new ConnectionConfig({
+		mosID: 'jestMOS',
+		acceptsConnections: true,
 		profiles: {
 			'0': true,
+			'1': true
 		}
-	});
+	}))
 
-	expect(mos).toBeInstanceOf(MosConnection);
+	test('Public methods', async () => {
+		expect(mos.getProfiles()).toMatchObject({
+			'0': true,
+			'1': true
+		})
 
-	var onConnection = jest.fn(() => {
-		// a new connection has been made
-	});
-
-	mos.onConnection(onConnection);
-
-
-	// Connect to ENPS:
-	await mos.connect({
-		ncs: {
-			ncsID: "MYTESTSERVER",
-			host: "127.0.0.1"
-		},
-		/*ncsBuddy?: {
-			ncsID: string;
-			host: string;
-		},*/
+		expect(mos.getComplianceText()).toBe('MOS Compatible – Profiles 0,1')
 	})
-
-	expect(onConnection).toHaveBeenCalled();
-
-	return 0;
 })

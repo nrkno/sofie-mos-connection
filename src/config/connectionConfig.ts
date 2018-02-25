@@ -3,15 +3,15 @@ export class ConnectionConfig implements IConnectionConfig {
 	acceptsConnections: boolean
 	accepsConnectionsFrom: string[]
 
-	private _profiles: ProfilesSupport = {
-		'0': true,
-		'1': true,
-		'2': true,
-		'3': true,
-		'4': true,
-		'5': true,
-		'6': true,
-		'7': true
+	private _profiles: Profiles = {
+		'0': false,
+		'1': false,
+		'2': false,
+		'3': false,
+		'4': false,
+		'5': false,
+		'6': false,
+		'7': false
 	}
 
 	constructor (init: IConnectionConfig) {
@@ -129,18 +129,24 @@ export class ConnectionConfig implements IConnectionConfig {
 export interface IConnectionConfig {
 	mosID: string
 	acceptsConnections: boolean
-	accepsConnectionsFrom: string[]
+	accepsConnectionsFrom?: string[]
 	profiles: ProfilesSupport
 }
 
 /** */
-export class ProfilesSupport {
-	'0': boolean = true
-	'1'?: boolean
-	'2'?: boolean
-	'3'?: boolean
-	'4'?: boolean
-	'5'?: boolean
-	'6'?: boolean
-	'7'?: boolean
+export class Profiles implements ProfilesSupport {
+	'0': boolean
+	'1': boolean
+	'2': boolean
+	'3': boolean
+	'4': boolean
+	'5': boolean
+	'6': boolean
+	'7': boolean
+	[key: string]: boolean
+}
+
+export interface ProfilesSupport {
+	'0': boolean
+	[key: string]: boolean
 }
