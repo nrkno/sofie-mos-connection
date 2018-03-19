@@ -64,7 +64,6 @@ export interface IMOSDevice {
 	getMachineInfo?: () => Promise<IMOSListMachInfo>
 	/* Emitted when the connection status has changed */
 	onConnectionChange?: (cb: (connectionStatus: IMOSConnectionStatus) => void) => void
-
 	getConnectionStatus?: () => IMOSConnectionStatus
 
 	/* Profile 1 */
@@ -228,7 +227,8 @@ export interface IMOSDeviceConnectionOptions {
 			upper: number
 			lower: number
 			query: number
-		}
+		},
+		timeout?: number // ms, fallback to default
 	}
 	secondary?: {
 		id: string // hostname
@@ -237,7 +237,8 @@ export interface IMOSDeviceConnectionOptions {
 			upper: number
 			lower: number
 			query: number
-		}
+		},
+		timeout?: number // ms, fallback to default
 	}
 }
 
@@ -255,8 +256,8 @@ export interface IMOSObject {
 	Paths: Array<IMOSObjectPath>
 	CreatedBy: MosString128
 	Created: MosTime
-	ChangedBy: MosString128
-	Changed: MosTime
+	ChangedBy?: MosString128 // if not present, defaults to CreatedBy
+	Changed?: MosTime // if not present, defaults to Created
 	Description: string
 	mosExternalMetaData?: Array<IMOSExternalMetaData>
 }
