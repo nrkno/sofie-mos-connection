@@ -19,7 +19,7 @@ export class ConnectionConfig implements IConnectionConfig {
 	}
 
 	/** */
-	get profiles(): ProfilesSupport {
+	get profiles (): ProfilesSupport {
 		return this._profiles
 	}
 

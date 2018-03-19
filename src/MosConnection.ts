@@ -1,65 +1,71 @@
-import {Socket} from 'net'
-import {ConnectionConfig, ProfilesSupport} from './config/connectionConfig'
-import {MosSocketServer} from './connection/mosSocketServer'
-import {IMosConnection} from './api'
-import { SocketServerEvent, SocketDescription } from './connection/socketConnection';
-import { Server } from './connection/Server';
-
+import { Socket } from 'net'
+import { ConnectionConfig, ProfilesSupport } from './config/connectionConfig'
+import { MosSocketServer } from './connection/mosSocketServer'
+import { IMosConnection } from './api'
+import { SocketServerEvent, SocketDescription } from './connection/socketConnection'
+import { Server } from './connection/Server'
 
 export class MosConnection implements IMosConnection {
 	static CONNECTION_PORT_LOWER: number = 10540
 	static CONNECTION_PORT_UPPER: number = 10541
 	static CONNECTION_PORT_QUERY: number = 10542
-	static _i: number = 0
-
-	private _isListening: Promise<boolean[]>
+	static _nextSocketID: number = 0
 
 	private _conf: ConnectionConfig
 
+	private _lowerSocketServer: MosSocketServer
 	private _upperSocketServer: MosSocketServer
 	private _querySocketServer: MosSocketServer
 	private _servers: {[host: string]: Server} = {}
-	
+
+	private _isListening: Promise<boolean[]>
+
 	/** */
 	constructor (config: ConnectionConfig) {
 		this._conf = config
+
 		if (this._conf.acceptsConnections) {
 			this._isListening = this._initiateIncomingConnections()
 		}
 	}
 
 	/** */
-	get isListening(): Promise<boolean[]> {
-		return this._isListening || Promise.reject(`Mos connection is not listening for connections. "Config.acceptsConnections" is "${this._conf.acceptsConnections}"`)
+	get isListening (): Promise<boolean[]> {
+		return this._isListening || Promise.reject(`Mos connection is not listening for connections. "Config.acceptsConnections" is "${this._conf.acceptsConnections}"`)
 	}
 
 	/** */
-	get isCompliant(): boolean {
-		return true
+	get isCompliant (): boolean {
+		return false
 	}
 
 	/** */
-	get acceptsConnections(): boolean {
+	get acceptsConnections (): boolean {
 		return this._conf.acceptsConnections
 	}
 
 	/** */
-	getProfiles(): ProfilesSupport {
+	get profiles (): ProfilesSupport {
 		return this._conf.profiles
 	}
 
 	/** */
-	dispose(): Promise<void> {
+	dispose (): Promise<void> {
+		let lowerSockets: Socket[] = []
 		let upperSockets: Socket[] = []
 		let querySockets: Socket[] = []
 
-		for (let i in this._servers) {
-			let server = this._servers[i]
+		for (let nextSocketID in this._servers) {
+			let server = this._servers[nextSocketID]
+			lowerSockets = lowerSockets.concat(server.lowerPortSockets)
 			upperSockets = upperSockets.concat(server.upperPortSockets)
 			querySockets = querySockets.concat(server.queryPortSockets)
 		}
 
-		let disposing: Promise<void>[] = []
+		let disposing: Promise<void>[] = []
+		if (this._lowerSocketServer) {
+			disposing.push(this._lowerSocketServer.dispose(lowerSockets))
+		}
 		if (this._upperSocketServer) {
 			disposing.push(this._upperSocketServer.dispose(upperSockets))
 		}
@@ -67,21 +73,20 @@ export class MosConnection implements IMosConnection {
 			disposing.push(this._querySocketServer.dispose(querySockets))
 		}
 
-		// @todo: all outgoing client
-
-		return new Promise((outerResolve) => {
+		return new Promise((resolveDispose) => {
 			Promise.all(disposing)
-				.then(() => outerResolve())
+			.then(() => resolveDispose())
 		})
+		// @todo: all outgoing clients
 	}
 
 	/** */
-	getComplianceText(): string {
+	get complianceText (): string {
 		if (this.isCompliant) {
 			let profiles: string[] = []
-			for (let i in this._conf.profiles) {
-				if (this._conf.profiles[i] === true) {
-					profiles.push(i)
+			for (let nextSocketID in this._conf.profiles) {
+				if (this._conf.profiles[nextSocketID] === true) {
+					profiles.push(nextSocketID)
 				}
 			}
 
@@ -91,33 +96,36 @@ export class MosConnection implements IMosConnection {
 	}
 
 	/** */
-	private _initiateIncomingConnections(): Promise<boolean[]> {
+	private _initiateIncomingConnections (): Promise<boolean[]> {
 		// shouldn't accept connections, so won't rig socket servers
 		if (!this._conf.acceptsConnections) {
 			return Promise.reject(false)
 		}
 
 		// setup two socket servers, then resolve with their listening statuses
-		return new Promise((outerResolve) => {
+		return new Promise((resolveDispose) => {
+			this._lowerSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_LOWER, 'lower')
 			this._upperSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_UPPER, 'upper')
 			this._querySocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_QUERY, 'query')
 
+			this._lowerSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 			this._upperSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 			this._querySocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 
 			Promise.all(
 				[
+					this._lowerSocketServer.listen(),
 					this._upperSocketServer.listen(),
 					this._querySocketServer.listen()
 				]
 			)
-			.then(result => outerResolve(result))
+			.then(result => resolveDispose(result))
 		})
 	}
 
 	/** */
 	private _registerIncomingClient (e: SocketDescription) {
-		let socketID = MosConnection.i
+		let socketID = MosConnection.nextSocketID
 
 		// handles socket listeners
 		e.socket.on('close', (/*hadError: boolean*/) => this._disposeIncomingSocket(e.socket, socketID))
@@ -131,7 +139,7 @@ export class MosConnection implements IMosConnection {
 	}
 
 	/** */
-	private _disposeIncomingSocket(socket: Socket, socketID: number) {
+	private _disposeIncomingSocket (socket: Socket, socketID: number) {
 		socket.removeAllListeners()
 		socket.destroy()
 		this._getServerForHost(socket.remoteAddress).removeSocket(socketID)
@@ -139,7 +147,7 @@ export class MosConnection implements IMosConnection {
 	}
 
 	/** */
-	private _getServerForHost(host: string): Server {
+	private _getServerForHost (host: string): Server {
 		// create new server if not known
 		if (!this._servers[host]) {
 			this._servers[host] = new Server()
@@ -148,7 +156,7 @@ export class MosConnection implements IMosConnection {
 		return this._servers[host]
 	}
 
-	private static get i(): number {
-		return this._i++
+	private static get nextSocketID (): number {
+		return this._nextSocketID++
 	}
 }

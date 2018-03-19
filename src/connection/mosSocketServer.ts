@@ -1,6 +1,6 @@
-import {Server, Socket, createServer} from 'net'
-import {EventEmitter} from 'events'
-import {IncomingConnectionType, SocketServerEvent} from './socketConnection';
+import { Server, Socket, createServer } from 'net'
+import { EventEmitter } from 'events'
+import { IncomingConnectionType, SocketServerEvent } from './socketConnection'
 
 export class MosSocketServer extends EventEmitter {
 
@@ -21,7 +21,7 @@ export class MosSocketServer extends EventEmitter {
 	}
 
 	/** */
-	listen(): Promise<boolean> {
+	listen (): Promise<boolean> {
 		return	new Promise((resolve, reject) => {
 
 			// already listening
@@ -37,7 +37,7 @@ export class MosSocketServer extends EventEmitter {
 				this._socketServer.removeListener('error', handleListeningStatus)
 				if (this._socketServer.listening) {
 					resolve(true)
-				}else {
+				} else {
 					reject(e || false)
 				}
 			}
@@ -52,8 +52,8 @@ export class MosSocketServer extends EventEmitter {
 	}
 
 	/** */
-	dispose(sockets: Socket[]): Promise<void > {
-		return	new Promise((outerResolve) => {
+	dispose (sockets: Socket[]): Promise<void > {
+		return	new Promise((resolveDispose) => {
 			let closePromises: Promise<void>[] = []
 
 			// close clients
@@ -74,10 +74,10 @@ export class MosSocketServer extends EventEmitter {
 					this._socketServer.close()
 				})
 			)
-			Promise.all(closePromises).then(() => outerResolve())
+			Promise.all(closePromises).then(() => resolveDispose())
 		})
 	}
-	
+
 	/** */
 	private _onClientConnection (socket: Socket) {
 		this.emit(SocketServerEvent.CLIENT_CONNECTED, {
@@ -85,13 +85,13 @@ export class MosSocketServer extends EventEmitter {
 			portDescription: this._portDescription
 		})
 	}
-	
+
 	/** */
 	private _onServerError (error: Error) {
 		// @todo: implement
 		console.log('Server error:', error)
 	}
-	
+
 	/** */
 	private _onServerClose () {
 		// @todo: implement

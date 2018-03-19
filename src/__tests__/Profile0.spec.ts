@@ -1,6 +1,6 @@
 // import {MosConnection} from '../MosConnection'
 // import { ConnectionConfig } from '../config/connectionConfig'
-import {MosConnection} from '../MosConnection'
+import {MosConnection } from '../MosConnection'
 import { ConnectionConfig } from '../config/connectionConfig'
 describe('MosConnection API', () => {
 	let mos = new MosConnection(new ConnectionConfig({
@@ -13,7 +13,7 @@ describe('MosConnection API', () => {
 	}))
 
 	test('Public methods', () => {
-		expect(mos.getProfiles()).toMatchObject({
+		expect(mos.profiles.toMatchObject({
 			'0': true,
 			'1': true
 		})

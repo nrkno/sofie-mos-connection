@@ -1,4 +1,4 @@
-import { Socket } from 'net';
+import { Socket } from 'net'
 
 /** */
 export enum SocketConnectionEvent {
@@ -20,12 +20,12 @@ export enum SocketServerEvent {
 }
 
 /** */
-export type ConnectionType = IncomingConnectionType | OutgoingConnectionType
-export type IncomingConnectionType = 'upper' | 'query'
-export type OutgoingConnectionType = 'lower'
+export type ConnectionType = IncomingConnectionType | OutgoingConnectionType
+export type IncomingConnectionType = 'lower' | 'upper' | 'query'
+export type OutgoingConnectionType = 'lower' | 'upper'
 
 /** */
 export type SocketDescription = {
-  socket: Socket,
-  portDescription: ConnectionType
+	socket: Socket,
+	portDescription: ConnectionType
 }

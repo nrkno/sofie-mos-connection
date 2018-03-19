@@ -2,8 +2,12 @@ import { MosTime } from '../mosTime'
 let a = new MosTime()
 describe('MosTime', () => {
 	test('parse time correctly', () => {
+		// test invalid date formats
+		let date = new Date(undefined)
+		expect(() => new MosTime(date)).toThrow(/Invalid timestamp/)
+
 		// test input format date, number and various strings
-		let date = new Date(2018, 1, 24, 23, 13, 52, 0) // local, zero-indexed month
+		date = new Date(2018, 1, 24, 23, 13, 52, 0) // local, zero-indexed month
 		expect(new MosTime(date).getTime()).toBe(date.getTime())
 		expect(new MosTime(date.getTime()).getTime()).toBe(date.getTime())
 		expect(new MosTime(date.toString()).getTime()).toBe(date.getTime()) // locale time
@@ -16,6 +20,7 @@ describe('MosTime', () => {
 		expect(new MosTime('2009-04-11T14:22:07,123').getTime()).toBe(new Date('2009-04-11T14:22:07.123').getTime())
 		expect(new MosTime('2009-04-11T14:22:07.123-05:00').getTime()).toBe(new Date('2009-04-11T14:22:07-05:00').getTime() + 123)
 		expect(new MosTime('2009-04-11T14:22:07,123-05:00').getTime()).toBe(new Date('2009-04-11T14:22:07-05:00').getTime() + 123)
+		expect(new MosTime('2009-04-11T14:22:07Z').getTime()).toBe(new Date('2009-04-11T14:22:07Z').getTime())
 		expect(new MosTime('2009-04-11T14:22:07Z').getTime()).toBe(new Date('2009-04-11T14:22:07Z').getTime())
 		expect(new MosTime('2009-04-11T14:22:07+5:00').getTime()).toBe(new Date('2009-04-11T14:22:07+05:00').getTime())
 	})

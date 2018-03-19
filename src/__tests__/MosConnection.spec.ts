@@ -1,4 +1,4 @@
-import {MosConnection} from '../MosConnection'
+import {MosConnection } from '../MosConnection'
 import { ConnectionConfig } from '../config/connectionConfig'
 describe('MosConnection API', () => {
 	let mos = new MosConnection(new ConnectionConfig({
@@ -11,18 +11,18 @@ describe('MosConnection API', () => {
 	}))
 
 	test('Public methods', () => {
-		expect(mos.getProfiles()).toMatchObject({
+		expect(mos.profiles.toMatchObject({
 			'0': true,
 			'1': true
 		})
 
-		expect(mos.getComplianceText()).toBe('MOS Compatible – Profiles 0,1')
+		expect(mos.complianceText).toBe('MOS Compatible – Profiles 0,1')
 	})
 
 	test('Incoming connections', () => {
 		mos = new MosConnection(new ConnectionConfig({
 			mosID: 'jestMOS',
-			acceptsConnections: true,
+			acceptsConnections: false,
 			profiles: {
 				'0': true,
 				'1': true
@@ -33,8 +33,8 @@ describe('MosConnection API', () => {
 			expect(mos.isListening).resolves.toEqual([true, true]).then(result => {
 				// CHECK THAT THE PORTS ARE OPEN AND CAN BE CONNCETED TO
 			})
-		}else {
-			expect(mos.isListening).rejects.toBe("Mos connection is not listening for connections. \"Config.acceptsConnections\" is \"false\"")
+		} else {
+			expect(mos.isListening).rejects.toBe('Mos connection is not listening for connections. "Config.acceptsConnections" is "false"')
 		}
 
 		// close sockets after test

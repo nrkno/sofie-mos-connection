@@ -1,5 +1,5 @@
 import * as moment from 'moment'
-import {pad} from './../utils/Utils'
+import { pad } from './../utils/Utils'
 
 export class MosTime {
 
@@ -40,7 +40,7 @@ export class MosTime {
 					if (customFormatParseResult !== false) {
 						let dateStr = `${customFormatParseResult.yy}-${customFormatParseResult.mm}-${customFormatParseResult.dd}T${customFormatParseResult.hh}:${customFormatParseResult.ii}:${customFormatParseResult.ss}${(customFormatParseResult.ms ? '.' + customFormatParseResult.ms : '')}${this._timezoneZuluIndicator}${this._timezoneDeclaration}`
 						time = new Date(dateStr)
-					}else {
+					} else {
 						// can't match custom format
 						// will be caught as invalid timestamp further down
 					}
@@ -63,16 +63,16 @@ export class MosTime {
 	}
 
 	/** */
-	toString(): string {
+	toString (): string {
 		if (!this._timezoneDeclaration) {
 			return moment.utc(this._time).format(`YYYY-MM-DDTHH:mm:ss,SSS${this._timezoneZuluIndicator.length ? '##!!##' : 'Z'}`).replace('+00:00', '').replace('##!!##', this._timezoneZuluIndicator)
-		}else {
-			return moment.utc(this.getTime()).add(this._timeOffsetValue, 'minutes').format(`YYYY-MM-DDTHH:mm:ss,SSS${this._timezoneZuluIndicator.length ? '##!!##' : this._timezoneDeclaration}`).replace('+00:00', '').replace('##!!##', this._timezoneZuluIndicator)
+		} else {
+			return moment.utc(this.getTime()).add(this._timeOffsetValue, 'minutes').format(`YYYY-MM-DDTHH:mm:ss,SSS${this._timezoneDeclaration}`).replace('+00:00', '')
 		}
 	}
 
 	/** */
-	getTime(): number {
+	getTime (): number {
 		return this._time.getTime()
 	}
 

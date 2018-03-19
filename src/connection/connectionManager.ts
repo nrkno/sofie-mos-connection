@@ -1,5 +1,5 @@
-import {Socket} from 'net'
-import { ConnectionType, IConnection } from './socketConnection';
+import { Socket } from 'net'
+import { ConnectionType, IConnection } from './socketConnection'
 
 export class ConnectionManager {
 
@@ -20,9 +20,9 @@ export class ConnectionManager {
 	}
 
 	/** */
-	getSocketsFor(connectionID: ConnectionType): IConnection[] {
+	getSocketsFor (connectionID: ConnectionType): IConnection[] {
 		let sockets: IConnection[] = []
-		for(let i in this._connections[connectionID]) {
+		for (let i in this._connections[connectionID]) {
 			sockets.push(this._connections[connectionID][i])
 		}
 		return sockets
