@@ -1,9 +1,9 @@
 import {MosTime} from '../dataTypes/mosTime'
 import {MosString128} from '../dataTypes/mosString128'
 
-export type IListMachInfoDefaultActiveXMode = 'MODALDIALOG' | 'MODELESS' | 'CONTAINED' | 'TOOLBAR'
+export type IMOSListMachInfoDefaultActiveXMode = 'MODALDIALOG' | 'MODELESS' | 'CONTAINED' | 'TOOLBAR'
 
-export interface IListMachInfo {
+export interface IMOSListMachInfo {
 	manufacturer: MosString128     // Used in MOS ActiveX messages. Manufacturer: Text description. 128 chars max.
 	model: MosString128     // Model: Text description. 128 chars max.
 	hwRev: MosString128     // HW Revision: 128 chars max.
@@ -28,11 +28,16 @@ export interface IListMachInfo {
 		profile7?: boolean
 
 	}
-	defaultActiveX: [{                            // defaultActiveX contains tags that describe the correct settings for the ActiveX control (NOTE: no two <defaultActivX> elements can have the same <mode> value).
-		mode: IListMachInfoDefaultActiveXMode  // Used in MOS ActiveX messages. How the ActiveX Plug-In window appears in the NCS Host window: MODALDIALOG, MODELESS, CONTAINED, TOOLBAR.
+	defaultActiveX?: [{                            // defaultActiveX contains tags that describe the correct settings for the ActiveX control (NOTE: no two <defaultActivX> elements can have the same <mode> value).
+		mode: IMOSListMachInfoDefaultActiveXMode  // Used in MOS ActiveX messages. How the ActiveX Plug-In window appears in the NCS Host window: MODALDIALOG, MODELESS, CONTAINED, TOOLBAR.
 		controlFileLocation: string               // controlFileLocation is the file location for the default ActiveX control.
 		controlSlug: MosString128                 // Defined by MOS 128 characters max
 		controlName: string                       // This value represents the key/classid key used to load the ActiveX from the registry., ex: "contained.containedCTRL.1"
 		controlDefaultParams: string              // This value represents the parameters that can be passed to an ActiveX. ex "URL=http:"
+	}]
+	mosExternalMetaData?: [{
+		mosScope?: string,
+		mosSchema: string,
+		mosPayload: any
 	}]
 }
