@@ -51,7 +51,6 @@ export interface IMosConnection {
 	readonly isCompliant: boolean
 	readonly complianceText: string
 
-
 	dispose (): Promise<void>
 	/*  */
 	connect:(ncs:IMOSDeviceConnectionOptions) => Promise<IMOSDevice> // resolved when connection has been made (before .onConnection is fired)
@@ -59,46 +58,91 @@ export interface IMosConnection {
 }
 
 export interface IMOSDevice {
-	/* Profil 0 */
+	/* Profile 0 */
 	/*  */
 	getMachineInfo?: () => Promise<IMOSListMachInfo> 
 	/* Emitted when the connection status has changed */
 	onConnectionChange?: (cb:(connectionStatus:IMOSConnectionStatus) => void) => void
-	
+
 	getConnectionStatus?: () => IMOSConnectionStatus
 
-	/* Profil 1 */
+	/* Profile 1 */
 	onRequestMOSObject?: (cb:(objId: string) => Promise<IMOSObject | null>) => void
 	onRequestAllMOSObjects?: (cb:() => Promise<Array<IMOSObject>>) => void
 	getMOSObject?: (objId: string) => Promise<IMOSObject>
 	getAllMOSObjects?: () => Promise<Array<IMOSObject>>
 
-	/* Profil 2 */
-	onCreateRunningOrder?: (cb:(IMOSRunningOrder) => Promise<IMOSROAck>) => void 
-	
-}
+	/* Profile 2 */
+	onCreateRunningOrder?: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
+	onReplaceRunningOrder?: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
+	onDeleteRunningOrder?: (cb: (runningOrderId: MosString128) => Promise<IMOSROAck>) => void
 
-export interface IMOSRunningOrder {
+	onRequestRunningOrder?: (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) => void // get roReq, send roList
+	getRunningOrder?: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null> // send roReq, get roList
+
+	onMetadataReplace?: (cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>) => void
+
+	onRunningOrderStatus?: (cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>) => void // get roElementStat
+	onStoryStatus?: (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) => void // get roElementStat
+	onItemStatus?: (cb: (status: IMOSItemStatus) => Promise<IMOSROAck>) => void // get roElementStat
+
+	setRunningOrderStatus?: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck> // send roElementStat
+	setStoryStatus?: (status: IMOSStoryStatus) => Promise<IMOSROAck> // send roElementStat
+	setItemStatus?: (status: IMOSItemStatus) => Promise<IMOSROAck> // send roElementStat
+	/* Profile 3 */
+	/* Profile 4 */
+	// roStorySend:
+	onStory?: (cb: (story: IMOSROFullStory) => Promise<any>) => void
+}
+export interface IMOSRunningOrderStatus {
+	ID: MosString128
+	Status: IMOSObjectStatus
+	Time: MosTime
+}
+export interface IMOSStoryStatus {
+	RunningOrderId: MosString128
+	ID: MosString128
+	Status: IMOSObjectStatus
+	Time: MosTime
+}
+export interface IMOSItemStatus {
+	RunningOrderId: MosString128
+	StoryId: MosString128
+	ID: MosString128
+	Status: IMOSObjectStatus
+	Time: MosTime
+}
+export interface IMOSRunningOrderBase {
 	ID: MosString128
 	Slug: MosString128
 	DefaultChannel?: MosString128
 	EditorialStart?: MosTime
 	EditorialDuration?: MosDuration
-	Trigger?: any // TODO: Johan frågar
+	Trigger?: any // TODO: Johan frågar vad denna gör
 	MacroIn?: MosString128
 	MacroOut?: MosString128
-	mosExternalMetaData?: Array<IMOSExternalMetaData>
+	MosExternalMetaData?: Array<IMOSExternalMetaData>
+}
+export interface IMOSRunningOrder extends IMOSRunningOrderBase {
 	Stories: Array<IMOSROStory>
 }
-
-export interface IMOSROStory {
+export interface IMOSStory {
 	ID: MosString128
 	Slug?: MosString128
 	Number?: MosString128
-	mosExternalMetaData?: Array<IMOSExternalMetaData>
+	MosExternalMetaData?: Array<IMOSExternalMetaData>
+}
+export interface IMOSROStory extends IMOSStory {
 	Items: Array<IMOSItem>
 }
-
+export interface IMOSROFullStory extends IMOSStory {
+	RunningOrderId: MosString128
+	Body: Array<IMOSROFullStoryBodyItem>
+}
+export interface IMOSROFullStoryBodyItem {
+	Type: string // enum, whatever?
+	Content: any | IMOSItem // maybe not, maybe something else? IMOSItemObject??
+}
 export interface IMOSItem {
 	ID: MosString128
 	Slug?: MosString128
@@ -113,7 +157,7 @@ export interface IMOSItem {
 	Trigger: any // TODO: Johan frågar
 	MacroIn?: MosString128
 	MacroOut?: MosString128
-	mosExternalMetaData?: Array<IMOSExternalMetaData>
+	MosExternalMetaData?: Array<IMOSExternalMetaData>
 }
 
 export type MosDuration = string // HH:MM:SS
@@ -144,10 +188,10 @@ export interface IMOSROAckObject {
 
 // /** */
 export interface IMOSConnectionStatus {
- 	primaryConnected: boolean
-	primaryStatus: string // if not connected this will contain human-readable error-message
- 	secondaryConnected: boolean
-	secondaryStatus: string // if not connected this will contain human-readable error-message
+ 	PrimaryConnected: boolean
+	PrimaryStatus: string // if not connected this will contain human-readable error-message
+ 	SecondaryConnected: boolean
+	SecondaryStatus: string // if not connected this will contain human-readable error-message
 }
 
 export interface IMOSDeviceConnectionOptions {
@@ -174,7 +218,7 @@ export interface IMOSDeviceConnectionOptions {
 export interface IMOSObject {
 	ID: MosString128
 	Slug: MosString128
-	mosAbstract?: string
+	MosAbstract?: string
 	Group?: string
 	Type: IMOSObjectType
 	TimeBase: number
@@ -192,9 +236,9 @@ export interface IMOSObject {
 }
 
 export interface IMOSExternalMetaData {
-	mosScope?: string
-	mosSchema: string
-	mosPayload: any
+	MosScope?: string
+	MosSchema: string
+	MosPayload: any
 }
 
 export enum IMOSObjectType {
