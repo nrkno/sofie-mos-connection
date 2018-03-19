@@ -1,7 +1,7 @@
-import {ProfilesSupport} from './config/connectionConfig';
+import {ProfilesSupport} from './config/connectionConfig'
 import {MosTime} from './dataTypes/mosTime'
 import {MosString128} from './dataTypes/mosString128'
-import {IMOSListMachInfo} from "./mosModel/0_listMachInfo"
+import {IMOSListMachInfo} from './mosModel/0_listMachInfo'
 
 // import {IMOSListMachInfo as IMOSP0ListMachineInfo, IMOSListMachInfo} from "./mosModel/0_listMachInfo"
 // import {HeartBeat} from './mosModel/0_heartBeat';
@@ -52,24 +52,24 @@ export interface IMosConnection {
 	readonly isCompliant: boolean
 	readonly complianceText: string
 
-	dispose (): Promise<void>
+	dispose: () => Promise<void>
 	/*  */
-	connect:(ncs:IMOSDeviceConnectionOptions) => Promise<IMOSDevice> // resolved when connection has been made (before .onConnection is fired)
-	onConnection:(cb:(mosDevice:IMOSDevice) => void) => void
+	connect: (connectionOptions: IMOSDeviceConnectionOptions) => Promise<IMOSDevice> // resolved when connection has been made (before .onConnection is fired)
+	onConnection: (cb: (mosDevice: IMOSDevice) => void) => void
 }
 
 export interface IMOSDevice {
 	/* Profile 0 */
 	/*  */
-	getMachineInfo?: () => Promise<IMOSListMachInfo> 
+	getMachineInfo?: () => Promise<IMOSListMachInfo>
 	/* Emitted when the connection status has changed */
-	onConnectionChange?: (cb:(connectionStatus:IMOSConnectionStatus) => void) => void
+	onConnectionChange?: (cb: (connectionStatus: IMOSConnectionStatus) => void) => void
 
 	getConnectionStatus?: () => IMOSConnectionStatus
 
 	/* Profile 1 */
-	onRequestMOSObject?: (cb:(objId: string) => Promise<IMOSObject | null>) => void
-	onRequestAllMOSObjects?: (cb:() => Promise<Array<IMOSObject>>) => void
+	onRequestMOSObject?: (cb: (objId: string) => Promise<IMOSObject | null>) => void
+	onRequestAllMOSObjects?: (cb: () => Promise<Array<IMOSObject>>) => void
 	getMOSObject?: (objId: string) => Promise<IMOSObject>
 	getAllMOSObjects?: () => Promise<Array<IMOSObject>>
 
@@ -100,7 +100,7 @@ export interface IMOSDevice {
 	onROMoveItems?: (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => IMOSROAck) => void
 	onRODeleteStories?: (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => IMOSROAck) => void
 	onRODeleteItems?: (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => IMOSROAck) => void
-	onROSwapStories?: (cb: (Action: IMORSROAction, StoryID0: MosString128, StoryID1: MosString128) => IMOSROAck) => void
+	onROSwapStories?: (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => IMOSROAck) => void
 	onROSwapItems?: (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => IMOSROAck) => void
 	/* Profile 3 */
 	/* Profile 4 */
@@ -230,7 +230,7 @@ export interface IMOSDeviceConnectionOptions {
 			query: number
 		}
 	}
-	secondary: {
+	secondary?: {
 		id: string // hostname
 		host: string // ip-addr
 		ports?: {
@@ -268,28 +268,28 @@ export interface IMOSExternalMetaData {
 }
 
 export enum IMOSObjectType {
-	STILL = "STILL",
-	AUDIO = "AUDIO",
-	VIDEO = "VIDEO"
+	STILL = 'STILL',
+	AUDIO = 'AUDIO',
+	VIDEO = 'VIDEO'
 }
 
 export enum IMOSObjectStatus {
-	NEW = "NEW",
-	UPDATED = "UPDATED",
-	MOVED = "MOVED",
-	BUSY = "BUSY",
-	DELETED = "DELETED",
-	NCS_CTRL = "NCS CTRL",
-	MANUAL_CTRL = "MANUAL CTRL",
-	READY = "READY",
-	NOT_READY = "NOT READY",
-	PLAY = "PLAY",
-	STOP = "STOP"
+	NEW = 'NEW',
+	UPDATED = 'UPDATED',
+	MOVED = 'MOVED',
+	BUSY = 'BUSY',
+	DELETED = 'DELETED',
+	NCS_CTRL = 'NCS CTRL',
+	MANUAL_CTRL = 'MANUAL CTRL',
+	READY = 'READY',
+	NOT_READY = 'NOT READY',
+	PLAY = 'PLAY',
+	STOP = 'STOP'
 }
 
 export enum IMOSObjectAirStatus {
-	READY = "READY",
-	NOT_READY = "NOT READY"
+	READY = 'READY',
+	NOT_READY = 'NOT READY'
 }
 
 export interface IMOSObjectPath {
@@ -299,7 +299,7 @@ export interface IMOSObjectPath {
 }
 
 export enum IMOSObjectPathType {
-	PATH = "PATH",
-	PROXY_PATH = "PROXY PATH",
-	METADATA_PATH = "METADATA PATH"
+	PATH = 'PATH',
+	PROXY_PATH = 'PROXY PATH',
+	METADATA_PATH = 'METADATA PATH'
 }
