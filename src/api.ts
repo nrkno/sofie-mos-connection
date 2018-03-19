@@ -1,6 +1,7 @@
 import {ProfilesSupport} from './config/connectionConfig';
 import {MosTime} from './dataTypes/mosTime'
 import {MosString128} from './dataTypes/mosString128'
+import {IMOSListMachInfo} from "./mosModel/0_listMachInfo"
 
 // import {IMOSListMachInfo as IMOSP0ListMachineInfo, IMOSListMachInfo} from "./mosModel/0_listMachInfo"
 // import {HeartBeat} from './mosModel/0_heartBeat';
@@ -89,10 +90,35 @@ export interface IMOSDevice {
 	setRunningOrderStatus?: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck> // send roElementStat
 	setStoryStatus?: (status: IMOSStoryStatus) => Promise<IMOSROAck> // send roElementStat
 	setItemStatus?: (status: IMOSItemStatus) => Promise<IMOSROAck> // send roElementStat
+
+	onReadyToAir?: (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) => void
+	onROInsertStories?: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => IMOSROAck) => void
+	onROInsertItems?: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => IMOSROAck) => void
+	onROReplaceStories?: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => IMOSROAck) => void
+	onROReplaceItems?: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => IMOSROAck) => void
+	onROMoveStories?: (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => IMOSROAck) => void
+	onROMoveItems?: (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => IMOSROAck) => void
+	onRODeleteStories?: (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => IMOSROAck) => void
+	onRODeleteItems?: (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => IMOSROAck) => void
+	onROSwapStories?: (cb: (Action: IMORSROAction, StoryID0: MosString128, StoryID1: MosString128) => IMOSROAck) => void
+	onROSwapItems?: (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => IMOSROAck) => void
 	/* Profile 3 */
 	/* Profile 4 */
 	// roStorySend:
 	onStory?: (cb: (story: IMOSROFullStory) => Promise<any>) => void
+}
+export interface IMOSROAction {
+	RunningOrderID: MosString128
+}
+export interface IMOSStoryAction extends IMOSROAction {
+	StoryID: MosString128
+}
+export interface IMOSItemAction extends IMOSStoryAction {
+	ItemID: MosString128
+}
+export interface IMOSROReadyToAir {
+	ID: MosString128
+	Status: IMOSObjectAirStatus
 }
 export interface IMOSRunningOrderStatus {
 	ID: MosString128
