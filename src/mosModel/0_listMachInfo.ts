@@ -35,9 +35,5 @@ export interface IMOSListMachInfo {
 		controlName: string                       // This value represents the key/classid key used to load the ActiveX from the registry., ex: "contained.containedCTRL.1"
 		controlDefaultParams: string              // This value represents the parameters that can be passed to an ActiveX. ex "URL=http:"
 	}]
-	mosExternalMetaData?: [{
-		mosScope?: string,
-		mosSchema: string,
-		mosPayload: any
-	}]
+	mosExternalMetaData?: Array<IMOSExternalMetaData>
 }

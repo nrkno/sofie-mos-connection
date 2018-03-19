@@ -57,12 +57,19 @@ export interface IMosConnection {
 }
 
 export interface IMOSDevice {
+	/* Profil 0 */
 	/*  */
-	getMachineInfo: () => Promise<IMOSListMachInfo> 
+	getMachineInfo?: () => Promise<IMOSListMachInfo> 
 	/* Emitted when the connection status has changed */
-	onConnectionChange: (cb:(connectionStatus:IMOSConnectionStatus) => void) => void
+	onConnectionChange?: (cb:(connectionStatus:IMOSConnectionStatus) => void) => void
 	
-	getConnectionStatus: () => IMOSConnectionStatus
+	getConnectionStatus?: () => IMOSConnectionStatus
+
+	/* Profil 1 */
+	onRequestMOSObject?: (cb:(objId: string) => Promise<IMOSObject | null>) => void
+	onRequestAllMOSObjects?: (cb:() => Promise<Array<IMOSObject>>) => void
+	getMOSObject?: (objId: string) => Promise<IMOSObject>
+	getAllMOSObjects?: () => Promise<Array<IMOSObject>>
 }
 
 // /** */
@@ -95,4 +102,67 @@ export interface IMOSDeviceConnectionOptions {
 			query: number
 		}
 	}
+}
+
+export interface IMOSObject {
+	ID: MosString128
+	Slug: MosString128
+	mosAbstract?: string
+	Group?: string
+	Type: IMOSObjectType
+	TimeBase: number
+	Revision: number // max 999
+	Duration: number
+	Status: IMOSObjectStatus
+	AirStatus: IMOSObjectAirStatus
+	Paths: Array<IMOSObjectPath>
+	CreatedBy: MosString128
+	Created: MosTime
+	ChangedBy: MosString128
+	Changed: MosTime
+	Description: string
+	mosExternalMetaData?: Array<IMOSExternalMetaData>
+}
+
+export interface IMOSExternalMetaData {
+	mosScope?: string
+	mosSchema: string
+	mosPayload: any
+}
+
+export enum IMOSObjectType {
+	STILL = "STILL",
+	AUDIO = "AUDIO",
+	VIDEO = "VIDEO"
+}
+
+export enum IMOSObjectStatus {
+	NEW = "NEW",
+	UPDATED = "UPDATED",
+	MOVED = "MOVED",
+	BUSY = "BUSY",
+	DELETED = "DELETED",
+	NCS_CTRL = "NCS CTRL",
+	MANUAL_CTRL = "MANUAL CTRL",
+	READY = "READY",
+	NOT_READY = "NOT READY",
+	PLAY = "PLAY",
+	STOP = "STOP"
+}
+
+export enum IMOSObjectAirStatus {
+	READY = "READY",
+	NOT_READY = "NOT READY"
+}
+
+export interface IMOSObjectPath {
+	Type: IMOSObjectPathType
+	Description: string
+	Target: string // Max 255
+}
+
+export enum IMOSObjectPathType {
+	PATH = "PATH",
+	PROXY_PATH = "PROXY PATH",
+	METADATA_PATH = "METADATA PATH"
 }
