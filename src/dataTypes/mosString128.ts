@@ -6,9 +6,8 @@ export class MosString128 {
 	constructor (str: string) {
 		this.string = str
 	}
-
 	/** */
-	toString(): string {
+	toString (): string {
 		return this._str
 	}
 

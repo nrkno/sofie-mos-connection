@@ -1,7 +1,11 @@
 import { Socket } from 'net'
 import { ConnectionConfig, ProfilesSupport } from './config/connectionConfig'
 import { MosSocketServer } from './connection/mosSocketServer'
-import { IMosConnection } from './api'
+import {
+	IMosConnection,
+	IMOSDeviceConnectionOptions,
+	IMOSDevice
+} from './api'
 import { SocketServerEvent, SocketDescription } from './connection/socketConnection'
 import { Server } from './connection/Server'
 
@@ -20,6 +24,8 @@ export class MosConnection implements IMosConnection {
 
 	private _isListening: Promise<boolean[]>
 
+	private _onconnection: (mosDevice: IMOSDevice) => void
+
 	/** */
 	constructor (config: ConnectionConfig) {
 		this._conf = config
@@ -27,6 +33,28 @@ export class MosConnection implements IMosConnection {
 		if (this._conf.acceptsConnections) {
 			this._isListening = this._initiateIncomingConnections()
 		}
+	}
+
+	/** */
+	connect (connectionOptions: IMOSDeviceConnectionOptions): Promise<IMOSDevice> {
+		// @todo: implement this
+
+		return new Promise((resolve) => {
+
+			// connect to mos device
+
+			// initialize mosDevice:
+			let mosDevice = new MosDevice() // pseudo-code here, put something real
+
+			// emit to .onConnection
+			if (this._onconnection) this._onconnection(mosDevice)
+
+			resolve(mosDevice)
+
+		})
+	}
+	onConnection (cb: (mosDevice: IMOSDevice) => void) {
+		this._onconnection = cb
 	}
 
 	/** */
