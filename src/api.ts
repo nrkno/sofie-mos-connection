@@ -1,4 +1,6 @@
 import {ProfilesSupport} from './config/connectionConfig';
+import {MosTime} from './dataTypes/mosTime'
+import {MosString128} from './dataTypes/mosString128'
 
 // import {IMOSListMachInfo as IMOSP0ListMachineInfo, IMOSListMachInfo} from "./mosModel/0_listMachInfo"
 // import {HeartBeat} from './mosModel/0_heartBeat';
@@ -70,6 +72,71 @@ export interface IMOSDevice {
 	onRequestAllMOSObjects?: (cb:() => Promise<Array<IMOSObject>>) => void
 	getMOSObject?: (objId: string) => Promise<IMOSObject>
 	getAllMOSObjects?: () => Promise<Array<IMOSObject>>
+
+	/* Profil 2 */
+	onCreateRunningOrder?: (cb:(IMOSRunningOrder) => Promise<IMOSROAck>) => void 
+	
+}
+
+export interface IMOSRunningOrder {
+	ID: MosString128
+	Slug: MosString128
+	DefaultChannel?: MosString128
+	EditorialStart?: MosTime
+	EditorialDuration?: MosDuration
+	Trigger?: any // TODO: Johan frågar
+	MacroIn?: MosString128
+	MacroOut?: MosString128
+	mosExternalMetaData?: Array<IMOSExternalMetaData>
+	Stories: Array<IMOSROStory>
+}
+
+export interface IMOSROStory {
+	ID: MosString128
+	Slug?: MosString128
+	Number?: MosString128
+	mosExternalMetaData?: Array<IMOSExternalMetaData>
+	Items: Array<IMOSItem>
+}
+
+export interface IMOSItem {
+	ID: MosString128
+	Slug?: MosString128
+	ObjectID: MosString128
+	MOSID: string
+	mosAbstract?: string
+	Paths?: Array<IMOSObjectPath>
+	Channel?: MosString128
+	EditorialStart?: MosTime
+	EditorialDuration?: MosDuration
+	UserTimingDuration: number
+	Trigger: any // TODO: Johan frågar
+	MacroIn?: MosString128
+	MacroOut?: MosString128
+	mosExternalMetaData?: Array<IMOSExternalMetaData>
+}
+
+export type MosDuration = string // HH:MM:SS
+
+export interface IMOSROAck {
+	ID: MosString128
+	Status: MosString128 // OK or error desc
+	Stories: Array<IMOSROAckStory>
+}
+
+export interface IMOSROAckStory {
+	ID: MosString128 // storyID
+	Items: Array<IMOSROAckItem>
+}
+
+export interface IMOSROAckItem {
+	ID: MosString128
+	Channel: MosString128
+	Objects: Array<IMOSROAckObject>
+}
+
+export interface IMOSROAckObject {
+	Status: IMOSObjectStatus
 }
 
 // /** */
