@@ -1,5 +1,6 @@
 import {ProfilesSupport} from './config/connectionConfig'
 import {MosTime} from './dataTypes/mosTime'
+import {MosDuration} from './dataTypes/mosDuration'
 import {MosString128} from './dataTypes/mosString128'
 import {IMOSListMachInfo} from './mosModel/0_listMachInfo'
 
@@ -138,7 +139,7 @@ export interface IMOSItemStatus {
 	Time: MosTime
 }
 export interface IMOSRunningOrderBase {
-	ID: MosString128
+	ID: MosString128 // running order id
 	Slug: MosString128
 	DefaultChannel?: MosString128
 	EditorialStart?: MosTime
@@ -176,19 +177,19 @@ export interface IMOSItem {
 	mosAbstract?: string
 	Paths?: Array<IMOSObjectPath>
 	Channel?: MosString128
-	EditorialStart?: MosTime
-	EditorialDuration?: MosDuration
+	EditorialStart?: number
+	EditorialDuration?: number
 	UserTimingDuration: number
-	Trigger: any // TODO: Johan frågar
+	Trigger?: any // TODO: Johan frågar
 	MacroIn?: MosString128
 	MacroOut?: MosString128
 	MosExternalMetaData?: Array<IMOSExternalMetaData>
 }
 
-export type MosDuration = string // HH:MM:SS
+export type MosDuration = MosDuration // HH:MM:SS
 
 export interface IMOSROAck {
-	ID: MosString128
+	ID: MosString128 // Running order id
 	Status: MosString128 // OK or error desc
 	Stories: Array<IMOSROAckStory>
 }
@@ -258,7 +259,7 @@ export interface IMOSObject {
 	Created: MosTime
 	ChangedBy?: MosString128 // if not present, defaults to CreatedBy
 	Changed?: MosTime // if not present, defaults to Created
-	Description: string
+	Description?: string
 	mosExternalMetaData?: Array<IMOSExternalMetaData>
 }
 

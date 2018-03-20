@@ -44,7 +44,13 @@ export class MosConnection implements IMosConnection {
 			// connect to mos device
 
 			// initialize mosDevice:
-			let mosDevice = new MosDevice() // pseudo-code here, put something real
+			// let mosDevice = new MosDevice() // pseudo-code here, put something real
+			let mosDevice = {
+				onRequestMOSObject () {},
+				onRequestAllMOSObjects () {},
+				getMOSObject () {},
+				getAllMOSObjects () {}
+			}
 
 			// emit to .onConnection
 			if (this._onconnection) this._onconnection(mosDevice)
