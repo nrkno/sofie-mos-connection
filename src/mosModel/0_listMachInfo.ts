@@ -1,7 +1,13 @@
 import {MosTime} from '../dataTypes/mosTime'
 import {MosString128} from '../dataTypes/mosString128'
+import {IMOSExternalMetaData} from '../dataTypes/mosExternalMetaData'
 
-export type IMOSListMachInfoDefaultActiveXMode = 'MODALDIALOG' | 'MODELESS' | 'CONTAINED' | 'TOOLBAR'
+export enum IMOSListMachInfoDefaultActiveXMode {
+	MODALDIALOG = 'MODALDIALOG',
+	MODELESS = 'MODELESS',
+	CONTAINED = 'CONTAINED',
+	TOOLBAR = 'TOOLBAR'
+}
 
 export interface IMOSListMachInfo {
 	manufacturer: MosString128     // Used in MOS ActiveX messages. Manufacturer: Text description. 128 chars max.

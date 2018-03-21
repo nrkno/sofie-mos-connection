@@ -1,6 +1,7 @@
 import {ProfilesSupport} from './config/connectionConfig'
 import {MosTime} from './dataTypes/mosTime'
 import {MosString128} from './dataTypes/mosString128'
+import {IMOSExternalMetaData} from './dataTypes/mosExternalMetaData'
 import {IMOSListMachInfo} from './mosModel/0_listMachInfo'
 
 // import {IMOSListMachInfo as IMOSP0ListMachineInfo, IMOSListMachInfo} from "./mosModel/0_listMachInfo"
@@ -260,12 +261,6 @@ export interface IMOSObject {
 	Changed?: MosTime // if not present, defaults to Created
 	Description: string
 	mosExternalMetaData?: Array<IMOSExternalMetaData>
-}
-
-export interface IMOSExternalMetaData {
-	MosScope?: string
-	MosSchema: string
-	MosPayload: any
 }
 
 export enum IMOSObjectType {
