@@ -1,7 +1,7 @@
-import { IMOSROStory, IMOSItem, IMOSRunningOrder, IMOSObjectPath, IMOSObjectPathType, IMOSObject, IMOSObjectStatus, IMOSObjectAirStatus, IMOSObjectType, IMOSRunningOrderBase } from "../api";
-import { MosString128 } from "../dataTypes/mosString128";
-import { MosTime } from "../dataTypes/mosTime";
-import { MosDuration } from "../dataTypes/mosDuration";
+import { IMOSROStory, IMOSItem, IMOSRunningOrder, IMOSObjectPath, IMOSObjectPathType, IMOSObject, IMOSObjectStatus, IMOSObjectAirStatus, IMOSObjectType, IMOSRunningOrderBase, IMOSRunningOrderStatus, IMOSItemStatus, IMOSStoryStatus, IMOSROReadyToAir, IMOSStoryAction, IMOSItemAction, IMOSROAction } from '../api'
+import { MosString128 } from '../dataTypes/mosString128'
+import { MosTime } from '../dataTypes/mosTime'
+import { MosDuration } from '../dataTypes/mosDuration'
 
 const literal = <T>(o: T) => o
 
@@ -274,6 +274,12 @@ let xmlData = {
 <status>MANUAL CTRL</status> \
 <time>2009-04-11T14:13:53</time> \
 </roElementStat> ',
+	'roElementStat_story': '<roElementStat element = "STORY"> \
+<roID>5PM</roID> \
+<storyID>HOTEL FIRE </storyID> \
+<status>PLAY</status> \
+<time>1999-04-11T14:13:53</time> \
+</roElementStat>  ',
 
 	'roElementStat_item': '<roElementStat element = "ITEM"> \
 <roID>5PM</roID> \
@@ -474,7 +480,20 @@ let xmlData = {
 	'roReadyToAir': '<roReadyToAir> \
 <roID>5PM</roID> \
 	  <roAir>READY</roAir> \
-	</roReadyToAir>'
+	</roReadyToAir>',
+	'roAck': '<roAck> \
+<roID>96857485</roID> \
+      <roStatus>Unknown object M000133</roStatus> \
+      <storyID>5983A501:0049B924:8390EF2B</storyID> \
+      <itemID>0</itemID> \
+      <objID>M000224</objID> \
+      <status>LOADED</status> \
+      <storyID>3854737F:0003A34D:983A0B28</storyID> \
+      <itemID>0</itemID> \
+      <objID>M000133</objID> \
+      <itemChannel>A</itemChannel> \
+      <status>UNKNOWN</status> \
+   </roAck>'
 }
 
 let xmlApiData = {
@@ -483,7 +502,7 @@ let xmlApiData = {
 		Slug: new MosString128('5PM RUNDOWN'),
 		// DefaultChannel?: MosString128,
 		EditorialStart: new MosTime('2009-04-17T17:02:00'),
-		EditorialDuration: '00:58:25', // @todo: change this into a real Duration
+		EditorialDuration: new MosDuration('00:58:25'), // @todo: change this into a real Duration
 		// Trigger?: any // TODO: Johan frågar vad denna gör,
 		// MacroIn?: MosString128,
 		// MacroOut?: MosString128,
@@ -532,7 +551,7 @@ let xmlApiData = {
 						// Channel?: new MosString128(),
 						EditorialStart: 55,
 						EditorialDuration: 310,
-						UserTimingDuration: 200,
+						UserTimingDuration: 200
 						// Trigger: 'CHAINED' // TODO: Johan frågar
 						// MacroIn?: new MosString128(),
 						// MacroOut?: new MosString128(),
@@ -596,7 +615,7 @@ let xmlApiData = {
 						// Channel?: new MosString128(),
 						EditorialStart: 500,
 						EditorialDuration: 600,
-						UserTimingDuration: 310,
+						UserTimingDuration: 310
 						// Trigger: 'CHAINED' // TODO: Johan frågar
 						// MacroIn?: new MosString128(),
 						// MacroOut?: new MosString128(),
@@ -640,7 +659,196 @@ let xmlApiData = {
 		// MacroIn?: new MosString128(''),
 		// MacroOut?: new MosString128(''),
 		// MosExternalMetaData?: Array<IMOSExternalMetaData>
-	})
+	}),
+	'roElementStat_ro': literal<IMOSRunningOrderStatus>({
+		ID: new MosString128('5PM'),
+		Status: IMOSObjectStatus.MANUAL_CTRL,
+		Time: new MosTime('2009-04-11T14:13:53')
+	}),
+	'roElementStat_story': literal<IMOSStoryStatus>({
+		RunningOrderId: new MosString128('5PM'),
+		ID: new MosString128('HOTEL FIRE'),
+		Status: IMOSObjectStatus.PLAY,
+		Time: new MosTime('1999-04-11T14:13:53')
+	}),
+	'roElementStat_item': literal<IMOSItemStatus>({
+		RunningOrderId: new MosString128('5PM'),
+		StoryId: new MosString128('HOTEL FIRE '),
+		ID: new MosString128('0'),
+		ObjectId: new MosString128('A0295'),
+		Channel: new MosString128('B'),
+		Status: IMOSObjectStatus.PLAY,
+		Time: new MosTime('2009-04-11T14:13:53')
+	}),
+	'roReadyToAir': literal<IMOSROReadyToAir>({
+		ID: new MosString128('5PM'),
+		Status: IMOSObjectAirStatus.READY
+	}),
+	'roElementAction_insert_story_Action': literal<IMOSStoryAction>({
+		RunningOrderID: new MosString128('5PM'),
+		StoryID: new MosString128('2')
+	}),
+	'roElementAction_insert_story_Stories': [
+		literal<IMOSROStory>({
+			ID: new MosString128('17'),
+			Slug: new MosString128('Barcelona Football'),
+			Number: new MosString128('A2'),
+			// MosExternalMetaData?: Array<IMOSExternalMetaData>,
+			Items: [
+				literal<IMOSItem>({
+					ID: new MosString128('27'),
+					// Slug?: new MosString128(''),
+					ObjectID: new MosString128('M73627'),
+					MOSID: 'testmos',
+					// mosAbstract?: '',
+					Paths: [
+						{Type: IMOSObjectPathType.PATH, Description: 'MPEG2 Video', Target: '\\server\media\clip392028cd2320s0d.mxf'},
+						{Type: IMOSObjectPathType.PROXY_PATH, Description: 'WM9 750Kbps', Target: 'http://server/proxy/clipe.wmv'},
+						{Type: IMOSObjectPathType.METADATA_PATH, Description: 'MOS Object', Target: 'http://server/proxy/clipe.xml'}
+					],
+					EditorialStart: 0,
+					EditorialDuration: 715,
+					UserTimingDuration: 415
+				}),
+				literal<IMOSItem>({
+					ID: new MosString128('28'),
+					ObjectID: new MosString128('M73628'),
+					MOSID: 'testmos',
+					// mosAbstract?: '',
+					EditorialStart: 0,
+					EditorialDuration: 315
+				})
+			]
+		})
+	],
+	'roElementAction_insert_item_Action': literal<IMOSItemAction>({
+		RunningOrderID: new MosString128('5PM'),
+		StoryID: new MosString128('2'),
+		ItemID: new MosString128('23')
+	}),
+	'roElementAction_insert_item_Items': [
+		literal<IMOSItem>({
+			ID: new MosString128('27'),
+			Slug: new MosString128('NHL PKG'),
+			ObjectID: new MosString128('M19873'),
+			MOSID: 'testmos',
+			Paths: [
+				{Type: IMOSObjectPathType.PATH, Description: 'MPEG2 Video', Target: '\\server\media\clip392028cd2320s0d.mxf'},
+				{Type: IMOSObjectPathType.PROXY_PATH, Description: 'WM9 750Kbps', Target: 'http://server/proxy/clipe.wmv'},
+				{Type: IMOSObjectPathType.METADATA_PATH, Description: 'MOS Object', Target: 'http://server/proxy/clipe.xml'}
+			],
+			EditorialStart: 0,
+			EditorialDuration: 700,
+			UserTimingDuration: 690
+		})
+	],
+	'roElementAction_replace_story_Action': literal<IMOSStoryAction>({
+		RunningOrderID: new MosString128('5PM'),
+		StoryID: new MosString128('2')
+	}),
+	'roElementAction_replace_story_Stories': [
+		literal<IMOSROStory>({
+			ID: new MosString128('17'),
+			Slug: new MosString128('Porto Football'),
+			Number: new MosString128('A2'),
+			// MosExternalMetaData?: Array<IMOSExternalMetaData>,
+			Items: [
+				literal<IMOSItem>({
+					ID: new MosString128('27'),
+					// Slug?: new MosString128(''),
+					ObjectID: new MosString128('M73627'),
+					MOSID: 'testmos',
+					// mosAbstract?: '',
+					Paths: [
+						{Type: IMOSObjectPathType.PATH, Description: 'MPEG2 Video', Target: '\\server\media\clip392028cd2320s0d.mxf'},
+						{Type: IMOSObjectPathType.PROXY_PATH, Description: 'WM9 750Kbps', Target: 'http://server/proxy/clipe.wmv'},
+						{Type: IMOSObjectPathType.METADATA_PATH, Description: 'MOS Object', Target: 'http://server/proxy/clipe.xml'}
+					],
+					EditorialStart: 0,
+					EditorialDuration: 715,
+					UserTimingDuration: 415
+				}),
+				literal<IMOSItem>({
+					ID: new MosString128('28'),
+					ObjectID: new MosString128('M73628'),
+					MOSID: 'testmos',
+					// mosAbstract?: '',
+					EditorialStart: 0,
+					EditorialDuration: 315
+				})
+			]
+		})
+	],
+	'roElementAction_replace_item_Action': literal<IMOSItemAction>({
+		RunningOrderID: new MosString128('5PM'),
+		StoryID: new MosString128('2'),
+		ItemID: new MosString128('23')
+	}),
+	'roElementAction_replace_item_Items': [
+		literal<IMOSItem>({
+			ID: new MosString128('27'),
+			Slug: new MosString128('NHL PKG'),
+			ObjectID: new MosString128('M19873'),
+			MOSID: 'testmos',
+			Paths: [
+				{Type: IMOSObjectPathType.PATH, Description: 'MPEG2 Video', Target: '\\server\media\clip392028cd2320s0d.mxf'},
+				{Type: IMOSObjectPathType.PROXY_PATH, Description: 'WM9 750Kbps', Target: 'http://server/proxy/clipe.wmv'},
+				{Type: IMOSObjectPathType.METADATA_PATH, Description: 'MOS Object', Target: 'http://server/proxy/clipe.xml'}
+			],
+			EditorialStart: 0,
+			EditorialDuration: 700,
+			UserTimingDuration: 690
+		})
+	],
+	'roElementAction_move_story_Action': literal<IMOSStoryAction>({
+		RunningOrderID: new MosString128('5PM'),
+		StoryID: new MosString128('2')
+	}),
+	'roElementAction_move_story_Stories': [
+		new MosString128('7')
+	],
+	'roElementAction_move_stories_Action': literal<IMOSStoryAction>({
+		RunningOrderID: new MosString128('5PM'),
+		StoryID: new MosString128('2')
+	}),
+	'roElementAction_move_stories_Stories': [
+		new MosString128('7'),
+		new MosString128('12')
+	],
+	'roElementAction_move_items_Action': literal<IMOSItemAction>({
+		RunningOrderID: new MosString128('5PM'),
+		StoryID: new MosString128('2'),
+		ItemID: new MosString128('12')
+	}),
+	'roElementAction_move_items_Items': [
+		new MosString128('23'),
+		new MosString128('24')
+	],
+	'roElementAction_delete_story_Action': literal<IMOSROAction>({
+		RunningOrderID: new MosString128('5PM')
+	}),
+	'roElementAction_delete_story_Stories': [
+		new MosString128('3')
+	],
+	'roElementAction_delete_items_Action': literal<IMOSStoryAction>({
+		RunningOrderID: new MosString128('5PM'),
+		StoryID: new MosString128('2')
+	}),
+	'roElementAction_delete_items_Items': [
+		new MosString128('23'),
+		new MosString128('24')
+	],
+	'roElementAction_swap_stories_Action': literal<IMOSROAction>({
+		RunningOrderID: new MosString128('5PM')
+	}),
+	'roElementAction_swap_stories_StoryId0': new MosString128('3'),
+	'roElementAction_swap_stories_StoryId1': new MosString128('5'),
+	'roElementAction_swap_items_Action': literal<IMOSStoryAction>({
+		RunningOrderID: new MosString128('5PM'),
+		StoryID: new MosString128('2')
+	}),
+	'roElementAction_swap_items_ItemId0': new MosString128('23'),
+	'roElementAction_swap_items_ItemId1': new MosString128('24')
 }
 
 export { xmlData, xmlApiData }
