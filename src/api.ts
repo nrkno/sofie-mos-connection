@@ -92,6 +92,7 @@ export interface IMOSDevice {
 	setItemStatus?: (status: IMOSItemStatus) => Promise<IMOSROAck> // send roElementStat
 
 	onReadyToAir?: (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) => void
+
 	onROInsertStories?: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => IMOSROAck) => void
 	onROInsertItems?: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => IMOSROAck) => void
 	onROReplaceStories?: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => IMOSROAck) => void
@@ -137,6 +138,8 @@ export interface IMOSItemStatus {
 	ID: MosString128
 	Status: IMOSObjectStatus
 	Time: MosTime
+	ObjectId?: MosString128
+	Channel?: MosString128
 }
 export interface IMOSRunningOrderBase {
 	ID: MosString128 // running order id
@@ -179,7 +182,7 @@ export interface IMOSItem {
 	Channel?: MosString128
 	EditorialStart?: number
 	EditorialDuration?: number
-	UserTimingDuration: number
+	UserTimingDuration?: number
 	Trigger?: any // TODO: Johan frågar
 	MacroIn?: MosString128
 	MacroOut?: MosString128
