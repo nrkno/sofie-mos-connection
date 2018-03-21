@@ -1,9 +1,31 @@
-export class ConnectionConfig implements IConnectionConfig {
+
+/** */
+export interface IConnectionConfig {
+	mosID: string
+	acceptsConnections: boolean
+	accepsConnectionsFrom?: string[]
+	profiles: IProfiles
+}
+
+/** */
+export interface IProfiles {
+	'0': boolean
+	'1': boolean
+	'2': boolean
+	'3': boolean
+	'4': boolean
+	'5': boolean
+	'6': boolean
+	'7': boolean
+	[key: string]: boolean
+}
+
+export class ConnectionConfig {
 	mosID: string
 	acceptsConnections: boolean
 	accepsConnectionsFrom: string[]
 
-	private _profiles: Profiles = {
+	private _profiles: IProfiles = {
 		'0': false,
 		'1': false,
 		'2': false,
@@ -19,12 +41,12 @@ export class ConnectionConfig implements IConnectionConfig {
 	}
 
 	/** */
-	get profiles (): ProfilesSupport {
+	get profiles (): IProfiles {
 		return this._profiles
 	}
 
 	/** */
-	set profiles (profileSupport: ProfilesSupport) {
+	set profiles (profileSupport: IProfiles) {
 		let atLeastOneOtherProfile = false
 
 		// profile 0 is mandatory
@@ -123,30 +145,4 @@ export class ConnectionConfig implements IConnectionConfig {
 	//     <mosRev>2.8.2</mosRev>
 	//     */
 	// }
-}
-
-/** */
-export interface IConnectionConfig {
-	mosID: string
-	acceptsConnections: boolean
-	accepsConnectionsFrom?: string[]
-	profiles: ProfilesSupport
-}
-
-/** */
-export class Profiles implements ProfilesSupport {
-	'0': boolean
-	'1': boolean
-	'2': boolean
-	'3': boolean
-	'4': boolean
-	'5': boolean
-	'6': boolean
-	'7': boolean
-	[key: string]: boolean
-}
-
-export interface ProfilesSupport {
-	'0': boolean
-	[key: string]: boolean
 }

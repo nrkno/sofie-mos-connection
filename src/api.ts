@@ -60,6 +60,7 @@ export interface IMosConnection {
 }
 
 export interface IMOSDevice {
+	id: string, // unique id for this device and session
 	/* Profile 0 */
 	/*  */
 	getMachineInfo?: () => Promise<IMOSListMachInfo>
