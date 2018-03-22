@@ -1,5 +1,5 @@
 import { Socket } from 'net'
-import { ConnectionConfig, ProfilesSupport } from './config/connectionConfig'
+import { ConnectionConfig, IConnectionConfig, IProfiles } from './config/connectionConfig'
 import { MosSocketServer } from './connection/mosSocketServer'
 import {
 	IMosConnection,
@@ -27,8 +27,8 @@ export class MosConnection implements IMosConnection {
 	private _onconnection: (mosDevice: IMOSDevice) => void
 
 	/** */
-	constructor (config: ConnectionConfig) {
-		this._conf = config
+	constructor (configOptions: IConnectionConfig) {
+		this._conf = new ConnectionConfig(configOptions)
 
 		if (this._conf.acceptsConnections) {
 			this._isListening = this._initiateIncomingConnections()
@@ -44,7 +44,13 @@ export class MosConnection implements IMosConnection {
 			// connect to mos device
 
 			// initialize mosDevice:
-			let mosDevice = new MosDevice() // pseudo-code here, put something real
+			// let mosDevice = new MosDevice() // pseudo-code here, put something real
+			let mosDevice = {
+				onRequestMOSObject () {},
+				onRequestAllMOSObjects () {},
+				getMOSObject () {},
+				getAllMOSObjects () {}
+			}
 
 			// emit to .onConnection
 			if (this._onconnection) this._onconnection(mosDevice)
@@ -73,7 +79,7 @@ export class MosConnection implements IMosConnection {
 	}
 
 	/** */
-	get profiles (): ProfilesSupport {
+	get profiles (): IProfiles {
 		return this._conf.profiles
 	}
 

@@ -1,5 +1,6 @@
 import {ProfilesSupport} from './config/connectionConfig'
 import {MosTime} from './dataTypes/mosTime'
+import {MosDuration} from './dataTypes/mosDuration'
 import {MosString128} from './dataTypes/mosString128'
 import {IMOSExternalMetaData} from './dataTypes/mosExternalMetaData'
 import {IMOSListMachInfo} from './mosModel/0_listMachInfo'
@@ -60,6 +61,7 @@ export interface IMosConnection {
 }
 
 export interface IMOSDevice {
+	id: string, // unique id for this device and session
 	/* Profile 0 */
 	/*  */
 	getMachineInfo?: () => Promise<IMOSListMachInfo>
@@ -92,6 +94,7 @@ export interface IMOSDevice {
 	setItemStatus?: (status: IMOSItemStatus) => Promise<IMOSROAck> // send roElementStat
 
 	onReadyToAir?: (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) => void
+
 	onROInsertStories?: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => IMOSROAck) => void
 	onROInsertItems?: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => IMOSROAck) => void
 	onROReplaceStories?: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => IMOSROAck) => void
@@ -137,9 +140,11 @@ export interface IMOSItemStatus {
 	ID: MosString128
 	Status: IMOSObjectStatus
 	Time: MosTime
+	ObjectId?: MosString128
+	Channel?: MosString128
 }
 export interface IMOSRunningOrderBase {
-	ID: MosString128
+	ID: MosString128 // running order id
 	Slug: MosString128
 	DefaultChannel?: MosString128
 	EditorialStart?: MosTime
@@ -177,19 +182,19 @@ export interface IMOSItem {
 	mosAbstract?: string
 	Paths?: Array<IMOSObjectPath>
 	Channel?: MosString128
-	EditorialStart?: MosTime
-	EditorialDuration?: MosDuration
-	UserTimingDuration: number
-	Trigger: any // TODO: Johan frågar
+	EditorialStart?: number
+	EditorialDuration?: number
+	UserTimingDuration?: number
+	Trigger?: any // TODO: Johan frågar
 	MacroIn?: MosString128
 	MacroOut?: MosString128
 	MosExternalMetaData?: Array<IMOSExternalMetaData>
 }
 
-export type MosDuration = string // HH:MM:SS
+export type MosDuration = MosDuration // HH:MM:SS
 
 export interface IMOSROAck {
-	ID: MosString128
+	ID: MosString128 // Running order id
 	Status: MosString128 // OK or error desc
 	Stories: Array<IMOSROAckStory>
 }
@@ -259,7 +264,7 @@ export interface IMOSObject {
 	Created: MosTime
 	ChangedBy?: MosString128 // if not present, defaults to CreatedBy
 	Changed?: MosTime // if not present, defaults to Created
-	Description: string
+	Description?: string
 	mosExternalMetaData?: Array<IMOSExternalMetaData>
 }
 

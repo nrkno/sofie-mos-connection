@@ -21,9 +21,13 @@ export class SocketMock extends EventEmitter implements Socket {
 	destroyed: boolean
 	writable: boolean
 	readable: boolean
+
+	private _responses: Array<(data: any) => string | Buffer > = []
+
 	constructor () {
 		super()
 
+		// @ts-ignore this is comparable with ISocketMock
 		instances.push(this)
 
 		// Wrap member functions in mocks:
@@ -97,10 +101,28 @@ export class SocketMock extends EventEmitter implements Socket {
 	// ------------------------------------------------------------------------
 	// Mock methods:
 	mockSentMessage (data, encoding) {
-		// nothing
+
+		if (this._responses.length) {
+			// send reply:
+
+			let cb = this._responses.shift()
+
+			setTimeout(() => {
+
+				let msg = cb(data)
+
+				this.mockReceiveMessage(msg)
+			},5)
+		}
 	}
 	mockReceiveMessage (msg: string | Buffer) {
 		this.emit('data', msg)
+	}
+	mockAddReply (cb: (data: any) => string | Buffer) {
+		this._responses.push(cb)
+	}
+	mockClear () {
+		this._responses.splice(0, 9999)
 	}
 }
 
