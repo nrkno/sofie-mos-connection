@@ -64,51 +64,51 @@ export interface IMOSDevice {
 	id: string, // unique id for this device and session
 	/* Profile 0 */
 	/*  */
-	getMachineInfo?: () => Promise<IMOSListMachInfo>
+	getMachineInfo: () => Promise<IMOSListMachInfo>
 	/* Emitted when the connection status has changed */
-	onConnectionChange?: (cb: (connectionStatus: IMOSConnectionStatus) => void) => void
-	getConnectionStatus?: () => IMOSConnectionStatus
+	onConnectionChange: (cb: (connectionStatus: IMOSConnectionStatus) => void) => void
+	getConnectionStatus: () => IMOSConnectionStatus
 
 	/* Profile 1 */
-	onRequestMOSObject?: (cb: (objId: string) => Promise<IMOSObject | null>) => void
-	onRequestAllMOSObjects?: (cb: () => Promise<Array<IMOSObject>>) => void
-	getMOSObject?: (objId: string) => Promise<IMOSObject>
-	getAllMOSObjects?: () => Promise<Array<IMOSObject>>
+	onRequestMOSObject: (cb: (objId: string) => Promise<IMOSObject | null>) => void
+	onRequestAllMOSObjects: (cb: () => Promise<Array<IMOSObject>>) => void
+	getMOSObject: (objId: string) => Promise<IMOSObject>
+	getAllMOSObjects: () => Promise<Array<IMOSObject>>
 
 	/* Profile 2 */
-	onCreateRunningOrder?: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
-	onReplaceRunningOrder?: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
-	onDeleteRunningOrder?: (cb: (runningOrderId: MosString128) => Promise<IMOSROAck>) => void
+	onCreateRunningOrder: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
+	onReplaceRunningOrder: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
+	onDeleteRunningOrder: (cb: (runningOrderId: MosString128) => Promise<IMOSROAck>) => void
 
-	onRequestRunningOrder?: (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) => void // get roReq, send roList
-	getRunningOrder?: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null> // send roReq, get roList
+	onRequestRunningOrder: (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) => void // get roReq, send roList
+	getRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null> // send roReq, get roList
 
-	onMetadataReplace?: (cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>) => void
+	onMetadataReplace: (cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>) => void
 
-	onRunningOrderStatus?: (cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>) => void // get roElementStat
-	onStoryStatus?: (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) => void // get roElementStat
-	onItemStatus?: (cb: (status: IMOSItemStatus) => Promise<IMOSROAck>) => void // get roElementStat
+	onRunningOrderStatus: (cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>) => void // get roElementStat
+	onStoryStatus: (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) => void // get roElementStat
+	onItemStatus: (cb: (status: IMOSItemStatus) => Promise<IMOSROAck>) => void // get roElementStat
 
-	setRunningOrderStatus?: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck> // send roElementStat
-	setStoryStatus?: (status: IMOSStoryStatus) => Promise<IMOSROAck> // send roElementStat
-	setItemStatus?: (status: IMOSItemStatus) => Promise<IMOSROAck> // send roElementStat
+	setRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck> // send roElementStat
+	setStoryStatus: (status: IMOSStoryStatus) => Promise<IMOSROAck> // send roElementStat
+	setItemStatus: (status: IMOSItemStatus) => Promise<IMOSROAck> // send roElementStat
 
-	onReadyToAir?: (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) => void
+	onReadyToAir: (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) => void
 
-	onROInsertStories?: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => IMOSROAck) => void
-	onROInsertItems?: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => IMOSROAck) => void
-	onROReplaceStories?: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => IMOSROAck) => void
-	onROReplaceItems?: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => IMOSROAck) => void
-	onROMoveStories?: (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => IMOSROAck) => void
-	onROMoveItems?: (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => IMOSROAck) => void
-	onRODeleteStories?: (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => IMOSROAck) => void
-	onRODeleteItems?: (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => IMOSROAck) => void
-	onROSwapStories?: (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => IMOSROAck) => void
-	onROSwapItems?: (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => IMOSROAck) => void
+	onROInsertStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => IMOSROAck) => void
+	onROInsertItems: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => IMOSROAck) => void
+	onROReplaceStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => IMOSROAck) => void
+	onROReplaceItems: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => IMOSROAck) => void
+	onROMoveStories: (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => IMOSROAck) => void
+	onROMoveItems: (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => IMOSROAck) => void
+	onRODeleteStories: (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => IMOSROAck) => void
+	onRODeleteItems: (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => IMOSROAck) => void
+	onROSwapStories: (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => IMOSROAck) => void
+	onROSwapItems: (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => IMOSROAck) => void
 	/* Profile 3 */
 	/* Profile 4 */
 	// roStorySend:
-	onStory?: (cb: (story: IMOSROFullStory) => Promise<any>) => void
+	onStory: (cb: (story: IMOSROFullStory) => Promise<any>) => void
 }
 export interface IMOSROAction {
 	RunningOrderID: MosString128
