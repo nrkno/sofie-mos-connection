@@ -1,4 +1,9 @@
+import {HeartBeat} from '../0_heartBeat'
 
-test('Simple test', () => {
-	expect(2).toBe(2)
+describe('HeartBeat', () => {
+	test('Simple test', () => {
+		let h = new HeartBeat()
+		console.log(h)
+		expect(2).toBe(2)
+	})
 })
