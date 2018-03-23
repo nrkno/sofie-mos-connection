@@ -10,14 +10,13 @@ export interface IConnectionConfig {
 /** */
 export interface IProfiles {
 	'0': boolean
-	'1': boolean
-	'2': boolean
-	'3': boolean
-	'4': boolean
-	'5': boolean
-	'6': boolean
-	'7': boolean
-	[key: string]: boolean
+	'1'?: boolean
+	'2'?: boolean
+	'3'?: boolean
+	'4'?: boolean
+	'5'?: boolean
+	'6'?: boolean
+	'7'?: boolean
 }
 
 export class ConnectionConfig {

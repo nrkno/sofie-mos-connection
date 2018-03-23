@@ -6,6 +6,7 @@ import {
 	IMOSDeviceConnectionOptions,
 	IMOSDevice
 } from './api'
+import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription } from './connection/socketConnection'
 import { Server } from './connection/Server'
 
@@ -44,13 +45,13 @@ export class MosConnection implements IMosConnection {
 			// connect to mos device
 
 			// initialize mosDevice:
-			// let mosDevice = new MosDevice() // pseudo-code here, put something real
-			let mosDevice = {
+			let mosDevice = new MosDevice(connectionOptions) // pseudo-code here, put something real
+			/*let mosDevice = {
 				onRequestMOSObject () {},
 				onRequestAllMOSObjects () {},
 				getMOSObject () {},
 				getAllMOSObjects () {}
-			}
+			}*/
 
 			// emit to .onConnection
 			if (this._onconnection) this._onconnection(mosDevice)
