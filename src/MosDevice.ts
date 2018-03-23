@@ -1,7 +1,7 @@
 import {Socket} from 'net'
 import {MosString128} from './dataTypes/mosString128'
 import {MosTime} from './dataTypes/mosTime'
-import {MosExternalMetaData} from './dataTypes/mosExternalMetaData'
+import {IMOSScope} from './dataTypes/mosExternalMetaData'
 import {IMOSListMachInfo, IMOSListMachInfoDefaultActiveXMode} from './mosModel/0_listMachInfo'
 
 export class MosDevice {
@@ -47,6 +47,9 @@ export class MosDevice {
 					controlDefaultParams: 'URL=test.ncs.com'
 				}],
 				mosExternalMetaData: [{
+					MosScope: IMOSScope.STORY,
+					MosSchema: 'http://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
+					MosPayload: 'hello world'
 				}]
 			}
 			resolve(list)
