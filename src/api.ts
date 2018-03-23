@@ -1,4 +1,4 @@
-import {ProfilesSupport} from './config/connectionConfig'
+import {IProfiles} from './config/connectionConfig'
 import {MosTime} from './dataTypes/mosTime'
 import {MosDuration} from './dataTypes/mosDuration'
 import {MosString128} from './dataTypes/mosString128'
@@ -50,7 +50,7 @@ export interface IMosConnection {
 	readonly isListening: Promise<boolean[]>
 
 	readonly acceptsConnections: boolean
-	readonly profiles: ProfilesSupport
+	readonly profiles: IProfiles
 	readonly isCompliant: boolean
 	readonly complianceText: string
 

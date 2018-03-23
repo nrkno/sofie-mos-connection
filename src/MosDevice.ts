@@ -1,16 +1,40 @@
 import {Socket} from 'net'
 import {MosString128} from './dataTypes/mosString128'
 import {MosTime} from './dataTypes/mosTime'
-import {IMOSScope} from './dataTypes/mosExternalMetaData'
-import {IMOSListMachInfo, IMOSListMachInfoDefaultActiveXMode} from './mosModel/0_listMachInfo'
+import {IMOSExternalMetaData} from './dataTypes/mosExternalMetaData'
+import {IMOSListMachInfo, IMOSDefaultActiveX} from './mosModel/0_listMachInfo'
 
 export class MosDevice {
 
 	id: string
 	socket: Socket
+	manufacturer: MosString128
+	model: MosString128
+	hwRev: MosString128
+	swRev: MosString128
+	DOM: MosTime
+	SN: MosString128
+	ID: MosString128
+	time: MosTime
+	opTime: MosTime
+	mosRev: MosString128
+	supportedProfiles: any
+	defaultActiveX: Array<IMOSDefaultActiveX>
+	mosExternalMetaData: Array<IMOSExternalMetaData>
 
 	constructor (socket: Socket) {
 		this.socket = socket
+		this.supportedProfiles = {
+			deviceType: 'NCS',
+			profile0: true,
+			profile1: true,
+			profile2: false,
+			profile3: false,
+			profile4: false,
+			profile5: false,
+			profile6: false,
+			profile7: false
+		}
 	}
 	
 	getMachineInfo (): Promise<IMOSListMachInfo> {
@@ -18,39 +42,19 @@ export class MosDevice {
 
 		return new Promise((resolve) => {
 			let list:IMOSListMachInfo = {
-				manufacturer: new MosString128('Manufacturer'),
-				model: new MosString128('Model text desc.'),
-				hwRev: new MosString128('Hardware Revision'),
-				swRev: new MosString128('Software Revision'),
-				DOM: new MosTime(),
-				SN: new MosString128('Serial number'),
-				ID: new MosString128('ID of a Machine'),
-				time: new MosTime(),
-				opTime: new MosTime(),
-				mosRev: new MosString128('Mos revision'),
-				supportedProfiles: {
-					deviceType: 'NCS',
-					profile0: true,
-					profile1: true,
-					profile2: false,
-					profile3: false,
-					profile4: false,
-					profile5: false,
-					profile6: false,
-					profile7: false
-				},
-				defaultActiveX: [{
-					mode: IMOSListMachInfoDefaultActiveXMode.MODALDIALOG,
-					controlFileLocation: 'file/path',
-					controlSlug: new MosString128('controlSlug'),
-					controlName: 'controlName',
-					controlDefaultParams: 'URL=test.ncs.com'
-				}],
-				mosExternalMetaData: [{
-					MosScope: IMOSScope.STORY,
-					MosSchema: 'http://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
-					MosPayload: 'hello world'
-				}]
+				manufacturer: this.manufacturer,
+				model: this.model,
+				hwRev: this.hwRev,
+				swRev: this.swRev,
+				DOM: this.DOM,
+				SN: this.SN,
+				ID: this.ID,
+				time: this.time,
+				opTime: this.opTime,
+				mosRev: this.mosRev,
+				supportedProfiles: this.supportedProfiles,
+				defaultActiveX: this.defaultActiveX,
+				mosExternalMetaData: this.mosExternalMetaData 
 			}
 			resolve(list)
 		})
