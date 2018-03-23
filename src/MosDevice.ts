@@ -1,8 +1,10 @@
+import * as XMLBuilder from 'xmlbuilder'
 import {Socket} from 'net'
 import {MosString128} from './dataTypes/mosString128'
 import {MosTime} from './dataTypes/mosTime'
 import {IMOSExternalMetaData} from './dataTypes/mosExternalMetaData'
 import {IMOSListMachInfo, IMOSDefaultActiveX} from './mosModel/0_listMachInfo'
+import { IMOSDeviceConnectionOptions } from './api'
 
 export class MosDevice {
 
@@ -22,10 +24,20 @@ export class MosDevice {
 	defaultActiveX: Array<IMOSDefaultActiveX>
 	mosExternalMetaData: Array<IMOSExternalMetaData>
 
-	constructor (socket: Socket) {
-		this.socket = socket
+	constructor (connectionOptions: IMOSDeviceConnectionOptions) {
+		//this.socket = socket
+		this.manufacturer = new MosString128('RadioVision, Ltd.')
+		this.model = new MosString128('TCS6000')
+		this.hwRev = new MosString128('0.1') // empty string returnes <hwRev/>
+		this.swRev = new MosString128('0.1')
+		this.DOM = new MosTime()
+		this.SN = new MosString128('927748927')
+		this.ID = new MosString128('airchache.newscenter.com')
+		this.time = new MosTime()
+		this.opTime = new MosTime()
+		this.mosRev = new MosString128("2.8.5")
 		this.supportedProfiles = {
-			deviceType: 'NCS',
+			deviceType: 'MOS',
 			profile0: true,
 			profile1: true,
 			profile2: false,
@@ -35,6 +47,7 @@ export class MosDevice {
 			profile6: false,
 			profile7: false
 		}
+		console.log(connectionOptions)
 	}
 	
 	getMachineInfo (): Promise<IMOSListMachInfo> {
@@ -58,7 +71,30 @@ export class MosDevice {
 			}
 			resolve(list)
 		})
-
 	}
+
+	get messageXMLBlocks(): XMLBuilder.XMLElementOrXMLNode {
+		let root = XMLBuilder.create('listMachInfo') // config headless 
+		root.ele('manufacturer', this.manufacturer.toString())
+		root.ele('model', this.model.toString())
+		root.ele('hwRev', this.hwRev.toString())
+		root.ele('swRev', this.swRev.toString())
+		root.ele('DOM', this.DOM.toString())
+		root.ele('SN', this.SN.toString())
+		root.ele('ID', this.ID.toString())
+		root.ele('time', this.time.toString())
+		root.ele('opTime', this.opTime.toString())
+		root.ele('mosRev', this.mosRev.toString())
+
+		let p = root.ele('supportedProfiles').att('deviceType', this.supportedProfiles.deviceType)
+		for(let i = 0; i < 8; i++) { // constant for # av profiles?
+			p.ele('mosProfile', (this.supportedProfiles['profile'+i] ? 'YES' : 'NO')).att('number', i)
+		}
+
+		// root.ele('defaultActiveX', this.manufacturer)
+		// root.ele('mosExternalMetaData', this.manufacturer) import from IMOSExternalMetaData
+		return root
+	}
+
 
 }
