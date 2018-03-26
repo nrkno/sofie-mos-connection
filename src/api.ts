@@ -109,7 +109,7 @@ export interface IMOSDevice {
 	/* Profile 3 */
 	/* Profile 4 */
 	// roStorySend:
-	onStory: (cb: (story: IMOSROFullStory) => Promise<any>) => void
+	onROStory: (cb: (story: IMOSROFullStory) => Promise<any>) => void
 }
 export {IMOSListMachInfo}
 export interface IMOSROAction {
