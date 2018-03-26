@@ -65,6 +65,7 @@ export interface IMOSDevice {
 	/* Profile 0 */
 	/*  */
 	getMachineInfo: () => Promise<IMOSListMachInfo>
+	onGetMachineInfo: (cb: () => Promise<IMOSListMachInfo>) => void
 	/* Emitted when the connection status has changed */
 	onConnectionChange: (cb: (connectionStatus: IMOSConnectionStatus) => void) => void
 	getConnectionStatus: () => IMOSConnectionStatus
@@ -110,6 +111,7 @@ export interface IMOSDevice {
 	// roStorySend:
 	onStory: (cb: (story: IMOSROFullStory) => Promise<any>) => void
 }
+export {IMOSListMachInfo}
 export interface IMOSROAction {
 	RunningOrderID: MosString128
 }
