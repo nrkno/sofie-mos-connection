@@ -96,16 +96,16 @@ export interface IMOSDevice {
 
 	onReadyToAir: (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) => void
 
-	onROInsertStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => IMOSROAck) => void
-	onROInsertItems: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => IMOSROAck) => void
-	onROReplaceStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => IMOSROAck) => void
-	onROReplaceItems: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => IMOSROAck) => void
-	onROMoveStories: (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => IMOSROAck) => void
-	onROMoveItems: (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => IMOSROAck) => void
-	onRODeleteStories: (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => IMOSROAck) => void
-	onRODeleteItems: (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => IMOSROAck) => void
-	onROSwapStories: (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => IMOSROAck) => void
-	onROSwapItems: (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => IMOSROAck) => void
+	onROInsertStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) => void
+	onROInsertItems: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) => void
+	onROReplaceStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) => void
+	onROReplaceItems: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) => void
+	onROMoveStories: (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) => void
+	onROMoveItems: (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>) => void
+	onRODeleteStories: (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) => void
+	onRODeleteItems: (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>) => void
+	onROSwapStories: (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>) => void
+	onROSwapItems: (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) => void
 	/* Profile 3 */
 	/* Profile 4 */
 	// roStorySend:
