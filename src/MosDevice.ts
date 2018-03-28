@@ -5,6 +5,7 @@ import {MosTime} from './dataTypes/mosTime'
 import {IMOSExternalMetaData} from './dataTypes/mosExternalMetaData'
 import {IMOSListMachInfo, IMOSDefaultActiveX} from './mosModel/0_listMachInfo'
 import { IMOSDeviceConnectionOptions } from './api'
+import { IConnectionConfig } from './config/connectionConfig'
 
 export class MosDevice {
 
@@ -24,22 +25,11 @@ export class MosDevice {
 	defaultActiveX: Array<IMOSDefaultActiveX>
 	mosExternalMetaData: Array<IMOSExternalMetaData>
 
-	constructor (connectionOptions: IMOSDeviceConnectionOptions) {
-		//this.socket = socket
-		this.manufacturer = new MosString128('RadioVision, Ltd.')
-		this.model = new MosString128('TCS6000')
-		this.hwRev = new MosString128('0.1') // empty string returnes <hwRev/>
-		this.swRev = new MosString128('0.1')
-		this.DOM = new MosTime()
-		this.SN = new MosString128('927748927')
-		this.ID = new MosString128('airchache.newscenter.com')
-		this.time = new MosTime()
-		this.opTime = new MosTime()
-		this.mosRev = new MosString128("2.8.5")
-		this.supportedProfiles = {
+	constructor (socket: Socket, connectionConfig: IConnectionConfig, connectionOptions: IMOSDeviceConnectionOptions) {
+		let supportedProfiles = {
 			deviceType: 'MOS',
-			profile0: true,
-			profile1: true,
+			profile0: false,
+			profile1: false,
 			profile2: false,
 			profile3: false,
 			profile4: false,
@@ -47,7 +37,29 @@ export class MosDevice {
 			profile6: false,
 			profile7: false
 		}
-		console.log(connectionOptions)
+		if (connectionConfig) {
+			if(connectionConfig.profiles['0']) supportedProfiles.profile0 = true 
+			if(connectionConfig.profiles['1']) supportedProfiles.profile1 = true 
+		}
+
+		this.socket = socket
+		this.manufacturer = new MosString128('RadioVision, Ltd.')
+		this.model = new MosString128('TCS6000')
+		this.hwRev = new MosString128('0.1') // empty string returnes <hwRev/>
+		this.swRev = new MosString128('0.1')
+		this.DOM = new MosTime()
+		this.SN = new MosString128('927748927')
+		this.ID = new MosString128(connectionConfig ? connectionConfig.mosID : '')
+		this.time = new MosTime()
+		this.opTime = new MosTime()
+		this.mosRev = new MosString128("2.8.5")
+		this.supportedProfiles = supportedProfiles
+
+		this.socket.on('data', this.onData)
+	}
+
+	onData (data: any) {
+		console.log('onData', data)
 	}
 	
 	getMachineInfo (): Promise<IMOSListMachInfo> {
@@ -95,6 +107,8 @@ export class MosDevice {
 		// root.ele('mosExternalMetaData', this.manufacturer) import from IMOSExternalMetaData
 		return root
 	}
+
+
 
 
 }
