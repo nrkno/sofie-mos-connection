@@ -1,5 +1,5 @@
 node_modules
-build
+dist
 test
 src/**.js
 
@@ -8,3 +8,5 @@ coverage
 *.log
 
 wallaby.conf.js
+
+.DS_Store
