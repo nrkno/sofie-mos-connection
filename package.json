@@ -33,6 +33,7 @@
   ],
   "scripts": {
     "info": "npm-scripts-info",
+    "install": "npm run build",
     "build": "trash build && yarn build:main && yarn build:module && yarn build:browser-deps && yarn build:browser && yarn build:browser-cjs && yarn build:resolve-sourcemaps",
     "build:main": "tsc -p tsconfig.json",
     "build:module": "tsc -p config/exports/tsconfig.module.json",
@@ -58,6 +59,7 @@
     "reset": "git clean -dfx && git reset --hard && yarn"
   },
   "scripts-info": {
+    "install": "Build the package automatically after installing it",
     "info": "Display information about the scripts",
     "build": "(Trash and re)build the library",
     "lint": "Lint all typescript source files",
