@@ -106,10 +106,15 @@ export class SocketMock extends EventEmitter implements Socket {
 			// send reply:
 
 			let cb = this._responses.shift()
+			let msg
 
 			setTimeout(() => {
 
-				let msg = cb(data)
+				if(typeof cb === 'string') {
+					msg = cb
+				} else {
+					msg = cb(data)
+				}
 
 				this.mockReceiveMessage(msg)
 			},5)

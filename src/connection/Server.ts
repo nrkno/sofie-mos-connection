@@ -5,24 +5,6 @@ import { ConnectionType, SocketDescription } from './socketConnection'
 // import {Socket} from 'net';
 
 /** */
-export abstract class MosDevice {
-
-	// private _host: string
-	private _id: string
-
-	// private _profiles: ProfilesSupport
-
-	// private _primaryServer: Server
-	// private _buddyServr: Server
-	// private _currentServer: Server = this._primaryServer
-
-	/** */
-	get id (): string {
-		return this._id
-	}
-}
-
-/** */
 export class Server {
 	// private _connected: boolean
 	// private _lastSeen: number

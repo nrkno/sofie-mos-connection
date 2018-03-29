@@ -4,12 +4,13 @@ import {MosString128} from './dataTypes/mosString128'
 import {MosTime} from './dataTypes/mosTime'
 import {IMOSExternalMetaData} from './dataTypes/mosExternalMetaData'
 import {IMOSListMachInfo, IMOSDefaultActiveX} from './mosModel/0_listMachInfo'
-import { IMOSDeviceConnectionOptions } from './api'
+import { IMOSDeviceConnectionOptions, IMOSObject } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
 
 export class MosDevice {
 
-	id: string
+	// private _host: string
+	private _id: string
 	socket: Socket
 	manufacturer: MosString128
 	model: MosString128
@@ -21,28 +22,28 @@ export class MosDevice {
 	time: MosTime
 	opTime: MosTime
 	mosRev: MosString128
-	supportedProfiles: any
 	defaultActiveX: Array<IMOSDefaultActiveX>
 	mosExternalMetaData: Array<IMOSExternalMetaData>
 
-	constructor (socket: Socket, connectionConfig: IConnectionConfig, connectionOptions: IMOSDeviceConnectionOptions) {
-		let supportedProfiles = {
-			deviceType: 'MOS',
-			profile0: false,
-			profile1: false,
-			profile2: false,
-			profile3: false,
-			profile4: false,
-			profile5: false,
-			profile6: false,
-			profile7: false
-		}
-		if (connectionConfig) {
-			if(connectionConfig.profiles['0']) supportedProfiles.profile0 = true 
-			if(connectionConfig.profiles['1']) supportedProfiles.profile1 = true 
-		}
+	private supportedProfiles = {
+		deviceType: 'MOS',
+		profile0: false,
+		profile1: false,
+		profile2: false,
+		profile3: false,
+		profile4: false,
+		profile5: false,
+		profile6: false,
+		profile7: false
+	} // Use same names as IProfiles?
 
-		this.socket = socket
+	// private _profiles: ProfilesSupport
+	// private _primaryServer: Server
+	// private _buddyServr: Server
+	// private _currentServer: Server = this._primaryServer
+
+	constructor (connectionConfig: IConnectionConfig, connectionOptions: IMOSDeviceConnectionOptions) {
+		this.socket = new Socket()
 		this.manufacturer = new MosString128('RadioVision, Ltd.')
 		this.model = new MosString128('TCS6000')
 		this.hwRev = new MosString128('0.1') // empty string returnes <hwRev/>
@@ -53,9 +54,23 @@ export class MosDevice {
 		this.time = new MosTime()
 		this.opTime = new MosTime()
 		this.mosRev = new MosString128("2.8.5")
-		this.supportedProfiles = supportedProfiles
+
+		if (connectionConfig) {
+			if(connectionConfig.profiles['0']) this.supportedProfiles.profile0 = true 
+			if(connectionConfig.profiles['1']) this.supportedProfiles.profile1 = true 
+			if(connectionConfig.profiles['2']) this.supportedProfiles.profile2 = true 
+			if(connectionConfig.profiles['3']) this.supportedProfiles.profile3 = true 
+			if(connectionConfig.profiles['4']) this.supportedProfiles.profile4 = true 
+			if(connectionConfig.profiles['5']) this.supportedProfiles.profile5 = true 
+			if(connectionConfig.profiles['6']) this.supportedProfiles.profile6 = true 
+			if(connectionConfig.profiles['7']) this.supportedProfiles.profile7 = true 
+		}
 
 		this.socket.on('data', this.onData)
+	}
+
+	get id (): string {
+		return this._id
 	}
 
 	onData (data: any) {
@@ -85,6 +100,12 @@ export class MosDevice {
 		})
 	}
 
+	//onRequestMOSObject: (cb: (objId: string) => Promise<IMOSObject | null>) => void
+	
+	onRequestMOSObject (cb: (objId: string) => Promise<IMOSObject | null>) { 
+		cb('123')
+	}
+
 	get messageXMLBlocks(): XMLBuilder.XMLElementOrXMLNode {
 		let root = XMLBuilder.create('listMachInfo') // config headless 
 		root.ele('manufacturer', this.manufacturer.toString())
@@ -99,7 +120,7 @@ export class MosDevice {
 		root.ele('mosRev', this.mosRev.toString())
 
 		let p = root.ele('supportedProfiles').att('deviceType', this.supportedProfiles.deviceType)
-		for(let i = 0; i < 8; i++) { // constant for # av profiles?
+		for(let i = 0; i < 8; i++) {
 			p.ele('mosProfile', (this.supportedProfiles['profile'+i] ? 'YES' : 'NO')).att('number', i)
 		}
 

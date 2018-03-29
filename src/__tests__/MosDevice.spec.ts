@@ -4,6 +4,15 @@ import { MosDevice } from '../MosDevice'
 import { Socket } from 'net'
 import { SocketMock } from '../__mocks__/socket'
 
+jest.mock('net')
+
+beforeAll(() => {
+	Socket = SocketMock
+})
+beforeEach(() => {
+	SocketMock.mockClear()
+})
+
 let testconfig = new ConnectionConfig({
 	mosID: 'jestMOS',
 	acceptsConnections: false,
@@ -21,14 +30,17 @@ let testoptions = {
 	}
 }
 
-describe('MosDevice', () => {
-	test('Print XML', () => {
-		let socket = new SocketMock()
-		let mos = new MosDevice(socket, testconfig, testoptions)
-		socket.write('<test>', () => {
-			console.log(this)
-		})
-		expect(mos.messageXMLBlocks.end({ pretty: true })).toEqual('<test>')
+describe('MosDevice', async () => {
+	test.only('Print XML', () => {
+		let mos = new MosDevice(testconfig, testoptions)
+		expect(SocketMock.instances).toHaveLength(1)
+
+		let sock = SocketMock.instances[0]
+		sock.mockAddReply("<world>") // vi simulerar ett svar från servern, triggas vid write
+		sock.write("test") // vi skickar till server
+		sock.mockReceiveMessage("<hello>") // vi tar emot från servern
+
+		expect(mos.messageXMLBlocks.end({ pretty: false })).toEqual('<test>')
 	})
 })
 
@@ -40,7 +52,7 @@ describe('MosDevice: Profile 0', () => {
 
 		expect(mosDevice).toBeTruthy()
 
-		/*expect(SocketMock.instances).toHaveLength(1)
+		expect(SocketMock.instances).toHaveLength(1)
 		let connMock = SocketMock.instances[0]
 		expect(connMock.connect).toHaveBeenCalledTimes(1)
 		expect(connMock.connect.mock.calls[0][0]).toEqual('127.0.0.1')
@@ -55,7 +67,7 @@ describe('MosDevice: Profile 0', () => {
 
 		expect(mosDevice.getConnectionStatus()).toEqual(true)
 
-		connectionStatusChanged.mockClear()*/
+		connectionStatusChanged.mockClear()
 
 		// @todo: add timeout test
 		// mock cause timeout
