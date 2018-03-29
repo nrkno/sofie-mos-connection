@@ -31,7 +31,7 @@ let testoptions = {
 }
 
 describe('MosDevice', async () => {
-	test.only('Print XML', () => {
+	test('Print XML', () => {
 		let mos = new MosDevice(testconfig, testoptions)
 		expect(SocketMock.instances).toHaveLength(1)
 

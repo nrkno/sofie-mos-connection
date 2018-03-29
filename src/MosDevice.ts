@@ -129,7 +129,40 @@ export class MosDevice {
 		return root
 	}
 
+	onRequestAllMOSObjects(): Promise<Array<IMOSObject>> { } 
+	onCreateRunningOrder (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) { }
+	onReplaceRunningOrder (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) { }
 
+	onDeleteRunningOrder (cb: (runningOrderId: MosString128) => Promise<IMOSROAck>) { }
+	onRequestRunningOrder (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) { }
 
+	getRunningOrder (runningOrderId: MosString128): Promise<IMOSRunningOrder | null> { }
+
+	onMetadataReplace (cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>) { }
+
+	onRunningOrderStatus (cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>) {} // get roElementStat
+	onStoryStatus (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) {} // get roElementStat
+	onItemStatus (cb: (status: IMOSItemStatus) => Promise<IMOSROAck>) {} // get roElementStat
+
+	setRunningOrderStatus (status: IMOSRunningOrderStatus): Promise<IMOSROAck> {} // send roElementStat
+	setStoryStatus (status: IMOSStoryStatus): Promise<IMOSROAck> {} // send roElementStat
+	setItemStatus (status: IMOSItemStatus): Promise<IMOSROAck> {} // send roElementStat
+
+	onReadyToAir (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) {}
+
+	onROInsertStories (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {}
+	onROInsertItems (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {}
+	onROReplaceStories (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {}
+	onROReplaceItems (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {}
+	onROMoveStories (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {}
+	onROMoveItems (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {}
+	onRODeleteStories (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {}
+	onRODeleteItems (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {}
+	onROSwapStories (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>) {}
+	onROSwapItems (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) {}
+	/* Profile 3 */
+	/* Profile 4 */
+	// roStorySend:
+	onROStory (cb: (story: IMOSROFullStory) => Promise<any>) {}
 
 }
