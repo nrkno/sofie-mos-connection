@@ -1,13 +1,16 @@
+defaults: &defaults
+  docker:
+    - image: circleci/node:8.0
+  working_directory: ~/tv-automation-mos-connection
+
 version: 2
 jobs:
   checkout_code:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/mos-connection
+    <<: *defaults
     steps:
       - checkout
       - attach_workspace:
-          at: ~/mos-connection
+          at: ~/tv-automation-mos-connection
       - restore_cache:
           keys:
             - yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
@@ -16,33 +19,40 @@ jobs:
       - run: yarn install
       - save_cache:
           key: yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths: node_modules
+          paths: [node_modules]
       - persist_to_workspace:
           root: .
-          paths: .
+          paths: [.]
   check_vulnerabilities:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/mos-connection
+    <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/mos-connection
+          at: ~/tv-automation-mos-connection
       - run: yarn install
-      - run: |
-            if [ "${CIRCLE_BRANCH}" == "production" ]; then
-              yarn validate:dependencies
-            else
-              yarn validate:dependencies || true
-            fi
-  test_and_report:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/mos-connection
+      - run: yarn validate:dependencies
+  test_node-8:
+    <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/mos-connection
+          at: ~/tv-automation-mos-connection
       - run: yarn install
       - run: yarn ci
+  test_node-6:
+    docker:
+      - image: circleci/node:6
+    working_directory: ~/tv-automation-mos-connection
+    steps:
+      - attach_workspace:
+          at: ~/tv-automation-mos-connection
+      - run: yarn install
+      - run: yarn ci
+
+  send-coverage:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/tv-automation-mos-connection
+      - run: yarn install
       - run: yarn send-coverage
       - store_artifacts:
           path: ./coverage/clover.xml
@@ -52,72 +62,50 @@ jobs:
           prefix: coverage
       - store_test_results:
           path: ./coverage/clover.xml
-  test_node-6:
-    docker:
-      - image: circleci/node:6
-    working_directory: ~/mos-connection
-    steps:
-      - attach_workspace:
-          at: ~/mos-connection
-      - run: yarn install
-      - run: yarn ci
-      # - run: yarn send-coverage
-      # - store_artifacts:
-      #     path: ./coverage/clover.xml
-      #     prefix: tests
-      # - store_artifacts:
-      #     path: coverage
-      #     prefix: coverage
-      # - store_test_results:
-      #     path: ./coverage/clover.xml
+
   build:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/mos-connection
+    <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/mos-connection
+          at: ~/tv-automation-mos-connection
       - run: yarn install
       - run: yarn build
-          # name: yarn build
-          # command: |
-          #   if [ "${CIRCLE_BRANCH}" == "production" ]; then
-          #     CI=true PUBLIC_URL=https://mos-connection-production.now.sh yarn build
-          #   elif [ "${CIRCLE_BRANCH}" == "development" ]; then
-          #     CI=true PUBLIC_URL=https://mos-connection-alpha.now.sh yarn build
-          #   elif [ "${CIRCLE_BRANCH}" == "master" ]; then
-          #     CI=true PUBLIC_URL=https://mos-connection-beta.now.sh yarn build
-          #   else
-          #     echo "This failed miserably!"
-          #   fi
       - persist_to_workspace:
           root: .
-          paths: .
-  # Some kind of serverless-deployment. Will update with npm/yarn deployment later
-  # deployment:
-  #   docker:
-  #     - image: circleci/node:latest
-  #   working_directory: ~/mos-connection
-  #   steps:
-  #     - attach_workspace:
-  #         at: ~/mos-connection
-  #     - run: yarn install
-  #     - run: sudo yarn global add now
-  #     - deploy:
-  #         name: Deploy & Alias.
-  #         command: |
-  #           if [ "${CIRCLE_BRANCH}" == "production" ]; then
-  #             now build -t ${NOW_TOKEN} -n=mos-connection --static
-  #             now -t ${NOW_TOKEN} alias mos-connection-production.now.sh
-  #           elif [ "${CIRCLE_BRANCH}" == "development" ]; then
-  #             now build -t ${NOW_TOKEN} -n=mos-connection --static
-  #             now -t ${NOW_TOKEN} alias mos-connection-alpha.now.sh
-  #           elif [ "${CIRCLE_BRANCH}" == "master" ]; then
-  #             now build -t ${NOW_TOKEN} -n=mos-connection --static
-  #             now -t ${NOW_TOKEN} alias mos-connection-beta.now.sh
-  #           else
-  #             echo "This failed miserably!"
-  #           fi
+          paths: [.]
+
+  release:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/tv-automation-mos-connection
+      - add_ssh_keys:
+          fingerprints:
+            - "82:ce:be:6e:24:71:ef:a9:4b:1e:fd:7a:8e:5e:2a:ef"
+      - run: yarn install
+      - run: git config --global user.email "jesper@starkar.no"
+      - run: git config --global user.name "jesperstarkar"
+      - run: yarn release
+      - run: git push --follow-tags origin HEAD
+      - persist_to_workspace:
+          root: .
+          paths: [.]
+
+  deployToNPM:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/tv-automation-mos-connection
+      - run:
+          name: Publish to NPM with yarn
+          command: NEW_VERSION=$(node -p "require('./package.json').version") && yarn publish --access=public --new-version=$NEW_VERSION
+      - deploy:
+          name: Publish to NPM with npm
+          command: npm publish --access=public
+      - persist_to_workspace:
+          root: .
+          paths: [.]
+
 workflows:
   version: 2
   test_build_deploy:
@@ -126,29 +114,40 @@ workflows:
       - check_vulnerabilities:
           requires:
             - checkout_code
-      - test_and_report:
+      - test_node-8:
           requires:
             - checkout_code
       - test_node-6:
           requires:
             - checkout_code
-      - build:
+      - send-coverage:
           requires:
-            - checkout_code
+            - check_vulnerabilities
+            - test_node-6
+            - test_node-8
           filters:
             branches:
               only:
-                - development
                 - master
-                - production
-      # - deployment:
-      #     requires:
-      #       - check_vulnerabilities
-      #       - test_and_report
-      #       - build
-      #     filters:
-      #       branches:
-      #         only:
-      #           - development
-      #           - master
-      #           - production
+      - release:
+          requires:
+            - send-coverage
+          filters:
+            branches:
+              only:
+                - master
+      - build:
+          requires:
+            - send-coverage
+            - release
+          filters:
+            branches:
+              only:
+                - master
+      - deployToNPM:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
