@@ -1,5 +1,6 @@
 import { Socket } from 'net'
 import { ConnectionConfig, IConnectionConfig, IProfiles } from './config/connectionConfig'
+import { MosSocketClient } from './connection/mosSocketClient'
 import { MosSocketServer } from './connection/mosSocketServer'
 import {
 	IMosConnection,
@@ -9,6 +10,7 @@ import {
 import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription } from './connection/socketConnection'
 import { Server } from './connection/Server'
+const iconv = require('iconv-lite')
 
 export class MosConnection implements IMosConnection {
 	static CONNECTION_PORT_LOWER: number = 10540
@@ -43,16 +45,27 @@ export class MosConnection implements IMosConnection {
 		return new Promise((resolve) => {
 
 			// connect to mos device
+			// Store MosSocketClients instead of Sockets in Server?
+			// Create MosSocketClients in construct?
+			let primary = new Server()
+			this._servers[connectionOptions.primary.host] = primary 
+
+			let lower = new MosSocketClient(connectionOptions.primary.host, MosConnection.CONNECTION_PORT_LOWER)
+			let upper = new MosSocketClient(connectionOptions.primary.host, MosConnection.CONNECTION_PORT_UPPER)
+			//let query = new MosSocketClient(connectionOptions.primary.host, MosConnection.CONNECTION_PORT_QUERY)
+
+			lower.connect()
+			upper.connect()
+			//query.connect()
+			
+			this._servers[connectionOptions.primary.host].registerIncomingConnection(1, lower._client, 'lower')
+			this._servers[connectionOptions.primary.host].registerIncomingConnection(2, upper._client, 'upper')
+			//this._servers[connectionOptions.primary.host].registerIncomingConnection(3, query._client, 'query')
+			console.log(this._servers)
 
 			// initialize mosDevice:
 			let connectionConfig = this._conf
-			let mosDevice = new MosDevice(connectionConfig, connectionOptions) // pseudo-code here, put something real
-			/*let mosDevice = {
-				onRequestMOSObject () {},
-				onRequestAllMOSObjects () {},
-				getMOSObject () {},
-				getAllMOSObjects () {}
-			}*/
+			let mosDevice = new MosDevice(connectionConfig, connectionOptions, primary) // pseudo-code here, put something real
 
 			// emit to .onConnection
 			if (this._onconnection) this._onconnection(mosDevice)
@@ -168,10 +181,16 @@ export class MosConnection implements IMosConnection {
 
 		// handles socket listeners
 		e.socket.on('close', (/*hadError: boolean*/) => this._disposeIncomingSocket(e.socket, socketID))
-		e.socket.on('data', (data: string) => console.log(`Socket got data (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${data}`))
+		e.socket.on('data', (data: string) => {
+			console.log(`Socket got data (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${data}`)
+
+			let buf = iconv.encode('<mos><mosID>test2.enps.mos</mosID><ncsID>2012R2ENPS8VM</ncsID><messageID>99</messageID><roAck><roID>2012R2ENPS8VM;P_ENPSMOS\W\F_HOLD ROs;DEC46951-28F9-4A11-8B0655D96B347E52</roID><roStatus>Unknown object M000133</roStatus><storyID>5983A501:0049B924:8390EF2B</storyID><itemID>0</itemID><objID>M000224</objID><status>LOADED</status><storyID>3854737F:0003A34D:983A0B28</storyID><itemID>0</itemID><objID>M000133</objID><itemChannel>A</itemChannel><status>UNKNOWN</status></roAck></mos>', 'utf16-be')
+			e.socket.write(buf, 'usc2')
+		})
 		e.socket.on('error', (error: Error) => console.log(`Socket had error (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${error}`))
 
 		// registers socket on server
+		// e.socket.remoteAddress är ej OK id, måste bytas ut
 		let server: Server = this._getServerForHost(e.socket.remoteAddress)
 		server.registerIncomingConnection(socketID, e.socket, e.portDescription)
 		console.log('added: ', this._servers)
@@ -181,6 +200,7 @@ export class MosConnection implements IMosConnection {
 	private _disposeIncomingSocket (socket: Socket, socketID: number) {
 		socket.removeAllListeners()
 		socket.destroy()
+		// e.socket.remoteAddress är ej OK id, måste bytas ut
 		this._getServerForHost(socket.remoteAddress).removeSocket(socketID)
 		console.log('removed: ', this._servers, '\n')
 	}

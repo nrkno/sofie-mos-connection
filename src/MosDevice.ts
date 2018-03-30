@@ -1,5 +1,6 @@
 import * as XMLBuilder from 'xmlbuilder'
 import {Socket} from 'net'
+import {Server} from './connection/Server'
 import {MosString128} from './dataTypes/mosString128'
 import {MosTime} from './dataTypes/mosTime'
 import {IMOSExternalMetaData} from './dataTypes/mosExternalMetaData'
@@ -38,11 +39,11 @@ export class MosDevice {
 	} // Use same names as IProfiles?
 
 	// private _profiles: ProfilesSupport
-	// private _primaryServer: Server
+	private _primaryServer: Server
 	// private _buddyServr: Server
 	// private _currentServer: Server = this._primaryServer
 
-	constructor (connectionConfig: IConnectionConfig, connectionOptions: IMOSDeviceConnectionOptions) {
+	constructor (connectionConfig: IConnectionConfig, connectionOptions: IMOSDeviceConnectionOptions, primaryServer: Server) {
 		this.socket = new Socket()
 		this.manufacturer = new MosString128('RadioVision, Ltd.')
 		this.model = new MosString128('TCS6000')
@@ -67,6 +68,7 @@ export class MosDevice {
 		}
 
 		this.socket.on('data', this.onData)
+		this._primaryServer = primaryServer
 	}
 
 	get id (): string {

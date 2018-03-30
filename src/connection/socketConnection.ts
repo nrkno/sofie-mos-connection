@@ -2,13 +2,13 @@ import { Socket } from 'net'
 
 /** */
 export enum SocketConnectionEvent {
-  // CONNECTED = 'eventsocketconnectionconnected',
-  // DISCONNECTED = 'eventsocketconnectiondisconnected',
-  // DISPOSED = 'eventsocketconnectiondisposed',
-  // TIMEOUT = 'eventsocketconnectiontimeout',
-  // ALIVE = 'eventsocketconnectionalive',
-  // REGISTER = 'eventsocketconnectionregister',
-  // UNREGISTER = 'eventsocketconnectionunregister'
+  CONNECTED = 'eventsocketconnectionconnected',
+  DISCONNECTED = 'eventsocketconnectiondisconnected',
+  DISPOSED = 'eventsocketconnectiondisposed',
+  TIMEOUT = 'eventsocketconnectiontimeout',
+  ALIVE = 'eventsocketconnectionalive',
+  REGISTER = 'eventsocketconnectionregister',
+  UNREGISTER = 'eventsocketconnectionunregister'
 }
 
 /** */

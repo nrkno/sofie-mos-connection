@@ -1,5 +1,4 @@
-import { MosConnection } from './MosConnection'
-import { ConnectionConfig } from './config/connectionConfig'
+import { MosConnection, ConnectionConfig } from '../src'
 
 let mos = new MosConnection(new ConnectionConfig({
 	mosID: 'jestMOS',
