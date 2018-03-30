@@ -1,4 +1,4 @@
-import { Server, Socket, createServer } from 'net'
+import { Server, Socket } from 'net'
 import { EventEmitter } from 'events'
 import { IncomingConnectionType, SocketServerEvent } from './socketConnection'
 
@@ -14,7 +14,7 @@ export class MosSocketServer extends EventEmitter {
 		this._port = port
 		this._portDescription = description
 
-		this._socketServer = createServer()
+		this._socketServer = new Server()
 		this._socketServer.on('connection', (socket: Socket) => this._onClientConnection(socket))
 		this._socketServer.on('close', () => this._onServerClose())
 		this._socketServer.on('error', (error) => this._onServerError(error))
@@ -22,27 +22,36 @@ export class MosSocketServer extends EventEmitter {
 
 	/** */
 	listen (): Promise<boolean> {
-		return	new Promise((resolve, reject) => {
+		console.log('listen', this._portDescription, this._port)
+		return new Promise((resolve, reject) => {
+			console.log('inside promise', this._portDescription, this._port)
 
 			// already listening
 			if (this._socketServer.listening) {
+				console.log('already listening', this._portDescription, this._port)
 				resolve(true)
 				return
 			}
 
 			// handles listening-listeners and cleans up
 			let handleListeningStatus = (e?: Error) => {
+				console.log('handleListeningStatus')
 				this._socketServer.removeListener('listening', handleListeningStatus)
 				this._socketServer.removeListener('close', handleListeningStatus)
 				this._socketServer.removeListener('error', handleListeningStatus)
 				if (this._socketServer.listening) {
+					console.log('listening', this._portDescription, this._port)
 					resolve(true)
 				} else {
+					console.log('not listening', this._portDescription, this._port)
 					reject(e || false)
 				}
 			}
 
 			// listens and handles error and events
+			this._socketServer.on('listening', () => {
+				console.log('listening!!')
+			})
 			this._socketServer.once('listening', handleListeningStatus)
 			this._socketServer.once('close', handleListeningStatus)
 			this._socketServer.once('error', handleListeningStatus)

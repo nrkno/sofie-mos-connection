@@ -9,7 +9,8 @@ import { SocketMock } from '../__mocks__/socket'
 
 import { xmlData, xmlApiData } from './testData.spec'
 
-jest.mock('net')
+// breaks net.Server, disabled for now
+// jest.mock('net')
 
 const literal = <T>(o: T) => o
 
@@ -130,10 +131,10 @@ test('basic initialization', async () => {
 	// expect(mos.complianceText).toBe('MOS Compatible – Profiles 0,1')
 })
 
-test('Incoming connections', () => {
+test('Incoming connections', async () => {
 	let mos = new MosConnection(new ConnectionConfig({
 		mosID: 'jestMOS',
-		acceptsConnections: false,
+		acceptsConnections: true,
 		profiles: {
 			'0': true,
 			'1': true
@@ -141,9 +142,7 @@ test('Incoming connections', () => {
 	}))
 
 	if (mos.acceptsConnections) {
-		expect(mos.isListening).resolves.toEqual([true, true]).then(result => {
-			// CHECK THAT THE PORTS ARE OPEN AND CAN BE CONNCETED TO
-		})
+		await expect(mos.isListening).resolves.toEqual([true, true, true])
 	} else {
 		expect(mos.isListening).rejects.toBe('Mos connection is not listening for connections. "Config.acceptsConnections" is "false"')
 	}

@@ -133,8 +133,10 @@ export class MosConnection implements IMosConnection {
 
 	/** */
 	private _initiateIncomingConnections (): Promise<boolean[]> {
+		//console.log('_initiateIncomingConnections')
 		// shouldn't accept connections, so won't rig socket servers
 		if (!this._conf.acceptsConnections) {
+			//console.log('reject')
 			return Promise.reject(false)
 		}
 
@@ -148,6 +150,7 @@ export class MosConnection implements IMosConnection {
 			this._upperSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 			this._querySocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 
+			//console.log('listen on all ports')
 			Promise.all(
 				[
 					this._lowerSocketServer.listen(),
