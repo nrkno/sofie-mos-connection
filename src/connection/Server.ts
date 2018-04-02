@@ -68,8 +68,8 @@ export class Server {
 		let clients
 
 		// Set mosID and ncsID
-		message.mosID = this.mosID
-		message.ncsID = this.id
+		message.mosID = this._mosID
+		message.ncsID = this._id
 
 		// Example: Port based on message type
 		if (message instanceof ReqMachInfo) {
