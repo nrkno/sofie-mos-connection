@@ -1,7 +1,7 @@
 import { MosConnection, ConnectionConfig } from '../src'
 
 let mos = new MosConnection(new ConnectionConfig({
-	mosID: 'jestMOS',
+	mosID: 'test2.enps.mos',
 	acceptsConnections: false,
 	profiles: {
 		'0': true,
