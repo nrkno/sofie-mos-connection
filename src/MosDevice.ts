@@ -40,10 +40,10 @@ export class MosDevice {
 
 	// private _profiles: ProfilesSupport
 	private _primaryServer: Server
-	// private _buddyServr: Server
+	private _secondaryServr: Server
 	// private _currentServer: Server = this._primaryServer
 
-	constructor (connectionConfig: IConnectionConfig, connectionOptions: IMOSDeviceConnectionOptions, primaryServer: Server) {
+	constructor (connectionConfig: IConnectionConfig, connectionOptions: IMOSDeviceConnectionOptions, primaryServer: Server, secondaryServer: Server | null) {
 		this.socket = new Socket()
 		this.manufacturer = new MosString128('RadioVision, Ltd.')
 		this.model = new MosString128('TCS6000')
@@ -69,6 +69,9 @@ export class MosDevice {
 
 		this.socket.on('data', this.onData)
 		this._primaryServer = primaryServer
+		if (secondaryServer) {
+			this._secondaryServer = secondaryServer
+		}
 	}
 
 	get id (): string {

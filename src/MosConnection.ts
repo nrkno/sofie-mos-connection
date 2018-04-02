@@ -47,25 +47,27 @@ export class MosConnection implements IMosConnection {
 			// connect to mos device
 			// Store MosSocketClients instead of Sockets in Server?
 			// Create MosSocketClients in construct?
-			let primary = new Server()
+			let primary = new Server(connectionOptions.primary.host)
+			let secondary
 			this._servers[connectionOptions.primary.host] = primary 
 
-			let lower = new MosSocketClient(connectionOptions.primary.host, MosConnection.CONNECTION_PORT_LOWER)
-			let upper = new MosSocketClient(connectionOptions.primary.host, MosConnection.CONNECTION_PORT_UPPER)
-			//let query = new MosSocketClient(connectionOptions.primary.host, MosConnection.CONNECTION_PORT_QUERY)
+			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
+			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
+			primary.connect()
 
-			lower.connect()
-			upper.connect()
-			//query.connect()
-			
-			this._servers[connectionOptions.primary.host].registerIncomingConnection(1, lower._client, 'lower')
-			this._servers[connectionOptions.primary.host].registerIncomingConnection(2, upper._client, 'upper')
-			//this._servers[connectionOptions.primary.host].registerIncomingConnection(3, query._client, 'query')
+			if (connectionOptions.secondary) {
+				secondary = new Server(connectionOptions.secondary.host)
+				this._servers[connectionOptions.primary.host] = secondary 
+				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
+				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
+				secondary.connect()
+			}
+
 			console.log(this._servers)
 
 			// initialize mosDevice:
 			let connectionConfig = this._conf
-			let mosDevice = new MosDevice(connectionConfig, connectionOptions, primary) // pseudo-code here, put something real
+			let mosDevice = new MosDevice(connectionConfig, connectionOptions, primary, secondary) // pseudo-code here, put something real
 
 			// emit to .onConnection
 			if (this._onconnection) this._onconnection(mosDevice)

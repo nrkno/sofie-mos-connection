@@ -1,62 +1,86 @@
-import { Socket } from 'net'
-import { ConnectionType, SocketDescription } from './socketConnection'
+import { ConnectionType } from './socketConnection'
+import { MosSocketClient } from '../connection/mosSocketClient'
 
 // import {ProfilesSupport} from '../config/connectionConfig';
 // import {Socket} from 'net';
+export interface ClientDescription {
+	client: MosSocketClient
+	clientDescription: string
+}
 
 /** */
 export class Server {
-	// private _connected: boolean
+	private _connected: boolean
 	// private _lastSeen: number
+	private _host: string
 
-	private _sockets: {[socketID: number]: SocketDescription} = {}
+	private _clients: {[clientID: number]: ClientDescription} = {}
+
+	constructor (host: string) {
+		this._host = host
+		this._connected = false
+	}
 
 	/** */
-	registerIncomingConnection (socketID: number, socket: Socket, portDescription: ConnectionType) {
-		this._sockets[socketID] = {
-			socket: socket,
-			portDescription: portDescription
+	registerIncomingConnection (clientID: number, client: MosSocketClient, clientDescription: ConnectionType) {
+		console.log('registerIncomingConnection', clientID)
+		this._clients[clientID] = {
+			client: client,
+			clientDescription: clientDescription
 		}
 	}
-
-	/** */
-	removeSocket (socketID: number) {
-		delete this._sockets[socketID]
+	
+	createClient (clientID: number, port: number, clientDescription: ConnectionType) {
+		this.registerIncomingConnection(clientID, new MosSocketClient(this._host, port, clientDescription), clientDescription)
 	}
 
 	/** */
-	get lowerPortSockets (): Socket[] {
-		let sockets: Socket[] = []
-		for (let i in this._sockets) {
-			if (this._sockets[i].portDescription === 'lower') {
-				sockets.push(this._sockets[i].socket)
+	removeClient (clientID: number) {
+		this._clients[clientID].client.dispose()
+		delete this._clients[clientID]
+	}
+
+	connect () {
+		for (let i in this._clients) {
+			console.log('connect', i)
+			this._clients[i].client.connect()
+		}
+		this._connected = true
+	}
+
+	/** */
+	get lowerPortClients (): MosSocketClient[] {
+		let clients: MosSocketClient[] = []
+		for (let i in this._clients) {
+			if (this._clients[i].clientDescription === 'lower') {
+				clients.push(this._clients[i].client)
 			}
 		}
 
-		return sockets
+		return clients
 	}
 
 	/** */
-	get upperPortSockets (): Socket[] {
-		let sockets: Socket[] = []
-		for (let i in this._sockets) {
-			if (this._sockets[i].portDescription === 'upper') {
-				sockets.push(this._sockets[i].socket)
+	get upperPortClients (): MosSocketClient[] {
+		let clients: MosSocketClient[] = []
+		for (let i in this._clients) {
+			if (this._clients[i].clientDescription === 'upper') {
+				clients.push(this._clients[i].client)
 			}
 		}
 
-		return sockets
+		return clients
 	}
 
 	/** */
-	get queryPortSockets (): Socket[] {
-		let sockets: Socket[] = []
-		for (let i in this._sockets) {
-			if (this._sockets[i].portDescription === 'query') {
-				sockets.push(this._sockets[i].socket)
+	get queryPortClients (): MosSocketClient[] {
+		let clients: MosSocketClient[] = []
+		for (let i in this._clients) {
+			if (this._clients[i].clientDescription === 'query') {
+				clients.push(this._clients[i].client)
 			}
 		}
 
-		return sockets
+		return clients
 	}
 }

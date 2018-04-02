@@ -12,7 +12,7 @@ export class MosSocketClient extends EventEmitter {
 	private _reconnectAttempts: number = 0
 
 	private _description: string
-	public _client: Socket
+	private _client: Socket
 	private _shouldBeConnected: boolean = false
 	private _connected: boolean
 	private _lastConnectionAttempt: number
@@ -23,10 +23,11 @@ export class MosSocketClient extends EventEmitter {
 	private _commandTimeout: number = 10000
 
   /** */
-	constructor (host: string, port: number) {
+	constructor (host: string, port: number, description: string) {
 		super()
 		this._host = host
 		this._port = port
+		this._description = description
 	}
 
   /** */
@@ -67,7 +68,7 @@ export class MosSocketClient extends EventEmitter {
 				}
 
 				//connects
-				console.log(`Socket ${this._description} attempting connection`)
+				console.log(new Date(), `Socket ${this._description} attempting connection`)
 				console.log('port', this._port, 'host', this._host)
 				this._client.setEncoding('ucs2')
 				this._client.connect(this._port, this._host)
