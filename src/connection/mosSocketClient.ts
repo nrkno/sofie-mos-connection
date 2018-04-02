@@ -193,7 +193,7 @@ export class MosSocketClient extends EventEmitter {
 	private _onData (data: string ) {
 		this.emit(SocketConnectionEvent.ALIVE)
 		data = Buffer.from(data, 'ucs2').toString()
-		console.log(`LOWER Received: ${data}`)
+		console.log(`${this.description} Received: ${data}`)
 	}
 
   /** */

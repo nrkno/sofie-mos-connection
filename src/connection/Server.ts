@@ -1,5 +1,6 @@
 import { ConnectionType } from './socketConnection'
 import { MosSocketClient } from '../connection/mosSocketClient'
+import { HeartBeat } from '../mosModel/0_heartBeat'
 
 // import {ProfilesSupport} from '../config/connectionConfig';
 // import {Socket} from 'net';
@@ -12,12 +13,16 @@ export interface ClientDescription {
 export class Server {
 	private _connected: boolean
 	// private _lastSeen: number
+	private _id: string
 	private _host: string
+	private _mosID: string
 
 	private _clients: {[clientID: number]: ClientDescription} = {}
 
-	constructor (host: string) {
+	constructor (id: string, host: string, mosID: string) {
+		this._id = id
 		this._host = host
+		this._mosID = mosID
 		this._connected = false
 	}
 
@@ -42,8 +47,16 @@ export class Server {
 
 	connect () {
 		for (let i in this._clients) {
-			console.log('connect', i)
+			// Connect client
+			console.log(`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
 			this._clients[i].client.connect()
+
+			// Create a heartbeat and send over to verify networkconnection
+			console.log(`Sending heartbeat for client ${i}`)
+			let hb = new HeartBeat()
+			hb.mosID = this._mosID
+			hb.ncsID = this._id
+			this._clients[i].client.executeCommand(hb)
 		}
 		this._connected = true
 	}

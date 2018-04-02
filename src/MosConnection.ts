@@ -47,7 +47,7 @@ export class MosConnection implements IMosConnection {
 			// connect to mos device
 			// Store MosSocketClients instead of Sockets in Server?
 			// Create MosSocketClients in construct?
-			let primary = new Server(connectionOptions.primary.host)
+			let primary = new Server(connectionOptions.primary.id, connectionOptions.primary.host, this._conf.mosID)
 			let secondary
 			this._servers[connectionOptions.primary.host] = primary 
 
@@ -56,8 +56,8 @@ export class MosConnection implements IMosConnection {
 			primary.connect()
 
 			if (connectionOptions.secondary) {
-				secondary = new Server(connectionOptions.secondary.host)
-				this._servers[connectionOptions.primary.host] = secondary 
+				secondary = new Server(connectionOptions.secondary.id, connectionOptions.secondary.host, this._conf.mosID)
+				this._servers[connectionOptions.secondary.host] = secondary 
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
 				secondary.connect()
