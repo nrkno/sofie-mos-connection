@@ -15,4 +15,8 @@ let mosdev = mos.connect({
 		host: '10.0.1.248',
 		timeout: 200
 	}
+}).then((dev) => {
+	dev.getMachineInfo().then((lm) => {
+		console.log('Machineinfo', lm)
+	})
 })

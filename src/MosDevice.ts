@@ -5,6 +5,7 @@ import {MosString128} from './dataTypes/mosString128'
 import {MosTime} from './dataTypes/mosTime'
 import {IMOSExternalMetaData} from './dataTypes/mosExternalMetaData'
 import {IMOSListMachInfo, IMOSDefaultActiveX} from './mosModel/0_listMachInfo'
+import {ReqMachInfo} from './mosModel/0_reqMachInfo'
 import { IMOSDeviceConnectionOptions, IMOSObject } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
 
@@ -41,7 +42,7 @@ export class MosDevice {
 	// private _profiles: ProfilesSupport
 	private _primaryServer: Server
 	private _secondaryServr: Server
-	// private _currentServer: Server = this._primaryServer
+	private _currentServer: Server
 
 	constructor (connectionConfig: IConnectionConfig, connectionOptions: IMOSDeviceConnectionOptions, primaryServer: Server, secondaryServer: Server | null) {
 		this.socket = new Socket()
@@ -69,6 +70,7 @@ export class MosDevice {
 
 		this.socket.on('data', this.onData)
 		this._primaryServer = primaryServer
+		this._currentServer = this._primaryServer
 		if (secondaryServer) {
 			this._secondaryServer = secondaryServer
 		}
@@ -84,6 +86,8 @@ export class MosDevice {
 	
 	getMachineInfo (): Promise<IMOSListMachInfo> {
 		// @todo: implement this
+		let message = new ReqMachInfo()
+		this._currentServer.executeCommand(message)
 
 		return new Promise((resolve) => {
 			let list:IMOSListMachInfo = {

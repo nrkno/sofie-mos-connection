@@ -1,6 +1,8 @@
 import { ConnectionType } from './socketConnection'
 import { MosSocketClient } from '../connection/mosSocketClient'
+import { MosMessage } from '../mosModel/MosMessage'
 import { HeartBeat } from '../mosModel/0_heartBeat'
+import { ReqMachInfo } from '../mosModel/0_reqMachInfo'
 
 // import {ProfilesSupport} from '../config/connectionConfig';
 // import {Socket} from 'net';
@@ -59,6 +61,24 @@ export class Server {
 			this._clients[i].client.executeCommand(hb)
 		}
 		this._connected = true
+	}
+
+	executeCommand (message: MosMessage): void {
+		// Fill with clients
+		let clients
+
+		// Set mosID and ncsID
+		message.mosID = this.mosID
+		message.ncsID = this.id
+
+		// Example: Port based on message type
+		if (message instanceof ReqMachInfo) {
+			clients = this.lowerPortClients
+		} else {
+			clients = this.upperPortClients
+		}
+
+		clients[0].executeCommand(message)
 	}
 
 	/** */
