@@ -62,8 +62,8 @@ export class MosSocketClient extends EventEmitter {
 				if (!this._client) {
 					this._client = new Socket()
 					this._client.on('close', (hadError: boolean) => this._onClose(hadError))
-					this._client.on('connect', this._onConnected)
-					this._client.on('data', this._onData)
+					this._client.on('connect', () => this._onConnected())
+					this._client.on('data', (data: string) => this._onData(data))
 					this._client.on('error', this._onError)
 				}
 
@@ -142,7 +142,7 @@ export class MosSocketClient extends EventEmitter {
 		let buf = iconv.encode(message.toString(), 'utf16-be')
 
 		global.clearTimeout(this._commandTimeoutTimer)
-		this._commandTimeoutTimer = global.setTimeout(this._onCommandTimeout, this._commandTimeout)
+		this._commandTimeoutTimer = global.setTimeout(() => this._onCommandTimeout(), this._commandTimeout)
 		this._client.write(buf, 'ucs2')
 
 		console.log(`MOS command sent from ${this._description} : ${buf}\r\nbytes sent: ${this._client.bytesWritten}`)
@@ -183,7 +183,7 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	private _onConnected () {
-		this.emit(SocketConnectionEvent.ALIVE)
+		this._client.emit(SocketConnectionEvent.ALIVE)
 		global.clearInterval(this._connectionAttemptTimer)
 		//this._clearConnectionAttemptTimer()
 		this.connected = true
@@ -191,9 +191,9 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	private _onData (data: string ) {
-		this.emit(SocketConnectionEvent.ALIVE)
+		this._client.emit(SocketConnectionEvent.ALIVE)
 		data = Buffer.from(data, 'ucs2').toString()
-		console.log(`${this.description} Received: ${data}`)
+		console.log(`${this._description} Received: ${data}`)
 	}
 
   /** */
