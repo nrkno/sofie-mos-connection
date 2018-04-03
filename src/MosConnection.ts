@@ -9,6 +9,7 @@ import {
 } from './api'
 import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription } from './connection/socketConnection'
+import { Server } from './connection/Server'
 import { NCSServerConnection } from './connection/NCSServerConnection'
 const iconv = require('iconv-lite')
 
@@ -23,7 +24,8 @@ export class MosConnection implements IMosConnection {
 	private _lowerSocketServer: MosSocketServer
 	private _upperSocketServer: MosSocketServer
 	private _querySocketServer: MosSocketServer
-	private _servers: {[host: string]: NCSServerConnection} = {}
+	private _servers: {[host: string]: Server} = {}
+	private _ncsConnections: {[host: string]: NCSServerConnection} = {}
 
 	private _isListening: Promise<boolean[]>
 
@@ -49,7 +51,7 @@ export class MosConnection implements IMosConnection {
 			// Create MosSocketClients in construct?
 			let primary = new NCSServerConnection(connectionOptions.primary.id, connectionOptions.primary.host, this._conf.mosID)
 			let secondary
-			this._servers[connectionOptions.primary.host] = primary 
+			this._ncsConnections[connectionOptions.primary.host] = primary 
 
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
@@ -57,13 +59,13 @@ export class MosConnection implements IMosConnection {
 
 			if (connectionOptions.secondary) {
 				secondary = new NCSServerConnection(connectionOptions.secondary.id, connectionOptions.secondary.host, this._conf.mosID)
-				this._servers[connectionOptions.secondary.host] = secondary 
+				this._ncsConnections[connectionOptions.secondary.host] = secondary 
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
 				secondary.connect()
 			}
 
-			console.log(this._servers)
+			console.log(this._ncsConnections)
 
 			// initialize mosDevice:
 			let connectionConfig = this._conf
@@ -108,9 +110,9 @@ export class MosConnection implements IMosConnection {
 
 		for (let nextSocketID in this._servers) {
 			let server = this._servers[nextSocketID]
-			lowerSockets = lowerSockets.concat(server.lowerPortClients)
-			upperSockets = upperSockets.concat(server.upperPortClients)
-			querySockets = querySockets.concat(server.queryPortClients)
+			lowerSockets = lowerSockets.concat(server.lowerPortSockets)
+			upperSockets = upperSockets.concat(server.upperPortSockets)
+			querySockets = querySockets.concat(server.queryPortSockets)
 		}
 
 		let disposing: Promise<void>[] = []
@@ -193,7 +195,7 @@ export class MosConnection implements IMosConnection {
 
 		// registers socket on server
 		// e.socket.remoteAddress är ej OK id, måste bytas ut
-		let server: NCSServerConnection = this._getServerForHost(e.socket.remoteAddress)
+		let server: Server = this._getServerForHost(e.socket.remoteAddress)
 		server.registerIncomingConnection(socketID, e.socket, e.portDescription)
 		console.log('added: ', this._servers)
 	}
@@ -208,10 +210,10 @@ export class MosConnection implements IMosConnection {
 	}
 
 	/** */
-	private _getServerForHost (host: string): NCSServerConnection {
+	private _getServerForHost (host: string): Server {
 		// create new server if not known
 		if (!this._servers[host]) {
-			this._servers[host] = new NCSServerConnection()
+			this._servers[host] = new Server()
 		}
 
 		return this._servers[host]
