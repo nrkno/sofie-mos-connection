@@ -2,6 +2,7 @@ import { EventEmitter } from 'events'
 import {Socket} from 'net'
 import {SocketConnectionEvent} from './socketConnection'
 import {MosMessage} from '../mosModel/MosMessage'
+import * as parser from 'xml2json'
 const iconv = require('iconv-lite')
 
 export class MosSocketClient extends EventEmitter {
@@ -205,7 +206,11 @@ export class MosSocketClient extends EventEmitter {
 		if(this._queue && this._queue.length) {
 			var cb = this._queue.shift()
 			// TODO: Parse XML to JSON
-			cb(data)
+			cb(parser.toJson(data, {
+				object: true,
+				coerce: true,
+				trim: true
+			}))
 		}
 	}
 
