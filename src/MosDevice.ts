@@ -89,20 +89,21 @@ export class MosDevice {
 
 		return new Promise((resolve) => {
 			this._currentServer.executeCommand(message).then((data) => {
+				let listMachInfo = data.mos.listMachInfo
 				let list:IMOSListMachInfo = {
-					manufacturer: this.manufacturer,
-					model: this.model,
-					hwRev: this.hwRev,
-					swRev: this.swRev,
-					DOM: this.DOM,
-					SN: this.SN,
-					ID: this.ID,
-					time: this.time,
-					opTime: this.opTime,
-					mosRev: this.mosRev,
+					manufacturer: listMachInfo.manufacturer,
+					model: listMachInfo.model,
+					hwRev: listMachInfo.hwRev,
+					swRev: listMachInfo.swRev,
+					DOM: listMachInfo.DOM,
+					SN: listMachInfo.SN,
+					ID: listMachInfo.ID,
+					time: listMachInfo.time,
+					opTime: listMachInfo.opTime,
+					mosRev: listMachInfo.mosRev/*,
 					supportedProfiles: this.supportedProfiles,
 					defaultActiveX: this.defaultActiveX,
-					mosExternalMetaData: this.mosExternalMetaData 
+					mosExternalMetaData: this.mosExternalMetaData*/ 
 				}
 				resolve(list)
 			})
