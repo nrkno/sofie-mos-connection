@@ -2,7 +2,6 @@ import { ConnectionType } from './socketConnection'
 import { MosSocketClient } from '../connection/mosSocketClient'
 import { MosMessage } from '../mosModel/MosMessage'
 import { HeartBeat } from '../mosModel/0_heartBeat'
-import { ReqMachInfo } from '../mosModel/0_reqMachInfo'
 
 // import {ProfilesSupport} from '../config/connectionConfig';
 // import {Socket} from 'net';
@@ -56,31 +55,41 @@ export class Server {
 			console.log(`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
 			this._clients[i].client.connect()
 
-			// TODO: Send heartbeat with executeCommand
+			// Send heartbeat and check connection
+			let heartbeat = new HeartBeat()
+			heartbeat.port = this._clients[i].clientDescription
+			this.executeCommand(heartbeat).then((data) => {
+				console.log(`Heartbeat on ${this._clients[i].clientDescription} received.`)
+			})
 		}
 		this._connected = true
 	}
 
 	executeCommand (message: MosMessage): Promise<any> {
 		// Fill with clients
-		let clients
+		let clients: Array<MosSocketClient>
 
 		// Set mosID and ncsID
-		// Definer port info i MosMessage, slip switch
 		message.mosID = this._mosID
 		message.ncsID = this._id
 
 		// Example: Port based on message type
-		if (message instanceof ReqMachInfo) {
+		if (message.port === 'lower') {
 			clients = this.lowerPortClients
-		} else {
+		} else if(message.port === 'upper') {
 			clients = this.upperPortClients
+		} else {
+			clients = this.queryPortClients
 		}
 
 		return new Promise((resolve, reject) => {
-			clients[0].queueCommand(message, (data) => {
-				resolve(data)
-			})
+			if(clients && clients.length) {
+				clients[0].queueCommand(message, (data) => {
+					resolve(data)
+				})
+			/*} else {
+				reject()*/
+			}
 		})
 	}
 
