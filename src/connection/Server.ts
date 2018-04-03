@@ -13,7 +13,7 @@ export interface ClientDescription {
 // Namnförslag: NCSServer
 // Vi ansluter från oss till NCS
 /** */
-export class Server {
+export class NCSServerConnection {
 	private _connected: boolean
 	// private _lastSeen: number
 	private _id: string
@@ -30,9 +30,8 @@ export class Server {
 	}
 
 	/** */
-	// Döp om till outgoing
-	registerIncomingConnection (clientID: number, client: MosSocketClient, clientDescription: ConnectionType) {
-		console.log('registerIncomingConnection', clientID)
+	registerOutgoingConnection (clientID: number, client: MosSocketClient, clientDescription: ConnectionType) {
+		console.log('registerOutgoingConnection', clientID)
 		this._clients[clientID] = {
 			client: client,
 			clientDescription: clientDescription
@@ -40,7 +39,7 @@ export class Server {
 	}
 	
 	createClient (clientID: number, port: number, clientDescription: ConnectionType) {
-		this.registerIncomingConnection(clientID, new MosSocketClient(this._host, port, clientDescription), clientDescription)
+		this.registerOutgoingConnection(clientID, new MosSocketClient(this._host, port, clientDescription), clientDescription)
 	}
 
 	/** */
@@ -59,7 +58,7 @@ export class Server {
 			let heartbeat = new HeartBeat()
 			heartbeat.port = this._clients[i].clientDescription
 			this.executeCommand(heartbeat).then((data) => {
-				console.log(`Heartbeat on ${this._clients[i].clientDescription} received.`)
+				console.log(`Heartbeat on ${this._clients[i].clientDescription} received.`, data)
 			})
 		}
 		this._connected = true
@@ -87,8 +86,8 @@ export class Server {
 				clients[0].queueCommand(message, (data) => {
 					resolve(data)
 				})
-			/*} else {
-				reject()*/
+			} else {
+				reject('No clients found')
 			}
 		})
 	}
