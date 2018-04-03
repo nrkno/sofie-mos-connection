@@ -22,6 +22,8 @@ export class MosSocketClient extends EventEmitter {
 	private _commandTimeoutTimer: NodeJS.Timer
 	private _commandTimeout: number = 10000
 
+	private _queue: Array<Promise<any>> = []
+
   /** */
 	constructor (host: string, port: number, description: string) {
 		super()
@@ -148,6 +150,11 @@ export class MosSocketClient extends EventEmitter {
 		console.log(`MOS command sent from ${this._description} : ${buf}\r\nbytes sent: ${this._client.bytesWritten}`)
 	}
 
+	queueCommand (message: MosMessage, cb: Promise<any>): void {
+		this._queue.push(cb)
+		this.executeCommand(message)
+	}
+
   /** */
 	private _autoReconnectionAttempt(): void {
 		if (this._autoReconnect) {
@@ -194,6 +201,12 @@ export class MosSocketClient extends EventEmitter {
 		this._client.emit(SocketConnectionEvent.ALIVE)
 		data = Buffer.from(data, 'ucs2').toString()
 		console.log(`${this._description} Received: ${data}`)
+
+		if(this._queue && this._queue.length) {
+			var cb = this._queue.shift()
+			// TODO: Parse XML to JSON
+			cb(data)
+		}
 	}
 
   /** */

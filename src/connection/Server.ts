@@ -11,6 +11,8 @@ export interface ClientDescription {
 	clientDescription: string
 }
 
+// Namnförslag: NCSServer
+// Vi ansluter från oss till NCS
 /** */
 export class Server {
 	private _connected: boolean
@@ -29,6 +31,7 @@ export class Server {
 	}
 
 	/** */
+	// Döp om till outgoing
 	registerIncomingConnection (clientID: number, client: MosSocketClient, clientDescription: ConnectionType) {
 		console.log('registerIncomingConnection', clientID)
 		this._clients[clientID] = {
@@ -53,21 +56,17 @@ export class Server {
 			console.log(`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
 			this._clients[i].client.connect()
 
-			// Create a heartbeat and send over to verify networkconnection
-			console.log(`Sending heartbeat for client ${i}`)
-			let hb = new HeartBeat()
-			hb.mosID = this._mosID
-			hb.ncsID = this._id
-			this._clients[i].client.executeCommand(hb)
+			// TODO: Send heartbeat with executeCommand
 		}
 		this._connected = true
 	}
 
-	executeCommand (message: MosMessage): void {
+	executeCommand (message: MosMessage): Promise<any> {
 		// Fill with clients
 		let clients
 
 		// Set mosID and ncsID
+		// Definer port info i MosMessage, slip switch
 		message.mosID = this._mosID
 		message.ncsID = this._id
 
@@ -78,7 +77,11 @@ export class Server {
 			clients = this.upperPortClients
 		}
 
-		clients[0].executeCommand(message)
+		return new Promise((resolve, reject) => {
+			clients[0].queueCommand(message, (data) => {
+				resolve(data)
+			})
+		})
 	}
 
 	/** */

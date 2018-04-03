@@ -85,27 +85,27 @@ export class MosDevice {
 	}
 	
 	getMachineInfo (): Promise<IMOSListMachInfo> {
-		// @todo: implement this
 		let message = new ReqMachInfo()
-		this._currentServer.executeCommand(message)
 
 		return new Promise((resolve) => {
-			let list:IMOSListMachInfo = {
-				manufacturer: this.manufacturer,
-				model: this.model,
-				hwRev: this.hwRev,
-				swRev: this.swRev,
-				DOM: this.DOM,
-				SN: this.SN,
-				ID: this.ID,
-				time: this.time,
-				opTime: this.opTime,
-				mosRev: this.mosRev,
-				supportedProfiles: this.supportedProfiles,
-				defaultActiveX: this.defaultActiveX,
-				mosExternalMetaData: this.mosExternalMetaData 
-			}
-			resolve(list)
+			this._currentServer.executeCommand(message).then((data) => {
+				let list:IMOSListMachInfo = {
+					manufacturer: this.manufacturer,
+					model: this.model,
+					hwRev: this.hwRev,
+					swRev: this.swRev,
+					DOM: this.DOM,
+					SN: this.SN,
+					ID: this.ID,
+					time: this.time,
+					opTime: this.opTime,
+					mosRev: this.mosRev,
+					supportedProfiles: this.supportedProfiles,
+					defaultActiveX: this.defaultActiveX,
+					mosExternalMetaData: this.mosExternalMetaData 
+				}
+				resolve(list)
+			})
 		})
 	}
 
