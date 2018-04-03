@@ -1,6 +1,6 @@
 import * as XMLBuilder from 'xmlbuilder'
 import {Socket} from 'net'
-import {NCSServerConnection} from './connection/Server'
+import {NCSServerConnection} from './connection/NCSServerConnection'
 import {MosString128} from './dataTypes/mosString128'
 import {MosTime} from './dataTypes/mosTime'
 import {IMOSExternalMetaData} from './dataTypes/mosExternalMetaData'

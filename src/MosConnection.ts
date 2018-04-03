@@ -9,7 +9,7 @@ import {
 } from './api'
 import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription } from './connection/socketConnection'
-import { NCSServerConnection } from './connection/Server'
+import { NCSServerConnection } from './connection/NCSServerConnection'
 const iconv = require('iconv-lite')
 
 export class MosConnection implements IMosConnection {
