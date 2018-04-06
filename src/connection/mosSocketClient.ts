@@ -24,6 +24,7 @@ export class MosSocketClient extends EventEmitter {
 	private _commandTimeout: number = 10000
 
 	private _queue: Array<Promise<any>> = []
+	private _ready: boolean
 
   /** */
 	constructor (host: string, port: number, description: string) {
@@ -83,6 +84,8 @@ export class MosSocketClient extends EventEmitter {
 			if (!this._connectionAttemptTimer) {
 				this._connectionAttemptTimer = global.setInterval(this._autoReconnectionAttempt, this._reconnectDelay)
 			}
+
+			this._ready = true
 		}
 	}
 
@@ -109,6 +112,7 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	dispose(): void {
+		this._ready = false
 		this._shouldBeConnected = false
 		this._clearConnectionAttemptTimer()
 		if (this._client) {
@@ -138,7 +142,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 
   /** */
-	executeCommand (message: MosMessage): void {
+	private executeCommand (message: MosMessage): void {
 
 		message.prepare() //@todo, is prepared? is sent already? logic needed
 
@@ -152,8 +156,22 @@ export class MosSocketClient extends EventEmitter {
 	}
 
 	queueCommand (message: MosMessage, cb: Promise<any>): void {
-		this._queue.push(cb)
-		this.executeCommand(message)
+		var that = this
+
+		if(this._ready){
+			this._ready = false
+			this._queue.push(cb)
+			this.executeCommand(message)
+		} else {
+			var retry = setInterval(function(){
+				if(that._ready){
+					clearInterval(retry)
+					that._ready = false
+					that._queue.push(cb)
+					that.executeCommand(message)
+				}
+			}, 200)
+		}
 	}
 
   /** */
@@ -212,6 +230,8 @@ export class MosSocketClient extends EventEmitter {
 				trim: true
 			}))
 		}
+
+		this._ready = true
 	}
 
   /** */
@@ -223,6 +243,7 @@ export class MosSocketClient extends EventEmitter {
 	/** */
 	private _onClose (hadError: boolean) {
 		this.connected = false
+		this._ready = false
 		if (hadError) {
 			console.log('Socket closed with error')
 		} else {
