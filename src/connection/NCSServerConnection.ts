@@ -127,4 +127,11 @@ export class NCSServerConnection {
 
 		return clients
 	}
+
+	dispose (): Promise<void> {
+		return	new Promise((resolveDispose) => {
+			console.log('Dispose NCS', this._host, this._clients)
+			resolveDispose()
+		})
+	}
 }

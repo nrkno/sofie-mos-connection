@@ -104,11 +104,17 @@ export class MosConnection implements IMosConnection {
 
 	/** */
 	dispose (): Promise<void> {
+		// TODO: Fix, this hangs if ENPS dont initiate a connection to us
+		console.log('disposing mosconnection...', this._servers)
+		console.log('')
 		let lowerSockets: Socket[] = []
 		let upperSockets: Socket[] = []
 		let querySockets: Socket[] = []
 
 		for (let nextSocketID in this._servers) {
+			console.log('servers', nextSocketID, this._servers[nextSocketID])
+			console.log('')
+
 			let server = this._servers[nextSocketID]
 			lowerSockets = lowerSockets.concat(server.lowerPortSockets)
 			upperSockets = upperSockets.concat(server.upperPortSockets)
@@ -126,6 +132,15 @@ export class MosConnection implements IMosConnection {
 			disposing.push(this._querySocketServer.dispose(querySockets))
 		}
 
+		if (this._ncsConnections) {
+			for (let ncsConnection in this._ncsConnections) {
+				console.log('ncsCon', ncsConnection)
+				disposing.push(this._ncsConnections[ncsConnection].dispose())
+			}
+		}
+
+		console.log('Should we try to dispose?')
+		console.log('disposing', disposing, disposing.length)
 		return new Promise((resolveDispose) => {
 			Promise.all(disposing)
 			.then(() => resolveDispose())
@@ -213,6 +228,7 @@ export class MosConnection implements IMosConnection {
 	private _getServerForHost (host: string): Server {
 		// create new server if not known
 		if (!this._servers[host]) {
+			console.log('Creating new Server')
 			this._servers[host] = new Server()
 		}
 
