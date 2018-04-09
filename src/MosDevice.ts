@@ -26,6 +26,9 @@ import {
 	IMOSConnectionStatus
 } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
+import { SocketDescription } from './connection/socketConnection'
+import * as parser from 'xml2json'
+const iconv = require('iconv-lite')
 
 export class MosDevice implements IMOSDevice {
 
@@ -95,6 +98,8 @@ export class MosDevice implements IMOSDevice {
 	// Profile 4
 	private _callbackOnROStory: (story: IMOSROFullStory) => Promise<any>
 
+	private _tmp: string = ''
+
 	constructor (
 		connectionConfig: IConnectionConfig,
 		primaryConnection: NCSServerConnection,
@@ -156,6 +161,54 @@ export class MosDevice implements IMOSDevice {
 		// root.ele('defaultActiveX', this.manufacturer)
 		// root.ele('mosExternalMetaData', this.manufacturer) import from IMOSExternalMetaData
 		return root
+	}
+
+	onData (e:SocketDescription, socketID: number, data: string): void {
+		console.log(`Socket got data (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${data}`)
+
+		let first = data.substr(0, 10)
+		let first_match = '\u0000<\u0000m\u0000o\u0000s\u0000>'
+		let last = data.substr(data.length - 15)
+		let last_match = '<\u0000/\u0000m\u0000o\u0000s\u0000>\u0000\r\u0000\n'
+
+		/*console.log('First?', first)
+		console.dir(first.length)
+		console.dir(first)
+		console.log('Last?', last.length, last)
+		console.dir(last.length)
+		console.dir(last)*/
+
+		if(first === first_match && last === last_match) {
+			let parsed = parser.toJson(data, {
+				object: true,
+				coerce: true,
+				trim: true
+			})
+
+			console.log('parsedData', parsed)
+			console.log('parsedTest', Object.keys(parsed.mos))
+
+		} else if(last === last_match) {
+			let parsed = parser.toJson(this._tmp + data, {
+				object: true,
+				coerce: true,
+				trim: true
+			})
+
+			console.log('parsedData', parsed)
+			console.log('parsedTest', Object.keys(parsed.mos))
+
+			this._tmp = ''
+
+		} else {
+			// TODO: Collect data and parse big string
+			console.log('Wont parse, saving data')
+
+			this._tmp += data
+		}
+
+		let buf = iconv.encode('<mos><mosID>test2.enps.mos</mosID><ncsID>2012R2ENPS8VM</ncsID><messageID>99</messageID><roAck><roID>2012R2ENPS8VM;P_ENPSMOS\W\F_HOLD ROs;DEC46951-28F9-4A11-8B0655D96B347E52</roID><roStatus>Unknown object M000133</roStatus><storyID>5983A501:0049B924:8390EF2B</storyID><itemID>0</itemID><objID>M000224</objID><status>LOADED</status><storyID>3854737F:0003A34D:983A0B28</storyID><itemID>0</itemID><objID>M000133</objID><itemChannel>A</itemChannel><status>UNKNOWN</status></roAck></mos>', 'utf16-be')
+		e.socket.write(buf, 'usc2')
 	}
 
 	/* Profile 0 */

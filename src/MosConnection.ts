@@ -10,7 +10,6 @@ import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription } from './connection/socketConnection'
 import { Server } from './connection/Server'
 import { NCSServerConnection } from './connection/NCSServerConnection'
-const iconv = require('iconv-lite')
 
 export class MosConnection implements IMosConnection {
 	static CONNECTION_PORT_LOWER: number = 10540
@@ -25,6 +24,7 @@ export class MosConnection implements IMosConnection {
 	private _querySocketServer: MosSocketServer
 	private _servers: {[host: string]: Server} = {}
 	private _ncsConnections: {[host: string]: NCSServerConnection} = {}
+	private _mosDevice: MosDevice
 
 	private _isListening: Promise<boolean[]>
 
@@ -68,12 +68,12 @@ export class MosConnection implements IMosConnection {
 
 			// initialize mosDevice:
 			let connectionConfig = this._conf
-			let mosDevice = new MosDevice(connectionConfig, primary, secondary) // pseudo-code here, put something real
+			this._mosDevice = new MosDevice(connectionConfig, primary, secondary) // pseudo-code here, put something real
 
 			// emit to .onConnection
-			if (this._onconnection) this._onconnection(mosDevice)
+			if (this._onconnection) this._onconnection(this._mosDevice)
 
-			resolve(mosDevice)
+			resolve(this._mosDevice)
 
 		})
 	}
@@ -189,11 +189,15 @@ export class MosConnection implements IMosConnection {
 
 		// handles socket listeners
 		e.socket.on('close', (/*hadError: boolean*/) => this._disposeIncomingSocket(e.socket, socketID))
+		e.socket.on('end', () => {
+			console.log('Socket End')
+		})
+		e.socket.on('drain', () => {
+			console.log('Socket Drain')
+		})
 		e.socket.on('data', (data: string) => {
-			console.log(`Socket got data (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${data}`)
-
-			let buf = iconv.encode('<mos><mosID>test2.enps.mos</mosID><ncsID>2012R2ENPS8VM</ncsID><messageID>99</messageID><roAck><roID>2012R2ENPS8VM;P_ENPSMOS\W\F_HOLD ROs;DEC46951-28F9-4A11-8B0655D96B347E52</roID><roStatus>Unknown object M000133</roStatus><storyID>5983A501:0049B924:8390EF2B</storyID><itemID>0</itemID><objID>M000224</objID><status>LOADED</status><storyID>3854737F:0003A34D:983A0B28</storyID><itemID>0</itemID><objID>M000133</objID><itemChannel>A</itemChannel><status>UNKNOWN</status></roAck></mos>', 'utf16-be')
-			e.socket.write(buf, 'usc2')
+			let str = Buffer.from(data, 'ucs2').toString()
+			this._mosDevice.onData(e, socketID, str)
 		})
 		e.socket.on('error', (error: Error) => console.log(`Socket had error (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${error}`))
 
