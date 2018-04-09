@@ -1,18 +1,17 @@
 import * as XMLBuilder from 'xmlbuilder'
-import {Socket} from 'net'
-import {NCSServerConnection} from './connection/NCSServerConnection'
-import {MosString128} from './dataTypes/mosString128'
-import {MosTime} from './dataTypes/mosTime'
-import {IMOSExternalMetaData} from './dataTypes/mosExternalMetaData'
-import {IMOSListMachInfo, IMOSDefaultActiveX} from './mosModel/0_listMachInfo'
-import {ReqMachInfo} from './mosModel/0_reqMachInfo'
-import { IMOSDeviceConnectionOptions, IMOSObject } from './api'
+import { Socket } from 'net'
+import { NCSServerConnection } from './connection/NCSServerConnection'
+import { MosString128 } from './dataTypes/mosString128'
+import { MosTime } from './dataTypes/mosTime'
+import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
+import { IMOSListMachInfo, IMOSDefaultActiveX } from './mosModel/0_listMachInfo'
+import { ReqMachInfo } from './mosModel/0_reqMachInfo'
+import { IMOSDeviceConnectionOptions, IMOSObject, IMOSDevice } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
 
-export class MosDevice {
+export class MosDevice implements IMOSDevice {
 
 	// private _host: string
-	private _id: string
 	socket: Socket
 	manufacturer: MosString128
 	model: MosString128
@@ -27,6 +26,8 @@ export class MosDevice {
 	defaultActiveX: Array<IMOSDefaultActiveX>
 	mosExternalMetaData: Array<IMOSExternalMetaData>
 
+	private _id: string
+
 	private supportedProfiles = {
 		deviceType: 'MOS',
 		profile0: false,
@@ -40,11 +41,16 @@ export class MosDevice {
 	} // Use same names as IProfiles?
 
 	// private _profiles: ProfilesSupport
-	private _primaryServer: NCSServerConnection
-	private _secondaryServer: NCSServerConnection
-	private _currentServer: NCSServerConnection
+	private _primaryConnection: NCSServerConnection
+	private _secondaryConnection: NCSServerConnection
+	private _currentConnection: NCSServerConnection
 
-	constructor (connectionConfig: IConnectionConfig, connectionOptions: IMOSDeviceConnectionOptions, primaryServer: NCSServerConnection, secondaryServer: NCSServerConnection | null) {
+	constructor (
+		connectionConfig: IConnectionConfig,
+		connectionOptions: IMOSDeviceConnectionOptions,
+		primaryConnection: NCSServerConnection,
+		secondaryConnection: NCSServerConnection | null
+	) {
 		this.socket = new Socket()
 		this.manufacturer = new MosString128('RadioVision, Ltd.')
 		this.model = new MosString128('TCS6000')
@@ -55,24 +61,24 @@ export class MosDevice {
 		this.ID = new MosString128(connectionConfig ? connectionConfig.mosID : '')
 		this.time = new MosTime()
 		this.opTime = new MosTime()
-		this.mosRev = new MosString128("2.8.5")
+		this.mosRev = new MosString128('2.8.5')
 
 		if (connectionConfig) {
-			if(connectionConfig.profiles['0']) this.supportedProfiles.profile0 = true 
-			if(connectionConfig.profiles['1']) this.supportedProfiles.profile1 = true 
-			if(connectionConfig.profiles['2']) this.supportedProfiles.profile2 = true 
-			if(connectionConfig.profiles['3']) this.supportedProfiles.profile3 = true 
-			if(connectionConfig.profiles['4']) this.supportedProfiles.profile4 = true 
-			if(connectionConfig.profiles['5']) this.supportedProfiles.profile5 = true 
-			if(connectionConfig.profiles['6']) this.supportedProfiles.profile6 = true 
-			if(connectionConfig.profiles['7']) this.supportedProfiles.profile7 = true 
+			if (connectionConfig.profiles['0']) this.supportedProfiles.profile0 = true
+			if (connectionConfig.profiles['1']) this.supportedProfiles.profile1 = true
+			if (connectionConfig.profiles['2']) this.supportedProfiles.profile2 = true
+			if (connectionConfig.profiles['3']) this.supportedProfiles.profile3 = true
+			if (connectionConfig.profiles['4']) this.supportedProfiles.profile4 = true
+			if (connectionConfig.profiles['5']) this.supportedProfiles.profile5 = true
+			if (connectionConfig.profiles['6']) this.supportedProfiles.profile6 = true
+			if (connectionConfig.profiles['7']) this.supportedProfiles.profile7 = true
 		}
 
 		this.socket.on('data', this.onData)
-		this._primaryServer = primaryServer
-		this._currentServer = this._primaryServer
-		if (secondaryServer) {
-			this._secondaryServer = secondaryServer
+		this._primaryConnection = primaryConnection
+		this._currentConnection = this._primaryConnection
+		if (secondaryConnection) {
+			this._secondaryConnection = secondaryConnection
 		}
 	}
 
@@ -83,14 +89,14 @@ export class MosDevice {
 	onData (data: any) {
 		console.log('onData', data)
 	}
-	
+
 	getMachineInfo (): Promise<IMOSListMachInfo> {
 		let message = new ReqMachInfo()
 
 		return new Promise((resolve) => {
-			this._currentServer.executeCommand(message).then((data) => {
+			this._currentConnection.executeCommand(message).then((data) => {
 				let listMachInfo = data.mos.listMachInfo
-				let list:IMOSListMachInfo = {
+				let list: IMOSListMachInfo = {
 					manufacturer: listMachInfo.manufacturer,
 					model: listMachInfo.model,
 					hwRev: listMachInfo.hwRev,
@@ -103,7 +109,7 @@ export class MosDevice {
 					mosRev: listMachInfo.mosRev/*,
 					supportedProfiles: this.supportedProfiles,
 					defaultActiveX: this.defaultActiveX,
-					mosExternalMetaData: this.mosExternalMetaData*/ 
+					mosExternalMetaData: this.mosExternalMetaData*/
 				}
 				resolve(list)
 			})
@@ -111,13 +117,13 @@ export class MosDevice {
 	}
 
 	//onRequestMOSObject: (cb: (objId: string) => Promise<IMOSObject | null>) => void
-	
-	onRequestMOSObject (cb: (objId: string) => Promise<IMOSObject | null>) { 
+
+	onRequestMOSObject (cb: (objId: string) => Promise<IMOSObject | null>) {
 		cb('123')
 	}
 
-	get messageXMLBlocks(): XMLBuilder.XMLElementOrXMLNode {
-		let root = XMLBuilder.create('listMachInfo') // config headless 
+	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+		let root = XMLBuilder.create('listMachInfo') // config headless
 		root.ele('manufacturer', this.manufacturer.toString())
 		root.ele('model', this.model.toString())
 		root.ele('hwRev', this.hwRev.toString())
@@ -130,8 +136,8 @@ export class MosDevice {
 		root.ele('mosRev', this.mosRev.toString())
 
 		let p = root.ele('supportedProfiles').att('deviceType', this.supportedProfiles.deviceType)
-		for(let i = 0; i < 8; i++) {
-			p.ele('mosProfile', (this.supportedProfiles['profile'+i] ? 'YES' : 'NO')).att('number', i)
+		for (let i = 0; i < 8; i++) {
+			p.ele('mosProfile', (this.supportedProfiles['profile' + i] ? 'YES' : 'NO')).att('number', i)
 		}
 
 		// root.ele('defaultActiveX', this.manufacturer)
@@ -139,7 +145,7 @@ export class MosDevice {
 		return root
 	}
 
-	onRequestAllMOSObjects(): Promise<Array<IMOSObject>> { } 
+	onRequestAllMOSObjects (): Promise<Array<IMOSObject>> { }
 	onCreateRunningOrder (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) { }
 	onReplaceRunningOrder (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) { }
 
