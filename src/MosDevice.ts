@@ -167,9 +167,9 @@ export class MosDevice implements IMOSDevice {
 		console.log(`Socket got data (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${data}`)
 
 		let first = data.substr(0, 10)
-		let first_match = '\u0000<\u0000m\u0000o\u0000s\u0000>'
+		let first_match = '\u0000<\u0000m\u0000o\u0000s\u0000>' // <mos>
 		let last = data.substr(data.length - 15)
-		let last_match = '<\u0000/\u0000m\u0000o\u0000s\u0000>\u0000\r\u0000\n'
+		let last_match = '<\u0000/\u0000m\u0000o\u0000s\u0000>\u0000\r\u0000\n' // </mos>
 
 		/*console.log('First?', first)
 		console.dir(first.length)
