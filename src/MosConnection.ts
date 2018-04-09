@@ -1,6 +1,5 @@
 import { Socket } from 'net'
 import { ConnectionConfig, IConnectionConfig, IProfiles } from './config/connectionConfig'
-import { MosSocketClient } from './connection/mosSocketClient'
 import { MosSocketServer } from './connection/mosSocketServer'
 import {
 	IMosConnection,
@@ -50,7 +49,7 @@ export class MosConnection implements IMosConnection {
 			// Store MosSocketClients instead of Sockets in Server?
 			// Create MosSocketClients in construct?
 			let primary = new NCSServerConnection(connectionOptions.primary.id, connectionOptions.primary.host, this._conf.mosID)
-			let secondary
+			let secondary = null
 			this._ncsConnections[connectionOptions.primary.host] = primary 
 
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
@@ -69,7 +68,7 @@ export class MosConnection implements IMosConnection {
 
 			// initialize mosDevice:
 			let connectionConfig = this._conf
-			let mosDevice = new MosDevice(connectionConfig, connectionOptions, primary, secondary) // pseudo-code here, put something real
+			let mosDevice = new MosDevice(connectionConfig, primary, secondary) // pseudo-code here, put something real
 
 			// emit to .onConnection
 			if (this._onconnection) this._onconnection(mosDevice)
@@ -104,17 +103,11 @@ export class MosConnection implements IMosConnection {
 
 	/** */
 	dispose (): Promise<void> {
-		// TODO: Fix, this hangs if ENPS dont initiate a connection to us
-		console.log('disposing mosconnection...', this._servers)
-		console.log('')
 		let lowerSockets: Socket[] = []
 		let upperSockets: Socket[] = []
 		let querySockets: Socket[] = []
 
 		for (let nextSocketID in this._servers) {
-			console.log('servers', nextSocketID, this._servers[nextSocketID])
-			console.log('')
-
 			let server = this._servers[nextSocketID]
 			lowerSockets = lowerSockets.concat(server.lowerPortSockets)
 			upperSockets = upperSockets.concat(server.upperPortSockets)
@@ -134,18 +127,14 @@ export class MosConnection implements IMosConnection {
 
 		if (this._ncsConnections) {
 			for (let ncsConnection in this._ncsConnections) {
-				console.log('ncsCon', ncsConnection)
 				disposing.push(this._ncsConnections[ncsConnection].dispose())
 			}
 		}
 
-		console.log('Should we try to dispose?')
-		console.log('disposing', disposing, disposing.length)
 		return new Promise((resolveDispose) => {
 			Promise.all(disposing)
 			.then(() => resolveDispose())
 		})
-		// @todo: all outgoing clients
 	}
 
 	/** */

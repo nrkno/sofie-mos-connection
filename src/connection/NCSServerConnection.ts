@@ -130,7 +130,9 @@ export class NCSServerConnection {
 
 	dispose (): Promise<void> {
 		return	new Promise((resolveDispose) => {
-			console.log('Dispose NCS', this._host, this._clients)
+			for (let i in this._clients) {
+				this.removeClient(i)
+			}
 			resolveDispose()
 		})
 	}

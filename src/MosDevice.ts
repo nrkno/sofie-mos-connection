@@ -6,7 +6,25 @@ import { MosTime } from './dataTypes/mosTime'
 import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
 import { IMOSListMachInfo, IMOSDefaultActiveX } from './mosModel/0_listMachInfo'
 import { ReqMachInfo } from './mosModel/0_reqMachInfo'
-import { IMOSDeviceConnectionOptions, IMOSObject, IMOSDevice } from './api'
+import {
+	IMOSDeviceConnectionOptions,
+	IMOSObject,
+	IMOSDevice,
+	IMOSRunningOrder,
+	IMOSRunningOrderBase,
+	IMOSRunningOrderStatus,
+	IMOSStoryStatus,
+	IMOSItemStatus,
+	IMOSROReadyToAir,
+	IMOSStoryAction,
+	IMOSItem,
+	IMOSROAction,
+	IMOSROStory,
+	IMOSItemAction,
+	IMOSROFullStory,
+	IMOSROAck,
+	IMOSConnectionStatus
+} from './api'
 import { IConnectionConfig } from './config/connectionConfig'
 
 export class MosDevice implements IMOSDevice {
@@ -45,13 +63,45 @@ export class MosDevice implements IMOSDevice {
 	private _secondaryConnection: NCSServerConnection
 	private _currentConnection: NCSServerConnection
 
+	// Profile 0
+	private _callbackOnGetMachineInfo: () => Promise<IMOSListMachInfo>
+	private _callbackOnConnectionChange: (connectionStatus: IMOSConnectionStatus) => void
+
+	// Profile 1
+	private _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null> 
+	private _callbackonRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
+
+	// Profile 2
+	private _callbackOnCreateRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
+	private _callbackOnReplaceRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
+	private _callbackOnDeleteRunningOrder: (runningOrderId: MosString128) => Promise<IMOSROAck>
+	private _callbackOnRequestRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>
+	private _callbackOnMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
+	private _callbackOnRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
+	private _callbackOnStoryStatus: (status: IMOSStoryStatus) => Promise<IMOSROAck>
+	private _callbackOnItemStatus: (status: IMOSItemStatus) => Promise<IMOSROAck>
+	private _callbackOnReadyToAir: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>
+	private _callbackOnROInsertStories: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
+	private _callbackOnROInsertItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
+	private _callbackOnROReplaceStories: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
+	private _callbackOnROReplaceItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
+	private _callbackOnROMoveStories: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
+	private _callbackOnROMoveItems: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>
+	private _callbackOnRODeleteStories: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
+	private _callbackOnRODeleteItems: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>
+	private _callbackOnROSwapStories: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>
+	private _callbackOnROSwapItems: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
+
+	// Profile 4
+	private _callbackOnROStory: (story: IMOSROFullStory) => Promise<any>
+
 	constructor (
 		connectionConfig: IConnectionConfig,
-		connectionOptions: IMOSDeviceConnectionOptions,
 		primaryConnection: NCSServerConnection,
 		secondaryConnection: NCSServerConnection | null
 	) {
 		this.socket = new Socket()
+		// Add params to this in MosConnection/MosDevice
 		this.manufacturer = new MosString128('RadioVision, Ltd.')
 		this.model = new MosString128('TCS6000')
 		this.hwRev = new MosString128('0.1') // empty string returnes <hwRev/>
@@ -74,7 +124,6 @@ export class MosDevice implements IMOSDevice {
 			if (connectionConfig.profiles['7']) this.supportedProfiles.profile7 = true
 		}
 
-		this.socket.on('data', this.onData)
 		this._primaryConnection = primaryConnection
 		this._currentConnection = this._primaryConnection
 		if (secondaryConnection) {
@@ -84,42 +133,6 @@ export class MosDevice implements IMOSDevice {
 
 	get id (): string {
 		return this._id
-	}
-
-	onData (data: any) {
-		console.log('onData', data)
-	}
-
-	getMachineInfo (): Promise<IMOSListMachInfo> {
-		let message = new ReqMachInfo()
-
-		return new Promise((resolve) => {
-			this._currentConnection.executeCommand(message).then((data) => {
-				let listMachInfo = data.mos.listMachInfo
-				let list: IMOSListMachInfo = {
-					manufacturer: listMachInfo.manufacturer,
-					model: listMachInfo.model,
-					hwRev: listMachInfo.hwRev,
-					swRev: listMachInfo.swRev,
-					DOM: listMachInfo.DOM,
-					SN: listMachInfo.SN,
-					ID: listMachInfo.ID,
-					time: listMachInfo.time,
-					opTime: listMachInfo.opTime,
-					mosRev: listMachInfo.mosRev/*,
-					supportedProfiles: this.supportedProfiles,
-					defaultActiveX: this.defaultActiveX,
-					mosExternalMetaData: this.mosExternalMetaData*/
-				}
-				resolve(list)
-			})
-		})
-	}
-
-	//onRequestMOSObject: (cb: (objId: string) => Promise<IMOSObject | null>) => void
-
-	onRequestMOSObject (cb: (objId: string) => Promise<IMOSObject | null>) {
-		cb('123')
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
@@ -145,40 +158,159 @@ export class MosDevice implements IMOSDevice {
 		return root
 	}
 
-	onRequestAllMOSObjects (): Promise<Array<IMOSObject>> { }
-	onCreateRunningOrder (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) { }
-	onReplaceRunningOrder (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) { }
+	/* Profile 0 */
+	getMachineInfo (): Promise<IMOSListMachInfo> {
+		let message = new ReqMachInfo()
 
-	onDeleteRunningOrder (cb: (runningOrderId: MosString128) => Promise<IMOSROAck>) { }
-	onRequestRunningOrder (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) { }
+		return new Promise((resolve) => {
+			this._currentConnection.executeCommand(message).then((data) => {
+				let listMachInfo = data.mos.listMachInfo
+				let list: IMOSListMachInfo = {
+					manufacturer: listMachInfo.manufacturer,
+					model: listMachInfo.model,
+					hwRev: listMachInfo.hwRev,
+					swRev: listMachInfo.swRev,
+					DOM: listMachInfo.DOM,
+					SN: listMachInfo.SN,
+					ID: listMachInfo.ID,
+					time: listMachInfo.time,
+					opTime: listMachInfo.opTime,
+					mosRev: listMachInfo.mosRev,
+					supportedProfiles: this.supportedProfiles,		// TODO: No data from ENPS, needs test!
+					defaultActiveX: this.defaultActiveX,			// TODO: No data from ENPS, needs test!
+					mosExternalMetaData: this.mosExternalMetaData	// TODO: No data from ENPS, needs test!
+				}
+				resolve(list)
+			})
+		})
+	}
 
-	getRunningOrder (runningOrderId: MosString128): Promise<IMOSRunningOrder | null> { }
+	onGetMachineInfo (cb: () => Promise<IMOSListMachInfo>) {
+		this._callbackOnGetMachineInfo = cb
+	}
 
-	onMetadataReplace (cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>) { }
+	onConnectionChange (cb: (connectionStatus: IMOSConnectionStatus) => void) {
+		this._callbackOnConnectionChange = cb
+	}
 
-	onRunningOrderStatus (cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>) {} // get roElementStat
-	onStoryStatus (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) {} // get roElementStat
-	onItemStatus (cb: (status: IMOSItemStatus) => Promise<IMOSROAck>) {} // get roElementStat
+	getConnectionStatus (): IMOSConnectionStatus {
+		// TODO: Implement this
+	}
 
-	setRunningOrderStatus (status: IMOSRunningOrderStatus): Promise<IMOSROAck> {} // send roElementStat
-	setStoryStatus (status: IMOSStoryStatus): Promise<IMOSROAck> {} // send roElementStat
-	setItemStatus (status: IMOSItemStatus): Promise<IMOSROAck> {} // send roElementStat
+	/* Profile 1 */
+	onRequestMOSObject (cb: (objId: string) => Promise<IMOSObject | null>) {
+		this._callbackOnRequestMOSOBject = cb
+	}
 
-	onReadyToAir (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) {}
+	onRequestAllMOSObjects (cb: () => Promise<Array<IMOSObject>>) {
+		this._callbackonRequestAllMOSObjects = cb
+	}
 
-	onROInsertStories (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {}
-	onROInsertItems (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {}
-	onROReplaceStories (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {}
-	onROReplaceItems (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {}
-	onROMoveStories (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {}
-	onROMoveItems (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {}
-	onRODeleteStories (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {}
-	onRODeleteItems (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {}
-	onROSwapStories (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>) {}
-	onROSwapItems (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) {}
-	/* Profile 3 */
+	getMOSObject (objID: string): Promise<IMOSObject> {
+		// TODO: Implement this
+	}
+
+	getAllMOSObjects (): Promise<Array<IMOSObject>> {
+		// TODO: Implement this
+	}
+
+	/* Profile 2 */
+	onCreateRunningOrder (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) {
+		this._callbackOnCreateRunningOrder = cb
+	}
+
+	onReplaceRunningOrder (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) {
+		this._callbackOnReplaceRunningOrder = cb
+	}
+
+	onDeleteRunningOrder (cb: (runningOrderId: MosString128) => Promise<IMOSROAck>) {
+		this._callbackOnDeleteRunningOrder = cb
+	}
+
+	//onRequestRunningOrder: (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) => void // get roReq, send roList
+	onRequestRunningOrder (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) {
+		this._callbackOnRequestRunningOrder = cb
+	}
+
+	getRunningOrder (runningOrderId: MosString128): Promise<IMOSRunningOrder | null> {
+		// TODO: Implement this
+	}
+
+	onMetadataReplace (cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>) {
+		this._callbackOnMetadataReplace = cb
+	}
+
+	onRunningOrderStatus (cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>) {
+		this._callbackOnRunningOrderStatus = cb
+	}
+
+	onStoryStatus (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) {
+		this._callbackOnStoryStatus = cb
+	}
+
+	onItemStatus (cb: (status: IMOSItemStatus) => Promise<IMOSROAck>) {
+		this._callbackOnItemStatus = cb
+	}
+
+	setRunningOrderStatus (status: IMOSRunningOrderStatus): Promise<IMOSROAck> {
+		// TODO: Implement this
+	}
+
+	setStoryStatus (status: IMOSStoryStatus): Promise<IMOSROAck> {
+		// TODO: Implement this
+	}
+
+	setItemStatus (status: IMOSItemStatus): Promise<IMOSROAck> {
+		// TODO: Implement this
+	}
+
+	onReadyToAir (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) {
+		this._callbackOnReadyToAir = cb
+	}
+
+	onROInsertStories (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {
+		this._callbackOnROInsertStories = cb
+	}
+
+	onROInsertItems (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {
+		this._callbackOnROInsertItems = cb
+	}
+
+	onROReplaceStories (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {
+		this._callbackOnROReplaceStories = cb
+	}
+
+	onROReplaceItems (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {
+		this._callbackOnROReplaceItems = cb
+	}
+
+	onROMoveStories (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {
+		this._callbackOnROMoveStories = cb
+	}
+
+	onROMoveItems (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {
+		this._callbackOnROMoveItems = cb
+	}
+
+	onRODeleteStories (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {
+		this._callbackOnRODeleteStories = cb
+	}
+
+	onRODeleteItems (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {
+		this._callbackOnRODeleteItems = cb
+	}
+
+	onROSwapStories (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>) {
+		this._callbackOnROSwapStories = cb
+	}
+
+	onROSwapItems (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) {
+		this._callbackOnROSwapItems = cb
+	}
+
 	/* Profile 4 */
-	// roStorySend:
-	onROStory (cb: (story: IMOSROFullStory) => Promise<any>) {}
+	onROStory (cb: (story: IMOSROFullStory) => Promise<any>) {
+		this._callbackOnROStory = cb
+	}
 
 }
