@@ -195,7 +195,24 @@ export class MosDevice implements IMOSDevice {
 		// Route data and reply to socket
 		if (parsed !== null) {
 			this.routeData(parsed).then((resp) => {
-				let buf = iconv.encode(resp, 'utf16-be')
+				let data = resp
+
+				// TODO: Create message based on parsed data and response
+				console.log('Creating ROAck for', Object.keys(parsed.mos))
+				if(typeof resp !== 'string') {
+					let message = new ROAck()
+					message.mosID = parsed.mos.mosID
+					message.ncsID = parsed.mos.ncsID
+					message.ID = resp.ID
+					message.Status = resp.Status
+					message.Stories = resp.Stories
+					message.prepare()
+					
+					data = message.toString()
+				}
+
+				console.log('WRITE TO SOCKET', data)
+				let buf = iconv.encode(data, 'utf16-be')
 				e.socket.write(buf, 'usc2')
 			})
 		}
@@ -215,12 +232,7 @@ export class MosDevice implements IMOSDevice {
 				this._callbackOnReadyToAir({
 					ID: data.mos.roReadyToAir.roID,
 					Status: data.mos.roReadyToAir.roAir
-				}).then(this.createROAck).then((ack) => {
-					ack.mosID = data.mos.mosID
-					ack.ncsID = data.mos.ncsID
-					ack.prepare()
-					resolve(ack.toString())
-				})
+				}).then(resolve)
 
 			} else if (key === 'roStoryMove' && typeof this._callbackOnROMoveStories === 'function') {
 				this._callbackOnROMoveStories({
@@ -228,12 +240,7 @@ export class MosDevice implements IMOSDevice {
 				}, [
 					data.mos.roStoryMove.storyID[0],
 					data.mos.roStoryMove.storyID[1]
-				]).then(this.createROAck).then((ack) => {
-					ack.mosID = data.mos.mosID
-					ack.ncsID = data.mos.ncsID
-					ack.prepare()
-					resolve(ack.toString())
-				})
+				]).then(resolve)
 
 			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
@@ -241,16 +248,6 @@ export class MosDevice implements IMOSDevice {
 				resolve('<mos><mosID>test2.enps.mos</mosID><ncsID>2012R2ENPS8VM</ncsID><messageID>99</messageID><roAck><roID>2012R2ENPS8VM;P_ENPSMOS\W\F_HOLD ROs;DEC46951-28F9-4A11-8B0655D96B347E52</roID><roStatus>Unknown object M000133</roStatus><storyID>5983A501:0049B924:8390EF2B</storyID><itemID>0</itemID><objID>M000224</objID><status>LOADED</status><storyID>3854737F:0003A34D:983A0B28</storyID><itemID>0</itemID><objID>M000133</objID><itemChannel>A</itemChannel><status>UNKNOWN</status></roAck></mos>')
 			}
 
-		})
-	}
-
-	createROAck (resp:IMOSROAck): Promise<ROAck> {
-		return new Promise((resolve, reject) => {
-			let ack = new ROAck()
-			ack.ID = resp.ID
-			ack.Status = resp.Status
-			ack.Stories = resp.Stories
-			resolve(ack)
 		})
 	}
 
