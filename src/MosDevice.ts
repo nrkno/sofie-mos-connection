@@ -249,7 +249,7 @@ export class MosDevice implements IMOSDevice {
 			let ack = new ROAck()
 			ack.ID = resp.ID
 			ack.Status = resp.Status
-			ack.Storiees = resp.Stories
+			ack.Stories = resp.Stories
 			resolve(ack)
 		})
 	}
