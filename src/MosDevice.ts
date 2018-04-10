@@ -242,6 +242,13 @@ export class MosDevice implements IMOSDevice {
 					data.mos.roStoryMove.storyID[1]
 				]).then(resolve)
 
+			} else if (key === 'roStoryDelete' && typeof this._callbackOnRODeleteStories === 'function') {
+				this._callbackOnRODeleteStories({
+					RunningOrderID: data.mos.roStoryDelete.roID
+				}, [
+					data.mos.roStoryDelete.storyID, // TODO: Handle multiple stories
+				]).then(resolve)
+
 			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
 			} else {
