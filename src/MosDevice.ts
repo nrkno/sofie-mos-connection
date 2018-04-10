@@ -5,6 +5,7 @@ import { MosString128 } from './dataTypes/mosString128'
 import { MosTime } from './dataTypes/mosTime'
 import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
 import { IMOSListMachInfo, IMOSDefaultActiveX } from './mosModel/0_listMachInfo'
+import { ROAck } from './mosModel/ROAck'
 import { ReqMachInfo } from './mosModel/0_reqMachInfo'
 import {
 	IMOSDeviceConnectionOptions,
@@ -72,7 +73,7 @@ export class MosDevice implements IMOSDevice {
 
 	// Profile 1
 	private _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null> 
-	private _callbackonRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
+	private _callbackOnRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
 
 	// Profile 2
 	private _callbackOnCreateRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
@@ -166,49 +167,91 @@ export class MosDevice implements IMOSDevice {
 	onData (e:SocketDescription, socketID: number, data: string): void {
 		console.log(`Socket got data (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${data}`)
 
+		let parsed = null
+		let parse_options = {
+			object: true,
+			coerce: true,
+			trim: true
+		}
 		let first = data.substr(0, 10)
 		let first_match = '\u0000<\u0000m\u0000o\u0000s\u0000>' // <mos>
 		let last = data.substr(data.length - 15)
 		let last_match = '<\u0000/\u0000m\u0000o\u0000s\u0000>\u0000\r\u0000\n' // </mos>
 
-		/*console.log('First?', first)
-		console.dir(first.length)
-		console.dir(first)
-		console.log('Last?', last.length, last)
-		console.dir(last.length)
-		console.dir(last)*/
-
+		// Data ready to be parsed
 		if(first === first_match && last === last_match) {
-			let parsed = parser.toJson(data, {
-				object: true,
-				coerce: true,
-				trim: true
-			})
+			parsed = parser.toJson(data, parse_options)
 
-			console.log('parsedData', parsed)
-			console.log('parsedTest', Object.keys(parsed.mos))
-
+		// Last chunk, ready to parse with saved data
 		} else if(last === last_match) {
-			let parsed = parser.toJson(this._tmp + data, {
-				object: true,
-				coerce: true,
-				trim: true
-			})
-
-			console.log('parsedData', parsed)
-			console.log('parsedTest', Object.keys(parsed.mos))
-
+			parsed = parser.toJson(this._tmp + data, parse_options)
 			this._tmp = ''
 
+		// Chunk, save for later
 		} else {
-			// TODO: Collect data and parse big string
-			console.log('Wont parse, saving data')
-
 			this._tmp += data
 		}
 
-		let buf = iconv.encode('<mos><mosID>test2.enps.mos</mosID><ncsID>2012R2ENPS8VM</ncsID><messageID>99</messageID><roAck><roID>2012R2ENPS8VM;P_ENPSMOS\W\F_HOLD ROs;DEC46951-28F9-4A11-8B0655D96B347E52</roID><roStatus>Unknown object M000133</roStatus><storyID>5983A501:0049B924:8390EF2B</storyID><itemID>0</itemID><objID>M000224</objID><status>LOADED</status><storyID>3854737F:0003A34D:983A0B28</storyID><itemID>0</itemID><objID>M000133</objID><itemChannel>A</itemChannel><status>UNKNOWN</status></roAck></mos>', 'utf16-be')
-		e.socket.write(buf, 'usc2')
+		// Route data and reply to socket
+		if (parsed !== null) {
+			this.routeData(parsed).then((resp) => {
+				let buf = iconv.encode(resp, 'utf16-be')
+				e.socket.write(buf, 'usc2')
+			})
+		}
+
+	}
+
+	routeData (data:object): Promise<any> {
+		let keys = Object.keys(data.mos)
+		let key = keys[3]
+
+		return new Promise((resolve, reject) => {
+			console.log('parsedData', data)
+			console.log('parsedTest', keys)
+
+			// Route and format data
+			if (key === 'roReadyToAir' && typeof this._callbackOnReadyToAir === 'function') {
+				this._callbackOnReadyToAir({
+					ID: data.mos.roReadyToAir.roID,
+					Status: data.mos.roReadyToAir.roAir
+				}).then(this.createROAck).then((ack) => {
+					ack.mosID = data.mos.mosID
+					ack.ncsID = data.mos.ncsID
+					ack.prepare()
+					resolve(ack.toString())
+				})
+
+			} else if (key === 'roStoryMove' && typeof this._callbackOnROMoveStories === 'function') {
+				this._callbackOnROMoveStories({
+					StoryID: data.mos.roStoryMove.roID
+				}, [
+					data.mos.roStoryMove.storyID[0],
+					data.mos.roStoryMove.storyID[1]
+				]).then(this.createROAck).then((ack) => {
+					ack.mosID = data.mos.mosID
+					ack.ncsID = data.mos.ncsID
+					ack.prepare()
+					resolve(ack.toString())
+				})
+
+			// TODO: Use MosMessage instead of string
+			// TODO: Use reject if function dont exists? Put Nack in ondata
+			} else {
+				resolve('<mos><mosID>test2.enps.mos</mosID><ncsID>2012R2ENPS8VM</ncsID><messageID>99</messageID><roAck><roID>2012R2ENPS8VM;P_ENPSMOS\W\F_HOLD ROs;DEC46951-28F9-4A11-8B0655D96B347E52</roID><roStatus>Unknown object M000133</roStatus><storyID>5983A501:0049B924:8390EF2B</storyID><itemID>0</itemID><objID>M000224</objID><status>LOADED</status><storyID>3854737F:0003A34D:983A0B28</storyID><itemID>0</itemID><objID>M000133</objID><itemChannel>A</itemChannel><status>UNKNOWN</status></roAck></mos>')
+			}
+
+		})
+	}
+
+	createROAck (resp:IMOSROAck): Promise<ROAck> {
+		return new Promise((resolve, reject) => {
+			let ack = new ROAck()
+			ack.ID = resp.ID
+			ack.Status = resp.Status
+			ack.Storiees = resp.Stories
+			resolve(ack)
+		})
 	}
 
 	/* Profile 0 */
@@ -256,7 +299,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRequestAllMOSObjects (cb: () => Promise<Array<IMOSObject>>) {
-		this._callbackonRequestAllMOSObjects = cb
+		this._callbackOnRequestAllMOSObjects = cb
 	}
 
 	getMOSObject (objID: string): Promise<IMOSObject> {
