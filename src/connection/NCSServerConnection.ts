@@ -21,6 +21,7 @@ export class NCSServerConnection {
 	private _mosID: string
 
 	private _clients: {[clientID: number]: ClientDescription} = {}
+	private _callbackOnConnectionChange: () => void
 
 	constructor (id: string, host: string, mosID: string) {
 		this._id = id
@@ -62,6 +63,8 @@ export class NCSServerConnection {
 			})
 		}
 		this._connected = true
+
+		if(this._callbackOnConnectionChange) this._callbackOnConnectionChange()
 	}
 
 	executeCommand (message: MosMessage): Promise<any> {
@@ -90,6 +93,14 @@ export class NCSServerConnection {
 				reject('No clients found')
 			}
 		})
+	}
+
+	onConnectionChange (cb: () => void) {
+		this._callbackOnConnectionChange = cb
+	}
+
+	get connected (): boolean {
+		return this._connected
 	}
 
 	/** */

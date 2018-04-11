@@ -131,9 +131,12 @@ export class MosDevice implements IMOSDevice {
 		}
 
 		this._primaryConnection = primaryConnection
+		this._primaryConnection.onConnectionChange(() => this.emitConnectionChange())
 		this._currentConnection = this._primaryConnection
+
 		if (secondaryConnection) {
 			this._secondaryConnection = secondaryConnection
+			this._secondaryConnection.onConnectionChange(() => this.emitConnectionChange())
 		}
 	}
 
@@ -162,6 +165,15 @@ export class MosDevice implements IMOSDevice {
 		// root.ele('defaultActiveX', this.manufacturer)
 		// root.ele('mosExternalMetaData', this.manufacturer) import from IMOSExternalMetaData
 		return root
+	}
+
+	emitConnectionChange(): void {
+		if(this._callbackOnConnectionChange) this._callbackOnConnectionChange(this.getConnectionStatus())
+	}
+
+	connect (): void {
+		if(this._primaryConnection) this._primaryConnection.connect()
+		if(this._secondaryConnection) this._secondaryConnection.connect()
 	}
 
 	onData (e:SocketDescription, socketID: number, data: string): void {
@@ -328,6 +340,12 @@ export class MosDevice implements IMOSDevice {
 
 	getConnectionStatus (): IMOSConnectionStatus {
 		// TODO: Implement this
+		return {
+			PrimaryConnected: this._primaryConnection.connected,
+			PrimaryStatus: '',
+			SecondaryConnected: (this._secondaryConnection ? this._secondaryConnection.connected : false),
+			SecondaryStatus: ''
+		}
 	}
 
 	/* Profile 1 */

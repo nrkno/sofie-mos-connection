@@ -54,21 +54,18 @@ export class MosConnection implements IMosConnection {
 
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
-			primary.connect()
 
 			if (connectionOptions.secondary) {
 				secondary = new NCSServerConnection(connectionOptions.secondary.id, connectionOptions.secondary.host, this._conf.mosID)
 				this._ncsConnections[connectionOptions.secondary.host] = secondary 
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
-				secondary.connect()
 			}
-
-			console.log(this._ncsConnections)
 
 			// initialize mosDevice:
 			let connectionConfig = this._conf
 			this._mosDevice = new MosDevice(connectionConfig, primary, secondary) // pseudo-code here, put something real
+			this._mosDevice.connect()
 
 			// emit to .onConnection
 			if (this._onconnection) this._onconnection(this._mosDevice)
