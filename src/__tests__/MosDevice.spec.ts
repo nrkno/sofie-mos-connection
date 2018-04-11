@@ -5,6 +5,8 @@ import { Socket } from 'net'
 import { SocketMock } from '../__mocks__/socket'
 import { IMOSConnectionStatus } from '../api'
 
+require('iconv-lite').encodingExists('utf16-be')
+
 jest.mock('net')
 
 beforeAll(() => {
