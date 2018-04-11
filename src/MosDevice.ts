@@ -287,6 +287,33 @@ export class MosDevice implements IMOSDevice {
 
 				this._callbackOnCreateRunningOrder(ro).then(resolve)
 
+			} else if (key === 'roStorySend' && typeof this._callbackOnROInsertStories === 'function') {
+				let action: IMOSStoryAction = {
+					RunningOrderID: data.roStorySend.roID,
+					StoryID: data.roStorySend.storyID
+				}
+				let stories: Array<IMOSROStory> = []
+				let story: IMOSROStory = {
+					ID: data.roStorySend.storyID,
+					Slug: data.roStorySend.storySlug,
+					Items: []
+					// TODO: Add & test Items, ObjectID, MOSID, mosAbstract, Paths, StoryBody
+					// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut
+				}
+				if (data.roStorySend.hasOwnProperty('storyNum') && data.roStorySend.storyNum !== {}) story.Number = data.roStorySend.storyNum
+				if (data.roStorySend.hasOwnProperty('mosExternalMetadata')){
+					// TODO: Handle an array of mosExternalMetadata
+					let meta: IMOSExternalMetaData = {
+						MosSchema: data.roStorySend.mosExternalMetadata.mosSchema,
+						MosPayload: data.roStorySend.mosExternalMetadata.mosPayload
+					}
+					if (data.roStorySend.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = data.roStorySend.mosExternalMetadata.mosScope
+					story.MosExternalMetaData = [meta]
+				}
+				stories.push(story)
+
+				this._callbackOnROInsertStories(action, stories).then(resolve)
+
 			} else if (key === 'roElementAction' && ops === 'INSERT' && typeof this._callbackOnROInsertStories === 'function') {
 				let stories: Array<IMOSROStory> = []
 
