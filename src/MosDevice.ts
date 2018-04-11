@@ -236,7 +236,7 @@ export class MosDevice implements IMOSDevice {
 
 	routeData (data: any): Promise<any> {
 		if (data && data.hasOwnProperty('mos')) data = data['mos']
-		let keys = Object.keys(data.mos)
+		let keys = Object.keys(data)
 		let key = keys[3]
 		let ops = (key === 'roElementAction' ? data.roElementAction.operation : null)
 
@@ -252,13 +252,12 @@ export class MosDevice implements IMOSDevice {
 					Status: data.roReadyToAir.roAir
 				}).then(resolve)
 
-			} else if (key === 'roStoryInsert' && typeof this._callbackOnROInsertStories === 'function') {
-				// onROInsertStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) => void
+			} else if (key === 'roElementAction' && ops === 'INSERT' && typeof this._callbackOnROInsertStories === 'function') {
 				let stories: Array<IMOSROStory> = []
 
 				this._callbackOnROInsertStories({
-					RunningOrderID: data.roStoryInsert.roID,
-					StoryID: data.roStoryInsert.storyID
+					RunningOrderID: data.roElementAction.roID,
+					StoryID: data.roElementAction.element_target.storyID
 				}, stories).then(resolve)
 
 			} else if (key === 'roElementAction' && ops === 'MOVE' && typeof this._callbackOnROMoveStories === 'function') {
