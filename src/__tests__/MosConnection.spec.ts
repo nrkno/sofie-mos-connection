@@ -10,6 +10,8 @@ import { ServerMock } from '../__mocks__/server'
 
 import { xmlData, xmlApiData } from './testData.spec'
 
+require('iconv-lite').encodingExists('utf16-be')
+
 // breaks net.Server, disabled for now
 // jest.mock('net')
 jest.mock('net')
@@ -488,7 +490,7 @@ describe('MosDevice: Profile 2', () => {
 		onRODeleteItems.mockClear()
 		onROSwapStories.mockClear()
 		onROSwapItems.mockClear()
-		
+
 	})
 	test('init', async () => {
 		expect(mosDevice).toBeTruthy()
