@@ -106,6 +106,7 @@ export class MosDevice implements IMOSDevice {
 		primaryConnection: NCSServerConnection,
 		secondaryConnection: NCSServerConnection | null
 	) {
+		this._id = new MosString128(connectionConfig.mosID)
 		this.socket = new Socket()
 		// Add params to this in MosConnection/MosDevice
 		this.manufacturer = new MosString128('RadioVision, Ltd.')
