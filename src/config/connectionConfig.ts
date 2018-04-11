@@ -19,7 +19,7 @@ export interface IProfiles {
 	'7'?: boolean
 }
 
-export class ConnectionConfig {
+export class ConnectionConfig implements IConnectionConfig {
 	mosID: string
 	acceptsConnections: boolean
 	accepsConnectionsFrom: string[]
