@@ -234,6 +234,15 @@ export class MosDevice implements IMOSDevice {
 					Status: data.mos.roReadyToAir.roAir
 				}).then(resolve)
 
+			} else if (key === 'roStoryInsert' && typeof this._callbackOnROInsertStories === 'function') {
+				//onROInsertStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) => void
+				let stories = []
+
+				this._callbackOnROInsertStories({
+					RunningOrderID: data.mos.roStoryInsert.roID,
+					StoryID: data.mos.roStoryInsert.storyID
+				}, stories).then(resolve)
+
 			} else if (key === 'roStoryMove' && typeof this._callbackOnROMoveStories === 'function') {
 				let stories = []
 
