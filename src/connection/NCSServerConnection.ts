@@ -144,6 +144,8 @@ export class NCSServerConnection {
 			for (let i in this._clients) {
 				this.removeClient(i)
 			}
+			this._connected = false
+			if(this._callbackOnConnectionChange) this._callbackOnConnectionChange()
 			resolveDispose()
 		})
 	}
