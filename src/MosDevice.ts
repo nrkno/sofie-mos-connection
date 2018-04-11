@@ -222,10 +222,12 @@ export class MosDevice implements IMOSDevice {
 	routeData (data:object): Promise<any> {
 		let keys = Object.keys(data.mos)
 		let key = keys[3]
+		let ops = (key === 'roElementAction' ? data.mos.roElementAction.operation : null)
 
 		return new Promise((resolve, reject) => {
 			console.log('parsedData', data)
 			console.log('parsedTest', keys)
+			console.log('key', key, 'ops', ops)
 
 			// Route and format data
 			if (key === 'roReadyToAir' && typeof this._callbackOnReadyToAir === 'function') {
@@ -243,17 +245,24 @@ export class MosDevice implements IMOSDevice {
 					StoryID: data.mos.roStoryInsert.storyID
 				}, stories).then(resolve)
 
-			} else if (key === 'roStoryMove' && typeof this._callbackOnROMoveStories === 'function') {
+			} else if (key === 'roElementAction' && ops === 'MOVE' && typeof this._callbackOnROMoveStories === 'function') {
 				let stories = []
 
-				for(let i = 1; i < data.mos.roStoryMove.storyID.length; i++) {
-					stories.push(data.mos.roStoryMove.storyID[i])
+				// Single story, store string in array
+				if (typeof data.mos.roElementAction.element_source.storyID === 'string') {
+					stories.push(data.mos.roElementAction.storyID)
+
+				// Multiple stories, push all to array
+				} else {
+					for(let i = 0; i < data.mos.roElementAction.element_source.storyID.length; i++) {
+						stories.push(data.mos.roElementAction.element_source.storyID[i])
+					}
 				}
 
 				this._callbackOnROMoveStories({
-					RunningOrderID: data.mos.roStoryMove.roID,
-					StoryID: data.mos.roStoryMove.storyID[0]
-				}, stories).then(resolve)
+					RunningOrderID: data.mos.roElementAction.roID,
+					StoryID: data.mos.roElementAction.element_target.storyID
+				}, [data.mos.roElementAction.element_source.storyID]).then(resolve)
 
 			} else if (key === 'roStoryDelete' && typeof this._callbackOnRODeleteStories === 'function') {
 				let stories = []
