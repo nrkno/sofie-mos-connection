@@ -72,7 +72,7 @@ export class MosDevice implements IMOSDevice {
 	private _callbackOnConnectionChange: (connectionStatus: IMOSConnectionStatus) => void
 
 	// Profile 1
-	private _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null> 
+	private _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null>
 	private _callbackOnRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
 
 	// Profile 2
@@ -106,7 +106,7 @@ export class MosDevice implements IMOSDevice {
 		primaryConnection: NCSServerConnection,
 		secondaryConnection: NCSServerConnection | null
 	) {
-		this._id = new MosString128(connectionConfig.mosID)
+		this._id = new MosString128(connectionConfig.mosID).toString()
 		this.socket = new Socket()
 		// Add params to this in MosConnection/MosDevice
 		this.manufacturer = new MosString128('RadioVision, Ltd.')
@@ -168,36 +168,38 @@ export class MosDevice implements IMOSDevice {
 		return root
 	}
 
-	emitConnectionChange(): void {
-		if(this._callbackOnConnectionChange) this._callbackOnConnectionChange(this.getConnectionStatus())
+	emitConnectionChange (): void {
+		if (this._callbackOnConnectionChange) this._callbackOnConnectionChange(this.getConnectionStatus())
 	}
 
 	connect (): void {
-		if(this._primaryConnection) this._primaryConnection.connect()
-		if(this._secondaryConnection) this._secondaryConnection.connect()
+		if (this._primaryConnection) this._primaryConnection.connect()
+		if (this._secondaryConnection) this._secondaryConnection.connect()
 	}
 
-	onData (e:SocketDescription, socketID: number, data: string): void {
+	onData (e: SocketDescription, socketID: number, data: string): void {
 		console.log(`Socket got data (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${data}`)
 
-		let parsed = null
-		let parse_options = {
+		let parsed: any = null
+		let parseOptions = {
 			object: true,
 			coerce: true,
 			trim: true
 		}
 		let first = data.substr(0, 10)
-		let first_match = '\u0000<\u0000m\u0000o\u0000s\u0000>' // <mos>
+		let firstMatch = '\u0000<\u0000m\u0000o\u0000s\u0000>' // <mos>
 		let last = data.substr(data.length - 15)
-		let last_match = '<\u0000/\u0000m\u0000o\u0000s\u0000>\u0000\r\u0000\n' // </mos>
+		let lastMatch = '<\u0000/\u0000m\u0000o\u0000s\u0000>\u0000\r\u0000\n' // </mos>
 
 		// Data ready to be parsed
-		if(first === first_match && last === last_match) {
-			parsed = parser.toJson(data, parse_options)
+		if (first === firstMatch && last === lastMatch) {
+			// @ts-ignore xml2json says arguments are wrong, but its not.
+			parsed = parser.toJson(data, parseOptions)
 
 		// Last chunk, ready to parse with saved data
-		} else if(last === last_match) {
-			parsed = parser.toJson(this._tmp + data, parse_options)
+		} else if (last === lastMatch) {
+			// @ts-ignore xml2json says arguments are wrong, but its not.
+			parsed = parser.toJson(this._tmp + data, parseOptions)
 			this._tmp = ''
 
 		// Chunk, save for later
@@ -212,7 +214,7 @@ export class MosDevice implements IMOSDevice {
 
 				// TODO: Create message based on parsed data and response
 				console.log('Creating ROAck for', Object.keys(parsed.mos))
-				if(typeof resp !== 'string') {
+				if (typeof resp !== 'string') {
 					let message = new ROAck()
 					message.mosID = parsed.mos.mosID
 					message.ncsID = parsed.mos.ncsID
@@ -220,7 +222,7 @@ export class MosDevice implements IMOSDevice {
 					message.Status = resp.Status
 					message.Stories = resp.Stories
 					message.prepare()
-					
+
 					data = message.toString()
 				}
 
@@ -232,12 +234,13 @@ export class MosDevice implements IMOSDevice {
 
 	}
 
-	routeData (data:object): Promise<any> {
+	routeData (data: any): Promise<any> {
+		if (data && data.hasOwnProperty('mos')) data = data['mos']
 		let keys = Object.keys(data.mos)
 		let key = keys[3]
-		let ops = (key === 'roElementAction' ? data.mos.roElementAction.operation : null)
+		let ops = (key === 'roElementAction' ? data.roElementAction.operation : null)
 
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			console.log('parsedData', data)
 			console.log('parsedTest', keys)
 			console.log('key', key, 'ops', ops)
@@ -245,54 +248,54 @@ export class MosDevice implements IMOSDevice {
 			// Route and format data
 			if (key === 'roReadyToAir' && typeof this._callbackOnReadyToAir === 'function') {
 				this._callbackOnReadyToAir({
-					ID: data.mos.roReadyToAir.roID,
-					Status: data.mos.roReadyToAir.roAir
+					ID: data.roReadyToAir.roID,
+					Status: data.roReadyToAir.roAir
 				}).then(resolve)
 
 			} else if (key === 'roStoryInsert' && typeof this._callbackOnROInsertStories === 'function') {
-				//onROInsertStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) => void
-				let stories = []
+				// onROInsertStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) => void
+				let stories: Array<IMOSROStory> = []
 
 				this._callbackOnROInsertStories({
-					RunningOrderID: data.mos.roStoryInsert.roID,
-					StoryID: data.mos.roStoryInsert.storyID
+					RunningOrderID: data.roStoryInsert.roID,
+					StoryID: data.roStoryInsert.storyID
 				}, stories).then(resolve)
 
 			} else if (key === 'roElementAction' && ops === 'MOVE' && typeof this._callbackOnROMoveStories === 'function') {
 				let stories = []
 
 				// Single story, store string in array
-				if (typeof data.mos.roElementAction.element_source.storyID === 'string') {
-					stories.push(data.mos.roElementAction.storyID)
+				if (typeof data.roElementAction.element_source.storyID === 'string') {
+					stories.push(data.roElementAction.storyID)
 
 				// Multiple stories, push all to array
 				} else {
-					for(let i = 0; i < data.mos.roElementAction.element_source.storyID.length; i++) {
-						stories.push(data.mos.roElementAction.element_source.storyID[i])
+					for (let i = 0; i < data.roElementAction.element_source.storyID.length; i++) {
+						stories.push(data.roElementAction.element_source.storyID[i])
 					}
 				}
 
 				this._callbackOnROMoveStories({
-					RunningOrderID: data.mos.roElementAction.roID,
-					StoryID: data.mos.roElementAction.element_target.storyID
-				}, [data.mos.roElementAction.element_source.storyID]).then(resolve)
+					RunningOrderID: data.roElementAction.roID,
+					StoryID: data.roElementAction.element_target.storyID
+				}, [data.roElementAction.element_source.storyID]).then(resolve)
 
 			} else if (key === 'roStoryDelete' && typeof this._callbackOnRODeleteStories === 'function') {
 				let stories = []
 
 				// Single story, store string in array
-				if (typeof data.mos.roStoryDelete.storyID === 'string') {
-					stories.push(data.mos.roStoryDelete.storyID)
+				if (typeof data.roStoryDelete.storyID === 'string') {
+					stories.push(data.roStoryDelete.storyID)
 
 				// Multiple stories, push all to array
 				} else {
-					for(let i = 0; i < data.mos.roStoryDelete.storyID.length; i++) {
-						stories.push(data.mos.roStoryDelete.storyID[i])
+					for (let i = 0; i < data.roStoryDelete.storyID.length; i++) {
+						stories.push(data.roStoryDelete.storyID[i])
 					}
 				}
 
 				this._callbackOnRODeleteStories({
-					RunningOrderID: data.mos.roStoryDelete.roID
+					RunningOrderID: data.roStoryDelete.roID
 				}, stories).then(resolve)
 
 			// TODO: Use MosMessage instead of string
@@ -379,7 +382,7 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnDeleteRunningOrder = cb
 	}
 
-	//onRequestRunningOrder: (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) => void // get roReq, send roList
+	// onRequestRunningOrder: (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) => void // get roReq, send roList
 	onRequestRunningOrder (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) {
 		this._callbackOnRequestRunningOrder = cb
 	}
