@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events'
 
-import { Socket} from 'net'
+import { Socket } from 'net'
 import { Writable } from 'stream'
 
 // Mock the Socket class in 'net':
@@ -110,7 +110,7 @@ export class SocketMock extends EventEmitter implements Socket {
 
 			setTimeout(() => {
 
-				if(typeof cb === 'string') {
+				if (typeof cb === 'string') {
 					msg = cb
 				} else {
 					msg = cb(data)

@@ -3,26 +3,28 @@ import { ConnectionConfig } from '../config/connectionConfig'
 import { IMOSConnectionStatus, IMOSDevice, IMOSObject, IMOSObjectType, IMOSObjectStatus, IMOSObjectAirStatus, IMOSObjectPathType, IMOSObjectPath, IMOSRunningOrder, IMOSROAck, IMOSRunningOrderBase, IMOSStoryStatus, IMOSRunningOrderStatus, IMOSItemStatus, IMOSROReadyToAir, IMOSStoryAction, IMOSROStory, IMOSItem, IMOSItemAction, IMOSROAction } from '../api'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosString128 } from '../dataTypes/mosString128'
-import { Socket } from 'net'
+import { Socket, Server } from 'net'
 
 import { SocketMock } from '../__mocks__/socket'
+import { ServerMock } from '../__mocks__/server'
 
 import { xmlData, xmlApiData } from './testData.spec'
 
 // breaks net.Server, disabled for now
 // jest.mock('net')
+jest.mock('net')
 
 const literal = <T>(o: T) => o
 
 function getMosDevice (): Promise<IMOSDevice> {
-	let mos = new MosConnection(new ConnectionConfig({
+	let mos = new MosConnection({
 		mosID: 'jestMOS',
-		acceptsConnections: false,
+		acceptsConnections: true,
 		profiles: {
 			'0': true,
 			'1': true
 		}
-	}))
+	})
 
 	return mos.connect({
 		primary: {
@@ -33,10 +35,10 @@ function getMosDevice (): Promise<IMOSDevice> {
 	})
 }
 let messageId = 0
-function fakeIncomingMessage (socketMock, message: string): Promise<void> {
+function fakeIncomingMessage (socketMockLower, message: string): Promise<void> {
 	let fullMessage = getXMLReply(messageId++, message)
 
-	socketMock.mockReceiveMessage(fullMessage)
+	socketMockLower.mockReceiveMessage(fullMessage)
 
 	return Promise.resolve()
 }
@@ -68,12 +70,16 @@ function getMosObj (): IMOSObject {
 		Description: ''
 	}
 }
-let socketMock: SocketMock
+let socketMockLower: SocketMock
+let socketMockUpper: SocketMock
+let socketMockQuery: SocketMock
 
 beforeAll(() => {
 	// Mock tcp connection
 	// @ts-ignore Replace Socket with the mocked varaint:
 	Socket = SocketMock
+	// @ts-ignore Replace Server with the mocked varaint:
+	Server = ServerMock
 })
 beforeEach(() => {
 	SocketMock.mockClear()
@@ -132,26 +138,25 @@ test('basic initialization', async () => {
 })
 
 test('Incoming connections', async () => {
-	let mos = new MosConnection(new ConnectionConfig({
+	let mos = new MosConnection({
 		mosID: 'jestMOS',
 		acceptsConnections: true,
 		profiles: {
 			'0': true,
 			'1': true
 		}
-	}))
+	})
+	expect(mos.acceptsConnections).toBe(true)
 
-	if (mos.acceptsConnections) {
-		await expect(mos.isListening).resolves.toEqual([true, true, true])
-	} else {
-		expect(mos.isListening).rejects.toBe('Mos connection is not listening for connections. "Config.acceptsConnections" is "false"')
-	}
+	// SocketMock.mockAddReply('<hello>')
+	await expect(mos.isListening).resolves.toEqual([true, true, true])
 
 	// close sockets after test
 	mos.isListening
 		.then(() => mos.dispose())
 		.catch(() => mos.dispose())
 })
+
 describe('MosDevice: Profile 0', () => {
 	test('init and connectionStatusChanged', async () => {
 		let mos = new MosConnection(new ConnectionConfig({
@@ -173,10 +178,17 @@ describe('MosDevice: Profile 0', () => {
 
 		expect(mosDevice).toBeTruthy()
 
-		expect(SocketMock.instances).toHaveLength(1)
-		let connMock = SocketMock.instances[0]
-		expect(connMock.connect).toHaveBeenCalledTimes(1)
-		expect(connMock.connect.mock.calls[0][0]).toEqual('127.0.0.1')
+		expect(SocketMock.instances).toHaveLength(3)
+		let connMocks = SocketMock.instances
+		// expect(connMocks[0].connect).toHaveBeenCalledTimes(1)
+		// expect(connMocks[0].connect.mock.calls[0][0]).toEqual(10540)
+		// expect(connMocks[0].connect.mock.calls[0][1]).toEqual('127.0.0.1')
+		expect(connMocks[1].connect).toHaveBeenCalledTimes(1)
+		expect(connMocks[1].connect.mock.calls[0][0]).toEqual(10540)
+		expect(connMocks[1].connect.mock.calls[0][1]).toEqual('127.0.0.1')
+		expect(connMocks[2].connect).toHaveBeenCalledTimes(1)
+		expect(connMocks[2].connect.mock.calls[0][0]).toEqual(10541)
+		expect(connMocks[2].connect.mock.calls[0][1]).toEqual('127.0.0.1')
 
 		let connectionStatusChanged = jest.fn()
 
@@ -184,9 +196,14 @@ describe('MosDevice: Profile 0', () => {
 			connectionStatusChanged(connectionStatus)
 		})
 
-		expect(connectionStatusChanged).toHaveBeenCalledTimes(1) // dunno if it really should have been called, maybe remove
+		// expect(connectionStatusChanged).toHaveBeenCalledTimes(1) // dunno if it really should have been called, maybe remove
 
-		expect(mosDevice.getConnectionStatus()).toEqual(true)
+		expect(mosDevice.getConnectionStatus()).toMatchObject({
+			PrimaryConnected: true,
+			PrimaryStatus: '', // if not connected this will contain human-readable error-message
+			SecondaryConnected: false
+			// SecondaryStatus: string // if not connected this will contain human-readable error-message
+		})
 
 		connectionStatusChanged.mockClear()
 
@@ -196,6 +213,7 @@ describe('MosDevice: Profile 0', () => {
 		// expect(connectionStatusChanged.mock.calls[0][0]).toMatchObject({PrimaryConnected: false})
 	})
 })
+
 describe('MosDevice: Profile 1', () => {
 	let mosDevice
 	let socketMock
@@ -216,9 +234,10 @@ describe('MosDevice: Profile 1', () => {
 		mosDevice.onRequestAllMOSObjects ((): Promise<Array<IMOSObject>> => {
 			return onRequestAllMOSObjects()
 		})
-		expect(SocketMock.instances).toHaveLength(1)
-		socketMock = SocketMock.instances[0]
-		expect(socketMock).toBeTruthy()
+		expect(SocketMock.instances).toHaveLength(3)
+		expect(SocketMock.instances[0]).toBeTruthy()
+		expect(SocketMock.instances[1]).toBeTruthy()
+		expect(SocketMock.instances[2]).toBeTruthy()
 	})
 	beforeEach(() => {
 		// SocketMock.mockClear()
@@ -283,7 +302,18 @@ describe('MosDevice: Profile 1', () => {
 
 describe('MosDevice: Profile 2', () => {
 	let mosDevice
-	let socketMock
+	let socketMockLower: SocketMock
+	let socketMockUpper: SocketMock
+	let socketMockQuery: SocketMock
+
+	let serverMockLower: ServerMock
+	let serverMockUpper: ServerMock
+	let serverMockQuery: ServerMock
+
+	let serverSocketMockLower: SocketMock
+	let serverSocketMockUpper: SocketMock
+	let serverSocketMockQuery: SocketMock
+
 	let onRequestMOSObject
 	let onRequestAllMOSObjects
 	let onCreateRunningOrder
@@ -308,8 +338,10 @@ describe('MosDevice: Profile 2', () => {
 
 	beforeAll(async () => {
 		SocketMock.mockClear()
+		ServerMock.mockClear()
 
 		mosDevice = await getMosDevice()
+
 		// Profile 1:
 		onRequestMOSObject = jest.fn()
 		onRequestAllMOSObjects = jest.fn()
@@ -410,9 +442,28 @@ describe('MosDevice: Profile 2', () => {
 			return onROSwapItems(Action, ItemID0, ItemID1)
 		})
 
-		expect(SocketMock.instances).toHaveLength(1)
-		socketMock = SocketMock.instances[0]
-		expect(socketMock).toBeTruthy()
+		expect(SocketMock.instances).toHaveLength(3)
+		socketMockLower = SocketMock.instances[0]
+		socketMockUpper = SocketMock.instances[1]
+		socketMockQuery = SocketMock.instances[2]
+		expect(socketMockLower).toBeTruthy()
+		expect(socketMockUpper).toBeTruthy()
+		expect(socketMockQuery).toBeTruthy()
+
+		expect(ServerMock.instances).toHaveLength(3)
+		serverMockLower = ServerMock.instances[0]
+		serverMockUpper = ServerMock.instances[1]
+		serverMockQuery = ServerMock.instances[2]
+		expect(serverMockLower).toBeTruthy()
+		expect(serverMockUpper).toBeTruthy()
+		expect(serverMockQuery).toBeTruthy()
+
+		// Pretend a server connects to us:
+		serverSocketMockLower = serverMockLower.mockNewConnection()
+		serverSocketMockUpper = serverMockUpper.mockNewConnection()
+		serverSocketMockQuery = serverMockQuery.mockNewConnection()
+
+		// expect(SocketMock.instances[0].connect).toHaveBeenCalledTimes(1)
 	})
 	beforeEach(() => {
 		onRequestMOSObject.mockClear()
@@ -437,6 +488,7 @@ describe('MosDevice: Profile 2', () => {
 		onRODeleteItems.mockClear()
 		onROSwapStories.mockClear()
 		onROSwapItems.mockClear()
+		
 	})
 	test('init', async () => {
 		expect(mosDevice).toBeTruthy()
@@ -444,30 +496,30 @@ describe('MosDevice: Profile 2', () => {
 	})
 	test('onCreateRunningOrder', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roCreate)
+		await fakeIncomingMessage(serverSocketMockLower, xmlData.roCreate)
 		expect(onCreateRunningOrder).toHaveBeenCalledTimes(1)
 		expect(onCreateRunningOrder.mock.calls[0][0]).toMatchObject(xmlApiData.roCreate)
 	})
 	test('onReplaceRunningOrder', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roReplace)
+		await fakeIncomingMessage(socketMockLower, xmlData.roReplace)
 		expect(onReplaceRunningOrder).toHaveBeenCalledTimes(1)
 		expect(onReplaceRunningOrder.mock.calls[0][0]).toMatchObject(xmlApiData.roReplace)
 	})
 	test('onDeleteRunningOrder', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roDelete)
+		await fakeIncomingMessage(socketMockLower, xmlData.roDelete)
 		expect(onReplaceRunningOrder).toHaveBeenCalledTimes(1)
 		expect(onReplaceRunningOrder.mock.calls[0][0]).toEqual(xmlApiData.roDelete)
 	})
 	test('onRequestRunningOrder', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roReq)
+		await fakeIncomingMessage(socketMockLower, xmlData.roReq)
 		expect(onReplaceRunningOrder).toHaveBeenCalledTimes(1)
 		expect(onReplaceRunningOrder.mock.calls[0][0]).toEqual(xmlApiData.roDelete)
 		// Check reply to socket server:
-		expect(socketMock.mockSentMessage).toHaveBeenCalledTimes(1)
-		expect(socketMock.mockSentMessage.calls[0][0]).toMatch(/<roList>.+96857485/)
+		expect(socketMockLower.mockSentMessage).toHaveBeenCalledTimes(1)
+		expect(socketMockLower.mockSentMessage.calls[0][0]).toMatch(/<roList>.+96857485/)
 	})
 	test('getRunningOrder', async () => {
 
@@ -477,7 +529,7 @@ describe('MosDevice: Profile 2', () => {
 			return getXMLReply(messageID, xmlData.roList)
 
 		})
-		socketMock.mockAddReply(mockReply)
+		socketMockLower.mockAddReply(mockReply)
 
 		let returnedObj: IMOSObject = await mosDevice.getRunningOrder(xmlApiData.roList.ID)
 
@@ -488,25 +540,25 @@ describe('MosDevice: Profile 2', () => {
 	})
 	test('onMetadataReplace', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roMetadataReplace)
+		await fakeIncomingMessage(socketMockLower, xmlData.roMetadataReplace)
 		expect(onMetadataReplace).toHaveBeenCalledTimes(1)
 		expect(onMetadataReplace.mock.calls[0][0]).toEqual(xmlApiData.roDelete)
 	})
 	test('onRunningOrderStatus', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementStat_ro)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementStat_ro)
 		expect(onRunningOrderStatus).toHaveBeenCalledTimes(1)
 		expect(onRunningOrderStatus.mock.calls[0][0]).toEqual(xmlApiData.roElementStat_ro)
 	})
 	test('onStoryStatus', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementStat_story)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementStat_story)
 		expect(onStoryStatus).toHaveBeenCalledTimes(1)
 		expect(onStoryStatus.mock.calls[0][0]).toEqual(xmlApiData.roElementStat_story)
 	})
 	test('onItemStatus', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementStat_item)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementStat_item)
 		expect(onItemStatus).toHaveBeenCalledTimes(1)
 		expect(onItemStatus.mock.calls[0][0]).toEqual(xmlApiData.roElementStat_item)
 	})
@@ -516,7 +568,7 @@ describe('MosDevice: Profile 2', () => {
 			let messageID = data.match(/<messageID>([^<]+)<\/messageID>/)[1]
 			return getXMLReply(messageID, xmlData.roAck)
 		})
-		socketMock.mockAddReply(mockReply)
+		socketMockLower.mockAddReply(mockReply)
 		let returnedAck: IMOSObject = await mosDevice.setRunningOrderStatus(xmlApiData.roElementStat_ro)
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		expect(mockReply.mock.calls[0][0]).toMatch(/<roElementStat element="RO">/)
@@ -527,7 +579,7 @@ describe('MosDevice: Profile 2', () => {
 			let messageID = data.match(/<messageID>([^<]+)<\/messageID>/)[1]
 			return getXMLReply(messageID, xmlData.roAck)
 		})
-		socketMock.mockAddReply(mockReply)
+		socketMockLower.mockAddReply(mockReply)
 		let returnedAck: IMOSObject = await mosDevice.setStoryStatus(xmlApiData.roElementStat_story)
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		expect(mockReply.mock.calls[0][0]).toMatch(/<roElementStat element="STORY">/)
@@ -538,81 +590,81 @@ describe('MosDevice: Profile 2', () => {
 			let messageID = data.match(/<messageID>([^<]+)<\/messageID>/)[1]
 			return getXMLReply(messageID, xmlData.roAck)
 		})
-		socketMock.mockAddReply(mockReply)
+		socketMockLower.mockAddReply(mockReply)
 		let returnedAck: IMOSObject = await mosDevice.setItemStatus(xmlApiData.roElementStat_item)
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		expect(mockReply.mock.calls[0][0]).toMatch(/<roElementStat element="ITEM">/)
 	})
 	test('onReadyToAir', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roReadyToAir)
+		await fakeIncomingMessage(socketMockLower, xmlData.roReadyToAir)
 		expect(onReadyToAir).toHaveBeenCalledTimes(1)
 		expect(onReadyToAir.mock.calls[0][0]).toEqual(xmlApiData.roReadyToAir)
 	})
 	test('onROInsertStories', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementAction_insert_story)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_insert_story)
 		expect(onROInsertStories).toHaveBeenCalledTimes(1)
 		expect(onROInsertStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_insert_story_Action)
 		expect(onROInsertStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_insert_story_Stories)
 	})
 	test('onROInsertItems', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementAction_insert_item)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_insert_item)
 		expect(onROInsertItems).toHaveBeenCalledTimes(1)
 		expect(onROInsertItems.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_insert_item_Action)
 		expect(onROInsertItems.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_insert_item_Items)
 	})
 	test('onROReplaceStories', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementAction_replace_story)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_replace_story)
 		expect(onROReplaceStories).toHaveBeenCalledTimes(1)
 		expect(onROReplaceStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_replace_story_Action)
 		expect(onROReplaceStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_replace_story_Stories)
 	})
 	test('onROReplaceItems', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementAction_replace_item)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_replace_item)
 		expect(onROReplaceItems).toHaveBeenCalledTimes(1)
 		expect(onROReplaceItems.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_replace_item_Action)
 		expect(onROReplaceItems.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_replace_item_Items)
 	})
 	test('onROMoveStories', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementAction_move_story)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_move_story)
 		expect(onROMoveStories).toHaveBeenCalledTimes(1)
 		expect(onROMoveStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_move_story_Action)
 		expect(onROMoveStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_move_story_Stories)
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementAction_move_stories)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_move_stories)
 		expect(onROMoveStories).toHaveBeenCalledTimes(1)
 		expect(onROMoveStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_move_stories_Action)
 		expect(onROMoveStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_move_stories_Stories)
 	})
 	test('onROMoveItems', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementAction_move_items)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_move_items)
 		expect(onROMoveItems).toHaveBeenCalledTimes(1)
 		expect(onROMoveItems.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_move_items_Action)
 		expect(onROMoveItems.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_move_items_Items)
 	})
 	test('onRODeleteStories', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementAction_delete_story)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_delete_story)
 		expect(onRODeleteStories).toHaveBeenCalledTimes(1)
 		expect(onRODeleteStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_delete_story_Action)
 		expect(onRODeleteStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_delete_story_Stories)
 	})
 	test('onRODeleteItems', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementAction_delete_items)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_delete_items)
 		expect(onRODeleteItems).toHaveBeenCalledTimes(1)
 		expect(onRODeleteItems.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_delete_items_Action)
 		expect(onRODeleteItems.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_delete_items_Items)
 	})
 	test('onROSwapStories', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementAction_swap_stories)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_swap_stories)
 		expect(onROSwapStories).toHaveBeenCalledTimes(1)
 		expect(onROSwapStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_swap_stories_Action)
 		expect(onROSwapStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_swap_stories_StoryId0)
@@ -620,7 +672,7 @@ describe('MosDevice: Profile 2', () => {
 	})
 	test('onROSwapItems', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, xmlData.roElementAction_swap_items)
+		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_swap_items)
 		expect(onROSwapItems).toHaveBeenCalledTimes(1)
 		expect(onROSwapItems.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_swap_items_Action)
 		expect(onROSwapItems.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_swap_items_ItemId0)
