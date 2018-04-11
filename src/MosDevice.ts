@@ -235,19 +235,34 @@ export class MosDevice implements IMOSDevice {
 				}).then(resolve)
 
 			} else if (key === 'roStoryMove' && typeof this._callbackOnROMoveStories === 'function') {
+				let stories = []
+
+				for(let i = 1; i < data.mos.roStoryMove.storyID.length; i++) {
+					stories.push(data.mos.roStoryMove.storyID[i])
+				}
+
 				this._callbackOnROMoveStories({
-					StoryID: data.mos.roStoryMove.roID
-				}, [
-					data.mos.roStoryMove.storyID[0],
-					data.mos.roStoryMove.storyID[1]
-				]).then(resolve)
+					RunningOrderID: data.mos.roStoryMove.roID,
+					StoryID: data.mos.roStoryMove.storyID[0]
+				}, stories).then(resolve)
 
 			} else if (key === 'roStoryDelete' && typeof this._callbackOnRODeleteStories === 'function') {
+				let stories = []
+
+				// Single story, store string in array
+				if (typeof data.mos.roStoryDelete.storyID === 'string') {
+					stories.push(data.mos.roStoryDelete.storyID)
+
+				// Multiple stories, push all to array
+				} else {
+					for(let i = 0; i < data.mos.roStoryDelete.storyID.length; i++) {
+						stories.push(data.mos.roStoryDelete.storyID[i])
+					}
+				}
+
 				this._callbackOnRODeleteStories({
 					RunningOrderID: data.mos.roStoryDelete.roID
-				}, [
-					data.mos.roStoryDelete.storyID, // TODO: Handle multiple stories
-				]).then(resolve)
+				}, stories).then(resolve)
 
 			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
