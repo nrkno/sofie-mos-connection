@@ -4,6 +4,7 @@ import { NCSServerConnection } from './connection/NCSServerConnection'
 import { MosString128 } from './dataTypes/mosString128'
 import { MosTime } from './dataTypes/mosTime'
 import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
+import { MosDuration } from './dataTypes/mosDuration'
 import { IMOSListMachInfo, IMOSDefaultActiveX } from './mosModel/0_listMachInfo'
 import { ROAck } from './mosModel/ROAck'
 import { ReqMachInfo } from './mosModel/0_reqMachInfo'
@@ -251,6 +252,40 @@ export class MosDevice implements IMOSDevice {
 					ID: data.roReadyToAir.roID,
 					Status: data.roReadyToAir.roAir
 				}).then(resolve)
+
+			} else if (key === 'roCreate' && typeof this._callbackOnCreateRunningOrder === 'function') {
+				let stories: Array<IMOSROStory> = []
+
+				for(let i = 0; i < data.roCreate.story.length; i++) {
+					let story: IMOSROStory = {
+						ID: data.roCreate.story[i].storyID,
+						Slug: data.roCreate.story[i].storySlug,
+						Items: []
+						// TODO: Add & test Number, MosExternalMetaData, Items, ObjectID, MOSID, mosAbstract, Paths, 
+						// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut, MosExternalMetaData
+					}
+					stories.push(story)
+				}
+
+				let ro: IMOSRunningOrder = {
+					ID: data.roCreate.roID,
+					Slug: data.roCreate.roSlug,
+					Stories: stories
+				}
+				if (data.roCreate.hasOwnProperty('roEdStart')) ro.EditorialStart = new MosTime(data.roCreate.roEdStart)
+				if (data.roCreate.hasOwnProperty('roEdDur')) ro.EditorialDuration = new MosDuration(data.roCreate.roEdDur)
+				if (data.roCreate.hasOwnProperty('mosExternalMetadata')){
+					// TODO: Handle an array of mosExternalMetadata
+					let meta: IMOSExternalMetaData = {
+						MosSchema: data.roCreate.mosExternalMetadata.mosSchema,
+						MosPayload: data.roCreate.mosExternalMetadata.mosPayload
+					}
+					if (data.roCreate.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = data.roCreate.mosExternalMetadata.mosScope
+					ro.MosExternalMetaData = [meta]
+				}
+				// TODO: Add & test DefaultChannel, Trigger, MacroIn, MacroOut
+
+				this._callbackOnCreateRunningOrder(ro).then(resolve)
 
 			} else if (key === 'roElementAction' && ops === 'INSERT' && typeof this._callbackOnROInsertStories === 'function') {
 				let stories: Array<IMOSROStory> = []
