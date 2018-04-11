@@ -18,14 +18,20 @@ export class NCSServerConnection {
 	// private _lastSeen: number
 	private _id: string
 	private _host: string
+	private _timeout: number
 	private _mosID: string
 
 	private _clients: {[clientID: number]: ClientDescription} = {}
 	private _callbackOnConnectionChange: () => void
 
-	constructor (id: string, host: string, mosID: string) {
+	private _heartBeatsTimer: NodeJS.Timer
+	private _heartBeatsDelay: number
+
+	constructor (id: string, host: string, timeout: number, mosID: string) {
 		this._id = id
 		this._host = host
+		this._timeout = timeout | 5000
+		this._heartBeatsDelay = this._timeout / 2
 		this._mosID = mosID
 		this._connected = false
 	}
@@ -38,7 +44,7 @@ export class NCSServerConnection {
 			clientDescription: clientDescription
 		}
 	}
-	
+
 	createClient (clientID: number, port: number, clientDescription: ConnectionType) {
 		this.registerOutgoingConnection(clientID, new MosSocketClient(this._host, port, clientDescription), clientDescription)
 	}
@@ -54,17 +60,14 @@ export class NCSServerConnection {
 			// Connect client
 			console.log(`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
 			this._clients[i].client.connect()
-
-			// Send heartbeat and check connection
-			let heartbeat = new HeartBeat()
-			heartbeat.port = this._clients[i].clientDescription
-			this.executeCommand(heartbeat).then((data) => {
-				console.log(`Heartbeat on ${this._clients[i].clientDescription} received.`, data)
-			})
 		}
 		this._connected = true
 
-		if(this._callbackOnConnectionChange) this._callbackOnConnectionChange()
+		// Send heartbeat and check connection
+		this._heartBeatsTimer = global.setInterval(() => this._sendHeartBeats(), this._heartBeatsDelay)
+
+		// Emit to _callbackOnConnectionChange
+		if (this._callbackOnConnectionChange) this._callbackOnConnectionChange()
 	}
 
 	executeCommand (message: MosMessage): Promise<any> {
@@ -78,14 +81,14 @@ export class NCSServerConnection {
 		// Example: Port based on message type
 		if (message.port === 'lower') {
 			clients = this.lowerPortClients
-		} else if(message.port === 'upper') {
+		} else if (message.port === 'upper') {
 			clients = this.upperPortClients
 		} else {
 			clients = this.queryPortClients
 		}
 
 		return new Promise((resolve, reject) => {
-			if(clients && clients.length) {
+			if (clients && clients.length) {
 				clients[0].queueCommand(message, (data) => {
 					resolve(data)
 				})
@@ -142,11 +145,22 @@ export class NCSServerConnection {
 	dispose (): Promise<void> {
 		return	new Promise((resolveDispose) => {
 			for (let i in this._clients) {
-				this.removeClient(i)
+				this.removeClient(parseInt(i, 10))
 			}
+			global.clearInterval(this._heartBeatsTimer)
 			this._connected = false
-			if(this._callbackOnConnectionChange) this._callbackOnConnectionChange()
+			if (this._callbackOnConnectionChange) this._callbackOnConnectionChange()
 			resolveDispose()
 		})
+	}
+
+	private _sendHeartBeats (): void {
+		for (let i in this._clients) {
+			let heartbeat = new HeartBeat()
+			heartbeat.port = this._clients[i].clientDescription
+			this.executeCommand(heartbeat).then((data) => {
+				console.log(`Heartbeat on ${this._clients[i].clientDescription} received.`, data)
+			})
+		}
 	}
 }

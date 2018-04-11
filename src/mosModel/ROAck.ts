@@ -15,10 +15,8 @@ export class ROAck extends MosMessage implements IMOSROAck {
 	Stories: Array<IMOSROAckStory>
 
   /** */
-	constructor (ID: MosString128, Status: string) {
+	constructor () {
 		super()
-		this.ID = ID
-		this.Status = new MosString128(Status)
 	}
 
   /** */

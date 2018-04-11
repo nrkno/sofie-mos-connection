@@ -15,17 +15,17 @@ export abstract class MosMessage {
 	prepare () {
 		if (!this.mosID) throw new Error(`Can't prepare message: mosID missing`)
 		if (!this.ncsID) throw new Error(`Can't prepare message: ncsID missing`)
-		//if (!this.port) throw new Error(`Can't prepare message: port missing`)
+		// if (!this.port) throw new Error(`Can't prepare message: port missing`)
 		this._messageID = MosMessage.messageID
 	}
 
   /** */
-	get messageID(): number {
+	get messageID (): number {
 		return this._messageID
 	}
 
   /** */
-	toString(): string {
+	toString (): string {
 		let xml = XMLBuilder.create('mos', undefined, undefined, {
 			headless: true
 		})
@@ -38,10 +38,10 @@ export abstract class MosMessage {
 	}
 
   /** */
-	protected abstract get messageXMLBlocks(): XMLBuilder.XMLElementOrXMLNode
+	protected abstract get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode
 
    /**  */
-	private static get messageID(): number {
+	private static get messageID (): number {
 	// increments and returns a signed 32-bit int counting from 1, resetting to 1 when wrapping
 		return MosMessage._messageID = MosMessage._messageID >= MosMessage.MAX_MESSAGE_ID ? 1 : MosMessage._messageID + 1
 	}

@@ -48,7 +48,7 @@ export class MosConnection implements IMosConnection {
 			// connect to mos device
 			// Store MosSocketClients instead of Sockets in Server?
 			// Create MosSocketClients in construct?
-			let primary = new NCSServerConnection(connectionOptions.primary.id, connectionOptions.primary.host, this._conf.mosID)
+			let primary = new NCSServerConnection(connectionOptions.primary.id, connectionOptions.primary.host, connectionOptions.primary.timeout, this._conf.mosID)
 			let secondary = null
 			this._ncsConnections[connectionOptions.primary.host] = primary 
 
@@ -56,7 +56,7 @@ export class MosConnection implements IMosConnection {
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
 
 			if (connectionOptions.secondary) {
-				secondary = new NCSServerConnection(connectionOptions.secondary.id, connectionOptions.secondary.host, this._conf.mosID)
+				secondary = new NCSServerConnection(connectionOptions.secondary.id, connectionOptions.secondary.host, connectionOptions.secondary.timeout, this._conf.mosID)
 				this._ncsConnections[connectionOptions.secondary.host] = secondary 
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')

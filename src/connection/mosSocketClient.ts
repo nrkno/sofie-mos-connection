@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
-import {Socket} from 'net'
-import {SocketConnectionEvent} from './socketConnection'
-import {MosMessage} from '../mosModel/MosMessage'
+import { Socket } from 'net'
+import { SocketConnectionEvent } from './socketConnection'
+import { MosMessage } from '../mosModel/MosMessage'
 import * as parser from 'xml2json'
 const iconv = require('iconv-lite')
 
@@ -50,19 +50,19 @@ export class MosSocketClient extends EventEmitter {
 	}
 
   /** */
-	connect(): void {
-		//prevents manipulation of active socket
+	connect (): void {
+		// prevents manipulation of active socket
 		if (!this.connected) {
-			//throthling attempts
-			if (!this._lastConnectionAttempt || (Date.now() - this._lastConnectionAttempt) >= this._reconnectDelay) { //!_lastReconnectionAttempt (means first attempt) OR time > _reconnectionDelay since last attempt
-				//recereates client if new attempt
+			// throthling attempts
+			if (!this._lastConnectionAttempt || (Date.now() - this._lastConnectionAttempt) >= this._reconnectDelay) { // !_lastReconnectionAttempt (means first attempt) OR time > _reconnectionDelay since last attempt
+				// recereates client if new attempt
 				if (this._client && this._client.connecting) {
 					this._client.destroy()
 					this._client.removeAllListeners()
 					delete this._client
 				}
 
-				//(re)creates client, either on first run or new attempt
+				// (re)creates client, either on first run or new attempt
 				if (!this._client) {
 					this._client = new Socket()
 					this._client.on('close', (hadError: boolean) => this._onClose(hadError))
@@ -71,7 +71,7 @@ export class MosSocketClient extends EventEmitter {
 					this._client.on('error', this._onError)
 				}
 
-				//connects
+				// connects
 				console.log(new Date(), `Socket ${this._description} attempting connection`)
 				console.log('port', this._port, 'host', this._host)
 				this._client.setEncoding('ucs2')
@@ -80,7 +80,7 @@ export class MosSocketClient extends EventEmitter {
 				this._lastConnectionAttempt = Date.now()
 			}
 
-			//sets timer to retry when needed
+			// sets timer to retry when needed
 			if (!this._connectionAttemptTimer) {
 				this._connectionAttemptTimer = global.setInterval(this._autoReconnectionAttempt, this._reconnectDelay)
 			}
@@ -90,12 +90,31 @@ export class MosSocketClient extends EventEmitter {
 	}
 
   /** */
-	disconnect(): void {
+	disconnect (): void {
 		this.dispose()
 	}
 
+	queueCommand (message: MosMessage, cb: any): void {
+		let that = this
+
+		if (this._ready) {
+			this._ready = false
+			this._queue.push(cb)
+			this.executeCommand(message)
+		} else {
+			let retry = setInterval(() => {
+				if (that._ready) {
+					clearInterval(retry)
+					that._ready = false
+					that._queue.push(cb)
+					that.executeCommand(message)
+				}
+			}, 200)
+		}
+	}
+
   /** */
-	get host(): string {
+	get host (): string {
 		if (this._client) {
 			return this._host
 		}
@@ -103,7 +122,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 
   /** */
-	get port(): number {
+	get port (): number {
 		if (this._client) {
 			return this._port
 		}
@@ -111,7 +130,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 
   /** */
-	dispose(): void {
+	dispose (): void {
 		this._ready = false
 		this._shouldBeConnected = false
 		this._clearConnectionAttemptTimer()
@@ -137,14 +156,14 @@ export class MosSocketClient extends EventEmitter {
 	}
 
   /** */
-	private get connected(): boolean {
+	private get connected (): boolean {
 		return this._connected
 	}
 
   /** */
 	private executeCommand (message: MosMessage): void {
 
-		message.prepare() //@todo, is prepared? is sent already? logic needed
+		message.prepare() // @todo, is prepared? is sent already? logic needed
 
 		let buf = iconv.encode(message.toString(), 'utf16-be')
 
@@ -155,35 +174,16 @@ export class MosSocketClient extends EventEmitter {
 		console.log(`MOS command sent from ${this._description} : ${buf}\r\nbytes sent: ${this._client.bytesWritten}`)
 	}
 
-	queueCommand (message: MosMessage, cb: Promise<any>): void {
-		var that = this
-
-		if(this._ready){
-			this._ready = false
-			this._queue.push(cb)
-			this.executeCommand(message)
-		} else {
-			var retry = setInterval(function(){
-				if(that._ready){
-					clearInterval(retry)
-					that._ready = false
-					that._queue.push(cb)
-					that.executeCommand(message)
-				}
-			}, 200)
-		}
-	}
-
   /** */
-	private _autoReconnectionAttempt(): void {
+	private _autoReconnectionAttempt (): void {
 		if (this._autoReconnect) {
-			if (this._reconnectAttempts > 0) {								//	no reconnection if no valid reconnectionAttemps is set
-				if ((this._reconnectAttempt >= this._reconnectAttempts)) {	//if current attempt is not less than max attempts
-					//reset reconnection behaviour
+			if (this._reconnectAttempts > 0) {								// no reconnection if no valid reconnectionAttemps is set
+				if ((this._reconnectAttempt >= this._reconnectAttempts)) {	// if current attempt is not less than max attempts
+					// reset reconnection behaviour
 					this._clearConnectionAttemptTimer()
 					return
 				}
-				//new attempt if not allready connected
+				// new attempt if not allready connected
 				if (!this.connected) {
 					this._reconnectAttempt++
 					this.connect()
@@ -193,9 +193,9 @@ export class MosSocketClient extends EventEmitter {
 	}
 
 	/** */
-	private _clearConnectionAttemptTimer(): void {
-		//@todo create event telling reconnection ended with result: true/false
-		//only if reconnection interval is true
+	private _clearConnectionAttemptTimer (): void {
+		// @todo create event telling reconnection ended with result: true/false
+		// only if reconnection interval is true
 		this._reconnectAttempt = 0
 		global.clearInterval(this._connectionAttemptTimer)
 		delete this._connectionAttemptTimer
@@ -211,7 +211,7 @@ export class MosSocketClient extends EventEmitter {
 	private _onConnected () {
 		this._client.emit(SocketConnectionEvent.ALIVE)
 		global.clearInterval(this._connectionAttemptTimer)
-		//this._clearConnectionAttemptTimer()
+		// this._clearConnectionAttemptTimer()
 		this.connected = true
 	}
 
@@ -221,14 +221,16 @@ export class MosSocketClient extends EventEmitter {
 		data = Buffer.from(data, 'ucs2').toString()
 		console.log(`${this._description} Received: ${data}`)
 
-		if(this._queue && this._queue.length) {
-			var cb = this._queue.shift()
+		if (this._queue && this._queue.length) {
+			let cb = this._queue.shift()
 			// TODO: Parse XML to JSON
-			cb(parser.toJson(data, {
-				object: true,
-				coerce: true,
-				trim: true
-			}))
+			if (typeof cb === 'function') {
+				cb(parser.toJson(data, {
+					'object': true,
+					coerce: true,
+					trim: true
+				}))
+			}
 		}
 
 		this._ready = true
@@ -236,7 +238,7 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	private _onError (error: Error) {
-		//dispatch error!!!!!
+		// dispatch error!!!!!
 		console.log(`Socket event error: ${error.message}`)
 	}
 
