@@ -287,6 +287,10 @@ export class MosDevice implements IMOSDevice {
 
 				this._callbackOnCreateRunningOrder(ro).then(resolve)
 
+			} else if (key === 'roDelete' && typeof this._callbackOnDeleteRunningOrder === 'function') {
+				// TODO: Change runningOrderId to RunningOrderID in interface?
+				this._callbackOnDeleteRunningOrder(data.roDelete.roID).then(resolve)
+
 			} else if (key === 'roStorySend' && typeof this._callbackOnROInsertStories === 'function') {
 				let action: IMOSStoryAction = {
 					RunningOrderID: data.roStorySend.roID,
