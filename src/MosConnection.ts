@@ -26,7 +26,7 @@ export class MosConnection implements IMosConnection {
 	private _querySocketServer: MosSocketServer
 	private _servers: {[host: string]: Server} = {}
 	private _ncsConnections: {[host: string]: NCSServerConnection} = {}
-	private _mosDevice: MosDevice
+	private _mosDevices: {[mosID: string]: MosDevice} = {}
 
 	private _isListening: Promise<boolean[]>
 
@@ -53,30 +53,41 @@ export class MosConnection implements IMosConnection {
 			// connect to mos device
 			// Store MosSocketClients instead of Sockets in Server?
 			// Create MosSocketClients in construct?
-			let primary = new NCSServerConnection(connectionOptions.primary.id, connectionOptions.primary.host, connectionOptions.primary.timeout, this._conf.mosID, this._debug)
+			let primary = new NCSServerConnection(
+				connectionOptions.primary.id,
+				connectionOptions.primary.host,
+				this._conf.mosID,
+				connectionOptions.primary.timeout,
+				this._debug
+			)
 			let secondary = null
-			this._ncsConnections[connectionOptions.primary.host] = primary 
+			this._ncsConnections[connectionOptions.primary.host] = primary
 
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
 
 			if (connectionOptions.secondary) {
-				secondary = new NCSServerConnection(connectionOptions.secondary.id, connectionOptions.secondary.host, connectionOptions.secondary.timeout, this._conf.mosID, this._debug)
-				this._ncsConnections[connectionOptions.secondary.host] = secondary 
+				secondary = new NCSServerConnection(
+					connectionOptions.secondary.id,
+					connectionOptions.secondary.host,
+					this._conf.mosID,
+					connectionOptions.secondary.timeout,
+					this._debug
+				)
+				this._ncsConnections[connectionOptions.secondary.host] = secondary
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
 			}
 
 			// initialize mosDevice:
 			let connectionConfig = this._conf
-			this._mosDevice = new MosDevice(connectionConfig, primary, secondary) // pseudo-code here, put something real
-			this._mosDevice.connect()
+			let mosDevice = new MosDevice(connectionConfig, primary, secondary)
+			this._mosDevices[mosDevice.id] = mosDevice
+			mosDevice.connect()
 
 			// emit to .onConnection
-			if (this._onconnection) this._onconnection(this._mosDevice)
-
-			resolve(this._mosDevice)
-
+			if (this._onconnection) this._onconnection(mosDevice)
+			resolve(mosDevice)
 		})
 	}
 	onConnection (cb: (mosDevice: IMOSDevice) => void) {
@@ -156,10 +167,10 @@ export class MosConnection implements IMosConnection {
 
 	/** */
 	private _initiateIncomingConnections (): Promise<boolean[]> {
-		//console.log('_initiateIncomingConnections')
+		// console.log('_initiateIncomingConnections')
 		// shouldn't accept connections, so won't rig socket servers
 		if (!this._conf.acceptsConnections) {
-			//console.log('reject')
+			// console.log('reject')
 			return Promise.reject(false)
 		}
 

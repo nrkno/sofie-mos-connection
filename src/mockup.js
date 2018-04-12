@@ -17,11 +17,11 @@ mos.isListening
   new Promise((listeningResolve, listeningReject) => {
     let incoming1 = new Socket()
     incoming1.once('connect', () => {
-      console.log('client-side connected')
+      // console.log('client-side connected')
       // incoming1.write('ping')
     })
     incoming1.once('data', (b) => {
-      console.log('client-side got data: ', b.toString())
+      // console.log('client-side got data: ', b.toString())
       listeningResolve() // close and bye
     })
     incoming1.connect(10541)
