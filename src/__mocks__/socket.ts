@@ -115,7 +115,7 @@ export class SocketMock extends EventEmitter implements Socket {
 					msg = cb(data)
 				}
 				if (msg !== false) this.mockReceiveMessage(msg)
-			},5)
+			},2)
 		}
 	}
 	mockReceiveMessage (msg: string | Buffer) {
@@ -136,7 +136,7 @@ export class SocketMock extends EventEmitter implements Socket {
 				} else {
 					setTimeout(() => {
 						check()
-					},5)
+					},2)
 				}
 			}
 			check()
