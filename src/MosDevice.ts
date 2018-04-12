@@ -241,15 +241,19 @@ export class MosDevice implements IMOSDevice {
 
 	routeData (data: any): Promise<any> {
 		if (data && data.hasOwnProperty('mos')) data = data['mos']
-		let keys = Object.keys(data)
-		let key = keys[3]
-		let ops = (key === 'roElementAction' ? data.roElementAction.operation : null)
+		// let keys = Object.keys(data)
+		// let key = keys[3]
+		// let ops = (key === 'roElementAction' ? data.roElementAction.operation : null)
 
+		// if (key === 1) {
+
+		// }
+		// console.log('keys', keys)
 		return new Promise((resolve) => {
-			if (this._debug){
+			if (this._debug) {
 				console.log('parsedData', data)
-				console.log('parsedTest', keys)
-				console.log('key', key, 'ops', ops)
+				// console.log('parsedTest', keys)
+				console.log('keys', Object.keys(data))
 			}
 
 			// Route and format data
@@ -261,7 +265,7 @@ export class MosDevice implements IMOSDevice {
 			// Profile 1
 			// TODO: _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null>
 			// TODO: _callbackOnRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
-			if (key === 'roCreate' && typeof this._callbackOnCreateRunningOrder === 'function') {
+			if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
 				let stories: Array<IMOSROStory> = []
 
 				for (let i = 0; i < data.roCreate.story.length; i++) {
@@ -292,12 +296,13 @@ export class MosDevice implements IMOSDevice {
 					ro.MosExternalMetaData = [meta]
 				}
 				// TODO: Add & test DefaultChannel, Trigger, MacroIn, MacroOut
+				// console.log(ro)
 
 				this._callbackOnCreateRunningOrder(ro).then(resolve)
 
 			// TODO: _callbackOnReplaceRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
 
-			} else if (key === 'roDelete' && typeof this._callbackOnDeleteRunningOrder === 'function') {
+			} else if (data.roDelete && typeof this._callbackOnDeleteRunningOrder === 'function') {
 				// TODO: Change runningOrderId to RunningOrderID in interface?
 				this._callbackOnDeleteRunningOrder(data.roDelete.roID).then(resolve)
 
@@ -307,13 +312,13 @@ export class MosDevice implements IMOSDevice {
 			// TODO: _callbackOnStoryStatus: (status: IMOSStoryStatus) => Promise<IMOSROAck>
 			// TODO: _callbackOnItemStatus: (status: IMOSItemStatus) => Promise<IMOSROAck>
 
-			} else if (key === 'roReadyToAir' && typeof this._callbackOnReadyToAir === 'function') {
+			} else if (data.roReadyToAir && typeof this._callbackOnReadyToAir === 'function') {
 				this._callbackOnReadyToAir({
 					ID: data.roReadyToAir.roID,
 					Status: data.roReadyToAir.roAir
 				}).then(resolve)
 
-			} else if (key === 'roStorySend' && typeof this._callbackOnROInsertStories === 'function') {
+			} else if (data.roStorySend && typeof this._callbackOnROInsertStories === 'function') {
 				let action: IMOSStoryAction = {
 					RunningOrderID: data.roStorySend.roID,
 					StoryID: data.roStorySend.storyID
@@ -340,7 +345,10 @@ export class MosDevice implements IMOSDevice {
 
 				this._callbackOnROInsertStories(action, stories).then(resolve)
 
-			} else if (key === 'roElementAction' && ops === 'INSERT' && typeof this._callbackOnROInsertStories === 'function') {
+			} else if (data.roElementAction &&
+				data.roElementAction.operation === 'INSERT' &&
+				typeof this._callbackOnROInsertStories === 'function'
+			) {
 				let stories: Array<IMOSROStory> = []
 
 				this._callbackOnROInsertStories({
@@ -352,7 +360,10 @@ export class MosDevice implements IMOSDevice {
 			// TODO: _callbackOnROReplaceStories: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
 			// TODO: _callbackOnROReplaceItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
 
-			} else if (key === 'roElementAction' && ops === 'MOVE' && typeof this._callbackOnROMoveStories === 'function') {
+			} else if (data.roElementAction &&
+				data.roElementAction.operation === 'MOVE'
+				&& typeof this._callbackOnROMoveStories === 'function'
+			) {
 				let stories: Array<MosString128> = []
 
 				// Single story, store string in array
@@ -376,7 +387,10 @@ export class MosDevice implements IMOSDevice {
 			// TODO: _callbackOnROMoveItems: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>
 			// TODO: _callbackOnRODeleteStories: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
 
-			} else if (key === 'roElementAction' && ops === 'DELETE' && typeof this._callbackOnRODeleteStories === 'function') {
+			} else if (data.roElementAction &&
+				data.roElementAction.operation === 'DELETE' &&
+				typeof this._callbackOnRODeleteStories === 'function'
+			) {
 				let stories: Array<MosString128> = []
 
 				// Single story, store string in array
