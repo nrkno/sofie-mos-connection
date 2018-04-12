@@ -10,6 +10,9 @@ import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription } from './connection/socketConnection'
 import { Server } from './connection/Server'
 import { NCSServerConnection } from './connection/NCSServerConnection'
+import * as parser from 'xml2json'
+import { ROAck } from './mosModel/ROAck'
+import { MosMessage } from './mosModel/MosMessage'
 const iconv = require('iconv-lite')
 
 export class MosConnection implements IMosConnection {
@@ -27,6 +30,7 @@ export class MosConnection implements IMosConnection {
 	private _servers: {[host: string]: Server} = {}
 	private _ncsConnections: {[host: string]: NCSServerConnection} = {}
 	private _mosDevices: {[mosID: string]: MosDevice} = {}
+	private _tmp: string = ''
 
 	private _isListening: Promise<boolean[]>
 
@@ -209,9 +213,56 @@ export class MosConnection implements IMosConnection {
 			if (this._debug) console.log('Socket Drain')
 		})
 		e.socket.on('data', (data: Buffer) => {
-			// let str = Buffer.from(data, 'ucs2').toString()
 			let str = iconv.decode(data, 'utf16-be')
-			this._mosDevice.onData(e, socketID, str)
+
+			if (this._debug) console.log(`Socket got data (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${data}`)
+
+			let parsed: any = null
+			let parseOptions = {
+				object: true,
+				coerce: true,
+				trim: true
+			}
+			let firstMatch = '<mos>' // <mos>
+			let first = str.substr(0, firstMatch.length)
+			let lastMatch = '</mos>\r\n' // </mos>
+			let last = str.substr(-lastMatch.length)
+
+			// Data ready to be parsed
+			if (first === firstMatch && last === lastMatch) {
+				// @ts-ignore xml2json says arguments are wrong, but its not.
+				parsed = parser.toJson(data, parseOptions)
+
+			// Last chunk, ready to parse with saved data
+			} else if (last === lastMatch) {
+				// @ts-ignore xml2json says arguments are wrong, but its not.
+				parsed = parser.toJson(e.chunks + data, parseOptions)
+				e.chunks = ''
+
+			// Chunk, save for later
+			} else {
+				if (e.chunks === undefined) e.chunks = ''
+				e.chunks += data
+			}
+
+			if (parsed !== null) {
+				let mosDevice = this._mosDevices[parsed.mos.mosID]
+
+				if (mosDevice) {
+					this._mosDevices[parsed.mos.mosID].routeData(parsed).then((message: MosMessage | string) => {
+						if (typeof message !== 'string') {
+							message.ncsID = parsed.mos.ncsID
+							message.mosID = parsed.mos.mosID
+							message.prepare(parsed.mos.mosMsgNum)
+							message = message.toString()
+						}
+						let buf = iconv.encode(message, 'utf16-be')
+						e.socket.write(buf, 'usc2')
+					})
+				} else {
+					// TODO: Handle missing mosDevice
+				}
+			}
 		})
 		e.socket.on('error', (error: Error) => {
 			if (this._debug) console.log(`Socket had error (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${error}`)
