@@ -10,7 +10,8 @@ import { ServerMock } from '../__mocks__/server'
 
 import { xmlData, xmlApiData } from './testData.spec'
 
-require('iconv-lite').encodingExists('utf16-be')
+const iconv = require('iconv-lite')
+iconv.encodingExists('utf16-be')
 
 // breaks net.Server, disabled for now
 // jest.mock('net')
@@ -45,12 +46,12 @@ function fakeIncomingMessage (socketMockLower, message: string): Promise<void> {
 	return Promise.resolve()
 }
 function getXMLReply (messageId, content): string {
-	return'<mos>' +
+	return iconv.encode('<mos>' +
 		'<mosID>aircache.newscenter.com</mosID>' +
 		'<ncsID>ncs.newscenter.com</ncsID>' +
 		'<messageID>' + messageId + '</messageID>' +
 		content +
-		'</mos>'
+		'</mos>\r\n', 'utf16-be')
 }
 function getMosObj (): IMOSObject {
 	return {
@@ -498,6 +499,7 @@ describe('MosDevice: Profile 2', () => {
 	})
 	test('onCreateRunningOrder', async () => {
 		// Fake incoming message on socket:
+
 		await fakeIncomingMessage(serverSocketMockLower, xmlData.roCreate)
 		expect(onCreateRunningOrder).toHaveBeenCalledTimes(1)
 		expect(onCreateRunningOrder.mock.calls[0][0]).toMatchObject(xmlApiData.roCreate)

@@ -189,10 +189,12 @@ export class MosDevice implements IMOSDevice {
 			coerce: true,
 			trim: true
 		}
-		let first = data.substr(0, 10)
-		let firstMatch = '\u0000<\u0000m\u0000o\u0000s\u0000>' // <mos>
-		let last = data.substr(data.length - 15)
-		let lastMatch = '<\u0000/\u0000m\u0000o\u0000s\u0000>\u0000\r\u0000\n' // </mos>
+		let firstMatch = '<mos>' // <mos>
+		let first = data.substr(0, firstMatch.length)
+		let lastMatch = '</mos>\r\n' // </mos>
+		let last = data.substr(-lastMatch.length)
+
+		// console.log(first)
 
 		// Data ready to be parsed
 		if (first === firstMatch && last === lastMatch) {
@@ -262,7 +264,7 @@ export class MosDevice implements IMOSDevice {
 			if (key === 'roCreate' && typeof this._callbackOnCreateRunningOrder === 'function') {
 				let stories: Array<IMOSROStory> = []
 
-				for(let i = 0; i < data.roCreate.story.length; i++) {
+				for (let i = 0; i < data.roCreate.story.length; i++) {
 					let story: IMOSROStory = {
 						ID: data.roCreate.story[i].storyID,
 						Slug: data.roCreate.story[i].storySlug,
@@ -280,7 +282,7 @@ export class MosDevice implements IMOSDevice {
 				}
 				if (data.roCreate.hasOwnProperty('roEdStart')) ro.EditorialStart = new MosTime(data.roCreate.roEdStart)
 				if (data.roCreate.hasOwnProperty('roEdDur')) ro.EditorialDuration = new MosDuration(data.roCreate.roEdDur)
-				if (data.roCreate.hasOwnProperty('mosExternalMetadata')){
+				if (data.roCreate.hasOwnProperty('mosExternalMetadata')) {
 					// TODO: Handle an array of mosExternalMetadata
 					let meta: IMOSExternalMetaData = {
 						MosSchema: data.roCreate.mosExternalMetadata.mosSchema,

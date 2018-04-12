@@ -10,6 +10,7 @@ import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription } from './connection/socketConnection'
 import { Server } from './connection/Server'
 import { NCSServerConnection } from './connection/NCSServerConnection'
+const iconv = require('iconv-lite')
 
 export class MosConnection implements IMosConnection {
 	static CONNECTION_PORT_LOWER: number = 10540
@@ -196,8 +197,9 @@ export class MosConnection implements IMosConnection {
 		e.socket.on('drain', () => {
 			if (this._debug) console.log('Socket Drain')
 		})
-		e.socket.on('data', (data: string) => {
-			let str = Buffer.from(data, 'ucs2').toString()
+		e.socket.on('data', (data: Buffer) => {
+			// let str = Buffer.from(data, 'ucs2').toString()
+			let str = iconv.decode(data, 'utf16-be')
 			this._mosDevice.onData(e, socketID, str)
 		})
 		e.socket.on('error', (error: Error) => {

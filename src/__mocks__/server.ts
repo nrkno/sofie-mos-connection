@@ -65,7 +65,7 @@ export class ServerMock extends EventEmitter implements Server {
 	// Mock methods:
 	mockNewConnection () {
 		// "Someone has connected"
-		console.log('mock connection')
+		// console.log('mock connection')
 		let socket = new SocketMock()
 		socket.on('data', (d) => {
 			this.emit('data')
