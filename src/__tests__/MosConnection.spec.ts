@@ -655,7 +655,7 @@ describe('MosDevice: Profile 2', () => {
 	})
 	test('onRODeleteStories', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_delete_story)
+		await fakeIncomingMessage(serverSocketMockLower, xmlData.roElementAction_delete_story)
 		expect(onRODeleteStories).toHaveBeenCalledTimes(1)
 		expect(onRODeleteStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_delete_story_Action)
 		expect(onRODeleteStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_delete_story_Stories)

@@ -355,20 +355,20 @@ export class MosDevice implements IMOSDevice {
 			) {
 				let stories: Array<MosString128> = []
 
-				// Single story, store string in array
-				if (typeof data.roElementAction.element_source.storyID === 'string') {
-					stories.push(data.roElementAction.storyID)
-
 				// Multiple stories, push all to array
-				} else {
+				if (data.roElementAction.element_source.storyID instanceof Array) {
 					for (let i = 0; i < data.roElementAction.element_source.storyID.length; i++) {
-						stories.push(data.roElementAction.element_source.storyID[i])
+						stories.push(new MosString128(data.roElementAction.element_source.storyID[i]))
 					}
+
+				// Single story, store string in array
+				} else {
+					stories.push(new MosString128(data.roElementAction.element_source.storyID))
 				}
 
 				this._callbackOnRODeleteStories({
-					RunningOrderID: data.roElementAction.roID
-				}, [data.roElementAction.element_source.storyID]).then((resp: IMOSROAck) => {
+					RunningOrderID: new MosString128(data.roElementAction.roID)
+				}, stories).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
 					ack.ID = resp.ID
 					ack.Status = resp.Status
