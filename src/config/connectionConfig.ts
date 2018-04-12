@@ -10,6 +10,7 @@ export interface IConnectionConfig {
 
 /** */
 export interface IProfiles {
+	[key: string]: boolean | undefined
 	'0': boolean
 	'1'?: boolean
 	'2'?: boolean

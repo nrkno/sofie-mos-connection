@@ -28,10 +28,10 @@ export class NCSServerConnection {
 	private _heartBeatsTimer: NodeJS.Timer
 	private _heartBeatsDelay: number
 
-	constructor (id: string, host: string, timeout: number, mosID: string, debug?: boolean) {
+	constructor (id: string, host: string, timeout: number = 5000, mosID: string, debug?: boolean) {
 		this._id = id
 		this._host = host
-		this._timeout = timeout | 5000
+		this._timeout = timeout
 		this._heartBeatsDelay = this._timeout / 2
 		this._mosID = mosID
 		this._connected = false

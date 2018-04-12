@@ -102,7 +102,7 @@ export class MosDevice implements IMOSDevice {
 
 	private _tmp: string = ''
 
-constructor (
+	constructor (
 		connectionConfig: IConnectionConfig,
 		primaryConnection: NCSServerConnection,
 		secondaryConnection: NCSServerConnection | null
@@ -115,7 +115,7 @@ constructor (
 		this.hwRev = new MosString128('0.1') // empty string returnes <hwRev/>
 		this.swRev = new MosString128('0.1')
 		this.DOM = new MosTime()
-	this.SN = new MosString128('927748927')
+		this.SN = new MosString128('927748927')
 		this.ID = new MosString128(connectionConfig ? connectionConfig.mosID : '')
 		this.time = new MosTime()
 		this.opTime = new MosTime()
@@ -135,7 +135,7 @@ constructor (
 
 		this._primaryConnection = primaryConnection
 		this._primaryConnection.onConnectionChange(() => this.emitConnectionChange())
-	this._currentConnection = this._primaryConnection
+		this._currentConnection = this._primaryConnection
 
 		if (secondaryConnection) {
 			this._secondaryConnection = secondaryConnection
@@ -144,8 +144,8 @@ constructor (
 	}
 
 	get id (): string {
-	return this._id
-}
+		return this._id
+	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
 		let root = XMLBuilder.create('listMachInfo') // config headless
