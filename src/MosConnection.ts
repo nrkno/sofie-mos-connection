@@ -30,7 +30,6 @@ export class MosConnection implements IMosConnection {
 	private _servers: {[host: string]: Server} = {}
 	private _ncsConnections: {[host: string]: NCSServerConnection} = {}
 	private _mosDevices: {[mosID: string]: MosDevice} = {}
-	private _tmp: string = ''
 
 	private _isListening: Promise<boolean[]>
 
@@ -159,6 +158,7 @@ export class MosConnection implements IMosConnection {
 		if (this.isCompliant) {
 			let profiles: string[] = []
 			for (let nextSocketID in this._conf.profiles) {
+				// @ts-ignore will fix this correctly later
 				if (this._conf.profiles[nextSocketID] === true) {
 					profiles.push(nextSocketID)
 				}
@@ -188,7 +188,7 @@ export class MosConnection implements IMosConnection {
 			this._upperSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 			this._querySocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 
-			//console.log('listen on all ports')
+			// console.log('listen on all ports')
 			Promise.all(
 				[
 					this._lowerSocketServer.listen(),
@@ -244,23 +244,43 @@ export class MosConnection implements IMosConnection {
 				if (e.chunks === undefined) e.chunks = ''
 				e.chunks += data
 			}
-
 			if (parsed !== null) {
 				let mosDevice = this._mosDevices[parsed.mos.mosID]
 
+				let mosMessageId: number = parsed.mos.messageID // is this correct? (needs to be verified) /Johan
+				let ncsID = parsed.mos.ncsID
+				let mosID = parsed.mos.mosID
+
+				let sendReply = (message: MosMessage) => {
+					message.ncsID = ncsID
+					message.mosID = mosID
+					message.prepare(mosMessageId)
+					let msgStr: string = message.toString()
+					let buf = iconv.encode(msgStr, 'utf16-be')
+					console.log('SEND REPLY', mosMessageId)
+					e.socket.write(buf, 'usc2')
+				}
+
 				if (mosDevice) {
-					this._mosDevices[parsed.mos.mosID].routeData(parsed).then((message: MosMessage | string) => {
-						if (typeof message !== 'string') {
-							message.ncsID = parsed.mos.ncsID
-							message.mosID = parsed.mos.mosID
-							message.prepare(parsed.mos.mosMsgNum)
-							message = message.toString()
+					mosDevice.routeData(parsed).then((message: MosMessage) => {
+						sendReply(message)
+					}).catch((err: Error | MosMessage) => {
+						// Something went wrong
+						if (err instanceof MosMessage) {
+							sendReply(err)
+						} else {
+							// Unknown / internal error
+							// Log error:
+							console.log(err)
+							// reply with NACK:
+							// TODO: implement ACK
+							// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
 						}
-						let buf = iconv.encode(message, 'utf16-be')
-						e.socket.write(buf, 'usc2')
+						// console.log(err)
 					})
 				} else {
 					// TODO: Handle missing mosDevice
+					// should reply with a NACK
 				}
 			}
 		})

@@ -554,13 +554,13 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnROStory = cb
 	}
 
-	private _parseIMOSROStory(data: Array<any>): Array<IMOSROStory> {
-		console.log(data)
+	private _parseIMOSROStory (data: Array<any>): Array<IMOSROStory> {
+		// console.log(data)
 		let stories: Array<IMOSROStory> = []
 		let items: Array<object> = []
 
 		for (let i = 0; i < data.length; i++) {
-			console.log(data[i], 'is array?', data[i].item instanceof Array)
+			// console.log(data[i], 'is array?', data[i].item instanceof Array)
 			let story: IMOSROStory = {
 				ID: new MosString128(data[i].storyID),
 				Slug: new MosString128(data[i].storySlug),
