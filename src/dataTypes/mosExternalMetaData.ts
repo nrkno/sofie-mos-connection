@@ -12,7 +12,7 @@ export enum IMOSScope {
 	PLAYLIST = 'PLAYLIST'
 }
 
-export class mosExternalMetaData {
+export class MosExternalMetaData {
 
 	private _scope?: IMOSScope
 	private _schema: string
