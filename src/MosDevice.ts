@@ -24,7 +24,9 @@ import {
 	IMOSItemAction,
 	IMOSROFullStory,
 	IMOSROAck,
-	IMOSConnectionStatus
+	IMOSConnectionStatus,
+	IMOSObjectPath,
+	IMOSObjectPathType
 } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
 import { SocketDescription } from './connection/socketConnection'
@@ -205,11 +207,77 @@ export class MosDevice implements IMOSDevice {
 				for (let i = 0; i < data.roCreate.story.length; i++) {
 					let story: IMOSROStory = {
 						ID: new MosString128(data.roCreate.story[i].storyID),
-						Slug: data.roCreate.story[i].storySlug,
+						Slug: new MosString128(data.roCreate.story[i].storySlug),
 						Items: []
 						// TODO: Add & test Number, MosExternalMetaData, Items, ObjectID, MOSID, mosAbstract, Paths
 						// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut, MosExternalMetaData
 					}
+					let item: IMOSItem = {
+						ID: new MosString128(data.roCreate.story[i].item.itemID),
+						ObjectID: new MosString128(data.roCreate.story[i].item.objID),
+						MOSID: data.roCreate.story[i].item.mosID,
+						// TODO: mosAbstract?: string,
+						// TODO: Channel?: MosString128,
+						// TODO: MacroIn?: MosString128,
+						// TODO: MacroOut?: MosString128,
+					}
+
+					if (data.roCreate.story[i].item.hasOwnProperty('itemSlug')) item.Slug = data.roCreate.story[i].item.itemSlug
+					if (data.roCreate.story[i].item.hasOwnProperty('objPaths')) {
+						let objPaths = data.roCreate.story[i].item.objPaths
+						let paths:Array<IMOSObjectPath> = []
+
+						if (objPaths.hasOwnProperty('objPath')) {
+							let path: IMOSObjectPath = {
+								Type: IMOSObjectPathType.PATH,
+								Description: objPaths.objPath.techDescription,
+								Target: objPaths.objPath['$t']
+							}
+							paths.push(path)
+						}
+						if (objPaths.hasOwnProperty('objProxyPath')) {
+							let path: IMOSObjectPath = {
+								Type: IMOSObjectPathType.PROXY_PATH,
+								Description: objPaths.objProxyPath.techDescription,
+								Target: objPaths.objProxyPath['$t']
+							}
+							paths.push(path)
+						}
+						if (objPaths.hasOwnProperty('objMetadataPath')) {
+							let path: IMOSObjectPath = {
+								Type: IMOSObjectPathType.METADATA_PATH,
+								Description: objPaths.objMetadataPath.techDescription,
+								Target: objPaths.objMetadataPath['$t']
+							}
+							paths.push(path)
+						}
+						item.Paths = paths
+					}
+					if (data.roCreate.story[i].item.hasOwnProperty('itemEdStart')) item.EditorialStart = data.roCreate.story[i].item.itemEdStart
+					if (data.roCreate.story[i].item.hasOwnProperty('itemEdDur')) item.EditorialDuration = data.roCreate.story[i].item.itemEdDur
+					if (data.roCreate.story[i].item.hasOwnProperty('itemUserTimingDur')) item.UserTimingDuration = data.roCreate.story[i].item.itemUserTimingDur
+					if (data.roCreate.story[i].item.hasOwnProperty('itemTrigger')) item.Trigger = data.roCreate.story[i].item.itemTrigger
+					if (data.roCreate.story[i].item.hasOwnProperty('mosExternalMetadata')) {
+						// TODO: Handle an array of mosExternalMetadata
+						let meta: IMOSExternalMetaData = {
+							MosSchema: data.roCreate.story[i].item.mosExternalMetadata.mosSchema,
+							MosPayload: data.roCreate.story[i].item.mosExternalMetadata.mosPayload
+						}
+						if (data.roCreate.story[i].item.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = data.roCreate.story[i].item.mosExternalMetadata.mosScope
+						item.MosExternalMetaData = [meta]
+					}
+
+					if (data.roCreate.story[i].hasOwnProperty('storyNum')) story.Number = new MosString128(data.roCreate.story[i].storyNum)
+					if (data.roCreate.story[i].hasOwnProperty('mosExternalMetadata')) {
+						// TODO: Handle an array of mosExternalMetadata
+						let meta: IMOSExternalMetaData = {
+							MosSchema: data.roCreate.story[i].mosExternalMetadata.mosSchema,
+							MosPayload: data.roCreate.story[i].mosExternalMetadata.mosPayload
+						}
+						if (data.roCreate.story[i].mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = data.roCreate.story[i].mosExternalMetadata.mosScope
+						ro.MosExternalMetaData = [meta]
+					}
+					story.Items.push(item)
 					stories.push(story)
 				}
 
