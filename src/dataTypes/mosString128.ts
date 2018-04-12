@@ -4,7 +4,7 @@ export class MosString128 {
 
 	/** */
 	constructor (str: string) {
-		this.string = str
+		this.string = '' + str + ''
 	}
 	/** */
 	toString (): string {
