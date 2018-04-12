@@ -14,7 +14,7 @@ export enum IMOSScope {
 
 export class mosExternalMetaData {
 
-	private _scope: IMOSScope
+	private _scope?: IMOSScope
 	private _schema: string
 	private _payload: any
 
@@ -24,9 +24,9 @@ export class mosExternalMetaData {
 		this._payload = obj.MosPayload
 	}
 
-	get scope (): IMOSScope {
+	get scope (): IMOSScope | undefined {
 		return this._scope
-	}s
+	}
 
 	get schema (): string {
 		return this._schema
