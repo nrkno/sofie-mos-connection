@@ -18,6 +18,7 @@ export class MosConnection implements IMosConnection {
 	static _nextSocketID: number = 0
 
 	private _conf: ConnectionConfig
+	private _debug: boolean = false
 
 	private _lowerSocketServer: MosSocketServer
 	private _upperSocketServer: MosSocketServer
@@ -37,6 +38,9 @@ export class MosConnection implements IMosConnection {
 		if (this._conf.acceptsConnections) {
 			this._isListening = this._initiateIncomingConnections()
 		}
+		if (this._conf.debug) {
+			this._debug = this._conf.debug
+		}
 	}
 
 	/** */
@@ -48,7 +52,7 @@ export class MosConnection implements IMosConnection {
 			// connect to mos device
 			// Store MosSocketClients instead of Sockets in Server?
 			// Create MosSocketClients in construct?
-			let primary = new NCSServerConnection(connectionOptions.primary.id, connectionOptions.primary.host, connectionOptions.primary.timeout, this._conf.mosID)
+			let primary = new NCSServerConnection(connectionOptions.primary.id, connectionOptions.primary.host, connectionOptions.primary.timeout, this._conf.mosID, this._debug)
 			let secondary = null
 			this._ncsConnections[connectionOptions.primary.host] = primary 
 
@@ -56,7 +60,7 @@ export class MosConnection implements IMosConnection {
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
 
 			if (connectionOptions.secondary) {
-				secondary = new NCSServerConnection(connectionOptions.secondary.id, connectionOptions.secondary.host, connectionOptions.secondary.timeout, this._conf.mosID)
+				secondary = new NCSServerConnection(connectionOptions.secondary.id, connectionOptions.secondary.host, connectionOptions.secondary.timeout, this._conf.mosID, this._debug)
 				this._ncsConnections[connectionOptions.secondary.host] = secondary 
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
@@ -187,22 +191,24 @@ export class MosConnection implements IMosConnection {
 		// handles socket listeners
 		e.socket.on('close', (/*hadError: boolean*/) => this._disposeIncomingSocket(e.socket, socketID))
 		e.socket.on('end', () => {
-			console.log('Socket End')
+			if (this._debug) console.log('Socket End')
 		})
 		e.socket.on('drain', () => {
-			console.log('Socket Drain')
+			if (this._debug) console.log('Socket Drain')
 		})
 		e.socket.on('data', (data: string) => {
 			let str = Buffer.from(data, 'ucs2').toString()
 			this._mosDevice.onData(e, socketID, str)
 		})
-		e.socket.on('error', (error: Error) => console.log(`Socket had error (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${error}`))
+		e.socket.on('error', (error: Error) => {
+			if (this._debug) console.log(`Socket had error (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${error}`)
+		})
 
 		// registers socket on server
 		// e.socket.remoteAddress är ej OK id, måste bytas ut
 		let server: Server = this._getServerForHost(e.socket.remoteAddress)
 		server.registerIncomingConnection(socketID, e.socket, e.portDescription)
-		console.log('added: ', this._servers)
+		if (this._debug) console.log('added: ', this._servers)
 	}
 
 	/** */
@@ -211,14 +217,14 @@ export class MosConnection implements IMosConnection {
 		socket.destroy()
 		// e.socket.remoteAddress är ej OK id, måste bytas ut
 		this._getServerForHost(socket.remoteAddress).removeSocket(socketID)
-		console.log('removed: ', this._servers, '\n')
+		if (this._debug) console.log('removed: ', this._servers, '\n')
 	}
 
 	/** */
 	private _getServerForHost (host: string): Server {
 		// create new server if not known
 		if (!this._servers[host]) {
-			console.log('Creating new Server')
+			if (this._debug) console.log('Creating new Server')
 			this._servers[host] = new Server()
 		}
 

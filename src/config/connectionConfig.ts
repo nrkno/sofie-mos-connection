@@ -4,7 +4,8 @@ export interface IConnectionConfig {
 	mosID: string
 	acceptsConnections: boolean
 	accepsConnectionsFrom?: string[]
-	profiles: IProfiles
+	profiles: IProfiles,
+	debug?: boolean
 }
 
 /** */
@@ -23,6 +24,7 @@ export class ConnectionConfig implements IConnectionConfig {
 	mosID: string
 	acceptsConnections: boolean
 	accepsConnectionsFrom: string[]
+	debug?: boolean
 
 	private _profiles: IProfiles = {
 		'0': false,

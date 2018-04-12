@@ -11,6 +11,7 @@ export class MosSocketClient extends EventEmitter {
 	private _autoReconnect: boolean = true
 	private _reconnectDelay: number = 3000
 	private _reconnectAttempts: number = 0
+	private _debug: boolean = false
 
 	private _description: string
 	private _client: Socket
@@ -27,11 +28,12 @@ export class MosSocketClient extends EventEmitter {
 	private _ready: boolean
 
   /** */
-	constructor (host: string, port: number, description: string) {
+	constructor (host: string, port: number, description: string, debug?: boolean) {
 		super()
 		this._host = host
 		this._port = port
 		this._description = description
+		if (debug) this._debug = debug
 	}
 
   /** */
@@ -72,8 +74,8 @@ export class MosSocketClient extends EventEmitter {
 				}
 
 				// connects
-				console.log(new Date(), `Socket ${this._description} attempting connection`)
-				console.log('port', this._port, 'host', this._host)
+				if (this._debug) console.log(new Date(), `Socket ${this._description} attempting connection`)
+				if (this._debug) console.log('port', this._port, 'host', this._host)
 				this._client.setEncoding('ucs2')
 				this._client.connect(this._port, this._host)
 				this._shouldBeConnected = true
@@ -146,7 +148,7 @@ export class MosSocketClient extends EventEmitter {
    * convenience wrapper to expose all logging calls to parent object
    */
 	log (args: any): void {
-		console.log(args)
+		if (this._debug) console.log(args)
 	}
 
   /** */
@@ -171,7 +173,7 @@ export class MosSocketClient extends EventEmitter {
 		this._commandTimeoutTimer = global.setTimeout(() => this._onCommandTimeout(), this._commandTimeout)
 		this._client.write(buf, 'ucs2')
 
-		console.log(`MOS command sent from ${this._description} : ${buf}\r\nbytes sent: ${this._client.bytesWritten}`)
+		if (this._debug) console.log(`MOS command sent from ${this._description} : ${buf}\r\nbytes sent: ${this._client.bytesWritten}`)
 	}
 
   /** */
@@ -219,7 +221,7 @@ export class MosSocketClient extends EventEmitter {
 	private _onData (data: string ) {
 		this._client.emit(SocketConnectionEvent.ALIVE)
 		data = Buffer.from(data, 'ucs2').toString()
-		console.log(`${this._description} Received: ${data}`)
+		if (this._debug) console.log(`${this._description} Received: ${data}`)
 
 		if (this._queue && this._queue.length) {
 			let cb = this._queue.shift()
@@ -239,7 +241,7 @@ export class MosSocketClient extends EventEmitter {
   /** */
 	private _onError (error: Error) {
 		// dispatch error!!!!!
-		console.log(`Socket event error: ${error.message}`)
+		if (this._debug) console.log(`Socket event error: ${error.message}`)
 	}
 
 	/** */
@@ -247,15 +249,15 @@ export class MosSocketClient extends EventEmitter {
 		this.connected = false
 		this._ready = false
 		if (hadError) {
-			console.log('Socket closed with error')
+			if (this._debug) console.log('Socket closed with error')
 		} else {
-			console.log('Socket closed without error')
+			if (this._debug) console.log('Socket closed without error')
 		}
 
 		this.emit(SocketConnectionEvent.DISCONNECTED)
 
 		if (this._shouldBeConnected === true) {
-			console.log('Socket should reconnect')
+			if (this._debug) console.log('Socket should reconnect')
 			this.connect()
 		}
 	}

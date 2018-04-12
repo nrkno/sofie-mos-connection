@@ -20,6 +20,7 @@ export class NCSServerConnection {
 	private _host: string
 	private _timeout: number
 	private _mosID: string
+	private _debug: boolean = false
 
 	private _clients: {[clientID: number]: ClientDescription} = {}
 	private _callbackOnConnectionChange: () => void
@@ -27,18 +28,19 @@ export class NCSServerConnection {
 	private _heartBeatsTimer: NodeJS.Timer
 	private _heartBeatsDelay: number
 
-	constructor (id: string, host: string, timeout: number, mosID: string) {
+	constructor (id: string, host: string, timeout: number, mosID: string, debug?: boolean) {
 		this._id = id
 		this._host = host
 		this._timeout = timeout | 5000
 		this._heartBeatsDelay = this._timeout / 2
 		this._mosID = mosID
 		this._connected = false
+		if (debug) this._debug = debug
 	}
 
 	/** */
 	registerOutgoingConnection (clientID: number, client: MosSocketClient, clientDescription: ConnectionType) {
-		console.log('registerOutgoingConnection', clientID)
+		if (this._debug) console.log('registerOutgoingConnection', clientID)
 		this._clients[clientID] = {
 			client: client,
 			clientDescription: clientDescription
@@ -46,7 +48,7 @@ export class NCSServerConnection {
 	}
 
 	createClient (clientID: number, port: number, clientDescription: ConnectionType) {
-		this.registerOutgoingConnection(clientID, new MosSocketClient(this._host, port, clientDescription), clientDescription)
+		this.registerOutgoingConnection(clientID, new MosSocketClient(this._host, port, clientDescription, this._debug), clientDescription)
 	}
 
 	/** */
@@ -58,7 +60,7 @@ export class NCSServerConnection {
 	connect () {
 		for (let i in this._clients) {
 			// Connect client
-			console.log(`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
+			if (this._debug) console.log(`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
 			this._clients[i].client.connect()
 		}
 		this._connected = true
@@ -159,7 +161,7 @@ export class NCSServerConnection {
 			let heartbeat = new HeartBeat()
 			heartbeat.port = this._clients[i].clientDescription
 			this.executeCommand(heartbeat).then((data) => {
-				console.log(`Heartbeat on ${this._clients[i].clientDescription} received.`, data)
+				if (this._debug) console.log(`Heartbeat on ${this._clients[i].clientDescription} received.`, data)
 			})
 		}
 	}

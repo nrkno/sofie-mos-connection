@@ -50,6 +50,7 @@ export class MosDevice implements IMOSDevice {
 	mosExternalMetaData: Array<IMOSExternalMetaData>
 
 	private _id: string
+	private _debug: boolean = false
 
 	private supportedProfiles = {
 		deviceType: 'MOS',
@@ -130,6 +131,7 @@ export class MosDevice implements IMOSDevice {
 			if (connectionConfig.profiles['5']) this.supportedProfiles.profile5 = true
 			if (connectionConfig.profiles['6']) this.supportedProfiles.profile6 = true
 			if (connectionConfig.profiles['7']) this.supportedProfiles.profile7 = true
+			if (connectionConfig.debug) this._debug = connectionConfig.debug
 		}
 
 		this._primaryConnection = primaryConnection
@@ -179,7 +181,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onData (e: SocketDescription, socketID: number, data: string): void {
-		console.log(`Socket got data (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${data}`)
+		if (this._debug) console.log(`Socket got data (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${data}`)
 
 		let parsed: any = null
 		let parseOptions = {
@@ -214,7 +216,7 @@ export class MosDevice implements IMOSDevice {
 				let data = resp
 
 				// TODO: Create message based on parsed data and response
-				console.log('Creating ROAck for', Object.keys(parsed.mos))
+				if (this._debug) console.log('Creating ROAck for', Object.keys(parsed.mos))
 				if (typeof resp !== 'string') {
 					let message = new ROAck()
 					message.mosID = parsed.mos.mosID
@@ -227,7 +229,7 @@ export class MosDevice implements IMOSDevice {
 					data = message.toString()
 				}
 
-				console.log('WRITE TO SOCKET', data)
+				if (this._debug) console.log('WRITE TO SOCKET', data)
 				let buf = iconv.encode(data, 'utf16-be')
 				e.socket.write(buf, 'usc2')
 			})
@@ -242,9 +244,11 @@ export class MosDevice implements IMOSDevice {
 		let ops = (key === 'roElementAction' ? data.roElementAction.operation : null)
 
 		return new Promise((resolve) => {
-			console.log('parsedData', data)
-			console.log('parsedTest', keys)
-			console.log('key', key, 'ops', ops)
+			if (this._debug){
+				console.log('parsedData', data)
+				console.log('parsedTest', keys)
+				console.log('key', key, 'ops', ops)
+			}
 
 			// Route and format data
 			if (key === 'roReadyToAir' && typeof this._callbackOnReadyToAir === 'function') {

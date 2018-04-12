@@ -7,12 +7,14 @@ export class MosSocketServer extends EventEmitter {
 	private _port: number
 	private _portDescription: IncomingConnectionType
 	private _socketServer: Server
+	private _debug: boolean = false
 
 	/** */
-	constructor (port: number, description: IncomingConnectionType) {
+	constructor (port: number, description: IncomingConnectionType, debug?: boolean) {
 		super()
 		this._port = port
 		this._portDescription = description
+		if (debug) this._debug = debug
 
 		this._socketServer = new Server()
 		this._socketServer.on('connection', (socket: Socket) => this._onClientConnection(socket))
@@ -22,35 +24,35 @@ export class MosSocketServer extends EventEmitter {
 
 	/** */
 	listen (): Promise<boolean> {
-		console.log('listen', this._portDescription, this._port)
+		if (this._debug) console.log('listen', this._portDescription, this._port)
 		return new Promise((resolve, reject) => {
-			console.log('inside promise', this._portDescription, this._port)
+			if (this._debug) console.log('inside promise', this._portDescription, this._port)
 
 			// already listening
 			if (this._socketServer.listening) {
-				console.log('already listening', this._portDescription, this._port)
+				if (this._debug) console.log('already listening', this._portDescription, this._port)
 				resolve(true)
 				return
 			}
 
 			// handles listening-listeners and cleans up
 			let handleListeningStatus = (e?: Error) => {
-				console.log('handleListeningStatus')
+				if (this._debug) console.log('handleListeningStatus')
 				this._socketServer.removeListener('listening', handleListeningStatus)
 				this._socketServer.removeListener('close', handleListeningStatus)
 				this._socketServer.removeListener('error', handleListeningStatus)
 				if (this._socketServer.listening) {
-					console.log('listening', this._portDescription, this._port)
+					if (this._debug) console.log('listening', this._portDescription, this._port)
 					resolve(true)
 				} else {
-					console.log('not listening', this._portDescription, this._port)
+					if (this._debug) console.log('not listening', this._portDescription, this._port)
 					reject(e || false)
 				}
 			}
 
 			// listens and handles error and events
 			this._socketServer.on('listening', () => {
-				console.log('listening!!')
+				if (this._debug) console.log('listening!!')
 			})
 			this._socketServer.once('listening', handleListeningStatus)
 			this._socketServer.once('close', handleListeningStatus)
@@ -98,12 +100,12 @@ export class MosSocketServer extends EventEmitter {
 	/** */
 	private _onServerError (error: Error) {
 		// @todo: implement
-		console.log('Server error:', error)
+		if (this._debug) console.log('Server error:', error)
 	}
 
 	/** */
 	private _onServerClose () {
 		// @todo: implement
-		console.log(`Server closed: on port ${this._port}`)
+		if (this._debug) console.log(`Server closed: on port ${this._port}`)
 	}
 }
