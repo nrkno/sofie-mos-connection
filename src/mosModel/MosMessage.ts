@@ -12,11 +12,11 @@ export abstract class MosMessage {
 	private _messageID: number
 
   /** */
-	prepare () {
+	prepare (messageID?: number) {
 		if (!this.mosID) throw new Error(`Can't prepare message: mosID missing`)
 		if (!this.ncsID) throw new Error(`Can't prepare message: ncsID missing`)
 		// if (!this.port) throw new Error(`Can't prepare message: port missing`)
-		this._messageID = MosMessage.messageID
+		this._messageID = (messageID ? messageID : MosMessage.messageID)
 	}
 
   /** */
