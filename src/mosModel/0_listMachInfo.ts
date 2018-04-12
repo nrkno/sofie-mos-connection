@@ -31,7 +31,6 @@ export interface IMOSListMachInfo {
 
 	supportedProfiles: {
 		deviceType: string,                 // deviceType="NCS"
-
 		profile0?: boolean,
 		profile1?: boolean,
 		profile2?: boolean,

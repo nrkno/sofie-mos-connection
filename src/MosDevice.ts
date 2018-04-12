@@ -9,7 +9,6 @@ import { IMOSListMachInfo, IMOSDefaultActiveX } from './mosModel/0_listMachInfo'
 import { ROAck } from './mosModel/ROAck'
 import { ReqMachInfo } from './mosModel/0_reqMachInfo'
 import {
-	IMOSDeviceConnectionOptions,
 	IMOSObject,
 	IMOSDevice,
 	IMOSRunningOrder,
@@ -52,7 +51,7 @@ export class MosDevice implements IMOSDevice {
 	private _id: string
 	private _debug: boolean = false
 
-	private supportedProfiles = {
+	private supportedProfiles: {[profile: string]: (boolean | string), deviceType: string} = {
 		deviceType: 'MOS',
 		profile0: false,
 		profile1: false,
@@ -75,12 +74,12 @@ export class MosDevice implements IMOSDevice {
 
 	// Profile 1
 	private _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null>
-	private _callbackOnRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
+	private _callbackOnRequestAllMOSObjects: () => Promise<Array< IMOSObject>>
 
 	// Profile 2
 	private _callbackOnCreateRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
 	private _callbackOnReplaceRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
-	private _callbackOnDeleteRunningOrder: (runningOrderId: MosString128) => Promise<IMOSROAck>
+	private _callbackOnDeleteRunningOrder: (runningOrderId: MosString128) => Promise< IMOSROAck>
 	private _callbackOnRequestRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>
 	private _callbackOnMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
 	private _callbackOnRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
@@ -103,7 +102,7 @@ export class MosDevice implements IMOSDevice {
 
 	private _tmp: string = ''
 
-	constructor (
+constructor (
 		connectionConfig: IConnectionConfig,
 		primaryConnection: NCSServerConnection,
 		secondaryConnection: NCSServerConnection | null
@@ -116,7 +115,7 @@ export class MosDevice implements IMOSDevice {
 		this.hwRev = new MosString128('0.1') // empty string returnes <hwRev/>
 		this.swRev = new MosString128('0.1')
 		this.DOM = new MosTime()
-		this.SN = new MosString128('927748927')
+	this.SN = new MosString128('927748927')
 		this.ID = new MosString128(connectionConfig ? connectionConfig.mosID : '')
 		this.time = new MosTime()
 		this.opTime = new MosTime()
@@ -136,7 +135,7 @@ export class MosDevice implements IMOSDevice {
 
 		this._primaryConnection = primaryConnection
 		this._primaryConnection.onConnectionChange(() => this.emitConnectionChange())
-		this._currentConnection = this._primaryConnection
+	this._currentConnection = this._primaryConnection
 
 		if (secondaryConnection) {
 			this._secondaryConnection = secondaryConnection
@@ -145,8 +144,8 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	get id (): string {
-		return this._id
-	}
+	return this._id
+}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
 		let root = XMLBuilder.create('listMachInfo') // config headless
@@ -478,11 +477,11 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRequestAllMOSObjects = cb
 	}
 
-	getMOSObject (objID: string): Promise<IMOSObject> {
+	getMOSObject (objID: string): Promise < IMOSObject > {
 		// TODO: Implement this
 	}
 
-	getAllMOSObjects (): Promise<Array<IMOSObject>> {
+	getAllMOSObjects (): Promise < Array < IMOSObject >> {
 		// TODO: Implement this
 	}
 
@@ -504,7 +503,7 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRequestRunningOrder = cb
 	}
 
-	getRunningOrder (runningOrderId: MosString128): Promise<IMOSRunningOrder | null> {
+	getRunningOrder (runningOrderId: MosString128): Promise < IMOSRunningOrder | null > {
 		// TODO: Implement this
 	}
 
@@ -524,15 +523,15 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnItemStatus = cb
 	}
 
-	setRunningOrderStatus (status: IMOSRunningOrderStatus): Promise<IMOSROAck> {
+	setRunningOrderStatus (status: IMOSRunningOrderStatus): Promise < IMOSROAck > {
 		// TODO: Implement this
 	}
 
-	setStoryStatus (status: IMOSStoryStatus): Promise<IMOSROAck> {
+	setStoryStatus (status: IMOSStoryStatus): Promise < IMOSROAck > {
 		// TODO: Implement this
 	}
 
-	setItemStatus (status: IMOSItemStatus): Promise<IMOSROAck> {
+	setItemStatus (status: IMOSItemStatus): Promise < IMOSROAck > {
 		// TODO: Implement this
 	}
 
