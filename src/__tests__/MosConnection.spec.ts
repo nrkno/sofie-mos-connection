@@ -37,21 +37,27 @@ function getMosDevice (): Promise<IMOSDevice> {
 		}
 	})
 }
-let messageId = 0
-function fakeIncomingMessage (socketMockLower, message: string): Promise<void> {
-	let fullMessage = getXMLReply(messageId++, message)
+let messageId = 1632
+function fakeIncomingMessage (socketMockLower, message: string): Promise<number> {
+	messageId++
+	let fullMessage = getXMLReply(messageId, message)
+	socketMockLower.mockReceiveMessage(encode(fullMessage))
 
-	socketMockLower.mockReceiveMessage(fullMessage)
-
-	return Promise.resolve()
+	return Promise.resolve(messageId)
 }
 function getXMLReply (messageId, content): string {
-	return iconv.encode('<mos>' +
+	return '<mos>' +
 		'<mosID>aircache.newscenter.com</mosID>' +
 		'<ncsID>ncs.newscenter.com</ncsID>' +
 		'<messageID>' + messageId + '</messageID>' +
 		content +
-		'</mos>\r\n', 'utf16-be')
+		'</mos>\r\n'
+}
+function decode (data: Buffer): string {
+	return iconv.decode(data, 'utf16-be')
+}
+function encode (str: string) {
+	return iconv.encode(str, 'utf16-be')
 }
 function getMosObj (): IMOSObject {
 	return {
@@ -500,9 +506,16 @@ describe('MosDevice: Profile 2', () => {
 	test('onCreateRunningOrder', async () => {
 		// Fake incoming message on socket:
 
-		await fakeIncomingMessage(serverSocketMockLower, xmlData.roCreate)
+		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roCreate)
 		expect(onCreateRunningOrder).toHaveBeenCalledTimes(1)
 		expect(onCreateRunningOrder.mock.calls[0][0]).toMatchObject(xmlApiData.roCreate)
+		// check reply to server:
+		await serverSocketMockLower.mockWaitForSentMessages()
+
+		expect(serverSocketMockLower.mockSentMessage).toHaveBeenCalledTimes(1)
+		let reply = decode(serverSocketMockLower.mockSentMessage.mock.calls[0][0])
+		expect(reply).toContain('<messageID>' + messageId + '</messageID>')
+		expect(reply).toContain('<roAck>')
 	})
 	test('onReplaceRunningOrder', async () => {
 		// Fake incoming message on socket:

@@ -101,7 +101,6 @@ export class SocketMock extends EventEmitter implements Socket {
 	// ------------------------------------------------------------------------
 	// Mock methods:
 	mockSentMessage (data, encoding) {
-
 		if (this._responses.length) {
 			// send reply:
 
@@ -115,8 +114,7 @@ export class SocketMock extends EventEmitter implements Socket {
 				} else {
 					msg = cb(data)
 				}
-
-				this.mockReceiveMessage(msg)
+				if (msg !== false) this.mockReceiveMessage(msg)
 			},5)
 		}
 	}
@@ -128,6 +126,22 @@ export class SocketMock extends EventEmitter implements Socket {
 	}
 	mockClear () {
 		this._responses.splice(0, 9999)
+	}
+	mockWaitForSentMessages () {
+		return new Promise((resolve) => {
+
+			let check = () => {
+				if (this._responses.length === 0) {
+					resolve()
+				} else {
+					setTimeout(() => {
+						check()
+					},5)
+				}
+			}
+			check()
+
+		})
 	}
 }
 
