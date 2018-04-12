@@ -3,7 +3,7 @@ import { mosExternalMetaData, IMOSScope } from '../mosExternalMetaData'
 let testdata = {
 	MosScope: IMOSScope.STORY,
 	MosSchema: 'http://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
-	MosPayload: 'hello world' 
+	MosPayload: 'hello world'
 }
 
 describe('mosExternalMetaData', () => {

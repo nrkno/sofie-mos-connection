@@ -55,14 +55,14 @@ export class MosConnection implements IMosConnection {
 			// Create MosSocketClients in construct?
 			let primary = new NCSServerConnection(connectionOptions.primary.id, connectionOptions.primary.host, connectionOptions.primary.timeout, this._conf.mosID, this._debug)
 			let secondary = null
-			this._ncsConnections[connectionOptions.primary.host] = primary 
+			this._ncsConnections[connectionOptions.primary.host] = primary
 
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
 
 			if (connectionOptions.secondary) {
 				secondary = new NCSServerConnection(connectionOptions.secondary.id, connectionOptions.secondary.host, connectionOptions.secondary.timeout, this._conf.mosID, this._debug)
-				this._ncsConnections[connectionOptions.secondary.host] = secondary 
+				this._ncsConnections[connectionOptions.secondary.host] = secondary
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
 			}
@@ -156,10 +156,10 @@ export class MosConnection implements IMosConnection {
 
 	/** */
 	private _initiateIncomingConnections (): Promise<boolean[]> {
-		//console.log('_initiateIncomingConnections')
+		// console.log('_initiateIncomingConnections')
 		// shouldn't accept connections, so won't rig socket servers
 		if (!this._conf.acceptsConnections) {
-			//console.log('reject')
+			// console.log('reject')
 			return Promise.reject(false)
 		}
 
@@ -173,7 +173,7 @@ export class MosConnection implements IMosConnection {
 			this._upperSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 			this._querySocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 
-			//console.log('listen on all ports')
+			// console.log('listen on all ports')
 			Promise.all(
 				[
 					this._lowerSocketServer.listen(),

@@ -273,7 +273,7 @@ export class MosDevice implements IMOSDevice {
 						ID: data.roCreate.story[i].storyID,
 						Slug: data.roCreate.story[i].storySlug,
 						Items: []
-						// TODO: Add & test Number, MosExternalMetaData, Items, ObjectID, MOSID, mosAbstract, Paths, 
+						// TODO: Add & test Number, MosExternalMetaData, Items, ObjectID, MOSID, mosAbstract, Paths,
 						// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut, MosExternalMetaData
 					}
 					stories.push(story)
@@ -332,7 +332,7 @@ export class MosDevice implements IMOSDevice {
 					// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut
 				}
 				if (data.roStorySend.hasOwnProperty('storyNum') && data.roStorySend.storyNum !== {}) story.Number = data.roStorySend.storyNum
-				if (data.roStorySend.hasOwnProperty('mosExternalMetadata')){
+				if (data.roStorySend.hasOwnProperty('mosExternalMetadata')) {
 					// TODO: Handle an array of mosExternalMetadata
 					let meta: IMOSExternalMetaData = {
 						MosSchema: data.roStorySend.mosExternalMetadata.mosSchema,

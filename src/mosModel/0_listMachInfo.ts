@@ -1,6 +1,6 @@
-import {MosTime} from '../dataTypes/mosTime'
-import {MosString128} from '../dataTypes/mosString128'
-import {IMOSExternalMetaData} from '../dataTypes/mosExternalMetaData'
+import { MosTime } from '../dataTypes/mosTime'
+import { MosString128 } from '../dataTypes/mosString128'
+import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 
 export enum IMOSListMachInfoDefaultActiveXMode {
 	MODALDIALOG = 'MODALDIALOG',
