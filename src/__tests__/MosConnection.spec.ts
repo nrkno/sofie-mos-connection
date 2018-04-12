@@ -601,13 +601,13 @@ describe('MosDevice: Profile 2', () => {
 	})
 	test('onReadyToAir', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMockLower, xmlData.roReadyToAir)
+		await fakeIncomingMessage(serverSocketMockLower, xmlData.roReadyToAir)
 		expect(onReadyToAir).toHaveBeenCalledTimes(1)
 		expect(onReadyToAir.mock.calls[0][0]).toEqual(xmlApiData.roReadyToAir)
 	})
 	test('onROInsertStories', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_insert_story)
+		await fakeIncomingMessage(serverSocketMockLower, xmlData.roElementAction_insert_story)
 		expect(onROInsertStories).toHaveBeenCalledTimes(1)
 		expect(onROInsertStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_insert_story_Action)
 		expect(onROInsertStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_insert_story_Stories)
