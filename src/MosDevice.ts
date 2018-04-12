@@ -251,13 +251,15 @@ export class MosDevice implements IMOSDevice {
 			}
 
 			// Route and format data
-			if (key === 'roReadyToAir' && typeof this._callbackOnReadyToAir === 'function') {
-				this._callbackOnReadyToAir({
-					ID: data.roReadyToAir.roID,
-					Status: data.roReadyToAir.roAir
-				}).then(resolve)
 
-			} else if (key === 'roCreate' && typeof this._callbackOnCreateRunningOrder === 'function') {
+			// Profile 0
+			// TODO: _callbackOnGetMachineInfo: () => Promise<IMOSListMachInfo>
+			// TODO: _callbackOnConnectionChange: (connectionStatus: IMOSConnectionStatus) => void
+
+			// Profile 1
+			// TODO: _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null>
+			// TODO: _callbackOnRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
+			if (key === 'roCreate' && typeof this._callbackOnCreateRunningOrder === 'function') {
 				let stories: Array<IMOSROStory> = []
 
 				for(let i = 0; i < data.roCreate.story.length; i++) {
@@ -291,9 +293,23 @@ export class MosDevice implements IMOSDevice {
 
 				this._callbackOnCreateRunningOrder(ro).then(resolve)
 
+			// TODO: _callbackOnReplaceRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
+
 			} else if (key === 'roDelete' && typeof this._callbackOnDeleteRunningOrder === 'function') {
 				// TODO: Change runningOrderId to RunningOrderID in interface?
 				this._callbackOnDeleteRunningOrder(data.roDelete.roID).then(resolve)
+
+			// TODO: _callbackOnRequestRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>
+			// TODO: _callbackOnMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
+			// TODO: _callbackOnRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
+			// TODO: _callbackOnStoryStatus: (status: IMOSStoryStatus) => Promise<IMOSROAck>
+			// TODO: _callbackOnItemStatus: (status: IMOSItemStatus) => Promise<IMOSROAck>
+
+			} else if (key === 'roReadyToAir' && typeof this._callbackOnReadyToAir === 'function') {
+				this._callbackOnReadyToAir({
+					ID: data.roReadyToAir.roID,
+					Status: data.roReadyToAir.roAir
+				}).then(resolve)
 
 			} else if (key === 'roStorySend' && typeof this._callbackOnROInsertStories === 'function') {
 				let action: IMOSStoryAction = {
@@ -330,6 +346,10 @@ export class MosDevice implements IMOSDevice {
 					StoryID: data.roElementAction.element_target.storyID
 				}, stories).then(resolve)
 
+			// TODO: _callbackOnROInsertItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
+			// TODO: _callbackOnROReplaceStories: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
+			// TODO: _callbackOnROReplaceItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
+
 			} else if (key === 'roElementAction' && ops === 'MOVE' && typeof this._callbackOnROMoveStories === 'function') {
 				let stories: Array<MosString128> = []
 
@@ -348,6 +368,11 @@ export class MosDevice implements IMOSDevice {
 					RunningOrderID: data.roElementAction.roID,
 					StoryID: data.roElementAction.element_target.storyID
 				}, [data.roElementAction.element_source.storyID]).then(resolve)
+				//
+
+			// TODO: _callbackOnROMoveStories: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
+			// TODO: _callbackOnROMoveItems: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>
+			// TODO: _callbackOnRODeleteStories: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
 
 			} else if (key === 'roElementAction' && ops === 'DELETE' && typeof this._callbackOnRODeleteStories === 'function') {
 				let stories: Array<MosString128> = []
@@ -366,6 +391,13 @@ export class MosDevice implements IMOSDevice {
 				this._callbackOnRODeleteStories({
 					RunningOrderID: data.roElementAction.roID
 				}, [data.roElementAction.element_source.storyID]).then(resolve)
+
+			// TODO: _callbackOnRODeleteItems: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>
+			// TODO: _callbackOnROSwapStories: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>
+			// TODO: _callbackOnROSwapItems: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
+
+			// Profile 4
+			// TODO: private _callbackOnROStory: (story: IMOSROFullStory) => Promise<any>
 
 			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
