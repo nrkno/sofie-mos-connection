@@ -54,7 +54,7 @@ export class MosDevice implements IMOSDevice {
 	private _id: string
 	private _debug: boolean = false
 
-	private supportedProfiles = {
+	private supportedProfiles: {[profile: string]: (boolean | string), deviceType: string} = {
 		deviceType: 'MOS',
 		profile0: false,
 		profile1: false,
@@ -77,12 +77,12 @@ export class MosDevice implements IMOSDevice {
 
 	// Profile 1
 	private _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null>
-	private _callbackOnRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
+	private _callbackOnRequestAllMOSObjects: () => Promise<Array< IMOSObject>>
 
 	// Profile 2
 	private _callbackOnCreateRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
 	private _callbackOnReplaceRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
-	private _callbackOnDeleteRunningOrder: (runningOrderId: MosString128) => Promise<IMOSROAck>
+	private _callbackOnDeleteRunningOrder: (runningOrderId: MosString128) => Promise< IMOSROAck>
 	private _callbackOnRequestRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>
 	private _callbackOnMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
 	private _callbackOnRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
@@ -447,11 +447,11 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRequestAllMOSObjects = cb
 	}
 
-	getMOSObject (objID: string): Promise<IMOSObject> {
+	getMOSObject (objID: string): Promise < IMOSObject > {
 		// TODO: Implement this
 	}
 
-	getAllMOSObjects (): Promise<Array<IMOSObject>> {
+	getAllMOSObjects (): Promise < Array < IMOSObject >> {
 		// TODO: Implement this
 	}
 
@@ -473,7 +473,7 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRequestRunningOrder = cb
 	}
 
-	getRunningOrder (runningOrderId: MosString128): Promise<IMOSRunningOrder | null> {
+	getRunningOrder (runningOrderId: MosString128): Promise < IMOSRunningOrder | null > {
 		// TODO: Implement this
 	}
 
@@ -493,15 +493,15 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnItemStatus = cb
 	}
 
-	setRunningOrderStatus (status: IMOSRunningOrderStatus): Promise<IMOSROAck> {
+	setRunningOrderStatus (status: IMOSRunningOrderStatus): Promise < IMOSROAck > {
 		// TODO: Implement this
 	}
 
-	setStoryStatus (status: IMOSStoryStatus): Promise<IMOSROAck> {
+	setStoryStatus (status: IMOSStoryStatus): Promise < IMOSROAck > {
 		// TODO: Implement this
 	}
 
-	setItemStatus (status: IMOSItemStatus): Promise<IMOSROAck> {
+	setItemStatus (status: IMOSItemStatus): Promise < IMOSROAck > {
 		// TODO: Implement this
 	}
 

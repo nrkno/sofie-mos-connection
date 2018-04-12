@@ -1,5 +1,5 @@
 import * as XMLBuilder from 'xmlbuilder'
-import {MosMessage} from './MosMessage'
+import { MosMessage } from './MosMessage'
 
 export class ReqMachInfo extends MosMessage {
 
@@ -10,9 +10,8 @@ export class ReqMachInfo extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks(): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
 		let messageBlock = XMLBuilder.create('reqMachInfo')
 		return messageBlock
 	}
 }
-

@@ -1,9 +1,9 @@
-import {IProfiles} from './config/connectionConfig'
-import {MosTime} from './dataTypes/mosTime'
-import {MosDuration} from './dataTypes/mosDuration'
-import {MosString128} from './dataTypes/mosString128'
-import {IMOSExternalMetaData} from './dataTypes/mosExternalMetaData'
-import {IMOSListMachInfo} from './mosModel/0_listMachInfo'
+import { IProfiles } from './config/connectionConfig'
+import { MosTime } from './dataTypes/mosTime'
+import { MosDuration } from './dataTypes/mosDuration'
+import { MosString128 } from './dataTypes/mosString128'
+import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
+import { IMOSListMachInfo } from './mosModel/0_listMachInfo'
 
 // import {IMOSListMachInfo as IMOSP0ListMachineInfo, IMOSListMachInfo} from "./mosModel/0_listMachInfo"
 // import {HeartBeat} from './mosModel/0_heartBeat';

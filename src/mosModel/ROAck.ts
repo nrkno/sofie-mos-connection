@@ -1,9 +1,9 @@
 import * as XMLBuilder from 'xmlbuilder'
-import {MosString128} from './../dataTypes/mosString128'
-import {MosMessage} from './MosMessage'
+import { MosString128 } from './../dataTypes/mosString128'
+import { MosMessage } from './MosMessage'
 import {
 	IMOSROAck,
-	IMOSROAckStory/*,
+	IMOSROAckStory /*,
 	IMOSROAckItem,
 	IMOSROAckObject*/
 } from '../api'
@@ -20,7 +20,7 @@ export class ROAck extends MosMessage implements IMOSROAck {
 	}
 
   /** */
-	get messageXMLBlocks(): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
 		let root = XMLBuilder.create('roAck')
 
 		root.ele('roID', {}, this.ID.toString())

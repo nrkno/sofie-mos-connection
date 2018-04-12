@@ -257,7 +257,6 @@ export class MosConnection implements IMosConnection {
 					message.prepare(mosMessageId)
 					let msgStr: string = message.toString()
 					let buf = iconv.encode(msgStr, 'utf16-be')
-					console.log('SEND REPLY', mosMessageId)
 					e.socket.write(buf, 'usc2')
 				}
 

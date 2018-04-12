@@ -1,6 +1,6 @@
-import {MosTime} from '../dataTypes/mosTime'
-import {MosString128} from '../dataTypes/mosString128'
-import {IMOSExternalMetaData} from '../dataTypes/mosExternalMetaData'
+import { MosTime } from '../dataTypes/mosTime'
+import { MosString128 } from '../dataTypes/mosString128'
+import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 
 export enum IMOSListMachInfoDefaultActiveXMode {
 	MODALDIALOG = 'MODALDIALOG',
@@ -31,7 +31,6 @@ export interface IMOSListMachInfo {
 
 	supportedProfiles: {
 		deviceType: string,                 // deviceType="NCS"
-
 		profile0?: boolean,
 		profile1?: boolean,
 		profile2?: boolean,

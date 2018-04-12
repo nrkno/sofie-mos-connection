@@ -12,10 +12,10 @@ export enum IMOSScope {
 	PLAYLIST = 'PLAYLIST'
 }
 
-export class mosExternalMetaData {
+export class MosExternalMetaData {
 
-	private _scope: IMOSScope
-	private _schema: string 
+	private _scope?: IMOSScope
+	private _schema: string
 	private _payload: any
 
 	constructor (obj: IMOSExternalMetaData) {
@@ -24,7 +24,7 @@ export class mosExternalMetaData {
 		this._payload = obj.MosPayload
 	}
 
-	get scope (): IMOSScope {
+	get scope (): IMOSScope | undefined {
 		return this._scope
 	}
 
@@ -36,11 +36,11 @@ export class mosExternalMetaData {
 		return this._payload
 	}
 
-	get messageXMLBlocks(): XMLBuilder.XMLElementOrXMLNode {
-		let root = XMLBuilder.create('mosExternalMetadata') // config headless 
+	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+		let root = XMLBuilder.create('mosExternalMetadata') // config headless
 		root.ele('mosScope', this._scope)
 		root.ele('mosSchema', this._schema)
-		root.ele('mosPayload', this._payload) // converts json to xml 
+		root.ele('mosPayload', this._payload) // converts json to xml
 		return root
 	}
 

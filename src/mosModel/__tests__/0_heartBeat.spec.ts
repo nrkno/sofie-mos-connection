@@ -1,4 +1,4 @@
-import {HeartBeat} from '../0_heartBeat'
+import { HeartBeat } from '../0_heartBeat'
 
 describe('HeartBeat', () => {
 	test('Simple test', () => {
