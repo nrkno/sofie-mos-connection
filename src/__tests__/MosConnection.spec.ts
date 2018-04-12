@@ -21,7 +21,7 @@ const literal = <T>(o: T) => o
 
 function getMosDevice (): Promise<IMOSDevice> {
 	let mos = new MosConnection({
-		mosID: 'jestMOS',
+		mosID: 'aircache.newscenter.com',
 		acceptsConnections: true,
 		profiles: {
 			'0': true,
