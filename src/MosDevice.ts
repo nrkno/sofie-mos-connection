@@ -331,7 +331,7 @@ export class MosDevice implements IMOSDevice {
 				}, stories).then(resolve)
 
 			} else if (key === 'roElementAction' && ops === 'MOVE' && typeof this._callbackOnROMoveStories === 'function') {
-				let stories = []
+				let stories: Array<MosString128> = []
 
 				// Single story, store string in array
 				if (typeof data.roElementAction.element_source.storyID === 'string') {
@@ -349,23 +349,23 @@ export class MosDevice implements IMOSDevice {
 					StoryID: data.roElementAction.element_target.storyID
 				}, [data.roElementAction.element_source.storyID]).then(resolve)
 
-			} else if (key === 'roStoryDelete' && typeof this._callbackOnRODeleteStories === 'function') {
-				let stories = []
+			} else if (key === 'roElementAction' && ops === 'DELETE' && typeof this._callbackOnRODeleteStories === 'function') {
+				let stories: Array<MosString128> = []
 
 				// Single story, store string in array
-				if (typeof data.roStoryDelete.storyID === 'string') {
-					stories.push(data.roStoryDelete.storyID)
+				if (typeof data.roElementAction.element_source.storyID === 'string') {
+					stories.push(data.roElementAction.storyID)
 
 				// Multiple stories, push all to array
 				} else {
-					for (let i = 0; i < data.roStoryDelete.storyID.length; i++) {
-						stories.push(data.roStoryDelete.storyID[i])
+					for (let i = 0; i < data.roElementAction.element_source.storyID.length; i++) {
+						stories.push(data.roElementAction.element_source.storyID[i])
 					}
 				}
 
 				this._callbackOnRODeleteStories({
-					RunningOrderID: data.roStoryDelete.roID
-				}, stories).then(resolve)
+					RunningOrderID: data.roElementAction.roID
+				}, [data.roElementAction.element_source.storyID]).then(resolve)
 
 			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
