@@ -222,7 +222,7 @@ export class MosDevice implements IMOSDevice {
 						// TODO: MacroOut?: MosString128,
 					}
 
-					if (data.roCreate.story[i].item.hasOwnProperty('itemSlug')) item.Slug = data.roCreate.story[i].item.itemSlug
+					if (data.roCreate.story[i].item.hasOwnProperty('itemSlug')) item.Slug = new MosString128(data.roCreate.story[i].item.itemSlug)
 					if (data.roCreate.story[i].item.hasOwnProperty('objPaths')) {
 						let objPaths = data.roCreate.story[i].item.objPaths
 						let paths:Array<IMOSObjectPath> = []

@@ -516,7 +516,7 @@ let xmlApiData = {
 				Items: [
 					literal<IMOSItem>({
 						ID: new MosString128('0'),
-						Slug: new MosString128('OLSTAT MURDER:VO'),
+						Slug: new MosString128('COLSTAT MURDER:VO'),
 						ObjectID: new MosString128('M000224'),
 						MOSID: 'testmos.enps.com',
 						// mosAbstract?: '',
@@ -580,7 +580,7 @@ let xmlApiData = {
 				Items: [
 					literal<IMOSItem>({
 						ID: new MosString128('0'),
-						Slug: new MosString128('OLSTAT MURDER:VO'),
+						Slug: new MosString128('COLSTAT MURDER:VO'),
 						ObjectID: new MosString128('M000224'),
 						MOSID: 'testmos.enps.com',
 						// mosAbstract?: '',
