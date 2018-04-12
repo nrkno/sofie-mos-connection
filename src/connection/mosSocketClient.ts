@@ -5,6 +5,8 @@ import { MosMessage } from '../mosModel/MosMessage'
 import * as parser from 'xml2json'
 const iconv = require('iconv-lite')
 
+export type CallBackFunction = (d: object) => void
+
 export class MosSocketClient extends EventEmitter {
 	private _host: string
 	private _port: number
@@ -24,9 +26,8 @@ export class MosSocketClient extends EventEmitter {
 	private _commandTimeoutTimer: NodeJS.Timer
 	private _commandTimeout: number = 10000
 
-	private _queue: Array<Promise<any>> = []
+	private _queue: Array<CallBackFunction> = []
 	private _ready: boolean
-
   /** */
 	constructor (host: string, port: number, description: string, debug?: boolean) {
 		super()
@@ -53,36 +54,35 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	connect (): void {
-		// prevents manipulation of active socket
+		// prevent manipulation of active socket
 		if (!this.connected) {
-			// throthling attempts
+			// throttling attempts
 			if (!this._lastConnectionAttempt || (Date.now() - this._lastConnectionAttempt) >= this._reconnectDelay) { // !_lastReconnectionAttempt (means first attempt) OR time > _reconnectionDelay since last attempt
-				// recereates client if new attempt
+				// recreate client if new attempt:
 				if (this._client && this._client.connecting) {
 					this._client.destroy()
 					this._client.removeAllListeners()
 					delete this._client
 				}
 
-				// (re)creates client, either on first run or new attempt
+				// (re)create client, either on first run or new attempt:
 				if (!this._client) {
 					this._client = new Socket()
 					this._client.on('close', (hadError: boolean) => this._onClose(hadError))
 					this._client.on('connect', () => this._onConnected())
-					this._client.on('data', (data: string) => this._onData(data))
+					this._client.on('data', (data: Buffer) => this._onData(data))
 					this._client.on('error', this._onError)
 				}
 
-				// connects
+				// connect:
 				if (this._debug) console.log(new Date(), `Socket ${this._description} attempting connection`)
 				if (this._debug) console.log('port', this._port, 'host', this._host)
-				this._client.setEncoding('ucs2')
 				this._client.connect(this._port, this._host)
 				this._shouldBeConnected = true
 				this._lastConnectionAttempt = Date.now()
 			}
 
-			// sets timer to retry when needed
+			// set timer to retry when needed:
 			if (!this._connectionAttemptTimer) {
 				this._connectionAttemptTimer = global.setInterval(this._autoReconnectionAttempt, this._reconnectDelay)
 			}
@@ -96,7 +96,7 @@ export class MosSocketClient extends EventEmitter {
 		this.dispose()
 	}
 
-	queueCommand (message: MosMessage, cb: any): void {
+	queueCommand (message: MosMessage, cb: CallBackFunction): void {
 		let that = this
 
 		if (this._ready) {
@@ -167,13 +167,14 @@ export class MosSocketClient extends EventEmitter {
 
 		message.prepare() // @todo, is prepared? is sent already? logic needed
 
-		let buf = iconv.encode(message.toString(), 'utf16-be')
+		let str: string = message.toString()
+		let buf = iconv.encode(str, 'utf16-be')
 
 		global.clearTimeout(this._commandTimeoutTimer)
 		this._commandTimeoutTimer = global.setTimeout(() => this._onCommandTimeout(), this._commandTimeout)
 		this._client.write(buf, 'ucs2')
+		if (this._debug) console.log(`MOS command sent from ${this._description} : ${str}\r\nbytes sent: ${this._client.bytesWritten}`)
 
-		if (this._debug) console.log(`MOS command sent from ${this._description} : ${buf}\r\nbytes sent: ${this._client.bytesWritten}`)
 	}
 
   /** */
@@ -218,20 +219,23 @@ export class MosSocketClient extends EventEmitter {
 	}
 
   /** */
-	private _onData (data: string ) {
+	private _onData (data: Buffer ) {
 		this._client.emit(SocketConnectionEvent.ALIVE)
-		data = Buffer.from(data, 'ucs2').toString()
-		if (this._debug) console.log(`${this._description} Received: ${data}`)
+		// data = Buffer.from(data, 'ucs2').toString()
+		let str: string = iconv.decode(data, 'utf16-be')
+
+		if (this._debug) console.log(`${this._description} Received: ${str}`)
 
 		if (this._queue && this._queue.length) {
-			let cb = this._queue.shift()
+			let cb: CallBackFunction | undefined = this._queue.shift()
 			// TODO: Parse XML to JSON
 			if (typeof cb === 'function') {
-				cb(parser.toJson(data, {
+				let parsedData: object = parser.toJson(str, {
 					'object': true,
 					coerce: true,
 					trim: true
-				}))
+				})
+				cb(parsedData)
 			}
 		}
 
