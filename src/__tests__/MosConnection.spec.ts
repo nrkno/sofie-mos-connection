@@ -635,15 +635,16 @@ describe('MosDevice: Profile 2', () => {
 	})
 	test('onROMoveStories', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_move_story)
+		await fakeIncomingMessage(serverSocketMockLower, xmlData.roElementAction_move_story)
 		expect(onROMoveStories).toHaveBeenCalledTimes(1)
 		expect(onROMoveStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_move_story_Action)
 		expect(onROMoveStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_move_story_Stories)
+
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMockLower, xmlData.roElementAction_move_stories)
-		expect(onROMoveStories).toHaveBeenCalledTimes(1)
-		expect(onROMoveStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_move_stories_Action)
-		expect(onROMoveStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_move_stories_Stories)
+		await fakeIncomingMessage(serverSocketMockLower, xmlData.roElementAction_move_stories)
+		expect(onROMoveStories).toHaveBeenCalledTimes(2)
+		expect(onROMoveStories.mock.calls[1][0]).toEqual(xmlApiData.roElementAction_move_stories_Action)
+		expect(onROMoveStories.mock.calls[1][1]).toEqual(xmlApiData.roElementAction_move_stories_Stories)
 	})
 	test('onROMoveItems', async () => {
 		// Fake incoming message on socket:
