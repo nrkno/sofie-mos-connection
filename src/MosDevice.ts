@@ -206,7 +206,7 @@ export class MosDevice implements IMOSDevice {
 			// TODO: _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null>
 			// TODO: _callbackOnRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
 			if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
-				let stories: Array<IMOSROStory> = Parser.xml2Story(data.roCreate.story)
+				let stories: Array<IMOSROStory> = Parser.xml2Stories(data.roCreate.story)
 				let ro: IMOSRunningOrder = {
 					ID: new MosString128(data.roCreate.roID),
 					Slug: new MosString128(data.roCreate.roSlug),
@@ -225,7 +225,6 @@ export class MosDevice implements IMOSDevice {
 					ro.MosExternalMetaData = [meta]
 				}
 				// TODO: Add & test DefaultChannel, Trigger, MacroIn, MacroOut
-				// console.log(ro)
 
 				this._callbackOnCreateRunningOrder(ro).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
@@ -236,7 +235,7 @@ export class MosDevice implements IMOSDevice {
 				}).catch(reject)
 
 			} else if (data.roReplace && typeof this._callbackOnReplaceRunningOrder === 'function') {
-				let stories: Array<IMOSROStory> = Parser.xml2Story(data.roReplace.story)
+				let stories: Array<IMOSROStory> = Parser.xml2Stories(data.roReplace.story)
 				let ro: IMOSRunningOrder = {
 					ID: new MosString128(data.roReplace.roID),
 					Slug: new MosString128(data.roReplace.roSlug),
@@ -326,7 +325,11 @@ export class MosDevice implements IMOSDevice {
 					resolve(ack)
 				}).catch(reject)
 
-			} else if (data.roElementStat && data.roElementStat.element === 'ITEM' && typeof this._callbackOnItemStatus === 'function') {
+			} else if (
+				data.roElementStat &&
+				data.roElementStat.element === 'ITEM' &&
+				typeof this._callbackOnItemStatus === 'function'
+			) {
 				let status: IMOSItemStatus = {
 					RunningOrderId: new MosString128(data.roElementStat.roID),
 					StoryId: new MosString128(data.roElementStat.storyID),
@@ -393,9 +396,11 @@ export class MosDevice implements IMOSDevice {
 			} else if (
 				data.roElementAction &&
 				data.roElementAction.operation === 'INSERT' &&
+				data.roElementAction.element_source &&
+				data.roElementAction.element_source.story &&
 				typeof this._callbackOnROInsertStories === 'function'
 			) {
-				let stories: Array<IMOSROStory> = Parser.xml2Story([data.roElementAction.element_source.story])
+				let stories: Array<IMOSROStory> = Parser.xml2Stories([data.roElementAction.element_source.story])
 
 				this._callbackOnROInsertStories({
 					RunningOrderID: new MosString128(data.roElementAction.roID),
@@ -408,7 +413,32 @@ export class MosDevice implements IMOSDevice {
 					resolve(ack)
 				}).catch(reject)
 
-			// TODO: _callbackOnROInsertItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
+			// _callbackOnROInsertItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
+			} else if (
+				data.roElementAction &&
+				data.roElementAction.operation === 'INSERT' &&
+				data.roElementAction.element_source &&
+				data.roElementAction.element_source.item &&
+				typeof this._callbackOnROInsertItems === 'function'
+			) {
+				// console.log(data.roElementAction.element_source.item)
+
+				let action: IMOSItemAction = {
+					RunningOrderID: new MosString128(data.roElementAction.roID),
+					StoryID: new MosString128(data.roElementAction.element_target.storyID),
+					ItemID:  new MosString128(data.roElementAction.element_target.itemID)
+				}
+
+				this._callbackOnROInsertItems(
+					action,
+					Parser.xml2Items(data.roElementAction.element_source.item))
+				.then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					// ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
 			// TODO: _callbackOnROReplaceStories: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
 			// TODO: _callbackOnROReplaceItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
 
