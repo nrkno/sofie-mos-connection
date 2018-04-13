@@ -277,7 +277,7 @@ export class MosDevice implements IMOSDevice {
 			// TODO: _callbackOnRequestRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>
 			// TODO: _callbackOnMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
 			// TODO: _callbackOnRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
-			} else if (data.roElementStat && typeof this._callbackOnRunningOrderStatus === 'function') {
+			} else if (data.roElementStat && data.roElementStat.element === 'RO' && typeof this._callbackOnRunningOrderStatus === 'function') {
 				let status: IMOSRunningOrderStatus = {
 					ID: new MosString128(data.roElementStat.roID),
 					Status: IMOSObjectStatus[data.roElementStat.status.replace(' ','_')],
@@ -292,7 +292,7 @@ export class MosDevice implements IMOSDevice {
 					resolve(ack)
 				}).catch(reject)
 
-			} else if (data.roElementStat && typeof this._callbackOnStoryStatus === 'function') {
+			} else if (data.roElementStat && data.roElementStat.element === 'STORY' && typeof this._callbackOnStoryStatus === 'function') {
 				let status: IMOSStoryStatus = {
 					RunningOrderId: new MosString128(data.roElementStat.roID),
 					ID: new MosString128(data.roElementStat.storyID),
@@ -308,7 +308,7 @@ export class MosDevice implements IMOSDevice {
 					resolve(ack)
 				}).catch(reject)
 
-			} else if (data.roElementStat && typeof this._callbackOnItemStatus === 'function') {
+			} else if (data.roElementStat && data.roElementStat.element === 'ITEM' && typeof this._callbackOnItemStatus === 'function') {
 				let status: IMOSItemStatus = {
 					RunningOrderId: new MosString128(data.roElementStat.roID),
 					StoryId: new MosString128(data.roElementStat.storyID),
