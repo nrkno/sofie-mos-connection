@@ -544,7 +544,24 @@ export class MosDevice implements IMOSDevice {
 					ack.Stories = resp.Stories
 					resolve(ack)
 				}).catch(reject)
-			// TODO: _callbackOnROSwapItems: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
+			} else if (data.roElementAction &&
+				data.roElementAction.operation === 'SWAP' &&
+				data.roElementAction.element_source.itemID &&
+				data.roElementAction.element_source.itemID.length === 2 &&
+				typeof this._callbackOnROSwapItems === 'function'
+			) {
+				let items: Array<MosString128> = Parser.xml2IDs(data.roElementAction.element_source.itemID)
+
+				this._callbackOnROSwapItems({
+					RunningOrderID: new MosString128(data.roElementAction.roID),
+					StoryID: new MosString128(data.roElementAction.element_target.storyID)
+				}, items[0], items[1]).then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
 
 			// Profile 4
 			// TODO: private _callbackOnROStory: (story: IMOSROFullStory) => Promise<any>
