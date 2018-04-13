@@ -9,6 +9,13 @@ import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
 
 import { xmlData, xmlApiData } from './testData.spec'
+import * as parser from 'xml2json'
+
+const parseOptions = {
+	object: true,
+	coerce: true,
+	trim: true
+}
 
 const iconv = require('iconv-lite')
 iconv.encodingExists('utf16-be')
@@ -82,6 +89,8 @@ function getMosObj (): IMOSObject {
 let socketMockLower: SocketMock
 let socketMockUpper: SocketMock
 let socketMockQuery: SocketMock
+
+
 
 beforeAll(() => {
 	// Mock tcp connection
@@ -507,6 +516,10 @@ describe('MosDevice: Profile 2', () => {
 		onROSwapStories.mockClear()
 		onROSwapItems.mockClear()
 
+		serverSocketMockLower.mockClear()
+		serverSocketMockUpper.mockClear()
+		serverSocketMockQuery.mockClear()
+
 	})
 	test('init', async () => {
 		expect(mosDevice).toBeTruthy()
@@ -536,13 +549,29 @@ describe('MosDevice: Profile 2', () => {
 	})
 	test('onRequestRunningOrder', async () => {
 		// Fake incoming message on socket:
-		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roReq)
-		expect(onReplaceRunningOrder).toHaveBeenCalledTimes(1)
-		expect(onReplaceRunningOrder.mock.calls[0][0]).toEqual(xmlApiData.roDelete)
+		let messageId = await fakeIncomingMessage(serverSocketMockUpper, xmlData.roReq)
+		expect(onRequestRunningOrder).toHaveBeenCalledTimes(1)
+
+		expect(onRequestRunningOrder.mock.calls[0][0]).toEqual(96857485)
 		// Check reply to socket server:
-		await socketMockLower.mockWaitForSentMessages()
-		expect(socketMockLower.mockSentMessage).toHaveBeenCalledTimes(1)
-		expect(socketMockLower.mockSentMessage.calls[0][0]).toMatch(/<roList>.+96857485/)
+		await serverSocketMockUpper.mockWaitForSentMessages()
+		expect(serverSocketMockUpper.mockSentMessage).toHaveBeenCalledTimes(1)
+		await checkReplyToServer(serverSocketMockUpper, messageId, '<roList>')
+		// console.log(decode(serverSocketMockUpper.mockSentMessage.mock.calls[0][0]))
+
+		let reply = decode(serverSocketMockUpper.mockSentMessage.mock.calls[0][0])
+		let parsedReply = parser.toJson(reply, parseOptions)
+		// console.log('parsedReply',parsedReply.mos)
+
+		// expect(parsedReply.mos.roList).toMatchObject(roLight(xmlApiData.roCreate))
+		expect(parsedReply.mos.roList.roID + '').toEqual (xmlApiData.roCreate.ID.toString())
+		expect(parsedReply.mos.roList.roSlug + '').toEqual (xmlApiData.roCreate.Slug.toString())
+		expect(parsedReply.mos.roList.story).toHaveLength(xmlApiData.roCreate.Stories.length)
+		expect(parsedReply.mos.roList.story[0].storyID + '').toEqual(xmlApiData.roCreate.Stories[0].ID.toString())
+		expect(parsedReply.mos.roList.story[0].item).toBeTruthy()
+		expect(parsedReply.mos.roList.story[0].item.itemID + '').toEqual(xmlApiData.roCreate.Stories[0].Items[0].ID.toString())
+		expect(parsedReply.mos.roList.story[0].item.objID + '').toEqual(xmlApiData.roCreate.Stories[0].Items[0].ObjectID.toString())
+
 	})
 	test('getRunningOrder', async () => {
 

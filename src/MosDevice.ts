@@ -33,7 +33,8 @@ import { IConnectionConfig } from './config/connectionConfig'
 import { SocketDescription } from './connection/socketConnection'
 import * as parser from 'xml2json'
 import { MosMessage } from './mosModel/MosMessage'
-import { MOSAck } from './mosModel/mosAck';
+import { MOSAck } from './mosModel/mosAck'
+import { ROList } from './mosModel/ROList'
 const iconv = require('iconv-lite')
 
 export class MosDevice implements IMOSDevice {
@@ -244,8 +245,25 @@ export class MosDevice implements IMOSDevice {
 					ack.Stories = resp.Stories
 					resolve(ack)
 				}).catch(reject)
+			} else if (data.roReq && typeof this._callbackOnRequestRunningOrder === 'function') {
+				// _callbackOnRequestRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>
 
-			// TODO: _callbackOnRequestRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>
+				this._callbackOnRequestRunningOrder(data.roReq.roID).then((ro: IMOSRunningOrder | null) => {
+					// console.log('ro', ro)
+					if (ro) {
+						let resp = new ROList()
+						resp.RO = ro
+						resolve(resp)
+					} else {
+						// RO not found
+						let ack = new ROAck()
+						ack.ID = data.roReq.roID
+						ack.Status = new MosString128(IMOSAckStatus.NACK)
+						// ack.Stories = resp.Stories
+						resolve(ack)
+					}
+				}).catch(reject)
+
 			// TODO: _callbackOnMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
 			// TODO: _callbackOnRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
 			// TODO: _callbackOnStoryStatus: (status: IMOSStoryStatus) => Promise<IMOSROAck>
