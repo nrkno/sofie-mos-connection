@@ -222,6 +222,8 @@ export class MosConnection implements IMosConnection {
 	private _registerIncomingClient (e: SocketDescription) {
 		let socketID = MosConnection.nextSocketID
 
+		// console.log('_registerIncomingClient', socketID, e.socket.remoteAddress)
+
 		// handles socket listeners
 		e.socket.on('close', (/*hadError: boolean*/) => {
 			this._disposeIncomingSocket(socketID)
@@ -248,6 +250,7 @@ export class MosConnection implements IMosConnection {
 			let lastMatch = '</mos>\r\n' // </mos>
 			let last = str.substr(-lastMatch.length)
 
+			// console.log(data)
 			// Data ready to be parsed
 			if (first === firstMatch && last === lastMatch) {
 				// @ts-ignore xml2json says arguments are wrong, but its not.
@@ -283,7 +286,7 @@ export class MosConnection implements IMosConnection {
 					e.socket.write(buf, 'usc2')
 				}
 				if (!mosDevice && this._conf.openRelay) {
-					console.log('OPEN RELAY ------------------')
+					// console.log('OPEN RELAY ------------------')
 					// Register a new mosDevice to use for this connection
 					if (parsed.mos.ncsID === this._conf.mosID) {
 						mosDevice = this.registerMosDevice(

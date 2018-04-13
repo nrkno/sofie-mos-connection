@@ -5,7 +5,7 @@ import { MosString128 } from './dataTypes/mosString128'
 import { MosTime } from './dataTypes/mosTime'
 import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
 import { MosDuration } from './dataTypes/mosDuration'
-import { IMOSListMachInfo, IMOSDefaultActiveX } from './mosModel/0_listMachInfo'
+import { IMOSListMachInfo, IMOSDefaultActiveX, ListMachineInfo } from './mosModel/0_listMachInfo'
 import { ROAck } from './mosModel/ROAck'
 import { ReqMachInfo } from './mosModel/0_reqMachInfo'
 import {
@@ -32,6 +32,7 @@ import { IConnectionConfig } from './config/connectionConfig'
 import { Parser } from './mosModel/Parser'
 import { MOSAck } from './mosModel/mosAck'
 import { ROList } from './mosModel/ROList'
+import { HeartBeat } from './mosModel/0_heartBeat';
 
 export class MosDevice implements IMOSDevice {
 
@@ -150,34 +151,14 @@ export class MosDevice implements IMOSDevice {
 		this._currentConnection = this._primaryConnection || this._primaryConnection || null
 	}
 
+	get hasConnection (): boolean {
+		return !!this._currentConnection
+	}
 	get idPrimary (): string {
 		return this._idPrimary
 	}
 	get idSecondary (): string | null {
 		return this._idSecondary
-	}
-
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
-		let root = XMLBuilder.create('listMachInfo') // config headless
-		root.ele('manufacturer', this.manufacturer.toString())
-		root.ele('model', this.model.toString())
-		root.ele('hwRev', this.hwRev.toString())
-		root.ele('swRev', this.swRev.toString())
-		root.ele('DOM', this.DOM.toString())
-		root.ele('SN', this.SN.toString())
-		root.ele('ID', this.ID.toString())
-		root.ele('time', this.time.toString())
-		root.ele('opTime', this.opTime.toString())
-		root.ele('mosRev', this.mosRev.toString())
-
-		let p = root.ele('supportedProfiles').att('deviceType', this.supportedProfiles.deviceType)
-		for (let i = 0; i < 8; i++) {
-			p.ele('mosProfile', (this.supportedProfiles['profile' + i] ? 'YES' : 'NO')).att('number', i)
-		}
-
-		// root.ele('defaultActiveX', this.manufacturer)
-		// root.ele('mosExternalMetaData', this.manufacturer) import from IMOSExternalMetaData
-		return root
 	}
 
 	emitConnectionChange (): void {
@@ -202,13 +183,25 @@ export class MosDevice implements IMOSDevice {
 			// Route and format data
 
 			// Profile 0
-			// TODO: _callbackOnGetMachineInfo: () => Promise<IMOSListMachInfo>
+
 			// TODO: _callbackOnConnectionChange: (connectionStatus: IMOSConnectionStatus) => void
+			if (data.heartbeat) {
+				// send immediate reply:
+				console.log('heartbeat')
+				let ack = new HeartBeat()
+				resolve(ack)
 
 			// Profile 1
 			// TODO: _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null>
 			// TODO: _callbackOnRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
-			if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
+
+			// TODO: _callbackOnGetMachineInfo: () => Promise<IMOSListMachInfo>
+			} else if (data.reqMachInfo && typeof this._callbackOnGetMachineInfo === 'function') {
+				this._callbackOnGetMachineInfo().then((m: IMOSListMachInfo) => {
+					let resp = new ListMachineInfo(m)
+					resolve(resp)
+				})
+			} else if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
 				let stories: Array<IMOSROStory> = Parser.xml2Stories(data.roCreate.story)
 				let ro: IMOSRunningOrder = {
 					ID: new MosString128(data.roCreate.roID),
@@ -572,6 +565,7 @@ export class MosDevice implements IMOSDevice {
 			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
 			} else {
+				console.log(data)
 				let msg = new MOSAck()
 				msg.ID = new MosString128(0) // Depends on type of message, needs logic
 				msg.Revision = 0
