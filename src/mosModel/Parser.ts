@@ -16,41 +16,41 @@ export namespace Parser {
 	}
 	export function ro2xml (ro: IMOSRunningOrder): XMLBuilder.XMLElementOrXMLNode {
 	}
-	export function xml2Story (xml: Array<any>): Array<IMOSROStory> {
-		let stories: Array<IMOSROStory> = []
-		let items: Array<object> = []
+	export function xml2Stories (xml: Array<any>): Array<IMOSROStory> {
+		let xmlStories: Array<any> = xml
+		if (!Array.isArray(xmlStories)) xmlStories = [xmlStories]
 
-		for (let i = 0; i < xml.length; i++) {
-			// console.log(xml[i], 'is array?', xml[i].item instanceof Array)
-			let story: IMOSROStory = {
-				ID: new MosString128(xml[i].storyID),
-				Slug: new MosString128(xml[i].storySlug),
-				Items: []
-				// TODO: Add & test Number, MosExternalMetaData, Items, ObjectID, MOSID, mosAbstract, Paths
-				// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut, MosExternalMetaData
-			}
-
-			if (xml[i].item instanceof Array) {
-				for (let j = 0; j < xml[i].item.length; j++) {
-					story.Items.push(xml2Item(xml[i].item[j]))
-				}
-			} else {
-				story.Items.push(xml2Item(xml[i].item))
-			}
-			if (xml[i].hasOwnProperty('storyNum')) story.Number = new MosString128(xml[i].storyNum)
-			if (xml[i].hasOwnProperty('MosExternalMetaData')) {
-				// TODO: Handle an array of MosExternalMetaData
-				let meta: IMosExternalMetaData = {
-					MosSchema: xml[i].MosExternalMetaData.mosSchema,
-					MosPayload: xml[i].MosExternalMetaData.mosPayload
-				}
-				if (xml[i].MosExternalMetaData.hasOwnProperty('mosScope')) meta.MosScope = xml[i].MosExternalMetaData.mosScope
-				ro.MosExternalMetaData = [meta]
-			}
-			stories.push(story)
+		return xmlStories.map((xmlStory: any) => {
+			return xml2Story(xml2Story)
+		})
+	}
+	export function xml2Story (xml: any): IMOSROStory {
+		let story: IMOSROStory = {
+			ID: new MosString128(xml.storyID),
+			Slug: new MosString128(xml.storySlug),
+			Items: []
+			// TODO: Add & test Number, MosExternalMetaData, Items, ObjectID, MOSID, mosAbstract, Paths
+			// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut, MosExternalMetaData
 		}
 
-		return stories
+		if (xml.item instanceof Array) {
+			xml.item.forEach((xmlItem: any) => {
+				story.Items.push(xml2Item(xmlItem))
+			})
+		} else if (xml.item) {
+			story.Items.push(xml2Item(xml.item))
+		}
+		if (xml.hasOwnProperty('storyNum')) story.Number = new MosString128(xml.storyNum)
+		if (xml.hasOwnProperty('MosExternalMetaData')) {
+			// TODO: Handle an array of MosExternalMetaData
+			let meta: IMosExternalMetaData = {
+				MosSchema: xml.MosExternalMetaData.mosSchema,
+				MosPayload: xml.MosExternalMetaData.mosPayload
+			}
+			if (xml.MosExternalMetaData.hasOwnProperty('mosScope')) meta.MosScope = xml.MosExternalMetaData.mosScope
+			ro.MosExternalMetaData = [meta]
+		}
+		return story
 	}
 	export function story2xml (story: IMOSROStory): XMLBuilder.XMLElementOrXMLNode {
 		let xmlStory = XMLBuilder.create('story')
