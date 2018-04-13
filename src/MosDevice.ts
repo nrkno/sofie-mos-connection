@@ -495,6 +495,29 @@ export class MosDevice implements IMOSDevice {
 					resolve(ack)
 				}).catch(reject)
 			// TODO: _callbackOnROMoveItems: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>
+			} else if (data.roElementAction &&
+				data.roElementAction.operation === 'MOVE' &&
+				(data.roElementAction.element_source || {}).itemID &&
+				typeof this._callbackOnROMoveItems === 'function'
+			) {
+				let action: IMOSItemAction = {
+					RunningOrderID: new MosString128(data.roElementAction.roID),
+					StoryID: new MosString128(data.roElementAction.element_target.storyID),
+					ItemID:  new MosString128(data.roElementAction.element_target.itemID)
+				}
+				let itemIDs: Array<MosString128> = []
+				let xmlItemIDs = data.roElementAction.element_source.itemID
+				if (!Array.isArray(xmlItemIDs)) xmlItemIDs = [xmlItemIDs]
+				xmlItemIDs.forEach((itemID: string) => {
+					itemIDs.push(new MosString128(itemID))
+				})
+				this._callbackOnROMoveItems(action, itemIDs).then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
 			// TODO: _callbackOnRODeleteStories: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
 
 			} else if (data.roElementAction &&
