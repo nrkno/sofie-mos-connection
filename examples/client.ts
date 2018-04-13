@@ -6,7 +6,9 @@ let mos = new MosConnection(new ConnectionConfig({
 	profiles: {
 		'0': true,
 		'1': true
-	}
+	},
+	openRelay: true,
+	// debug: true
 }))
 
 let mosdev = mos.connect({

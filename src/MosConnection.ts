@@ -14,7 +14,7 @@ import { NCSServerConnection } from './connection/NCSServerConnection'
 import * as parser from 'xml2json'
 import { MosMessage } from './mosModel/MosMessage'
 import { MOSAck } from './mosModel/mosAck'
-import { MosString128 } from '.';
+import { MosString128 } from './dataTypes/mosString128'
 const iconv = require('iconv-lite')
 
 export class MosConnection implements IMosConnection {
@@ -29,9 +29,9 @@ export class MosConnection implements IMosConnection {
 	private _lowerSocketServer: MosSocketServer
 	private _upperSocketServer: MosSocketServer
 	private _querySocketServer: MosSocketServer
-	private _servers: {[host: string]: Server} = {}
+	private _incomingSockets: {[sockedId: string]: SocketDescription} = {}
 	private _ncsConnections: {[host: string]: NCSServerConnection} = {}
-	private _mosDevices: {[mosID: string]: MosDevice} = {}
+	private _mosDevices: {[ncsID: string]: MosDevice} = {}
 
 	private _isListening: Promise<boolean[]>
 
@@ -85,18 +85,32 @@ export class MosConnection implements IMosConnection {
 			}
 
 			// initialize mosDevice:
-			let connectionConfig = this._conf
-			let mosDevice = new MosDevice(connectionConfig, primary, secondary)
-			this._mosDevices[mosDevice.id] = mosDevice
-			mosDevice.connect()
-
-			// emit to .onConnection
-			if (this._onconnection) this._onconnection(mosDevice)
+			let mosDevice = this.registerMosDevice(
+				this._conf.mosID,
+				connectionOptions.primary.id,
+				(connectionOptions.secondary || {}).id || null,
+				primary, secondary)
 			resolve(mosDevice)
 		})
 	}
 	onConnection (cb: (mosDevice: IMOSDevice) => void) {
 		this._onconnection = cb
+	}
+	registerMosDevice (
+		myMosID: string,
+		theirMosId0: string,
+		theirMosId1: string | null,
+		primary: NCSServerConnection | null, secondary: NCSServerConnection | null): MosDevice {
+		let id0 = myMosID + '_' + theirMosId0
+		let id1 = (theirMosId1 ? myMosID + '_' + theirMosId1 : null)
+		let mosDevice = new MosDevice(id0, id1, this._conf, primary, secondary)
+		this._mosDevices[id0] = mosDevice
+		if (id1) this._mosDevices[id1] = mosDevice
+		mosDevice.connect()
+
+		// emit to .onConnection
+		if (this._onconnection) this._onconnection(mosDevice)
+		return mosDevice
 	}
 
 	/** */
@@ -121,15 +135,17 @@ export class MosConnection implements IMosConnection {
 
 	/** */
 	dispose (): Promise<void> {
-		let lowerSockets: Socket[] = []
-		let upperSockets: Socket[] = []
-		let querySockets: Socket[] = []
+		let sockets: Array<Socket> = []
+		// let lowerSockets: Socket[] = []
+		// let upperSockets: Socket[] = []
+		// let querySockets: Socket[] = []
 
-		for (let nextSocketID in this._servers) {
-			let server = this._servers[nextSocketID]
-			lowerSockets = lowerSockets.concat(server.lowerPortSockets)
-			upperSockets = upperSockets.concat(server.upperPortSockets)
-			querySockets = querySockets.concat(server.queryPortSockets)
+		for (let socketID in this._incomingSockets) {
+			let e = this._incomingSockets[socketID]
+			if (e) {
+				sockets.push(e.socket)
+			}
+			
 		}
 
 		let disposing: Promise<void>[] = []
@@ -207,7 +223,9 @@ export class MosConnection implements IMosConnection {
 		let socketID = MosConnection.nextSocketID
 
 		// handles socket listeners
-		e.socket.on('close', (/*hadError: boolean*/) => this._disposeIncomingSocket(e.socket, socketID))
+		e.socket.on('close', (/*hadError: boolean*/) => {
+			this._disposeIncomingSocket(socketID)
+		}) // => this._disposeIncomingSocket(e.socket, socketID))
 		e.socket.on('end', () => {
 			if (this._debug) console.log('Socket End')
 		})
@@ -247,7 +265,10 @@ export class MosConnection implements IMosConnection {
 				e.chunks += data
 			}
 			if (parsed !== null) {
-				let mosDevice = this._mosDevices[parsed.mos.mosID]
+				let mosDevice = (
+					this._mosDevices[parsed.mos.ncsID + '_' + parsed.mos.mosID] ||
+					this._mosDevices[parsed.mos.mosID + '_' + parsed.mos.ncsID]
+				)
 
 				let mosMessageId: number = parsed.mos.messageID // is this correct? (needs to be verified) /Johan
 				let ncsID = parsed.mos.ncsID
@@ -260,6 +281,21 @@ export class MosConnection implements IMosConnection {
 					let msgStr: string = message.toString()
 					let buf = iconv.encode(msgStr, 'utf16-be')
 					e.socket.write(buf, 'usc2')
+				}
+				if (!mosDevice && this._conf.openRelay) {
+					console.log('OPEN RELAY ------------------')
+					// Register a new mosDevice to use for this connection
+					if (parsed.mos.ncsID === this._conf.mosID) {
+						mosDevice = this.registerMosDevice(
+							this._conf.mosID,
+							parsed.mos.mosID,
+							null,null, null)
+					} else if (parsed.mos.mosID === this._conf.mosID) {
+						mosDevice = this.registerMosDevice(
+							this._conf.mosID,
+							parsed.mos.ncsID,
+							null, null, null)
+					}
 				}
 
 				if (mosDevice) {
@@ -289,9 +325,9 @@ export class MosConnection implements IMosConnection {
 					// TODO: Handle missing mosDevice
 					// should reply with a NACK
 					let msg = new MOSAck()
-					msg.ID = 0
+					msg.ID = new MosString128(0)
 					msg.Revision = 0
-					msg.Description = 'MosDevice not found'
+					msg.Description = new MosString128('MosDevice not found')
 					msg.Status = IMOSAckStatus.NACK
 					sendReply(msg) // TODO: Need tests
 				}
@@ -303,29 +339,23 @@ export class MosConnection implements IMosConnection {
 
 		// registers socket on server
 		// e.socket.remoteAddress är ej OK id, måste bytas ut
-		let server: Server = this._getServerForHost(e.socket.remoteAddress)
-		server.registerIncomingConnection(socketID, e.socket, e.portDescription)
-		if (this._debug) console.log('added: ', this._servers)
+		// let server: Server = this._getServerForHost(e.socket.remoteAddress)
+		// server.registerIncomingConnection(socketID, e.socket, e.portDescription)
+		this._incomingSockets[socketID + ''] = e
+		if (this._debug) console.log('added: ', socketID)
 	}
 
 	/** */
-	private _disposeIncomingSocket (socket: Socket, socketID: number) {
-		socket.removeAllListeners()
-		socket.destroy()
-		// e.socket.remoteAddress är ej OK id, måste bytas ut
-		this._getServerForHost(socket.remoteAddress).removeSocket(socketID)
-		if (this._debug) console.log('removed: ', this._servers, '\n')
-	}
-
-	/** */
-	private _getServerForHost (host: string): Server {
-		// create new server if not known
-		if (!this._servers[host]) {
-			if (this._debug) console.log('Creating new Server')
-			this._servers[host] = new Server()
+	private _disposeIncomingSocket (socketID: number) {
+		let e = this._incomingSockets[socketID + '']
+		if (e) {
+			e.socket.removeAllListeners()
+			e.socket.destroy()
 		}
-
-		return this._servers[host]
+		delete this._incomingSockets[socketID + '']
+		// e.socket.remoteAddress är ej OK id, måste bytas ut
+		// this._getServerForHost(socket.remoteAddress).removeSocket(socketID)
+		if (this._debug) console.log('removed: ', socketID, '\n')
 	}
 
 	private static get nextSocketID (): number {

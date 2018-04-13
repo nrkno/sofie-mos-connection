@@ -61,7 +61,8 @@ export interface IMosConnection {
 }
 
 export interface IMOSDevice {
-	id: string, // unique id for this device and session
+	idPrimary: string, // unique id for this device and session
+	idSecondary: string | null, // unique id for this device and session (buddy)
 	/* Profile 0 */
 	/*  */
 	getMachineInfo: () => Promise<IMOSListMachInfo>

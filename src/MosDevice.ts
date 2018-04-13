@@ -50,7 +50,8 @@ export class MosDevice implements IMOSDevice {
 	defaultActiveX: Array<IMOSDefaultActiveX>
 	mosExternalMetaData: Array<IMOSExternalMetaData>
 
-	private _id: string
+	private _idPrimary: string
+	private _idSecondary: string | null
 	private _debug: boolean = false
 
 	private supportedProfiles: {[profile: string]: (boolean | string), deviceType: string} = {
@@ -66,9 +67,9 @@ export class MosDevice implements IMOSDevice {
 	} // Use same names as IProfiles?
 
 	// private _profiles: ProfilesSupport
-	private _primaryConnection: NCSServerConnection
-	private _secondaryConnection: NCSServerConnection
-	private _currentConnection: NCSServerConnection
+	private _primaryConnection: NCSServerConnection | null = null
+	private _secondaryConnection: NCSServerConnection | null = null
+	private _currentConnection: NCSServerConnection | null = null
 
 	// Profile 0
 	private _callbackOnGetMachineInfo: () => Promise<IMOSListMachInfo>
@@ -105,11 +106,15 @@ export class MosDevice implements IMOSDevice {
 	private _tmp: string = ''
 
 	constructor (
+		idPrimary: string,
+		idSecondary: string | null,
 		connectionConfig: IConnectionConfig,
-		primaryConnection: NCSServerConnection,
+		primaryConnection: NCSServerConnection | null,
 		secondaryConnection: NCSServerConnection | null
 	) {
-		this._id = new MosString128(connectionConfig.mosID).toString()
+		// this._id = new MosString128(connectionConfig.mosID).toString()
+		this._idPrimary = idPrimary
+		this._idSecondary = idSecondary
 		this.socket = new Socket()
 		// Add params to this in MosConnection/MosDevice
 		this.manufacturer = new MosString128('RadioVision, Ltd.')
@@ -134,19 +139,22 @@ export class MosDevice implements IMOSDevice {
 			if (connectionConfig.profiles['7']) this.supportedProfiles.profile7 = true
 			if (connectionConfig.debug) this._debug = connectionConfig.debug
 		}
-
-		this._primaryConnection = primaryConnection
-		this._primaryConnection.onConnectionChange(() => this.emitConnectionChange())
-		this._currentConnection = this._primaryConnection
-
+		if (primaryConnection) {
+			this._primaryConnection = primaryConnection
+			this._primaryConnection.onConnectionChange(() => this.emitConnectionChange())
+		}
 		if (secondaryConnection) {
 			this._secondaryConnection = secondaryConnection
 			this._secondaryConnection.onConnectionChange(() => this.emitConnectionChange())
 		}
+		this._currentConnection = this._primaryConnection || this._primaryConnection || null
 	}
 
-	get id (): string {
-		return this._id
+	get idPrimary (): string {
+		return this._idPrimary
+	}
+	get idSecondary (): string | null {
+		return this._idSecondary
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
@@ -367,7 +375,7 @@ export class MosDevice implements IMOSDevice {
 					story.MosExternalMetaData = [meta]
 				}
 				stories.push(story)
-				console.log('roStorySend', stories)
+				// console.log('roStorySend', stories)
 				this._callbackOnROInsertStories(action, stories).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
 					ack.ID = resp.ID
@@ -580,27 +588,32 @@ export class MosDevice implements IMOSDevice {
 	getMachineInfo (): Promise<IMOSListMachInfo> {
 		let message = new ReqMachInfo()
 
-		return new Promise((resolve) => {
-			this._currentConnection.executeCommand(message).then((data) => {
-				console.log('reply', data)
-				let listMachInfo = data.mos.listMachInfo
-				let list: IMOSListMachInfo = {
-					manufacturer: listMachInfo.manufacturer,
-					model: listMachInfo.model,
-					hwRev: listMachInfo.hwRev,
-					swRev: listMachInfo.swRev,
-					DOM: listMachInfo.DOM,
-					SN: listMachInfo.SN,
-					ID: listMachInfo.ID,
-					time: listMachInfo.time,
-					opTime: listMachInfo.opTime,
-					mosRev: listMachInfo.mosRev,
-					supportedProfiles: this.supportedProfiles,		// TODO: No data from ENPS, needs test!
-					defaultActiveX: this.defaultActiveX,			// TODO: No data from ENPS, needs test!
-					mosExternalMetaData: this.mosExternalMetaData	// TODO: No data from ENPS, needs test!
-				}
-				resolve(list)
-			})
+		return new Promise((resolve, reject) => {
+			if (this._currentConnection) {
+
+				this._currentConnection.executeCommand(message).then((data) => {
+					// console.log('reply', data)
+					let listMachInfo = data.mos.listMachInfo
+					let list: IMOSListMachInfo = {
+						manufacturer: listMachInfo.manufacturer,
+						model: listMachInfo.model,
+						hwRev: listMachInfo.hwRev,
+						swRev: listMachInfo.swRev,
+						DOM: listMachInfo.DOM,
+						SN: listMachInfo.SN,
+						ID: listMachInfo.ID,
+						time: listMachInfo.time,
+						opTime: listMachInfo.opTime,
+						mosRev: listMachInfo.mosRev,
+						supportedProfiles: this.supportedProfiles,		// TODO: No data from ENPS, needs test!
+						defaultActiveX: this.defaultActiveX,			// TODO: No data from ENPS, needs test!
+						mosExternalMetaData: this.mosExternalMetaData	// TODO: No data from ENPS, needs test!
+					}
+					resolve(list)
+				})
+			} else {
+				reject('No Connection')
+			}
 		})
 	}
 
@@ -615,7 +628,7 @@ export class MosDevice implements IMOSDevice {
 	getConnectionStatus (): IMOSConnectionStatus {
 		// TODO: Implement this
 		return {
-			PrimaryConnected: this._primaryConnection.connected,
+			PrimaryConnected: (this._primaryConnection ? this._primaryConnection.connected : false),
 			PrimaryStatus: '',
 			SecondaryConnected: (this._secondaryConnection ? this._secondaryConnection.connected : false),
 			SecondaryStatus: ''
