@@ -126,6 +126,8 @@ export class SocketMock extends EventEmitter implements Socket {
 	}
 	mockClear () {
 		this._responses.splice(0, 9999)
+		// @ts-ignore
+		this.mockSentMessage.mockClear()
 	}
 	mockWaitForSentMessages () {
 		return new Promise((resolve) => {
