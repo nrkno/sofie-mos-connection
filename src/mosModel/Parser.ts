@@ -218,19 +218,13 @@ export namespace Parser {
 		xmlMD.ele('mosPayload', {}, payload)
 		return xmlMD
 	}
-	export function xml2ID (xml: XMLBuilder.XMLElementOrXMLNode): Array<MosString128> {
+	export function xml2IDs (xml: XMLBuilder.XMLElementOrXMLNode): Array<MosString128> {
 		let arr: Array<MosString128> = []
-
-		// Multiple stories, push all to array
-		if (xml instanceof Array) {
-			for (let i = 0; i < xml.length; i++) {
-				arr.push(new MosString128(xml[i]))
-			}
-
-		// Single story, store string in array
-		} else {
-			arr.push(new MosString128(xml))
-		}
+		
+		if (!Array.isArray(xml)) xml = [xml]
+		xml.forEach((id: string) => {
+			arr.push(new MosString128(id))
+		})
 
 		return arr
 	}

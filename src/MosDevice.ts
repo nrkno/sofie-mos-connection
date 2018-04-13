@@ -471,12 +471,7 @@ export class MosDevice implements IMOSDevice {
 					RunningOrderID: new MosString128(data.roElementAction.roID),
 					StoryID: new MosString128(data.roElementAction.element_target.storyID)
 				}
-				let storyIDs: Array<MosString128> = []
-				let xmlStoryIDs = data.roElementAction.element_source.storyID
-				if (!Array.isArray(xmlStoryIDs)) xmlStoryIDs = [xmlStoryIDs]
-				xmlStoryIDs.forEach((storyID: string) => {
-					storyIDs.push(new MosString128(storyID))
-				})
+				let storyIDs: Array<MosString128> = Parser.xml2IDs(data.roElementAction.element_source.storyID)
 				this._callbackOnROMoveStories(action, storyIDs).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
 					ack.ID = resp.ID
@@ -495,12 +490,7 @@ export class MosDevice implements IMOSDevice {
 					StoryID: new MosString128(data.roElementAction.element_target.storyID),
 					ItemID:  new MosString128(data.roElementAction.element_target.itemID)
 				}
-				let itemIDs: Array<MosString128> = []
-				let xmlItemIDs = data.roElementAction.element_source.itemID
-				if (!Array.isArray(xmlItemIDs)) xmlItemIDs = [xmlItemIDs]
-				xmlItemIDs.forEach((itemID: string) => {
-					itemIDs.push(new MosString128(itemID))
-				})
+				let itemIDs: Array<MosString128> = Parser.xml2IDs(data.roElementAction.element_source.itemID)
 				this._callbackOnROMoveItems(action, itemIDs).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
 					ack.ID = resp.ID
@@ -515,18 +505,7 @@ export class MosDevice implements IMOSDevice {
 				data.roElementAction.element_source.storyID &&
 				typeof this._callbackOnRODeleteStories === 'function'
 			) {
-				let stories: Array<MosString128> = []
-
-				// Multiple stories, push all to array
-				if (data.roElementAction.element_source.storyID instanceof Array) {
-					for (let i = 0; i < data.roElementAction.element_source.storyID.length; i++) {
-						stories.push(new MosString128(data.roElementAction.element_source.storyID[i]))
-					}
-
-				// Single story, store string in array
-				} else {
-					stories.push(new MosString128(data.roElementAction.element_source.storyID))
-				}
+				let stories: Array<MosString128> = Parser.xml2IDs(data.roElementAction.element_source.storyID)
 
 				this._callbackOnRODeleteStories({
 					RunningOrderID: new MosString128(data.roElementAction.roID)
@@ -548,7 +527,7 @@ export class MosDevice implements IMOSDevice {
 					RunningOrderID: new MosString128(data.roElementAction.roID),
 					StoryID: new MosString128(data.roElementAction.element_target.storyID)
 				}
-				let items: Array<MosString128> = Parser.xml2ID(data.roElementAction.element_source.itemID)
+				let items: Array<MosString128> = Parser.xml2IDs(data.roElementAction.element_source.itemID)
 
 				this._callbackOnRODeleteItems(action, items).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
