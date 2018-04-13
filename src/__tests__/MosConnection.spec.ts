@@ -594,7 +594,7 @@ describe('MosDevice: Profile 2', () => {
 		// Fake incoming message on socket:
 		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roMetadataReplace)
 		expect(onMetadataReplace).toHaveBeenCalledTimes(1)
-		expect(onMetadataReplace.mock.calls[0][0]).toEqual(xmlApiData.roDelete)
+		expect(onMetadataReplace.mock.calls[0][0]).toEqual(xmlApiData.roMetadataReplace)
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
 	test('onRunningOrderStatus', async () => {

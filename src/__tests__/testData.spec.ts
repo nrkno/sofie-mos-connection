@@ -2,6 +2,7 @@ import { IMOSROStory, IMOSItem, IMOSRunningOrder, IMOSObjectPath, IMOSObjectPath
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
+import { IMOSScope } from '../dataTypes/mosExternalMetaData'
 
 const literal = <T>(o: T) => o
 
@@ -654,11 +655,21 @@ let xmlApiData = {
 		Slug: new MosString128('5PM RUNDOWN'),
 		// DefaultChannel?: new MosString128(''),
 		EditorialStart: new MosTime('2009-04-17T17:02:00'),
-		EditorialDuration: new MosDuration('00:58:25')
+		EditorialDuration: new MosDuration('00:58:25'),
 		// Trigger?: any // TODO: Johan frågar vad denna gör
 		// MacroIn?: new MosString128(''),
 		// MacroOut?: new MosString128(''),
-		// MosExternalMetaData?: Array<IMOSExternalMetaData>
+		MosExternalMetaData: [{
+			MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+			MosScope: IMOSScope.PLAYLIST,
+			MosPayload: {
+				Owner: 'SHOLMES',
+				destination: 'b',
+				source: 'a',
+				transitionMode: 2,
+				transitionPoint: 463
+			}
+		}]
 	}),
 	'roElementStat_ro': literal<IMOSRunningOrderStatus>({
 		ID: new MosString128('5PM'),

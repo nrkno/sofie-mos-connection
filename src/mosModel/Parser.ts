@@ -5,14 +5,41 @@ import {
 	IMOSItem,
 	IMOSObjectPathType,
 	IMOSObjectPath,
-	IMosExternalMetaData
+	IMosExternalMetaData,
+	IMOSRunningOrderBase
 } from '../api'
 import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
+import { MosTime } from '../dataTypes/mosTime'
+import { MosDuration } from '../dataTypes/mosDuration'
 import * as parser from 'xml2json'
 export namespace Parser {
 
+	export function xml2ROBase (xml: XMLBuilder.XMLElementOrXMLNode): IMOSRunningOrderBase {
+		let ro: IMOSRunningOrderBase = {
+			ID: new MosString128(xml.roID),
+			Slug: new MosString128(xml.roSlug)
+		}
+
+		if (xml.hasOwnProperty('roEdStart')) ro.EditorialStart = new MosTime(xml.roEdStart)
+		if (xml.hasOwnProperty('roEdDur')) ro.EditorialDuration = new MosDuration(xml.roEdDur)
+		if (xml.hasOwnProperty('mosExternalMetadata')) {
+			// TODO: Handle an array of mosExternalMetadata
+			let meta: IMOSExternalMetaData = {
+				MosSchema: xml.mosExternalMetadata.mosSchema,
+				MosPayload: xml.mosExternalMetadata.mosPayload
+			}
+			if (xml.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = xml.mosExternalMetadata.mosScope
+			ro.MosExternalMetaData = [meta]
+		}
+		// TODO: Add & test DefaultChannel, Trigger, MacroIn, MacroOut
+		return ro
+	}
 	export function xml2RO (xml: XMLBuilder.XMLElementOrXMLNode): IMOSRunningOrder {
+		let stories: Array<IMOSROStory> = xml2Stories(xml.story)
+		let ro: IMOSRunningOrder = xml2ROBase(xml) as IMOSRunningOrder
+		ro.Stories = stories
+		return ro
 	}
 	export function ro2xml (ro: IMOSRunningOrder): XMLBuilder.XMLElementOrXMLNode {
 	}
@@ -182,5 +209,21 @@ export namespace Parser {
 		let payload = parser.toXml(md.MosPayload)  // TODO: implement this properly, convert to xml
 		xmlMD.ele('mosPayload', {}, payload)
 		return xmlMD
+	}
+	export function xml2ID (xml: XMLBuilder.XMLElementOrXMLNode): Array<MosString128> {
+		let arr: Array<MosString128> = []
+
+		// Multiple stories, push all to array
+		if (xml instanceof Array) {
+			for (let i = 0; i < xml.length; i++) {
+				arr.push(new MosString128(xml[i]))
+			}
+
+		// Single story, store string in array
+		} else {
+			arr.push(new MosString128(xml))
+		}
+
+		return arr
 	}
 }

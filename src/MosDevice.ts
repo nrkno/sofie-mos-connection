@@ -206,7 +206,7 @@ export class MosDevice implements IMOSDevice {
 			// TODO: _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null>
 			// TODO: _callbackOnRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
 			if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
-				let stories: Array<IMOSROStory> = Parser.xml2Story(data.roCreate.story)
+				let stories: Array<IMOSROStory> = Parser.xml2Stories(data.roCreate.story)
 				let ro: IMOSRunningOrder = {
 					ID: new MosString128(data.roCreate.roID),
 					Slug: new MosString128(data.roCreate.roSlug),
@@ -236,26 +236,7 @@ export class MosDevice implements IMOSDevice {
 				}).catch(reject)
 
 			} else if (data.roReplace && typeof this._callbackOnReplaceRunningOrder === 'function') {
-				let stories: Array<IMOSROStory> = Parser.xml2Story(data.roReplace.story)
-				let ro: IMOSRunningOrder = {
-					ID: new MosString128(data.roReplace.roID),
-					Slug: new MosString128(data.roReplace.roSlug),
-					Stories: stories
-				}
-
-				if (data.roReplace.hasOwnProperty('roEdStart')) ro.EditorialStart = new MosTime(data.roReplace.roEdStart)
-				if (data.roReplace.hasOwnProperty('roEdDur')) ro.EditorialDuration = new MosDuration(data.roReplace.roEdDur)
-				if (data.roReplace.hasOwnProperty('mosExternalMetadata')) {
-					// TODO: Handle an array of mosExternalMetadata
-					let meta: IMOSExternalMetaData = {
-						MosSchema: data.roReplace.mosExternalMetadata.mosSchema,
-						MosPayload: data.roReplace.mosExternalMetadata.mosPayload
-					}
-					if (data.roReplace.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = data.roReplace.mosExternalMetadata.mosScope
-					ro.MosExternalMetaData = [meta]
-				}
-				// TODO: Add & test DefaultChannel, Trigger, MacroIn, MacroOut
-				// console.log(ro)
+				let ro: IMOSRunningOrder = Parser.xml2RO(data.roReplace)
 
 				this._callbackOnReplaceRunningOrder(ro).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
@@ -293,8 +274,17 @@ export class MosDevice implements IMOSDevice {
 					}
 				}).catch(reject)
 
-			// TODO: _callbackOnMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
-			// TODO: _callbackOnRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
+			} else if (data.roMetadataReplace && typeof this._callbackOnMetadataReplace === 'function') {
+				let ro: IMOSRunningOrderBase = Parser.xml2ROBase(data.roMetadataReplace)
+
+				this._callbackOnMetadataReplace(ro).then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
+
 			} else if (data.roElementStat && data.roElementStat.element === 'RO' && typeof this._callbackOnRunningOrderStatus === 'function') {
 				let status: IMOSRunningOrderStatus = {
 					ID: new MosString128(data.roElementStat.roID),
@@ -395,7 +385,7 @@ export class MosDevice implements IMOSDevice {
 				data.roElementAction.operation === 'INSERT' &&
 				typeof this._callbackOnROInsertStories === 'function'
 			) {
-				let stories: Array<IMOSROStory> = Parser.xml2Story([data.roElementAction.element_source.story])
+				let stories: Array<IMOSROStory> = Parser.xml2Stories([data.roElementAction.element_source.story])
 
 				this._callbackOnROInsertStories({
 					RunningOrderID: new MosString128(data.roElementAction.roID),
@@ -446,6 +436,7 @@ export class MosDevice implements IMOSDevice {
 
 			} else if (data.roElementAction &&
 				data.roElementAction.operation === 'DELETE' &&
+				data.roElementAction.element_source.storyID &&
 				typeof this._callbackOnRODeleteStories === 'function'
 			) {
 				let stories: Array<MosString128> = []
@@ -472,6 +463,25 @@ export class MosDevice implements IMOSDevice {
 				}).catch(reject)
 
 			// TODO: _callbackOnRODeleteItems: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>
+			} else if (data.roElementAction &&
+				data.roElementAction.operation === 'DELETE' &&
+				data.roElementAction.element_source.itemID &&
+				typeof this._callbackOnRODeleteItems === 'function'
+			) {
+				let action: IMOSStoryAction = {
+					RunningOrderID: new MosString128(data.roElementAction.roID),
+					StoryID: new MosString128(data.roElementAction.element_target.storyID)
+				}
+				let items: Array<MosString128> = Parser.xml2ID(data.roElementAction.element_source.itemID)
+
+				this._callbackOnRODeleteItems(action, items).then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
+			
 			// TODO: _callbackOnROSwapStories: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>
 			// TODO: _callbackOnROSwapItems: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
 
