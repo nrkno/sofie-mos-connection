@@ -396,8 +396,7 @@ export class MosDevice implements IMOSDevice {
 			} else if (
 				data.roElementAction &&
 				data.roElementAction.operation === 'INSERT' &&
-				data.roElementAction.element_source &&
-				data.roElementAction.element_source.story &&
+				(data.roElementAction.element_source || {}).story &&
 				typeof this._callbackOnROInsertStories === 'function'
 			) {
 				let action: IMOSStoryAction = {
@@ -416,8 +415,7 @@ export class MosDevice implements IMOSDevice {
 			} else if (
 				data.roElementAction &&
 				data.roElementAction.operation === 'INSERT' &&
-				data.roElementAction.element_source &&
-				data.roElementAction.element_source.item &&
+				(data.roElementAction.element_source || {}).item &&
 				typeof this._callbackOnROInsertItems === 'function'
 			) {
 				// console.log(data.roElementAction.element_source.item)
@@ -439,8 +437,7 @@ export class MosDevice implements IMOSDevice {
 			} else if (
 				data.roElementAction &&
 				data.roElementAction.operation === 'REPLACE' &&
-				data.roElementAction.element_source &&
-				data.roElementAction.element_source.story &&
+				(data.roElementAction.element_source || {}).story &&
 				typeof this._callbackOnROReplaceStories === 'function'
 			) {
 				let action: IMOSStoryAction = {
@@ -458,12 +455,9 @@ export class MosDevice implements IMOSDevice {
 			} else if (
 				data.roElementAction &&
 				data.roElementAction.operation === 'REPLACE' &&
-				data.roElementAction.element_source &&
-				data.roElementAction.element_source.item &&
+				(data.roElementAction.element_source || {}).item &&
 				typeof this._callbackOnROReplaceItems === 'function'
 			) {
-				// console.log(data.roElementAction.element_source.item)
-
 				let action: IMOSItemAction = {
 					RunningOrderID: new MosString128(data.roElementAction.roID),
 					StoryID: new MosString128(data.roElementAction.element_target.storyID),
@@ -478,36 +472,28 @@ export class MosDevice implements IMOSDevice {
 					// ack.Stories = resp.Stories
 					resolve(ack)
 				}).catch(reject)
-
 			} else if (data.roElementAction &&
-				data.roElementAction.operation === 'MOVE'
-				&& typeof this._callbackOnROMoveStories === 'function'
+				data.roElementAction.operation === 'MOVE' &&
+				(data.roElementAction.element_source || {}).storyID &&
+				typeof this._callbackOnROMoveStories === 'function'
 			) {
-				let stories: Array<MosString128> = []
-
-				// Multiple stories, push all to array
-				if (data.roElementAction.element_source.storyID instanceof Array) {
-					for (let i = 0; i < data.roElementAction.element_source.storyID.length; i++) {
-						stories.push(new MosString128(data.roElementAction.element_source.storyID[i]))
-					}
-
-				// Single story, store string in array
-				} else {
-					stories.push(new MosString128(data.roElementAction.element_source.storyID))
-				}
-
-				this._callbackOnROMoveStories({
+				let action: IMOSStoryAction = {
 					RunningOrderID: new MosString128(data.roElementAction.roID),
 					StoryID: new MosString128(data.roElementAction.element_target.storyID)
-				}, stories).then((resp: IMOSROAck) => {
+				}
+				let storyIDs: Array<MosString128> = []
+				let xmlStoryIDs = data.roElementAction.element_source.storyID
+				if (!Array.isArray(xmlStoryIDs)) xmlStoryIDs = [xmlStoryIDs]
+				xmlStoryIDs.forEach((storyID: string) => {
+					storyIDs.push(new MosString128(storyID))
+				})
+				this._callbackOnROMoveStories(action, storyIDs).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
 					ack.ID = resp.ID
 					ack.Status = resp.Status
 					ack.Stories = resp.Stories
 					resolve(ack)
 				}).catch(reject)
-
-			// TODO: _callbackOnROMoveStories: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
 			// TODO: _callbackOnROMoveItems: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>
 			// TODO: _callbackOnRODeleteStories: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
 
