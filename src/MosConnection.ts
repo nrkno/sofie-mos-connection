@@ -4,7 +4,8 @@ import { MosSocketServer } from './connection/mosSocketServer'
 import {
 	IMosConnection,
 	IMOSDeviceConnectionOptions,
-	IMOSDevice
+	IMOSDevice,
+	IMOSAckStatus
 } from './api'
 import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription } from './connection/socketConnection'
@@ -13,6 +14,7 @@ import { NCSServerConnection } from './connection/NCSServerConnection'
 import * as parser from 'xml2json'
 import { ROAck } from './mosModel/ROAck'
 import { MosMessage } from './mosModel/MosMessage'
+import { MOSAck } from './mosModel/mosAck';
 const iconv = require('iconv-lite')
 
 export class MosConnection implements IMosConnection {
@@ -274,12 +276,24 @@ export class MosConnection implements IMosConnection {
 							// reply with NACK:
 							// TODO: implement ACK
 							// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
+							let msg = new MOSAck()
+							msg.ID = 0
+							msg.Revision = 0
+							msg.Description = 'Internal Error'
+							msg.Status = IMOSAckStatus.NACK
+							sendReply(msg) // TODO: Need tests
 						}
 						// console.log(err)
 					})
 				} else {
 					// TODO: Handle missing mosDevice
 					// should reply with a NACK
+					let msg = new MOSAck()
+					msg.ID = 0
+					msg.Revision = 0
+					msg.Description = 'MosDevice not found'
+					msg.Status = IMOSAckStatus.NACK
+					sendReply(msg) // TODO: Need tests
 				}
 			}
 		})

@@ -195,6 +195,13 @@ export interface IMOSItem {
 
 export type MosDuration = MosDuration // HH:MM:SS
 
+export interface IMOSAck {
+	ID: MosString128
+	Revision: Number // max 999
+	Status: IMOSAckStatus
+	Description: MosString128
+}
+
 export interface IMOSROAck {
 	ID: MosString128 // Running order id
 	Status: MosString128 // OK or error desc
@@ -288,6 +295,11 @@ export enum IMOSObjectStatus {
 	NOT_READY = 'NOT READY',
 	PLAY = 'PLAY',
 	STOP = 'STOP'
+}
+
+export enum IMOSAckStatus {
+	ACK = 'ACK',
+	NACK = 'NACK'
 }
 
 export enum IMOSObjectAirStatus {
