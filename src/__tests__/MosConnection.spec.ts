@@ -402,7 +402,6 @@ describe('MosDevice: Profile 2', () => {
 		mosDevice.onRequestAllMOSObjects ((): Promise<Array<IMOSObject>> => {
 			return onRequestAllMOSObjects()
 		})
-
 		mosDevice.onCreateRunningOrder ((ro: IMOSRunningOrder): Promise<IMOSROAck> => {
 			return onCreateRunningOrder(ro)
 		})
@@ -531,8 +530,8 @@ describe('MosDevice: Profile 2', () => {
 	test('onDeleteRunningOrder', async () => {
 		// Fake incoming message on socket:
 		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roDelete)
-		expect(onReplaceRunningOrder).toHaveBeenCalledTimes(1)
-		expect(onReplaceRunningOrder.mock.calls[0][0]).toEqual(xmlApiData.roDelete)
+		expect(onDeleteRunningOrder).toHaveBeenCalledTimes(1)
+		expect(onDeleteRunningOrder.mock.calls[0][0]).toEqual(xmlApiData.roDelete)
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
 	test('onRequestRunningOrder', async () => {
