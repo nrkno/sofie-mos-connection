@@ -27,7 +27,8 @@ import {
 	IMOSConnectionStatus,
 	IMOSObjectPath,
 	IMOSObjectPathType,
-	IMOSAckStatus
+	IMOSAckStatus,
+	IMOSObjectStatus
 } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
 import { SocketDescription } from './connection/socketConnection'
@@ -234,7 +235,35 @@ export class MosDevice implements IMOSDevice {
 					resolve(ack)
 				}).catch(reject)
 
-			// TODO: _callbackOnReplaceRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
+			} else if (data.roReplace && typeof this._callbackOnReplaceRunningOrder === 'function') {
+				let stories: Array<IMOSROStory> = this._parseIMOSROStory(data.roReplace.story)
+				let ro: IMOSRunningOrder = {
+					ID: new MosString128(data.roReplace.roID),
+					Slug: new MosString128(data.roReplace.roSlug),
+					Stories: stories
+				}
+
+				if (data.roReplace.hasOwnProperty('roEdStart')) ro.EditorialStart = new MosTime(data.roReplace.roEdStart)
+				if (data.roReplace.hasOwnProperty('roEdDur')) ro.EditorialDuration = new MosDuration(data.roReplace.roEdDur)
+				if (data.roReplace.hasOwnProperty('mosExternalMetadata')) {
+					// TODO: Handle an array of mosExternalMetadata
+					let meta: IMOSExternalMetaData = {
+						MosSchema: data.roReplace.mosExternalMetadata.mosSchema,
+						MosPayload: data.roReplace.mosExternalMetadata.mosPayload
+					}
+					if (data.roReplace.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = data.roReplace.mosExternalMetadata.mosScope
+					ro.MosExternalMetaData = [meta]
+				}
+				// TODO: Add & test DefaultChannel, Trigger, MacroIn, MacroOut
+				// console.log(ro)
+
+				this._callbackOnReplaceRunningOrder(ro).then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
 
 			} else if (data.roDelete && typeof this._callbackOnDeleteRunningOrder === 'function') {
 				// TODO: Change runningOrderId to RunningOrderID in interface?
@@ -266,8 +295,55 @@ export class MosDevice implements IMOSDevice {
 
 			// TODO: _callbackOnMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
 			// TODO: _callbackOnRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
-			// TODO: _callbackOnStoryStatus: (status: IMOSStoryStatus) => Promise<IMOSROAck>
-			// TODO: _callbackOnItemStatus: (status: IMOSItemStatus) => Promise<IMOSROAck>
+			} else if (data.roElementStat && data.roElementStat.element === 'RO' && typeof this._callbackOnRunningOrderStatus === 'function') {
+				let status: IMOSRunningOrderStatus = {
+					ID: new MosString128(data.roElementStat.roID),
+					Status: IMOSObjectStatus[data.roElementStat.status.replace(' ','_')],
+					Time: new MosTime(data.roElementStat.time)
+				}
+
+				this._callbackOnRunningOrderStatus(status).then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
+
+			} else if (data.roElementStat && data.roElementStat.element === 'STORY' && typeof this._callbackOnStoryStatus === 'function') {
+				let status: IMOSStoryStatus = {
+					RunningOrderId: new MosString128(data.roElementStat.roID),
+					ID: new MosString128(data.roElementStat.storyID),
+					Status: IMOSObjectStatus[data.roElementStat.status],
+					Time: new MosTime(data.roElementStat.time)
+				}
+
+				this._callbackOnStoryStatus(status).then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
+
+			} else if (data.roElementStat && data.roElementStat.element === 'ITEM' && typeof this._callbackOnItemStatus === 'function') {
+				let status: IMOSItemStatus = {
+					RunningOrderId: new MosString128(data.roElementStat.roID),
+					StoryId: new MosString128(data.roElementStat.storyID),
+					ID: new MosString128(data.roElementStat.itemID),
+					Status: IMOSObjectStatus[data.roElementStat.status],
+					Time: new MosTime(data.roElementStat.time)
+				}
+				if (data.roElementStat.hasOwnProperty('objID')) status.ObjectId = new MosString128(data.roElementStat.objID)
+				if (data.roElementStat.hasOwnProperty('itemChannel')) status.Channel = new MosString128(data.roElementStat.itemChannel)
+
+				this._callbackOnItemStatus(status).then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
 
 			} else if (data.roReadyToAir && typeof this._callbackOnReadyToAir === 'function') {
 				this._callbackOnReadyToAir({

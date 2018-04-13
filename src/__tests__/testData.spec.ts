@@ -673,7 +673,7 @@ let xmlApiData = {
 	}),
 	'roElementStat_item': literal<IMOSItemStatus>({
 		RunningOrderId: new MosString128('5PM'),
-		StoryId: new MosString128('HOTEL FIRE '),
+		StoryId: new MosString128('HOTEL FIRE'),
 		ID: new MosString128('0'),
 		ObjectId: new MosString128('A0295'),
 		Channel: new MosString128('B'),
