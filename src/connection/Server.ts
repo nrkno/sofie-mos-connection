@@ -5,19 +5,20 @@ import { ConnectionType, SocketDescription } from './socketConnection'
 export class Server {
 	// private _connected: boolean
 	// private _lastSeen: number
-	private _sockets: {[socketID: number]: SocketDescription} = {}
+	private _sockets: {[socketID: string]: SocketDescription} = {}
 
 	/** */
 	registerIncomingConnection (socketID: number, socket: Socket, portDescription: ConnectionType) {
-		this._sockets[socketID] = {
+		this._sockets[socketID + ''] = {
 			socket: socket,
-			portDescription: portDescription
+			portDescription: portDescription,
+			chunks: ''
 		}
 	}
 
 	/** */
 	removeSocket (socketID: number) {
-		delete this._sockets[socketID]
+		delete this._sockets[socketID + '']
 	}
 
 	/** */

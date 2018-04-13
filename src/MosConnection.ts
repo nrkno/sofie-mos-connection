@@ -12,9 +12,9 @@ import { SocketServerEvent, SocketDescription } from './connection/socketConnect
 import { Server } from './connection/Server'
 import { NCSServerConnection } from './connection/NCSServerConnection'
 import * as parser from 'xml2json'
-import { ROAck } from './mosModel/ROAck'
 import { MosMessage } from './mosModel/MosMessage'
-import { MOSAck } from './mosModel/mosAck';
+import { MOSAck } from './mosModel/mosAck'
+import { MosString128 } from '.';
 const iconv = require('iconv-lite')
 
 export class MosConnection implements IMosConnection {
@@ -277,9 +277,9 @@ export class MosConnection implements IMosConnection {
 							// TODO: implement ACK
 							// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
 							let msg = new MOSAck()
-							msg.ID = 0
+							msg.ID = new MosString128(0)
 							msg.Revision = 0
-							msg.Description = 'Internal Error'
+							msg.Description = new MosString128('Internal Error')
 							msg.Status = IMOSAckStatus.NACK
 							sendReply(msg) // TODO: Need tests
 						}

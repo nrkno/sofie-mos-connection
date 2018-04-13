@@ -25,18 +25,13 @@ import {
 	IMOSROFullStory,
 	IMOSROAck,
 	IMOSConnectionStatus,
-	IMOSObjectPath,
-	IMOSObjectPathType,
 	IMOSAckStatus,
 	IMOSObjectStatus
 } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
-import { SocketDescription } from './connection/socketConnection'
 import { Parser } from './mosModel/Parser'
-import { MosMessage } from './mosModel/MosMessage'
 import { MOSAck } from './mosModel/mosAck'
 import { ROList } from './mosModel/ROList'
-const iconv = require('iconv-lite')
 
 export class MosDevice implements IMOSDevice {
 
@@ -285,7 +280,7 @@ export class MosDevice implements IMOSDevice {
 			} else if (data.roElementStat && data.roElementStat.element === 'RO' && typeof this._callbackOnRunningOrderStatus === 'function') {
 				let status: IMOSRunningOrderStatus = {
 					ID: new MosString128(data.roElementStat.roID),
-					Status: IMOSObjectStatus[data.roElementStat.status.replace(' ','_')],
+					Status: data.roElementStat.status.replace(' ','_') as IMOSObjectStatus,
 					Time: new MosTime(data.roElementStat.time)
 				}
 
@@ -301,7 +296,7 @@ export class MosDevice implements IMOSDevice {
 				let status: IMOSStoryStatus = {
 					RunningOrderId: new MosString128(data.roElementStat.roID),
 					ID: new MosString128(data.roElementStat.storyID),
-					Status: IMOSObjectStatus[data.roElementStat.status],
+					Status: data.roElementStat.status as IMOSObjectStatus,
 					Time: new MosTime(data.roElementStat.time)
 				}
 
@@ -322,7 +317,7 @@ export class MosDevice implements IMOSDevice {
 					RunningOrderId: new MosString128(data.roElementStat.roID),
 					StoryId: new MosString128(data.roElementStat.storyID),
 					ID: new MosString128(data.roElementStat.itemID),
-					Status: IMOSObjectStatus[data.roElementStat.status],
+					Status: data.roElementStat.status as IMOSObjectStatus,
 					Time: new MosTime(data.roElementStat.time)
 				}
 				if (data.roElementStat.hasOwnProperty('objID')) status.ObjectId = new MosString128(data.roElementStat.objID)
@@ -636,11 +631,11 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRequestAllMOSObjects = cb
 	}
 
-	getMOSObject (objID: string): Promise < IMOSObject > {
+	getMOSObject (objID: string): Promise <IMOSObject> {
 		// TODO: Implement this
 	}
 
-	getAllMOSObjects (): Promise < Array < IMOSObject >> {
+	getAllMOSObjects (): Promise <Array<IMOSObject>> {
 		// TODO: Implement this
 	}
 

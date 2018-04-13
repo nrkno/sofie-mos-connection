@@ -40,10 +40,10 @@ export namespace Parser {
 		ro.Stories = stories
 		return ro
 	}
-	export function ro2xml (ro: IMOSRunningOrder): XMLBuilder.XMLElementOrXMLNode {
-		// too implement
-		return XMLBuilder.create('ro')
-	}
+	// export function ro2xml (ro: IMOSRunningOrder): XMLBuilder.XMLElementOrXMLNode {
+	// 	// too implement
+	// 	return XMLBuilder.create('ro')
+	// }
 	export function xml2Stories (xml: Array<any>): Array<IMOSROStory> {
 		let xmlStories: Array<any> = xml
 		if (!Array.isArray(xmlStories)) xmlStories = [xmlStories]
