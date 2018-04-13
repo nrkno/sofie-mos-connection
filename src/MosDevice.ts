@@ -277,6 +277,21 @@ export class MosDevice implements IMOSDevice {
 			// TODO: _callbackOnRequestRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>
 			// TODO: _callbackOnMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
 			// TODO: _callbackOnRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
+			} else if (data.roElementStat && typeof this._callbackOnRunningOrderStatus === 'function') {
+				let status: IMOSRunningOrderStatus = {
+					ID: new MosString128(data.roElementStat.roID),
+					Status: IMOSObjectStatus[data.roElementStat.status.replace(' ','_')],
+					Time: new MosTime(data.roElementStat.time)
+				}
+
+				this._callbackOnRunningOrderStatus(status).then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
+
 			} else if (data.roElementStat && typeof this._callbackOnStoryStatus === 'function') {
 				let status: IMOSStoryStatus = {
 					RunningOrderId: new MosString128(data.roElementStat.roID),
