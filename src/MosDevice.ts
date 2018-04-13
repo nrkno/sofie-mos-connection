@@ -255,8 +255,6 @@ export class MosDevice implements IMOSDevice {
 					resolve(ack)
 				}).catch(reject)
 			} else if (data.roReq && typeof this._callbackOnRequestRunningOrder === 'function') {
-				// _callbackOnRequestRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>
-
 				this._callbackOnRequestRunningOrder(data.roReq.roID).then((ro: IMOSRunningOrder | null) => {
 					// console.log('ro', ro)
 					if (ro) {
@@ -408,8 +406,6 @@ export class MosDevice implements IMOSDevice {
 				(data.roElementAction.element_source || {}).item &&
 				typeof this._callbackOnROInsertItems === 'function'
 			) {
-				// console.log(data.roElementAction.element_source.item)
-
 				let action: IMOSItemAction = {
 					RunningOrderID: new MosString128(data.roElementAction.roID),
 					StoryID: new MosString128(data.roElementAction.element_target.storyID),
@@ -479,7 +475,6 @@ export class MosDevice implements IMOSDevice {
 					ack.Stories = resp.Stories
 					resolve(ack)
 				}).catch(reject)
-			// TODO: _callbackOnROMoveItems: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>
 			} else if (data.roElementAction &&
 				data.roElementAction.operation === 'MOVE' &&
 				(data.roElementAction.element_source || {}).itemID &&
@@ -498,8 +493,6 @@ export class MosDevice implements IMOSDevice {
 					ack.Stories = resp.Stories
 					resolve(ack)
 				}).catch(reject)
-			// TODO: _callbackOnRODeleteStories: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
-
 			} else if (data.roElementAction &&
 				data.roElementAction.operation === 'DELETE' &&
 				data.roElementAction.element_source.storyID &&
@@ -516,8 +509,6 @@ export class MosDevice implements IMOSDevice {
 					ack.Stories = resp.Stories
 					resolve(ack)
 				}).catch(reject)
-
-			// TODO: _callbackOnRODeleteItems: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>
 			} else if (data.roElementAction &&
 				data.roElementAction.operation === 'DELETE' &&
 				data.roElementAction.element_source.itemID &&
@@ -536,7 +527,7 @@ export class MosDevice implements IMOSDevice {
 					ack.Stories = resp.Stories
 					resolve(ack)
 				}).catch(reject)
-			
+
 			// TODO: _callbackOnROSwapStories: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>
 			// TODO: _callbackOnROSwapItems: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
 
