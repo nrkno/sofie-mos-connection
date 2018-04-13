@@ -233,7 +233,35 @@ export class MosDevice implements IMOSDevice {
 					resolve(ack)
 				}).catch(reject)
 
-			// TODO: _callbackOnReplaceRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
+			} else if (data.roReplace && typeof this._callbackOnReplaceRunningOrder === 'function') {
+				let stories: Array<IMOSROStory> = this._parseIMOSROStory(data.roReplace.story)
+				let ro: IMOSRunningOrder = {
+					ID: new MosString128(data.roReplace.roID),
+					Slug: new MosString128(data.roReplace.roSlug),
+					Stories: stories
+				}
+
+				if (data.roReplace.hasOwnProperty('roEdStart')) ro.EditorialStart = new MosTime(data.roReplace.roEdStart)
+				if (data.roReplace.hasOwnProperty('roEdDur')) ro.EditorialDuration = new MosDuration(data.roReplace.roEdDur)
+				if (data.roReplace.hasOwnProperty('mosExternalMetadata')) {
+					// TODO: Handle an array of mosExternalMetadata
+					let meta: IMOSExternalMetaData = {
+						MosSchema: data.roReplace.mosExternalMetadata.mosSchema,
+						MosPayload: data.roReplace.mosExternalMetadata.mosPayload
+					}
+					if (data.roReplace.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = data.roReplace.mosExternalMetadata.mosScope
+					ro.MosExternalMetaData = [meta]
+				}
+				// TODO: Add & test DefaultChannel, Trigger, MacroIn, MacroOut
+				// console.log(ro)
+
+				this._callbackOnReplaceRunningOrder(ro).then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
 
 			} else if (data.roDelete && typeof this._callbackOnDeleteRunningOrder === 'function') {
 				// TODO: Change runningOrderId to RunningOrderID in interface?
