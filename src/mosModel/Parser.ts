@@ -21,7 +21,7 @@ export namespace Parser {
 		if (!Array.isArray(xmlStories)) xmlStories = [xmlStories]
 
 		return xmlStories.map((xmlStory: any) => {
-			return xml2Story(xml2Story)
+			return xml2Story(xmlStory)
 		})
 	}
 	export function xml2Story (xml: any): IMOSROStory {
