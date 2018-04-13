@@ -26,12 +26,14 @@ import {
 	IMOSROAck,
 	IMOSConnectionStatus,
 	IMOSObjectPath,
-	IMOSObjectPathType
+	IMOSObjectPathType,
+	IMOSAckStatus
 } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
 import { SocketDescription } from './connection/socketConnection'
 import * as parser from 'xml2json'
 import { MosMessage } from './mosModel/MosMessage'
+import { MOSAck } from './mosModel/mosAck';
 const iconv = require('iconv-lite')
 
 export class MosDevice implements IMOSDevice {
@@ -386,7 +388,13 @@ export class MosDevice implements IMOSDevice {
 			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
 			} else {
-				resolve('<mos><mosID>test2.enps.mos</mosID><ncsID>2012R2ENPS8VM</ncsID><messageID>99</messageID><roAck><roID>2012R2ENPS8VM;P_ENPSMOS\W\F_HOLD ROs;DEC46951-28F9-4A11-8B0655D96B347E52</roID><roStatus>Unknown object M000133</roStatus><storyID>5983A501:0049B924:8390EF2B</storyID><itemID>0</itemID><objID>M000224</objID><status>LOADED</status><storyID>3854737F:0003A34D:983A0B28</storyID><itemID>0</itemID><objID>M000133</objID><itemChannel>A</itemChannel><status>UNKNOWN</status></roAck></mos>')
+				let msg = new MOSAck()
+				msg.ID = 0 // Depends on type of message, needs logic
+				msg.Revision = 0
+				msg.Description = 'Unsupported function'
+				msg.Status = IMOSAckStatus.NACK
+				resolve(msg)
+				// resolve('<mos><mosID>test2.enps.mos</mosID><ncsID>2012R2ENPS8VM</ncsID><messageID>99</messageID><roAck><roID>2012R2ENPS8VM;P_ENPSMOS\W\F_HOLD ROs;DEC46951-28F9-4A11-8B0655D96B347E52</roID><roStatus>Unknown object M000133</roStatus><storyID>5983A501:0049B924:8390EF2B</storyID><itemID>0</itemID><objID>M000224</objID><status>LOADED</status><storyID>3854737F:0003A34D:983A0B28</storyID><itemID>0</itemID><objID>M000133</objID><itemChannel>A</itemChannel><status>UNKNOWN</status></roAck></mos>')
 			}
 
 		})
