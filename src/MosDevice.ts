@@ -32,7 +32,7 @@ import {
 } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
 import { SocketDescription } from './connection/socketConnection'
-import * as parser from 'xml2json'
+import { Parser } from './mosModel/Parser'
 import { MosMessage } from './mosModel/MosMessage'
 import { MOSAck } from './mosModel/mosAck'
 import { ROList } from './mosModel/ROList'
@@ -206,7 +206,7 @@ export class MosDevice implements IMOSDevice {
 			// TODO: _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null>
 			// TODO: _callbackOnRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
 			if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
-				let stories: Array<IMOSROStory> = this._parseIMOSROStory(data.roCreate.story)
+				let stories: Array<IMOSROStory> = Parser.xml2Story(data.roCreate.story)
 				let ro: IMOSRunningOrder = {
 					ID: new MosString128(data.roCreate.roID),
 					Slug: new MosString128(data.roCreate.roSlug),
@@ -236,7 +236,7 @@ export class MosDevice implements IMOSDevice {
 				}).catch(reject)
 
 			} else if (data.roReplace && typeof this._callbackOnReplaceRunningOrder === 'function') {
-				let stories: Array<IMOSROStory> = this._parseIMOSROStory(data.roReplace.story)
+				let stories: Array<IMOSROStory> = Parser.xml2Story(data.roReplace.story)
 				let ro: IMOSRunningOrder = {
 					ID: new MosString128(data.roReplace.roID),
 					Slug: new MosString128(data.roReplace.roSlug),
@@ -395,8 +395,7 @@ export class MosDevice implements IMOSDevice {
 				data.roElementAction.operation === 'INSERT' &&
 				typeof this._callbackOnROInsertStories === 'function'
 			) {
-				console.log(data.roElementAction.element_source.story.item)
-				let stories: Array<IMOSROStory> = this._parseIMOSROStory([data.roElementAction.element_source.story])
+				let stories: Array<IMOSROStory> = Parser.xml2Story([data.roElementAction.element_source.story])
 
 				this._callbackOnROInsertStories({
 					RunningOrderID: new MosString128(data.roElementAction.roID),
@@ -654,102 +653,5 @@ export class MosDevice implements IMOSDevice {
 	/* Profile 4 */
 	onROStory (cb: (story: IMOSROFullStory) => Promise<any>) {
 		this._callbackOnROStory = cb
-	}
-
-	private _parseIMOSROStory (data: Array<any>): Array<IMOSROStory> {
-		// console.log(data)
-		let stories: Array<IMOSROStory> = []
-		let items: Array<object> = []
-
-		for (let i = 0; i < data.length; i++) {
-			// console.log(data[i], 'is array?', data[i].item instanceof Array)
-			let story: IMOSROStory = {
-				ID: new MosString128(data[i].storyID),
-				Slug: new MosString128(data[i].storySlug),
-				Items: []
-				// TODO: Add & test Number, MosExternalMetaData, Items, ObjectID, MOSID, mosAbstract, Paths
-				// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut, MosExternalMetaData
-			}
-
-			if (data[i].item instanceof Array) {
-				for (let j = 0; j < data[i].item.length; j++) {
-					story.Items.push(this._parseIMOSItem(data[i].item[j]))
-				}
-			} else {
-				story.Items.push(this._parseIMOSItem(data[i].item))
-			}
-			if (data[i].hasOwnProperty('storyNum')) story.Number = new MosString128(data[i].storyNum)
-			if (data[i].hasOwnProperty('mosExternalMetadata')) {
-				// TODO: Handle an array of mosExternalMetadata
-				let meta: IMOSExternalMetaData = {
-					MosSchema: data[i].mosExternalMetadata.mosSchema,
-					MosPayload: data[i].mosExternalMetadata.mosPayload
-				}
-				if (data[i].mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = data[i].mosExternalMetadata.mosScope
-				ro.MosExternalMetaData = [meta]
-			}
-			stories.push(story)
-		}
-
-		return stories
-	}
-
-	private _parseIMOSItem(data: any): IMOSItem {
-		let item: IMOSItem = {
-			ID: new MosString128(data.itemID),
-			ObjectID: new MosString128(data.objID),
-			MOSID: data.mosID
-			// TODO: mosAbstract?: string,
-			// TODO: Channel?: MosString128,
-			// TODO: MacroIn?: MosString128,
-			// TODO: MacroOut?: MosString128,
-		}
-
-		if (data.hasOwnProperty('itemSlug')) item.Slug = new MosString128(data.itemSlug)
-		if (data.hasOwnProperty('objPaths')) {
-			let objPaths = data.objPaths
-			let paths:Array<IMOSObjectPath> = []
-
-			if (objPaths.hasOwnProperty('objPath')) {
-				let path: IMOSObjectPath = {
-					Type: IMOSObjectPathType.PATH,
-					Description: objPaths.objPath.techDescription,
-					Target: objPaths.objPath['$t']
-				}
-				paths.push(path)
-			}
-			if (objPaths.hasOwnProperty('objProxyPath')) {
-				let path: IMOSObjectPath = {
-					Type: IMOSObjectPathType.PROXY_PATH,
-					Description: objPaths.objProxyPath.techDescription,
-					Target: objPaths.objProxyPath['$t']
-				}
-				paths.push(path)
-			}
-			if (objPaths.hasOwnProperty('objMetadataPath')) {
-				let path: IMOSObjectPath = {
-					Type: IMOSObjectPathType.METADATA_PATH,
-					Description: objPaths.objMetadataPath.techDescription,
-					Target: objPaths.objMetadataPath['$t']
-				}
-				paths.push(path)
-			}
-			item.Paths = paths
-		}
-		if (data.hasOwnProperty('itemEdStart')) item.EditorialStart = data.itemEdStart
-		if (data.hasOwnProperty('itemEdDur')) item.EditorialDuration = data.itemEdDur
-		if (data.hasOwnProperty('itemUserTimingDur')) item.UserTimingDuration = data.itemUserTimingDur
-		if (data.hasOwnProperty('itemTrigger')) item.Trigger = data.itemTrigger
-		if (data.hasOwnProperty('mosExternalMetadata')) {
-			// TODO: Handle an array of mosExternalMetadata
-			let meta: IMOSExternalMetaData = {
-				MosSchema: data.mosExternalMetadata.mosSchema,
-				MosPayload: data.mosExternalMetadata.mosPayload
-			}
-			if (data.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = data.mosExternalMetadata.mosScope
-			item.MosExternalMetaData = [meta]
-		}
-
-		return item
 	}
 }
