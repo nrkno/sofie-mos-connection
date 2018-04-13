@@ -27,7 +27,8 @@ import {
 	IMOSConnectionStatus,
 	IMOSObjectPath,
 	IMOSObjectPathType,
-	IMOSAckStatus
+	IMOSAckStatus,
+	IMOSObjectStatus
 } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
 import { SocketDescription } from './connection/socketConnection'
@@ -277,7 +278,24 @@ export class MosDevice implements IMOSDevice {
 			// TODO: _callbackOnMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
 			// TODO: _callbackOnRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
 			// TODO: _callbackOnStoryStatus: (status: IMOSStoryStatus) => Promise<IMOSROAck>
-			// TODO: _callbackOnItemStatus: (status: IMOSItemStatus) => Promise<IMOSROAck>
+			} else if (data.roElementStat && typeof this._callbackOnItemStatus === 'function') {
+				let status: IMOSItemStatus = {
+					RunningOrderId: new MosString128(data.roElementStat.roID),
+					StoryId: new MosString128(data.roElementStat.storyID),
+					ID: new MosString128(data.roElementStat.itemID),
+					Status: IMOSObjectStatus[data.roElementStat.status],
+					Time: new MosTime(data.roElementStat.time)
+				}
+				if (data.roElementStat.hasOwnProperty('objID')) status.ObjectId = new MosString128(data.roElementStat.objID)
+				if (data.roElementStat.hasOwnProperty('itemChannel')) status.Channel = new MosString128(data.roElementStat.itemChannel)
+
+				this._callbackOnItemStatus(status).then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
 
 			} else if (data.roReadyToAir && typeof this._callbackOnReadyToAir === 'function') {
 				this._callbackOnReadyToAir({
