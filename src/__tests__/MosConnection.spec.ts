@@ -693,19 +693,20 @@ describe('MosDevice: Profile 2', () => {
 		expect(onROReplaceItems.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_replace_item_Items)
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
-	test('onROMoveStories', async () => {
+	test('onROMoveStory', async () => {
 		// Fake incoming message on socket:
 		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roElementAction_move_story)
 		expect(onROMoveStories).toHaveBeenCalledTimes(1)
 		expect(onROMoveStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_move_story_Action)
 		expect(onROMoveStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_move_story_Stories)
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
-
+	})
+	test('onROMoveStories', async () => {
 		// Fake incoming message on socket:
 		let messageId2 = await fakeIncomingMessage(serverSocketMockLower, xmlData.roElementAction_move_stories)
-		expect(onROMoveStories).toHaveBeenCalledTimes(2)
-		expect(onROMoveStories.mock.calls[1][0]).toEqual(xmlApiData.roElementAction_move_stories_Action)
-		expect(onROMoveStories.mock.calls[1][1]).toEqual(xmlApiData.roElementAction_move_stories_Stories)
+		expect(onROMoveStories).toHaveBeenCalledTimes(1)
+		expect(onROMoveStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_move_stories_Action)
+		expect(onROMoveStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_move_stories_Stories)
 		await checkReplyToServer(serverSocketMockLower, messageId2, '<roAck>')
 	})
 	test('onROMoveItems', async () => {

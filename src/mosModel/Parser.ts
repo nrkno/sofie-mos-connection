@@ -99,6 +99,14 @@ export namespace Parser {
 		})
 		return xmlStory
 	}
+	export function xml2Items (xml: Array<any>): Array<IMOSItem> {
+		let xmlItems: Array<any> = xml
+		if (!Array.isArray(xmlItems)) xmlItems = [xmlItems]
+
+		return xmlItems.map((xmlItem: any) => {
+			return xml2Item(xmlItem)
+		})
+	}
 	export function xml2Item (xml: any): IMOSItem {
 		let item: IMOSItem = {
 			ID: new MosString128(xml.itemID),
