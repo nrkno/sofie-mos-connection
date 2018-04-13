@@ -5,7 +5,6 @@ import {
 	IMOSItem,
 	IMOSObjectPathType,
 	IMOSObjectPath,
-	IMosExternalMetaData,
 	IMOSRunningOrderBase
 } from '../api'
 import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
@@ -15,7 +14,7 @@ import { MosDuration } from '../dataTypes/mosDuration'
 import * as parser from 'xml2json'
 export namespace Parser {
 
-	export function xml2ROBase (xml: XMLBuilder.XMLElementOrXMLNode): IMOSRunningOrderBase {
+	export function xml2ROBase (xml: any): IMOSRunningOrderBase {
 		let ro: IMOSRunningOrderBase = {
 			ID: new MosString128(xml.roID),
 			Slug: new MosString128(xml.roSlug)
@@ -35,13 +34,15 @@ export namespace Parser {
 		// TODO: Add & test DefaultChannel, Trigger, MacroIn, MacroOut
 		return ro
 	}
-	export function xml2RO (xml: XMLBuilder.XMLElementOrXMLNode): IMOSRunningOrder {
+	export function xml2RO (xml: any): IMOSRunningOrder {
 		let stories: Array<IMOSROStory> = xml2Stories(xml.story)
 		let ro: IMOSRunningOrder = xml2ROBase(xml) as IMOSRunningOrder
 		ro.Stories = stories
 		return ro
 	}
 	export function ro2xml (ro: IMOSRunningOrder): XMLBuilder.XMLElementOrXMLNode {
+		// too implement
+		return XMLBuilder.create('ro')
 	}
 	export function xml2Stories (xml: Array<any>): Array<IMOSROStory> {
 		let xmlStories: Array<any> = xml
@@ -70,7 +71,7 @@ export namespace Parser {
 		if (xml.hasOwnProperty('storyNum')) story.Number = new MosString128(xml.storyNum)
 		if (xml.hasOwnProperty('MosExternalMetaData')) {
 			// TODO: Handle an array of MosExternalMetaData
-			let meta: IMosExternalMetaData = {
+			let meta: IMOSExternalMetaData = {
 				MosSchema: xml.MosExternalMetaData.mosSchema,
 				MosPayload: xml.MosExternalMetaData.mosPayload
 			}
@@ -91,7 +92,7 @@ export namespace Parser {
 			story.MosExternalMetaData.forEach((md: IMOSExternalMetaData) => {
 				let xmlMD = metaData2xml(md)
 				xmlStory.importDocument(xmlMD)
-			}
+			})
 		}
 		story.Items.forEach((item: IMOSItem) => {
 			let xmlItem = item2xml(item)
@@ -121,7 +122,7 @@ export namespace Parser {
 		if (xml.hasOwnProperty('itemSlug')) item.Slug = new MosString128(xml.itemSlug)
 		if (xml.hasOwnProperty('objPaths')) {
 			let objPaths = xml.objPaths
-			let paths:Array<IMOSObjectPath> = []
+			let paths: Array<IMOSObjectPath> = []
 
 			if (objPaths.hasOwnProperty('objPath')) {
 				let path: IMOSObjectPath = {
@@ -155,7 +156,7 @@ export namespace Parser {
 		if (xml.hasOwnProperty('itemTrigger')) item.Trigger = xml.itemTrigger
 		if (xml.hasOwnProperty('MosExternalMetaData')) {
 			// TODO: Handle an array of MosExternalMetaData
-			let meta: IMosExternalMetaData = {
+			let meta: IMOSExternalMetaData = {
 				MosSchema: xml.MosExternalMetaData.mosSchema,
 				MosPayload: xml.MosExternalMetaData.mosPayload
 			}
@@ -206,23 +207,24 @@ export namespace Parser {
 		// TODO: mosExternalMetadata*
 		return xmlItem
 	}
-	export function xml2MetaData (xml: XMLBuilder.XMLElementOrXMLNode): IMOSExternalMetaData {
-	}
+	// export function xml2MetaData (xml: XMLBuilder.XMLElementOrXMLNode): IMOSExternalMetaData {
+	// 	// TODO: implement
+	// }
 	export function metaData2xml (md: IMOSExternalMetaData): XMLBuilder.XMLElementOrXMLNode {
 		let xmlMD = XMLBuilder.create('mosExternalMetadata')
 
 		if (md.MosScope) xmlMD.ele('mosScope', {}, md.MosScope)
 		xmlMD.ele('mosSchema', {}, md.MosSchema)
-		
+
 		let payload = parser.toXml(md.MosPayload)  // TODO: implement this properly, convert to xml
 		xmlMD.ele('mosPayload', {}, payload)
 		return xmlMD
 	}
-	export function xml2IDs (xml: XMLBuilder.XMLElementOrXMLNode): Array<MosString128> {
+	export function xml2IDs (xml: any): Array<MosString128> {
 		let arr: Array<MosString128> = []
-		
-		if (!Array.isArray(xml)) xml = [xml]
-		xml.forEach((id: string) => {
+		let xmlIds: Array<string> = xml
+		if (!Array.isArray(xmlIds)) xmlIds = [xmlIds]
+		xmlIds.forEach((id: string) => {
 			arr.push(new MosString128(id))
 		})
 

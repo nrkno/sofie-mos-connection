@@ -372,7 +372,7 @@ export class MosDevice implements IMOSDevice {
 					story.MosExternalMetaData = [meta]
 				}
 				stories.push(story)
-
+				console.log('roStorySend', stories)
 				this._callbackOnROInsertStories(action, stories).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
 					ack.ID = resp.ID
