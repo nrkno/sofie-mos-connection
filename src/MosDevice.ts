@@ -1,4 +1,3 @@
-import * as XMLBuilder from 'xmlbuilder'
 import { Socket } from 'net'
 import { NCSServerConnection } from './connection/NCSServerConnection'
 import { MosString128 } from './dataTypes/mosString128'
@@ -105,8 +104,6 @@ export class MosDevice implements IMOSDevice {
 
 	// Profile 4
 	private _callbackOnROStory: (story: IMOSROFullStory) => Promise<any>
-
-	private _tmp: string = ''
 
 	constructor (
 		idPrimary: string,

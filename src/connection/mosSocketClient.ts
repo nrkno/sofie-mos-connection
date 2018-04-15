@@ -101,7 +101,6 @@ export class MosSocketClient extends EventEmitter {
 	}
 
 	queueCommand (message: MosMessage, cb: CallBackFunction): void {
-		let that = this
 
 		message.prepare()
 		// console.log('queueing', message.messageID, message.constructor.name )

@@ -1,7 +1,7 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from './MosMessage'
 import { MosString128 } from '../dataTypes/mosString128'
-import { IMOSObjectStatus, IMOSRunningOrderStatus, IMOSStoryStatus, IMOSItemStatus } from '../api'
+import { IMOSObjectStatus } from '../api'
 import { MosTime } from '../dataTypes/mosTime'
 
 export enum ROElementStatType {

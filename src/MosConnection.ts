@@ -9,7 +9,6 @@ import {
 } from './api'
 import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription } from './connection/socketConnection'
-import { Server } from './connection/Server'
 import { NCSServerConnection } from './connection/NCSServerConnection'
 import * as parser from 'xml2json'
 import { MosMessage } from './mosModel/MosMessage'
@@ -88,7 +87,7 @@ export class MosConnection implements IMosConnection {
 			let mosDevice = this.registerMosDevice(
 				this._conf.mosID,
 				connectionOptions.primary.id,
-				(connectionOptions.secondary || {}).id || null,
+				(connectionOptions.secondary ? connectionOptions.secondary.id : null),
 				primary, secondary)
 			resolve(mosDevice)
 		})

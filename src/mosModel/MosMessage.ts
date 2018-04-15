@@ -48,5 +48,4 @@ export abstract class MosMessage {
 	protected abstract get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode
 
    /**  */
-	
 }

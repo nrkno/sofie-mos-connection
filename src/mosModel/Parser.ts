@@ -80,7 +80,7 @@ export namespace Parser {
 				MosPayload: xml.MosExternalMetaData.mosPayload
 			}
 			if (xml.MosExternalMetaData.hasOwnProperty('mosScope')) meta.MosScope = xml.MosExternalMetaData.mosScope
-			ro.MosExternalMetaData = [meta]
+			story.MosExternalMetaData = [meta]
 		}
 		return story
 	}
