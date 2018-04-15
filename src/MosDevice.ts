@@ -32,7 +32,8 @@ import { IConnectionConfig } from './config/connectionConfig'
 import { Parser } from './mosModel/Parser'
 import { MOSAck } from './mosModel/mosAck'
 import { ROList } from './mosModel/ROList'
-import { HeartBeat } from './mosModel/0_heartBeat';
+import { HeartBeat } from './mosModel/0_heartBeat'
+import { ROReq } from './mosModel/2_roReq'
 
 export class MosDevice implements IMOSDevice {
 
@@ -187,7 +188,7 @@ export class MosDevice implements IMOSDevice {
 			// TODO: _callbackOnConnectionChange: (connectionStatus: IMOSConnectionStatus) => void
 			if (data.heartbeat) {
 				// send immediate reply:
-				console.log('heartbeat')
+				// console.log('heartbeat')
 				let ack = new HeartBeat()
 				resolve(ack)
 
@@ -664,8 +665,26 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRequestRunningOrder = cb
 	}
 
-	getRunningOrder (runningOrderId: MosString128): Promise < IMOSRunningOrder | null > {
+	getRunningOrder (runningOrderId: MosString128): Promise<IMOSRunningOrder | null > {
 		// TODO: Implement this
+		let message = new ROReq(runningOrderId)
+
+		return new Promise((resolve, reject) => {
+			if (this._currentConnection) {
+				this._currentConnection.executeCommand(message).then((data) => {
+					if (data.mos.roAck) {
+						reject(data.mos.roAck)
+					} else if (data.mos.roList) {
+						let ro: IMOSRunningOrder = Parser.xml2RO(data.mos.roList)
+						resolve(ro)
+					} else {
+						reject('Unknown response')
+					}
+				})
+			} else {
+				reject('No Connection')
+			}
+		})
 	}
 
 	onMetadataReplace (cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>) {

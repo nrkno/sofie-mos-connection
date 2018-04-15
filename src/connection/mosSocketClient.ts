@@ -230,12 +230,18 @@ export class MosSocketClient extends EventEmitter {
 			let cb: CallBackFunction | undefined = this._queue.shift()
 			// TODO: Parse XML to JSON
 			if (typeof cb === 'function') {
-				let parsedData: object = parser.toJson(str, {
-					'object': true,
-					coerce: true,
-					trim: true
-				})
-				cb(parsedData)
+				try {
+
+					let parsedData: object = parser.toJson(str, {
+						'object': true,
+						coerce: true,
+						trim: true
+					})
+					cb(parsedData)
+				} catch (e) {
+					// console.log(str)
+					throw e
+				}
 			}
 		}
 

@@ -1,6 +1,26 @@
 import { MosConnection } from '../MosConnection'
 import { ConnectionConfig } from '../config/connectionConfig'
-import { IMOSConnectionStatus, IMOSDevice, IMOSObject, IMOSObjectType, IMOSObjectStatus, IMOSObjectAirStatus, IMOSObjectPathType, IMOSObjectPath, IMOSRunningOrder, IMOSROAck, IMOSRunningOrderBase, IMOSStoryStatus, IMOSRunningOrderStatus, IMOSItemStatus, IMOSROReadyToAir, IMOSStoryAction, IMOSROStory, IMOSItem, IMOSItemAction, IMOSROAction } from '../api'
+import { IMOSConnectionStatus, 
+	IMOSDevice,
+	IMOSObject,
+	IMOSObjectType,
+	IMOSObjectStatus,
+	IMOSObjectAirStatus,
+	IMOSObjectPathType,
+	IMOSObjectPath,
+	IMOSRunningOrder,
+	IMOSROAck,
+	IMOSRunningOrderBase,
+	IMOSStoryStatus,
+	IMOSRunningOrderStatus,
+	IMOSItemStatus,
+	IMOSROReadyToAir,
+	IMOSStoryAction,
+	IMOSROStory,
+	IMOSItem,
+	IMOSItemAction,
+	IMOSROAction
+} from '../api'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosString128 } from '../dataTypes/mosString128'
 import { Socket, Server } from 'net'
@@ -10,6 +30,7 @@ import { ServerMock } from '../__mocks__/server'
 
 import { xmlData, xmlApiData } from './testData.spec'
 import * as parser from 'xml2json'
+import { MosDevice } from '../MosDevice'
 
 const parseOptions = {
 	object: true,
@@ -319,7 +340,7 @@ describe('MosDevice: Profile 1', () => {
 })
 
 describe('MosDevice: Profile 2', () => {
-	let mosDevice
+	let mosDevice: MosDevice
 	let socketMockLower: SocketMock
 	let socketMockUpper: SocketMock
 	let socketMockQuery: SocketMock
@@ -470,17 +491,22 @@ describe('MosDevice: Profile 2', () => {
 		})
 
 		expect(SocketMock.instances).toHaveLength(3)
-		socketMockLower = SocketMock.instances[0]
-		socketMockUpper = SocketMock.instances[1]
-		socketMockQuery = SocketMock.instances[2]
+
+		SocketMock.instances.forEach((s) => {
+			if (s.connectedPort === 10540) socketMockLower = s
+			if (s.connectedPort === 10541) socketMockUpper = s
+			if (s.connectedPort === 10542) socketMockQuery = s
+		})
 		expect(socketMockLower).toBeTruthy()
 		expect(socketMockUpper).toBeTruthy()
-		expect(socketMockQuery).toBeTruthy()
+		// expect(socketMockQuery).toBeTruthy()
 
 		expect(ServerMock.instances).toHaveLength(3)
+		// ServerMock.instances.forEach((s) => {
+		// })
 		serverMockLower = ServerMock.instances[0]
-		serverMockUpper = ServerMock.instances[1]
-		serverMockQuery = ServerMock.instances[2]
+		serverMockUpper = ServerMock.instances[2]
+		serverMockQuery = ServerMock.instances[1]
 		expect(serverMockLower).toBeTruthy()
 		expect(serverMockUpper).toBeTruthy()
 		expect(serverMockQuery).toBeTruthy()
@@ -489,6 +515,14 @@ describe('MosDevice: Profile 2', () => {
 		serverSocketMockLower = serverMockLower.mockNewConnection()
 		serverSocketMockUpper = serverMockUpper.mockNewConnection()
 		serverSocketMockQuery = serverMockQuery.mockNewConnection()
+
+		socketMockLower.name = 'lower'
+		socketMockUpper.name = 'upper'
+		// socketMockQuery.name = 'query'
+
+		serverSocketMockLower.name = 'serverLower'
+		serverSocketMockUpper.name = 'serverUpper'
+		serverSocketMockQuery.name = 'serverQuery'
 
 		// expect(SocketMock.instances[0].connect).toHaveBeenCalledTimes(1)
 	})
@@ -577,18 +611,21 @@ describe('MosDevice: Profile 2', () => {
 
 		// Prepare server response
 		let mockReply = jest.fn((data) => {
-			let messageID = data.match(/<messageID>([^<]+)<\/messageID>/)[1]
-			return getXMLReply(messageID, xmlData.roList)
+			// console.log('mockReply', data)
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)[1]
+			let repl = getXMLReply(messageID, xmlData.roList)
+			// console.log('repl', repl)
+			return encode(repl)
 
 		})
-		socketMockLower.mockAddReply(mockReply)
-
-		let returnedObj: IMOSObject = await mosDevice.getRunningOrder(xmlApiData.roList.ID)
-		await socketMockLower.mockWaitForSentMessages()
+		socketMockUpper.mockAddReply(mockReply)
+		let returnedObj: IMOSRunningOrder = await mosDevice.getRunningOrder(xmlApiData.roList.ID)
+		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
-		expect(mockReply.mock.calls[0][0]).toMatch(/<roReq>/)
-
-		expect(returnedObj).toMatchObject(xmlApiData.roList)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<roReq>/)
+		expect(returnedObj).toMatchObject(xmlApiData.roList2)
 	})
 	test('onMetadataReplace', async () => {
 		// Fake incoming message on socket:

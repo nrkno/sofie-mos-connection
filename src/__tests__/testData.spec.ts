@@ -650,6 +650,64 @@ let xmlApiData = {
 		// Description: string
 		// mosExternalMetaData?: Array<IMOSExternalMetaData>
 	}),
+	'roList2': literal<IMOSRunningOrder>({
+		ID: new MosString128('96857485'),
+		Slug: new MosString128('5PM RUNDOWN'),
+		// MosAbstract: string,
+		Stories: [
+			literal<IMOSROStory>({
+				ID: new MosString128('5983A501:0049B924:8390EF2B'),
+				Slug: new MosString128('Colstat Murder'),
+				Number: new MosString128('B10'),
+				// MosExternalMetaData: Array<IMOSExternalMetaData>
+				Items: [
+					literal<IMOSItem>({
+						ID: new MosString128('0'),
+						Slug: new MosString128('COLSTAT MURDER:VO'),
+						ObjectID: new MosString128('M000224'),
+						MOSID: 'testmos.enps.com',
+						// mosAbstract?: '',
+						Paths: [
+							literal<IMOSObjectPath>({Type: IMOSObjectPathType.PATH, Description: 'MPEG2 Video', Target: '\\server\media\clip392028cd2320s0d.mxf'}),
+							literal<IMOSObjectPath>({Type: IMOSObjectPathType.PROXY_PATH, Description: 'WM9 750Kbps', Target: 'http://server/proxy/clipe.wmv'}),
+							literal<IMOSObjectPath>({Type: IMOSObjectPathType.METADATA_PATH, Description: 'MOS Object', Target: 'http://server/proxy/clipe.xml'})
+						],
+						// Channel?: new MosString128(),
+						// EditorialStart?: MosTime
+						EditorialDuration: 645,
+						UserTimingDuration: 310,
+						Trigger: 'CHAINED' // TODO: Johan frågar
+						// MacroIn?: new MosString128(),
+						// MacroOut?: new MosString128(),
+						// MosExternalMetaData?: Array<IMOSExternalMetaData>
+					})
+				]
+			}),
+			literal<IMOSROStory>({
+				ID: new MosString128('3854737F:0003A34D:983A0B28'),
+				Slug: new MosString128('Test MOS'),
+				Number: new MosString128('B11'),
+				// MosExternalMetaData: Array<IMOSExternalMetaData>
+				Items: [
+					literal<IMOSItem>({
+						ID: new MosString128('0'),
+						// Slug: new MosString128(''),
+						ObjectID: new MosString128('M000133'),
+						MOSID: 'testmos.enps.com',
+						// mosAbstract?: '',
+						// Channel?: new MosString128(),
+						EditorialStart: 55,
+						EditorialDuration: 310,
+						UserTimingDuration: 310
+						// Trigger: 'CHAINED' // TODO: Johan frågar
+						// MacroIn?: new MosString128(),
+						// MacroOut?: new MosString128(),
+						// MosExternalMetaData?: Array<IMOSExternalMetaData>
+					})
+				]
+			})
+		]
+	}),
 	'roMetadataReplace': literal<IMOSRunningOrderBase>({
 		ID: new MosString128('96857485'),
 		Slug: new MosString128('5PM RUNDOWN'),

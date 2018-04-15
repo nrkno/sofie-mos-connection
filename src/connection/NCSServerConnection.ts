@@ -85,8 +85,10 @@ export class NCSServerConnection {
 			clients = this.lowerPortClients
 		} else if (message.port === 'upper') {
 			clients = this.upperPortClients
-		} else {
+		} else if (message.port === 'query') {
 			clients = this.queryPortClients
+		} else {
+			throw Error('Unknown port name: "' + message.port + '"')
 		}
 
 		return new Promise((resolve, reject) => {

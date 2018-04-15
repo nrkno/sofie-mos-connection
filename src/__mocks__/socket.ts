@@ -22,6 +22,10 @@ export class SocketMock extends EventEmitter implements Socket {
 	writable: boolean
 	readable: boolean
 
+	public name: string
+	public connectedPort: number
+	public connectedHost: string
+
 	private _responses: Array<(data: any) => string | Buffer > = []
 
 	constructor () {
@@ -71,7 +75,11 @@ export class SocketMock extends EventEmitter implements Socket {
 		this.mockSentMessage.apply(this, arguments)
 		return true
 	}
-	connect () { return this }
+	connect (port, host) {
+		this.connectedPort = port
+		this.connectedHost = host
+		return this
+	}
 	setEncoding () { return this }
 	destroy () { /* nothing */ }
 	pause () { return this }
@@ -101,6 +109,7 @@ export class SocketMock extends EventEmitter implements Socket {
 	// ------------------------------------------------------------------------
 	// Mock methods:
 	mockSentMessage (data, encoding) {
+		// console.log('mockSentMessage ' + this.name, data)
 		if (this._responses.length) {
 			// send reply:
 
