@@ -250,7 +250,7 @@ export class MosConnection implements IMosConnection {
 			let lastMatch = '</mos>\r\n' // </mos>
 			let last = str.substr(-lastMatch.length)
 
-			// console.log(data)
+			// console.log(str)
 			// Data ready to be parsed
 			if (first === firstMatch && last === lastMatch) {
 				// @ts-ignore xml2json says arguments are wrong, but its not.
@@ -300,7 +300,6 @@ export class MosConnection implements IMosConnection {
 							null, null, null)
 					}
 				}
-
 				if (mosDevice) {
 					mosDevice.routeData(parsed).then((message: MosMessage) => {
 						sendReply(message)

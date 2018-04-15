@@ -184,7 +184,7 @@ export class MosDevice implements IMOSDevice {
 			// Route and format data
 
 			// Profile 0
-
+			// console.log(data)
 			// TODO: _callbackOnConnectionChange: (connectionStatus: IMOSConnectionStatus) => void
 			if (data.heartbeat) {
 				// send immediate reply:
@@ -270,7 +270,6 @@ export class MosDevice implements IMOSDevice {
 
 			} else if (data.roMetadataReplace && typeof this._callbackOnMetadataReplace === 'function') {
 				let ro: IMOSRunningOrderBase = Parser.xml2ROBase(data.roMetadataReplace)
-
 				this._callbackOnMetadataReplace(ro).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
 					ack.ID = resp.ID
