@@ -34,6 +34,7 @@ import { MOSAck } from './mosModel/mosAck'
 import { ROList } from './mosModel/ROList'
 import { HeartBeat } from './mosModel/0_heartBeat'
 import { ROReq } from './mosModel/2_roReq'
+import { ROElementStat, ROElementStatType } from './mosModel/2_roElementStat'
 
 export class MosDevice implements IMOSDevice {
 
@@ -665,7 +666,6 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	getRunningOrder (runningOrderId: MosString128): Promise<IMOSRunningOrder | null > {
-		// TODO: Implement this
 		let message = new ROReq(runningOrderId)
 
 		return new Promise((resolve, reject) => {
@@ -703,15 +703,61 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	setRunningOrderStatus (status: IMOSRunningOrderStatus): Promise < IMOSROAck > {
-		// TODO: Implement this
+		let message = new ROElementStat({
+			type: ROElementStatType.RO,
+			roId: new MosString128(status.ID),
+			status: status.Status
+		})
+		return new Promise((resolve, reject) => {
+			if (this._currentConnection) {
+				this._currentConnection.executeCommand(message).then((data) => {
+					let roAck: ROAck = Parser.xml2ROAck(data.mos.roAck)
+					resolve(roAck)
+				})
+			} else {
+				reject('No Connection')
+			}
+		})
 	}
 
 	setStoryStatus (status: IMOSStoryStatus): Promise < IMOSROAck > {
-		// TODO: Implement this
+		let message = new ROElementStat({
+			type: ROElementStatType.STORY,
+			roId: new MosString128(status.RunningOrderId),
+			storyId: new MosString128(status.ID),
+			status: status.Status
+		})
+		return new Promise((resolve, reject) => {
+			if (this._currentConnection) {
+				this._currentConnection.executeCommand(message).then((data) => {
+					let roAck: ROAck = Parser.xml2ROAck(data.mos.roAck)
+					resolve(roAck)
+				})
+			} else {
+				reject('No Connection')
+			}
+		})
 	}
-
 	setItemStatus (status: IMOSItemStatus): Promise < IMOSROAck > {
-		// TODO: Implement this
+		let message = new ROElementStat({
+			type: ROElementStatType.ITEM,
+			roId: new MosString128(status.RunningOrderId),
+			storyId: new MosString128(status.StoryId),
+			itemId: new MosString128(status.ID),
+			objId: new MosString128(status.ObjectId),
+			itemChannel: new MosString128(status.Channel),
+			status: status.Status
+		})
+		return new Promise((resolve, reject) => {
+			if (this._currentConnection) {
+				this._currentConnection.executeCommand(message).then((data) => {
+					let roAck: ROAck = Parser.xml2ROAck(data.mos.roAck)
+					resolve(roAck)
+				})
+			} else {
+				reject('No Connection')
+			}
+		})
 	}
 
 	onReadyToAir (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) {

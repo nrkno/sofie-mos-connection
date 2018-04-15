@@ -5,13 +5,17 @@ import {
 	IMOSItem,
 	IMOSObjectPathType,
 	IMOSObjectPath,
-	IMOSRunningOrderBase
+	IMOSRunningOrderBase,
+	IMOSROAckStory,
+	IMOSROAckItem,
+	IMOSROAckObject
 } from '../api'
 import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
 import * as parser from 'xml2json'
+import { ROAck } from '../mosModel/ROAck'
 export namespace Parser {
 
 	export function xml2ROBase (xml: any): IMOSRunningOrderBase {
@@ -229,5 +233,54 @@ export namespace Parser {
 		})
 
 		return arr
+	}
+	export function xml2ROAck (xml: any): ROAck {
+		let roAck: ROAck = new ROAck()
+
+		roAck.ID 		= new MosString128(xml.roID)
+		roAck.Status 	= new MosString128(xml.roStatus)
+
+		let xmlStoryIDs = xml.storyID
+		let xmlItemIDs = xml.itemID
+		let xmlObjIDs = xml.objID
+		let xmlStatuses = xml.status
+
+		if (!Array.isArray(xmlStoryIDs)) xmlStoryIDs = [xmlStoryIDs]
+		if (!Array.isArray(xmlItemIDs)) xmlItemIDs = [xmlItemIDs]
+		if (!Array.isArray(xmlObjIDs)) xmlObjIDs = [xmlObjIDs]
+		if (!Array.isArray(xmlStatuses)) xmlStatuses = [xmlStatuses]
+
+		roAck.Stories 	= []
+
+		let iMax = Math.max(xmlStoryIDs.length,xmlItemIDs.length,xmlObjIDs.length,xmlStatuses.length)
+
+		let story: IMOSROAckStory | null = null
+		let item: IMOSROAckItem | null = null
+		let object: IMOSROAckObject | null = null
+		for (let i = 0; i < iMax; i++) {
+			if (xmlStoryIDs[i]) {
+				story = {
+					ID: new MosString128(xmlStoryIDs[i]),
+					Items: []
+				}
+				roAck.Stories.push(story)
+			}
+			if (xmlItemIDs[i]) {
+				item = {
+					ID: new MosString128(xmlStoryIDs[i]),
+					Channel: new MosString128(''),
+					Objects: []
+				}
+				if (story) story.Items.push(item)
+			}
+			if (xmlObjIDs[i] && xmlStatuses[i]) {
+				object = {
+					Status: xmlStatuses[i]
+				}
+				if (item) item.Objects.push(object)
+			}
+		}
+
+		return roAck
 	}
 }

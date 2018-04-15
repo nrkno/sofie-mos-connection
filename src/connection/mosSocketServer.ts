@@ -21,6 +21,31 @@ export class MosSocketServer extends EventEmitter {
 		this._socketServer.on('close', () => this._onServerClose())
 		this._socketServer.on('error', (error) => this._onServerError(error))
 	}
+	dispose (sockets: Socket[]): Promise<void > {
+		return	new Promise((resolveDispose) => {
+			let closePromises: Promise<void>[] = []
+
+			// close clients
+			sockets.forEach(socket => {
+				closePromises.push(
+					new Promise((resolve) => {
+						socket.on('close', resolve)
+						socket.end()
+						socket.destroy()
+					})
+				)
+			})
+
+			// close server
+			closePromises.push(
+				new Promise((resolve) => {
+					this._socketServer.on('close', resolve)
+					this._socketServer.close()
+				})
+			)
+			Promise.all(closePromises).then(() => resolveDispose())
+		})
+	}
 
 	/** */
 	listen (): Promise<boolean> {
@@ -59,33 +84,6 @@ export class MosSocketServer extends EventEmitter {
 			this._socketServer.once('error', handleListeningStatus)
 
 			this._socketServer.listen(this._port)
-		})
-	}
-
-	/** */
-	dispose (sockets: Socket[]): Promise<void > {
-		return	new Promise((resolveDispose) => {
-			let closePromises: Promise<void>[] = []
-
-			// close clients
-			sockets.forEach(socket => {
-				closePromises.push(
-					new Promise((resolve) => {
-						socket.on('close', resolve)
-						socket.end()
-						socket.destroy()
-					})
-				)
-			})
-
-			// close server
-			closePromises.push(
-				new Promise((resolve) => {
-					this._socketServer.on('close', resolve)
-					this._socketServer.close()
-				})
-			)
-			Promise.all(closePromises).then(() => resolveDispose())
 		})
 	}
 

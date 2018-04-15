@@ -50,7 +50,7 @@ export class MosConnection implements IMosConnection {
 	}
 
 	/** */
-	connect (connectionOptions: IMOSDeviceConnectionOptions): Promise<IMOSDevice> {
+	connect (connectionOptions: IMOSDeviceConnectionOptions): Promise<MosDevice> {
 		// @todo: implement this
 
 		return new Promise((resolve) => {
@@ -136,37 +136,24 @@ export class MosConnection implements IMosConnection {
 	/** */
 	dispose (): Promise<void> {
 		let sockets: Array<Socket> = []
-		// let lowerSockets: Socket[] = []
-		// let upperSockets: Socket[] = []
-		// let querySockets: Socket[] = []
-
 		for (let socketID in this._incomingSockets) {
 			let e = this._incomingSockets[socketID]
 			if (e) {
 				sockets.push(e.socket)
 			}
-			
 		}
-
-		let disposing: Promise<void>[] = []
-		if (this._lowerSocketServer) {
-			disposing.push(this._lowerSocketServer.dispose(lowerSockets))
-		}
-		if (this._upperSocketServer) {
-			disposing.push(this._upperSocketServer.dispose(upperSockets))
-		}
-		if (this._querySocketServer) {
-			disposing.push(this._querySocketServer.dispose(querySockets))
-		}
-
-		if (this._ncsConnections) {
-			for (let ncsConnection in this._ncsConnections) {
-				disposing.push(this._ncsConnections[ncsConnection].dispose())
-			}
-		}
-
+		let disposePromises: Array<Promise<void>> = sockets.map((socket) => {
+			return new Promise((resolve) => {
+				socket.on('close', resolve)
+				socket.end()
+				socket.destroy()
+			})
+		})
+		disposePromises.push(this._lowerSocketServer.dispose([]))
+		disposePromises.push(this._upperSocketServer.dispose([]))
+		disposePromises.push(this._querySocketServer.dispose([]))
 		return new Promise((resolveDispose) => {
-			Promise.all(disposing)
+			Promise.all(disposePromises)
 			.then(() => resolveDispose())
 		})
 	}

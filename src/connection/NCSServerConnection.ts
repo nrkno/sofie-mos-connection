@@ -90,11 +90,14 @@ export class NCSServerConnection {
 		} else {
 			throw Error('Unknown port name: "' + message.port + '"')
 		}
-
 		return new Promise((resolve, reject) => {
 			if (clients && clients.length) {
-				clients[0].queueCommand(message, (data) => {
-					resolve(data)
+				clients[0].queueCommand(message, (err, data) => {
+					if (err) {
+						reject(err)
+					} else {
+						resolve(data)
+					}
 				})
 			} else {
 				reject('No clients found')

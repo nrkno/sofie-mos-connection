@@ -47,7 +47,7 @@ jest.mock('net')
 
 const literal = <T>(o: T) => o
 
-function getMosDevice (): Promise<IMOSDevice> {
+function getMosDevice (): Promise<MosDevice> {
 	let mos = new MosConnection({
 		mosID: 'aircache.newscenter.com',
 		acceptsConnections: true,
@@ -253,6 +253,7 @@ describe('MosDevice: Profile 0', () => {
 	})
 })
 
+/*
 describe('MosDevice: Profile 1', () => {
 	let mosDevice
 	let socketMock
@@ -338,7 +339,7 @@ describe('MosDevice: Profile 1', () => {
 	})
 	// todo: getAllMOSObjects
 })
-
+*/
 describe('MosDevice: Profile 2', () => {
 	let mosDevice: MosDevice
 	let socketMockLower: SocketMock
@@ -459,34 +460,34 @@ describe('MosDevice: Profile 2', () => {
 		mosDevice.onReadyToAir ((Action: IMOSROReadyToAir): Promise<IMOSROAck> => {
 			return onReadyToAir(Action)
 		})
-		mosDevice.onROInsertStories ((Action: IMOSStoryAction, Stories: Array<IMOSROStory>): IMOSROAck => {
+		mosDevice.onROInsertStories ((Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> => {
 			return onROInsertStories(Action, Stories)
 		})
-		mosDevice.onROInsertItems ((Action: IMOSItemAction, Items: Array<IMOSItem>): IMOSROAck => {
+		mosDevice.onROInsertItems ((Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> => {
 			return onROInsertItems(Action, Items)
 		})
-		mosDevice.onROReplaceStories ((Action: IMOSStoryAction, Stories: Array<IMOSROStory>): IMOSROAck => {
+		mosDevice.onROReplaceStories ((Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> => {
 			return onROReplaceStories(Action, Stories)
 		})
-		mosDevice.onROReplaceItems ((Action: IMOSItemAction, Items: Array<IMOSItem>): IMOSROAck => {
+		mosDevice.onROReplaceItems ((Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> => {
 			return onROReplaceItems(Action, Items)
 		})
-		mosDevice.onROMoveStories ((Action: IMOSStoryAction, Stories: Array<MosString128>): IMOSROAck => {
+		mosDevice.onROMoveStories ((Action: IMOSStoryAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
 			return onROMoveStories(Action, Stories)
 		})
-		mosDevice.onROMoveItems ((Action: IMOSItemAction, Items: Array<MosString128>): IMOSROAck => {
+		mosDevice.onROMoveItems ((Action: IMOSItemAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
 			return onROMoveItems(Action, Items)
 		})
-		mosDevice.onRODeleteStories ((Action: IMOSROAction, Stories: Array<MosString128>): IMOSROAck => {
+		mosDevice.onRODeleteStories ((Action: IMOSROAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
 			return onRODeleteStories(Action, Stories)
 		})
-		mosDevice.onRODeleteItems ((Action: IMOSStoryAction, Items: Array<MosString128>): IMOSROAck => {
+		mosDevice.onRODeleteItems ((Action: IMOSStoryAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
 			return onRODeleteItems(Action, Items)
 		})
-		mosDevice.onROSwapStories ((Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128): IMOSROAck => {
+		mosDevice.onROSwapStories ((Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128): Promise<IMOSROAck> => {
 			return onROSwapStories(Action, StoryID0, StoryID1)
 		})
-		mosDevice.onROSwapItems ((Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): IMOSROAck => {
+		mosDevice.onROSwapItems ((Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> => {
 			return onROSwapItems(Action, ItemID0, ItemID1)
 		})
 
@@ -557,7 +558,8 @@ describe('MosDevice: Profile 2', () => {
 	})
 	test('init', async () => {
 		expect(mosDevice).toBeTruthy()
-		expect(SocketMock.instances).toHaveLength(1)
+		expect(socketMockLower).toBeTruthy()
+		expect(socketMockUpper).toBeTruthy()
 	})
 	test('onCreateRunningOrder', async () => {
 		// Fake incoming message on socket:
@@ -611,11 +613,9 @@ describe('MosDevice: Profile 2', () => {
 
 		// Prepare server response
 		let mockReply = jest.fn((data) => {
-			// console.log('mockReply', data)
 			let str = decode(data)
 			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)[1]
 			let repl = getXMLReply(messageID, xmlData.roList)
-			// console.log('repl', repl)
 			return encode(repl)
 
 		})
@@ -655,41 +655,49 @@ describe('MosDevice: Profile 2', () => {
 		expect(onItemStatus.mock.calls[0][0]).toEqual(xmlApiData.roElementStat_item)
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
+	// todo
 	test('setRunningOrderStatus', async () => {
 		// Prepare server response
 		let mockReply = jest.fn((data) => {
-			let messageID = data.match(/<messageID>([^<]+)<\/messageID>/)[1]
-			return getXMLReply(messageID, xmlData.roAck)
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)[1]
+			let repl = getXMLReply(messageID, xmlData.roAck)
+			return encode(repl)
 		})
-		socketMockLower.mockAddReply(mockReply)
-		let returnedAck: IMOSObject = await mosDevice.setRunningOrderStatus(xmlApiData.roElementStat_ro)
-		await socketMockLower.mockWaitForSentMessages()
+		socketMockUpper.mockAddReply(mockReply)
+		let returnedAck: IMOSROAck = await mosDevice.setRunningOrderStatus(xmlApiData.roElementStat_ro)
+		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
-		expect(mockReply.mock.calls[0][0]).toMatch(/<roElementStat element="RO">/)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<roElementStat element="RO">/)
 	})
 	test('setStoryStatus', async () => {
 		// Prepare server response
 		let mockReply = jest.fn((data) => {
-			let messageID = data.match(/<messageID>([^<]+)<\/messageID>/)[1]
-			return getXMLReply(messageID, xmlData.roAck)
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)[1]
+			return encode(getXMLReply(messageID, xmlData.roAck))
 		})
-		socketMockLower.mockAddReply(mockReply)
-		let returnedAck: IMOSObject = await mosDevice.setStoryStatus(xmlApiData.roElementStat_story)
-		await socketMockLower.mockWaitForSentMessages()
+		socketMockUpper.mockAddReply(mockReply)
+		let returnedAck: IMOSROAck = await mosDevice.setStoryStatus(xmlApiData.roElementStat_story)
+		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
-		expect(mockReply.mock.calls[0][0]).toMatch(/<roElementStat element="STORY">/)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<roElementStat element="STORY">/)
 	})
 	test('setItemStatus', async () => {
 		// Prepare server response
 		let mockReply = jest.fn((data) => {
-			let messageID = data.match(/<messageID>([^<]+)<\/messageID>/)[1]
-			return getXMLReply(messageID, xmlData.roAck)
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)[1]
+			return encode(getXMLReply(messageID, xmlData.roAck))
 		})
-		socketMockLower.mockAddReply(mockReply)
-		let returnedAck: IMOSObject = await mosDevice.setItemStatus(xmlApiData.roElementStat_item)
-		await socketMockLower.mockWaitForSentMessages()
+		socketMockUpper.mockAddReply(mockReply)
+		let returnedAck: IMOSROAck = await mosDevice.setItemStatus(xmlApiData.roElementStat_item)
+		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
-		expect(mockReply.mock.calls[0][0]).toMatch(/<roElementStat element="ITEM">/)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<roElementStat element="ITEM">/)
 	})
 	test('onReadyToAir', async () => {
 		// Fake incoming message on socket:

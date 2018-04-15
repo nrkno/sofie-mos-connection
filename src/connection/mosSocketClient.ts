@@ -5,7 +5,7 @@ import { MosMessage } from '../mosModel/MosMessage'
 import * as parser from 'xml2json'
 const iconv = require('iconv-lite')
 
-export type CallBackFunction = (d: object) => void
+export type CallBackFunction = (err: any, data: object) => void
 
 export class MosSocketClient extends EventEmitter {
 	private _host: string
@@ -26,8 +26,11 @@ export class MosSocketClient extends EventEmitter {
 	private _commandTimeoutTimer: NodeJS.Timer
 	private _commandTimeout: number = 10000
 
-	private _queue: Array<CallBackFunction> = []
-	private _ready: boolean
+	private _queueCallback: {[messageId: string]: CallBackFunction} = {}
+	private _queueMessages: Array<MosMessage> = []
+	private _ready: boolean = false
+
+	private processQueueInterval: any
   /** */
 	constructor (host: string, port: number, description: string, debug?: boolean) {
 		super()
@@ -35,6 +38,7 @@ export class MosSocketClient extends EventEmitter {
 		this._port = port
 		this._description = description
 		if (debug) this._debug = debug
+
 	}
 
   /** */
@@ -99,18 +103,25 @@ export class MosSocketClient extends EventEmitter {
 	queueCommand (message: MosMessage, cb: CallBackFunction): void {
 		let that = this
 
+		message.prepare()
+		// console.log('queueing', message.messageID, message.constructor.name )
+		this._queueCallback[message.messageID] = cb
+		this._queueMessages.push(message)
+
+		this.processQueue()
+	}
+	processQueue () {
 		if (this._ready) {
-			this._ready = false
-			this._queue.push(cb)
-			this.executeCommand(message)
+			if (this.processQueueInterval) clearInterval(this.processQueueInterval)
+			if (this._queueMessages.length) {
+				this._ready = false
+				let message = this._queueMessages[0]
+				this.executeCommand(message)
+			}
 		} else {
-			let retry = setInterval(() => {
-				if (that._ready) {
-					clearInterval(retry)
-					that._ready = false
-					that._queue.push(cb)
-					that.executeCommand(message)
-				}
+			clearInterval(this.processQueueInterval)
+			this.processQueueInterval = setInterval(() => {
+				this.processQueue()
 			}, 200)
 		}
 	}
@@ -165,8 +176,7 @@ export class MosSocketClient extends EventEmitter {
   /** */
 	private executeCommand (message: MosMessage): void {
 
-		message.prepare() // @todo, is prepared? is sent already? logic needed
-
+		// message.prepare() // @todo, is prepared? is sent already? logic needed
 		let str: string = message.toString()
 		let buf = iconv.encode(str, 'utf16-be')
 
@@ -226,26 +236,32 @@ export class MosSocketClient extends EventEmitter {
 
 		if (this._debug) console.log(`${this._description} Received: ${str}`)
 
-		if (this._queue && this._queue.length) {
-			let cb: CallBackFunction | undefined = this._queue.shift()
-			// TODO: Parse XML to JSON
-			if (typeof cb === 'function') {
-				try {
+		try {
+			let parsedData: any = parser.toJson(str, {
+				'object': true,
+				coerce: true,
+				trim: true
+			})
 
-					let parsedData: object = parser.toJson(str, {
-						'object': true,
-						coerce: true,
-						trim: true
-					})
-					cb(parsedData)
-				} catch (e) {
-					// console.log(str)
-					throw e
-				}
+			let messageId = parsedData.mos.messageID
+			let cb: CallBackFunction | undefined = this._queueCallback[messageId]
+			let msg = this._queueMessages[0]
+			if (msg.messageID.toString() !== (messageId + '')) {
+				console.log('Mos reply id diff: ' + messageId + ', ' + msg.messageID)
 			}
+			if (cb) {
+				cb(null, parsedData)
+				this._queueMessages.shift() // remove the first message
+				delete this._queueCallback[messageId]
+			}
+
+		} catch (e) {
+			console.log(str)
+			throw e
 		}
 
 		this._ready = true
+		this.processQueue()
 	}
 
   /** */
