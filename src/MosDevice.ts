@@ -282,7 +282,7 @@ export class MosDevice implements IMOSDevice {
 			} else if (data.roElementStat && data.roElementStat.element === 'RO' && typeof this._callbackOnRunningOrderStatus === 'function') {
 				let status: IMOSRunningOrderStatus = {
 					ID: new MosString128(data.roElementStat.roID),
-					Status: data.roElementStat.status.replace(' ','_') as IMOSObjectStatus,
+					Status: data.roElementStat.status,
 					Time: new MosTime(data.roElementStat.time)
 				}
 
