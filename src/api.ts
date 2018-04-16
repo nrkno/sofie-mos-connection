@@ -74,7 +74,7 @@ export interface IMOSDevice {
 	/* Profile 1 */
 	onRequestMOSObject: (cb: (objId: string) => Promise<IMOSObject | null>) => void
 	onRequestAllMOSObjects: (cb: () => Promise<Array<IMOSObject>>) => void
-	getMOSObject: (objId: string) => Promise<IMOSObject>
+	getMOSObject: (objId: MosString128) => Promise<IMOSObject>
 	getAllMOSObjects: () => Promise<Array<IMOSObject>>
 
 	/* Profile 2 */
@@ -274,7 +274,7 @@ export interface IMOSObject {
 	Created: MosTime
 	ChangedBy?: MosString128 // if not present, defaults to CreatedBy
 	Changed?: MosTime // if not present, defaults to Created
-	Description?: string
+	Description?: any // xml json
 	mosExternalMetaData?: Array<IMOSExternalMetaData>
 }
 

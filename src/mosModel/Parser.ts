@@ -171,6 +171,41 @@ export namespace Parser {
 
 		return item
 	}
+	export function xml2ObjPaths (xml: any): Array<IMOSObjectPath> {
+		let paths: Array<IMOSObjectPath> = []
+
+		let xmlPaths: Array<{key: string, o: any}> = []
+		Object.keys(xml).forEach((key) => {
+			let arr: Array<any> = xml[key]
+			if (!Array.isArray(arr)) arr = [arr]
+
+			arr.forEach((o) => {
+				xmlPaths.push({
+					key: key,
+					o: o
+				})
+			})
+		})
+
+		xmlPaths.forEach((xmlPath) => {
+			let type: IMOSObjectPathType | null = null
+			if (xmlPath.key === 'objPath') {
+				type = IMOSObjectPathType.PATH
+			} else if (xmlPath.key === 'objProxyPath') {
+				type = IMOSObjectPathType.PROXY_PATH
+			} else if (xmlPath.key === 'objMetadataPath') {
+				type = IMOSObjectPathType.METADATA_PATH
+			}
+			if (type) {
+				paths.push({
+					Type: type,
+					Description: xmlPath.o.techDescription,
+					Target: xmlPath.o.$t
+				})
+			}
+		})
+		return paths
+	}
 	export function objPaths2xml (paths: Array<IMOSObjectPath>): XMLBuilder.XMLElementOrXMLNode {
 		let xmlObjPaths = XMLBuilder.create('objPaths')
 		paths.forEach((path: IMOSObjectPath) => {
@@ -288,6 +323,37 @@ export namespace Parser {
 		}
 
 		return roAck
+	}
+	export function xml2MosObjs (xml: any ): Array<IMOSObject> {
+		let xmlObjs: Array<any> = []
+		xmlObjs = xml
+		if (!Array.isArray(xmlObjs)) xmlObjs = [xmlObjs]
+
+		return xmlObjs.map((xmlObj) => {
+			return xml2MosObj(xmlObj)
+		})
+	}
+	export function xml2MosObj (xml: any ): IMOSObject {
+		let mosObj: IMOSObject = {
+			ID: new MosString128(xml.objID),
+			Slug: new MosString128(xml.objSlug),
+			MosAbstract: xml.mosAbstract,
+			Group: xml.objGroup,
+			Type: xml.objType,
+			TimeBase: xml.objTB,
+			Revision: xml.objRev,
+			Duration: xml.objDur,
+			Status: xml.status,
+			AirStatus: xml.objAir,
+			Paths: xml2ObjPaths(xml.objPaths),
+			CreatedBy: new MosString128(xml.createdBy),
+			Created: new MosTime(xml.created),
+			ChangedBy: new MosString128(xml.changedBy),
+			Changed: new MosTime(xml.changed),
+			Description: xml.description
+			// mosExternalMetaData?: Array<IMOSExternalMetaData>
+		}
+		return mosObj
 	}
 	export function mosObj2xml (obj: IMOSObject): XMLBuilder.XMLElementOrXMLNode {
 		let xml = XMLBuilder.create('mosObj')

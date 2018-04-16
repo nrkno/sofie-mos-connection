@@ -36,6 +36,8 @@ import { ROReq } from './mosModel/2_roReq'
 import { ROElementStat, ROElementStatType } from './mosModel/2_roElementStat'
 import { MosObj } from './mosModel/1_mosObj'
 import { MosListAll } from './mosModel/1_mosListAll'
+import { ReqMosObj } from './mosModel/1_reqMosObj'
+import { ReqMosObjAll } from './mosModel/1_reqMosObjAll'
 
 export class MosDevice implements IMOSDevice {
 
@@ -181,7 +183,7 @@ export class MosDevice implements IMOSDevice {
 				console.log('keys', Object.keys(data))
 			}
 
-			// Route and format data
+			// Route and format data:
 
 			// Profile 0:
 			if (data.heartbeat) {
@@ -643,12 +645,44 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRequestAllMOSObjects = cb
 	}
 
-	getMOSObject (objID: string): Promise <IMOSObject> {
-		// TODO: Implement this
+	getMOSObject (objID: MosString128): Promise <IMOSObject> {
+		let message = new ReqMosObj(objID)
+		return new Promise((resolve, reject) => {
+			if (this._currentConnection) {
+				this._currentConnection.executeCommand(message).then((data) => {
+					if (data.mos.roAck) {
+						reject(data.mos.roAck)
+					} else if (data.mos.mosObj) {
+						let obj: IMOSObject = Parser.xml2MosObj(data.mos.mosObj)
+						resolve(obj)
+					} else {
+						reject('Unknown response')
+					}
+				})
+			} else {
+				reject('No Connection')
+			}
+		})
 	}
 
 	getAllMOSObjects (): Promise <Array<IMOSObject>> {
-		// TODO: Implement this
+		let message = new ReqMosObjAll()
+		return new Promise((resolve, reject) => {
+			if (this._currentConnection) {
+				this._currentConnection.executeCommand(message).then((data) => {
+					if (data.mos.roAck) {
+						reject(data.mos.roAck)
+					} else if (data.mos.mosListAll) {
+						let objs: Array<IMOSObject> = Parser.xml2MosObjs(data.mos.mosListAll.mosObj)
+						resolve(objs)
+					} else {
+						reject('Unknown response')
+					}
+				})
+			} else {
+				reject('No Connection')
+			}
+		})
 	}
 
 	/* Profile 2 */

@@ -70,6 +70,69 @@ let xmlData = {
 		</mosPayload> \
 	</mosExternalMetadata> \
 </mosObj>',
+	'mosListAll': '<mosListAll>\
+<mosObj>\
+<objID>M000123</objID>\
+<objSlug>HOTEL FIRE</objSlug>\
+<objPaths>\
+<objPath techDescription="MPEG2 Video">\\server\media\clip392028cd2320s0d.mxf</objPath>\
+<objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>\
+<objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>\
+</objPaths>\
+      <createdBy>Chris</createdBy>\
+      <created>2009-10-31T23:39:12</created>\
+      <changedBy>Chris</changedBy>\
+      <changed>2009-11-01T14:35:55</changed>\
+      <description>\
+         <p>                       \
+            Exterior footage of\
+            <em>Baley Park Hotel</em>\
+             on fire with natural sound. Trucks are visible for the first portion of the clip.         \
+            <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>\
+         </p>\
+         <p>\
+            <tab/>\
+            Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.\
+         </p>\
+         <p>\
+            <em>Clip has been doubled for pad on voice over.</em>\
+         </p>\
+      </description>\
+    </mosObj>\
+    <mosObj>\
+      <objID>M000224</objID>\
+      <objSlug>COLSTAT MURDER:VO</objSlug>\
+      <objType>VIDEO</objType>\
+      <objTB>59.94</objTB>\
+      <objRev>4</objRev>\
+      <objDur>800</objDur>\
+      <status>UPDATED</status>\
+      <objAir>READY</objAir>\
+<objPaths>\
+<objPath techDescription="MPEG2 Video">\\server\media\clip392028cd2320s0d.mxf</objPath>\
+<objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>\
+<objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>\
+</objPaths>\
+      <createdBy>Phil</createdBy>\
+      <created>2009-11-01T15:19:01</created>\
+      <changedBy>Chris</changedBy>\
+      <changed>2009-11-01T15:21:15</changed>\
+      <description>VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.</description>\
+      <mosExternalMetadata>\
+         <mosScope>STORY</mosScope>\
+           <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>\
+         <mosPayload>\
+            <Owner>SHOLMES</Owner>\
+            <ModTime>20010308142001</ModTime>\
+            <mediaTime>0</mediaTime>\
+            <TextTime>278</TextTime>\
+            <ModBy>LJOHNSTON</ModBy>\
+            <Approved>0</Approved>\
+            <Creator>SHOLMES</Creator>\
+         </mosPayload>\
+      </mosExternalMetadata>\
+    </mosObj>\
+   </mosListAll>',
 
 	'roCreate': '<roCreate> \
 <roID>96857485</roID> \
@@ -533,7 +596,7 @@ let xmlApiData = {
 			})
 		],
 		CreatedBy: new MosString128('Jonas'),
-		Created: new MosTime('2001-01-01'),
+		Created: new MosTime('2001-01-01')
 		// ChangedBy?: new MosString128 // if not present, defaults to CreatedBy(),
 		// Changed?: MosTime // if not present, defaults to Created
 		// Description?: string
@@ -568,12 +631,85 @@ let xmlApiData = {
 			})
 		],
 		CreatedBy: new MosString128('Jonas'),
-		Created: new MosTime('2001-01-01'),
+		Created: new MosTime('2001-01-01')
 		// ChangedBy?: new MosString128 // if not present, defaults to CreatedBy(),
 		// Changed?: MosTime // if not present, defaults to Created
 		// Description?: string
 		// mosExternalMetaData?: Array<IMOSExternalMetaData>
 	}),
+
+	'mosListAll': [
+		literal<IMOSObject>({
+			ID: new MosString128('M000123'),
+			Slug: new MosString128('HOTEL FIRE'),
+			// MosAbstract: ''
+			// Group?: '
+			Type: undefined,
+			TimeBase: undefined,
+			Revision: undefined,
+			Duration: undefined,
+			Status: undefined,
+			AirStatus: undefined,
+			Paths: [
+				literal<IMOSObjectPath>({
+					Type: IMOSObjectPathType.PATH,
+					Description: 'MPEG2 Video',
+					Target: '\\server\media\clip392028cd2320s0d.mxf'
+				}),
+				literal<IMOSObjectPath>({
+					Type: IMOSObjectPathType.PROXY_PATH,
+					Description: 'WM9 750Kbps',
+					Target: 'http://server/proxy/clipe.wmv'
+				}),
+				literal<IMOSObjectPath>({
+					Type: IMOSObjectPathType.METADATA_PATH,
+					Description: 'MOS Object',
+					Target: 'http://server/proxy/clipe.xml'
+				})
+			],
+			CreatedBy: new MosString128('Chris'),
+			Created: new MosTime('2009-10-31T23:39:12'),
+			ChangedBy: new MosString128('Chris'),
+			Changed: new MosTime('2009-11-01T14:35:55'),
+			Description: {}
+		}),
+		literal<IMOSObject>({
+			ID: new MosString128('M000224'),
+			Slug: new MosString128('COLSTAT MURDER:VO'),
+			// MosAbstract: ''
+			// Group?: '
+			Type: IMOSObjectType.VIDEO,
+			TimeBase: 59.94,
+			Revision: 4,
+			Duration: 800,
+			Status: IMOSObjectStatus.UPDATED,
+			AirStatus: IMOSObjectAirStatus.READY,
+			Paths: [
+				literal<IMOSObjectPath>({
+					Type: IMOSObjectPathType.PATH,
+					Description: 'MPEG2 Video',
+					Target: '\\server\media\clip392028cd2320s0d.mxf'
+				}),
+				literal<IMOSObjectPath>({
+					Type: IMOSObjectPathType.PROXY_PATH,
+					Description: 'WM9 750Kbps',
+					Target: 'http://server/proxy/clipe.wmv'
+				}),
+				literal<IMOSObjectPath>({
+					Type: IMOSObjectPathType.METADATA_PATH,
+					Description: 'MOS Object',
+					Target: 'http://server/proxy/clipe.xml'
+				})
+			],
+			CreatedBy: new MosString128('Phil'),
+			Created: new MosTime('2009-11-01T15:19:01'),
+			ChangedBy: new MosString128('Chris'),
+			Changed: new MosTime('2009-11-01T15:21:15'),
+			Description: 'VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.'
+			// mosExternalMetaData?: Array<IMOSExternalMetaData>
+		})
+	],
+
 	'roCreate': literal<IMOSRunningOrder>({
 		ID: new MosString128('96857485'),
 		Slug: new MosString128('5PM RUNDOWN'),

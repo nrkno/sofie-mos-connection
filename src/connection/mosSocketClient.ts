@@ -179,6 +179,8 @@ export class MosSocketClient extends EventEmitter {
 		let str: string = message.toString()
 		let buf = iconv.encode(str, 'utf16-be')
 
+		// console.log('sending',this._client.name, str)
+
 		global.clearTimeout(this._commandTimeoutTimer)
 		this._commandTimeoutTimer = global.setTimeout(() => this._onCommandTimeout(), this._commandTimeout)
 		this._client.write(buf, 'ucs2')
