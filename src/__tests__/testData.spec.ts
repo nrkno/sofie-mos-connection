@@ -11,6 +11,12 @@ test('At least one test', () => {
 })
 
 let xmlData = {
+	'reqObj': '<mosReqObj>\
+		<objID>M000123</objID>\
+		 </mosReqObj>',
+	'mosReqAll': '<mosReqAll>\
+		 <pause>0</pause>\
+		  </mosReqAll>',
 	'mosObj': '<mosObj> \
 	<objID>M000123</objID> \
 	<objSlug>Hotel Fire</objSlug> \
@@ -498,6 +504,76 @@ let xmlData = {
 }
 
 let xmlApiData = {
+	'mosObj': literal<IMOSObject>({
+		ID: new MosString128('M000123'),
+		Slug: new MosString128('My new object'),
+		// MosAbstract: ''
+		// Group?: '
+		Type: IMOSObjectType.VIDEO,
+		TimeBase: 50.00,
+		Revision: 1, // max 999
+		Duration: 1500,
+		Status: IMOSObjectStatus.READY,
+		AirStatus: IMOSObjectAirStatus.READY,
+		Paths: [
+			literal<IMOSObjectPath>({
+				Type: IMOSObjectPathType.PATH,
+				Description: 'MPEG2 Video',
+				Target: '\\server\media\clip392028cd2320s0d.mxf'
+			}),
+			literal<IMOSObjectPath>({
+				Type: IMOSObjectPathType.PROXY_PATH,
+				Description: 'WM9 750Kbps',
+				Target: 'http://server/proxy/clipe.wmv'
+			}),
+			literal<IMOSObjectPath>({
+				Type: IMOSObjectPathType.METADATA_PATH,
+				Description: 'MOS Object',
+				Target: 'http://server/proxy/clipe.xml'
+			})
+		],
+		CreatedBy: new MosString128('Jonas'),
+		Created: new MosTime('2001-01-01'),
+		// ChangedBy?: new MosString128 // if not present, defaults to CreatedBy(),
+		// Changed?: MosTime // if not present, defaults to Created
+		// Description?: string
+		// mosExternalMetaData?: Array<IMOSExternalMetaData>
+	}),
+	'mosObj2': literal<IMOSObject>({
+		ID: new MosString128('M0003523'),
+		Slug: new MosString128('My new object 2'),
+		// MosAbstract: ''
+		// Group?: '
+		Type: IMOSObjectType.VIDEO,
+		TimeBase: 50.00,
+		Revision: 1, // max 999
+		Duration: 1000,
+		Status: IMOSObjectStatus.READY,
+		AirStatus: IMOSObjectAirStatus.READY,
+		Paths: [
+			literal<IMOSObjectPath>({
+				Type: IMOSObjectPathType.PATH,
+				Description: 'MPEG2 Video',
+				Target: '\\server\media\clip392028cd2320s0d.mxf'
+			}),
+			literal<IMOSObjectPath>({
+				Type: IMOSObjectPathType.PROXY_PATH,
+				Description: 'WM9 750Kbps',
+				Target: 'http://server/proxy/clipe.wmv'
+			}),
+			literal<IMOSObjectPath>({
+				Type: IMOSObjectPathType.METADATA_PATH,
+				Description: 'MOS Object',
+				Target: 'http://server/proxy/clipe.xml'
+			})
+		],
+		CreatedBy: new MosString128('Jonas'),
+		Created: new MosTime('2001-01-01'),
+		// ChangedBy?: new MosString128 // if not present, defaults to CreatedBy(),
+		// Changed?: MosTime // if not present, defaults to Created
+		// Description?: string
+		// mosExternalMetaData?: Array<IMOSExternalMetaData>
+	}),
 	'roCreate': literal<IMOSRunningOrder>({
 		ID: new MosString128('96857485'),
 		Slug: new MosString128('5PM RUNDOWN'),

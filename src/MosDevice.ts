@@ -34,6 +34,8 @@ import { ROList } from './mosModel/ROList'
 import { HeartBeat } from './mosModel/0_heartBeat'
 import { ROReq } from './mosModel/2_roReq'
 import { ROElementStat, ROElementStatType } from './mosModel/2_roElementStat'
+import { MosObj } from './mosModel/1_mosObj'
+import { MosListAll } from './mosModel/1_mosListAll'
 
 export class MosDevice implements IMOSDevice {
 
@@ -181,25 +183,30 @@ export class MosDevice implements IMOSDevice {
 
 			// Route and format data
 
-			// Profile 0
-			// console.log(data)
-			// TODO: _callbackOnConnectionChange: (connectionStatus: IMOSConnectionStatus) => void
+			// Profile 0:
 			if (data.heartbeat) {
 				// send immediate reply:
 				// console.log('heartbeat')
 				let ack = new HeartBeat()
 				resolve(ack)
 
-			// Profile 1
-			// TODO: _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null>
-			// TODO: _callbackOnRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
-
-			// TODO: _callbackOnGetMachineInfo: () => Promise<IMOSListMachInfo>
 			} else if (data.reqMachInfo && typeof this._callbackOnGetMachineInfo === 'function') {
 				this._callbackOnGetMachineInfo().then((m: IMOSListMachInfo) => {
 					let resp = new ListMachineInfo(m)
 					resolve(resp)
 				})
+			// Profile 1:
+			} else if (data.mosReqObj && typeof this._callbackOnRequestMOSOBject === 'function') {
+				this._callbackOnRequestMOSOBject(data.mosReqObj.objID).then((mosObj: IMOSObject) => {
+					let resp = new MosObj(mosObj)
+					resolve(resp)
+				})
+			} else if (data.mosReqAll && typeof this._callbackOnRequestAllMOSObjects === 'function') {
+				this._callbackOnRequestAllMOSObjects().then((mosObjs: Array<IMOSObject>) => {
+					let resp = new MosListAll(mosObjs)
+					resolve(resp)
+				})
+			// Profile 2:
 			} else if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
 				let stories: Array<IMOSROStory> = Parser.xml2Stories(data.roCreate.story)
 				let ro: IMOSRunningOrder = {

@@ -8,7 +8,8 @@ import {
 	IMOSRunningOrderBase,
 	IMOSROAckStory,
 	IMOSROAckItem,
-	IMOSROAckObject
+	IMOSROAckObject,
+	IMOSObject
 } from '../api'
 import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
@@ -170,6 +171,25 @@ export namespace Parser {
 
 		return item
 	}
+	export function objPaths2xml (paths: Array<IMOSObjectPath>): XMLBuilder.XMLElementOrXMLNode {
+		let xmlObjPaths = XMLBuilder.create('objPaths')
+		paths.forEach((path: IMOSObjectPath) => {
+			if (path.Type === IMOSObjectPathType.PATH) {
+				xmlObjPaths.ele('objPath', {
+					techDescription: path.Description
+				}, path.Target)
+			} else if (path.Type === IMOSObjectPathType.PROXY_PATH) {
+				xmlObjPaths.ele('objProxyPath', {
+					techDescription: path.Description
+				}, path.Target)
+			} else if (path.Type === IMOSObjectPathType.METADATA_PATH) {
+				xmlObjPaths.ele('objMetadataPath ', {
+					techDescription: path.Description
+				}, path.Target)
+			}
+		})
+		return xmlObjPaths
+	}
 	export function item2xml (item: IMOSItem): XMLBuilder.XMLElementOrXMLNode {
 		let xmlItem = XMLBuilder.create('item')
 		xmlItem.ele('itemID', {}, item.ID)
@@ -179,22 +199,8 @@ export namespace Parser {
 		if (item.mosAbstract) 			xmlItem.ele('mosAbstract', {}, item.mosAbstract)
 
 		if (item.Paths) {
-			let xmlObjPaths = xmlItem.ele('objPaths')
-			item.Paths.forEach((path: IMOSObjectPath) => {
-				if (path.Type === IMOSObjectPathType.PATH) {
-					xmlObjPaths.ele('objPath', {
-						techDescription: path.Description
-					}, path.Target)
-				} else if (path.Type === IMOSObjectPathType.PROXY_PATH) {
-					xmlObjPaths.ele('objProxyPath', {
-						techDescription: path.Description
-					}, path.Target)
-				} else if (path.Type === IMOSObjectPathType.METADATA_PATH) {
-					xmlObjPaths.ele('objMetadataPath ', {
-						techDescription: path.Description
-					}, path.Target)
-				}
-			})
+			let xmlObjPaths = objPaths2xml(item.Paths)
+			xmlItem.importDocument(xmlObjPaths)
 		}
 		//  objPaths?
 		// 	  objPath*
@@ -282,5 +288,33 @@ export namespace Parser {
 		}
 
 		return roAck
+	}
+	export function mosObj2xml (obj: IMOSObject): XMLBuilder.XMLElementOrXMLNode {
+		let xml = XMLBuilder.create('mosObj')
+
+		xml.ele('objID', {}, obj.ID)
+		xml.ele('objSlug', {}, obj.Slug)
+		if (obj.MosAbstract) 	xml.ele('mosAbstract', {}, obj.MosAbstract)
+		if (obj.Group) 			xml.ele('objGroup', {}, obj.Group)
+		xml.ele('objType', {}, obj.Type)
+		xml.ele('objTB', {}, obj.TimeBase)
+		xml.ele('objRev', {}, obj.Revision)
+		xml.ele('objDur', {}, obj.Duration)
+		xml.ele('status', {}, obj.Status)
+		xml.ele('objAir', {}, obj.AirStatus)
+
+		if (obj.Paths) {
+			let xmlObjPaths = objPaths2xml(obj.Paths)
+			xml.importDocument(xmlObjPaths)
+		}
+
+		xml.ele('createdBy', {}, obj.CreatedBy)
+		xml.ele('created', {}, obj.Created)
+		if (obj.ChangedBy) xml.ele('changedBy', {}, 	obj.ChangedBy)
+		if (obj.Changed) xml.ele('changed', {}, 		obj.Changed)
+		if (obj.Description) xml.ele('description', {}, 	obj.Description)
+
+		// Todo: metadata:
+		return xml
 	}
 }
