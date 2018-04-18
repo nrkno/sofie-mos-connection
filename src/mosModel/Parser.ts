@@ -17,6 +17,19 @@ import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
 import * as parser from 'xml2json'
 import { ROAck } from '../mosModel/ROAck'
+
+function isEmpty (obj: any) {
+	if (typeof obj === 'object') {
+		for (let prop in obj) {
+			if (obj.hasOwnProperty(prop)) {
+				return false
+			}
+		}
+		return JSON.stringify(obj) === JSON.stringify({})
+	} else {
+		return !obj
+	}
+}
 export namespace Parser {
 
 	export function xml2ROBase (xml: any): IMOSRunningOrderBase {
@@ -73,7 +86,7 @@ export namespace Parser {
 		} else if (xml.item) {
 			story.Items.push(xml2Item(xml.item))
 		}
-		if (xml.hasOwnProperty('storyNum')) story.Number = new MosString128(xml.storyNum)
+		if (xml.hasOwnProperty('storyNum') && !isEmpty(xml.storyNum)) story.Number = new MosString128(xml.storyNum || '')
 		if (xml.hasOwnProperty('MosExternalMetaData')) {
 			// TODO: Handle an array of MosExternalMetaData
 			let meta: IMOSExternalMetaData = {
@@ -90,8 +103,8 @@ export namespace Parser {
 
 		xmlStory.ele('storyID', {}, story.ID)
 		// if (story.Slug) xmlStory.ele('storySlug', {}, story.)
-		if (story.Slug) xmlStory.ele('storySlug', {}, story.Slug)
-		if (story.Number) xmlStory.ele('storyNum', {}, story.Number)
+		if (story.Slug) xmlStory.ele('storySlug', {}, story.Slug.toString())
+		if (story.Number) xmlStory.ele('storyNum', {}, story.Number.toString())
 
 		if (story.MosExternalMetaData) {
 			story.MosExternalMetaData.forEach((md: IMOSExternalMetaData) => {
@@ -124,7 +137,7 @@ export namespace Parser {
 			// TODO: MacroOut?: MosString128,
 		}
 
-		if (xml.hasOwnProperty('itemSlug')) item.Slug = new MosString128(xml.itemSlug)
+		if (xml.hasOwnProperty('itemSlug') && !isEmpty(xml.itemSlug)) item.Slug = new MosString128(xml.itemSlug)
 		if (xml.hasOwnProperty('objPaths')) {
 			let objPaths = xml.objPaths
 			let paths: Array<IMOSObjectPath> = []

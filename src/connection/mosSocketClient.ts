@@ -257,7 +257,7 @@ export class MosSocketClient extends EventEmitter {
 			}
 
 		} catch (e) {
-			console.log(str)
+			console.log('str', str)
 			throw e
 		}
 

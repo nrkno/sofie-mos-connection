@@ -184,11 +184,9 @@ export class MosDevice implements IMOSDevice {
 			}
 
 			// Route and format data:
-
 			// Profile 0:
 			if (data.heartbeat) {
 				// send immediate reply:
-				// console.log('heartbeat')
 				let ack = new HeartBeat()
 				resolve(ack)
 
@@ -260,7 +258,6 @@ export class MosDevice implements IMOSDevice {
 				}).catch(reject)
 			} else if (data.roReq && typeof this._callbackOnRequestRunningOrder === 'function') {
 				this._callbackOnRequestRunningOrder(data.roReq.roID).then((ro: IMOSRunningOrder | null) => {
-					// console.log('ro', ro)
 					if (ro) {
 						let resp = new ROList()
 						resp.RO = ro
@@ -356,26 +353,7 @@ export class MosDevice implements IMOSDevice {
 					RunningOrderID: data.roStorySend.roID,
 					StoryID: data.roStorySend.storyID
 				}
-				let stories: Array<IMOSROStory> = []
-				let story: IMOSROStory = {
-					ID: data.roStorySend.storyID,
-					Slug: data.roStorySend.storySlug,
-					Items: []
-					// TODO: Add & test Items, ObjectID, MOSID, mosAbstract, Paths, StoryBody
-					// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut
-				}
-				if (data.roStorySend.hasOwnProperty('storyNum') && data.roStorySend.storyNum !== {}) story.Number = data.roStorySend.storyNum
-				if (data.roStorySend.hasOwnProperty('mosExternalMetadata')) {
-					// TODO: Handle an array of mosExternalMetadata
-					let meta: IMOSExternalMetaData = {
-						MosSchema: data.roStorySend.mosExternalMetadata.mosSchema,
-						MosPayload: data.roStorySend.mosExternalMetadata.mosPayload
-					}
-					if (data.roStorySend.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = data.roStorySend.mosExternalMetadata.mosScope
-					story.MosExternalMetaData = [meta]
-				}
-				stories.push(story)
-				// console.log('roStorySend', stories)
+				let stories: Array<IMOSROStory> = Parser.xml2Stories(data.roStorySend)
 				this._callbackOnROInsertStories(action, stories).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
 					ack.ID = resp.ID
@@ -593,7 +571,6 @@ export class MosDevice implements IMOSDevice {
 			if (this._currentConnection) {
 
 				this._currentConnection.executeCommand(message).then((data) => {
-					// console.log('reply', data)
 					let listMachInfo = data.mos.listMachInfo
 					let list: IMOSListMachInfo = {
 						manufacturer: listMachInfo.manufacturer,
