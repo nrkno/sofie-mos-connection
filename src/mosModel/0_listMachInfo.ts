@@ -1,6 +1,8 @@
-import {MosTime} from '../dataTypes/mosTime'
-import {MosString128} from '../dataTypes/mosString128'
-import {IMOSExternalMetaData} from '../dataTypes/mosExternalMetaData'
+import { MosTime } from '../dataTypes/mosTime'
+import { MosString128 } from '../dataTypes/mosString128'
+import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
+import { MosMessage } from '../mosModel/MosMessage'
+import * as XMLBuilder from 'xmlbuilder'
 
 export enum IMOSListMachInfoDefaultActiveXMode {
 	MODALDIALOG = 'MODALDIALOG',
@@ -31,7 +33,6 @@ export interface IMOSListMachInfo {
 
 	supportedProfiles: {
 		deviceType: string,                 // deviceType="NCS"
-
 		profile0?: boolean,
 		profile1?: boolean,
 		profile2?: boolean,
@@ -44,4 +45,38 @@ export interface IMOSListMachInfo {
 	}
 	defaultActiveX?: Array<IMOSDefaultActiveX>
 	mosExternalMetaData?: Array<IMOSExternalMetaData>
+}
+
+export class ListMachineInfo extends MosMessage {
+
+	info: IMOSListMachInfo
+
+  /** */
+	constructor (info: IMOSListMachInfo) {
+		super()
+		this.info = info
+	}
+
+  /** */
+	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+
+		let root = XMLBuilder.create('listMachInfo')
+		root.ele('manufacturer', this.info.manufacturer.toString())
+		root.ele('model', this.info.model.toString())
+		root.ele('hwRev', this.info.hwRev.toString())
+		root.ele('swRev', this.info.swRev.toString())
+		root.ele('DOM', this.info.DOM.toString())
+		root.ele('SN', this.info.SN.toString())
+		root.ele('ID', this.info.ID.toString())
+		root.ele('time', this.info.time.toString())
+		if (this.info.opTime) root.ele('opTime', this.info.opTime.toString())
+		root.ele('mosRev', this.info.mosRev.toString())
+
+		let p = root.ele('supportedProfiles').att('deviceType', this.info.supportedProfiles.deviceType)
+		for (let i = 0; i < 8; i++) {
+			// @ts-ignore
+			p.ele('mosProfile', (this.info.supportedProfiles['profile' + i] ? 'YES' : 'NO')).att('number', i)
+		}
+		return root
+	}
 }

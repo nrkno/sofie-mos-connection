@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events'
 
-import { Socket} from 'net'
+import { Socket } from 'net'
 import { Writable } from 'stream'
 
 // Mock the Socket class in 'net':
@@ -21,6 +21,10 @@ export class SocketMock extends EventEmitter implements Socket {
 	destroyed: boolean
 	writable: boolean
 	readable: boolean
+
+	public name: string
+	public connectedPort: number
+	public connectedHost: string
 
 	private _responses: Array<(data: any) => string | Buffer > = []
 
@@ -71,7 +75,11 @@ export class SocketMock extends EventEmitter implements Socket {
 		this.mockSentMessage.apply(this, arguments)
 		return true
 	}
-	connect () { return this }
+	connect (port, host) {
+		this.connectedPort = port
+		this.connectedHost = host
+		return this
+	}
 	setEncoding () { return this }
 	destroy () { /* nothing */ }
 	pause () { return this }
@@ -101,18 +109,22 @@ export class SocketMock extends EventEmitter implements Socket {
 	// ------------------------------------------------------------------------
 	// Mock methods:
 	mockSentMessage (data, encoding) {
-
+		// console.log('mockSentMessage ' + this.name, data)
 		if (this._responses.length) {
 			// send reply:
 
 			let cb = this._responses.shift()
+			let msg
 
 			setTimeout(() => {
 
-				let msg = cb(data)
-
-				this.mockReceiveMessage(msg)
-			},5)
+				if (typeof cb === 'string') {
+					msg = cb
+				} else {
+					msg = cb(data)
+				}
+				if (msg !== false) this.mockReceiveMessage(msg)
+			},2)
 		}
 	}
 	mockReceiveMessage (msg: string | Buffer) {
@@ -123,6 +135,24 @@ export class SocketMock extends EventEmitter implements Socket {
 	}
 	mockClear () {
 		this._responses.splice(0, 9999)
+		// @ts-ignore
+		this.mockSentMessage.mockClear()
+	}
+	mockWaitForSentMessages () {
+		return new Promise((resolve) => {
+
+			let check = () => {
+				if (this._responses.length === 0) {
+					resolve()
+				} else {
+					setTimeout(() => {
+						check()
+					},2)
+				}
+			}
+			check()
+
+		})
 	}
 }
 

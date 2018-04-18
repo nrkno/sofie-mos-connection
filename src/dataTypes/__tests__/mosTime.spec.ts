@@ -27,15 +27,17 @@ describe('MosTime', () => {
 	test('format time strings correctly', () => {
 		let date = new Date(Date.UTC(2018, 1, 24, 23, 13, 52, 0)) // utc, zero-indexed month
 		expect(new MosTime(date).toString()).toBe('2018-02-24T23:13:52,000')
-		expect(new MosTime(date.getTime()).toString()).toBe('2018-02-24T23:13:52,000')
-		expect(new MosTime(date.toString()).toString()).toBe('2018-02-25T00:13:52,000+01:00') // locale time
-		expect(new MosTime(date.toUTCString()).toString()).toBe('2018-02-24T23:13:52,000') // utc
-		expect(new MosTime(date.toISOString()).toString()).toBe('2018-02-24T23:13:52,000Z') // utc
+		expect(new MosTime(1519514032000).toString()).toBe('2018-02-24T23:13:52,000') // date.getTime()
+		expect(new MosTime('Sun Feb 25 2018 00:13:52 GMT+0100 (W. Europe Standard Time)').toString()).toBe('2018-02-25T00:13:52,000+01:00') // date.toString() locale time 
+		expect(new MosTime('Sat, 24 Feb 2018 23:13:52 GMT').toString()).toBe('2018-02-24T23:13:52,000') // date.toUTCString()
+		expect(new MosTime('2018-02-24T23:13:52.000Z').toString()).toBe('2018-02-24T23:13:52,000Z') // date.toISOString()
 
 		// mos-centric strings
-		expect(new MosTime('2009-04-11T14:22:07').toString()).toBe('2009-04-11T14:22:07,000')
-		expect(new MosTime('2009-04-11T14:22:07.123').toString()).toBe('2009-04-11T14:22:07,123')
-		expect(new MosTime('2009-04-11T14:22:07,123').toString()).toBe('2009-04-11T14:22:07,123')
+		let localHours = 14
+		localHours += new Date().getTimezoneOffset() / 60
+		expect(new MosTime('2009-04-11T14:22:07').toString()).toBe('2009-04-11T' + localHours + ':22:07,000')
+		expect(new MosTime('2009-04-11T14:22:07.123').toString()).toBe('2009-04-11T' + localHours + ':22:07,123')
+		expect(new MosTime('2009-04-11T14:22:07,123').toString()).toBe('2009-04-11T' + localHours + ':22:07,123')
 		expect(new MosTime('2009-04-11T14:22:07Z').toString()).toBe('2009-04-11T14:22:07,000Z')
 		expect(new MosTime('2009-04-11T14:22:07.123Z').toString()).toBe('2009-04-11T14:22:07,123Z')
 		expect(new MosTime('2009-04-11T14:22:07,123Z').toString()).toBe('2009-04-11T14:22:07,123Z')

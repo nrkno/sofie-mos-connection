@@ -1,9 +1,9 @@
-import {IProfiles} from './config/connectionConfig'
-import {MosTime} from './dataTypes/mosTime'
-import {MosDuration} from './dataTypes/mosDuration'
-import {MosString128} from './dataTypes/mosString128'
-import {IMOSExternalMetaData} from './dataTypes/mosExternalMetaData'
-import {IMOSListMachInfo} from './mosModel/0_listMachInfo'
+import { IProfiles } from './config/connectionConfig'
+import { MosTime } from './dataTypes/mosTime'
+import { MosDuration } from './dataTypes/mosDuration'
+import { MosString128 } from './dataTypes/mosString128'
+import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
+import { IMOSListMachInfo } from './mosModel/0_listMachInfo'
 
 // import {IMOSListMachInfo as IMOSP0ListMachineInfo, IMOSListMachInfo} from "./mosModel/0_listMachInfo"
 // import {HeartBeat} from './mosModel/0_heartBeat';
@@ -61,7 +61,8 @@ export interface IMosConnection {
 }
 
 export interface IMOSDevice {
-	id: string, // unique id for this device and session
+	idPrimary: string, // unique id for this device and session
+	idSecondary: string | null, // unique id for this device and session (buddy)
 	/* Profile 0 */
 	/*  */
 	getMachineInfo: () => Promise<IMOSListMachInfo>
@@ -73,7 +74,7 @@ export interface IMOSDevice {
 	/* Profile 1 */
 	onRequestMOSObject: (cb: (objId: string) => Promise<IMOSObject | null>) => void
 	onRequestAllMOSObjects: (cb: () => Promise<Array<IMOSObject>>) => void
-	getMOSObject: (objId: string) => Promise<IMOSObject>
+	getMOSObject: (objId: MosString128) => Promise<IMOSObject>
 	getAllMOSObjects: () => Promise<Array<IMOSObject>>
 
 	/* Profile 2 */
@@ -195,6 +196,13 @@ export interface IMOSItem {
 
 export type MosDuration = MosDuration // HH:MM:SS
 
+export interface IMOSAck {
+	ID: MosString128
+	Revision: Number // max 999
+	Status: IMOSAckStatus
+	Description: MosString128
+}
+
 export interface IMOSROAck {
 	ID: MosString128 // Running order id
 	Status: MosString128 // OK or error desc
@@ -266,7 +274,7 @@ export interface IMOSObject {
 	Created: MosTime
 	ChangedBy?: MosString128 // if not present, defaults to CreatedBy
 	Changed?: MosTime // if not present, defaults to Created
-	Description?: string
+	Description?: any // xml json
 	mosExternalMetaData?: Array<IMOSExternalMetaData>
 }
 
@@ -288,6 +296,11 @@ export enum IMOSObjectStatus {
 	NOT_READY = 'NOT READY',
 	PLAY = 'PLAY',
 	STOP = 'STOP'
+}
+
+export enum IMOSAckStatus {
+	ACK = 'ACK',
+	NACK = 'NACK'
 }
 
 export enum IMOSObjectAirStatus {
