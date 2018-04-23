@@ -11,7 +11,7 @@ import {
 	IMOSROAckObject,
 	IMOSObject
 } from '../api'
-import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
+import { IMOSExternalMetaData, MosExternalMetaData, IMOSScope } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
@@ -74,28 +74,16 @@ export namespace Parser {
 		let story: IMOSROStory = {
 			ID: new MosString128(xml.storyID),
 			Slug: new MosString128(xml.storySlug),
-			Items: []
-			// TODO: Add & test Number, MosExternalMetaData, Items, ObjectID, MOSID, mosAbstract, Paths
+			Items: xml2Items(xml.item)
+			// TODO: Add & test Number, ObjectID, MOSID, mosAbstract, Paths
 			// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut, MosExternalMetaData
+			// MosExternalMetaData: xml2MetaData(xml.mosExternalMetadata)
 		}
 
-		if (xml.item instanceof Array) {
-			xml.item.forEach((xmlItem: any) => {
-				story.Items.push(xml2Item(xmlItem))
-			})
-		} else if (xml.item) {
-			story.Items.push(xml2Item(xml.item))
-		}
+		if (xml.hasOwnProperty('mosExternalMetadata')) story.MosExternalMetaData = xml2MetaData(xml.mosExternalMetadata)
+
 		if (xml.hasOwnProperty('storyNum') && !isEmpty(xml.storyNum)) story.Number = new MosString128(xml.storyNum || '')
-		if (xml.hasOwnProperty('MosExternalMetaData')) {
-			// TODO: Handle an array of MosExternalMetaData
-			let meta: IMOSExternalMetaData = {
-				MosSchema: xml.MosExternalMetaData.mosSchema,
-				MosPayload: xml.MosExternalMetaData.mosPayload
-			}
-			if (xml.MosExternalMetaData.hasOwnProperty('mosScope')) meta.MosScope = xml.MosExternalMetaData.mosScope
-			story.MosExternalMetaData = [meta]
-		}
+
 		return story
 	}
 	export function story2xml (story: IMOSROStory): XMLBuilder.XMLElementOrXMLNode {
@@ -138,49 +126,12 @@ export namespace Parser {
 		}
 
 		if (xml.hasOwnProperty('itemSlug') && !isEmpty(xml.itemSlug)) item.Slug = new MosString128(xml.itemSlug)
-		if (xml.hasOwnProperty('objPaths')) {
-			let objPaths = xml.objPaths
-			let paths: Array<IMOSObjectPath> = []
-
-			if (objPaths.hasOwnProperty('objPath')) {
-				let path: IMOSObjectPath = {
-					Type: IMOSObjectPathType.PATH,
-					Description: objPaths.objPath.techDescription,
-					Target: objPaths.objPath['$t']
-				}
-				paths.push(path)
-			}
-			if (objPaths.hasOwnProperty('objProxyPath')) {
-				let path: IMOSObjectPath = {
-					Type: IMOSObjectPathType.PROXY_PATH,
-					Description: objPaths.objProxyPath.techDescription,
-					Target: objPaths.objProxyPath['$t']
-				}
-				paths.push(path)
-			}
-			if (objPaths.hasOwnProperty('objMetadataPath')) {
-				let path: IMOSObjectPath = {
-					Type: IMOSObjectPathType.METADATA_PATH,
-					Description: objPaths.objMetadataPath.techDescription,
-					Target: objPaths.objMetadataPath['$t']
-				}
-				paths.push(path)
-			}
-			item.Paths = paths
-		}
+		if (xml.hasOwnProperty('objPaths')) item.Paths = xml2ObjPaths(xml.objPaths)
 		if (xml.hasOwnProperty('itemEdStart')) item.EditorialStart = xml.itemEdStart
 		if (xml.hasOwnProperty('itemEdDur')) item.EditorialDuration = xml.itemEdDur
 		if (xml.hasOwnProperty('itemUserTimingDur')) item.UserTimingDuration = xml.itemUserTimingDur
 		if (xml.hasOwnProperty('itemTrigger')) item.Trigger = xml.itemTrigger
-		if (xml.hasOwnProperty('MosExternalMetaData')) {
-			// TODO: Handle an array of MosExternalMetaData
-			let meta: IMOSExternalMetaData = {
-				MosSchema: xml.MosExternalMetaData.mosSchema,
-				MosPayload: xml.MosExternalMetaData.mosPayload
-			}
-			if (xml.MosExternalMetaData.hasOwnProperty('mosScope')) meta.MosScope = xml.MosExternalMetaData.mosScope
-			item.MosExternalMetaData = [meta]
-		}
+		if (xml.hasOwnProperty('mosExternalMetadata')) item.MosExternalMetaData = xml2MetaData(xml.mosExternalMetadata)
 
 		return item
 	}
@@ -262,12 +213,28 @@ export namespace Parser {
 		if (item.Trigger) 				xmlItem.ele('itemTrigger', {}, item.Trigger)
 		if (item.MacroIn) 				xmlItem.ele('macroIn', {}, item.MacroIn)
 		if (item.MacroOut) 				xmlItem.ele('macroOut', {}, item.MacroOut)
-		// TODO: mosExternalMetadata*
+		if (item.MacroOut)				xmlItem.ele('mosExternalMetadata', {}, item.MacroOut)
+		if (item.MosExternalMetaData) {
+			item.MosExternalMetaData.forEach((md) => {
+				let xmlMetaData = metaData2xml(md)
+				xmlItem.importDocument(xmlMetaData)
+			})
+		}
 		return xmlItem
 	}
-	// export function xml2MetaData (xml: XMLBuilder.XMLElementOrXMLNode): IMOSExternalMetaData {
-	// 	// TODO: implement
-	// }
+	export function xml2MetaData (xml: any): Array<IMOSExternalMetaData> {
+		if (!xml) return []
+		let xmlMetadata: Array<any> = xml
+		if (!Array.isArray(xml)) xmlMetadata = [xmlMetadata]
+		return xmlMetadata.map((xmlmd) => {
+			let md: IMOSExternalMetaData = {
+				MosScope: (xmlmd.hasOwnProperty('mosScope') ? xmlmd.mosScope : null),
+				MosSchema: xmlmd.mosSchema + '',
+				MosPayload: xmlmd.mosPayload
+			}
+			return md
+		})
+	}
 	export function metaData2xml (md: IMOSExternalMetaData): XMLBuilder.XMLElementOrXMLNode {
 		let xmlMD = XMLBuilder.create('mosExternalMetadata')
 
@@ -364,8 +331,8 @@ export namespace Parser {
 			ChangedBy: new MosString128(xml.changedBy),
 			Changed: new MosTime(xml.changed),
 			Description: xml.description
-			// mosExternalMetaData?: Array<IMOSExternalMetaData>
 		}
+		if (xml.hasOwnProperty('mosExternalMetadata')) mosObj.MosExternalMetaData = xml2MetaData(xml.mosExternalMetadata)
 		return mosObj
 	}
 	export function mosObj2xml (obj: IMOSObject): XMLBuilder.XMLElementOrXMLNode {
@@ -392,7 +359,12 @@ export namespace Parser {
 		if (obj.ChangedBy) xml.ele('changedBy', {}, 	obj.ChangedBy)
 		if (obj.Changed) xml.ele('changed', {}, 		obj.Changed)
 		if (obj.Description) xml.ele('description', {}, 	obj.Description)
-
+		if (obj.MosExternalMetaData) {
+			obj.MosExternalMetaData.forEach((md) => {
+				let xmlMetaData = metaData2xml(md)
+				xml.importDocument(xmlMetaData)
+			})
+		}
 		// Todo: metadata:
 		return xml
 	}

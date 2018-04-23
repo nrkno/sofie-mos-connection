@@ -2,7 +2,7 @@ import { IMOSROStory, IMOSItem, IMOSRunningOrder, IMOSObjectPath, IMOSObjectPath
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
-import { IMOSScope } from '../dataTypes/mosExternalMetaData'
+import { IMOSScope, IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 
 const literal = <T>(o: T) => o
 
@@ -596,11 +596,26 @@ let xmlApiData = {
 			})
 		],
 		CreatedBy: new MosString128('Jonas'),
-		Created: new MosTime('2001-01-01')
+		Created: new MosTime('2001-01-01'),
 		// ChangedBy?: new MosString128 // if not present, defaults to CreatedBy(),
 		// Changed?: MosTime // if not present, defaults to Created
 		// Description?: string
 		// mosExternalMetaData?: Array<IMOSExternalMetaData>
+		MosExternalMetaData: [
+			literal<IMOSExternalMetaData>({
+				MosScope: IMOSScope.STORY,
+				MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>',
+				MosPayload: {
+					Owner: 'SHOLMES',
+					ModTime: 20010308142001,
+					mediaTime: 0,
+					TextTime: 278,
+					ModBy: 'LJOHNSTON',
+					Approved: 0,
+					Creator: 'SHOLMES'
+				}
+			})
+		]
 	}),
 	'mosObj2': literal<IMOSObject>({
 		ID: new MosString128('M0003523'),
@@ -705,8 +720,22 @@ let xmlApiData = {
 			Created: new MosTime('2009-11-01T15:19:01'),
 			ChangedBy: new MosString128('Chris'),
 			Changed: new MosTime('2009-11-01T15:21:15'),
-			Description: 'VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.'
-			// mosExternalMetaData?: Array<IMOSExternalMetaData>
+			Description: 'VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.',
+			MosExternalMetaData: [
+				literal<IMOSExternalMetaData>({
+					MosScope: IMOSScope.STORY,
+					MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+					MosPayload: {
+						Owner: 'SHOLMES',
+						ModTime: 20010308142001,
+						mediaTime: 0,
+						TextTime: 278,
+						ModBy: 'LJOHNSTON',
+						Approved: 0,
+						Creator: 'SHOLMES'
+					}
+				})
+			]
 		})
 	],
 
@@ -742,10 +771,23 @@ let xmlApiData = {
 						// EditorialStart?: MosTime
 						EditorialDuration: 645,
 						UserTimingDuration: 310,
-						Trigger: 'CHAINED' // TODO: Johan frågar
+						Trigger: 'CHAINED', // TODO: Johan frågar
 						// MacroIn?: new MosString128(),
 						// MacroOut?: new MosString128(),
 						// MosExternalMetaData?: Array<IMOSExternalMetaData>
+						MosExternalMetaData: [
+							literal<IMOSExternalMetaData>({
+								MosScope: IMOSScope.PLAYLIST,
+								MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+								MosPayload: {
+									Owner: 'SHOLMES',
+									transitionMode: 2,
+									transitionPoint: 463,
+									source: 'a',
+									destination: 'b'
+								}
+							})
+						]
 					})
 				]
 			}),
@@ -764,11 +806,23 @@ let xmlApiData = {
 						// Channel?: new MosString128(),
 						EditorialStart: 55,
 						EditorialDuration: 310,
-						UserTimingDuration: 200
+						UserTimingDuration: 200,
 						// Trigger: 'CHAINED' // TODO: Johan frågar
 						// MacroIn?: new MosString128(),
 						// MacroOut?: new MosString128(),
-						// MosExternalMetaData?: Array<IMOSExternalMetaData>
+						MosExternalMetaData: [
+							literal<IMOSExternalMetaData>({
+								MosScope: IMOSScope.PLAYLIST,
+								MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+								MosPayload: {
+								  Owner: 'SHOLMES',
+								  transitionMode: 2,
+								  transitionPoint: 463,
+								  source: 'a',
+								  destination: 'b'
+								}
+							})
+						]
 					})
 				]
 			})
@@ -888,10 +942,22 @@ let xmlApiData = {
 						// EditorialStart?: MosTime
 						EditorialDuration: 645,
 						UserTimingDuration: 310,
-						Trigger: 'CHAINED' // TODO: Johan frågar
+						Trigger: 'CHAINED', // TODO: Johan frågar
 						// MacroIn?: new MosString128(),
 						// MacroOut?: new MosString128(),
-						// MosExternalMetaData?: Array<IMOSExternalMetaData>
+						MosExternalMetaData: [
+							literal<IMOSExternalMetaData>({
+								MosScope: IMOSScope.PLAYLIST,
+								MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+								MosPayload: {
+									Owner: 'SHOLMES',
+									transitionMode: 2,
+									transitionPoint: 463,
+									source: 'a',
+									destination: 'b'
+								}
+							})
+						]
 					})
 				]
 			}),
@@ -910,11 +976,23 @@ let xmlApiData = {
 						// Channel?: new MosString128(),
 						EditorialStart: 55,
 						EditorialDuration: 310,
-						UserTimingDuration: 310
+						UserTimingDuration: 310,
 						// Trigger: 'CHAINED' // TODO: Johan frågar
 						// MacroIn?: new MosString128(),
 						// MacroOut?: new MosString128(),
-						// MosExternalMetaData?: Array<IMOSExternalMetaData>
+						MosExternalMetaData: [
+							literal<IMOSExternalMetaData>({
+								MosScope: IMOSScope.PLAYLIST,
+								MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+								MosPayload: {
+									Owner: 'SHOLMES',
+									transitionMode: 2,
+									transitionPoint: 463,
+									source: 'a',
+									destination: 'b'
+								}
+							})
+						]
 					})
 				]
 			})

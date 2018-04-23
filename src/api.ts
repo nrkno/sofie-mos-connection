@@ -275,7 +275,7 @@ export interface IMOSObject {
 	ChangedBy?: MosString128 // if not present, defaults to CreatedBy
 	Changed?: MosTime // if not present, defaults to Created
 	Description?: any // xml json
-	mosExternalMetaData?: Array<IMOSExternalMetaData>
+	MosExternalMetaData?: Array<IMOSExternalMetaData>
 }
 
 export enum IMOSObjectType {
