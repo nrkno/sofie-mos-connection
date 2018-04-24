@@ -15,11 +15,11 @@ let mos = new MosConnection(new ConnectionConfig({
 }))
 
 mos.onConnection((dev: MosDevice) => {
-	// console.log('new mosDevic!')
+	console.log('new mosDevice: ', dev.ID.toString())
 
 	if (dev.hasConnection) {
 		dev.getMachineInfo().then((lm) => {
-			console.log('Machineinfo', lm)
+			// console.log('Machineinfo', lm)
 		})
 	}
 
@@ -81,10 +81,9 @@ mos.onConnection((dev: MosDevice) => {
 
 	dev.onROInsertStories((Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> => {
 		return new Promise((resolve, reject) => {
-			console.log('onROInsertStories', {
-				ID: Action.StoryID,
-				Status: 'OK',
-				Stories: Stories
+			console.log('onROInsertStories')
+			Stories.forEach((story) => {
+				console.log(story)
 			})
 			resolve({
 				ID: Action.StoryID,
