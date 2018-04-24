@@ -4,7 +4,6 @@ import { MosSocketServer } from './connection/mosSocketServer'
 import {
 	IMosConnection,
 	IMOSDeviceConnectionOptions,
-	IMOSDevice,
 	IMOSAckStatus
 } from './api'
 import { MosDevice } from './MosDevice'
@@ -34,7 +33,7 @@ export class MosConnection implements IMosConnection {
 
 	private _isListening: Promise<boolean[]>
 
-	private _onconnection: (mosDevice: IMOSDevice) => void
+	private _onconnection: (mosDevice: MosDevice) => void
 
 	/** */
 	constructor (configOptions: IConnectionConfig) {
@@ -89,17 +88,19 @@ export class MosConnection implements IMosConnection {
 				connectionOptions.primary.id,
 				(connectionOptions.secondary ? connectionOptions.secondary.id : null),
 				primary, secondary)
+
 			resolve(mosDevice)
 		})
 	}
-	onConnection (cb: (mosDevice: IMOSDevice) => void) {
+	onConnection (cb: (mosDevice: MosDevice) => void) {
 		this._onconnection = cb
 	}
 	registerMosDevice (
 		myMosID: string,
 		theirMosId0: string,
 		theirMosId1: string | null,
-		primary: NCSServerConnection | null, secondary: NCSServerConnection | null): MosDevice {
+		primary: NCSServerConnection | null, secondary: NCSServerConnection | null
+	): MosDevice {
 		let id0 = myMosID + '_' + theirMosId0
 		let id1 = (theirMosId1 ? myMosID + '_' + theirMosId1 : null)
 		let mosDevice = new MosDevice(id0, id1, this._conf, primary, secondary)
@@ -236,6 +237,7 @@ export class MosConnection implements IMosConnection {
 			let lastMatch = '</mos>\r\n' // </mos>
 			let last = str.substr(-lastMatch.length)
 
+			// console.log('--------------------------------------------------------')
 			// console.log(str)
 			// Data ready to be parsed
 			if (first === firstMatch && last === lastMatch) {

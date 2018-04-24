@@ -19,7 +19,8 @@ import { IMOSConnectionStatus,
 	IMOSROStory,
 	IMOSItem,
 	IMOSItemAction,
-	IMOSROAction
+	IMOSROAction,
+	IMOSROFullStory
 } from '../api'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosString128 } from '../dataTypes/mosString128'
@@ -910,6 +911,80 @@ describe('MosDevice: Profile 2', () => {
 		expect(onROSwapItems.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_swap_items_Action)
 		expect(onROSwapItems.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_swap_items_ItemId0)
 		expect(onROSwapItems.mock.calls[0][2]).toEqual(xmlApiData.roElementAction_swap_items_ItemId1)
+		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+	})
+})
+
+
+
+describe('MosDevice: Profile 4', () => {
+	let mosDevice: MosDevice
+	let socketMockLower: SocketMock
+	let socketMockUpper: SocketMock
+	let socketMockQuery: SocketMock
+
+	let serverMockLower: ServerMock
+	let serverMockUpper: ServerMock
+	let serverMockQuery: ServerMock
+
+	let serverSocketMockLower: SocketMock
+	let serverSocketMockUpper: SocketMock
+	let serverSocketMockQuery: SocketMock
+
+	let onROStory
+
+	beforeAll(async () => {
+		SocketMock.mockClear()
+		ServerMock.mockClear()
+
+		mosDevice = await getMosDevice()
+
+		let roAckReply = () => {
+			let ack: IMOSROAck = {
+				ID: new MosString128('runningOrderId'),
+				Status: new MosString128('OK'),
+				Stories: []
+			}
+			return Promise.resolve(ack)
+		}
+		// Profile 2:
+		onROStory = jest.fn(roAckReply)
+
+		mosDevice.onROStory ((story: IMOSROFullStory): Promise<IMOSROAck> => {
+			return onROStory(story)
+		})
+		let b = doBeforeAll()
+		socketMockLower = b.socketMockLower
+		socketMockUpper = b.socketMockUpper
+		socketMockQuery = b.socketMockQuery
+		serverMockLower = b.serverMockLower
+		serverMockUpper = b.serverMockUpper
+		serverMockQuery = b.serverMockQuery
+		serverSocketMockLower = b.serverSocketMockLower
+		serverSocketMockUpper = b.serverSocketMockUpper
+		serverSocketMockQuery = b.serverSocketMockQuery
+		// expect(SocketMock.instances[0].connect).toHaveBeenCalledTimes(1)
+	})
+	beforeEach(() => {
+
+		onROStory.mockClear()
+
+		serverSocketMockLower.mockClear()
+		serverSocketMockUpper.mockClear()
+		serverSocketMockQuery.mockClear()
+
+	})
+	test('init', async () => {
+		expect(mosDevice).toBeTruthy()
+		expect(socketMockLower).toBeTruthy()
+		expect(socketMockUpper).toBeTruthy()
+	})
+	test.only('onROStory', async () => {
+		// Fake incoming message on socket:
+
+		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySend)
+		expect(onROStory).toHaveBeenCalledTimes(1)
+		expect(onROStory.mock.calls[0][0]).toMatchObject(xmlApiData.roStorySend)
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
 })

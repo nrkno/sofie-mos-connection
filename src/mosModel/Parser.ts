@@ -9,9 +9,10 @@ import {
 	IMOSROAckStory,
 	IMOSROAckItem,
 	IMOSROAckObject,
-	IMOSObject
+	IMOSObject,
+	IMOSROFullStory
 } from '../api'
-import { IMOSExternalMetaData, MosExternalMetaData, IMOSScope } from '../dataTypes/mosExternalMetaData'
+import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
@@ -63,6 +64,7 @@ export namespace Parser {
 	// 	return XMLBuilder.create('ro')
 	// }
 	export function xml2Stories (xml: Array<any>): Array<IMOSROStory> {
+		if (!xml) return []
 		let xmlStories: Array<any> = xml
 		if (!Array.isArray(xmlStories)) xmlStories = [xmlStories]
 
@@ -70,14 +72,29 @@ export namespace Parser {
 			return xml2Story(xmlStory)
 		})
 	}
+	export function xml2FullStory (xml: any): IMOSROFullStory {
+		let story: IMOSROFullStory = Object.assign({
+			RunningOrderId: new MosString128(xml.roID),
+			Body: xml2Body(xml.storyBody),
+		}, xml2Story(xml));
+
+		return story
+	}
 	export function xml2Story (xml: any): IMOSROStory {
 		let story: IMOSROStory = {
 			ID: new MosString128(xml.storyID),
 			Slug: new MosString128(xml.storySlug),
-			Items: xml2Items(xml.item)
+			Items: []
 			// TODO: Add & test Number, ObjectID, MOSID, mosAbstract, Paths
 			// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut, MosExternalMetaData
 			// MosExternalMetaData: xml2MetaData(xml.mosExternalMetadata)
+		}
+		if (xml.hasOwnProperty('item')) story.Items = story.Items.concat(xml2Items(xml.item))
+		if (xml.hasOwnProperty('storyBody') && xml.storyBody) {
+			// Note: the <storyBody> is sent in roStorySend
+			if (xml.storyBody.hasOwnProperty('storyItem')) {
+				story.Items = story.Items.concat(xml2Items(xml.storyBody.storyItem))
+			}
 		}
 
 		if (xml.hasOwnProperty('mosExternalMetadata')) story.MosExternalMetaData = xml2MetaData(xml.mosExternalMetadata)
@@ -107,6 +124,7 @@ export namespace Parser {
 		return xmlStory
 	}
 	export function xml2Items (xml: Array<any>): Array<IMOSItem> {
+		if (!xml) return []
 		let xmlItems: Array<any> = xml
 		if (!Array.isArray(xmlItems)) xmlItems = [xmlItems]
 
@@ -133,9 +151,15 @@ export namespace Parser {
 		if (xml.hasOwnProperty('itemTrigger')) item.Trigger = xml.itemTrigger
 		if (xml.hasOwnProperty('mosExternalMetadata')) item.MosExternalMetaData = xml2MetaData(xml.mosExternalMetadata)
 
+		if (xml.hasOwnProperty('mosObj')) {
+			// Note: the <mosObj> is sent in roStorySend
+			item.MosObjects = xml2MosObjs(xml.mosObj)
+		}
+
 		return item
 	}
 	export function xml2ObjPaths (xml: any): Array<IMOSObjectPath> {
+		if (!xml) return []
 		let paths: Array<IMOSObjectPath> = []
 
 		let xmlPaths: Array<{key: string, o: any}> = []
@@ -305,6 +329,7 @@ export namespace Parser {
 		return roAck
 	}
 	export function xml2MosObjs (xml: any ): Array<IMOSObject> {
+		if (!xml) return []
 		let xmlObjs: Array<any> = []
 		xmlObjs = xml
 		if (!Array.isArray(xmlObjs)) xmlObjs = [xmlObjs]
@@ -367,5 +392,14 @@ export namespace Parser {
 		}
 		// Todo: metadata:
 		return xml
+	}
+	export function xml2Body (xml: any): any {
+		let body = {}
+		console.log('xml2Body', xml)
+		let elementKeys = Object.keys(xml)
+		elementKeys.forEach((key) => {
+			// let elements
+		})
+		return body
 	}
 }

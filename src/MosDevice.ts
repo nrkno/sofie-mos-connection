@@ -107,7 +107,7 @@ export class MosDevice implements IMOSDevice {
 	private _callbackOnROSwapItems: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
 
 	// Profile 4
-	private _callbackOnROStory: (story: IMOSROFullStory) => Promise<any>
+	private _callbackOnROStory: (story: IMOSROFullStory) => Promise<IMOSROAck>
 
 	constructor (
 		idPrimary: string,
@@ -175,7 +175,6 @@ export class MosDevice implements IMOSDevice {
 
 	routeData (data: any): Promise<any> {
 		if (data && data.hasOwnProperty('mos')) data = data['mos']
-
 		return new Promise((resolve, reject) => {
 			if (this._debug) {
 				console.log('parsedData', data)
@@ -347,21 +346,6 @@ export class MosDevice implements IMOSDevice {
 					ack.Stories = resp.Stories
 					resolve(ack)
 				}).catch(reject)
-
-			} else if (data.roStorySend && typeof this._callbackOnROInsertStories === 'function') {
-				let action: IMOSStoryAction = {
-					RunningOrderID: data.roStorySend.roID,
-					StoryID: data.roStorySend.storyID
-				}
-				let stories: Array<IMOSROStory> = Parser.xml2Stories(data.roStorySend)
-				this._callbackOnROInsertStories(action, stories).then((resp: IMOSROAck) => {
-					let ack = new ROAck()
-					ack.ID = resp.ID
-					ack.Status = resp.Status
-					ack.Stories = resp.Stories
-					resolve(ack)
-				}).catch(reject)
-
 			} else if (
 				data.roElementAction &&
 				data.roElementAction.operation === 'INSERT' &&
@@ -545,7 +529,15 @@ export class MosDevice implements IMOSDevice {
 				}).catch(reject)
 
 			// Profile 4
-			// TODO: private _callbackOnROStory: (story: IMOSROFullStory) => Promise<any>
+			} else if (data.roStorySend && typeof this._callbackOnROStory === 'function') {
+				let story: IMOSROFullStory = Parser.xml2FullStory(data.roStorySend)
+				this._callbackOnROStory(story).then((resp: IMOSROAck) => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
 
 			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
@@ -820,7 +812,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	/* Profile 4 */
-	onROStory (cb: (story: IMOSROFullStory) => Promise<any>) {
+	onROStory (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) {
 		this._callbackOnROStory = cb
 	}
 }

@@ -4,6 +4,7 @@ import { MosDuration } from './dataTypes/mosDuration'
 import { MosString128 } from './dataTypes/mosString128'
 import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
 import { IMOSListMachInfo } from './mosModel/0_listMachInfo'
+import { MosDevice } from './MosDevice'
 
 // import {IMOSListMachInfo as IMOSP0ListMachineInfo, IMOSListMachInfo} from "./mosModel/0_listMachInfo"
 // import {HeartBeat} from './mosModel/0_heartBeat';
@@ -56,8 +57,8 @@ export interface IMosConnection {
 
 	dispose: () => Promise<void>
 	/*  */
-	connect: (connectionOptions: IMOSDeviceConnectionOptions) => Promise<IMOSDevice> // resolved when connection has been made (before .onConnection is fired)
-	onConnection: (cb: (mosDevice: IMOSDevice) => void) => void
+	connect: (connectionOptions: IMOSDeviceConnectionOptions) => Promise<MosDevice> // resolved when connection has been made (before .onConnection is fired)
+	onConnection: (cb: (mosDevice: MosDevice) => void) => void
 }
 
 export interface IMOSDevice {
@@ -110,7 +111,7 @@ export interface IMOSDevice {
 	/* Profile 3 */
 	/* Profile 4 */
 	// roStorySend:
-	onROStory: (cb: (story: IMOSROFullStory) => Promise<any>) => void
+	onROStory: (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) => void
 }
 export {IMOSListMachInfo}
 export interface IMOSROAction {
@@ -192,6 +193,7 @@ export interface IMOSItem {
 	MacroIn?: MosString128
 	MacroOut?: MosString128
 	MosExternalMetaData?: Array<IMOSExternalMetaData>
+	MosObjects?: Array<IMOSObject>
 }
 
 export type MosDuration = MosDuration // HH:MM:SS
