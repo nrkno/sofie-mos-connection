@@ -10,7 +10,8 @@ import {
 	IMOSROAckItem,
 	IMOSROAckObject,
 	IMOSObject,
-	IMOSROFullStory
+	IMOSROFullStory,
+	IMOSROFullStoryBodyItem
 } from '../api'
 import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
@@ -18,6 +19,7 @@ import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
 import * as parser from 'xml2json'
 import { ROAck } from '../mosModel/ROAck'
+import { Z_STREAM_END } from 'zlib';
 
 function isEmpty (obj: any) {
 	if (typeof obj === 'object') {
@@ -75,8 +77,8 @@ export namespace Parser {
 	export function xml2FullStory (xml: any): IMOSROFullStory {
 		let story: IMOSROFullStory = Object.assign({
 			RunningOrderId: new MosString128(xml.roID),
-			Body: xml2Body(xml.storyBody),
-		}, xml2Story(xml));
+			Body: xml2Body(xml.storyBody)
+		}, xml2Story(xml))
 
 		return story
 	}
@@ -393,13 +395,28 @@ export namespace Parser {
 		// Todo: metadata:
 		return xml
 	}
-	export function xml2Body (xml: any): any {
-		let body = {}
-		console.log('xml2Body', xml)
+	export function xml2Body (xml: any): Array<IMOSROFullStoryBodyItem> {
+		let body: Array<IMOSROFullStoryBodyItem> = []
+
+		/*
+		// Not able to implement this currently, need to change {arrayNotation: true} in xml2json option
 		let elementKeys = Object.keys(xml)
-		elementKeys.forEach((key) => {
+		elementKeys.forEach((key: string) => {
 			// let elements
+			let d = xml[key]
+
+			if (!Array.isArray(d)) d = [d]
+
+			d.forEach((el: any) => {
+				let bodyItem: IMOSROFullStoryBodyItem = {
+					Type: key,
+					Content: el
+				}
+				body.push(bodyItem)
+			})
 		})
+		console.log('xml2Body', body)
+		*/
 		return body
 	}
 }

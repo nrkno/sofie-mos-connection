@@ -1,4 +1,4 @@
-import { IMOSROStory, IMOSItem, IMOSRunningOrder, IMOSObjectPath, IMOSObjectPathType, IMOSObject, IMOSObjectStatus, IMOSObjectAirStatus, IMOSObjectType, IMOSRunningOrderBase, IMOSRunningOrderStatus, IMOSItemStatus, IMOSStoryStatus, IMOSROReadyToAir, IMOSStoryAction, IMOSItemAction, IMOSROAction } from '../api'
+import { IMOSROStory, IMOSItem, IMOSRunningOrder, IMOSObjectPath, IMOSObjectPathType, IMOSObject, IMOSObjectStatus, IMOSObjectAirStatus, IMOSObjectType, IMOSRunningOrderBase, IMOSRunningOrderStatus, IMOSItemStatus, IMOSStoryStatus, IMOSROReadyToAir, IMOSStoryAction, IMOSItemAction, IMOSROAction, IMOSROFullStory, IMOSROFullStoryBodyItem } from '../api'
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
@@ -1269,119 +1269,66 @@ let xmlApiData = {
 	'roElementAction_swap_items_ItemId1': new MosString128('24'),
 
 	'roStorySend': literal<IMOSROFullStory>({
-		ID: new MosString128('96857485'),
-		Slug: new MosString128('5PM RUNDOWN'),
+		ID: new MosString128('2012R2ENPS8VM;P_ENPSNEWS\\W\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB'),
+		RunningOrderId: new MosString128('2012R2ENPS8VM;P_ENPSNEWS\\W;696297DF-1568-4B36-B43B3B79514B40D4'),
+		Slug: new MosString128('KRITIKK ETTER BRANN KONGSBERG;SAK'),
 		// DefaultChannel?: MosString128,
-		EditorialStart: new MosTime('2009-04-17T17:02:00'),
-		EditorialDuration: new MosDuration('00:58:25'), // @todo: change this into a real Duration
+		// EditorialStart: new MosTime('2009-04-17T17:02:00'),
+		// EditorialDuration: new MosDuration('00:58:25'), // @todo: change this into a real Duration
 		// Trigger?: any // TODO: Johan frågar vad denna gör,
 		// MacroIn?: MosString128,
 		// MacroOut?: MosString128,
 		// MosExternalMetaData?: Array<IMOSExternalMetaData>,
-		Stories: [
-			literal<IMOSROStory>({
-				ID: new MosString128('5983A501:0049B924:8390EF2B'),
-				Slug: new MosString128('COLSTAT MURDER'),
-				Number: new MosString128('A5'),
-				// MosExternalMetaData: Array<IMOSExternalMetaData>
-				Items: [
-					literal<IMOSItem>({
-						ID: new MosString128('0'),
-						Slug: new MosString128('COLSTAT MURDER:VO'),
-						ObjectID: new MosString128('M000224'),
-						MOSID: 'testmos.enps.com',
-						// mosAbstract?: '',
-						Paths: [
-							literal<IMOSObjectPath>({Type: IMOSObjectPathType.PATH, Description: 'MPEG2 Video', Target: '\\server\media\clip392028cd2320s0d.mxf'}),
-							literal<IMOSObjectPath>({Type: IMOSObjectPathType.PROXY_PATH, Description: 'WM9 750Kbps', Target: 'http://server/proxy/clipe.wmv'}),
-							literal<IMOSObjectPath>({Type: IMOSObjectPathType.METADATA_PATH, Description: 'MOS Object', Target: 'http://server/proxy/clipe.xml'})
-						],
-						// Channel?: new MosString128(),
-						// EditorialStart?: MosTime
-						EditorialDuration: 645,
-						UserTimingDuration: 310,
-						Trigger: 'CHAINED', // TODO: Johan frågar
-						// MacroIn?: new MosString128(),
-						// MacroOut?: new MosString128(),
-						// MosExternalMetaData?: Array<IMOSExternalMetaData>
-						MosExternalMetaData: [
-							literal<IMOSExternalMetaData>({
-								MosScope: IMOSScope.PLAYLIST,
-								MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
-								MosPayload: {
-									Owner: 'SHOLMES',
-									transitionMode: 2,
-									transitionPoint: 463,
-									source: 'a',
-									destination: 'b'
+		Body: []
+		/*Body: [
+			// literal<IMOSROFullStoryBodyItem>({
+			// 	Type: 'p',
+			// 	Content: ' '
+			// }),
+			literal<IMOSROFullStoryBodyItem>({
+				Type: 'storyItem',
+				Content: literal<IMOSItem>({
+					ID: new MosString128('2'),
+					Slug: new MosString128('M: '),
+					ObjectID: new MosString128('N11580_1412594672'),
+					MOSID: 'METADATA.NRK.MOS',
+					mosAbstract: 'METADATA',
+					// Paths?: Array<IMOSObjectPath>,
+					// Channel?: new MosString128(''),
+					// EditorialStart?: number,
+					// EditorialDuration?: number,
+					// UserTimingDuration?: number,
+					// Trigger?: any // TODO: Johan frågar
+					// MacroIn?: new MosString128(''),
+					// MacroOut?: new MosString128(''),
+					MosExternalMetaData: [literal<IMOSExternalMetaData>({
+						MosScope: IMOSScope.PLAYLIST,
+						MosSchema: 'http://mosA4.com/mos/supported_schemas/MOSAXML2.08',
+						MosPayload: {
+							nrk: {
+								type: 'video',
+								changedBy: 'N11580',
+								changetime: '2014-10-06T13:24:32 +02:00',
+								c: {
+									title: '',
+									description: '',
+									hbbtv: {
+										link: ''
+									},
+									rights: {
+										notes: '',
+										owner: 'NRK',
+										c: 'Green'
+									}
 								}
-							})
-						]
-					})
-				]
+							}
+						}
+					})]
+					// MosObjects?: Array<IMOSObject>
+				})
 			})
-		]
-	}),
-
-	<roStorySend> \
-   <roID>2012R2ENPS8VM;P_ENPSNEWS\\W;696297DF-1568-4B36-B43B3B79514B40D4</roID> \
-   <storyID>2012R2ENPS8VM;P_ENPSNEWS\\W\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB</storyID> \
-   <storySlug>KRITIKK ETTER BRANN KONGSBERG;SAK</storySlug> \
-   <storyNum></storyNum> \
-   <storyBody><p> </p><storyItem><itemID>2</itemID><objID>N11580_1412594672</objID><mosID>METADATA.NRK.MOS</mosID><mosAbstract>METADATA</mosAbstract><objSlug>M: </objSlug><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://mosA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema><mosPayload><nrk type="video" changedBy="N11580" changetime="2014-10-06T13:24:32 +02:00"><title></title><description></description><hbbtv link=""></hbbtv><rights notes="" owner="NRK">Green</rights></nrk></mosPayload></mosExternalMetadata><itemSlug>SAK BUSKERUD;SAK-14</itemSlug></storyItem><p> </p> \
-   <p> </p> \
-   <p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039287?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.n \
-   -------------------------------------------------------- \
-   rk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>3</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039288_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039288?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039288_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>4</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039289_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039289?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039289_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>5</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039290_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039290?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039290_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>6</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 24 foto/red | 1:Foto og redigering: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039291_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>24 foto/red 1:Foto og redigering:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039291?version=1</objID><objSlug>24 foto/red 1:Foto og redigering:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039291_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000024.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>7</itemID></storyItem><p> </p> \
-   <p> </p><storyItem><mosID>mosart.morten.mos</mosID><mosAbstract>TIDSMARKØR IKKE RØR</mosAbstract><objID>STORYSTATUS</objID><objSlug>Story status</objSlug><itemID>8</itemID><itemSlug>SAK BUSKERUD;SAK-20</itemSlug></storyItem><p> </p></storyBody> \
-   <mosExternalMetadata> \
-   <mosScope>PLAYLIST</mosScope> \
-   <mosSchema>http://2012R2ENPS8VM:10505/schema/enps.dtd</mosSchema> \
-   <mosPayload> \
-   <Approved>0</Approved> \
-   <Creator>LINUXENPS</Creator> \
-   <MediaTime>0</MediaTime> \
-   <ModBy>LINUXENPS</ModBy> \
-   <ModTime>20180227T004205Z</ModTime> \
-   <MOSItemDurations> \
-   0 \
-   0 \
-   0 \
-   0 \
-   0 \
-   </MOSItemDurations> \
-   <MOSItemEdDurations> \
-    \
-    \
-    \
-    \
-    \
-   </MOSItemEdDurations> \
-   <MOSObjSlugs>M: \
-   01 ett navn 1:  2: \
-   01 ett navn 1:  2: \
-   01 ett navn 1:  2: \
-   01 ett navn 1:  2: \
-   24 foto/red 1:Foto og redigering:  2: \
-   Story status</MOSObjSlugs> \
-   <MOSSlugs>SAK BUSKERUD;SAK-14 \
-   01 ett navn 1:  2: \
-   01 ett navn 1:  2: \
-   01 ett navn 1:  2: \
-   01 ett navn 1:  2: \
-   24 foto/red 1:Foto og redigering:  2: \
-   SAK BUSKERUD;SAK-20</MOSSlugs> \
-   <Owner>LINUXENPS</Owner> \
-   <pubApproved>0</pubApproved> \
-   <SourceMediaTime>0</SourceMediaTime> \
-   <SourceTextTime>0</SourceTextTime> \
-   <StoryProducer>DKTE</StoryProducer> \
-   <TextTime>0</TextTime> \
-   <mosartType>FULL</mosartType> \
-   <ENPSItemType>3</ENPSItemType> \
-   </mosPayload> \
-   </mosExternalMetadata> \
-   </roStorySend>'
+		]*/
+	})
 }
 
 export { xmlData, xmlApiData }

@@ -915,8 +915,6 @@ describe('MosDevice: Profile 2', () => {
 	})
 })
 
-
-
 describe('MosDevice: Profile 4', () => {
 	let mosDevice: MosDevice
 	let socketMockLower: SocketMock
@@ -979,7 +977,7 @@ describe('MosDevice: Profile 4', () => {
 		expect(socketMockLower).toBeTruthy()
 		expect(socketMockUpper).toBeTruthy()
 	})
-	test.only('onROStory', async () => {
+	test('onROStory', async () => {
 		// Fake incoming message on socket:
 
 		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySend)
