@@ -1,4 +1,4 @@
-import { Server, Socket, createServer } from 'net'
+import { Server, Socket } from 'net'
 import { EventEmitter } from 'events'
 import { IncomingConnectionType, SocketServerEvent } from './socketConnection'
 
@@ -7,51 +7,20 @@ export class MosSocketServer extends EventEmitter {
 	private _port: number
 	private _portDescription: IncomingConnectionType
 	private _socketServer: Server
+	private _debug: boolean = false
 
 	/** */
-	constructor (port: number, description: IncomingConnectionType) {
+	constructor (port: number, description: IncomingConnectionType, debug?: boolean) {
 		super()
 		this._port = port
 		this._portDescription = description
+		if (debug) this._debug = debug
 
-		this._socketServer = createServer()
+		this._socketServer = new Server()
 		this._socketServer.on('connection', (socket: Socket) => this._onClientConnection(socket))
 		this._socketServer.on('close', () => this._onServerClose())
 		this._socketServer.on('error', (error) => this._onServerError(error))
 	}
-
-	/** */
-	listen (): Promise<boolean> {
-		return	new Promise((resolve, reject) => {
-
-			// already listening
-			if (this._socketServer.listening) {
-				resolve(true)
-				return
-			}
-
-			// handles listening-listeners and cleans up
-			let handleListeningStatus = (e?: Error) => {
-				this._socketServer.removeListener('listening', handleListeningStatus)
-				this._socketServer.removeListener('close', handleListeningStatus)
-				this._socketServer.removeListener('error', handleListeningStatus)
-				if (this._socketServer.listening) {
-					resolve(true)
-				} else {
-					reject(e || false)
-				}
-			}
-
-			// listens and handles error and events
-			this._socketServer.once('listening', handleListeningStatus)
-			this._socketServer.once('close', handleListeningStatus)
-			this._socketServer.once('error', handleListeningStatus)
-
-			this._socketServer.listen(this._port)
-		})
-	}
-
-	/** */
 	dispose (sockets: Socket[]): Promise<void > {
 		return	new Promise((resolveDispose) => {
 			let closePromises: Promise<void>[] = []
@@ -79,6 +48,46 @@ export class MosSocketServer extends EventEmitter {
 	}
 
 	/** */
+	listen (): Promise<boolean> {
+		if (this._debug) console.log('listen', this._portDescription, this._port)
+		return new Promise((resolve, reject) => {
+			if (this._debug) console.log('inside promise', this._portDescription, this._port)
+
+			// already listening
+			if (this._socketServer.listening) {
+				if (this._debug) console.log('already listening', this._portDescription, this._port)
+				resolve(true)
+				return
+			}
+
+			// handles listening-listeners and cleans up
+			let handleListeningStatus = (e?: Error) => {
+				if (this._debug) console.log('handleListeningStatus')
+				this._socketServer.removeListener('listening', handleListeningStatus)
+				this._socketServer.removeListener('close', handleListeningStatus)
+				this._socketServer.removeListener('error', handleListeningStatus)
+				if (this._socketServer.listening) {
+					if (this._debug) console.log('listening', this._portDescription, this._port)
+					resolve(true)
+				} else {
+					if (this._debug) console.log('not listening', this._portDescription, this._port)
+					reject(e || false)
+				}
+			}
+
+			// listens and handles error and events
+			this._socketServer.on('listening', () => {
+				if (this._debug) console.log('listening!!')
+			})
+			this._socketServer.once('listening', handleListeningStatus)
+			this._socketServer.once('close', handleListeningStatus)
+			this._socketServer.once('error', handleListeningStatus)
+
+			this._socketServer.listen(this._port)
+		})
+	}
+
+	/** */
 	private _onClientConnection (socket: Socket) {
 		this.emit(SocketServerEvent.CLIENT_CONNECTED, {
 			socket: socket,
@@ -89,12 +98,12 @@ export class MosSocketServer extends EventEmitter {
 	/** */
 	private _onServerError (error: Error) {
 		// @todo: implement
-		console.log('Server error:', error)
+		if (this._debug) console.log('Server error:', error)
 	}
 
 	/** */
 	private _onServerClose () {
 		// @todo: implement
-		console.log(`Server closed: on port ${this._port}`)
+		if (this._debug) console.log(`Server closed: on port ${this._port}`)
 	}
 }

@@ -2,13 +2,13 @@ import { Socket } from 'net'
 
 /** */
 export enum SocketConnectionEvent {
-  // CONNECTED = 'eventsocketconnectionconnected',
-  // DISCONNECTED = 'eventsocketconnectiondisconnected',
-  // DISPOSED = 'eventsocketconnectiondisposed',
-  // TIMEOUT = 'eventsocketconnectiontimeout',
-  // ALIVE = 'eventsocketconnectionalive',
-  // REGISTER = 'eventsocketconnectionregister',
-  // UNREGISTER = 'eventsocketconnectionunregister'
+  CONNECTED = 'eventsocketconnectionconnected',
+  DISCONNECTED = 'eventsocketconnectiondisconnected',
+  DISPOSED = 'eventsocketconnectiondisposed',
+  TIMEOUT = 'eventsocketconnectiontimeout',
+  ALIVE = 'eventsocketconnectionalive',
+  REGISTER = 'eventsocketconnectionregister',
+  UNREGISTER = 'eventsocketconnectionunregister'
 }
 
 /** */
@@ -27,5 +27,6 @@ export type OutgoingConnectionType = 'lower' | 'upper'
 /** */
 export type SocketDescription = {
 	socket: Socket,
-	portDescription: ConnectionType
+	portDescription: ConnectionType,
+	chunks: string // temporary storage for chunks
 }

@@ -3,8 +3,8 @@ export class MosString128 {
 	private _str: string
 
 	/** */
-	constructor (str: string) {
-		this.string = str
+	constructor (str: any) {
+		this.string = '' + str + ''
 	}
 	/** */
 	toString (): string {
