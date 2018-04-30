@@ -233,31 +233,43 @@ export class MosSocketClient extends EventEmitter {
 	private _onData (data: Buffer ) {
 		this._client.emit(SocketConnectionEvent.ALIVE)
 		// data = Buffer.from(data, 'ucs2').toString()
-		let str: string = iconv.decode(data, 'utf16-be')
+		let messageString: string = iconv.decode(data, 'utf16-be')
 
-		if (this._debug) console.log(`${this._description} Received: ${str}`)
+		if (this._debug) console.log(`${this._description} Received: ${messageString}`)
 
 		try {
-			let parsedData: any = parser.toJson(str, {
+			let parsedData: any = parser.toJson(messageString, {
 				'object': true,
 				coerce: true,
 				trim: true
 			})
 
 			let messageId = parsedData.mos.messageID
-			let cb: CallBackFunction | undefined = this._queueCallback[messageId]
-			let msg = this._queueMessages[0]
-			if (msg.messageID.toString() !== (messageId + '')) {
-				console.log('Mos reply id diff: ' + messageId + ', ' + msg.messageID)
-			}
-			if (cb) {
-				cb(null, parsedData)
-				this._queueMessages.shift() // remove the first message
-				delete this._queueCallback[messageId]
+			if (messageId) {
+				let cb: CallBackFunction | undefined = this._queueCallback[messageId]
+				let msg = this._queueMessages[0]
+				if (msg.messageID.toString() !== (messageId + '')) {
+					console.log('Mos reply id diff: ' + messageId + ', ' + msg.messageID)
+					console.log(parsedData)
+				}
+				if (cb) {
+					cb(null, parsedData)
+					this._queueMessages.shift() // remove the first message
+					delete this._queueCallback[messageId]
+				}
+			} else {
+				// error message?
+				if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
+					console.log('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
+					this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
+				} else {
+					// unknown message..
+					this.emit('error', 'Unknown message: ' + messageString)
+				}
 			}
 
 		} catch (e) {
-			console.log('str', str)
+			console.log('messageString', messageString)
 			throw e
 		}
 
