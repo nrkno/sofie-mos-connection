@@ -812,6 +812,29 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	/* Profile 4 */
+	getAllRunningOrders (): Promise<Array<IMOSRunningOrderBase>> {
+		let message = new ROReqAll()
+		return new Promise((resolve, reject) => {
+			if (this._currentConnection) {
+				this._currentConnection.executeCommand(message).then((data) => {
+					if ((data.mos.roListAll || {}).ro) {
+						let xmlRos: Array<any> = data.mos.roListAll.ro
+						if (!Array.isArray(xmlRos)) xmlRos = [xmlRos]
+						let ros: Array<IMOSRunningOrderBase> = []
+						xmlRos.forEach((xmlRo) => {
+							ros.push(Parser.xml2ROBase(xmlRo))
+						})
+						resolve(ros)
+					} else {
+						console.log(data.mos)
+						reject('Unknown reply ')
+					}
+				})
+			} else {
+				reject('No Connection')
+			}
+		})
+	}
 	onROStory (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) {
 		this._callbackOnROStory = cb
 	}

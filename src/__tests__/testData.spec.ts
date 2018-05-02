@@ -622,7 +622,49 @@ let xmlData = {
    <ENPSItemType>3</ENPSItemType> \
    </mosPayload> \
    </mosExternalMetadata> \
-   </roStorySend>'
+   </roStorySend>',
+	'roListAll': '<roListAll>\
+      <ro>\
+   	 <roID>5PM</roID>\
+   	 <roSlug>5PM Rundown</roSlug>\
+   	 <roChannel></roChannel>\
+   	 <roEdStart>2009-07-11T17:00:00</roEdStart>\
+   	 <roEdDur>00:30:00</roEdDur>\
+   	 <roTrigger>MANUAL</roTrigger>\
+   	 <mosExternalMetadata>\
+   	   <mosScope>PLAYLIST</mosScope>\
+   	   <mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>\
+   	   <mosPayload>\
+   		  <Owner>SHOLMES</Owner>\
+   		  <mediaTime>0</mediaTime>\
+   		  <TextTime>278</TextTime>\
+   		  <ModBy>LJOHNSTON</ModBy>\
+   		  <Approved>0</Approved>\
+   		  <Creator>SHOLMES</Creator>\
+   	   </mosPayload>\
+   	</mosExternalMetadata>\
+      </ro>\
+      <ro>\
+   	 <roID>6PM</roID>\
+   	 <roSlug>6PM Rundown</roSlug>\
+   	 <roChannel></roChannel>\
+   	 <roEdStart>2009-07-09T18:00:00</roEdStart>\
+   	 <roEdDur>00:30:00</roEdDur>\
+   	 <roTrigger>MANUAL</roTrigger>\
+   	 <mosExternalMetadata>\
+   	   <mosScope>PLAYLIST</mosScope>\
+   	   <mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>\
+   	   <mosPayload>\
+   		  <Owner>SHOLMES</Owner>\
+   		  <mediaTime>0</mediaTime>\
+   		  <TextTime>350</TextTime>\
+   		  <ModBy>BSMITH</ModBy>\
+   		  <Approved>1</Approved>\
+   		  <Creator>SHOLMES</Creator>\
+   	   </mosPayload>\
+   	</mosExternalMetadata>\
+   	</ro>\
+    </roListAll>'
 }
 
 let xmlApiData = {
@@ -1328,7 +1370,57 @@ let xmlApiData = {
 				})
 			})
 		]*/
-	})
+	}),
+	'roListAll': [
+		literal<IMOSRunningOrderBase>({
+			ID: new MosString128('5PM'),
+			Slug: new MosString128('5PM Rundown'),
+			// DefaultChannel: new MosString128(''),
+			EditorialStart: new MosTime('2009-07-11T17:00:00'),
+			EditorialDuration: new MosDuration('00:30:00'),
+			Trigger: new MosString128('MANUAL'),
+			// MacroIn: new MosString128(''),
+			// MacroOut: new MosString128(''),
+			MosExternalMetaData: [
+				literal<IMOSExternalMetaData>({
+					MosScope: IMOSScope.PLAYLIST,
+					MosSchema: 'http://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
+					MosPayload: {
+						Owner: 'SHOLMES',
+						mediaTime: 0,
+						TextTime: 278,
+						ModBy: 'LJOHNSTON',
+						Approved: 0,
+						Creator: 'SHOLMES'
+					}
+				})
+			]
+		}),
+		literal<IMOSRunningOrderBase>({
+			ID: new MosString128('6PM'),
+			Slug: new MosString128('6PM Rundown'),
+			// DefaultChannel: new MosString128(''),
+			EditorialStart: new MosTime('2009-07-09T18:00:00'),
+			EditorialDuration: new MosDuration('00:30:00'),
+			Trigger: new MosString128('MANUAL'),
+			// MacroIn: new MosString128(''),
+			// MacroOut: new MosString128(''),
+			MosExternalMetaData: [
+				literal<IMOSExternalMetaData>({
+					MosScope: IMOSScope.PLAYLIST,
+					MosSchema: 'http://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
+					MosPayload: {
+						Owner: 'SHOLMES',
+						mediaTime: 0,
+						TextTime: 350,
+						ModBy: 'BSMITH',
+						Approved: 1,
+						Creator: 'SHOLMES'
+					}
+				})
+			]
+		})
+	]
 }
 
 export { xmlData, xmlApiData }
