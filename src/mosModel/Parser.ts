@@ -40,9 +40,13 @@ export namespace Parser {
 			Slug: new MosString128(xml.roSlug)
 		}
 
-		if (xml.hasOwnProperty('roEdStart')) ro.EditorialStart = new MosTime(xml.roEdStart)
-		if (xml.hasOwnProperty('roEdDur')) ro.EditorialDuration = new MosDuration(xml.roEdDur)
-		if (xml.hasOwnProperty('mosExternalMetadata')) {
+		if (xml.hasOwnProperty('roEdStart') && !isEmpty(xml.roEdStart)) 	ro.EditorialStart = new MosTime(xml.roEdStart)
+		if (xml.hasOwnProperty('roEdDur') 	&& !isEmpty(xml.roEdDur)) 		ro.EditorialDuration = new MosDuration(xml.roEdDur)
+		if (xml.hasOwnProperty('roChannel') && !isEmpty(xml.roChannel)) 	ro.DefaultChannel = new MosString128(xml.roChannel)
+		if (xml.hasOwnProperty('roTrigger') && !isEmpty(xml.roTrigger)) 	ro.Trigger = new MosString128(xml.roTrigger)
+		if (xml.hasOwnProperty('macroIn') 	&& !isEmpty(xml.macroIn)) 		ro.MacroIn = new MosString128(xml.macroIn)
+		if (xml.hasOwnProperty('macroOut') 	&& !isEmpty(xml.macroOut))		ro.MacroOut = new MosString128(xml.macroOut)
+		if (xml.hasOwnProperty('mosExternalMetadata') && !isEmpty(xml.mosExternalMetadata)) {
 			// TODO: Handle an array of mosExternalMetadata
 			let meta: IMOSExternalMetaData = {
 				MosSchema: xml.mosExternalMetadata.mosSchema,
@@ -51,7 +55,6 @@ export namespace Parser {
 			if (xml.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = xml.mosExternalMetadata.mosScope
 			ro.MosExternalMetaData = [meta]
 		}
-		// TODO: Add & test DefaultChannel, Trigger, MacroIn, MacroOut
 		return ro
 	}
 	export function xml2RO (xml: any): IMOSRunningOrder {
