@@ -13,9 +13,10 @@ import * as parser from 'xml2json'
 import { MosMessage } from './mosModel/MosMessage'
 import { MOSAck } from './mosModel/mosAck'
 import { MosString128 } from './dataTypes/mosString128'
+import { EventEmitter } from 'events'
 const iconv = require('iconv-lite')
 
-export class MosConnection implements IMosConnection {
+export class MosConnection extends EventEmitter implements IMosConnection {
 	static CONNECTION_PORT_LOWER: number = 10540
 	static CONNECTION_PORT_UPPER: number = 10541
 	static CONNECTION_PORT_QUERY: number = 10542
@@ -37,6 +38,7 @@ export class MosConnection implements IMosConnection {
 
 	/** */
 	constructor (configOptions: IConnectionConfig) {
+		super()
 		this._conf = new ConnectionConfig(configOptions)
 
 		if (this._conf.acceptsConnections) {
@@ -142,7 +144,7 @@ export class MosConnection implements IMosConnection {
 				sockets.push(e.socket)
 			}
 		}
-		let disposePromises: Array<Promise<void>> = sockets.map((socket) => {
+		let disposePromises: Array<Promise<any>> = sockets.map((socket) => {
 			return new Promise((resolve) => {
 				socket.on('close', resolve)
 				socket.end()
@@ -152,9 +154,9 @@ export class MosConnection implements IMosConnection {
 		disposePromises.push(this._lowerSocketServer.dispose([]))
 		disposePromises.push(this._upperSocketServer.dispose([]))
 		disposePromises.push(this._querySocketServer.dispose([]))
-		return new Promise((resolveDispose) => {
-			Promise.all(disposePromises)
-			.then(() => resolveDispose())
+		return Promise.all(disposePromises)
+		.then(() => {
+			return
 		})
 	}
 
@@ -168,7 +170,6 @@ export class MosConnection implements IMosConnection {
 					profiles.push(nextSocketID)
 				}
 			}
-
 			return `MOS Compatible – Profiles ${profiles.join(',')}`
 		}
 		return 'Warning: Not MOS compatible'
@@ -184,47 +185,44 @@ export class MosConnection implements IMosConnection {
 		}
 
 		// setup two socket servers, then resolve with their listening statuses
-		return new Promise((resolveDispose) => {
-			this._lowerSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_LOWER, 'lower')
-			this._upperSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_UPPER, 'upper')
-			this._querySocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_QUERY, 'query')
+		this._lowerSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_LOWER, 'lower')
+		this._upperSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_UPPER, 'upper')
+		this._querySocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_QUERY, 'query')
 
-			this._lowerSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
-			this._upperSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
-			this._querySocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
+		this._lowerSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
+		this._upperSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
+		this._querySocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 
-			// console.log('listen on all ports')
-			Promise.all(
-				[
-					this._lowerSocketServer.listen(),
-					this._upperSocketServer.listen(),
-					this._querySocketServer.listen()
-				]
-			)
-			.then(result => resolveDispose(result))
-		})
+		// console.log('listen on all ports')
+		return Promise.all(
+			[
+				this._lowerSocketServer.listen(),
+				this._upperSocketServer.listen(),
+				this._querySocketServer.listen()
+			]
+		)
 	}
 
 	/** */
-	private _registerIncomingClient (e: SocketDescription) {
+	private _registerIncomingClient (client: SocketDescription) {
 		let socketID = MosConnection.nextSocketID
 
 		// console.log('_registerIncomingClient', socketID, e.socket.remoteAddress)
 
 		// handles socket listeners
-		e.socket.on('close', (/*hadError: boolean*/) => {
+		client.socket.on('close', (/*hadError: boolean*/) => {
 			this._disposeIncomingSocket(socketID)
 		}) // => this._disposeIncomingSocket(e.socket, socketID))
-		e.socket.on('end', () => {
+		client.socket.on('end', () => {
 			if (this._debug) console.log('Socket End')
 		})
-		e.socket.on('drain', () => {
+		client.socket.on('drain', () => {
 			if (this._debug) console.log('Socket Drain')
 		})
-		e.socket.on('data', (data: Buffer) => {
-			let str = iconv.decode(data, 'utf16-be')
+		client.socket.on('data', (data: Buffer) => {
+			let messageString = iconv.decode(data, 'utf16-be').trim()
 
-			if (this._debug) console.log(`Socket got data (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${data}`)
+			if (this._debug) console.log(`Socket got data (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${data}`)
 
 			let parsed: any = null
 			let parseOptions = {
@@ -233,110 +231,117 @@ export class MosConnection implements IMosConnection {
 				trim: true
 			}
 			let firstMatch = '<mos>' // <mos>
-			let first = str.substr(0, firstMatch.length)
-			let lastMatch = '</mos>\r\n' // </mos>
-			let last = str.substr(-lastMatch.length)
+			let first = messageString.substr(0, firstMatch.length)
+			let lastMatch = '</mos>' // </mos>
+			let last = messageString.substr(-lastMatch.length)
 
-			// console.log('--------------------------------------------------------')
-			// console.log(str)
-			// Data ready to be parsed
-			if (first === firstMatch && last === lastMatch) {
-				// @ts-ignore xml2json says arguments are wrong, but its not.
-				parsed = parser.toJson(data, parseOptions)
+			if (!client.chunks) client.chunks = ''
+			try {
 
-			// Last chunk, ready to parse with saved data
-			} else if (last === lastMatch) {
-				// @ts-ignore xml2json says arguments are wrong, but its not.
-				parsed = parser.toJson(e.chunks + data, parseOptions)
-				e.chunks = ''
-
-			// Chunk, save for later
-			} else {
-				if (e.chunks === undefined) e.chunks = ''
-				e.chunks += data
-			}
-			if (parsed !== null) {
-				let mosDevice = (
-					this._mosDevices[parsed.mos.ncsID + '_' + parsed.mos.mosID] ||
-					this._mosDevices[parsed.mos.mosID + '_' + parsed.mos.ncsID]
-				)
-
-				let mosMessageId: number = parsed.mos.messageID // is this correct? (needs to be verified) /Johan
-				let ncsID = parsed.mos.ncsID
-				let mosID = parsed.mos.mosID
-
-				let sendReply = (message: MosMessage) => {
-					message.ncsID = ncsID
-					message.mosID = mosID
-					message.prepare(mosMessageId)
-					let msgStr: string = message.toString()
-					let buf = iconv.encode(msgStr, 'utf16-be')
-					e.socket.write(buf, 'usc2')
+				// console.log('--------------------------------------------------------')
+				// console.log(messageString)
+				if (first === firstMatch && last === lastMatch) {
+					// Data ready to be parsed:
+					// @ts-ignore xml2json says arguments are wrong, but its not.
+					parsed = parser.toJson(messageString, parseOptions)
+				} else if (last === lastMatch) {
+					// Last chunk, ready to parse with saved data:
+					// @ts-ignore xml2json says arguments are wrong, but its not.
+					parsed = parser.toJson(client.chunks + messageString, parseOptions)
+					client.chunks = ''
+				} else if (first === firstMatch ) {
+					// Chunk, save for later:
+					client.chunks = messageString
+				} else {
+					// Chunk, save for later:
+					client.chunks += messageString
 				}
-				if (!mosDevice && this._conf.openRelay) {
-					// console.log('OPEN RELAY ------------------')
-					// Register a new mosDevice to use for this connection
-					if (parsed.mos.ncsID === this._conf.mosID) {
-						mosDevice = this.registerMosDevice(
-							this._conf.mosID,
-							parsed.mos.mosID,
-							null,null, null)
-					} else if (parsed.mos.mosID === this._conf.mosID) {
-						mosDevice = this.registerMosDevice(
-							this._conf.mosID,
-							parsed.mos.ncsID,
-							null, null, null)
+				if (parsed !== null) {
+					let mosDevice = (
+						this._mosDevices[parsed.mos.ncsID + '_' + parsed.mos.mosID] ||
+						this._mosDevices[parsed.mos.mosID + '_' + parsed.mos.ncsID]
+					)
+					let mosMessageId: number = parsed.mos.messageID // is this correct? (needs to be verified) /Johan
+					let ncsID = parsed.mos.ncsID
+					let mosID = parsed.mos.mosID
+
+					let sendReply = (message: MosMessage) => {
+						message.ncsID = ncsID
+						message.mosID = mosID
+						message.prepare(mosMessageId)
+						let msgStr: string = message.toString()
+						let buf = iconv.encode(msgStr, 'utf16-be')
+						client.socket.write(buf, 'usc2')
+					}
+					if (!mosDevice && this._conf.openRelay) {
+						// console.log('OPEN RELAY ------------------')
+						// Register a new mosDevice to use for this connection
+						if (parsed.mos.ncsID === this._conf.mosID) {
+							mosDevice = this.registerMosDevice(
+								this._conf.mosID,
+								parsed.mos.mosID,
+								null,null, null)
+						} else if (parsed.mos.mosID === this._conf.mosID) {
+							mosDevice = this.registerMosDevice(
+								this._conf.mosID,
+								parsed.mos.ncsID,
+								null, null, null)
+						}
+					}
+					if (mosDevice) {
+						mosDevice.routeData(parsed).then((message: MosMessage) => {
+							sendReply(message)
+						}).catch((err: Error | MosMessage) => {
+							// Something went wrong
+							if (err instanceof MosMessage) {
+								sendReply(err)
+							} else {
+								// Unknown / internal error
+								// Log error:
+								console.log(err)
+								// reply with NACK:
+								// TODO: implement ACK
+								// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
+								let msg = new MOSAck()
+								msg.ID = new MosString128(0)
+								msg.Revision = 0
+								msg.Description = new MosString128('Internal Error')
+								msg.Status = IMOSAckStatus.NACK
+								sendReply(msg) // TODO: Need tests
+							}
+							// console.log(err)
+						})
+					} else {
+						// TODO: Handle missing mosDevice
+						// should reply with a NACK
+						let msg = new MOSAck()
+						msg.ID = new MosString128(0)
+						msg.Revision = 0
+						msg.Description = new MosString128('MosDevice not found')
+						msg.Status = IMOSAckStatus.NACK
+						sendReply(msg) // TODO: Need tests
 					}
 				}
-				if (mosDevice) {
-					mosDevice.routeData(parsed).then((message: MosMessage) => {
-						sendReply(message)
-					}).catch((err: Error | MosMessage) => {
-						// Something went wrong
-						if (err instanceof MosMessage) {
-							sendReply(err)
-						} else {
-							// Unknown / internal error
-							// Log error:
-							console.log(err)
-							// reply with NACK:
-							// TODO: implement ACK
-							// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
-							let msg = new MOSAck()
-							msg.ID = new MosString128(0)
-							msg.Revision = 0
-							msg.Description = new MosString128('Internal Error')
-							msg.Status = IMOSAckStatus.NACK
-							sendReply(msg) // TODO: Need tests
-						}
-						// console.log(err)
-					})
-				} else {
-					// TODO: Handle missing mosDevice
-					// should reply with a NACK
-					let msg = new MOSAck()
-					msg.ID = new MosString128(0)
-					msg.Revision = 0
-					msg.Description = new MosString128('MosDevice not found')
-					msg.Status = IMOSAckStatus.NACK
-					sendReply(msg) // TODO: Need tests
-				}
+			} catch (e) {
+				console.log('chunks-------------\n', client.chunks)
+				console.log('messageString---------\n', messageString)
+				this.emit('error', e)
 			}
 		})
-		e.socket.on('error', (error: Error) => {
-			if (this._debug) console.log(`Socket had error (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${error}`)
+		client.socket.on('error', (e: Error) => {
+			if (this._debug) console.log(`Socket had error (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${e}`)
 		})
 
 		// registers socket on server
 		// e.socket.remoteAddress är ej OK id, måste bytas ut
 		// let server: Server = this._getServerForHost(e.socket.remoteAddress)
 		// server.registerIncomingConnection(socketID, e.socket, e.portDescription)
-		this._incomingSockets[socketID + ''] = e
+		this._incomingSockets[socketID + ''] = client
 		if (this._debug) console.log('added: ', socketID)
 	}
 
 	/** */
-	private _disposeIncomingSocket (socketID: number) {
+	private _disposeIncomingSocket (socketID: string) {
 		let e = this._incomingSockets[socketID + '']
 		if (e) {
 			e.socket.removeAllListeners()
@@ -348,7 +353,7 @@ export class MosConnection implements IMosConnection {
 		if (this._debug) console.log('removed: ', socketID, '\n')
 	}
 
-	private static get nextSocketID (): number {
-		return this._nextSocketID++
+	private static get nextSocketID (): string {
+		return this._nextSocketID++ + ''
 	}
 }

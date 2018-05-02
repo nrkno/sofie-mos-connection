@@ -121,7 +121,7 @@ export class MosTime {
 			let ii = pad(match[5], 2)
 			let ss = pad(match[6], 2)
 			let ms = match[8]
-			let timezoneIndicator = typeof match[10] === 'string' ? match[10].toUpperCase() : match[10]
+			let timezoneIndicator = match[10] ? match[10].toUpperCase() : match[10]
 			timezoneIndicator = timezoneIndicator === 'Z' ? timezoneIndicator : ''
 
 			return {

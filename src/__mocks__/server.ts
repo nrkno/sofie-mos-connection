@@ -50,9 +50,9 @@ export class ServerMock extends EventEmitter implements Server {
 		},5)
 		return this
 	}
-	close (callback?: Function) { return this }
+	close (callback?: Function) { if (callback) callback(); return this }
 	address () { return { port: 0, family: 'string', address: 'string' } }
-	getConnections (cb: (error: Error | null, count: number) => void) { /*nothing*/ }
+	getConnections (cb: (error: Error | null, count: number) => void) { cb(null, 0) }
 	ref () { return this }
 	unref () { return this }
 	// addListener (event: string, listener: (...args: any[]) => void) { return this }
@@ -68,7 +68,7 @@ export class ServerMock extends EventEmitter implements Server {
 		// console.log('mock connection')
 		let socket = new SocketMock()
 		socket.on('data', (d) => {
-			this.emit('data')
+			this.emit('data', d)
 		})
 
 		this.emit('connection', socket)
@@ -77,11 +77,11 @@ export class ServerMock extends EventEmitter implements Server {
 	}
 
 	mockSentMessage (data, encoding) {
-
+		encoding = encoding
 		if (this._responses.length) {
 			// send reply:
 
-			let cb = this._responses.shift()
+			let cb: any = this._responses.shift()
 			let msg
 
 			setTimeout(() => {

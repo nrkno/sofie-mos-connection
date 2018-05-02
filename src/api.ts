@@ -110,8 +110,8 @@ export interface IMOSDevice {
 	onROSwapItems: (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) => void
 	/* Profile 3 */
 	/* Profile 4 */
-	// roStorySend:
-	onROStory: (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) => void
+	getAllRunningOrders: () => Promise<Array<IMOSRunningOrderBase>> // send roReqAll
+	onROStory: (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) => void // roStorySend
 }
 export {IMOSListMachInfo}
 export interface IMOSROAction {
@@ -153,7 +153,7 @@ export interface IMOSRunningOrderBase {
 	DefaultChannel?: MosString128
 	EditorialStart?: MosTime
 	EditorialDuration?: MosDuration
-	Trigger?: any // TODO: Johan frågar vad denna gör
+	Trigger?: MosString128 // TODO: Johan frågar vad denna gör
 	MacroIn?: MosString128
 	MacroOut?: MosString128
 	MosExternalMetaData?: Array<IMOSExternalMetaData>
@@ -321,3 +321,4 @@ export enum IMOSObjectPathType {
 	PROXY_PATH = 'PROXY PATH',
 	METADATA_PATH = 'METADATA PATH'
 }
+export { IMOSExternalMetaData }

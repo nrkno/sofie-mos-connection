@@ -1,13 +1,7 @@
 import { MosConnection } from '../MosConnection'
 import { ConnectionConfig } from '../config/connectionConfig'
 import { IMOSConnectionStatus,
-	IMOSDevice,
 	IMOSObject,
-	IMOSObjectType,
-	IMOSObjectStatus,
-	IMOSObjectAirStatus,
-	IMOSObjectPathType,
-	IMOSObjectPath,
 	IMOSRunningOrder,
 	IMOSROAck,
 	IMOSRunningOrderBase,
@@ -22,8 +16,8 @@ import { IMOSConnectionStatus,
 	IMOSROAction,
 	IMOSROFullStory
 } from '../api'
-import { MosTime } from '../dataTypes/mosTime'
 import { MosString128 } from '../dataTypes/mosString128'
+// @ts-ignore Socket is never read
 import { Socket, Server } from 'net'
 
 import { SocketMock } from '../__mocks__/socket'
@@ -50,7 +44,7 @@ iconv.encodingExists('utf16-be')
 // jest.mock('net')
 jest.mock('net')
 
-const literal = <T>(o: T) => o
+// const literal = <T>(o: T) => o
 
 function getMosDevice (): Promise<MosDevice> {
 	SocketMock.mockClear()
@@ -94,26 +88,6 @@ function decode (data: Buffer): string {
 }
 function encode (str: string) {
 	return iconv.encode(str, 'utf16-be')
-}
-function getMosObj (): IMOSObject {
-	return {
-		ID: new MosString128('abc123'),
-		Slug: new MosString128('Just another test'),
-		Type: IMOSObjectType.VIDEO,
-		TimeBase: 25, // fps
-		Revision: 1,
-		Duration: 328, // frames,
-		Status: IMOSObjectStatus.READY,
-		AirStatus: IMOSObjectAirStatus.READY,
-		Paths: [{
-			Type: IMOSObjectPathType.PATH,
-			Description: 'Media path',
-			Target: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-		}],
-		CreatedBy: new MosString128('R.A'),
-		Created: new MosTime(536457600000),
-		Description: ''
-	}
 }
 async function checkReplyToServer (socket: SocketMock, messageId: number, replyString: string) {
 	// check reply to server:
@@ -190,37 +164,37 @@ beforeEach(() => {
 })
 describe('MosDevice: General', () => {
 	test('Test the Socket mock', async () => {
-	
+
 		let conn = new Socket()
-	
+
 		let onData = jest.fn()
 		let onConnect = jest.fn()
 		let onClose = jest.fn()
 		let onError = jest.fn()
-	
+
 		conn.on('data', onData)
 		conn.on('connect', onConnect)
 		conn.on('close', onClose)
 		conn.on('error', onError)
-	
+
 		conn.connect('127.0.0.1')
-	
+
 		expect(conn.connect).toHaveBeenCalledTimes(1)
-	
+
 		expect(SocketMock.instances).toHaveLength(1)
-	
+
 		let connMock = SocketMock.instances[0]
-	
+
 		// Simulate us getting som data:
 		connMock.mockReceiveMessage('hello')
-	
+
 		expect(onData).toHaveBeenCalledTimes(1)
-	
+
 		// Send some data:
 		conn.write('hello!')
-	
+
 		expect(connMock.mockSentMessage).toHaveBeenCalledTimes(1)
-	
+
 	})
 	test('basic initialization', async () => {
 		let mos = new MosConnection(new ConnectionConfig({
@@ -231,12 +205,12 @@ describe('MosDevice: General', () => {
 				'1': true
 			}
 		}))
-	
+
 		expect(mos.profiles).toMatchObject({
 			'0': true,
 			'1': true
 		})
-	
+
 		// expect(mos.complianceText).toBe('MOS Compatible – Profiles 0,1')
 	})
 	test('Incoming connections', async () => {
@@ -249,10 +223,10 @@ describe('MosDevice: General', () => {
 			}
 		})
 		expect(mos.acceptsConnections).toBe(true)
-	
+
 		// SocketMock.mockAddReply('<hello>')
 		await expect(mos.isListening).resolves.toEqual([true, true, true])
-	
+
 		// close sockets after test
 		mos.isListening
 			.then(() => mos.dispose())
@@ -338,11 +312,17 @@ describe('MosDevice: Profile 1', () => {
 
 	beforeAll(async () => {
 
+		serverMockLower = serverMockLower // lintfix: never read
+		serverMockUpper = serverMockUpper // lintfix: never read
+		serverMockQuery = serverMockQuery // lintfix: never read
+		socketMockLower = socketMockLower // lintfix: never read
+		socketMockUpper = socketMockUpper // lintfix: never read
+		socketMockQuery = socketMockQuery // lintfix: never read
+
 		mosDevice = await getMosDevice()
 
 		// Profile 1:
 		onRequestMOSObject = jest.fn(() => {
-			// console.log('onRequestMOSObject')
 			return Promise.resolve(xmlApiData.mosObj)
 		})
 		onRequestAllMOSObjects = jest.fn(() => {
@@ -351,14 +331,6 @@ describe('MosDevice: Profile 1', () => {
 				xmlApiData.mosObj2
 			])
 		})
-		let roAckReply = () => {
-			let ack: IMOSROAck = {
-				ID: new MosString128('runningOrderId'),
-				Status: new MosString128('OK'),
-				Stories: []
-			}
-			return Promise.resolve(ack)
-		}
 		mosDevice.onRequestMOSObject ((objId: string): Promise<IMOSObject | null> => {
 			return onRequestMOSObject(objId)
 		})
@@ -395,7 +367,7 @@ describe('MosDevice: Profile 1', () => {
 	})
 	test('onRequestMOSObject', async () => {
 		// Fake incoming message on socket:
-		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.reqObj )
+		await fakeIncomingMessage(serverSocketMockLower, xmlData.reqObj )
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(1)
 		expect(onRequestMOSObject.mock.calls[0][0]).toEqual(xmlApiData.mosObj.ID.toString())
 		expect(onRequestAllMOSObjects).toHaveBeenCalledTimes(0)
@@ -412,7 +384,7 @@ describe('MosDevice: Profile 1', () => {
 	})
 	test('onRequestAllMOSObjects', async () => {
 		// Fake incoming message on socket:
-		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.mosReqAll )
+		await fakeIncomingMessage(serverSocketMockLower, xmlData.mosReqAll )
 		expect(onRequestAllMOSObjects).toHaveBeenCalledTimes(1)
 		// expect(onRequestMOSObject.mock.calls[0][0]).toEqual(xmlApiData.mosObj.ID.toString())
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(0)
@@ -428,29 +400,9 @@ describe('MosDevice: Profile 1', () => {
 		expect(parsedReply.mos.mosListAll.mosObj[0].objSlug + '').toEqual (xmlApiData.mosObj.Slug.toString())
 		expect(parsedReply.mos.mosListAll.mosObj[1].objID + '').toEqual (xmlApiData.mosObj2.ID.toString())
 		expect(parsedReply.mos.mosListAll.mosObj[1].objSlug + '').toEqual (xmlApiData.mosObj2.Slug.toString())
-		/*
-		let mosObj = getMosObj()
-
-		expect(socketMock).toBeTruthy()
-
-		// Mock our response
-		onRequestAllMOSObjects.mockReturnValueOnce(Promise.resolve([mosObj]))
-		// Fake incoming message on socket:
-		await fakeIncomingMessage(socketMock, '<mosReqObj><objID>' + mosObj.ID + '</objID></mosReqObj>')
-
-		expect(onRequestAllMOSObjects).toHaveBeenCalledTimes(1)
-		expect(onRequestMOSObject).toHaveBeenCalledTimes(0)
-		expect(socketMock.mockReceiveMessage).toHaveBeenCalledTimes(1)
-		expect(socketMock.mockReceiveMessage.mock.calls[0][0]).toMatch(new RegExp('mosListAll.+mosObj.+<objID>' + mosObj.ID))
-
-		// Test :
-		// mosDevice.getMOSObject?: (objId: string) => Promise<IMOSObject>
-		// mosDevice.getAllMOSObjects?: () => Promise<Array<IMOSObject>>
-		*/
 
 	})
 	test('getMOSObject', async () => {
-		let mosObj = getMosObj()
 
 		// Prepare mock server response:
 		let mockReply = jest.fn((data) => {
@@ -472,7 +424,6 @@ describe('MosDevice: Profile 1', () => {
 		expect(returnedObj).toMatchObject(xmlApiData.roList)
 	})
 	test('getAllMOSObjects', async () => {
-		let mosObj = getMosObj()
 
 		expect(socketMockLower).toBeTruthy()
 		// Prepare mock server response:
@@ -531,6 +482,13 @@ describe('MosDevice: Profile 2', () => {
 	beforeAll(async () => {
 		SocketMock.mockClear()
 		ServerMock.mockClear()
+
+		socketMockLower = socketMockLower // lintfix: never read
+		socketMockUpper = socketMockUpper // lintfix: never read
+		socketMockQuery = socketMockQuery // lintfix: never read
+		serverMockLower = serverMockLower // lintfix: never read
+		serverMockUpper = serverMockUpper // lintfix: never read
+		serverMockQuery = serverMockQuery // lintfix: never read
 
 		mosDevice = await getMosDevice()
 
@@ -787,6 +745,8 @@ describe('MosDevice: Profile 2', () => {
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<roElementStat element="RO">/)
+		expect(returnedAck).toBeTruthy()
+		expect(returnedAck.ID.toString()).toEqual('96857485')
 	})
 	test('setStoryStatus', async () => {
 		// Prepare server response
@@ -801,6 +761,8 @@ describe('MosDevice: Profile 2', () => {
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<roElementStat element="STORY">/)
+		expect(returnedAck).toBeTruthy()
+		expect(returnedAck.ID.toString()).toEqual('96857485')
 	})
 	test('setItemStatus', async () => {
 		// Prepare server response
@@ -815,6 +777,8 @@ describe('MosDevice: Profile 2', () => {
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<roElementStat element="ITEM">/)
+		expect(returnedAck).toBeTruthy()
+		expect(returnedAck.ID.toString()).toEqual('96857485')
 	})
 	test('onReadyToAir', async () => {
 		// Fake incoming message on socket:
@@ -965,6 +929,13 @@ describe('MosDevice: Profile 4', () => {
 	})
 	beforeEach(() => {
 
+		socketMockLower = socketMockLower // lintfix: never read
+		socketMockUpper = socketMockUpper // lintfix: never read
+		socketMockQuery = socketMockQuery // lintfix: never read
+		serverMockLower = serverMockLower // lintfix: never read
+		serverMockUpper = serverMockUpper // lintfix: never read
+		serverMockQuery = serverMockQuery // lintfix: never read
+
 		onROStory.mockClear()
 
 		serverSocketMockLower.mockClear()
@@ -977,12 +948,31 @@ describe('MosDevice: Profile 4', () => {
 		expect(socketMockLower).toBeTruthy()
 		expect(socketMockUpper).toBeTruthy()
 	})
-	test('onROStory', async () => {
+	/*test('onROStory', async () => {
 		// Fake incoming message on socket:
 
 		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySend)
 		expect(onROStory).toHaveBeenCalledTimes(1)
 		expect(onROStory.mock.calls[0][0]).toMatchObject(xmlApiData.roStorySend)
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+	})
+	*/
+	test('getAllRunningOrders', async () => {
+		// Prepare server response
+		let mockReply = jest.fn((data) => {
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)[1]
+			return encode(getXMLReply(messageID, xmlData.roListAll))
+		})
+		socketMockUpper.mockAddReply(mockReply)
+		let returnedListAll = await mosDevice.getAllRunningOrders()
+		await socketMockUpper.mockWaitForSentMessages()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<roReqAll/)
+
+		expect(returnedListAll).toHaveLength(2)
+		expect(returnedListAll[0]).toMatchObject(xmlApiData.roListAll[0])
+		expect(returnedListAll[1]).toMatchObject(xmlApiData.roListAll[1])
 	})
 })

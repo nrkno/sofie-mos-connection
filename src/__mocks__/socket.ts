@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
 
 import { Socket } from 'net'
-import { Writable } from 'stream'
+// import { Writable } from 'stream'
 
 // Mock the Socket class in 'net':
 
@@ -84,23 +84,23 @@ export class SocketMock extends EventEmitter implements Socket {
 	destroy () { /* nothing */ }
 	pause () { return this }
 	resume () { return this }
-	setTimeout (timeout: number, callback?: Function) { return this }
-	setNoDelay (noDelay?: boolean) { return this }
-	setKeepAlive (enable?: boolean, initialDelay?: number) { return this }
+	setTimeout (timeout: number, callback?: Function) { setTimeout(callback, timeout); return this }
+	setNoDelay (noDelay?: boolean) { noDelay = noDelay; return this }
+	setKeepAlive (enable?: boolean, initialDelay?: number) { enable = enable; initialDelay = initialDelay ;return this }
 	address () { return {port: 100, family: 'localhost', address: '127.0.0.1'} }
 	unref () { /* nothing */ }
 	ref () { /* nothing */ }
 	end () { /* nothing */ }
-	_write (chunk: any, encoding: string, callback: Function) { /* nothing */ }
-	setDefaultEncoding (encoding: string) { return this }
-	_read (size: number) { /* nothing */ }
-	read (size?: number) { /* nothing */ }
+	_write (chunk: any, encoding: string, callback: Function) { chunk = chunk; encoding = encoding; callback() /* nothing */ }
+	setDefaultEncoding (encoding: string) { encoding = encoding; return this }
+	_read (size: number) { size = size }
+	read (size?: number) { size = size }
 	isPaused () { return false }
-	pipe (destination, options?: { end?: boolean; }) { return destination }
-	unpipe (destination) { return this }
-	unshift (chunk: any) { /* nothing */ }
-	wrap (oldStream: NodeJS.ReadableStream) { return this }
-	push (chunk: any, encoding?: string) { return true }
+	pipe (destination, options?: { end?: boolean; }) { options = options; return destination }
+	unpipe (destination) { destination = destination; return this }
+	unshift (chunk: any) { chunk = chunk }
+	wrap (oldStream: NodeJS.ReadableStream) { oldStream = oldStream; return this }
+	push (chunk: any, encoding?: string) { chunk = chunk; encoding = encoding; return true }
 	_destroy () { /* nothing */ }
 	_final () { /* nothing */ }
 	cork () { /* nothing */ }
@@ -110,10 +110,11 @@ export class SocketMock extends EventEmitter implements Socket {
 	// Mock methods:
 	mockSentMessage (data, encoding) {
 		// console.log('mockSentMessage ' + this.name, data)
+		encoding = encoding
 		if (this._responses.length) {
 			// send reply:
 
-			let cb = this._responses.shift()
+			let cb: any = this._responses.shift()
 			let msg
 
 			setTimeout(() => {
