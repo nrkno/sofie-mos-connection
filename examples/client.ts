@@ -1,10 +1,19 @@
-import { MosConnection, ConnectionConfig, IMOSROAck, IMOSROReadyToAir, IMOSRunningOrder, IMOSStoryAction, IMOSROStory, IMOSListMachInfo } from '../src'
+import {
+	MosConnection,
+	ConnectionConfig,
+	IMOSROAck,
+	IMOSROReadyToAir,
+	IMOSRunningOrder,
+	IMOSStoryAction,
+	IMOSROStory,
+	IMOSListMachInfo
+} from '../src'
 
 import { MosString128 } from '../src/dataTypes/mosString128'
 import { MosTime } from '../src/dataTypes/mosTime'
 import { MosDevice } from '../src/MosDevice'
 let mos = new MosConnection(new ConnectionConfig({
-	mosID: 'seff.tv.automation',
+	mosID: 'sofie.tv.automation',
 	acceptsConnections: true,
 	profiles: {
 		'0': true,
