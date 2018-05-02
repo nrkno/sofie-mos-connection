@@ -321,3 +321,4 @@ export enum IMOSObjectPathType {
 	PROXY_PATH = 'PROXY PATH',
 	METADATA_PATH = 'METADATA PATH'
 }
+export { IMOSExternalMetaData }
