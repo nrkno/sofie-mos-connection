@@ -38,6 +38,7 @@ import { MosObj } from './mosModel/1_mosObj'
 import { MosListAll } from './mosModel/1_mosListAll'
 import { ReqMosObj } from './mosModel/1_reqMosObj'
 import { ReqMosObjAll } from './mosModel/1_reqMosObjAll'
+import { ROReqAll } from './mosModel/4_roReqAll'
 
 export class MosDevice implements IMOSDevice {
 
@@ -207,6 +208,8 @@ export class MosDevice implements IMOSDevice {
 				})
 			// Profile 2:
 			} else if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
+				let ro = Parser.xml2RO(data.roCreate)
+				/*
 				let stories: Array<IMOSROStory> = Parser.xml2Stories(data.roCreate.story)
 				let ro: IMOSRunningOrder = {
 					ID: new MosString128(data.roCreate.roID),
@@ -225,7 +228,7 @@ export class MosDevice implements IMOSDevice {
 					if (data.roCreate.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = data.roCreate.mosExternalMetadata.mosScope
 					ro.MosExternalMetaData = [meta]
 				}
-				// TODO: Add & test DefaultChannel, Trigger, MacroIn, MacroOut
+				*/
 
 				this._callbackOnCreateRunningOrder(ro).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
@@ -687,6 +690,7 @@ export class MosDevice implements IMOSDevice {
 						reject('Unknown response')
 					}
 				})
+				.catch(reject)
 			} else {
 				reject('No Connection')
 			}
@@ -766,47 +770,36 @@ export class MosDevice implements IMOSDevice {
 			}
 		})
 	}
-
 	onReadyToAir (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) {
 		this._callbackOnReadyToAir = cb
 	}
-
 	onROInsertStories (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {
 		this._callbackOnROInsertStories = cb
 	}
-
 	onROInsertItems (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {
 		this._callbackOnROInsertItems = cb
 	}
-
 	onROReplaceStories (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {
 		this._callbackOnROReplaceStories = cb
 	}
-
 	onROReplaceItems (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {
 		this._callbackOnROReplaceItems = cb
 	}
-
 	onROMoveStories (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {
 		this._callbackOnROMoveStories = cb
 	}
-
 	onROMoveItems (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {
 		this._callbackOnROMoveItems = cb
 	}
-
 	onRODeleteStories (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {
 		this._callbackOnRODeleteStories = cb
 	}
-
 	onRODeleteItems (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {
 		this._callbackOnRODeleteItems = cb
 	}
-
 	onROSwapStories (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>) {
 		this._callbackOnROSwapStories = cb
 	}
-
 	onROSwapItems (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) {
 		this._callbackOnROSwapItems = cb
 	}

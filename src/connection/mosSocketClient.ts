@@ -7,6 +7,12 @@ const iconv = require('iconv-lite')
 
 export type CallBackFunction = (err: any, data: object) => void
 
+const parseOptions = {
+	'object': true,
+	coerce: true,
+	trim: true
+}
+
 export class MosSocketClient extends EventEmitter {
 	private _host: string
 	private _port: number
@@ -31,6 +37,8 @@ export class MosSocketClient extends EventEmitter {
 	private _ready: boolean = false
 
 	private processQueueInterval: any
+	private _startingUp: boolean = true
+	private dataChunks: string = ''
   /** */
 	constructor (host: string, port: number, description: string, debug?: boolean) {
 		super()
@@ -233,44 +241,77 @@ export class MosSocketClient extends EventEmitter {
 	private _onData (data: Buffer ) {
 		this._client.emit(SocketConnectionEvent.ALIVE)
 		// data = Buffer.from(data, 'ucs2').toString()
-		let messageString: string = iconv.decode(data, 'utf16-be')
+		let messageString: string = iconv.decode(data, 'utf16-be').trim()
 
 		if (this._debug) console.log(`${this._description} Received: ${messageString}`)
 
-		try {
-			let parsedData: any = parser.toJson(messageString, {
-				'object': true,
-				coerce: true,
-				trim: true
-			})
+		let firstMatch = '<mos>' // <mos>
+		let first = messageString.substr(0, firstMatch.length)
+		let lastMatch = '</mos>' // </mos>
+		let last = messageString.substr(-lastMatch.length)
 
-			let messageId = parsedData.mos.messageID
-			if (messageId) {
-				let cb: CallBackFunction | undefined = this._queueCallback[messageId]
-				let msg = this._queueMessages[0]
-				if (msg.messageID.toString() !== (messageId + '')) {
-					console.log('Mos reply id diff: ' + messageId + ', ' + msg.messageID)
-					console.log(parsedData)
-				}
-				if (cb) {
-					cb(null, parsedData)
-					this._queueMessages.shift() // remove the first message
-					delete this._queueCallback[messageId]
+		let parsedData: any
+		try {
+			// console.log(first === firstMatch, last === lastMatch, last, lastMatch)
+			if (first === firstMatch && last === lastMatch) {
+				// Data ready to be parsed:
+				parsedData = parser.toJson(messageString, parseOptions)
+				this.dataChunks = ''
+			} else if (last === lastMatch) {
+				// Last chunk, ready to parse with saved data:
+				parsedData = parser.toJson(this.dataChunks + messageString, parseOptions)
+				this.dataChunks = ''
+			} else if (first === firstMatch ) {
+				// Chunk, save for later:
+				this.dataChunks = messageString
+			} else {
+				// Chunk, save for later:
+				this.dataChunks += messageString
+			}
+			// let parsedData: any = parser.toJson(messageString, )
+			if (parsedData) {
+				let messageId = parsedData.mos.messageID
+				if (messageId) {
+					let cb: CallBackFunction | undefined = this._queueCallback[messageId]
+					let msg = this._queueMessages[0]
+					if (msg) {
+						if (msg.messageID.toString() !== (messageId + '')) {
+							console.log('Mos reply id diff: ' + messageId + ', ' + msg.messageID)
+							console.log(parsedData)
+						}
+						if (cb) {
+							cb(null, parsedData)
+							this._queueMessages.shift() // remove the first message
+							delete this._queueCallback[messageId]
+						}
+					} else {
+						// huh, we've got a reply to something we've not sent.
+						console.log('Got reply to something we\'ve not asked for', messageString)
+					}
+				} else {
+					// error message?
+					if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
+						console.log('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
+						this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
+					} else {
+						// unknown message..
+						this.emit('error', 'Unknown message: ' + messageString)
+					}
 				}
 			} else {
-				// error message?
-				if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
-					console.log('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
-					this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
-				} else {
-					// unknown message..
-					this.emit('error', 'Unknown message: ' + messageString)
-				}
+				return
 			}
-
+			// console.log('messageString', messageString)
+			// console.log('first msg', messageString)
+			this._startingUp = false
 		} catch (e) {
 			console.log('messageString', messageString)
-			throw e
+			if (this._startingUp) {
+				// when starting up, we might get half a message, let's ignore this error then
+				console.log('Strange XML-message upon startup')
+			} else {
+				throw e
+			}
 		}
 
 		this._ready = true

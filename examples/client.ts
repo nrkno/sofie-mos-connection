@@ -22,13 +22,33 @@ let mos = new MosConnection(new ConnectionConfig({
 	openRelay: true
 	// debug: true
 }))
-
+mos.on('error',(e) => {
+	console.log('Emit error', e)
+})
 mos.onConnection((dev: MosDevice) => {
-	console.log('new mosDevice: ', dev.ID.toString())
-
+	console.log('new mosDevice: ', dev.idPrimary, dev.idSecondary)
+	// console.log(dev)
 	if (dev.hasConnection) {
 		dev.getMachineInfo().then((lm) => {
 			// console.log('Machineinfo', lm)
+		})
+		.then(() => {
+			return dev.getAllRunningOrders()
+		})
+		.then((ros) => {
+			console.log('allRunningOrders', ros)
+
+			// trigger a re-send of those running orders:
+			// return dev.getRunningOrder(new MosString128('696297DF-1568-4B36-B43B3B79514B40D4'))
+			return Promise.all(ros.map((ro) => {
+				return dev.getRunningOrder(ro.ID)
+			}))
+		})
+		.then((roLists) => {
+			console.log('roLists', roLists)
+		})
+		.catch((e) => {
+			console.log('ERROR', e)
 		})
 	}
 
@@ -137,7 +157,7 @@ mos.onConnection((dev: MosDevice) => {
 let mosdev = mos.connect({
 	primary: {
 		id: '2012R2ENPS8VM',
-		host: '10.0.1.248',
+		host: '10.0.1.244',
 		timeout: 5000
 	}
 })
