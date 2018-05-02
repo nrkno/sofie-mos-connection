@@ -3,7 +3,7 @@ import { NCSServerConnection } from './connection/NCSServerConnection'
 import { MosString128 } from './dataTypes/mosString128'
 import { MosTime } from './dataTypes/mosTime'
 import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
-import { MosDuration } from './dataTypes/mosDuration'
+// import { MosDuration } from './dataTypes/mosDuration'
 import { IMOSListMachInfo, IMOSDefaultActiveX, ListMachineInfo } from './mosModel/0_listMachInfo'
 import { ROAck } from './mosModel/ROAck'
 import { ReqMachInfo } from './mosModel/0_reqMachInfo'
@@ -79,36 +79,36 @@ export class MosDevice implements IMOSDevice {
 	private _currentConnection: NCSServerConnection | null = null
 
 	// Profile 0
-	private _callbackOnGetMachineInfo: () => Promise<IMOSListMachInfo>
-	private _callbackOnConnectionChange: (connectionStatus: IMOSConnectionStatus) => void
+	private _callbackOnGetMachineInfo?: () => Promise<IMOSListMachInfo>
+	private _callbackOnConnectionChange?: (connectionStatus: IMOSConnectionStatus) => void
 
 	// Profile 1
-	private _callbackOnRequestMOSOBject: (objId: string) => Promise<IMOSObject | null>
-	private _callbackOnRequestAllMOSObjects: () => Promise<Array< IMOSObject>>
+	private _callbackOnRequestMOSOBject?: (objId: string) => Promise<IMOSObject | null>
+	private _callbackOnRequestAllMOSObjects?: () => Promise<Array< IMOSObject>>
 
 	// Profile 2
-	private _callbackOnCreateRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
-	private _callbackOnReplaceRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
-	private _callbackOnDeleteRunningOrder: (runningOrderId: MosString128) => Promise< IMOSROAck>
-	private _callbackOnRequestRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>
-	private _callbackOnMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
-	private _callbackOnRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
-	private _callbackOnStoryStatus: (status: IMOSStoryStatus) => Promise<IMOSROAck>
-	private _callbackOnItemStatus: (status: IMOSItemStatus) => Promise<IMOSROAck>
-	private _callbackOnReadyToAir: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>
-	private _callbackOnROInsertStories: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
-	private _callbackOnROInsertItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
-	private _callbackOnROReplaceStories: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
-	private _callbackOnROReplaceItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
-	private _callbackOnROMoveStories: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
-	private _callbackOnROMoveItems: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>
-	private _callbackOnRODeleteStories: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
-	private _callbackOnRODeleteItems: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>
-	private _callbackOnROSwapStories: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>
-	private _callbackOnROSwapItems: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
+	private _callbackOnCreateRunningOrder?: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
+	private _callbackOnReplaceRunningOrder?: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
+	private _callbackOnDeleteRunningOrder?: (runningOrderId: MosString128) => Promise< IMOSROAck>
+	private _callbackOnRequestRunningOrder?: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>
+	private _callbackOnMetadataReplace?: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
+	private _callbackOnRunningOrderStatus?: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
+	private _callbackOnStoryStatus?: (status: IMOSStoryStatus) => Promise<IMOSROAck>
+	private _callbackOnItemStatus?: (status: IMOSItemStatus) => Promise<IMOSROAck>
+	private _callbackOnReadyToAir?: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>
+	private _callbackOnROInsertStories?: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
+	private _callbackOnROInsertItems?: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
+	private _callbackOnROReplaceStories?: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
+	private _callbackOnROReplaceItems?: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
+	private _callbackOnROMoveStories?: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
+	private _callbackOnROMoveItems?: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>
+	private _callbackOnRODeleteStories?: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
+	private _callbackOnRODeleteItems?: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>
+	private _callbackOnROSwapStories?: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>
+	private _callbackOnROSwapItems?: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
 
 	// Profile 4
-	private _callbackOnROStory: (story: IMOSROFullStory) => Promise<IMOSROAck>
+	private _callbackOnROStory?: (story: IMOSROFullStory) => Promise<IMOSROAck>
 
 	constructor (
 		idPrimary: string,
@@ -194,18 +194,18 @@ export class MosDevice implements IMOSDevice {
 				this._callbackOnGetMachineInfo().then((m: IMOSListMachInfo) => {
 					let resp = new ListMachineInfo(m)
 					resolve(resp)
-				})
+				}).catch(reject)
 			// Profile 1:
 			} else if (data.mosReqObj && typeof this._callbackOnRequestMOSOBject === 'function') {
 				this._callbackOnRequestMOSOBject(data.mosReqObj.objID).then((mosObj: IMOSObject) => {
 					let resp = new MosObj(mosObj)
 					resolve(resp)
-				})
+				}).catch(reject)
 			} else if (data.mosReqAll && typeof this._callbackOnRequestAllMOSObjects === 'function') {
 				this._callbackOnRequestAllMOSObjects().then((mosObjs: Array<IMOSObject>) => {
 					let resp = new MosListAll(mosObjs)
 					resolve(resp)
-				})
+				}).catch(reject)
 			// Profile 2:
 			} else if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
 				let ro = Parser.xml2RO(data.roCreate)
@@ -583,7 +583,7 @@ export class MosDevice implements IMOSDevice {
 						mosExternalMetaData: this.mosExternalMetaData	// TODO: No data from ENPS, needs test!
 					}
 					resolve(list)
-				})
+				}).catch(reject)
 			} else {
 				reject('No Connection')
 			}
@@ -630,7 +630,7 @@ export class MosDevice implements IMOSDevice {
 					} else {
 						reject('Unknown response')
 					}
-				})
+				}).catch(reject)
 			} else {
 				reject('No Connection')
 			}
@@ -650,7 +650,7 @@ export class MosDevice implements IMOSDevice {
 					} else {
 						reject('Unknown response')
 					}
-				})
+				}).catch(reject)
 			} else {
 				reject('No Connection')
 			}
@@ -724,7 +724,7 @@ export class MosDevice implements IMOSDevice {
 				this._currentConnection.executeCommand(message).then((data) => {
 					let roAck: ROAck = Parser.xml2ROAck(data.mos.roAck)
 					resolve(roAck)
-				})
+				}).catch(reject)
 			} else {
 				reject('No Connection')
 			}
@@ -743,7 +743,7 @@ export class MosDevice implements IMOSDevice {
 				this._currentConnection.executeCommand(message).then((data) => {
 					let roAck: ROAck = Parser.xml2ROAck(data.mos.roAck)
 					resolve(roAck)
-				})
+				}).catch(reject)
 			} else {
 				reject('No Connection')
 			}
@@ -764,7 +764,7 @@ export class MosDevice implements IMOSDevice {
 				this._currentConnection.executeCommand(message).then((data) => {
 					let roAck: ROAck = Parser.xml2ROAck(data.mos.roAck)
 					resolve(roAck)
-				})
+				}).catch(reject)
 			} else {
 				reject('No Connection')
 			}
@@ -822,7 +822,7 @@ export class MosDevice implements IMOSDevice {
 						console.log(data.mos)
 						reject('Unknown reply ')
 					}
-				})
+				}).catch(reject)
 			} else {
 				reject('No Connection')
 			}

@@ -1,5 +1,5 @@
 import { MosTime } from '../mosTime'
-let a = new MosTime()
+
 describe('MosTime', () => {
 	test('parse time correctly', () => {
 		// test invalid date formats
@@ -50,7 +50,7 @@ describe('MosTime', () => {
 		const SEC = 1000
 		const MIN = 60 * SEC
 		const HOUR = MIN * 60
-		const DAY = HOUR * 24
+		// const DAY = HOUR * 24
 
 		// @todo: double check all expectations
 

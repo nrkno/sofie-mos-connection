@@ -144,7 +144,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				sockets.push(e.socket)
 			}
 		}
-		let disposePromises: Array<Promise<void>> = sockets.map((socket) => {
+		let disposePromises: Array<Promise<any>> = sockets.map((socket) => {
 			return new Promise((resolve) => {
 				socket.on('close', resolve)
 				socket.end()
@@ -154,9 +154,9 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		disposePromises.push(this._lowerSocketServer.dispose([]))
 		disposePromises.push(this._upperSocketServer.dispose([]))
 		disposePromises.push(this._querySocketServer.dispose([]))
-		return new Promise((resolveDispose) => {
-			Promise.all(disposePromises)
-			.then(() => resolveDispose())
+		return Promise.all(disposePromises)
+		.then(() => {
+			return
 		})
 	}
 
@@ -185,25 +185,22 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		}
 
 		// setup two socket servers, then resolve with their listening statuses
-		return new Promise((resolveDispose) => {
-			this._lowerSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_LOWER, 'lower')
-			this._upperSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_UPPER, 'upper')
-			this._querySocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_QUERY, 'query')
+		this._lowerSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_LOWER, 'lower')
+		this._upperSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_UPPER, 'upper')
+		this._querySocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_QUERY, 'query')
 
-			this._lowerSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
-			this._upperSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
-			this._querySocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
+		this._lowerSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
+		this._upperSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
+		this._querySocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 
-			// console.log('listen on all ports')
-			Promise.all(
-				[
-					this._lowerSocketServer.listen(),
-					this._upperSocketServer.listen(),
-					this._querySocketServer.listen()
-				]
-			)
-			.then(result => resolveDispose(result))
-		})
+		// console.log('listen on all ports')
+		return Promise.all(
+			[
+				this._lowerSocketServer.listen(),
+				this._upperSocketServer.listen(),
+				this._querySocketServer.listen()
+			]
+		)
 	}
 
 	/** */
@@ -223,9 +220,9 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			if (this._debug) console.log('Socket Drain')
 		})
 		client.socket.on('data', (data: Buffer) => {
-			let messageStr = iconv.decode(data, 'utf16-be').trim()
+			let messageString = iconv.decode(data, 'utf16-be').trim()
 
-			if (this._debug) console.log(`Socket got data (${socketID}, ${e.socket.remoteAddress}, ${e.portDescription}): ${data}`)
+			if (this._debug) console.log(`Socket got data (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${data}`)
 
 			let parsed: any = null
 			let parseOptions = {
@@ -234,30 +231,30 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				trim: true
 			}
 			let firstMatch = '<mos>' // <mos>
-			let first = messageStr.substr(0, firstMatch.length)
+			let first = messageString.substr(0, firstMatch.length)
 			let lastMatch = '</mos>' // </mos>
-			let last = messageStr.substr(-lastMatch.length)
+			let last = messageString.substr(-lastMatch.length)
 
 			if (!client.chunks) client.chunks = ''
 			try {
 
 				// console.log('--------------------------------------------------------')
-				// console.log(messageStr)
+				// console.log(messageString)
 				if (first === firstMatch && last === lastMatch) {
 					// Data ready to be parsed:
 					// @ts-ignore xml2json says arguments are wrong, but its not.
-					parsed = parser.toJson(messageStr, parseOptions)
+					parsed = parser.toJson(messageString, parseOptions)
 				} else if (last === lastMatch) {
 					// Last chunk, ready to parse with saved data:
 					// @ts-ignore xml2json says arguments are wrong, but its not.
-					parsed = parser.toJson(client.chunks + messageStr, parseOptions)
+					parsed = parser.toJson(client.chunks + messageString, parseOptions)
 					client.chunks = ''
 				} else if (first === firstMatch ) {
 					// Chunk, save for later:
-					client.chunks = messageStr
+					client.chunks = messageString
 				} else {
 					// Chunk, save for later:
-					client.chunks += messageStr
+					client.chunks += messageString
 				}
 				if (parsed !== null) {
 					let mosDevice = (
@@ -327,7 +324,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				}
 			} catch (e) {
 				console.log('chunks-------------\n', client.chunks)
-				console.log('messageStr---------\n', messageStr)
+				console.log('messageString---------\n', messageString)
 				this.emit('error', e)
 			}
 		})
@@ -344,7 +341,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	}
 
 	/** */
-	private _disposeIncomingSocket (socketID: number) {
+	private _disposeIncomingSocket (socketID: string) {
 		let e = this._incomingSockets[socketID + '']
 		if (e) {
 			e.socket.removeAllListeners()
@@ -356,7 +353,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		if (this._debug) console.log('removed: ', socketID, '\n')
 	}
 
-	private static get nextSocketID (): number {
-		return this._nextSocketID++
+	private static get nextSocketID (): string {
+		return this._nextSocketID++ + ''
 	}
 }

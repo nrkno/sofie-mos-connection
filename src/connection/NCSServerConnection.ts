@@ -22,7 +22,7 @@ export class NCSServerConnection {
 	private _mosID: string
 	private _debug: boolean = false
 
-	private _clients: {[clientID: number]: ClientDescription} = {}
+	private _clients: {[clientID: string]: ClientDescription} = {}
 	private _callbackOnConnectionChange: () => void
 
 	private _heartBeatsTimer: NodeJS.Timer
@@ -39,7 +39,7 @@ export class NCSServerConnection {
 	}
 
 	/** */
-	registerOutgoingConnection (clientID: number, client: MosSocketClient, clientDescription: ConnectionType) {
+	registerOutgoingConnection (clientID: string, client: MosSocketClient, clientDescription: ConnectionType) {
 		if (this._debug) console.log('registerOutgoingConnection', clientID)
 		this._clients[clientID] = {
 			client: client,
@@ -47,12 +47,12 @@ export class NCSServerConnection {
 		}
 	}
 
-	createClient (clientID: number, port: number, clientDescription: ConnectionType) {
+	createClient (clientID: string, port: number, clientDescription: ConnectionType) {
 		this.registerOutgoingConnection(clientID, new MosSocketClient(this._host, port, clientDescription, this._debug), clientDescription)
 	}
 
 	/** */
-	removeClient (clientID: number) {
+	removeClient (clientID: string) {
 		this._clients[clientID].client.dispose()
 		delete this._clients[clientID]
 	}
@@ -151,8 +151,8 @@ export class NCSServerConnection {
 
 	dispose (): Promise<void> {
 		return	new Promise((resolveDispose) => {
-			for (let i in this._clients) {
-				this.removeClient(parseInt(i, 10))
+			for (let key in this._clients) {
+				this.removeClient(key)
 			}
 			global.clearInterval(this._heartBeatsTimer)
 			this._connected = false
@@ -161,13 +161,16 @@ export class NCSServerConnection {
 		})
 	}
 
-	private _sendHeartBeats (): void {
-		for (let i in this._clients) {
-			let heartbeat = new HeartBeat()
-			heartbeat.port = this._clients[i].clientDescription
-			this.executeCommand(heartbeat).then((data) => {
-				if (this._debug) console.log(`Heartbeat on ${this._clients[i].clientDescription} received.`, data)
+	private _sendHeartBeats (): Promise<any[]> {
+		return Promise.all(
+			Object.keys(this._clients).map((key) => {
+				let heartbeat = new HeartBeat()
+				heartbeat.port = this._clients[key].clientDescription
+				return this.executeCommand(heartbeat)
+				.then((data) => {
+					if (this._debug) console.log(`Heartbeat on ${this._clients[key].clientDescription} received.`, data)
+				})
 			})
-		}
+		)
 	}
 }

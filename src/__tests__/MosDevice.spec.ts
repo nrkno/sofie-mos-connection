@@ -1,6 +1,7 @@
 import { MosConnection } from '../MosConnection'
 import { ConnectionConfig } from '../config/connectionConfig'
 import { MosDevice } from '../MosDevice'
+// @ts-ignore Socket is never read
 import { Socket } from 'net'
 import { SocketMock } from '../__mocks__/socket'
 import { IMOSConnectionStatus } from '../api'
@@ -34,7 +35,7 @@ let testoptions = {
 	}
 }
 
-describe('MosDevice', async () => {
+// describe('MosDevice', async () => {
 	// // @todo: @ojna: fix this?
 	// test('Print XML', () => {
 	// 	let mos = new MosDevice(testconfig, testoptions, null)
@@ -47,7 +48,7 @@ describe('MosDevice', async () => {
 
 	// 	expect(mos.messageXMLBlocks.end({ pretty: false })).toEqual('<test>')
 	// })
-})
+// })
 
 describe('MosDevice: Profile 0', () => {
 	test('init and connectionStatusChanged', async () => {
