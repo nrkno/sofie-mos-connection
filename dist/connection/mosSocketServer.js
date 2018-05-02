@@ -18,23 +18,21 @@ class MosSocketServer extends events_1.EventEmitter {
         this._socketServer.on('error', (error) => this._onServerError(error));
     }
     dispose(sockets) {
-        return new Promise((resolveDispose) => {
-            let closePromises = [];
-            // close clients
-            sockets.forEach(socket => {
-                closePromises.push(new Promise((resolve) => {
-                    socket.on('close', resolve);
-                    socket.end();
-                    socket.destroy();
-                }));
-            });
-            // close server
+        let closePromises = [];
+        // close clients
+        sockets.forEach(socket => {
             closePromises.push(new Promise((resolve) => {
-                this._socketServer.on('close', resolve);
-                this._socketServer.close();
+                socket.on('close', resolve);
+                socket.end();
+                socket.destroy();
             }));
-            Promise.all(closePromises).then(() => resolveDispose());
         });
+        // close server
+        closePromises.push(new Promise((resolve) => {
+            this._socketServer.on('close', resolve);
+            this._socketServer.close();
+        }));
+        return Promise.all(closePromises);
     }
     /** */
     listen() {

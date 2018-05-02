@@ -5,6 +5,11 @@ const net_1 = require("net");
 const socketConnection_1 = require("./socketConnection");
 const parser = require("xml2json");
 const iconv = require('iconv-lite');
+const parseOptions = {
+    'object': true,
+    coerce: true,
+    trim: true
+};
 class MosSocketClient extends events_1.EventEmitter {
     /** */
     constructor(host, port, description, debug) {
@@ -19,6 +24,8 @@ class MosSocketClient extends events_1.EventEmitter {
         this._queueCallback = {};
         this._queueMessages = [];
         this._ready = false;
+        this._startingUp = true;
+        this.dataChunks = '';
         this._host = host;
         this._port = port;
         this._description = description;
@@ -196,30 +203,88 @@ class MosSocketClient extends events_1.EventEmitter {
     _onData(data) {
         this._client.emit(socketConnection_1.SocketConnectionEvent.ALIVE);
         // data = Buffer.from(data, 'ucs2').toString()
-        let str = iconv.decode(data, 'utf16-be');
+        let messageString = iconv.decode(data, 'utf16-be').trim();
         if (this._debug)
-            console.log(`${this._description} Received: ${str}`);
+            console.log(`${this._description} Received: ${messageString}`);
+        let firstMatch = '<mos>'; // <mos>
+        let first = messageString.substr(0, firstMatch.length);
+        let lastMatch = '</mos>'; // </mos>
+        let last = messageString.substr(-lastMatch.length);
+        let parsedData;
         try {
-            let parsedData = parser.toJson(str, {
-                'object': true,
-                coerce: true,
-                trim: true
-            });
-            let messageId = parsedData.mos.messageID;
-            let cb = this._queueCallback[messageId];
-            let msg = this._queueMessages[0];
-            if (msg.messageID.toString() !== (messageId + '')) {
-                console.log('Mos reply id diff: ' + messageId + ', ' + msg.messageID);
+            // console.log(first === firstMatch, last === lastMatch, last, lastMatch)
+            if (first === firstMatch && last === lastMatch) {
+                // Data ready to be parsed:
+                // @ts-ignore xml2json says arguments are wrong, but its not.
+                parsedData = parser.toJson(messageString, parseOptions);
+                this.dataChunks = '';
             }
-            if (cb) {
-                cb(null, parsedData);
-                this._queueMessages.shift(); // remove the first message
-                delete this._queueCallback[messageId];
+            else if (last === lastMatch) {
+                // Last chunk, ready to parse with saved data:
+                // @ts-ignore xml2json says arguments are wrong, but its not.
+                parsedData = parser.toJson(this.dataChunks + messageString, parseOptions);
+                this.dataChunks = '';
             }
+            else if (first === firstMatch) {
+                // Chunk, save for later:
+                this.dataChunks = messageString;
+            }
+            else {
+                // Chunk, save for later:
+                this.dataChunks += messageString;
+            }
+            // let parsedData: any = parser.toJson(messageString, )
+            if (parsedData) {
+                let messageId = parsedData.mos.messageID;
+                if (messageId) {
+                    let cb = this._queueCallback[messageId];
+                    let msg = this._queueMessages[0];
+                    if (msg) {
+                        if (msg.messageID.toString() !== (messageId + '')) {
+                            console.log('Mos reply id diff: ' + messageId + ', ' + msg.messageID);
+                            console.log(parsedData);
+                        }
+                        if (cb) {
+                            cb(null, parsedData);
+                            this._queueMessages.shift(); // remove the first message
+                            delete this._queueCallback[messageId];
+                        }
+                    }
+                    else {
+                        // huh, we've got a reply to something we've not sent.
+                        console.log('Got reply to something we\'ve not asked for', messageString);
+                    }
+                }
+                else {
+                    // error message?
+                    if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
+                        console.log('Mos Error message:' + parsedData.mos.mosAck.statusDescription);
+                        this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription);
+                    }
+                    else {
+                        // unknown message..
+                        this.emit('error', 'Unknown message: ' + messageString);
+                    }
+                }
+            }
+            else {
+                return;
+            }
+            // console.log('messageString', messageString)
+            // console.log('first msg', messageString)
+            this._startingUp = false;
         }
         catch (e) {
-            console.log('str', str);
-            throw e;
+            console.log('messageString', messageString);
+            if (this._startingUp) {
+                // when starting up, we might get half a message, let's ignore this error then
+                console.log('Strange XML-message upon startup');
+            }
+            else {
+                console.log('dataChunks-------------\n', this.dataChunks);
+                console.log('messageString---------\n', messageString);
+                this.emit('error', e);
+            }
         }
         this._ready = true;
         this.processQueue();

@@ -27,11 +27,19 @@ var Parser;
             ID: new mosString128_1.MosString128(xml.roID),
             Slug: new mosString128_1.MosString128(xml.roSlug)
         };
-        if (xml.hasOwnProperty('roEdStart'))
+        if (xml.hasOwnProperty('roEdStart') && !isEmpty(xml.roEdStart))
             ro.EditorialStart = new mosTime_1.MosTime(xml.roEdStart);
-        if (xml.hasOwnProperty('roEdDur'))
+        if (xml.hasOwnProperty('roEdDur') && !isEmpty(xml.roEdDur))
             ro.EditorialDuration = new mosDuration_1.MosDuration(xml.roEdDur);
-        if (xml.hasOwnProperty('mosExternalMetadata')) {
+        if (xml.hasOwnProperty('roChannel') && !isEmpty(xml.roChannel))
+            ro.DefaultChannel = new mosString128_1.MosString128(xml.roChannel);
+        if (xml.hasOwnProperty('roTrigger') && !isEmpty(xml.roTrigger))
+            ro.Trigger = new mosString128_1.MosString128(xml.roTrigger);
+        if (xml.hasOwnProperty('macroIn') && !isEmpty(xml.macroIn))
+            ro.MacroIn = new mosString128_1.MosString128(xml.macroIn);
+        if (xml.hasOwnProperty('macroOut') && !isEmpty(xml.macroOut))
+            ro.MacroOut = new mosString128_1.MosString128(xml.macroOut);
+        if (xml.hasOwnProperty('mosExternalMetadata') && !isEmpty(xml.mosExternalMetadata)) {
             // TODO: Handle an array of mosExternalMetadata
             let meta = {
                 MosSchema: xml.mosExternalMetadata.mosSchema,
@@ -41,7 +49,6 @@ var Parser;
                 meta.MosScope = xml.mosExternalMetadata.mosScope;
             ro.MosExternalMetaData = [meta];
         }
-        // TODO: Add & test DefaultChannel, Trigger, MacroIn, MacroOut
         return ro;
     }
     Parser.xml2ROBase = xml2ROBase;
@@ -68,10 +75,15 @@ var Parser;
     }
     Parser.xml2Stories = xml2Stories;
     function xml2FullStory(xml) {
-        let story = Object.assign({
+        let story0 = xml2Story(xml);
+        let story = {
+            ID: story0.ID,
+            Slug: story0.Slug,
+            Number: story0.Number,
+            MosExternalMetaData: story0.MosExternalMetaData,
             RunningOrderId: new mosString128_1.MosString128(xml.roID),
             Body: xml2Body(xml.storyBody)
-        }, xml2Story(xml));
+        };
         return story;
     }
     Parser.xml2FullStory = xml2FullStory;
@@ -443,6 +455,19 @@ var Parser;
         })
         console.log('xml2Body', body)
         */
+        // Temporary implementation:
+        if (xml.storyItem) {
+            let items = xml.storyItem;
+            if (!Array.isArray(items))
+                items = [items];
+            items.forEach((item) => {
+                let bodyItem = {
+                    Type: 'storyItem',
+                    Content: item
+                };
+                body.push(bodyItem);
+            });
+        }
         return body;
     }
     Parser.xml2Body = xml2Body;

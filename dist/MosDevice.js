@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const net_1 = require("net");
 const mosString128_1 = require("./dataTypes/mosString128");
 const mosTime_1 = require("./dataTypes/mosTime");
-const mosDuration_1 = require("./dataTypes/mosDuration");
+// import { MosDuration } from './dataTypes/mosDuration'
 const _0_listMachInfo_1 = require("./mosModel/0_listMachInfo");
 const ROAck_1 = require("./mosModel/ROAck");
 const _0_reqMachInfo_1 = require("./mosModel/0_reqMachInfo");
@@ -18,6 +18,7 @@ const _1_mosObj_1 = require("./mosModel/1_mosObj");
 const _1_mosListAll_1 = require("./mosModel/1_mosListAll");
 const _1_reqMosObj_1 = require("./mosModel/1_reqMosObj");
 const _1_reqMosObjAll_1 = require("./mosModel/1_reqMosObjAll");
+const _4_roReqAll_1 = require("./mosModel/4_roReqAll");
 class MosDevice {
     constructor(idPrimary, idSecondary, connectionConfig, primaryConnection, secondaryConnection) {
         this._debug = false;
@@ -120,44 +121,44 @@ class MosDevice {
                 this._callbackOnGetMachineInfo().then((m) => {
                     let resp = new _0_listMachInfo_1.ListMachineInfo(m);
                     resolve(resp);
-                });
+                }).catch(reject);
                 // Profile 1:
             }
             else if (data.mosReqObj && typeof this._callbackOnRequestMOSOBject === 'function') {
                 this._callbackOnRequestMOSOBject(data.mosReqObj.objID).then((mosObj) => {
                     let resp = new _1_mosObj_1.MosObj(mosObj);
                     resolve(resp);
-                });
+                }).catch(reject);
             }
             else if (data.mosReqAll && typeof this._callbackOnRequestAllMOSObjects === 'function') {
                 this._callbackOnRequestAllMOSObjects().then((mosObjs) => {
                     let resp = new _1_mosListAll_1.MosListAll(mosObjs);
                     resolve(resp);
-                });
+                }).catch(reject);
                 // Profile 2:
             }
             else if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
-                let stories = Parser_1.Parser.xml2Stories(data.roCreate.story);
-                let ro = {
-                    ID: new mosString128_1.MosString128(data.roCreate.roID),
-                    Slug: new mosString128_1.MosString128(data.roCreate.roSlug),
+                let ro = Parser_1.Parser.xml2RO(data.roCreate);
+                /*
+                let stories: Array<IMOSROStory> = Parser.xml2Stories(data.roCreate.story)
+                let ro: IMOSRunningOrder = {
+                    ID: new MosString128(data.roCreate.roID),
+                    Slug: new MosString128(data.roCreate.roSlug),
                     Stories: stories
-                };
-                if (data.roCreate.hasOwnProperty('roEdStart'))
-                    ro.EditorialStart = new mosTime_1.MosTime(data.roCreate.roEdStart);
-                if (data.roCreate.hasOwnProperty('roEdDur'))
-                    ro.EditorialDuration = new mosDuration_1.MosDuration(data.roCreate.roEdDur);
+                }
+
+                if (data.roCreate.hasOwnProperty('roEdStart')) ro.EditorialStart = new MosTime(data.roCreate.roEdStart)
+                if (data.roCreate.hasOwnProperty('roEdDur')) ro.EditorialDuration = new MosDuration(data.roCreate.roEdDur)
                 if (data.roCreate.hasOwnProperty('mosExternalMetadata')) {
                     // TODO: Handle an array of mosExternalMetadata
-                    let meta = {
+                    let meta: IMOSExternalMetaData = {
                         MosSchema: data.roCreate.mosExternalMetadata.mosSchema,
                         MosPayload: data.roCreate.mosExternalMetadata.mosPayload
-                    };
-                    if (data.roCreate.mosExternalMetadata.hasOwnProperty('mosScope'))
-                        meta.MosScope = data.roCreate.mosExternalMetadata.mosScope;
-                    ro.MosExternalMetaData = [meta];
+                    }
+                    if (data.roCreate.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = data.roCreate.mosExternalMetadata.mosScope
+                    ro.MosExternalMetaData = [meta]
                 }
-                // TODO: Add & test DefaultChannel, Trigger, MacroIn, MacroOut
+                */
                 this._callbackOnCreateRunningOrder(ro).then((resp) => {
                     let ack = new ROAck_1.ROAck();
                     ack.ID = resp.ID;
@@ -497,7 +498,7 @@ class MosDevice {
                         mosExternalMetaData: this.mosExternalMetaData // TODO: No data from ENPS, needs test!
                     };
                     resolve(list);
-                });
+                }).catch(reject);
             }
             else {
                 reject('No Connection');
@@ -541,7 +542,7 @@ class MosDevice {
                     else {
                         reject('Unknown response');
                     }
-                });
+                }).catch(reject);
             }
             else {
                 reject('No Connection');
@@ -563,7 +564,7 @@ class MosDevice {
                     else {
                         reject('Unknown response');
                     }
-                });
+                }).catch(reject);
             }
             else {
                 reject('No Connection');
@@ -599,7 +600,8 @@ class MosDevice {
                     else {
                         reject('Unknown response');
                     }
-                });
+                })
+                    .catch(reject);
             }
             else {
                 reject('No Connection');
@@ -629,7 +631,7 @@ class MosDevice {
                 this._currentConnection.executeCommand(message).then((data) => {
                     let roAck = Parser_1.Parser.xml2ROAck(data.mos.roAck);
                     resolve(roAck);
-                });
+                }).catch(reject);
             }
             else {
                 reject('No Connection');
@@ -648,7 +650,7 @@ class MosDevice {
                 this._currentConnection.executeCommand(message).then((data) => {
                     let roAck = Parser_1.Parser.xml2ROAck(data.mos.roAck);
                     resolve(roAck);
-                });
+                }).catch(reject);
             }
             else {
                 reject('No Connection');
@@ -670,7 +672,7 @@ class MosDevice {
                 this._currentConnection.executeCommand(message).then((data) => {
                     let roAck = Parser_1.Parser.xml2ROAck(data.mos.roAck);
                     resolve(roAck);
-                });
+                }).catch(reject);
             }
             else {
                 reject('No Connection');
@@ -711,6 +713,32 @@ class MosDevice {
         this._callbackOnROSwapItems = cb;
     }
     /* Profile 4 */
+    getAllRunningOrders() {
+        let message = new _4_roReqAll_1.ROReqAll();
+        return new Promise((resolve, reject) => {
+            if (this._currentConnection) {
+                this._currentConnection.executeCommand(message).then((data) => {
+                    if ((data.mos.roListAll || {}).ro) {
+                        let xmlRos = data.mos.roListAll.ro;
+                        if (!Array.isArray(xmlRos))
+                            xmlRos = [xmlRos];
+                        let ros = [];
+                        xmlRos.forEach((xmlRo) => {
+                            ros.push(Parser_1.Parser.xml2ROBase(xmlRo));
+                        });
+                        resolve(ros);
+                    }
+                    else {
+                        console.log(data.mos);
+                        reject('Unknown reply ');
+                    }
+                }).catch(reject);
+            }
+            else {
+                reject('No Connection');
+            }
+        });
+    }
     onROStory(cb) {
         this._callbackOnROStory = cb;
     }

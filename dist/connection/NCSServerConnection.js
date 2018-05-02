@@ -122,8 +122,8 @@ class NCSServerConnection {
     }
     dispose() {
         return new Promise((resolveDispose) => {
-            for (let i in this._clients) {
-                this.removeClient(parseInt(i, 10));
+            for (let key in this._clients) {
+                this.removeClient(key);
             }
             global.clearInterval(this._heartBeatsTimer);
             this._connected = false;
@@ -133,14 +133,15 @@ class NCSServerConnection {
         });
     }
     _sendHeartBeats() {
-        for (let i in this._clients) {
+        return Promise.all(Object.keys(this._clients).map((key) => {
             let heartbeat = new _0_heartBeat_1.HeartBeat();
-            heartbeat.port = this._clients[i].clientDescription;
-            this.executeCommand(heartbeat).then((data) => {
+            heartbeat.port = this._clients[key].clientDescription;
+            return this.executeCommand(heartbeat)
+                .then((data) => {
                 if (this._debug)
-                    console.log(`Heartbeat on ${this._clients[i].clientDescription} received.`, data);
+                    console.log(`Heartbeat on ${this._clients[key].clientDescription} received.`, data);
             });
-        }
+        }));
     }
 }
 exports.NCSServerConnection = NCSServerConnection;

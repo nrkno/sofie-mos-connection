@@ -19,10 +19,10 @@ export declare class NCSServerConnection {
     private _heartBeatsDelay;
     constructor(id: string, host: string, mosID: string, timeout?: number, debug?: boolean);
     /** */
-    registerOutgoingConnection(clientID: number, client: MosSocketClient, clientDescription: ConnectionType): void;
-    createClient(clientID: number, port: number, clientDescription: ConnectionType): void;
+    registerOutgoingConnection(clientID: string, client: MosSocketClient, clientDescription: ConnectionType): void;
+    createClient(clientID: string, port: number, clientDescription: ConnectionType): void;
     /** */
-    removeClient(clientID: number): void;
+    removeClient(clientID: string): void;
     connect(): void;
     executeCommand(message: MosMessage): Promise<any>;
     onConnectionChange(cb: () => void): void;

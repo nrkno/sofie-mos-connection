@@ -22,6 +22,8 @@ export declare class MosSocketClient extends EventEmitter {
     private _queueMessages;
     private _ready;
     private processQueueInterval;
+    private _startingUp;
+    private dataChunks;
     /** */
     constructor(host: string, port: number, description: string, debug?: boolean);
     /** */

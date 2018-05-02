@@ -1,8 +1,10 @@
+/// <reference types="node" />
 import { IConnectionConfig, IProfiles } from './config/connectionConfig';
 import { IMosConnection, IMOSDeviceConnectionOptions } from './api';
 import { MosDevice } from './MosDevice';
 import { NCSServerConnection } from './connection/NCSServerConnection';
-export declare class MosConnection implements IMosConnection {
+import { EventEmitter } from 'events';
+export declare class MosConnection extends EventEmitter implements IMosConnection {
     static CONNECTION_PORT_LOWER: number;
     static CONNECTION_PORT_UPPER: number;
     static CONNECTION_PORT_QUERY: number;
@@ -38,7 +40,7 @@ export declare class MosConnection implements IMosConnection {
     /** */
     private _initiateIncomingConnections();
     /** */
-    private _registerIncomingClient(e);
+    private _registerIncomingClient(client);
     /** */
     private _disposeIncomingSocket(socketID);
     private static readonly nextSocketID;
