@@ -19,7 +19,6 @@ import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
 import * as parser from 'xml2json'
 import { ROAck } from '../mosModel/ROAck'
-import { Z_STREAM_END } from 'zlib';
 
 function isEmpty (obj: any) {
 	if (typeof obj === 'object') {
@@ -75,10 +74,15 @@ export namespace Parser {
 		})
 	}
 	export function xml2FullStory (xml: any): IMOSROFullStory {
-		let story: IMOSROFullStory = Object.assign({
+		let story0 = xml2Story(xml)
+		let story: IMOSROFullStory = {
+			ID: story0.ID,
+			Slug: story0.Slug,
+			Number: story0.Number,
+			MosExternalMetaData: story0.MosExternalMetaData,
 			RunningOrderId: new MosString128(xml.roID),
 			Body: xml2Body(xml.storyBody)
-		}, xml2Story(xml))
+		}
 
 		return story
 	}
@@ -417,6 +421,18 @@ export namespace Parser {
 		})
 		console.log('xml2Body', body)
 		*/
+		// Temporary implementation:
+		if (xml.storyItem) {
+			let items: Array<any> = xml.storyItem
+			if (!Array.isArray(items)) items = [items]
+			items.forEach((item) => {
+				let bodyItem: IMOSROFullStoryBodyItem = {
+					Type: 'storyItem',
+					Content: item
+				}
+				body.push(bodyItem)
+			})
+		}
 		return body
 	}
 }
