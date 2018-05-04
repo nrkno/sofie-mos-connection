@@ -8,3 +8,5 @@ let mos = new MosConnection(new ConnectionConfig({
 		'1': true
 	}
 }))
+mos.init()
+.catch(console.log)

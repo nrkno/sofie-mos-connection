@@ -31,8 +31,10 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	private _incomingSockets: {[sockedId: string]: SocketDescription} = {}
 	private _ncsConnections: {[host: string]: NCSServerConnection} = {}
 	private _mosDevices: {[ncsID: string]: MosDevice} = {}
+	private _initialized: boolean = false
+	private _isListening: boolean = false
 
-	private _isListening: Promise<boolean[]>
+	// private _isListening: Promise<boolean[]>
 
 	private _onconnection: (mosDevice: MosDevice) => void
 
@@ -41,17 +43,31 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		super()
 		this._conf = new ConnectionConfig(configOptions)
 
-		if (this._conf.acceptsConnections) {
-			this._isListening = this._initiateIncomingConnections()
-		}
 		if (this._conf.debug) {
 			this._debug = this._conf.debug
 		}
 	}
+	init (): Promise<boolean> {
+		this._initialized = true
+		if (this._conf.acceptsConnections) {
+			return new Promise((resolve, reject) => {
+				this._initiateIncomingConnections()
+				.then(() => {
+					this._isListening = true
+					resolve(true)
+				})
+				.catch((err) => {
+					// this.emit('error', err)
+					reject(err)
+				})
+			})
+		}
+		return Promise.resolve(false)
+	}
 
 	/** */
 	connect (connectionOptions: IMOSDeviceConnectionOptions): Promise<MosDevice> {
-		// @todo: implement this
+		if (!this._initialized) throw Error('Not initialized, run .init() first!')
 
 		return new Promise((resolve) => {
 
@@ -122,8 +138,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		return mosDevice
 	}
 	/** */
-	get isListening (): Promise<boolean[]> {
-		return this._isListening || Promise.reject(`Mos connection is not listening for connections. "Config.acceptsConnections" is "${this._conf.acceptsConnections}"`)
+	get isListening (): boolean {
+		return this._isListening
 	}
 
 	/** */
@@ -182,12 +198,12 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	}
 
 	/** */
-	private _initiateIncomingConnections (): Promise<boolean[]> {
+	private _initiateIncomingConnections (): Promise<void> {
 		// console.log('_initiateIncomingConnections')
 		// shouldn't accept connections, so won't rig socket servers
 		if (!this._conf.acceptsConnections) {
+			return Promise.reject('Not configured for accepting connections')
 			// console.log('reject')
-			return Promise.reject(false)
 		}
 
 		// setup two socket servers, then resolve with their listening statuses
@@ -206,7 +222,10 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				this._upperSocketServer.listen(),
 				this._querySocketServer.listen()
 			]
-		)
+		).then(() => {
+			// All sockets are open and listening at this point
+			return
+		})
 	}
 
 	/** */

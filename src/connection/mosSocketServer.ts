@@ -46,42 +46,44 @@ export class MosSocketServer extends EventEmitter {
 	}
 
 	/** */
-	listen (): Promise<boolean> {
+	listen (): Promise<void> {
 		if (this._debug) console.log('listen', this._portDescription, this._port)
 		return new Promise((resolve, reject) => {
-			if (this._debug) console.log('inside promise', this._portDescription, this._port)
+			try {
 
-			// already listening
-			if (this._socketServer.listening) {
-				if (this._debug) console.log('already listening', this._portDescription, this._port)
-				resolve(true)
-				return
-			}
-
-			// handles listening-listeners and cleans up
-			let handleListeningStatus = (e?: Error) => {
-				if (this._debug) console.log('handleListeningStatus')
-				this._socketServer.removeListener('listening', handleListeningStatus)
-				this._socketServer.removeListener('close', handleListeningStatus)
-				this._socketServer.removeListener('error', handleListeningStatus)
+				if (this._debug) console.log('inside promise', this._portDescription, this._port)
+				// already listening
 				if (this._socketServer.listening) {
-					if (this._debug) console.log('listening', this._portDescription, this._port)
-					resolve(true)
-				} else {
-					if (this._debug) console.log('not listening', this._portDescription, this._port)
-					reject(e || false)
+					if (this._debug) console.log('already listening', this._portDescription, this._port)
+					resolve()
+					return
 				}
+				// handles listening-listeners and cleans up
+				let handleListeningStatus = (e?: Error) => {
+					if (this._debug) console.log('handleListeningStatus')
+					this._socketServer.removeListener('listening', handleListeningStatus)
+					this._socketServer.removeListener('close', handleListeningStatus)
+					this._socketServer.removeListener('error', handleListeningStatus)
+					if (this._socketServer.listening) {
+						if (this._debug) console.log('listening', this._portDescription, this._port)
+						resolve()
+					} else {
+						if (this._debug) console.log('not listening', this._portDescription, this._port)
+						reject(e || false)
+					}
+				}
+
+				// listens and handles error and events
+				this._socketServer.on('listening', () => {
+					if (this._debug) console.log('listening!!')
+				})
+				this._socketServer.once('listening', handleListeningStatus)
+				this._socketServer.once('close', handleListeningStatus)
+				this._socketServer.once('error', handleListeningStatus)
+				this._socketServer.listen(this._port)
+			} catch (e) {
+				reject(e)
 			}
-
-			// listens and handles error and events
-			this._socketServer.on('listening', () => {
-				if (this._debug) console.log('listening!!')
-			})
-			this._socketServer.once('listening', handleListeningStatus)
-			this._socketServer.once('close', handleListeningStatus)
-			this._socketServer.once('error', handleListeningStatus)
-
-			this._socketServer.listen(this._port)
 		})
 	}
 

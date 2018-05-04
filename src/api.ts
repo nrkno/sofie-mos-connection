@@ -48,7 +48,7 @@ import { MosDevice } from './MosDevice'
 // }
 
 export interface IMosConnection {
-	readonly isListening: Promise<boolean[]>
+	readonly isListening: boolean
 
 	readonly acceptsConnections: boolean
 	readonly profiles: IProfiles

@@ -228,9 +228,10 @@ describe('MosDevice: General', () => {
 		await expect(mos.isListening).resolves.toEqual([true, true, true])
 
 		// close sockets after test
-		mos.isListening
-			.then(() => mos.dispose())
-			.catch(() => mos.dispose())
+		mos.dispose()
+		// mos.isListening
+		// 	.then(() => )
+		// 	.catch(() => mos.dispose())
 	})
 })
 describe('MosDevice: Profile 0', () => {
