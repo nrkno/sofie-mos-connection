@@ -10,3 +10,4 @@ coverage
 wallaby.conf.js
 
 .DS_Store
+docs/
