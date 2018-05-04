@@ -263,7 +263,7 @@ export class MosSocketClient extends EventEmitter {
 				// @ts-ignore xml2json says arguments are wrong, but its not.
 				parsedData = parser.toJson(this.dataChunks + messageString, parseOptions)
 				this.dataChunks = ''
-			} else if (first === firstMatch ) {
+			} else if (first === firstMatch) {
 				// Chunk, save for later:
 				this.dataChunks = messageString
 			} else {

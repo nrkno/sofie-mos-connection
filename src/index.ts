@@ -6,7 +6,7 @@ export {
 	ConnectionConfig
 } from './config/connectionConfig'
 
-export {MosString128} from './dataTypes/mosString128'
-export {MosDuration} from './dataTypes/mosDuration'
-export {MosTime} from './dataTypes/mosTime'
-export {MosDevice} from './MosDevice'
+export { MosString128 } from './dataTypes/mosString128'
+export { MosDuration } from './dataTypes/mosDuration'
+export { MosTime } from './dataTypes/mosTime'
+export { MosDevice } from './MosDevice'

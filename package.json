@@ -86,11 +86,11 @@
     "sleep-ms": "^2.0.1",
     "standard-version": "^4.0.0",
     "trash-cli": "^1.4.0",
-    "ts-jest": "^22.0.4",
-    "tslint": "^5.4.3",
-    "tslint-config-standard": "^6.0.1",
-    "typedoc": "^0.8.0",
-    "typescript": "^2.4.1"
+    "ts-jest": "^22.4.4",
+    "tslint": "^5.10.0",
+    "tslint-config-standard": "^7.0.0",
+    "typedoc": "^0.11.1",
+    "typescript": "^2.8.3"
   },
   "keywords": [
     "mos",

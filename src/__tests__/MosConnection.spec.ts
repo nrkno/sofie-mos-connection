@@ -331,10 +331,10 @@ describe('MosDevice: Profile 1', () => {
 				xmlApiData.mosObj2
 			])
 		})
-		mosDevice.onRequestMOSObject ((objId: string): Promise<IMOSObject | null> => {
+		mosDevice.onRequestMOSObject((objId: string): Promise<IMOSObject | null> => {
 			return onRequestMOSObject(objId)
 		})
-		mosDevice.onRequestAllMOSObjects ((): Promise<Array<IMOSObject>> => {
+		mosDevice.onRequestAllMOSObjects((): Promise<Array<IMOSObject>> => {
 			return onRequestAllMOSObjects()
 		})
 		let b = doBeforeAll()
@@ -367,7 +367,7 @@ describe('MosDevice: Profile 1', () => {
 	})
 	test('onRequestMOSObject', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(serverSocketMockLower, xmlData.reqObj )
+		await fakeIncomingMessage(serverSocketMockLower, xmlData.reqObj)
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(1)
 		expect(onRequestMOSObject.mock.calls[0][0]).toEqual(xmlApiData.mosObj.ID.toString())
 		expect(onRequestAllMOSObjects).toHaveBeenCalledTimes(0)
@@ -379,12 +379,12 @@ describe('MosDevice: Profile 1', () => {
 		let reply = decode(serverSocketMockLower.mockSentMessage.mock.calls[0][0])
 		let parsedReply: any = parser.toJson(reply, parseOptions)
 
-		expect(parsedReply.mos.mosObj.objID + '').toEqual (xmlApiData.mosObj.ID.toString())
-		expect(parsedReply.mos.mosObj.objSlug + '').toEqual (xmlApiData.mosObj.Slug.toString())
+		expect(parsedReply.mos.mosObj.objID + '').toEqual(xmlApiData.mosObj.ID.toString())
+		expect(parsedReply.mos.mosObj.objSlug + '').toEqual(xmlApiData.mosObj.Slug.toString())
 	})
 	test('onRequestAllMOSObjects', async () => {
 		// Fake incoming message on socket:
-		await fakeIncomingMessage(serverSocketMockLower, xmlData.mosReqAll )
+		await fakeIncomingMessage(serverSocketMockLower, xmlData.mosReqAll)
 		expect(onRequestAllMOSObjects).toHaveBeenCalledTimes(1)
 		// expect(onRequestMOSObject.mock.calls[0][0]).toEqual(xmlApiData.mosObj.ID.toString())
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(0)
@@ -396,10 +396,10 @@ describe('MosDevice: Profile 1', () => {
 		let reply = decode(serverSocketMockLower.mockSentMessage.mock.calls[0][0])
 		let parsedReply: any = parser.toJson(reply, parseOptions)
 		expect(parsedReply.mos.mosListAll.mosObj).toHaveLength(2)
-		expect(parsedReply.mos.mosListAll.mosObj[0].objID + '').toEqual (xmlApiData.mosObj.ID.toString())
-		expect(parsedReply.mos.mosListAll.mosObj[0].objSlug + '').toEqual (xmlApiData.mosObj.Slug.toString())
-		expect(parsedReply.mos.mosListAll.mosObj[1].objID + '').toEqual (xmlApiData.mosObj2.ID.toString())
-		expect(parsedReply.mos.mosListAll.mosObj[1].objSlug + '').toEqual (xmlApiData.mosObj2.Slug.toString())
+		expect(parsedReply.mos.mosListAll.mosObj[0].objID + '').toEqual(xmlApiData.mosObj.ID.toString())
+		expect(parsedReply.mos.mosListAll.mosObj[0].objSlug + '').toEqual(xmlApiData.mosObj.Slug.toString())
+		expect(parsedReply.mos.mosListAll.mosObj[1].objID + '').toEqual(xmlApiData.mosObj2.ID.toString())
+		expect(parsedReply.mos.mosListAll.mosObj[1].objSlug + '').toEqual(xmlApiData.mosObj2.Slug.toString())
 
 	})
 	test('getMOSObject', async () => {
@@ -527,67 +527,67 @@ describe('MosDevice: Profile 2', () => {
 		onROSwapStories = jest.fn(roAckReply)
 		onROSwapItems = jest.fn(roAckReply)
 
-		mosDevice.onRequestMOSObject ((objId: string): Promise<IMOSObject | null> => {
+		mosDevice.onRequestMOSObject((objId: string): Promise<IMOSObject | null> => {
 			return onRequestMOSObject(objId)
 		})
-		mosDevice.onRequestAllMOSObjects ((): Promise<Array<IMOSObject>> => {
+		mosDevice.onRequestAllMOSObjects((): Promise<Array<IMOSObject>> => {
 			return onRequestAllMOSObjects()
 		})
-		mosDevice.onCreateRunningOrder ((ro: IMOSRunningOrder): Promise<IMOSROAck> => {
+		mosDevice.onCreateRunningOrder((ro: IMOSRunningOrder): Promise<IMOSROAck> => {
 			return onCreateRunningOrder(ro)
 		})
-		mosDevice.onReplaceRunningOrder ((ro: IMOSRunningOrder): Promise<IMOSROAck> => {
+		mosDevice.onReplaceRunningOrder((ro: IMOSRunningOrder): Promise<IMOSROAck> => {
 			return onReplaceRunningOrder(ro)
 		})
-		mosDevice.onDeleteRunningOrder ((runningOrderId: MosString128): Promise<IMOSROAck> => {
+		mosDevice.onDeleteRunningOrder((runningOrderId: MosString128): Promise<IMOSROAck> => {
 			return onDeleteRunningOrder(runningOrderId)
 		})
-		mosDevice.onRequestRunningOrder ((runningOrderId: MosString128): Promise<IMOSRunningOrder | null> => {
+		mosDevice.onRequestRunningOrder((runningOrderId: MosString128): Promise<IMOSRunningOrder | null> => {
 			return onRequestRunningOrder(runningOrderId)
 		})
-		mosDevice.onMetadataReplace ((metadata: IMOSRunningOrderBase): Promise<IMOSROAck> => {
+		mosDevice.onMetadataReplace((metadata: IMOSRunningOrderBase): Promise<IMOSROAck> => {
 			return onMetadataReplace(metadata)
 		})
-		mosDevice.onRunningOrderStatus ((status: IMOSRunningOrderStatus): Promise<IMOSROAck> => {
+		mosDevice.onRunningOrderStatus((status: IMOSRunningOrderStatus): Promise<IMOSROAck> => {
 			return onRunningOrderStatus(status)
 		})
-		mosDevice.onStoryStatus ((status: IMOSStoryStatus): Promise<IMOSROAck> => {
+		mosDevice.onStoryStatus((status: IMOSStoryStatus): Promise<IMOSROAck> => {
 			return onStoryStatus(status)
 		})
-		mosDevice.onItemStatus ((status: IMOSItemStatus): Promise<IMOSROAck> => {
+		mosDevice.onItemStatus((status: IMOSItemStatus): Promise<IMOSROAck> => {
 			return onItemStatus(status)
 		})
-		mosDevice.onReadyToAir ((Action: IMOSROReadyToAir): Promise<IMOSROAck> => {
+		mosDevice.onReadyToAir((Action: IMOSROReadyToAir): Promise<IMOSROAck> => {
 			return onReadyToAir(Action)
 		})
-		mosDevice.onROInsertStories ((Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> => {
+		mosDevice.onROInsertStories((Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> => {
 			return onROInsertStories(Action, Stories)
 		})
-		mosDevice.onROInsertItems ((Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> => {
+		mosDevice.onROInsertItems((Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> => {
 			return onROInsertItems(Action, Items)
 		})
-		mosDevice.onROReplaceStories ((Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> => {
+		mosDevice.onROReplaceStories((Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> => {
 			return onROReplaceStories(Action, Stories)
 		})
-		mosDevice.onROReplaceItems ((Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> => {
+		mosDevice.onROReplaceItems((Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> => {
 			return onROReplaceItems(Action, Items)
 		})
-		mosDevice.onROMoveStories ((Action: IMOSStoryAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
+		mosDevice.onROMoveStories((Action: IMOSStoryAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
 			return onROMoveStories(Action, Stories)
 		})
-		mosDevice.onROMoveItems ((Action: IMOSItemAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
+		mosDevice.onROMoveItems((Action: IMOSItemAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
 			return onROMoveItems(Action, Items)
 		})
-		mosDevice.onRODeleteStories ((Action: IMOSROAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
+		mosDevice.onRODeleteStories((Action: IMOSROAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
 			return onRODeleteStories(Action, Stories)
 		})
-		mosDevice.onRODeleteItems ((Action: IMOSStoryAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
+		mosDevice.onRODeleteItems((Action: IMOSStoryAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
 			return onRODeleteItems(Action, Items)
 		})
-		mosDevice.onROSwapStories ((Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128): Promise<IMOSROAck> => {
+		mosDevice.onROSwapStories((Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128): Promise<IMOSROAck> => {
 			return onROSwapStories(Action, StoryID0, StoryID1)
 		})
-		mosDevice.onROSwapItems ((Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> => {
+		mosDevice.onROSwapItems((Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> => {
 			return onROSwapItems(Action, ItemID0, ItemID1)
 		})
 		let b = doBeforeAll()
@@ -675,8 +675,8 @@ describe('MosDevice: Profile 2', () => {
 		// console.log('parsedReply',parsedReply.mos)
 
 		// expect(parsedReply.mos.roList).toMatchObject(roLight(xmlApiData.roCreate))
-		expect(parsedReply.mos.roList.roID + '').toEqual (xmlApiData.roCreate.ID.toString())
-		expect(parsedReply.mos.roList.roSlug + '').toEqual (xmlApiData.roCreate.Slug.toString())
+		expect(parsedReply.mos.roList.roID + '').toEqual(xmlApiData.roCreate.ID.toString())
+		expect(parsedReply.mos.roList.roSlug + '').toEqual(xmlApiData.roCreate.Slug.toString())
 		expect(parsedReply.mos.roList.story).toHaveLength(xmlApiData.roCreate.Stories.length)
 		expect(parsedReply.mos.roList.story[0].storyID + '').toEqual(xmlApiData.roCreate.Stories[0].ID.toString())
 		expect(parsedReply.mos.roList.story[0].item).toBeTruthy()
@@ -912,7 +912,7 @@ describe('MosDevice: Profile 4', () => {
 		// Profile 2:
 		onROStory = jest.fn(roAckReply)
 
-		mosDevice.onROStory ((story: IMOSROFullStory): Promise<IMOSROAck> => {
+		mosDevice.onROStory((story: IMOSROFullStory): Promise<IMOSROAck> => {
 			return onROStory(story)
 		})
 		let b = doBeforeAll()
