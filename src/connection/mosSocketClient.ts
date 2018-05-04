@@ -184,15 +184,17 @@ export class MosSocketClient extends EventEmitter {
 	private executeCommand (message: MosMessage): void {
 
 		// message.prepare() // @todo, is prepared? is sent already? logic needed
-		let str: string = message.toString()
-		let buf = iconv.encode(str, 'utf16-be')
+		let messageString: string = message.toString()
+		let buf = iconv.encode(messageString, 'utf16-be')
 
 		// console.log('sending',this._client.name, str)
 
 		global.clearTimeout(this._commandTimeoutTimer)
 		this._commandTimeoutTimer = global.setTimeout(() => this._onCommandTimeout(), this._commandTimeout)
 		this._client.write(buf, 'ucs2')
-		if (this._debug) console.log(`MOS command sent from ${this._description} : ${str}\r\nbytes sent: ${this._client.bytesWritten}`)
+		if (this._debug) console.log(`MOS command sent from ${this._description} : ${messageString}\r\nbytes sent: ${this._client.bytesWritten}`)
+
+		this.emit('rawMessage','sent', messageString)
 
 	}
 
@@ -238,11 +240,12 @@ export class MosSocketClient extends EventEmitter {
 	}
 
   /** */
-	private _onData (data: Buffer ) {
+	private _onData (data: Buffer) {
 		this._client.emit(SocketConnectionEvent.ALIVE)
 		// data = Buffer.from(data, 'ucs2').toString()
 		let messageString: string = iconv.decode(data, 'utf16-be').trim()
 
+		this.emit('rawMessage','recieved', messageString)
 		if (this._debug) console.log(`${this._description} Received: ${messageString}`)
 
 		let firstMatch = '<mos>' // <mos>

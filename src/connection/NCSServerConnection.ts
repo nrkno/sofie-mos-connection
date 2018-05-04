@@ -2,6 +2,7 @@ import { ConnectionType } from './socketConnection'
 import { MosSocketClient } from '../connection/mosSocketClient'
 import { MosMessage } from '../mosModel/MosMessage'
 import { HeartBeat } from '../mosModel/0_heartBeat'
+import { EventEmitter } from 'events'
 
 // import {ProfilesSupport} from '../config/connectionConfig';
 // import {Socket} from 'net';
@@ -13,7 +14,7 @@ export interface ClientDescription {
 // Namnförslag: NCSServer
 // Vi ansluter från oss till NCS
 /** */
-export class NCSServerConnection {
+export class NCSServerConnection extends EventEmitter {
 	private _connected: boolean
 	// private _lastSeen: number
 	private _id: string
@@ -29,6 +30,7 @@ export class NCSServerConnection {
 	private _heartBeatsDelay: number
 
 	constructor (id: string, host: string, mosID: string, timeout?: number, debug?: boolean) {
+		super()
 		this._id = id
 		this._host = host
 		this._timeout = timeout || 5000
@@ -38,17 +40,16 @@ export class NCSServerConnection {
 		if (debug) this._debug = debug
 	}
 
-	/** */
-	registerOutgoingConnection (clientID: string, client: MosSocketClient, clientDescription: ConnectionType) {
+	createClient (clientID: string, port: number, clientDescription: ConnectionType) {
+		let client = new MosSocketClient(this._host, port, clientDescription, this._debug)
 		if (this._debug) console.log('registerOutgoingConnection', clientID)
 		this._clients[clientID] = {
 			client: client,
 			clientDescription: clientDescription
 		}
-	}
-
-	createClient (clientID: string, port: number, clientDescription: ConnectionType) {
-		this.registerOutgoingConnection(clientID, new MosSocketClient(this._host, port, clientDescription, this._debug), clientDescription)
+		client.on('rawMessage', (type: string, message: string) => {
+			this.emit('rawMessage', type, message)
+		})
 	}
 
 	/** */

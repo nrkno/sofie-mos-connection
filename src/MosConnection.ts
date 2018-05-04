@@ -68,6 +68,10 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			let secondary = null
 			this._ncsConnections[connectionOptions.primary.host] = primary
 
+			primary.on('rawMessage', (type: string, message: string) => {
+				this.emit('rawMessage', 'primary', type, message)
+			})
+
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
 
@@ -80,6 +84,9 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 					this._debug
 				)
 				this._ncsConnections[connectionOptions.secondary.host] = secondary
+				secondary.on('rawMessage', (type: string, message: string) => {
+					this.emit('rawMessage', 'secondary', type, message)
+				})
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
 			}
@@ -114,7 +121,6 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		if (this._onconnection) this._onconnection(mosDevice)
 		return mosDevice
 	}
-
 	/** */
 	get isListening (): Promise<boolean[]> {
 		return this._isListening || Promise.reject(`Mos connection is not listening for connections. "Config.acceptsConnections" is "${this._conf.acceptsConnections}"`)
@@ -207,11 +213,13 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	private _registerIncomingClient (client: SocketDescription) {
 		let socketID = MosConnection.nextSocketID
 
+		this.emit('rawMessage', 'incoming_' + socketID, 'newConnection', 'From ' + client.socket.remoteAddress + ':' + client.socket.remotePort)
 		// console.log('_registerIncomingClient', socketID, e.socket.remoteAddress)
 
 		// handles socket listeners
 		client.socket.on('close', (/*hadError: boolean*/) => {
 			this._disposeIncomingSocket(socketID)
+			this.emit('rawMessage', 'incoming_' + socketID, 'closedConnection', '')
 		}) // => this._disposeIncomingSocket(e.socket, socketID))
 		client.socket.on('end', () => {
 			if (this._debug) console.log('Socket End')
@@ -221,6 +229,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		})
 		client.socket.on('data', (data: Buffer) => {
 			let messageString = iconv.decode(data, 'utf16-be').trim()
+
+			this.emit('rawMessage', 'incoming', 'recieved', messageString)
 
 			if (this._debug) console.log(`Socket got data (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${data}`)
 
@@ -249,7 +259,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 					// @ts-ignore xml2json says arguments are wrong, but its not.
 					parsed = parser.toJson(client.chunks + messageString, parseOptions)
 					client.chunks = ''
-				} else if (first === firstMatch ) {
+				} else if (first === firstMatch) {
 					// Chunk, save for later:
 					client.chunks = messageString
 				} else {
@@ -269,9 +279,11 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 						message.ncsID = ncsID
 						message.mosID = mosID
 						message.prepare(mosMessageId)
-						let msgStr: string = message.toString()
-						let buf = iconv.encode(msgStr, 'utf16-be')
+						let messageString: string = message.toString()
+						let buf = iconv.encode(messageString, 'utf16-be')
 						client.socket.write(buf, 'usc2')
+
+						this.emit('rawMessage', 'incoming_' + socketID, 'sent', messageString)
 					}
 					if (!mosDevice && this._conf.openRelay) {
 						// console.log('OPEN RELAY ------------------')
