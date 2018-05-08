@@ -46,7 +46,7 @@ jest.mock('net')
 
 // const literal = <T>(o: T) => o
 
-function getMosDevice (): Promise<MosDevice> {
+async function getMosDevice (): Promise<MosDevice> {
 	SocketMock.mockClear()
 	ServerMock.mockClear()
 
@@ -58,8 +58,8 @@ function getMosDevice (): Promise<MosDevice> {
 			'1': true
 		}
 	})
-
-	return mos.connect({
+	await mos.init()
+	return await mos.connect({
 		primary: {
 			id: 'ncs.newscenter.com',
 			host: '127.0.0.1',
@@ -223,15 +223,11 @@ describe('MosDevice: General', () => {
 			}
 		})
 		expect(mos.acceptsConnections).toBe(true)
-
-		// SocketMock.mockAddReply('<hello>')
-		await expect(mos.isListening).resolves.toEqual([true, true, true])
+		await mos.init()
+		await expect(mos.isListening).toBe(true)
 
 		// close sockets after test
-		mos.dispose()
-		// mos.isListening
-		// 	.then(() => )
-		// 	.catch(() => mos.dispose())
+		await mos.dispose()
 	})
 })
 describe('MosDevice: Profile 0', () => {
@@ -247,6 +243,7 @@ describe('MosDevice: Profile 0', () => {
 				'1': true
 			}
 		}))
+		await mos.init()
 
 		let mosDevice = await mos.connect({
 			primary: {

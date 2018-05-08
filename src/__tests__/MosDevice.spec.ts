@@ -53,7 +53,7 @@ let testoptions = {
 describe('MosDevice: Profile 0', () => {
 	test('init and connectionStatusChanged', async () => {
 		let mos = new MosConnection(testconfig)
-
+		await mos.init()
 		let mosDevice: MosDevice = await mos.connect(testoptions)
 
 		expect(mosDevice).toBeTruthy()
