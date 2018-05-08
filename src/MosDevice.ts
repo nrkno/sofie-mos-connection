@@ -623,7 +623,7 @@ export class MosDevice implements IMOSDevice {
 			if (this._currentConnection) {
 				this._currentConnection.executeCommand(message).then((data) => {
 					if (data.mos.roAck) {
-						reject(data.mos.roAck)
+						reject(Parser.xml2ROAck(data.mos.roAck))
 					} else if (data.mos.mosObj) {
 						let obj: IMOSObject = Parser.xml2MosObj(data.mos.mosObj)
 						resolve(obj)
@@ -643,7 +643,7 @@ export class MosDevice implements IMOSDevice {
 			if (this._currentConnection) {
 				this._currentConnection.executeCommand(message).then((data) => {
 					if (data.mos.roAck) {
-						reject(data.mos.roAck)
+						reject(Parser.xml2ROAck(data.mos.roAck))
 					} else if (data.mos.mosListAll) {
 						let objs: Array<IMOSObject> = Parser.xml2MosObjs(data.mos.mosListAll.mosObj)
 						resolve(objs)
@@ -682,7 +682,7 @@ export class MosDevice implements IMOSDevice {
 			if (this._currentConnection) {
 				this._currentConnection.executeCommand(message).then((data) => {
 					if (data.mos.roAck) {
-						reject(data.mos.roAck)
+						reject(Parser.xml2ROAck(data.mos.roAck))
 					} else if (data.mos.roList) {
 						let ro: IMOSRunningOrder = Parser.xml2RO(data.mos.roList)
 						resolve(ro)
@@ -810,12 +810,14 @@ export class MosDevice implements IMOSDevice {
 		return new Promise((resolve, reject) => {
 			if (this._currentConnection) {
 				this._currentConnection.executeCommand(message).then((data) => {
-					if ((data.mos.roListAll || {}).ro) {
-						let xmlRos: Array<any> = data.mos.roListAll.ro
+					if (data.mos.hasOwnProperty('roListAll')) {
+						let xmlRos: Array<any> = (data.mos.roListAll || {}).ro
 						if (!Array.isArray(xmlRos)) xmlRos = [xmlRos]
 						let ros: Array<IMOSRunningOrderBase> = []
 						xmlRos.forEach((xmlRo) => {
-							ros.push(Parser.xml2ROBase(xmlRo))
+							if (xmlRo) {
+								ros.push(Parser.xml2ROBase(xmlRo))
+							}
 						})
 						resolve(ros)
 					} else {
