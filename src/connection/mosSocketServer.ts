@@ -8,6 +8,7 @@ export class MosSocketServer extends EventEmitter {
 	private _portDescription: IncomingConnectionType
 	private _socketServer: Server
 	private _debug: boolean = false
+	private _connectedSockets: Array<Socket> = []
 
 	/** */
 	constructor (port: number, description: IncomingConnectionType, debug?: boolean) {
@@ -38,10 +39,16 @@ export class MosSocketServer extends EventEmitter {
 		// close server
 		closePromises.push(
 			new Promise((resolve) => {
-				this._socketServer.on('close', resolve)
-				this._socketServer.close()
+				// this._socketServer.on('close', resolve)
+				this._socketServer.close(() => {
+					resolve()
+				})
 			})
 		)
+		// close any server connections:
+		this._connectedSockets.forEach((socket: Socket) => {
+			socket.destroy()
+		})
 		return Promise.all(closePromises)
 	}
 
@@ -89,6 +96,13 @@ export class MosSocketServer extends EventEmitter {
 
 	/** */
 	private _onClientConnection (socket: Socket) {
+		this._connectedSockets.push(socket)
+		socket.on('close', () => {
+			let i = this._connectedSockets.indexOf(socket)
+			if (i !== -1) {
+				this._connectedSockets.splice(i, 1)
+			}
+		})
 		this.emit(SocketServerEvent.CLIENT_CONNECTED, {
 			socket: socket,
 			portDescription: this._portDescription
