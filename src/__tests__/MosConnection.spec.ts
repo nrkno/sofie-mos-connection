@@ -59,7 +59,7 @@ async function getMosDevice (): Promise<MosDevice> {
 		}
 	})
 	await mos.init()
-	return await mos.connect({
+	return mos.connect({
 		primary: {
 			id: 'ncs.newscenter.com',
 			host: '127.0.0.1',
@@ -224,7 +224,7 @@ describe('MosDevice: General', () => {
 		})
 		expect(mos.acceptsConnections).toBe(true)
 		await mos.init()
-		await expect(mos.isListening).toBe(true)
+		expect(mos.isListening).toBe(true)
 
 		// close sockets after test
 		await mos.dispose()
