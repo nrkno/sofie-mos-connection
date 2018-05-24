@@ -37,16 +37,6 @@ jobs:
           at: ~/tv-automation-mos-connection
       - run: yarn install
       - run: yarn ci
-  test_node-6:
-    docker:
-      - image: circleci/node:6
-    working_directory: ~/tv-automation-mos-connection
-    steps:
-      - attach_workspace:
-          at: ~/tv-automation-mos-connection
-      - run: yarn install
-      - run: yarn ci
-
   send-coverage:
     <<: *defaults
     steps:
@@ -117,13 +107,9 @@ workflows:
       - test_node-8:
           requires:
             - checkout_code
-      - test_node-6:
-          requires:
-            - checkout_code
       - send-coverage:
           requires:
             - check_vulnerabilities
-            - test_node-6
             - test_node-8
           filters:
             branches:
