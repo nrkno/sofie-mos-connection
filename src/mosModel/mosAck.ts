@@ -24,7 +24,7 @@ export class MOSAck extends MosMessage implements IMOSAck {
 
 		root.ele('objID', {}, this.ID.toString())
 		root.ele('objRev', {}, this.Revision)
-		root.ele('status', {}, IMOSAckStatus[this.Status])
+		root.ele('status', {}, (IMOSAckStatus as any)[this.Status])
 		root.ele('statusDescription', {}, this.Description.toString())
 
 		return root
