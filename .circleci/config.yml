@@ -73,6 +73,7 @@ jobs:
           fingerprints:
             - "82:ce:be:6e:24:71:ef:a9:4b:1e:fd:7a:8e:5e:2a:ef"
       - run: yarn install
+      - run: mkdir -p ~/.ssh
       - run:
           name: Keyscan Github
           command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
