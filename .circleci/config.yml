@@ -3,21 +3,6 @@ defaults: &defaults
     - image: circleci/node:8
   working_directory: ~/tv-automation-mos-connection
 
-deployToNPM-core: &deployToNPM-core
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/tv-automation-mos-connection
-      - run:
-          name: Publish to NPM with yarn
-          command: NEW_VERSION=$(node -p "require('./package.json').version") && yarn publish --access=public --new-version=$NEW_VERSION
-      - deploy:
-          name: Publish to NPM with npm
-          command: npm publish --access=public
-      - persist_to_workspace:
-          root: .
-          paths: [.]
-
 version: 2
 jobs:
   checkout_code:
@@ -96,9 +81,22 @@ jobs:
           root: .
           paths: [.]
   deployToNPM:
-    <<: *deployToNPM-core
-  deployToNPM-manual:
-    <<: *deployToNPM-core
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/tv-automation-mos-connection
+      - run:
+          name: Write NPM Token to ~/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run:
+          name: Publish to NPM with yarn
+          command: NEW_VERSION=$(node -p "require('./package.json').version") && yarn publish --access=public --new-version=$NEW_VERSION
+      - deploy:
+          name: Publish to NPM with npm
+          command: npm publish --access=public
+      - persist_to_workspace:
+          root: .
+          paths: [.]
 
 workflows:
   version: 2
@@ -134,15 +132,6 @@ workflows:
             branches:
               only:
                 - master
-      - manualRelease:
-          type: approval
-          requires:
-            - build
-          # Disable filter branch for testing
-          # filters:
-          #   branches:
-          #     only:
-          #       - master
       - deployToNPM:
           requires:
             - build
@@ -150,10 +139,36 @@ workflows:
             branches:
               only:
                 - master
-      - deployToNPM-manual:
+  manual_release:
+    jobs:
+      - manualRelease:
+          type: approval
           requires:
-            - manualRelease
+            - build
           filters:
             branches:
-              only:
+              ignore:
                 - master
+      - checkout_code:
+          requires:
+            - manualRelease
+      - check_vulnerabilities:
+          requires:
+            - checkout_code
+      - test_node-8:
+          requires:
+            - checkout_code
+      - send-coverage:
+          requires:
+            - check_vulnerabilities
+            - test_node-8
+      - release:
+          requires:
+            - checkout_code
+            - send-coverage
+      - build:
+          requires:
+            - release
+      - deployToNPM:
+          requires:
+            - build
