@@ -143,8 +143,6 @@ workflows:
     jobs:
       - manualRelease:
           type: approval
-          requires:
-            - build
           filters:
             branches:
               ignore:
