@@ -225,7 +225,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			if (this._debug) console.log(`Socket got data (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${data}`)
 
 			let parsed: any = null
-			let parseOptions = {
+			let parseOptions: any = {
 				object: true,
 				coerce: true,
 				trim: true
@@ -242,11 +242,9 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				// console.log(messageString)
 				if (first === firstMatch && last === lastMatch) {
 					// Data ready to be parsed:
-					// @ts-ignore xml2json says arguments are wrong, but its not.
 					parsed = parser.toJson(messageString, parseOptions)
 				} else if (last === lastMatch) {
 					// Last chunk, ready to parse with saved data:
-					// @ts-ignore xml2json says arguments are wrong, but its not.
 					parsed = parser.toJson(client.chunks + messageString, parseOptions)
 					client.chunks = ''
 				} else if (first === firstMatch ) {

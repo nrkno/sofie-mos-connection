@@ -7,7 +7,7 @@ const iconv = require('iconv-lite')
 
 export type CallBackFunction = (err: any, data: object) => void
 
-const parseOptions = {
+const parseOptions: any = {
 	'object': true,
 	coerce: true,
 	trim: true
@@ -255,12 +255,10 @@ export class MosSocketClient extends EventEmitter {
 			// console.log(first === firstMatch, last === lastMatch, last, lastMatch)
 			if (first === firstMatch && last === lastMatch) {
 				// Data ready to be parsed:
-				// @ts-ignore xml2json says arguments are wrong, but its not.
 				parsedData = parser.toJson(messageString, parseOptions)
 				this.dataChunks = ''
 			} else if (last === lastMatch) {
 				// Last chunk, ready to parse with saved data:
-				// @ts-ignore xml2json says arguments are wrong, but its not.
 				parsedData = parser.toJson(this.dataChunks + messageString, parseOptions)
 				this.dataChunks = ''
 			} else if (first === firstMatch ) {
