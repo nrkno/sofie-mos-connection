@@ -1,6 +1,6 @@
 defaults: &defaults
   docker:
-    - image: circleci/node:8.0
+    - image: circleci/node:8
   working_directory: ~/tv-automation-mos-connection
 
 version: 2
