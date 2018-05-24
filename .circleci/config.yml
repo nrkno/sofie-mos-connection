@@ -3,6 +3,21 @@ defaults: &defaults
     - image: circleci/node:8
   working_directory: ~/tv-automation-mos-connection
 
+deployToNPM-core: &deployToNPM-core
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/tv-automation-mos-connection
+      - run:
+          name: Publish to NPM with yarn
+          command: NEW_VERSION=$(node -p "require('./package.json').version") && yarn publish --access=public --new-version=$NEW_VERSION
+      - deploy:
+          name: Publish to NPM with npm
+          command: npm publish --access=public
+      - persist_to_workspace:
+          root: .
+          paths: [.]
+
 version: 2
 jobs:
   checkout_code:
@@ -80,21 +95,10 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: [.]
-
   deployToNPM:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/tv-automation-mos-connection
-      - run:
-          name: Publish to NPM with yarn
-          command: NEW_VERSION=$(node -p "require('./package.json').version") && yarn publish --access=public --new-version=$NEW_VERSION
-      - deploy:
-          name: Publish to NPM with npm
-          command: npm publish --access=public
-      - persist_to_workspace:
-          root: .
-          paths: [.]
+    <<: *deployToNPM-core
+  deployToNPM-manual:
+    <<: *deployToNPM-core
 
 workflows:
   version: 2
@@ -130,9 +134,25 @@ workflows:
             branches:
               only:
                 - master
+      - manualRelease:
+          type: approval
+          requires:
+            - build
+          # Disable filter branch for testing
+          # filters:
+          #   branches:
+          #     only:
+          #       - master
       - deployToNPM:
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - master
+      - deployToNPM-manual:
+          requires:
+            - manualRelease
           filters:
             branches:
               only:
