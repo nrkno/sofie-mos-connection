@@ -40,7 +40,7 @@
     "test": "yarn lint && yarn unit",
     "test:integration": "yarn lint && jest --config=jest-integration.config.js",
     "watch": "jest --watch",
-    "cov": "jest; opn coverage/lcov-report/index.html",
+    "cov": "jest --coverage; opn coverage/lcov-report/index.html",
     "cov-open": "opn coverage/lcov-report/index.html",
     "send-coverage": "jest && codecov",
     "docs": "yarn docs:html && opn docs/index.html",
