@@ -95,9 +95,9 @@ jobs:
       - run:
           name: Publish to NPM with yarn
           command: NEW_VERSION=$(node -p "require('./package.json').version") && yarn publish --access=public --new-version=$NEW_VERSION
-      - deploy:
-          name: Publish to NPM with npm
-          command: npm publish --access=public
+      # - deploy:
+      #     name: Publish to NPM with npm
+      #     command: npm publish --access=public
       - persist_to_workspace:
           root: .
           paths: [.]
