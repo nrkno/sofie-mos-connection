@@ -10,7 +10,7 @@ Based on http://mosprotocol.com
 ## Getting started
 
 ```typescript
-import {MosConnection} from 'mos-connection'
+import { MosConnection } from 'tv-automation-mos-connection'
 
 let mos = new MosConnection(new ConnectionConfig({
 	mosID: 'my.mos.application',

@@ -215,13 +215,11 @@ class MosSocketClient extends events_1.EventEmitter {
             // console.log(first === firstMatch, last === lastMatch, last, lastMatch)
             if (first === firstMatch && last === lastMatch) {
                 // Data ready to be parsed:
-                // @ts-ignore xml2json says arguments are wrong, but its not.
                 parsedData = parser.toJson(messageString, parseOptions);
                 this.dataChunks = '';
             }
             else if (last === lastMatch) {
                 // Last chunk, ready to parse with saved data:
-                // @ts-ignore xml2json says arguments are wrong, but its not.
                 parsedData = parser.toJson(this.dataChunks + messageString, parseOptions);
                 this.dataChunks = '';
             }

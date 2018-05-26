@@ -31,7 +31,6 @@ class ListMachineInfo extends MosMessage_1.MosMessage {
         root.ele('mosRev', this.info.mosRev.toString());
         let p = root.ele('supportedProfiles').att('deviceType', this.info.supportedProfiles.deviceType);
         for (let i = 0; i < 8; i++) {
-            // @ts-ignore
             p.ele('mosProfile', (this.info.supportedProfiles['profile' + i] ? 'YES' : 'NO')).att('number', i);
         }
         return root;

@@ -1,5 +1,5 @@
 {
-  "name": "mos-connection",
+  "name": "tv-automation-mos-connection",
   "version": "0.1.0",
   "description": "MOS compliant TCP/IP Socket connection.",
   "main": "dist/index.js",
@@ -9,12 +9,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/superflytv/mos-connection.git"
+    "url": "git+https://github.com/nrkno/tv-automation-mos-connection.git"
   },
   "bugs": {
-    "url": "https://github.com/superflytv/mos-connection/issues"
+    "url": "https://github.com/nrkno/tv-automation-mos-connection/issues"
   },
-  "homepage": "https://github.com/superflytv/mos-connection#readme",
+  "homepage": "https://github.com/nrkno/tv-automation-mos-connection#readme",
   "author": {
     "name": "Jesper Stærkær",
     "email": "jesper@superfly.tv",
