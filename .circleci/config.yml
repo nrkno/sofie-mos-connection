@@ -143,34 +143,35 @@ workflows:
             branches:
               only:
                 - master
-  manual_release:
-    jobs:
-      - manualRelease:
-          type: approval
-          filters:
-            branches:
-              ignore:
-                - master
-      - checkout_code:
-          requires:
-            - manualRelease
-      - check_vulnerabilities:
-          requires:
-            - checkout_code
-      - test_node-8:
-          requires:
-            - checkout_code
-      - send-coverage:
-          requires:
-            - check_vulnerabilities
-            - test_node-8
-      - release:
-          requires:
-            - checkout_code
-            - send-coverage
-      - build:
-          requires:
-            - release
-      - deployToNPM:
-          requires:
-            - build
+  # Uncomment for manual release flow on non-master branch:
+  # manual_release:
+  #   jobs:
+  #     - manualRelease:
+  #         type: approval
+  #         filters:
+  #           branches:
+  #             ignore:
+  #               - master
+  #     - checkout_code:
+  #         requires:
+  #           - manualRelease
+  #     - check_vulnerabilities:
+  #         requires:
+  #           - checkout_code
+  #     - test_node-8:
+  #         requires:
+  #           - checkout_code
+  #     - send-coverage:
+  #         requires:
+  #           - check_vulnerabilities
+  #           - test_node-8
+  #     - release:
+  #         requires:
+  #           - checkout_code
+  #           - send-coverage
+  #     - build:
+  #         requires:
+  #           - release
+  #     - deployToNPM:
+  #         requires:
+  #           - build
