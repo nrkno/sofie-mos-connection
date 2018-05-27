@@ -51,7 +51,8 @@
     "release": "yarn reset && yarn test && yarn docs:publish && yarn changelog",
     "reset": "git clean -dfx && git reset --hard && yarn",
     "ci": "yarn test",
-    "validate:dependencies": "nsp check"
+    "validate:dependencies": "nsp check && yarn license-validate",
+    "license-validate": "node-license-validator -p -d --allow-licenses MIT BSD BSD-3-Clause ISC Apache"
   },
   "scripts-info": {
     "info": "Display information about the scripts",
@@ -79,6 +80,7 @@
     "gh-pages": "^1.0.0",
     "jest": "^22.4.2",
     "mkdirp": "^0.5.1",
+    "node-license-validator": "^1.3.0",
     "npm-scripts-info": "^0.3.6",
     "nsp": "^3.2.1",
     "nyc": "^11.0.3",
