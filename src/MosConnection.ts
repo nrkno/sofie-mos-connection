@@ -171,6 +171,14 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			return
 		})
 	}
+	getDevice (id: string): MosDevice {
+		return this._mosDevices[id]
+	}
+	getDevices (): Array<MosDevice> {
+		return Object.keys(this._mosDevices).map((id: string) => {
+			return this._mosDevices[id]
+		})
+	}
 	disposeMosDevice (mosDevice: MosDevice): Promise<void>
 	disposeMosDevice (myMosID: string, theirMosId0: string, theirMosId1: string | null): Promise<void>
 	disposeMosDevice (

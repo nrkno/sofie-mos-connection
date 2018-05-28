@@ -164,6 +164,18 @@ export class MosDevice implements IMOSDevice {
 	get idSecondary (): string | null {
 		return this._idSecondary
 	}
+	get primaryHost (): string | null {
+		return (this._primaryConnection ? this._primaryConnection.host : null)
+	}
+	get primaryId (): string | null {
+		return (this._primaryConnection ? this._primaryConnection.id : null)
+	}
+	get secondaryHost (): string | null {
+		return (this._secondaryConnection ? this._secondaryConnection.host : null)
+	}
+	get secondaryId (): string | null {
+		return (this._secondaryConnection ? this._secondaryConnection.id : null)
+	}
 
 	emitConnectionChange (): void {
 		if (this._callbackOnConnectionChange) this._callbackOnConnectionChange(this.getConnectionStatus())
