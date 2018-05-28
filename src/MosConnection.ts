@@ -108,7 +108,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			}
 
 			// initialize mosDevice:
-			let mosDevice = this.registerMosDevice(
+			let mosDevice = this._registerMosDevice(
 				this._conf.mosID,
 				connectionOptions.primary.id,
 				(connectionOptions.secondary ? connectionOptions.secondary.id : null),
@@ -119,23 +119,6 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	}
 	onConnection (cb: (mosDevice: MosDevice) => void) {
 		this._onconnection = cb
-	}
-	registerMosDevice (
-		myMosID: string,
-		theirMosId0: string,
-		theirMosId1: string | null,
-		primary: NCSServerConnection | null, secondary: NCSServerConnection | null
-	): MosDevice {
-		let id0 = myMosID + '_' + theirMosId0
-		let id1 = (theirMosId1 ? myMosID + '_' + theirMosId1 : null)
-		let mosDevice = new MosDevice(id0, id1, this._conf, primary, secondary)
-		this._mosDevices[id0] = mosDevice
-		if (id1) this._mosDevices[id1] = mosDevice
-		mosDevice.connect()
-
-		// emit to .onConnection
-		if (this._onconnection) this._onconnection(mosDevice)
-		return mosDevice
 	}
 	/** */
 	get isListening (): boolean {
@@ -176,10 +159,49 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		disposePromises.push(this._lowerSocketServer.dispose([]))
 		disposePromises.push(this._upperSocketServer.dispose([]))
 		disposePromises.push(this._querySocketServer.dispose([]))
+
+		Object.keys(this._mosDevices).forEach(deviceId => {
+			let device = this._mosDevices[deviceId]
+			disposePromises.push(
+				device.dispose()
+				.then(() => {
+					delete this._mosDevices[deviceId]
+				})
+			)
+		})
 		return Promise.all(disposePromises)
 		.then(() => {
 			return
 		})
+	}
+	disposeMosDevice (mosDevice: MosDevice): void
+	disposeMosDevice (myMosID: string, theirMosId0: string, theirMosId1: string | null): void
+	disposeMosDevice (
+		myMosIDOrMosDevice: string | MosDevice,
+		theirMosId0?: string,
+		theirMosId1?: string | null
+	) {
+		let id0
+		let id1
+		if (myMosIDOrMosDevice && myMosIDOrMosDevice instanceof MosDevice) {
+			// myMosID = myMosIDOrMosDevice
+			let mosDevice = myMosIDOrMosDevice
+			id0 = mosDevice.idPrimary
+			id1 = mosDevice.idSecondary
+		} else {
+			let myMosID = myMosIDOrMosDevice
+			id0 = myMosID + '_' + theirMosId0
+			id1 = (theirMosId1 ? myMosID + '_' + theirMosId1 : null)
+		}
+
+		if (this._mosDevices[id0]) {
+			this._mosDevices[id0].dispose()
+			delete this._mosDevices[id0]
+		}
+		if (id1 && this._mosDevices[id1]) {
+			this._mosDevices[id1].dispose()
+			delete this._mosDevices[id1]
+		}
 	}
 
 	/** */
@@ -195,6 +217,23 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			return `MOS Compatible – Profiles ${profiles.join(',')}`
 		}
 		return 'Warning: Not MOS compatible'
+	}
+	private _registerMosDevice (
+		myMosID: string,
+		theirMosId0: string,
+		theirMosId1: string | null,
+		primary: NCSServerConnection | null, secondary: NCSServerConnection | null
+	): MosDevice {
+		let id0 = myMosID + '_' + theirMosId0
+		let id1 = (theirMosId1 ? myMosID + '_' + theirMosId1 : null)
+		let mosDevice = new MosDevice(id0, id1, this._conf, primary, secondary)
+		this._mosDevices[id0] = mosDevice
+		if (id1) this._mosDevices[id1] = mosDevice
+		mosDevice.connect()
+
+		// emit to .onConnection
+		if (this._onconnection) this._onconnection(mosDevice)
+		return mosDevice
 	}
 
 	/** */
@@ -308,12 +347,12 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 						// console.log('OPEN RELAY ------------------')
 						// Register a new mosDevice to use for this connection
 						if (parsed.mos.ncsID === this._conf.mosID) {
-							mosDevice = this.registerMosDevice(
+							mosDevice = this._registerMosDevice(
 								this._conf.mosID,
 								parsed.mos.mosID,
 								null,null, null)
 						} else if (parsed.mos.mosID === this._conf.mosID) {
-							mosDevice = this.registerMosDevice(
+							mosDevice = this._registerMosDevice(
 								this._conf.mosID,
 								parsed.mos.ncsID,
 								null, null, null)

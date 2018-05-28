@@ -173,6 +173,15 @@ export class MosDevice implements IMOSDevice {
 		if (this._primaryConnection) this._primaryConnection.connect()
 		if (this._secondaryConnection) this._secondaryConnection.connect()
 	}
+	dispose (): Promise<void> {
+		let ps: Array<Promise<any>> = []
+		if (this._primaryConnection) ps.push(this._primaryConnection.dispose())
+		if (this._secondaryConnection) ps.push(this._secondaryConnection.dispose())
+		return Promise.all(ps)
+		.then(() => {
+			return
+		})
+	}
 
 	routeData (data: any): Promise<any> {
 		if (data && data.hasOwnProperty('mos')) data = data['mos']

@@ -160,7 +160,7 @@ beforeAll(() => {
 	Server = ServerMock
 })
 beforeEach(() => {
-	// SocketMock.mockClear()
+	SocketMock.mockClear()
 })
 describe('MosDevice: General', () => {
 	test('Test the Socket mock', async () => {
@@ -225,9 +225,47 @@ describe('MosDevice: General', () => {
 		expect(mos.acceptsConnections).toBe(true)
 		await mos.init()
 		expect(mos.isListening).toBe(true)
+		expect(SocketMock.instances).toHaveLength(0)
 
 		// close sockets after test
 		await mos.dispose()
+	})
+	test('MosDevice', async () => {
+		let mos = new MosConnection({
+			mosID: 'jestMOS',
+			acceptsConnections: true,
+			profiles: {
+				'0': true,
+				'1': true
+			}
+		})
+		expect(mos.acceptsConnections).toBe(true)
+		await mos.init()
+		expect(mos.isListening).toBe(true)
+
+		let mosDevice = await mos.connect({
+			primary: {
+				id: 'primary',
+				host: '192.168.0.1'
+			}
+			// todo: secondary
+		})
+		expect(mosDevice).toBeTruthy()
+		expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
+
+		expect(SocketMock.instances).toHaveLength(3)
+		expect(SocketMock.instances[1].connectedHost).toEqual('192.168.0.1')
+		expect(SocketMock.instances[1].connectedPort).toEqual(10540)
+		expect(SocketMock.instances[2].connectedHost).toEqual('192.168.0.1')
+		expect(SocketMock.instances[2].connectedPort).toEqual(10541)
+
+		// close sockets after test
+		await mos.dispose()
+
+		expect(SocketMock.instances).toHaveLength(3)
+		expect(SocketMock.instances[1].destroy).toHaveBeenCalledTimes(1)
+		expect(SocketMock.instances[2].destroy).toHaveBeenCalledTimes(1)
+
 	})
 })
 describe('MosDevice: Profile 0', () => {

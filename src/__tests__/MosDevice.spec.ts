@@ -92,5 +92,11 @@ describe('MosDevice: Profile 0', () => {
 		// mock cause timeout
 		// expect(connectionStatusChanged).toHaveBeenCalledTimes(1)
 		// expect(connectionStatusChanged.mock.calls[0][0]).toMatchObject({PrimaryConnected: false})
+
+		// Test proper dispose:
+		mosDevice.dispose()
+
+		expect(connMocks[1].destroy).toHaveBeenCalledTimes(1)
+		expect(connMocks[2].destroy).toHaveBeenCalledTimes(1)
 	})
 })
