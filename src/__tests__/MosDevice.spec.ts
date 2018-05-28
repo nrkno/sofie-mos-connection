@@ -94,7 +94,7 @@ describe('MosDevice: Profile 0', () => {
 		// expect(connectionStatusChanged.mock.calls[0][0]).toMatchObject({PrimaryConnected: false})
 
 		// Test proper dispose:
-		mosDevice.dispose()
+		await mosDevice.dispose()
 
 		expect(connMocks[1].destroy).toHaveBeenCalledTimes(1)
 		expect(connMocks[2].destroy).toHaveBeenCalledTimes(1)

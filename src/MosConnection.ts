@@ -163,10 +163,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		Object.keys(this._mosDevices).forEach(deviceId => {
 			let device = this._mosDevices[deviceId]
 			disposePromises.push(
-				device.dispose()
-				.then(() => {
-					delete this._mosDevices[deviceId]
-				})
+				this.disposeMosDevice(device)
 			)
 		})
 		return Promise.all(disposePromises)
@@ -174,15 +171,15 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			return
 		})
 	}
-	disposeMosDevice (mosDevice: MosDevice): void
-	disposeMosDevice (myMosID: string, theirMosId0: string, theirMosId1: string | null): void
+	disposeMosDevice (mosDevice: MosDevice): Promise<void>
+	disposeMosDevice (myMosID: string, theirMosId0: string, theirMosId1: string | null): Promise<void>
 	disposeMosDevice (
 		myMosIDOrMosDevice: string | MosDevice,
 		theirMosId0?: string,
 		theirMosId1?: string | null
-	) {
-		let id0
-		let id1
+	): Promise<void> {
+		let id0: string
+		let id1: string | null
 		if (myMosIDOrMosDevice && myMosIDOrMosDevice instanceof MosDevice) {
 			// myMosID = myMosIDOrMosDevice
 			let mosDevice = myMosIDOrMosDevice
@@ -193,14 +190,18 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			id0 = myMosID + '_' + theirMosId0
 			id1 = (theirMosId1 ? myMosID + '_' + theirMosId1 : null)
 		}
-
 		if (this._mosDevices[id0]) {
-			this._mosDevices[id0].dispose()
-			delete this._mosDevices[id0]
-		}
-		if (id1 && this._mosDevices[id1]) {
-			this._mosDevices[id1].dispose()
-			delete this._mosDevices[id1]
+			return this._mosDevices[id0].dispose()
+			.then(() => {
+				delete this._mosDevices[id0]
+			})
+		} else if (id1 && this._mosDevices[id1]) {
+			return this._mosDevices[id1].dispose()
+			.then(() => {
+				delete this._mosDevices[id1 || '']
+			})
+		} else {
+			return Promise.reject('Device not found')
 		}
 	}
 
