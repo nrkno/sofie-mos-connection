@@ -15,3 +15,6 @@ These are all the major changes introduced by thin new revision. This is kept he
 10. Adding CODECOV_TOKEN to circleci.
 11. Add circleCI badge top of readme
 12. Rename library to reflect github name
+13. Update .npmignore. Make sure to include all the needed files, and nothing more. Minimal release etc. etc.
+14. Update .gitignore. Remove things like coverage, docs, and so forth.
+15. Remove travis
