@@ -99,9 +99,6 @@ jobs:
       # - deploy:
       #     name: Publish to NPM with npm
       #     command: npm publish --access=public
-      - persist_to_workspace:
-          root: .
-          paths: [.]
 
 workflows:
   version: 2
