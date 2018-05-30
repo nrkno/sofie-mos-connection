@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.0...0.3.1) (2018-05-30)
+
+
+### Bug Fixes
+
+* missed rename ([9f550a4](https://github.com/nrkno/tv-automation-mos-connection/commit/9f550a4))
+* rename steps, workflows, and jobs ([5db0434](https://github.com/nrkno/tv-automation-mos-connection/commit/5db0434))
+* typo in send coverage command ([92bb8a2](https://github.com/nrkno/tv-automation-mos-connection/commit/92bb8a2))
+* yet another typo in config ([25e4df8](https://github.com/nrkno/tv-automation-mos-connection/commit/25e4df8))
+* yet another typoI feel bad. This time I am 87% certain it will work ([004a0ff](https://github.com/nrkno/tv-automation-mos-connection/commit/004a0ff))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.2.0...0.3.0) (2018-05-30)
 
