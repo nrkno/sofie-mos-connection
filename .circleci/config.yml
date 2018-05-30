@@ -95,6 +95,7 @@ jobs:
       - run:
           name: Publish to NPM with yarn
           command: NEW_VERSION=$(node -p "require('./package.json').version") && yarn publish --access=public --new-version=$NEW_VERSION
+      # I have read that some people are experiencing problems with yars publish. Change to npm publish, as below, if that happens.
       # - deploy:
       #     name: Publish to NPM with npm
       #     command: npm publish --access=public
@@ -143,35 +144,3 @@ workflows:
             branches:
               only:
                 - master
-  # Uncomment for manual release flow on non-master branch:
-  # manual_release:
-  #   jobs:
-  #     - manualRelease:
-  #         type: approval
-  #         filters:
-  #           branches:
-  #             ignore:
-  #               - master
-  #     - checkout_code:
-  #         requires:
-  #           - manualRelease
-  #     - check_vulnerabilities:
-  #         requires:
-  #           - checkout_code
-  #     - test_node-8:
-  #         requires:
-  #           - checkout_code
-  #     - send-coverage:
-  #         requires:
-  #           - check_vulnerabilities
-  #           - test_node-8
-  #     - release:
-  #         requires:
-  #           - checkout_code
-  #           - send-coverage
-  #     - build:
-  #         requires:
-  #           - release
-  #     - deployToNPM:
-  #         requires:
-  #           - build
