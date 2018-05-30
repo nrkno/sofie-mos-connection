@@ -3,7 +3,8 @@ node_modules
 test
 src/**.js
 
-coverage
+/coverage
+/docs
 .nyc_output
 *.log
 
