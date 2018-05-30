@@ -132,7 +132,7 @@ workflows:
       - Build:
           requires:
             - Send Coverage
-            - release
+            - Git release
           filters:
             branches:
               only:
