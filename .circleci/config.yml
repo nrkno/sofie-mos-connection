@@ -132,14 +132,14 @@ workflows:
       - Build:
           requires:
             - Send Coverage
-            - Git release
+            - Git Release
           filters:
             branches:
               only:
                 - master
       - Deploy to NPM:
           requires:
-            - build
+            - Build
           filters:
             branches:
               only:
