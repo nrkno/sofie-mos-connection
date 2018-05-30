@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.3"></a>
+## [0.3.3](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.2...0.3.3) (2018-05-30)
+
+
+### Bug Fixes
+
+* remove persist to workspace on last step ([6c075a9](https://github.com/nrkno/tv-automation-mos-connection/commit/6c075a9))
+
+
+
 <a name="0.3.2"></a>
 ## [0.3.2](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.1...0.3.2) (2018-05-30)
 
