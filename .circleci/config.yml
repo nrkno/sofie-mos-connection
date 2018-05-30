@@ -43,7 +43,7 @@ jobs:
       - attach_workspace:
           at: ~/tv-automation-mos-connection
       - run: yarn install
-      - run: yarn Send Coverage
+      - run: yarn send coverage
       - store_artifacts:
           path: ./coverage/clover.xml
           prefix: tests
