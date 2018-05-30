@@ -5,7 +5,7 @@ defaults: &defaults
 
 version: 2
 jobs:
-  checkout_code:
+  Checkout Code:
     <<: *defaults
     steps:
       - checkout
@@ -23,27 +23,27 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: [.]
-  check_vulnerabilities:
+  Check for vulnerabilities:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/tv-automation-mos-connection
       - run: yarn install
       - run: yarn validate:dependencies
-  test_node-8:
+  Test node-8:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/tv-automation-mos-connection
       - run: yarn install
       - run: yarn ci
-  send-coverage:
+  Send Coverage:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/tv-automation-mos-connection
       - run: yarn install
-      - run: yarn send-coverage
+      - run: yarn Send Coverage
       - store_artifacts:
           path: ./coverage/clover.xml
           prefix: tests
@@ -53,7 +53,7 @@ jobs:
       - store_test_results:
           path: ./coverage/clover.xml
 
-  build:
+  Build:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -64,7 +64,7 @@ jobs:
           root: .
           paths: [.]
 
-  release:
+  Git Release:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -84,7 +84,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: [.]
-  deployToNPM:
+  Deploy to NPM:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -105,41 +105,41 @@ jobs:
 
 workflows:
   version: 2
-  test_build_deploy:
+  Test build and deploy(master):
     jobs:
-      - checkout_code
-      - check_vulnerabilities:
+      - Checkout Code
+      - Check for vulnerabilities:
           requires:
-            - checkout_code
-      - test_node-8:
+            - Checkout Code
+      - Test node-8:
           requires:
-            - checkout_code
-      - send-coverage:
+            - Checkout Code
+      - Send Coverage:
           requires:
-            - check_vulnerabilities
-            - test_node-8
+            - Check for vulnerabilities
+            - Test node-8
           filters:
             branches:
               only:
                 - master
-      - release:
+      - Git Release:
           requires:
-            - send-coverage
+            - Send Coverage
           filters:
             branches:
               only:
                 - master
-      - build:
+      - Build:
           requires:
-            - send-coverage
-            - release
+            - Send Coverage
+            - Git Release
           filters:
             branches:
               only:
                 - master
-      - deployToNPM:
+      - Deploy to NPM:
           requires:
-            - build
+            - Build
           filters:
             branches:
               only:
