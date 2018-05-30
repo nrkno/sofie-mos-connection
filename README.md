@@ -1,4 +1,5 @@
 # MOS-Connection
+[![CircleCI](https://circleci.com/gh/nrkno/tv-automation-mos-connection.svg?style=svg)](https://circleci.com/gh/nrkno/tv-automation-mos-connection)
 
 Library for connecting to a Mos-device
 
@@ -9,7 +10,7 @@ Based on http://mosprotocol.com
 ## Getting started
 
 ```typescript
-import {MosConnection} from 'mos-connection'
+import { MosConnection } from 'tv-automation-mos-connection'
 
 let mos = new MosConnection(new ConnectionConfig({
 	mosID: 'my.mos.application',

@@ -1,6 +1,6 @@
 defaults: &defaults
   docker:
-    - image: circleci/node:8.0
+    - image: circleci/node:8
   working_directory: ~/tv-automation-mos-connection
 
 version: 2
@@ -37,16 +37,6 @@ jobs:
           at: ~/tv-automation-mos-connection
       - run: yarn install
       - run: yarn ci
-  test_node-6:
-    docker:
-      - image: circleci/node:6
-    working_directory: ~/tv-automation-mos-connection
-    steps:
-      - attach_workspace:
-          at: ~/tv-automation-mos-connection
-      - run: yarn install
-      - run: yarn ci
-
   send-coverage:
     <<: *defaults
     steps:
@@ -81,8 +71,12 @@ jobs:
           at: ~/tv-automation-mos-connection
       - add_ssh_keys:
           fingerprints:
-            - "82:ce:be:6e:24:71:ef:a9:4b:1e:fd:7a:8e:5e:2a:ef"
+            - "fe:e8:83:0c:e9:a3:83:47:db:a9:f4:ce:a3:1f:7e:28"
       - run: yarn install
+      - run: mkdir -p ~/.ssh
+      - run:
+          name: Keyscan Github
+          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
       - run: git config --global user.email "jesper@starkar.no"
       - run: git config --global user.name "jesperstarkar"
       - run: yarn release
@@ -90,18 +84,21 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: [.]
-
   deployToNPM:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/tv-automation-mos-connection
       - run:
+          name: Write NPM Token to ~/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run:
           name: Publish to NPM with yarn
           command: NEW_VERSION=$(node -p "require('./package.json').version") && yarn publish --access=public --new-version=$NEW_VERSION
-      - deploy:
-          name: Publish to NPM with npm
-          command: npm publish --access=public
+      # I have read that some people are experiencing problems with yars publish. Change to npm publish, as below, if that happens.
+      # - deploy:
+      #     name: Publish to NPM with npm
+      #     command: npm publish --access=public
       - persist_to_workspace:
           root: .
           paths: [.]
@@ -117,13 +114,9 @@ workflows:
       - test_node-8:
           requires:
             - checkout_code
-      - test_node-6:
-          requires:
-            - checkout_code
       - send-coverage:
           requires:
             - check_vulnerabilities
-            - test_node-6
             - test_node-8
           filters:
             branches:
