@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.2.0...0.3.0) (2018-05-30)
+
+
+### Bug Fixes
+
+* add important change step ([1f7bb12](https://github.com/nrkno/tv-automation-mos-connection/commit/1f7bb12))
+* clean out manual release commentsadd comment about yarn publish possibly failing for some users ([d2635f4](https://github.com/nrkno/tv-automation-mos-connection/commit/d2635f4))
+* Remove incorrect guide in changes ([7b4a0a2](https://github.com/nrkno/tv-automation-mos-connection/commit/7b4a0a2))
+* Remove manual release workflow ([49f110b](https://github.com/nrkno/tv-automation-mos-connection/commit/49f110b))
+* run docs generation during CI test ([18729c1](https://github.com/nrkno/tv-automation-mos-connection/commit/18729c1))
+
+
+### Features
+
+* license check ([c47df39](https://github.com/nrkno/tv-automation-mos-connection/commit/c47df39))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.1.0...0.2.0) (2018-05-26)
 
