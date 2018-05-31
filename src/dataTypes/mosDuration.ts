@@ -21,11 +21,12 @@ export class MosDuration {
 		let s = this._duration
 
 		let hh = Math.floor(s / 3600)
-		s -= s * 3600
+		s -= hh * 3600
 
 		let mm = Math.floor(s / 60)
-		s -= s * 60
+		s -= mm * 60
 
+		console.log(hh)
 		let ss = Math.floor(s)
 
 		return hh + ':' + mm + ':' + ss
