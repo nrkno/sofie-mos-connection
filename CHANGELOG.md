@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.8"></a>
+## [0.3.8](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.7...0.3.8) (2018-05-31)
+
+
+### Bug Fixes
+
+* remove dist from git repo ([0607d24](https://github.com/nrkno/tv-automation-mos-connection/commit/0607d24))
+* update documentation on scripts ([261ae04](https://github.com/nrkno/tv-automation-mos-connection/commit/261ae04))
+
+
+
 <a name="0.3.7"></a>
 ## [0.3.7](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.6...0.3.7) (2018-05-31)
 
