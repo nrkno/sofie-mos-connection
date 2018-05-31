@@ -53,8 +53,8 @@ let testoptions = {
 describe('MosDevice: Profile 0', () => {
 	test('init and connectionStatusChanged', async () => {
 		let mos = new MosConnection(testconfig)
-
-		let mosDevice = await mos.connect(testoptions)
+		await mos.init()
+		let mosDevice: MosDevice = await mos.connect(testoptions)
 
 		expect(mosDevice).toBeTruthy()
 
@@ -92,5 +92,11 @@ describe('MosDevice: Profile 0', () => {
 		// mock cause timeout
 		// expect(connectionStatusChanged).toHaveBeenCalledTimes(1)
 		// expect(connectionStatusChanged.mock.calls[0][0]).toMatchObject({PrimaryConnected: false})
+
+		// Test proper dispose:
+		await mosDevice.dispose()
+
+		expect(connMocks[1].destroy).toHaveBeenCalledTimes(1)
+		expect(connMocks[2].destroy).toHaveBeenCalledTimes(1)
 	})
 })

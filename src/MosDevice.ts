@@ -164,6 +164,18 @@ export class MosDevice implements IMOSDevice {
 	get idSecondary (): string | null {
 		return this._idSecondary
 	}
+	get primaryHost (): string | null {
+		return (this._primaryConnection ? this._primaryConnection.host : null)
+	}
+	get primaryId (): string | null {
+		return (this._primaryConnection ? this._primaryConnection.id : null)
+	}
+	get secondaryHost (): string | null {
+		return (this._secondaryConnection ? this._secondaryConnection.host : null)
+	}
+	get secondaryId (): string | null {
+		return (this._secondaryConnection ? this._secondaryConnection.id : null)
+	}
 
 	emitConnectionChange (): void {
 		if (this._callbackOnConnectionChange) this._callbackOnConnectionChange(this.getConnectionStatus())
@@ -172,6 +184,15 @@ export class MosDevice implements IMOSDevice {
 	connect (): void {
 		if (this._primaryConnection) this._primaryConnection.connect()
 		if (this._secondaryConnection) this._secondaryConnection.connect()
+	}
+	dispose (): Promise<void> {
+		let ps: Array<Promise<any>> = []
+		if (this._primaryConnection) ps.push(this._primaryConnection.dispose())
+		if (this._secondaryConnection) ps.push(this._secondaryConnection.dispose())
+		return Promise.all(ps)
+		.then(() => {
+			return
+		})
 	}
 
 	routeData (data: any): Promise<any> {
@@ -623,7 +644,7 @@ export class MosDevice implements IMOSDevice {
 			if (this._currentConnection) {
 				this._currentConnection.executeCommand(message).then((data) => {
 					if (data.mos.roAck) {
-						reject(data.mos.roAck)
+						reject(Parser.xml2ROAck(data.mos.roAck))
 					} else if (data.mos.mosObj) {
 						let obj: IMOSObject = Parser.xml2MosObj(data.mos.mosObj)
 						resolve(obj)
@@ -643,7 +664,7 @@ export class MosDevice implements IMOSDevice {
 			if (this._currentConnection) {
 				this._currentConnection.executeCommand(message).then((data) => {
 					if (data.mos.roAck) {
-						reject(data.mos.roAck)
+						reject(Parser.xml2ROAck(data.mos.roAck))
 					} else if (data.mos.mosListAll) {
 						let objs: Array<IMOSObject> = Parser.xml2MosObjs(data.mos.mosListAll.mosObj)
 						resolve(objs)
@@ -682,7 +703,7 @@ export class MosDevice implements IMOSDevice {
 			if (this._currentConnection) {
 				this._currentConnection.executeCommand(message).then((data) => {
 					if (data.mos.roAck) {
-						reject(data.mos.roAck)
+						reject(Parser.xml2ROAck(data.mos.roAck))
 					} else if (data.mos.roList) {
 						let ro: IMOSRunningOrder = Parser.xml2RO(data.mos.roList)
 						resolve(ro)
@@ -810,12 +831,14 @@ export class MosDevice implements IMOSDevice {
 		return new Promise((resolve, reject) => {
 			if (this._currentConnection) {
 				this._currentConnection.executeCommand(message).then((data) => {
-					if ((data.mos.roListAll || {}).ro) {
-						let xmlRos: Array<any> = data.mos.roListAll.ro
+					if (data.mos.hasOwnProperty('roListAll')) {
+						let xmlRos: Array<any> = (data.mos.roListAll || {}).ro
 						if (!Array.isArray(xmlRos)) xmlRos = [xmlRos]
 						let ros: Array<IMOSRunningOrderBase> = []
 						xmlRos.forEach((xmlRo) => {
-							ros.push(Parser.xml2ROBase(xmlRo))
+							if (xmlRo) {
+								ros.push(Parser.xml2ROBase(xmlRo))
+							}
 						})
 						resolve(ros)
 					} else {

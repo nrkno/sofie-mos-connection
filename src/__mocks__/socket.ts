@@ -87,7 +87,7 @@ export class SocketMock extends EventEmitter implements Socket {
 	setTimeout (timeout: number, callback?: Function) { setTimeout(callback, timeout); return this }
 	setNoDelay (noDelay?: boolean) { noDelay = noDelay; return this }
 	setKeepAlive (enable?: boolean, initialDelay?: number) { enable = enable; initialDelay = initialDelay ;return this }
-	address () { return {port: 100, family: 'localhost', address: '127.0.0.1'} }
+	address () { return { port: 100, family: 'localhost', address: '127.0.0.1' } }
 	unref () { /* nothing */ }
 	ref () { /* nothing */ }
 	end () { /* nothing */ }

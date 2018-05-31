@@ -337,7 +337,7 @@ export namespace Parser {
 
 		return roAck
 	}
-	export function xml2MosObjs (xml: any ): Array<IMOSObject> {
+	export function xml2MosObjs (xml: any): Array<IMOSObject> {
 		if (!xml) return []
 		let xmlObjs: Array<any> = []
 		xmlObjs = xml
@@ -347,7 +347,7 @@ export namespace Parser {
 			return xml2MosObj(xmlObj)
 		})
 	}
-	export function xml2MosObj (xml: any ): IMOSObject {
+	export function xml2MosObj (xml: any): IMOSObject {
 		let mosObj: IMOSObject = {
 			ID: new MosString128(xml.objID),
 			Slug: new MosString128(xml.objSlug),

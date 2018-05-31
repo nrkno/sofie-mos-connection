@@ -30,10 +30,10 @@ export class MosSocketClient extends EventEmitter {
 	private _connectionAttemptTimer: NodeJS.Timer
 
 	private _commandTimeoutTimer: NodeJS.Timer
-	private _commandTimeout: number = 10000
+	private _commandTimeout: number = 5000
 
 	private _queueCallback: {[messageId: string]: CallBackFunction} = {}
-	private _queueMessages: Array<MosMessage> = []
+	private _queueMessages: Array<{time: number, msg: MosMessage}> = []
 	private _ready: boolean = false
 
 	private processQueueInterval: any
@@ -113,7 +113,7 @@ export class MosSocketClient extends EventEmitter {
 		message.prepare()
 		// console.log('queueing', message.messageID, message.constructor.name )
 		this._queueCallback[message.messageID] = cb
-		this._queueMessages.push(message)
+		this._queueMessages.push({ time: Date.now(), msg: message })
 
 		this.processQueue()
 	}
@@ -123,7 +123,7 @@ export class MosSocketClient extends EventEmitter {
 			if (this._queueMessages.length) {
 				this._ready = false
 				let message = this._queueMessages[0]
-				this.executeCommand(message)
+				this.executeCommand(message.msg)
 			}
 		} else {
 			clearInterval(this.processQueueInterval)
@@ -182,17 +182,31 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	private executeCommand (message: MosMessage): void {
-
+		// console.log('executeCommand', message)
 		// message.prepare() // @todo, is prepared? is sent already? logic needed
-		let str: string = message.toString()
-		let buf = iconv.encode(str, 'utf16-be')
+		let messageString: string = message.toString()
+		let buf = iconv.encode(messageString, 'utf16-be')
 
 		// console.log('sending',this._client.name, str)
 
 		global.clearTimeout(this._commandTimeoutTimer)
-		this._commandTimeoutTimer = global.setTimeout(() => this._onCommandTimeout(), this._commandTimeout)
+		this._commandTimeoutTimer = global.setTimeout(() => {
+			// command timeout
+
+			let cb: CallBackFunction | undefined = this._queueCallback[message.messageID]
+			if (cb) {
+				cb(Error('Command timed out'), {})
+			} else {
+				// this._onUnhandledCommandTimeout()
+			}
+			this._queueMessages.shift() // remove the first message
+			delete this._queueCallback[message.messageID]
+
+		}, this._commandTimeout)
 		this._client.write(buf, 'ucs2')
-		if (this._debug) console.log(`MOS command sent from ${this._description} : ${str}\r\nbytes sent: ${this._client.bytesWritten}`)
+		if (this._debug) console.log(`MOS command sent from ${this._description} : ${messageString}\r\nbytes sent: ${this._client.bytesWritten}`)
+
+		this.emit('rawMessage','sent', messageString)
 
 	}
 
@@ -224,10 +238,10 @@ export class MosSocketClient extends EventEmitter {
 	}
 
   /** */
-	private _onCommandTimeout () {
-		global.clearTimeout(this._commandTimeoutTimer)
-		this.emit(SocketConnectionEvent.TIMEOUT)
-	}
+	// private _onUnhandledCommandTimeout () {
+	// 	global.clearTimeout(this._commandTimeoutTimer)
+	// 	this.emit(SocketConnectionEvent.TIMEOUT)
+	// }
 
   /** */
 	private _onConnected () {
@@ -238,11 +252,12 @@ export class MosSocketClient extends EventEmitter {
 	}
 
   /** */
-	private _onData (data: Buffer ) {
+	private _onData (data: Buffer) {
 		this._client.emit(SocketConnectionEvent.ALIVE)
 		// data = Buffer.from(data, 'ucs2').toString()
 		let messageString: string = iconv.decode(data, 'utf16-be').trim()
 
+		this.emit('rawMessage','recieved', messageString)
 		if (this._debug) console.log(`${this._description} Received: ${messageString}`)
 
 		let firstMatch = '<mos>' // <mos>
@@ -261,7 +276,7 @@ export class MosSocketClient extends EventEmitter {
 				// Last chunk, ready to parse with saved data:
 				parsedData = parser.toJson(this.dataChunks + messageString, parseOptions)
 				this.dataChunks = ''
-			} else if (first === firstMatch ) {
+			} else if (first === firstMatch) {
 				// Chunk, save for later:
 				this.dataChunks = messageString
 			} else {
@@ -273,11 +288,13 @@ export class MosSocketClient extends EventEmitter {
 				let messageId = parsedData.mos.messageID
 				if (messageId) {
 					let cb: CallBackFunction | undefined = this._queueCallback[messageId]
-					let msg = this._queueMessages[0]
-					if (msg) {
-						if (msg.messageID.toString() !== (messageId + '')) {
-							console.log('Mos reply id diff: ' + messageId + ', ' + msg.messageID)
+					let message = this._queueMessages[0]
+					if (message) {
+						if (message.msg.messageID.toString() !== (messageId + '')) {
+							console.log('Mos reply id diff: ' + messageId + ', ' + message.msg.messageID)
 							console.log(parsedData)
+
+							this._triggerQueueCleanup()
 						}
 						if (cb) {
 							cb(null, parsedData)
@@ -288,6 +305,7 @@ export class MosSocketClient extends EventEmitter {
 						// huh, we've got a reply to something we've not sent.
 						console.log('Got reply to something we\'ve not asked for', messageString)
 					}
+					clearTimeout(this._commandTimeoutTimer)
 				} else {
 					// error message?
 					if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
@@ -342,5 +360,23 @@ export class MosSocketClient extends EventEmitter {
 			if (this._debug) console.log('Socket should reconnect')
 			this.connect()
 		}
+	}
+	private _triggerQueueCleanup () {
+		// in case we're in unsync with messages, prevent deadlock:
+		setTimeout(() => {
+			console.log('QueueCleanup')
+			for (let i = this._queueMessages.length - 1; i >= 0; i--) {
+				let message = this._queueMessages[i]
+				if (Date.now() - message.time > this._commandTimeout) {
+
+					let cb = this._queueCallback[message.msg.messageID]
+					if (cb) {
+						cb(Error('Command Timeout'), {})
+					}
+					this._queueMessages.splice(i, 1)
+				}
+			}
+
+		}, this._commandTimeout)
 	}
 }

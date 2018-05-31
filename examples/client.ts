@@ -22,6 +22,9 @@ let mos = new MosConnection(new ConnectionConfig({
 	openRelay: true
 	// debug: true
 }))
+mos.on('rawMessage',(source, type, message) => {
+	// console.log('rawMessage', source, type, message)
+})
 mos.on('error',(e) => {
 	console.log('Emit error', e)
 })
@@ -154,14 +157,19 @@ mos.onConnection((dev: MosDevice) => {
 
 })
 
-let mosdev = mos.connect({
-	primary: {
-		id: '2012R2ENPS8VM',
-		host: '10.0.1.244',
-		timeout: 5000
-	}
+mos.init()
+.then((listening) => {
+	let mosdev = mos.connect({
+		primary: {
+			id: '2012R2ENPS8VM',
+			host: '10.0.1.244',
+			timeout: 100000
+		}
+	})
 })
-
+.catch(e => {
+	console.log(e)
+})
 // let mosdev = mos.connect({
 // 	primary: {
 // 		id: 'test2.enps.mos',
