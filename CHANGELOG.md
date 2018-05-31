@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.6"></a>
+## [0.3.6](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.5...0.3.6) (2018-05-31)
+
+
+### Bug Fixes
+
+* **mosDuration:**  fixes bug with mosDurations displaying wrong values once consumed ([8a8af4e](https://github.com/nrkno/tv-automation-mos-connection/commit/8a8af4e))
+
+
+
 <a name="0.3.5"></a>
 ## [0.3.5](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.4...0.3.5) (2018-05-30)
 

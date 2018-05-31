@@ -1,6 +1,6 @@
 {
   "name": "tv-automation-mos-connection",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "MOS compliant TCP/IP Socket connection.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
