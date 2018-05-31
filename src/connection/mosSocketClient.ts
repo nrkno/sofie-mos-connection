@@ -288,10 +288,10 @@ export class MosSocketClient extends EventEmitter {
 				let messageId = parsedData.mos.messageID
 				if (messageId) {
 					let cb: CallBackFunction | undefined = this._queueCallback[messageId]
-					let message = this._queueMessages[0]
-					if (message) {
-						if (message.msg.messageID.toString() !== (messageId + '')) {
-							console.log('Mos reply id diff: ' + messageId + ', ' + message.msg.messageID)
+					let sentMessage = this._queueMessages[0]
+					if (sentMessage) {
+						if (sentMessage.msg.messageID.toString() !== (messageId + '')) {
+							console.log('Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
 							console.log(parsedData)
 
 							this._triggerQueueCleanup()

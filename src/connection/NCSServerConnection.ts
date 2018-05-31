@@ -23,6 +23,7 @@ export class NCSServerConnection extends EventEmitter {
 	private _timeout: number
 	private _mosID: string
 	private _debug: boolean = false
+	private _disposed: boolean = false
 
 	private _clients: {[clientID: string]: ClientDescription} = {}
 	private _callbackOnConnectionChange: () => void
@@ -168,7 +169,8 @@ export class NCSServerConnection extends EventEmitter {
 	}
 
 	dispose (): Promise<void> {
-		return	new Promise((resolveDispose) => {
+		this._disposed = true
+		return new Promise((resolveDispose) => {
 			for (let key in this._clients) {
 				this.removeClient(key)
 			}
@@ -184,7 +186,9 @@ export class NCSServerConnection extends EventEmitter {
 
 		let triggerNextHeartBeat = () => {
 			this._heartBeatsTimer = global.setTimeout(() => {
-				this._sendHeartBeats()
+				if (!this._disposed) {
+					this._sendHeartBeats()
+				}
 			}, this._heartBeatsDelay)
 		}
 
