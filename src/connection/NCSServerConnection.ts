@@ -199,7 +199,6 @@ export class NCSServerConnection extends EventEmitter {
 
 				let heartbeat = new HeartBeat()
 				heartbeat.port = this._clients[key].clientDescription
-
 				return this.executeCommand(heartbeat)
 				.then(() => {
 					client.heartbeatConnected = true
