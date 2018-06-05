@@ -1,7 +1,7 @@
 defaults: &defaults
   docker:
     - image: circleci/node:8
-  working_directory: ~/tv-automation-mos-connection
+  working_directory: ~/project
 
 version: 2
 jobs:
@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/tv-automation-mos-connection
+          at: ~/project
       - restore_cache:
           keys:
             - yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
@@ -27,21 +27,21 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/tv-automation-mos-connection
+          at: ~/project
       - run: yarn install
       - run: yarn validate:dependencies
   Test node-8:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/tv-automation-mos-connection
+          at: ~/project
       - run: yarn install
       - run: yarn ci
   Send Coverage:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/tv-automation-mos-connection
+          at: ~/project
       - run: yarn install
       - run: yarn send-coverage
       - store_artifacts:
@@ -57,7 +57,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/tv-automation-mos-connection
+          at: ~/project
       - run: yarn install
       - run: yarn build
       - persist_to_workspace:
@@ -68,7 +68,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/tv-automation-mos-connection
+          at: ~/project
       - add_ssh_keys:
           fingerprints:
             - "fe:e8:83:0c:e9:a3:83:47:db:a9:f4:ce:a3:1f:7e:28"
@@ -88,7 +88,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/mos-connection
+          at: ~/project
       - run:
           name: Write NPM Token to ~/.npmrc
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
@@ -102,7 +102,7 @@ jobs:
 
 workflows:
   version: 2
-  Test build and deploy(master):
+  Test build and deploy(master only):
     jobs:
       - Checkout Code
       - Check for vulnerabilities:
