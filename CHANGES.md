@@ -3,9 +3,9 @@
 
 These are all the major changes introduced by thin new revision. This is kept here for reference for the other repositories.
 
-1. CircleCI config changes (see diff)
-2. Some minor changes to package.json
-3. Some code changes to make docs-commands work
+1. CircleCI config. Copy from other project, update Fingerprint (after step 6.)
+2. Some minor changes to package.json (scripts + script-info + contributor)
+3. Some code changes to make docs-commands work (`yarn docs:html`)
 4. Setup project on CircleCI
 5. Added NPM_TOKEN to CircleCI
 6. Set up ssh-key with write permissions on CircleCI and GitHub (`ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`, upload .pub to github, and private to CircleCI) Remember to allow write access on github
