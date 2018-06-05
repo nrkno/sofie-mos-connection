@@ -226,7 +226,7 @@ export class MosSocketClient extends EventEmitter {
 		global.setTimeout(() => {
 			if (this._sentMessage && this._sentMessage.msg.messageID === sentMessageId) {
 				if (this._debug) console.log('timeout ' + sentMessageId)
-				this._sendReply(sentMessageId, Error('Command timed out'), null )
+				this._sendReply(sentMessageId, Error('Command timed out'), null)
 				this.processQueue()
 			}
 		}, this._commandTimeout)
@@ -321,7 +321,7 @@ export class MosSocketClient extends EventEmitter {
 							if (this._debug) console.log('Mos reply id diff: ' + messageId + ', ' + this._sentMessage.msg.messageID)
 							if (this._debug) console.log(parsedData)
 
-							this.emit('warning', 'Mos reply id diff: ' + messageId + ', ' + this._sentMessage.msg.messageID )
+							this.emit('warning', 'Mos reply id diff: ' + messageId + ', ' + this._sentMessage.msg.messageID)
 
 							this._triggerQueueCleanup()
 						}
@@ -334,7 +334,7 @@ export class MosSocketClient extends EventEmitter {
 					} else {
 						// huh, we've got a reply to something we've not sent.
 						if (this._debug) console.log('Got a reply (' + messageId + '), but we haven\'t sent any message', messageString)
-						this.emit('warning', 'Got a reply (' + messageId + '), but we haven\'t sent any message ' + messageString )
+						this.emit('warning', 'Got a reply (' + messageId + '), but we haven\'t sent any message ' + messageString)
 					}
 					clearTimeout(this._commandTimeoutTimer)
 				} else {

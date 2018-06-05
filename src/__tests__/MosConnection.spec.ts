@@ -452,7 +452,7 @@ describe('MosDevice: Profile 1', () => {
 		await serverSocketMockLower.mockWaitForSentMessages()
 		expect(serverSocketMockLower.mockSentMessage).toHaveBeenCalledTimes(1)
 		// // @ts-ignore mock
-		let reply = decode(serverSocketMockLower.mockSentMessage.mock.calls[0][0])
+		let reply = decode(serverSocketMockLower.mockSentMessage['mock'].calls[0][0])
 		let parsedReply: any = parser.toJson(reply, parseOptions)
 
 		expect(parsedReply.mos.mosObj.objID + '').toEqual(xmlApiData.mosObj.ID.toString())
