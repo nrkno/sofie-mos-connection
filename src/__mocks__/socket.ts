@@ -1,9 +1,14 @@
 import { EventEmitter } from 'events'
 
 import { Socket } from 'net'
+import { MosTime } from '../dataTypes/mosTime'
+
+const iconv = require('iconv-lite')
+iconv.encodingExists('utf16-be')
 // import { Writable } from 'stream'
 
 // Mock the Socket class in 'net':
+let setTimeoutOrg = setTimeout
 
 let instances: Array<ISocketMock> = []
 
@@ -27,6 +32,7 @@ export class SocketMock extends EventEmitter implements Socket {
 	public connectedHost: string
 
 	private _responses: Array<(data: any) => string | Buffer > = []
+	private _replyToHeartBeat: boolean = true
 
 	constructor () {
 		super()
@@ -62,6 +68,7 @@ export class SocketMock extends EventEmitter implements Socket {
 		this.cork = jest.fn(this.cork)
 		this.uncork = jest.fn(this.uncork)
 
+		this.mockSentMessage0 = jest.fn(this.mockSentMessage0)
 		this.mockSentMessage = jest.fn(this.mockSentMessage)
 	}
 	static mockClear () {
@@ -72,16 +79,22 @@ export class SocketMock extends EventEmitter implements Socket {
 	}
 
 	write () {
-		this.mockSentMessage.apply(this, arguments)
+		this.mockSentMessage0.apply(this, arguments)
 		return true
 	}
 	connect (port, host) {
 		this.connectedPort = port
 		this.connectedHost = host
+
+		this.emit('connect')
 		return this
 	}
 	setEncoding () { return this }
-	destroy () { /* nothing */ }
+	destroy () {
+		this.destroyed = true
+		this.emit('close')
+		/* nothing */
+	}
 	pause () { return this }
 	resume () { return this }
 	setTimeout (timeout: number, callback?: Function) { setTimeout(callback, timeout); return this }
@@ -108,8 +121,43 @@ export class SocketMock extends EventEmitter implements Socket {
 
 	// ------------------------------------------------------------------------
 	// Mock methods:
+	mockSentMessage0 (data, encoding) {
+		// console.log('mockSentMessage ' + this.name, this.decode(data))
+		encoding = encoding
+
+		if (this._replyToHeartBeat) {
+			let str
+			if (typeof data === 'string') str = data
+			else str = this.decode(data)
+
+			if (str.match(/<heartbeat>/)) {
+				try {
+					let mosID = str.match(/<mosID>([^<]+)<\/mosID>/)[1]
+					let ncsID = str.match(/<ncsID>([^<]+)<\/ncsID>/)[1]
+					let messageId = str.match(/<messageID>([^<]+)<\/messageID>/)[1]
+					let repl = '<mos>\
+						<mosID>' + mosID + '</mosID>\
+						<ncsID>' + ncsID + '</ncsID>\
+						<messageID>' + messageId + '</messageID>\
+							<heartbeat>\
+								<time>' + (new MosTime()).toString() + '</time>\
+							</heartbeat>\
+					</mos>\r\n'
+					// console.log('repl', repl)
+					this.mockReceiveMessage(
+						this.encode(repl)
+					)
+				} catch (e) {
+					console.log('mockReply', str)
+					throw e
+				}
+				return
+			}
+		}
+		this.mockSentMessage(data, encoding)
+	}
 	mockSentMessage (data, encoding) {
-		// console.log('mockSentMessage ' + this.name, data)
+
 		encoding = encoding
 		if (this._responses.length) {
 			// send reply:
@@ -117,7 +165,7 @@ export class SocketMock extends EventEmitter implements Socket {
 			let cb: any = this._responses.shift()
 			let msg
 
-			setTimeout(() => {
+			setTimeoutOrg(() => {
 
 				if (typeof cb === 'string') {
 					msg = cb
@@ -125,7 +173,7 @@ export class SocketMock extends EventEmitter implements Socket {
 					msg = cb(data)
 				}
 				if (msg !== false) this.mockReceiveMessage(msg)
-			},2)
+			},1)
 		}
 	}
 	mockReceiveMessage (msg: string | Buffer) {
@@ -137,7 +185,8 @@ export class SocketMock extends EventEmitter implements Socket {
 	mockClear () {
 		this._responses.splice(0, 9999)
 		// @ts-ignore
-		this.mockSentMessage.mockClear()
+		this.mockSentMessage0['mockClear']()
+		this.mockSentMessage['mockClear']()
 	}
 	mockWaitForSentMessages () {
 		return new Promise((resolve) => {
@@ -146,14 +195,24 @@ export class SocketMock extends EventEmitter implements Socket {
 				if (this._responses.length === 0) {
 					resolve()
 				} else {
-					setTimeout(() => {
+					setTimeoutOrg(() => {
 						check()
-					},2)
+					},1)
 				}
 			}
 			check()
 
 		})
+	}
+
+	decode (data: Buffer): string {
+		return iconv.decode(data, 'utf16-be')
+	}
+	encode (str: string) {
+		return iconv.encode(str, 'utf16-be')
+	}
+	setReplyToHeartBeat (replyToHeartBeat) {
+		this._replyToHeartBeat = replyToHeartBeat
 	}
 }
 

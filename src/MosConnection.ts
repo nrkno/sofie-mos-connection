@@ -149,24 +149,33 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				sockets.push(e.socket)
 			}
 		}
-		let disposePromises: Array<Promise<any>> = sockets.map((socket) => {
+		let disposePromises0: Array<Promise<any>> = sockets.map((socket: Socket) => {
 			return new Promise((resolve) => {
 				socket.on('close', resolve)
 				socket.end()
 				socket.destroy()
 			})
 		})
-		disposePromises.push(this._lowerSocketServer.dispose([]))
-		disposePromises.push(this._upperSocketServer.dispose([]))
-		disposePromises.push(this._querySocketServer.dispose([]))
+		let disposePromises1: Array<Promise<any>> = [
+			this._lowerSocketServer.dispose([]),
+			this._upperSocketServer.dispose([]),
+			this._querySocketServer.dispose([])
+		]
 
-		Object.keys(this._mosDevices).forEach(deviceId => {
+		let disposePromises2: Array<Promise<any>> = []
+		Object.keys(this._mosDevices).map(deviceId => {
 			let device = this._mosDevices[deviceId]
-			disposePromises.push(
+			disposePromises2.push(
 				this.disposeMosDevice(device)
 			)
 		})
-		return Promise.all(disposePromises)
+		return Promise.all(disposePromises0)
+		.then(() => {
+			return Promise.all(disposePromises1)
+		})
+		.then(() => {
+			return Promise.all(disposePromises2)
+		})
 		.then(() => {
 			return
 		})
@@ -402,6 +411,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			} catch (e) {
 				console.log('chunks-------------\n', client.chunks)
 				console.log('messageString---------\n', messageString)
+				console.log('error', e)
 				this.emit('error', e)
 			}
 		})

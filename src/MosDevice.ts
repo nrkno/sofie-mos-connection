@@ -198,11 +198,9 @@ export class MosDevice implements IMOSDevice {
 	routeData (data: any): Promise<any> {
 		if (data && data.hasOwnProperty('mos')) data = data['mos']
 		return new Promise((resolve, reject) => {
-			if (this._debug) {
-				console.log('parsedData', data)
-				// console.log('parsedTest', keys)
-				console.log('keys', Object.keys(data))
-			}
+			if (this._debug) console.log('parsedData', data)
+			// if (this._debug) console.log('parsedTest', keys)
+			if (this._debug) console.log('keys', Object.keys(data))
 
 			// Route and format data:
 			// Profile 0:
@@ -566,7 +564,7 @@ export class MosDevice implements IMOSDevice {
 			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
 			} else {
-				console.log(data)
+				if (this._debug) console.log(data)
 				let msg = new MOSAck()
 				msg.ID = new MosString128(0) // Depends on type of message, needs logic
 				msg.Revision = 0
@@ -843,7 +841,7 @@ export class MosDevice implements IMOSDevice {
 						resolve(ros)
 					} else {
 						console.log(data.mos)
-						reject('Unknown reply ')
+						reject('Unknown reply')
 					}
 				}).catch(reject)
 			} else {

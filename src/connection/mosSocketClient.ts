@@ -28,13 +28,13 @@ export class MosSocketClient extends EventEmitter {
 	private _description: string
 	private _client: Socket
 	private _shouldBeConnected: boolean = false
-	private _connected: boolean
+	private _connected: boolean = false
 	private _lastConnectionAttempt: number
 	private _reconnectAttempt: number = 0
 	private _connectionAttemptTimer: NodeJS.Timer
 
 	private _commandTimeoutTimer: NodeJS.Timer
-	private _commandTimeout: number = 5000
+	private _commandTimeout: number
 
 	private _queueCallback: {[messageId: string]: CallBackFunction} = {}
 	private _queueMessages: Array<QueueMessage> = []
@@ -47,11 +47,12 @@ export class MosSocketClient extends EventEmitter {
 	private dataChunks: string = ''
 
   /** */
-	constructor (host: string, port: number, description: string, debug?: boolean) {
+	constructor (host: string, port: number, description: string, timeout?: number, debug?: boolean) {
 		super()
 		this._host = host
 		this._port = port
 		this._description = description
+		this._commandTimeout = timeout || 5000
 		if (debug) this._debug = debug
 
 	}
@@ -103,7 +104,9 @@ export class MosSocketClient extends EventEmitter {
 
 			// set timer to retry when needed:
 			if (!this._connectionAttemptTimer) {
-				this._connectionAttemptTimer = global.setInterval(this._autoReconnectionAttempt, this._reconnectDelay)
+				this._connectionAttemptTimer = global.setInterval(() => {
+					this._autoReconnectionAttempt()
+				}, this._reconnectDelay)
 			}
 
 			// this._readyToSendMessage = true
@@ -126,6 +129,7 @@ export class MosSocketClient extends EventEmitter {
 		this.processQueue()
 	}
 	processQueue () {
+		// console.log('this.connected', this.connected)
 		if (!this._sentMessage && this.connected) {
 			if (this.processQueueTimeout) clearTimeout(this.processQueueTimeout)
 			let message = this._queueMessages.shift()

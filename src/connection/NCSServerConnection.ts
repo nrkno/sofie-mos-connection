@@ -43,7 +43,7 @@ export class NCSServerConnection extends EventEmitter {
 	}
 
 	createClient (clientID: string, port: number, clientDescription: ConnectionType) {
-		let client = new MosSocketClient(this._host, port, clientDescription, this._debug)
+		let client = new MosSocketClient(this._host, port, clientDescription, this._timeout, this._debug)
 		if (this._debug) console.log('registerOutgoingConnection', clientID)
 		this._clients[clientID] = {
 			heartbeatConnected: false,
@@ -183,6 +183,7 @@ export class NCSServerConnection extends EventEmitter {
 
 	private _sendHeartBeats (): void {
 		if (this._heartBeatsTimer) clearTimeout(this._heartBeatsTimer)
+		if (this._disposed) return
 
 		let triggerNextHeartBeat = () => {
 			this._heartBeatsTimer = global.setTimeout(() => {
