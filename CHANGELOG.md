@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.11"></a>
+## [0.3.11](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.10...0.3.11) (2018-06-05)
+
+
+### Bug Fixes
+
+* improve changes.md ([3dc5eaf](https://github.com/nrkno/tv-automation-mos-connection/commit/3dc5eaf))
+* use generic project name in config. Add more steps to do ([773c469](https://github.com/nrkno/tv-automation-mos-connection/commit/773c469))
+
+
+
 <a name="0.3.10"></a>
 ## [0.3.10](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.9...0.3.10) (2018-06-01)
 
