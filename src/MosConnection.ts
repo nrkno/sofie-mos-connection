@@ -31,8 +31,10 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	private _incomingSockets: {[sockedId: string]: SocketDescription} = {}
 	private _ncsConnections: {[host: string]: NCSServerConnection} = {}
 	private _mosDevices: {[ncsID: string]: MosDevice} = {}
+	private _initialized: boolean = false
+	private _isListening: boolean = false
 
-	private _isListening: Promise<boolean[]>
+	// private _isListening: Promise<boolean[]>
 
 	private _onconnection: (mosDevice: MosDevice) => void
 
@@ -41,17 +43,31 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		super()
 		this._conf = new ConnectionConfig(configOptions)
 
-		if (this._conf.acceptsConnections) {
-			this._isListening = this._initiateIncomingConnections()
-		}
 		if (this._conf.debug) {
 			this._debug = this._conf.debug
 		}
 	}
+	init (): Promise<boolean> {
+		this._initialized = true
+		if (this._conf.acceptsConnections) {
+			return new Promise((resolve, reject) => {
+				this._initiateIncomingConnections()
+				.then(() => {
+					this._isListening = true
+					resolve(true)
+				})
+				.catch((err) => {
+					// this.emit('error', err)
+					reject(err)
+				})
+			})
+		}
+		return Promise.resolve(false)
+	}
 
 	/** */
 	connect (connectionOptions: IMOSDeviceConnectionOptions): Promise<MosDevice> {
-		// @todo: implement this
+		if (!this._initialized) throw Error('Not initialized, run .init() first!')
 
 		return new Promise((resolve) => {
 
@@ -68,6 +84,10 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			let secondary = null
 			this._ncsConnections[connectionOptions.primary.host] = primary
 
+			primary.on('rawMessage', (type: string, message: string) => {
+				this.emit('rawMessage', 'primary', type, message)
+			})
+
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
 
@@ -80,12 +100,15 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 					this._debug
 				)
 				this._ncsConnections[connectionOptions.secondary.host] = secondary
+				secondary.on('rawMessage', (type: string, message: string) => {
+					this.emit('rawMessage', 'secondary', type, message)
+				})
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
 			}
 
 			// initialize mosDevice:
-			let mosDevice = this.registerMosDevice(
+			let mosDevice = this._registerMosDevice(
 				this._conf.mosID,
 				connectionOptions.primary.id,
 				(connectionOptions.secondary ? connectionOptions.secondary.id : null),
@@ -97,27 +120,9 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	onConnection (cb: (mosDevice: MosDevice) => void) {
 		this._onconnection = cb
 	}
-	registerMosDevice (
-		myMosID: string,
-		theirMosId0: string,
-		theirMosId1: string | null,
-		primary: NCSServerConnection | null, secondary: NCSServerConnection | null
-	): MosDevice {
-		let id0 = myMosID + '_' + theirMosId0
-		let id1 = (theirMosId1 ? myMosID + '_' + theirMosId1 : null)
-		let mosDevice = new MosDevice(id0, id1, this._conf, primary, secondary)
-		this._mosDevices[id0] = mosDevice
-		if (id1) this._mosDevices[id1] = mosDevice
-		mosDevice.connect()
-
-		// emit to .onConnection
-		if (this._onconnection) this._onconnection(mosDevice)
-		return mosDevice
-	}
-
 	/** */
-	get isListening (): Promise<boolean[]> {
-		return this._isListening || Promise.reject(`Mos connection is not listening for connections. "Config.acceptsConnections" is "${this._conf.acceptsConnections}"`)
+	get isListening (): boolean {
+		return this._isListening
 	}
 
 	/** */
@@ -144,20 +149,77 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				sockets.push(e.socket)
 			}
 		}
-		let disposePromises: Array<Promise<any>> = sockets.map((socket) => {
+		let disposePromises0: Array<Promise<any>> = sockets.map((socket: Socket) => {
 			return new Promise((resolve) => {
 				socket.on('close', resolve)
 				socket.end()
 				socket.destroy()
 			})
 		})
-		disposePromises.push(this._lowerSocketServer.dispose([]))
-		disposePromises.push(this._upperSocketServer.dispose([]))
-		disposePromises.push(this._querySocketServer.dispose([]))
-		return Promise.all(disposePromises)
+		let disposePromises1: Array<Promise<any>> = [
+			this._lowerSocketServer.dispose([]),
+			this._upperSocketServer.dispose([]),
+			this._querySocketServer.dispose([])
+		]
+
+		let disposePromises2: Array<Promise<any>> = []
+		Object.keys(this._mosDevices).map(deviceId => {
+			let device = this._mosDevices[deviceId]
+			disposePromises2.push(
+				this.disposeMosDevice(device)
+			)
+		})
+		return Promise.all(disposePromises0)
+		.then(() => {
+			return Promise.all(disposePromises1)
+		})
+		.then(() => {
+			return Promise.all(disposePromises2)
+		})
 		.then(() => {
 			return
 		})
+	}
+	getDevice (id: string): MosDevice {
+		return this._mosDevices[id]
+	}
+	getDevices (): Array<MosDevice> {
+		return Object.keys(this._mosDevices).map((id: string) => {
+			return this._mosDevices[id]
+		})
+	}
+	disposeMosDevice (mosDevice: MosDevice): Promise<void>
+	disposeMosDevice (myMosID: string, theirMosId0: string, theirMosId1: string | null): Promise<void>
+	disposeMosDevice (
+		myMosIDOrMosDevice: string | MosDevice,
+		theirMosId0?: string,
+		theirMosId1?: string | null
+	): Promise<void> {
+		let id0: string
+		let id1: string | null
+		if (myMosIDOrMosDevice && myMosIDOrMosDevice instanceof MosDevice) {
+			// myMosID = myMosIDOrMosDevice
+			let mosDevice = myMosIDOrMosDevice
+			id0 = mosDevice.idPrimary
+			id1 = mosDevice.idSecondary
+		} else {
+			let myMosID = myMosIDOrMosDevice
+			id0 = myMosID + '_' + theirMosId0
+			id1 = (theirMosId1 ? myMosID + '_' + theirMosId1 : null)
+		}
+		if (this._mosDevices[id0]) {
+			return this._mosDevices[id0].dispose()
+			.then(() => {
+				delete this._mosDevices[id0]
+			})
+		} else if (id1 && this._mosDevices[id1]) {
+			return this._mosDevices[id1].dispose()
+			.then(() => {
+				delete this._mosDevices[id1 || '']
+			})
+		} else {
+			return Promise.reject('Device not found')
+		}
 	}
 
 	/** */
@@ -174,14 +236,31 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		}
 		return 'Warning: Not MOS compatible'
 	}
+	private _registerMosDevice (
+		myMosID: string,
+		theirMosId0: string,
+		theirMosId1: string | null,
+		primary: NCSServerConnection | null, secondary: NCSServerConnection | null
+	): MosDevice {
+		let id0 = myMosID + '_' + theirMosId0
+		let id1 = (theirMosId1 ? myMosID + '_' + theirMosId1 : null)
+		let mosDevice = new MosDevice(id0, id1, this._conf, primary, secondary)
+		this._mosDevices[id0] = mosDevice
+		if (id1) this._mosDevices[id1] = mosDevice
+		mosDevice.connect()
+
+		// emit to .onConnection
+		if (this._onconnection) this._onconnection(mosDevice)
+		return mosDevice
+	}
 
 	/** */
-	private _initiateIncomingConnections (): Promise<boolean[]> {
+	private _initiateIncomingConnections (): Promise<void> {
 		// console.log('_initiateIncomingConnections')
 		// shouldn't accept connections, so won't rig socket servers
 		if (!this._conf.acceptsConnections) {
+			return Promise.reject('Not configured for accepting connections')
 			// console.log('reject')
-			return Promise.reject(false)
 		}
 
 		// setup two socket servers, then resolve with their listening statuses
@@ -200,18 +279,23 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				this._upperSocketServer.listen(),
 				this._querySocketServer.listen()
 			]
-		)
+		).then(() => {
+			// All sockets are open and listening at this point
+			return
+		})
 	}
 
 	/** */
 	private _registerIncomingClient (client: SocketDescription) {
 		let socketID = MosConnection.nextSocketID
 
+		this.emit('rawMessage', 'incoming_' + socketID, 'newConnection', 'From ' + client.socket.remoteAddress + ':' + client.socket.remotePort)
 		// console.log('_registerIncomingClient', socketID, e.socket.remoteAddress)
 
 		// handles socket listeners
 		client.socket.on('close', (/*hadError: boolean*/) => {
 			this._disposeIncomingSocket(socketID)
+			this.emit('rawMessage', 'incoming_' + socketID, 'closedConnection', '')
 		}) // => this._disposeIncomingSocket(e.socket, socketID))
 		client.socket.on('end', () => {
 			if (this._debug) console.log('Socket End')
@@ -221,6 +305,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		})
 		client.socket.on('data', (data: Buffer) => {
 			let messageString = iconv.decode(data, 'utf16-be').trim()
+
+			this.emit('rawMessage', 'incoming', 'recieved', messageString)
 
 			if (this._debug) console.log(`Socket got data (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${data}`)
 
@@ -247,7 +333,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 					// Last chunk, ready to parse with saved data:
 					parsed = parser.toJson(client.chunks + messageString, parseOptions)
 					client.chunks = ''
-				} else if (first === firstMatch ) {
+				} else if (first === firstMatch) {
 					// Chunk, save for later:
 					client.chunks = messageString
 				} else {
@@ -267,20 +353,22 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 						message.ncsID = ncsID
 						message.mosID = mosID
 						message.prepare(mosMessageId)
-						let msgStr: string = message.toString()
-						let buf = iconv.encode(msgStr, 'utf16-be')
+						let messageString: string = message.toString()
+						let buf = iconv.encode(messageString, 'utf16-be')
 						client.socket.write(buf, 'usc2')
+
+						this.emit('rawMessage', 'incoming_' + socketID, 'sent', messageString)
 					}
 					if (!mosDevice && this._conf.openRelay) {
 						// console.log('OPEN RELAY ------------------')
 						// Register a new mosDevice to use for this connection
 						if (parsed.mos.ncsID === this._conf.mosID) {
-							mosDevice = this.registerMosDevice(
+							mosDevice = this._registerMosDevice(
 								this._conf.mosID,
 								parsed.mos.mosID,
 								null,null, null)
 						} else if (parsed.mos.mosID === this._conf.mosID) {
-							mosDevice = this.registerMosDevice(
+							mosDevice = this._registerMosDevice(
 								this._conf.mosID,
 								parsed.mos.ncsID,
 								null, null, null)
@@ -323,6 +411,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			} catch (e) {
 				console.log('chunks-------------\n', client.chunks)
 				console.log('messageString---------\n', messageString)
+				console.log('error', e)
 				this.emit('error', e)
 			}
 		})

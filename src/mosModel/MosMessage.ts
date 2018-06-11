@@ -14,7 +14,7 @@ export abstract class MosMessage {
 	private static getNewMessageID (): number {
 		// increments and returns a signed 32-bit int counting from 1, resetting to 1 when wrapping
 		MosMessage._messageID++
-		if (MosMessage._messageID >= MosMessage.MAX_MESSAGE_ID ) MosMessage._messageID = 1
+		if (MosMessage._messageID >= MosMessage.MAX_MESSAGE_ID) MosMessage._messageID = 1
 		return MosMessage._messageID
 	}
 
@@ -41,7 +41,7 @@ export abstract class MosMessage {
 		xml.ele('messageID', this.messageID)
 		xml.importDocument(this.messageXMLBlocks)
 
-		return xml.end({pretty: true})
+		return xml.end({ pretty: true })
 	}
 
   /** */

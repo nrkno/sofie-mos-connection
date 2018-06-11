@@ -48,7 +48,7 @@ import { MosDevice } from './MosDevice'
 // }
 
 export interface IMosConnection {
-	readonly isListening: Promise<boolean[]>
+	readonly isListening: boolean
 
 	readonly acceptsConnections: boolean
 	readonly profiles: IProfiles
@@ -113,7 +113,7 @@ export interface IMOSDevice {
 	getAllRunningOrders: () => Promise<Array<IMOSRunningOrderBase>> // send roReqAll
 	onROStory: (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) => void // roStorySend
 }
-export {IMOSListMachInfo}
+export { IMOSListMachInfo }
 export interface IMOSROAction {
 	RunningOrderID: MosString128
 }

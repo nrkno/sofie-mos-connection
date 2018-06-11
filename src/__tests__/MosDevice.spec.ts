@@ -10,9 +10,17 @@ require('iconv-lite').encodingExists('utf16-be')
 
 jest.mock('net')
 
+let setTimeoutOrg = setTimeout
+let delay = (ms) => {
+	return new Promise((resolve) => {
+		setTimeoutOrg(resolve, ms)
+	})
+}
+
 beforeAll(() => {
 	// @ts-ignore Mock
 	Socket = SocketMock
+	// jest.useFakeTimers()
 })
 beforeEach(() => {
 	SocketMock.mockClear()
@@ -53,8 +61,8 @@ let testoptions = {
 describe('MosDevice: Profile 0', () => {
 	test('init and connectionStatusChanged', async () => {
 		let mos = new MosConnection(testconfig)
-
-		let mosDevice = await mos.connect(testoptions)
+		await mos.init()
+		let mosDevice: MosDevice = await mos.connect(testoptions)
 
 		expect(mosDevice).toBeTruthy()
 
@@ -78,6 +86,9 @@ describe('MosDevice: Profile 0', () => {
 		})
 
 		// expect(connectionStatusChanged).toHaveBeenCalledTimes(1) // dunno if it really should have been called, maybe remove
+		// jest.runOnlyPendingTimers()
+		await delay(10) // to allow for async timers & events to triggered
+		// console.log('-----------')
 
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: true,
@@ -88,9 +99,31 @@ describe('MosDevice: Profile 0', () => {
 
 		connectionStatusChanged.mockClear()
 
+		// console.log('----------- test timeout')
+		// test timeout:
+		connMocks[1].setReplyToHeartBeat(false)
+		connMocks[2].setReplyToHeartBeat(false)
+
+		// jest.runOnlyPendingTimers() // allow for heartbeats to be sent
+		// jest.runOnlyPendingTimers() // allow for heartbeats to be received
+		await delay(300) // to allow for timeout:
+		// console.log('----------- after timeout')
+		expect(mosDevice.getConnectionStatus()).toMatchObject({
+			PrimaryConnected: false,
+			PrimaryStatus: '', // if not connected this will contain human-readable error-message
+			SecondaryConnected: false
+			// SecondaryStatus: string // if not connected this will contain human-readable error-message
+		})
+
 		// @todo: add timeout test
 		// mock cause timeout
 		// expect(connectionStatusChanged).toHaveBeenCalledTimes(1)
 		// expect(connectionStatusChanged.mock.calls[0][0]).toMatchObject({PrimaryConnected: false})
+
+		// Test proper dispose:
+		await mosDevice.dispose()
+
+		expect(connMocks[1].destroy).toHaveBeenCalledTimes(1)
+		expect(connMocks[2].destroy).toHaveBeenCalledTimes(1)
 	})
 })

@@ -5,6 +5,7 @@ import { SocketMock } from './socket'
 // import { Writable } from 'stream'
 
 // Mock the Server class in 'net':
+let setTimeoutOrg = setTimeout
 
 let instances: Array<IServerMock> = []
 
@@ -44,13 +45,19 @@ export class ServerMock extends EventEmitter implements Server {
 	}
 
 	listen () {
-		setTimeout(() => {
+		setTimeoutOrg(() => {
 			this.listening = true
 			this.emit('listening', {})
-		},5)
+		},1)
 		return this
 	}
-	close (callback?: Function) { if (callback) callback(); return this }
+	close (callback?: Function) {
+		if (callback) callback()
+		setTimeoutOrg(() => {
+			this.emit('close')
+		},1)
+		return this
+	}
 	address () { return { port: 0, family: 'string', address: 'string' } }
 	getConnections (cb: (error: Error | null, count: number) => void) { cb(null, 0) }
 	ref () { return this }
@@ -84,7 +91,7 @@ export class ServerMock extends EventEmitter implements Server {
 			let cb: any = this._responses.shift()
 			let msg
 
-			setTimeout(() => {
+			setTimeoutOrg(() => {
 
 				if (typeof cb === 'string') {
 					msg = cb
@@ -93,7 +100,7 @@ export class ServerMock extends EventEmitter implements Server {
 				}
 
 				this.mockReceiveMessage(msg)
-			},5)
+			},1)
 		}
 	}
 	mockReceiveMessage (msg: string | Buffer) {
