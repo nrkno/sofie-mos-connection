@@ -1,11 +1,9 @@
 {
-  "name": "tv-automation-mos-connection",
-  "version": "0.3.5",
+  "name": "mos-connection",
+  "version": "0.3.12",
   "description": "MOS compliant TCP/IP Socket connection.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "module": "dist/module/index.js",
-  "browser": "dist/browser/index.js",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -58,18 +56,26 @@
   "scripts-info": {
     "info": "Display information about the scripts",
     "build": "(Trash and re)build the library",
+    "build:main": "Builds main build command without trash.",
     "lint": "Lint all typescript source files",
     "unit": "Build the library and run unit tests",
     "test": "Lint, build, and test the library",
+    "test:integration": "Integration tests. Work in progress",
     "watch": "Watch source files, rebuild library on changes, rerun relevant tests",
     "cov": "Run tests, generate the HTML coverage report, and open it in a browser",
+    "cov-open": "Open current test coverage",
+    "send-coverage": "send coverage to codecov",
     "docs": "Generate HTML API documentation and open it in a browser",
     "docs:test": "Running the docs generation for testing.",
-    "docs:publish": "Generate HTML API documentation and push it to GitHub Pages",
+    "docs:html": "Generate HTML documentation",
     "docs:json": "Generate API documentation in typedoc JSON format",
+    "docs:publish": "Generate HTML API documentation and push it to GitHub Pages",
     "changelog": "Bump package.json version, update CHANGELOG.md, tag a release",
+    "release": "Clean, build, test, publish docs, and prepare release (a one-step publish process). Updates versions and creates git commits.",
     "reset": "Delete all untracked files and reset the repo to the last commit",
-    "release": "Clean, build, test, publish docs, and prepare release (a one-step publish process)"
+    "ci": "Test script for running by the CI (CircleCI)",
+    "validate:dependencies": "Scan dependencies for vulnerabilities and check licenses",
+    "license-validate": "Validate licenses for dependencies."
   },
   "engines": {
     "node": ">=4.5"

@@ -2,6 +2,68 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.12"></a>
+## [0.3.12](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.11...0.3.12) (2018-06-05)
+
+
+### Bug Fixes
+
+* rename in readme ([69dd953](https://github.com/nrkno/tv-automation-mos-connection/commit/69dd953))
+
+
+
+<a name="0.3.11"></a>
+## [0.3.11](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.10...0.3.11) (2018-06-05)
+
+
+### Bug Fixes
+
+* improve changes.md ([3dc5eaf](https://github.com/nrkno/tv-automation-mos-connection/commit/3dc5eaf))
+* use generic project name in config. Add more steps to do ([773c469](https://github.com/nrkno/tv-automation-mos-connection/commit/773c469))
+
+
+
+<a name="0.3.10"></a>
+## [0.3.10](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.9...0.3.10) (2018-06-01)
+
+
+
+<a name="0.3.9"></a>
+## [0.3.9](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.8...0.3.9) (2018-06-01)
+
+
+
+<a name="0.3.8"></a>
+## [0.3.8](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.7...0.3.8) (2018-05-31)
+
+
+### Bug Fixes
+
+* remove dist from git repo ([0607d24](https://github.com/nrkno/tv-automation-mos-connection/commit/0607d24))
+* update documentation on scripts ([261ae04](https://github.com/nrkno/tv-automation-mos-connection/commit/261ae04))
+
+
+
+<a name="0.3.7"></a>
+## [0.3.7](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.6...0.3.7) (2018-05-31)
+
+
+### Bug Fixes
+
+* correction to license ([3667644](https://github.com/nrkno/tv-automation-mos-connection/commit/3667644))
+
+
+
+<a name="0.3.6"></a>
+## [0.3.6](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.5...0.3.6) (2018-05-31)
+
+
+### Bug Fixes
+
+* **mosDuration:**  fixes bug with mosDurations displaying wrong values once consumed ([8a8af4e](https://github.com/nrkno/tv-automation-mos-connection/commit/8a8af4e))
+
+
+
 <a name="0.3.5"></a>
 ## [0.3.5](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.4...0.3.5) (2018-05-30)
 
