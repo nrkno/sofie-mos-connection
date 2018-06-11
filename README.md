@@ -5,6 +5,8 @@ Library for connecting to a Mos-device
 
 Based on http://mosprotocol.com
 
+Docs: https://nrkno.github.io/tv-automation-mos-connection/
+
 *Note: This library is currently under heavy develpoment, expect breaking changes.*
 
 ## Getting started
