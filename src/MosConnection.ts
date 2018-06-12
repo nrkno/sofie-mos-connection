@@ -245,6 +245,14 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		let id0 = myMosID + '_' + theirMosId0
 		let id1 = (theirMosId1 ? myMosID + '_' + theirMosId1 : null)
 		let mosDevice = new MosDevice(id0, id1, this._conf, primary, secondary)
+
+		// Add mosDevice to register:
+		if (this._mosDevices[id0]) {
+			throw new Error('Unable to register MosDevice "' + id0 + '": The device already exists!')
+		}
+		if (id1 && this._mosDevices[id1]) {
+			throw new Error('Unable to register MosDevice "' + id1 + '": The device already exists!')
+		}
 		this._mosDevices[id0] = mosDevice
 		if (id1) this._mosDevices[id1] = mosDevice
 		mosDevice.connect()
