@@ -30,6 +30,7 @@ test('At least one test', () => {
 })
 
 let xmlData = {
+	'heartbeat': '<heartbeat>\</heartbeat>',
 	'reqObj': '<mosReqObj>\
 		<objID>M000123</objID>\
 		 </mosReqObj>',

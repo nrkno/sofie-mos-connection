@@ -65,33 +65,37 @@ export class MosSocketServer extends EventEmitter {
 					resolve()
 					return
 				}
-				// handles listening-listeners and cleans up
-				let handleListeningStatus = (e?: Error) => {
-					if (this._debug) console.log('handleListeningStatus')
-					this._socketServer.removeListener('listening', handleListeningStatus)
-					this._socketServer.removeListener('close', handleListeningStatus)
-					this._socketServer.removeListener('error', handleListeningStatus)
-					if (this._socketServer.listening) {
-						if (this._debug) console.log('listening', this._portDescription, this._port)
-						resolve()
-					} else {
-						if (this._debug) console.log('not listening', this._portDescription, this._port)
-						reject(e || false)
-					}
-				}
 
-				// listens and handles error and events
-				this._socketServer.on('listening', () => {
-					if (this._debug) console.log('listening!!')
+				// Listens and handles error and events
+				this._socketServer.once('error', (e) => {
+					reject(e)
 				})
-				this._socketServer.once('listening', handleListeningStatus)
-				this._socketServer.once('close', handleListeningStatus)
-				this._socketServer.once('error', handleListeningStatus)
+				this._socketServer.once('close', () => {
+					reject(Error('Socket was closed'))
+				})
+				this._socketServer.once('listening', () => {
+					resolve()
+
+					this._socketServer.on('error', (e) => {
+						this.emit(SocketServerEvent.ERROR, e)
+					})
+					this._socketServer.on('close', () => {
+						this.emit(SocketServerEvent.CLOSE)
+					})
+				})
+
 				this._socketServer.listen(this._port)
 			} catch (e) {
 				reject(e)
 			}
 		})
+	}
+
+	get port () {
+		return this._port
+	}
+	get portDescription () {
+		return this._portDescription
 	}
 
 	/** */

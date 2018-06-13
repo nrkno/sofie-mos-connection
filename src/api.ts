@@ -59,6 +59,10 @@ export interface IMosConnection {
 	/*  */
 	connect: (connectionOptions: IMOSDeviceConnectionOptions) => Promise<MosDevice> // resolved when connection has been made (before .onConnection is fired)
 	onConnection: (cb: (mosDevice: MosDevice) => void) => void
+
+	on (event: 'error', listener: (error: Error) => void): this
+	on (event: 'info', listener: (message: string, data?: any) => void): this
+	on (event: 'rawMessage', listener: (source: string, type: string, message: string) => void): this
 }
 
 export interface IMOSDevice {

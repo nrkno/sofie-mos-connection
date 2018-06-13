@@ -16,7 +16,9 @@ export enum SocketServerEvent {
   // LISTENING = 'eventsocketserverlistening',
   // DISPOSED = 'eventsocketserverdisposed',
   // ALIVE = 'eventsocketserveralive',
-  CLIENT_CONNECTED = 'eventsocketserverclientconnected'
+  CLIENT_CONNECTED = 'eventsocketserverclientconnected',
+  ERROR = 'eventsocketserverclienterror',
+  CLOSE = 'eventsocketserverclientclose'
 }
 
 /** */

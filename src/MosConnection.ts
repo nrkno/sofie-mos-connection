@@ -7,7 +7,7 @@ import {
 	IMOSAckStatus
 } from './api'
 import { MosDevice } from './MosDevice'
-import { SocketServerEvent, SocketDescription } from './connection/socketConnection'
+import { SocketServerEvent, SocketDescription, IncomingConnectionType } from './connection/socketConnection'
 import { NCSServerConnection } from './connection/NCSServerConnection'
 import * as parser from 'xml2json'
 import { MosMessage } from './mosModel/MosMessage'
@@ -271,21 +271,41 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			// console.log('reject')
 		}
 
-		// setup two socket servers, then resolve with their listening statuses
-		this._lowerSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_LOWER, 'lower')
-		this._upperSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_UPPER, 'upper')
-		this._querySocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_QUERY, 'query')
+		let initSocket = (port: number, description: IncomingConnectionType) => {
+			let socketServer = new MosSocketServer(port, description)
+			socketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
+			socketServer.on(SocketServerEvent.ERROR, (e) => {
+				// handle error
+				this.emit('error', e)
+			})
 
-		this._lowerSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
-		this._upperSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
-		this._querySocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
+			return socketServer
+		}
+
+		this._lowerSocketServer = initSocket(MosConnection.CONNECTION_PORT_LOWER, 'lower')
+		this._upperSocketServer = initSocket(MosConnection.CONNECTION_PORT_UPPER, 'upper')
+		this._querySocketServer = initSocket(MosConnection.CONNECTION_PORT_QUERY, 'query')
+		// setup two socket servers, then resolve with their listening statuses
+		// this._lowerSocketServer =
+		// this._upperSocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_UPPER, 'upper')
+		// this._querySocketServer = new MosSocketServer(MosConnection.CONNECTION_PORT_QUERY, 'query')
+
+		// this._lowerSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
+		// this._upperSocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
+		// this._querySocketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 
 		// console.log('listen on all ports')
+		let handleListen = (socketServer: MosSocketServer) => {
+			return socketServer.listen()
+			.then(() => {
+				this.emit('info', 'Listening on port ' + socketServer.port + ' (' + socketServer.portDescription + ')')
+			})
+		}
 		return Promise.all(
 			[
-				this._lowerSocketServer.listen(),
-				this._upperSocketServer.listen(),
-				this._querySocketServer.listen()
+				handleListen(this._lowerSocketServer),
+				handleListen(this._upperSocketServer),
+				handleListen(this._querySocketServer)
 			]
 		).then(() => {
 			// All sockets are open and listening at this point
