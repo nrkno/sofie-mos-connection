@@ -298,7 +298,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		let handleListen = (socketServer: MosSocketServer) => {
 			return socketServer.listen()
 			.then(() => {
-				this.emit('info', 'Listening on port ' + this._lowerSocketServer.port + ' (' + this._lowerSocketServer.portDescription + ')')
+				this.emit('info', 'Listening on port ' + socketServer.port + ' (' + socketServer.portDescription + ')')
 			})
 		}
 		return Promise.all(
