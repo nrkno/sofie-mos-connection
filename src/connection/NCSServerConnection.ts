@@ -12,10 +12,14 @@ export interface ClientDescription {
 	clientDescription: string
 }
 
+export interface INCSServerConnection {
+	on (event: 'rawMessage', listener: (type: string, message: string) => void): this
+}
+
 // Namnförslag: NCSServer
 // Vi ansluter från oss till NCS
 /** */
-export class NCSServerConnection extends EventEmitter {
+export class NCSServerConnection extends EventEmitter implements INCSServerConnection {
 	private _connected: boolean
 	// private _lastSeen: number
 	private _id: string
