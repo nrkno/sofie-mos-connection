@@ -31,7 +31,7 @@ export class SocketMock extends EventEmitter implements Socket {
 	public connectedPort: number
 	public connectedHost: string
 
-	private _responses: Array<(data: any) => string | Buffer > = []
+	private _responses: Array<string | false | ((data: any) => string | Buffer | false) > = []
 	private _replyToHeartBeat: boolean = true
 
 	constructor () {
@@ -162,14 +162,16 @@ export class SocketMock extends EventEmitter implements Socket {
 		if (this._responses.length) {
 			// send reply:
 
-			let cb: any = this._responses.shift()
-			let msg
+			let cb = this._responses.shift()
+			let msg: string | Buffer | false
 
 			setTimeoutOrg(() => {
 
 				if (typeof cb === 'string') {
 					msg = cb
-				} else {
+				} else if (cb === false) {
+					msg = cb
+				} else if (typeof cb === 'function') {
 					msg = cb(data)
 				}
 				if (msg !== false) this.mockReceiveMessage(msg)
@@ -179,7 +181,7 @@ export class SocketMock extends EventEmitter implements Socket {
 	mockReceiveMessage (msg: string | Buffer) {
 		this.emit('data', msg)
 	}
-	mockAddReply (cb: (data: any) => string | Buffer) {
+	mockAddReply (cb: string | false | ((data: any) => string | Buffer | false)) {
 		this._responses.push(cb)
 	}
 	mockClear () {

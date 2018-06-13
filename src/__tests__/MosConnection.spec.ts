@@ -57,7 +57,7 @@ async function getMosConnection (): Promise<MosConnection> {
 	ServerMock.mockClear()
 
 	let mos = new MosConnection({
-		mosID: 'aircache.newscenter.com',
+		mosID: 'our.mos.id',
 		acceptsConnections: true,
 		profiles: {
 			'0': true,
@@ -75,7 +75,7 @@ async function getMosDevice (mos: MosConnection): Promise<MosDevice> {
 
 	let device = await mos.connect({
 		primary: {
-			id: 'ncs.newscenter.com',
+			id: 'their.mos.id',
 			host: '127.0.0.1',
 			timeout: 200
 		}
@@ -87,17 +87,17 @@ async function getMosDevice (mos: MosConnection): Promise<MosDevice> {
 	return Promise.resolve(device)
 }
 let sendMessageId = 1632
-function fakeIncomingMessage (socketMockLower: SocketMock, message: string): Promise<number> {
+function fakeIncomingMessage (socketMockLower: SocketMock, message: string, ourMosId?: string, theirMosId?: string): Promise<number> {
 	sendMessageId++
-	let fullMessage = getXMLReply(sendMessageId, message)
+	let fullMessage = getXMLReply(sendMessageId, message, ourMosId, theirMosId)
 	socketMockLower.mockReceiveMessage(encode(fullMessage))
 
 	return Promise.resolve(sendMessageId)
 }
-function getXMLReply (messageId, content): string {
+function getXMLReply (messageId, content, ourMosId?: string, theirMosId?: string): string {
 	return '<mos>' +
-		'<mosID>aircache.newscenter.com</mosID>' +
-		'<ncsID>ncs.newscenter.com</ncsID>' +
+		'<mosID>' + (ourMosId || 'our.mos.id') + '</mosID>' +
+		'<ncsID>' + (theirMosId || 'their.mos.id') + '</ncsID>' +
 		'<messageID>' + messageId + '</messageID>' +
 		content +
 		'</mos>\r\n'
@@ -298,12 +298,12 @@ describe('MosDevice: General', () => {
 
 	})
 })
-describe('MosDevice: Profile 0', () => {
+describe('MosDevice: Basic functionality', () => {
 	test('init and connectionStatusChanged', async () => {
 		SocketMock.mockClear()
 		ServerMock.mockClear()
 
-		let mos = new MosConnection(new ConnectionConfig({
+		let mosConnection = new MosConnection(new ConnectionConfig({
 			mosID: 'jestMOS',
 			acceptsConnections: false,
 			profiles: {
@@ -311,9 +311,9 @@ describe('MosDevice: Profile 0', () => {
 				'1': true
 			}
 		}))
-		await mos.init()
+		await mosConnection.init()
 
-		let mosDevice = await mos.connect({
+		let mosDevice = await mosConnection.connect({
 			primary: {
 				id: 'mockServer',
 				host: '127.0.0.1',
@@ -358,6 +358,151 @@ describe('MosDevice: Profile 0', () => {
 		// mock cause timeout
 		// expect(connectionStatusChanged).toHaveBeenCalledTimes(1)
 		// expect(connectionStatusChanged.mock.calls[0][0]).toMatchObject({PrimaryConnected: false})
+	})
+
+})
+describe('MosDevice: Profile 0', () => {
+	let mosDevice: MosDevice
+	let mosConnection: MosConnection
+
+	let serverMockLower: ServerMock
+	let serverMockUpper: ServerMock
+	let serverMockQuery: ServerMock
+
+	let socketMockLower: SocketMock
+	let socketMockUpper: SocketMock
+	let socketMockQuery: SocketMock
+
+	let serverSocketMockLower: SocketMock
+	let serverSocketMockUpper: SocketMock
+	let serverSocketMockQuery: SocketMock
+
+	let onRequestMOSObject
+	let onRequestAllMOSObjects
+
+	beforeAll(async () => {
+
+		serverMockLower = serverMockLower // lintfix: never read
+		serverMockUpper = serverMockUpper // lintfix: never read
+		serverMockQuery = serverMockQuery // lintfix: never read
+		socketMockLower = socketMockLower // lintfix: never read
+		socketMockUpper = socketMockUpper // lintfix: never read
+		socketMockQuery = socketMockQuery // lintfix: never read
+
+		mosConnection = await getMosConnection()
+		mosDevice = await getMosDevice(mosConnection)
+
+		// Profile 1:
+		onRequestMOSObject = jest.fn(() => {
+			return Promise.resolve(xmlApiData.mosObj)
+		})
+		onRequestAllMOSObjects = jest.fn(() => {
+			return Promise.resolve([
+				xmlApiData.mosObj,
+				xmlApiData.mosObj2
+			])
+		})
+		mosDevice.onRequestMOSObject((objId: string): Promise<IMOSObject | null> => {
+			return onRequestMOSObject(objId)
+		})
+		mosDevice.onRequestAllMOSObjects((): Promise<Array<IMOSObject>> => {
+			return onRequestAllMOSObjects()
+		})
+		let b = doBeforeAll()
+		socketMockLower = b.socketMockLower
+		socketMockUpper = b.socketMockUpper
+		socketMockQuery = b.socketMockQuery
+		serverMockLower = b.serverMockLower
+		serverMockUpper = b.serverMockUpper
+		serverMockQuery = b.serverMockQuery
+		serverSocketMockLower = b.serverSocketMockLower
+		serverSocketMockUpper = b.serverSocketMockUpper
+		serverSocketMockQuery = b.serverSocketMockQuery
+	})
+	afterAll(async () => {
+		await mosDevice.dispose()
+		await mosConnection.dispose()
+	})
+	beforeEach(() => {
+		// SocketMock.mockClear()
+		onRequestMOSObject.mockClear()
+		onRequestAllMOSObjects.mockClear()
+
+		serverSocketMockLower.mockClear()
+		serverSocketMockUpper.mockClear()
+		if (serverSocketMockQuery) serverSocketMockQuery.mockClear()
+		socketMockLower.mockClear()
+		socketMockUpper.mockClear()
+		if (socketMockQuery) socketMockQuery.mockClear()
+	})
+	test('init', async () => {
+		expect(mosDevice).toBeTruthy()
+		expect(socketMockLower).toBeTruthy()
+		expect(socketMockUpper).toBeTruthy()
+		expect(serverSocketMockLower).toBeTruthy()
+	})
+	test('heartbeat from other party', async () => {
+
+		expect(serverSocketMockLower).toBeTruthy()
+
+		serverSocketMockLower.setReplyToHeartBeat(false)
+
+		let serverReply = jest.fn(() => false)
+		serverSocketMockLower.mockAddReply(serverReply)
+		// Fake incoming message on socket:
+		let sendMessageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.heartbeat)
+		await delay(10) // to allow for async timers & events to triggered
+
+		expect(serverReply).toHaveBeenCalledTimes(1)
+		// console.log(serverReply.mock.calls[0])
+
+		let msg = serverSocketMockLower.decode(serverReply.mock.calls[0][0])
+
+		expect(msg).toMatch(/<heartbeat/)
+		expect(msg).toMatch('<messageID>' + sendMessageId)
+	})
+
+	test('unknown party connects', async () => {
+
+		// let unknownServerSocketMockLower = serverMockLower.mockNewConnection()
+
+		expect(serverSocketMockLower).toBeTruthy()
+		serverSocketMockLower.setReplyToHeartBeat(false)
+		let serverReply = jest.fn(() => false)
+		serverSocketMockLower.mockAddReply(serverReply)
+
+		// Fake incoming message on socket:
+		let sendMessageId = await fakeIncomingMessage(
+			serverSocketMockLower,
+			xmlData.heartbeat,
+			'ourUnknownMosId'
+		)
+		await delay(10) // to allow for async timers & events to triggered
+
+		expect(serverReply).toHaveBeenCalledTimes(1)
+		let msg = serverSocketMockLower.decode(serverReply.mock.calls[0][0])
+		expect(msg).toMatch(/<roAck>/)
+		expect(msg).toMatch('<messageID>' + sendMessageId)
+		expect(msg).toMatch('<status>NACK')
+
+		serverReply.mockClear()
+		serverSocketMockLower.mockAddReply(serverReply)
+
+		// Fake incoming message on socket:
+		sendMessageId = await fakeIncomingMessage(
+			serverSocketMockLower,
+			xmlData.heartbeat,
+			undefined,
+			'theirUnknownMosId'
+		)
+		await delay(10) // to allow for async timers & events to triggered
+
+		expect(serverReply).toHaveBeenCalledTimes(1)
+		msg = serverSocketMockLower.decode(serverReply.mock.calls[0][0])
+		expect(msg).toMatch(/<roAck>/)
+		expect(msg).toMatch('<messageID>' + sendMessageId)
+		expect(msg).toMatch('<status>NACK')
+
 	})
 })
 

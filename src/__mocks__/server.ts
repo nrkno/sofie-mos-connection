@@ -4,6 +4,9 @@ import { Server } from 'net'
 import { SocketMock } from './socket'
 // import { Writable } from 'stream'
 
+const iconv = require('iconv-lite')
+iconv.encodingExists('utf16-be')
+
 // Mock the Server class in 'net':
 let setTimeoutOrg = setTimeout
 
@@ -15,6 +18,8 @@ export class ServerMock extends EventEmitter implements Server {
 	maxConnections: number
 	connections: number
 	listening: boolean
+	listenToPort: number
+
 	private _responses: Array<(data: any) => string | Buffer > = []
 
 	constructor () {
@@ -44,7 +49,9 @@ export class ServerMock extends EventEmitter implements Server {
 		return instances
 	}
 
-	listen () {
+	listen (port) {
+
+		this.listenToPort = port
 		setTimeoutOrg(() => {
 			this.listening = true
 			this.emit('listening', {})
@@ -111,6 +118,12 @@ export class ServerMock extends EventEmitter implements Server {
 	}
 	mockClear () {
 		this._responses.splice(0, 9999)
+	}
+	decode (data: Buffer): string {
+		return iconv.decode(data, 'utf16-be')
+	}
+	encode (str: string) {
+		return iconv.encode(str, 'utf16-be')
 	}
 }
 
