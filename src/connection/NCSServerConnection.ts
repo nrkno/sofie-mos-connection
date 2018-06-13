@@ -108,7 +108,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 					}
 				})
 			} else {
-				reject('No clients found')
+				reject('executeCommand: No clients found for ' + message.port)
 			}
 		})
 	}
