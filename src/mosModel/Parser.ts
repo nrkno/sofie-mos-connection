@@ -17,8 +17,6 @@ import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
-// import * as parser from 'xml2json'
-import { js2xml } from 'xml-js'
 import { ROAck } from '../mosModel/ROAck'
 
 function isEmpty (obj: any) {
@@ -276,8 +274,8 @@ export namespace Parser {
 		// xmlMD.ele('mosSchema', {}, md.MosSchema)
 
 		// let payload = parser.toXml(md.MosPayload)  // TODO: implement this properly, convert to xml
-		let payload = js2xml({ mosExternalMetadata: md }, { compact: true })
-		return XMLBuilder.create(payload)
+		// let payload = js2xml({ mosExternalMetadata: md }, { compact: true })
+		return XMLBuilder.create({ mosExternalMetadata: md })
 		// xmlMD.ele('mosPayload', {}, payload)
 		// return xmlMD
 	}
