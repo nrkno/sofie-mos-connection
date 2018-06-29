@@ -4622,6 +4622,12 @@ xdg-trashdir@^2.1.1:
     user-home "^2.0.0"
     xdg-basedir "^2.0.0"
 
+xml-js@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/xml-js/-/xml-js-1.6.4.tgz#fcf9fdc9fb6d691122a02fe5a55c30f84d93ab90"
+  dependencies:
+    sax "^1.2.4"
+
 xml-name-validator@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
