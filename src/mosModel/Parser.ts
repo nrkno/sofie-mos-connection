@@ -17,7 +17,8 @@ import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
-import * as parser from 'xml2json'
+// import * as parser from 'xml2json'
+import { js2xml } from 'xml-js'
 import { ROAck } from '../mosModel/ROAck'
 
 function isEmpty (obj: any) {
@@ -269,14 +270,16 @@ export namespace Parser {
 		})
 	}
 	export function metaData2xml (md: IMOSExternalMetaData): XMLBuilder.XMLElementOrXMLNode {
-		let xmlMD = XMLBuilder.create('mosExternalMetadata')
+		// let xmlMD = XMLBuilder.create('mosExternalMetadata')
 
-		if (md.MosScope) xmlMD.ele('mosScope', {}, md.MosScope)
-		xmlMD.ele('mosSchema', {}, md.MosSchema)
+		// if (md.MosScope) xmlMD.ele('mosScope', {}, md.MosScope)
+		// xmlMD.ele('mosSchema', {}, md.MosSchema)
 
-		let payload = parser.toXml(md.MosPayload)  // TODO: implement this properly, convert to xml
-		xmlMD.ele('mosPayload', {}, payload)
-		return xmlMD
+		// let payload = parser.toXml(md.MosPayload)  // TODO: implement this properly, convert to xml
+		let payload = js2xml({ mosExternalMetadata: md }, { compact: true })
+		return XMLBuilder.create(payload)
+		// xmlMD.ele('mosPayload', {}, payload)
+		// return xmlMD
 	}
 	export function xml2IDs (xml: any): Array<MosString128> {
 		let arr: Array<MosString128> = []

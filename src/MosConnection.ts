@@ -9,7 +9,7 @@ import {
 import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription, IncomingConnectionType } from './connection/socketConnection'
 import { NCSServerConnection } from './connection/NCSServerConnection'
-import * as parser from 'xml2json'
+import { xml2js } from './utils/Utils'
 import { MosMessage } from './mosModel/MosMessage'
 import { MOSAck } from './mosModel/mosAck'
 import { MosString128 } from './dataTypes/mosString128'
@@ -339,11 +339,6 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			if (this._debug) console.log(`Socket got data (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${data}`)
 
 			let parsed: any = null
-			let parseOptions: any = {
-				object: true,
-				coerce: true,
-				trim: true
-			}
 			let firstMatch = '<mos>' // <mos>
 			let first = messageString.substr(0, firstMatch.length)
 			let lastMatch = '</mos>' // </mos>
@@ -356,10 +351,10 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				// console.log(messageString)
 				if (first === firstMatch && last === lastMatch) {
 					// Data ready to be parsed:
-					parsed = parser.toJson(messageString, parseOptions)
+					parsed = xml2js(messageString)
 				} else if (last === lastMatch) {
 					// Last chunk, ready to parse with saved data:
-					parsed = parser.toJson(client.chunks + messageString, parseOptions)
+					parsed = xml2js(messageString)
 					client.chunks = ''
 				} else if (first === firstMatch) {
 					// Chunk, save for later:

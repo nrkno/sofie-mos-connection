@@ -20,7 +20,6 @@ export function xml2js (messageString: string): object {
 				if (childEl.type && childEl.type === 'text') {
 					element.type = 'text'
 					Object.defineProperty(element, 'text', Object.getOwnPropertyDescriptor(childEl, 'text')!)
-					delete childEl.attributes
 				} else {
 					delete childEl.name
 					delete childEl.type
@@ -32,8 +31,14 @@ export function xml2js (messageString: string): object {
 				}
 				delete element.elements
 				concatChildrenAndTraverseObject(childEl)
-				if (childEl.type === 'text' && !childEl.attributes) {
+				if (childEl.type === 'text') {
 					element[name] = childEl.text
+					if (childEl.attributes) {
+						for (const key in childEl.attributes) {
+							element[key] = childEl.attributes[key]
+						}
+						delete childEl.attributes
+					}
 				}
 			} else if (element.elements.length > 1) {
 				for (const childEl of element.elements) {
@@ -47,13 +52,25 @@ export function xml2js (messageString: string): object {
 					const array: any = []
 					for (const childEl of element.elements) {
 						if (childEl.type && childEl.type === 'text') {
-							if (childEl.text) array.push(childEl.text)
-							if (childEl.text) array.push(childEl.text)
+							if (Object.keys(childEl).length > 2) {
+								array.push(childEl)
+							} else if (childEl.attributes) {
+								childEl.attributes.text = childEl.text
+								array.push(childEl.attributes)
+							} else {
+								array.push(childEl.text)
+							}
 						} else {
 							if (childEl.type) delete childEl.type
 							if (childEl.name) delete childEl.name
 							if (Object.keys(childEl).length > 1) {
 								// might contain something useful like attributes
+								if (childEl.attributes) {
+									for (const key in childEl.attributes) {
+										childEl[key] = childEl.attributes[key]
+									}
+									delete childEl.attributes
+								}
 								array.push(childEl)
 							} else {
 								array.push(childEl[Object.keys(childEl)[0]])
@@ -64,12 +81,18 @@ export function xml2js (messageString: string): object {
 					delete element.elements
 				} else if (names.length === namesSet.size && !orderedTags.has(element.name)) {
 					for (const childEl of element.elements) {
-						if (childEl.type && childEl.type === 'text' && !childEl.attributes) {
+						if (childEl.type && childEl.type === 'text' && (Object.keys(childEl).length < 4 || (!childEl.name && Object.keys(childEl).length < 3))) {
 							if (!childEl.text) {
 								element.text = childEl.text
 							}
 							element[childEl.name] = childEl.text
 						} else {
+							if (childEl.attributes) {
+								for (const key in childEl.attributes) {
+									childEl[key] = childEl.attributes[key]
+								}
+								delete childEl.attributes
+							}
 							const name = childEl.name || childEl.type || 'unknownEl'
 							if (childEl.type) delete childEl.type
 							if (childEl.name) delete childEl.name
@@ -81,8 +104,13 @@ export function xml2js (messageString: string): object {
 					const holder: {[key: string]: any} = {}
 					for (let childEl of element.elements) {
 						const name = childEl.name
-						if (childEl.type === 'text') {
+						if (childEl.type === 'text' && Object.keys(childEl).length < 4) {
 							childEl = childEl.text
+						} else if (childEl.attributes) {
+							for (const key in childEl.attributes) {
+								childEl[key] = childEl.attributes[key]
+							}
+							delete childEl.attributes
 						}
 						if (holder[name]) {
 							holder[name].push(childEl)
