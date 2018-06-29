@@ -2,16 +2,11 @@ import { EventEmitter } from 'events'
 import { Socket } from 'net'
 import { SocketConnectionEvent } from './socketConnection'
 import { MosMessage } from '../mosModel/MosMessage'
-import * as parser from 'xml2json'
+import { xml2js } from '../utils/Utils'
 const iconv = require('iconv-lite')
 
 export type CallBackFunction = (err: any, data: object) => void
 
-const parseOptions: any = {
-	'object': true,
-	coerce: true,
-	trim: true
-}
 interface QueueMessage {
 	time: number
 	msg: MosMessage
@@ -297,11 +292,11 @@ export class MosSocketClient extends EventEmitter {
 			// console.log(first === firstMatch, last === lastMatch, last, lastMatch)
 			if (first === firstMatch && last === lastMatch) {
 				// Data ready to be parsed:
-				parsedData = parser.toJson(messageString, parseOptions)
+				parsedData = xml2js(messageString)// , { compact: true, trim: true, nativeType: true })
 				this.dataChunks = ''
 			} else if (last === lastMatch) {
 				// Last chunk, ready to parse with saved data:
-				parsedData = parser.toJson(this.dataChunks + messageString, parseOptions)
+				parsedData = xml2js(this.dataChunks)// , { compact: true, trim: true, nativeType: true })
 				this.dataChunks = ''
 			} else if (first === firstMatch) {
 				// Chunk, save for later:
@@ -312,6 +307,7 @@ export class MosSocketClient extends EventEmitter {
 			}
 			// let parsedData: any = parser.toJson(messageString, )
 			if (parsedData) {
+				// console.log(parsedData, newParserData)
 				let messageId = parsedData.mos.messageID
 				if (messageId) {
 					if (this._sentMessage) {

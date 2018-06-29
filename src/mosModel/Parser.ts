@@ -196,8 +196,8 @@ export namespace Parser {
 			if (type) {
 				paths.push({
 					Type: type,
-					Description: xmlPath.o.techDescription,
-					Target: xmlPath.o.$t
+					Description: xmlPath.o.techDescription || xmlPath.o.attributes.techDescription,
+					Target: xmlPath.o.text || xmlPath.o.$t
 				})
 			}
 		})
