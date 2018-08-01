@@ -1164,14 +1164,28 @@ describe('MosDevice: Profile 4', () => {
 		expect(socketMockLower).toBeTruthy()
 		expect(socketMockUpper).toBeTruthy()
 	})
-	// test('onROStory', async () => {
-	// 	// Fake incoming message on socket:
+	test('onROStory', async () => {
+		// Fake incoming message on socket:
 
-	// 	let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySend)
-	// 	expect(onROStory).toHaveBeenCalledTimes(1)
-	// 	expect(onROStory.mock.calls[0][0]).toMatchObject(xmlApiData.roStorySend)
-	// 	await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
-	// })
+		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySend)
+		expect(onROStory).toHaveBeenCalledTimes(1)
+
+		let o = Object.assign({}, xmlApiData.roStorySend)
+		delete o.Body
+		expect(onROStory.mock.calls[0][0]).toMatchObject(o)
+		xmlApiData.roStorySend.Body.forEach((item, key) => {
+			try {
+
+				expect(onROStory.mock.calls[0][0].Body[key]).toMatchObject(item)
+			} catch (e) {
+				console.log(key)
+				throw e
+			}
+		})
+		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+
+		// expect(onROStory.mock.calls[0][0]).toMatchObject(xmlApiData.roStorySend)
+	})
 	test('getAllRunningOrders', async () => {
 		// Prepare server response
 		let mockReply = jest.fn((data) => {

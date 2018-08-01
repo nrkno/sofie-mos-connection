@@ -185,6 +185,7 @@ export interface IMOSROFullStoryBodyItem {
 export interface IMOSItem {
 	ID: MosString128
 	Slug?: MosString128
+	ItemSlug?: MosString128
 	ObjectID: MosString128
 	MOSID: string
 	mosAbstract?: string
@@ -271,23 +272,25 @@ export interface IMOSObject {
 	Group?: string
 	Type: IMOSObjectType
 	TimeBase: number
-	Revision: number // max 999
+	Revision?: number // max 999
 	Duration: number
-	Status: IMOSObjectStatus
-	AirStatus: IMOSObjectAirStatus
+	Status?: IMOSObjectStatus
+	AirStatus?: IMOSObjectAirStatus
 	Paths: Array<IMOSObjectPath>
-	CreatedBy: MosString128
-	Created: MosTime
+	CreatedBy?: MosString128
+	Created?: MosTime
 	ChangedBy?: MosString128 // if not present, defaults to CreatedBy
 	Changed?: MosTime // if not present, defaults to Created
 	Description?: any // xml json
 	MosExternalMetaData?: Array<IMOSExternalMetaData>
+	MosItemEditorProgID?: MosString128
 }
 
 export enum IMOSObjectType {
 	STILL = 'STILL',
 	AUDIO = 'AUDIO',
-	VIDEO = 'VIDEO'
+	VIDEO = 'VIDEO',
+	OTHER = 'OTHER' // unknown/not speficied
 }
 
 export enum IMOSObjectStatus {
