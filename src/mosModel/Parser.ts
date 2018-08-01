@@ -192,7 +192,7 @@ export namespace Parser {
 			} else if (xmlPath.key === 'objMetadataPath') {
 				type = IMOSObjectPathType.METADATA_PATH
 			}
-			if (type) {
+			if (type && Object.keys(xmlPath.o).length > 0) {
 				paths.push({
 					Type: type,
 					Description: xmlPath.o.techDescription || xmlPath.o.attributes.techDescription,
