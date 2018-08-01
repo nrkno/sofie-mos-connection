@@ -10,8 +10,15 @@ export function pad (n: string, width: number, z?: string): string {
 export function xml2js (messageString: string): object {
 	let object = xmlParser(messageString, { compact: false, trim: true, nativeType: true })
 	// common tags we typically want to know the order of the contents of:
-	const orderedTags = new Set([ 'storyBody', 'storyItem', 'mosAbstract', 'description', 'p', 'em', 'span', 'h1', 'h2', 'i', 'b' ])
+	const orderedTags = new Set([ 'storyBody', 'mosAbstract', 'description', 'p', 'em', 'span', 'h1', 'h2', 'i', 'b' ])
 
+	/**
+	 * Doing a post-order tree traversal we try to make the objectified tree as compact as possible.
+	 * Whenever we find an "orderedTag" we keep the order of it's children.
+	 * 
+	 * ps: post-order means we make a node's children as compact as possible first, and then try to make
+	 * that node compact.
+	 */
 	const concatChildrenAndTraverseObject = (element: {[key: string]: any }) => {
 		if (element.elements) {
 			if (element.elements.length === 1) {
@@ -46,8 +53,7 @@ export function xml2js (messageString: string): object {
 					concatChildrenAndTraverseObject(childEl)
 				}
 
-				if (!orderedTags.has(element.name)) {
-					// console.log(element)
+				if (!orderedTags.has(element.name)) { // if the element name is contained in the set of orderedTag names we don't make it any more compact
 					let names: Array<string> = element.elements.map((obj: { name?: string, type?: string }) => obj.name || obj.type || 'unknownElement')
 					let namesSet = new Set(names)
 					if ((namesSet.size === 1 && names.length !== 1) && !namesSet.has('type') && !namesSet.has('name')) {
