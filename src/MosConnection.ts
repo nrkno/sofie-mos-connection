@@ -354,10 +354,10 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 					parsed = xml2js(messageString)
 				} else if (last === lastMatch) {
 					// Last chunk, ready to parse with saved data:
-					parsed = xml2js(messageString)
+					parsed = xml2js(client.chunks + messageString)
 					client.chunks = ''
 				} else if (first === firstMatch) {
-					// Chunk, save for later:
+					// First chunk, save for later:
 					client.chunks = messageString
 				} else {
 					// Chunk, save for later:
