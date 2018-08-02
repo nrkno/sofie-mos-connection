@@ -1374,7 +1374,7 @@ let xmlApiData = {
 								attributes: {
 									type: 'video',
 									changedBy: 'N11580',
-									changetime: '2014-10-06T13:24:32 +02:00',
+									changetime: '2014-10-06T13:24:32 +02:00'
 								},
 								title: '',
 								description: '',
@@ -1493,7 +1493,7 @@ let xmlApiData = {
 							MosItemEditorProgID: new MosString128('Chymox.AssetBrowser.1')
 						})
 					]
-				},
+				}
 			}),
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'p',

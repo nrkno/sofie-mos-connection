@@ -15,7 +15,7 @@ export function xml2js (messageString: string): object {
 	/**
 	 * Doing a post-order tree traversal we try to make the objectified tree as compact as possible.
 	 * Whenever we find an "orderedTag" we keep the order of it's children.
-	 * 
+	 *
 	 * ps: post-order means we make a node's children as compact as possible first, and then try to make
 	 * that node compact.
 	 */

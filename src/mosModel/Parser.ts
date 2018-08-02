@@ -11,8 +11,7 @@ import {
 	IMOSROAckObject,
 	IMOSObject,
 	IMOSROFullStory,
-	IMOSROFullStoryBodyItem,
-	IMOSObjectType
+	IMOSROFullStoryBodyItem
 } from '../api'
 import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
@@ -257,14 +256,6 @@ export namespace Parser {
 			})
 		}
 		return xmlItem
-	}
-	function isEmpty (obj: object) {
-		for (let key in obj) {
-			if (obj.hasOwnProperty(key)) {
-				return false
-			}
-		}
-		return true
 	}
 	function fixPayload (obj: any): any {
 		if (typeof obj === 'object') {
