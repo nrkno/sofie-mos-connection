@@ -11,7 +11,8 @@ import {
 	IMOSROAckObject,
 	IMOSObject,
 	IMOSROFullStory,
-	IMOSROFullStoryBodyItem
+	IMOSROFullStoryBodyItem,
+	IMOSObjectType
 } from '../api'
 import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
@@ -158,6 +159,9 @@ export namespace Parser {
 		if (xml.hasOwnProperty('itemUserTimingDur')) item.UserTimingDuration = xml.itemUserTimingDur
 		if (xml.hasOwnProperty('itemTrigger')) item.Trigger = xml.itemTrigger
 		if (xml.hasOwnProperty('mosExternalMetadata')) item.MosExternalMetaData = xml2MetaData(xml.mosExternalMetadata)
+		if (xml.hasOwnProperty('mosAbstract')) item.mosAbstract = xml.mosAbstract + ''
+		if (xml.hasOwnProperty('objSlug')) item.ObjectSlug = new MosString128(xml.objSlug)
+		if (xml.hasOwnProperty('itemChannel')) item.Channel = new MosString128(xml.itemChannel)
 
 		if (xml.hasOwnProperty('mosObj')) {
 			// Note: the <mosObj> is sent in roStorySend
@@ -254,6 +258,29 @@ export namespace Parser {
 		}
 		return xmlItem
 	}
+	function isEmpty (obj: object) {
+		for (let key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				return false
+			}
+		}
+		return true
+	}
+	function fixPayload (obj: any): any {
+		if (typeof obj === 'object') {
+			for (let key in obj) {
+				let o = obj[key]
+				if (typeof o === 'object') {
+					if (isEmpty(o)) {
+						obj[key] = ''
+					} else {
+						fixPayload(o)
+					}
+				}
+			}
+		}
+		return obj
+	}
 	export function xml2MetaData (xml: any): Array<IMOSExternalMetaData> {
 		if (!xml) return []
 		let xmlMetadata: Array<any> = xml
@@ -262,7 +289,7 @@ export namespace Parser {
 			let md: IMOSExternalMetaData = {
 				MosScope: (xmlmd.hasOwnProperty('mosScope') ? xmlmd.mosScope : null),
 				MosSchema: xmlmd.mosSchema + '',
-				MosPayload: xmlmd.mosPayload
+				MosPayload: fixPayload(xmlmd.mosPayload)
 			}
 			return md
 		})
@@ -368,6 +395,7 @@ export namespace Parser {
 			Description: xml.description
 		}
 		if (xml.hasOwnProperty('mosExternalMetadata')) mosObj.MosExternalMetaData = xml2MetaData(xml.mosExternalMetadata)
+		if (xml.hasOwnProperty('mosItemEditorProgID')) mosObj.MosItemEditorProgID = new MosString128(xml.mosItemEditorProgID)
 		return mosObj
 	}
 	export function mosObj2xml (obj: IMOSObject): XMLBuilder.XMLElementOrXMLNode {

@@ -185,7 +185,7 @@ export interface IMOSROFullStoryBodyItem {
 export interface IMOSItem {
 	ID: MosString128
 	Slug?: MosString128
-	ItemSlug?: MosString128
+	ObjectSlug?: MosString128
 	ObjectID: MosString128
 	MOSID: string
 	mosAbstract?: string

@@ -1173,12 +1173,17 @@ describe('MosDevice: Profile 4', () => {
 		let o = Object.assign({}, xmlApiData.roStorySend)
 		delete o.Body
 		expect(onROStory.mock.calls[0][0]).toMatchObject(o)
-		xmlApiData.roStorySend.Body.forEach((item, key) => {
+		xmlApiData.roStorySend.Body.forEach((testItem, key) => {
+			let item: any
 			try {
+				item = onROStory.mock.calls[0][0].Body[key]
+				if (!testItem.Content) delete testItem.Content
 
-				expect(onROStory.mock.calls[0][0].Body[key]).toMatchObject(item)
+				expect(item).toMatchObject(testItem)
 			} catch (e) {
 				console.log(key)
+				console.log('item', item)
+				console.log('testItem', testItem)
 				throw e
 			}
 		})

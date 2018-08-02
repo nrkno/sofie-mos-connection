@@ -1347,17 +1347,17 @@ let xmlApiData = {
 		Body: [
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'p',
-				Content: ' '
+				Content: ''
 			}),
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'storyItem',
 				Content: literal<IMOSItem>({
 					ID: new MosString128('2'),
-					Slug: new MosString128('M: '),
+					Slug: new MosString128('SAK BUSKERUD;SAK-14'),
 					ObjectID: new MosString128('N11580_1412594672'),
 					MOSID: 'METADATA.NRK.MOS',
 					mosAbstract: 'METADATA',
-					ItemSlug: new MosString128('SAK BUSKERUD;SAK-14'),
+					ObjectSlug: new MosString128('M:'),
 					// Paths?: Array<IMOSObjectPath>,
 					// Channel?: new MosString128(''),
 					// EditorialStart?: number,
@@ -1371,20 +1371,20 @@ let xmlApiData = {
 						MosSchema: 'http://mosA4.com/mos/supported_schemas/MOSAXML2.08',
 						MosPayload: {
 							nrk: {
-								type: 'video',
-								changedBy: 'N11580',
-								changetime: '2014-10-06T13:24:32 +02:00',
-								c: {
-									title: '',
-									description: '',
-									hbbtv: {
-										link: ''
-									},
-									rights: {
-										notes: '',
-										owner: 'NRK',
-										c: 'Green'
-									}
+								attributes: {
+									type: 'video',
+									changedBy: 'N11580',
+									changetime: '2014-10-06T13:24:32 +02:00',
+								},
+								title: '',
+								description: '',
+								hbbtv: {
+									link: ''
+								},
+								rights: {
+									notes: '',
+									owner: 'NRK',
+									text: 'Green'
 								}
 							}
 						}
@@ -1394,15 +1394,15 @@ let xmlApiData = {
 			}),
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'p',
-				Content: ' '
+				Content: ''
 			}),
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'p',
-				Content: ' '
+				Content: ''
 			}),
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'p',
-				Content: ' '
+				Content: ''
 			}),
 			// literal<IMOSROFullStoryBodyItem>({
 			literal<IMOSROFullStoryBodyItem>({
@@ -1413,7 +1413,7 @@ let xmlApiData = {
 					// ObjectID: new MosString128(''),
 					MOSID: 'chyron.techycami02.ndte.nrk.mos',
 					mosAbstract: '_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00',
-					ItemSlug: new MosString128('01 ett navn 1:&#160;&#160;2:'),
+					Slug: new MosString128('01 ett navn 1:\xa0\xa02:'), // &nbsp = 160
 					Paths: [
 						literal<IMOSObjectPath>({
 							Type: IMOSObjectPathType.PROXY_PATH,
@@ -1428,36 +1428,36 @@ let xmlApiData = {
 					// Trigger?: any
 					// MacroIn?: new MosString128(''),
 					// MacroOut?: new MosString128(''),
-					MosExternalMetaData: [literal<IMOSExternalMetaData>({
-						MosScope: IMOSScope.PLAYLIST,
-						MosSchema: '',
-						MosPayload: {
-							nrk: {
-								type: '',
-								changedBy: '',
-								changetime: '',
-								c: {
-									title: '',
-									description: '',
-									hbbtv: {
-										link: ''
-									},
-									rights: {
-										notes: '',
-										owner: '',
-										c: ''
-									}
-								}
-							}
-						}
-					})],
+					// MosExternalMetaData: [literal<IMOSExternalMetaData>({
+					// 	MosScope: IMOSScope.PLAYLIST,
+					// 	MosSchema: '',
+					// 	MosPayload: {
+					// 		nrk: {
+					// 			type: '',
+					// 			changedBy: '',
+					// 			changetime: '',
+
+					// 			title: '',
+					// 			description: '',
+					// 			hbbtv: {
+					// 				link: ''
+					// 			},
+					// 			rights: {
+					// 				notes: '',
+					// 				owner: '',
+					// 				text: ''
+					// 			}
+
+					// 		}
+					// 	}
+					// })],
 					MosObjects: [
 						literal<IMOSObject>({
 							ID: new MosString128('NYHETER\\00039287?version=1'),
-							Slug: new MosString128('01 ett navn 1:&#160;&#160;2:'),
+							Slug: new MosString128('01 ett navn 1:\xa0\xa02:'), // &nbsp = 160
 							// MosAbstract?: '',
 							// Group?: '',
-							Type: IMOSObjectType.OTHER,
+							Type: undefined,
 							TimeBase: 0,
 							// Revision: number, // max 999
 							Duration: 0,
@@ -1485,7 +1485,7 @@ let xmlApiData = {
 									subtype: 'lyric/data',
 									subtypeid: 'I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr',
 									ObjectDetails: {
-										ServerID: 'chyron.techycami02.ndte.n \r\n--------------------------------------------------------\r\n \nrk.mos',
+										ServerID: 'chyron.techycami02.ndte.n    --------------------------------------------------------    rk.mos',
 										ServerURL: 'http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx'
 									}
 								}
@@ -1497,7 +1497,7 @@ let xmlApiData = {
 			}),
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'p',
-				Content: ' '
+				Content: ''
 			}),
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'storyItem'
@@ -1505,11 +1505,7 @@ let xmlApiData = {
 			} as IMOSROFullStoryBodyItem), // tmp
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'p',
-				Content: ' '
-			}),
-			literal<IMOSROFullStoryBodyItem>({
-				Type: 'p',
-				Content: ' '
+				Content: ''
 			}),
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'storyItem'
@@ -1517,7 +1513,7 @@ let xmlApiData = {
 			} as IMOSROFullStoryBodyItem), // tmp
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'p',
-				Content: ' '
+				Content: ''
 			})
 
 			// <p> </p>

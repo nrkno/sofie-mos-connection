@@ -90,7 +90,7 @@ export function xml2js (messageString: string): object {
 						delete element.elements
 					} else if (names.length === namesSet.size) {
 						for (const childEl of element.elements) {
-							if (childEl.type && childEl.type === 'text' && (Object.keys(childEl).length < 4 || (!childEl.name && Object.keys(childEl).length < 3))) {
+							if (childEl.type && childEl.type === 'text' && (Object.keys(childEl).length <= 3 || (!childEl.name && Object.keys(childEl).length < 3))) {
 								if (!childEl.text) {
 									element.text = childEl.text
 								}
@@ -113,7 +113,7 @@ export function xml2js (messageString: string): object {
 						const holder: {[key: string]: any} = {}
 						for (let childEl of element.elements) {
 							const name = childEl.name
-							if (childEl.type === 'text' && Object.keys(childEl).length < 4) {
+							if (childEl.type === 'text' && Object.keys(childEl).length <= 3) {
 								childEl = childEl.text
 							} else if (childEl.attributes) {
 								for (const key in childEl.attributes) {

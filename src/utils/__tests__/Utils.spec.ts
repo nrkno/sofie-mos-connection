@@ -15,7 +15,7 @@ test('xml2js', () => {
 	</storyBody>
 </roStorySend>
 	`)
-	console.log(o.roStorySend.storyBody)
+	// console.log(o.roStorySend.storyBody)
 	expect(o).toBeTruthy()
 	expect(o.roStorySend.storyBody).toMatchObject({ elements: 
          [ { type: 'text', name: 'p', text: 'Hello and welcome' },
