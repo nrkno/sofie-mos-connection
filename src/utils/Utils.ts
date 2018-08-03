@@ -20,26 +20,32 @@ export function xml2js (messageString: string): object {
 	 * that node compact.
 	 */
 	const concatChildrenAndTraverseObject = (element: {[key: string]: any }) => {
+
+		if (element.name) {
+			element.$name = element.name
+			delete element.name
+		}
+		if (element.type) {
+			element.$type = element.type
+			delete element.type
+		}
+
 		if (element.elements) {
 			if (element.elements.length === 1) {
 				concatChildrenAndTraverseObject(element.elements[0])
 
 				const childEl = element.elements[0]
-				const name = childEl.name || childEl.type || 'unknownElement'
-				if (childEl.type && childEl.type === 'text') {
-					element.type = 'text'
-					Object.defineProperty(element, 'text', Object.getOwnPropertyDescriptor(childEl, 'text')!)
+				const name = childEl.$name || childEl.$type || 'unknownElement'
+				if (childEl.$type && childEl.$type === 'text') {
+					element.$type = 'text'
+					element.text = childEl.text
 				} else {
-					delete childEl.name
-					delete childEl.type
-					Object.defineProperty(
-						element,
-						name,
-						Object.getOwnPropertyDescriptor(element.elements, 0)!
-					)
+					delete childEl.$name
+					delete childEl.$type
+					element[name] = element.elements[0]
 				}
 				delete element.elements
-				if (childEl.type === 'text') {
+				if (childEl.$type === 'text') {
 					element[name] = childEl.text
 					if (childEl.attributes) {
 						for (const key in childEl.attributes) {
@@ -53,14 +59,14 @@ export function xml2js (messageString: string): object {
 					concatChildrenAndTraverseObject(childEl)
 				}
 
-				if (!orderedTags.has(element.name)) { // if the element name is contained in the set of orderedTag names we don't make it any more compact
-					let names: Array<string> = element.elements.map((obj: { name?: string, type?: string }) => obj.name || obj.type || 'unknownElement')
+				if (!orderedTags.has(element.$name)) { // if the element name is contained in the set of orderedTag names we don't make it any more compact
+					let names: Array<string> = element.elements.map((obj: { $name?: string, $type?: string }) => obj.$name || obj.$type || 'unknownElement')
 					let namesSet = new Set(names)
 					if ((namesSet.size === 1 && names.length !== 1) && !namesSet.has('type') && !namesSet.has('name')) {
 						// make array compact:
 						const array: any = []
 						for (const childEl of element.elements) {
-							if (childEl.type && childEl.type === 'text') {
+							if (childEl.$type && childEl.$type === 'text') {
 								if (Object.keys(childEl).length > 2) {
 									array.push(childEl)
 								} else if (childEl.attributes) {
@@ -70,8 +76,8 @@ export function xml2js (messageString: string): object {
 									array.push(childEl.text)
 								}
 							} else {
-								if (childEl.type) delete childEl.type
-								if (childEl.name) delete childEl.name
+								if (childEl.$type) delete childEl.$type
+								if (childEl.$name) delete childEl.$name
 								if (Object.keys(childEl).length > 1) {
 									// might contain something useful like attributes
 									if (childEl.attributes) {
@@ -89,12 +95,13 @@ export function xml2js (messageString: string): object {
 						element[names[0]] = array
 						delete element.elements
 					} else if (names.length === namesSet.size) {
+						// all elements are unique
 						for (const childEl of element.elements) {
-							if (childEl.type && childEl.type === 'text' && (Object.keys(childEl).length <= 3 || (!childEl.name && Object.keys(childEl).length < 3))) {
+							if (childEl.$type && childEl.$type === 'text' && (Object.keys(childEl).length <= 3 || (!childEl.$name && Object.keys(childEl).length < 3))) {
 								if (!childEl.text) {
 									element.text = childEl.text
 								}
-								element[childEl.name] = childEl.text
+								element[childEl.$name] = childEl.text
 							} else {
 								if (childEl.attributes) {
 									for (const key in childEl.attributes) {
@@ -102,9 +109,9 @@ export function xml2js (messageString: string): object {
 									}
 									delete childEl.attributes
 								}
-								const name = childEl.name || childEl.type || 'unknownEl'
-								if (childEl.type) delete childEl.type
-								if (childEl.name) delete childEl.name
+								const name = childEl.$name || childEl.$type || 'unknownEl'
+								if (childEl.$type) delete childEl.$type
+								if (childEl.$name) delete childEl.$name
 								element[name] = childEl
 							}
 						}
@@ -112,8 +119,8 @@ export function xml2js (messageString: string): object {
 					} else if (names.length !== namesSet.size) {
 						const holder: {[key: string]: any} = {}
 						for (let childEl of element.elements) {
-							const name = childEl.name
-							if (childEl.type === 'text' && Object.keys(childEl).length <= 3) {
+							const name = childEl.$name
+							if (childEl.$type === 'text' && Object.keys(childEl).length <= 3) {
 								childEl = childEl.text
 							} else if (childEl.attributes) {
 								for (const key in childEl.attributes) {
@@ -132,6 +139,7 @@ export function xml2js (messageString: string): object {
 						}
 						delete element.elements
 					}
+				} else {
 				}
 			}
 		}
