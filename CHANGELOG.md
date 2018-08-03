@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.17...0.4.0) (2018-08-03)
+
+
+### Bug Fixes
+
+* changes in parser when data structures has changed ([4491b8f](https://github.com/nrkno/tv-automation-mos-connection/commit/4491b8f))
+* metadata tag might be empty ([897df5c](https://github.com/nrkno/tv-automation-mos-connection/commit/897df5c))
+* mosString, flat attributes and removed usage of xml2json ([92bbe41](https://github.com/nrkno/tv-automation-mos-connection/commit/92bbe41))
+* single child xml data ([b3dc170](https://github.com/nrkno/tv-automation-mos-connection/commit/b3dc170))
+* tests ([cdea898](https://github.com/nrkno/tv-automation-mos-connection/commit/cdea898))
+* update xml2Body to retain order ([681fd68](https://github.com/nrkno/tv-automation-mos-connection/commit/681fd68))
+* xml2js: changed internal structure to $name & $type, instead of name & type, to avoid collisions ([1706185](https://github.com/nrkno/tv-automation-mos-connection/commit/1706185))
+
+
+### Features
+
+* added dependency on xml-js ([f2ac082](https://github.com/nrkno/tv-automation-mos-connection/commit/f2ac082))
+* keep order of tags inside some fields ([95fe1f8](https://github.com/nrkno/tv-automation-mos-connection/commit/95fe1f8))
+* tweaked the parsing, got the test to pass ([ec9c3bd](https://github.com/nrkno/tv-automation-mos-connection/commit/ec9c3bd))
+
+
+
 <a name="0.3.17"></a>
 ## [0.3.17](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.16...0.3.17) (2018-06-15)
 
