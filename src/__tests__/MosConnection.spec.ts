@@ -24,18 +24,8 @@ import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
 
 import { xmlData, xmlApiData } from './testData.spec'
-import * as parser from 'xml2json'
+import { xml2js } from 'xml-js'
 import { MosDevice } from '../MosDevice'
-
-const parseOptions: {
-	object: true,
-	coerce: boolean,
-	trim: boolean
-} = {
-	object: true,
-	coerce: true,
-	trim: true
-}
 
 const iconv = require('iconv-lite')
 iconv.encodingExists('utf16-be')
@@ -598,10 +588,10 @@ describe('MosDevice: Profile 1', () => {
 		expect(serverSocketMockLower.mockSentMessage).toHaveBeenCalledTimes(1)
 		// // @ts-ignore mock
 		let reply = decode(serverSocketMockLower.mockSentMessage['mock'].calls[0][0])
-		let parsedReply: any = parser.toJson(reply, parseOptions)
+		let parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
 
-		expect(parsedReply.mos.mosObj.objID + '').toEqual(xmlApiData.mosObj.ID.toString())
-		expect(parsedReply.mos.mosObj.objSlug + '').toEqual(xmlApiData.mosObj.Slug.toString())
+		expect(parsedReply.mos.mosObj.objID._text + '').toEqual(xmlApiData.mosObj.ID.toString())
+		expect(parsedReply.mos.mosObj.objSlug._text + '').toEqual(xmlApiData.mosObj.Slug.toString())
 	})
 	test('onRequestAllMOSObjects', async () => {
 		// Fake incoming message on socket:
@@ -615,12 +605,12 @@ describe('MosDevice: Profile 1', () => {
 		expect(serverSocketMockLower.mockSentMessage).toHaveBeenCalledTimes(1)
 		// @ts-ignore mock
 		let reply = decode(serverSocketMockLower.mockSentMessage.mock.calls[0][0])
-		let parsedReply: any = parser.toJson(reply, parseOptions)
+		let parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
 		expect(parsedReply.mos.mosListAll.mosObj).toHaveLength(2)
-		expect(parsedReply.mos.mosListAll.mosObj[0].objID + '').toEqual(xmlApiData.mosObj.ID.toString())
-		expect(parsedReply.mos.mosListAll.mosObj[0].objSlug + '').toEqual(xmlApiData.mosObj.Slug.toString())
-		expect(parsedReply.mos.mosListAll.mosObj[1].objID + '').toEqual(xmlApiData.mosObj2.ID.toString())
-		expect(parsedReply.mos.mosListAll.mosObj[1].objSlug + '').toEqual(xmlApiData.mosObj2.Slug.toString())
+		expect(parsedReply.mos.mosListAll.mosObj[0].objID._text + '').toEqual(xmlApiData.mosObj.ID.toString())
+		expect(parsedReply.mos.mosListAll.mosObj[0].objSlug._text + '').toEqual(xmlApiData.mosObj.Slug.toString())
+		expect(parsedReply.mos.mosListAll.mosObj[1].objID._text + '').toEqual(xmlApiData.mosObj2.ID.toString())
+		expect(parsedReply.mos.mosListAll.mosObj[1].objSlug._text + '').toEqual(xmlApiData.mosObj2.Slug.toString())
 
 	})
 	test('getMOSObject', async () => {
@@ -895,17 +885,17 @@ describe('MosDevice: Profile 2', () => {
 		// console.log(decode(serverSocketMockUpper.mockSentMessage.mock.calls[0][0]))
 		// @ts-ignore mock
 		let reply = decode(serverSocketMockUpper.mockSentMessage.mock.calls[0][0])
-		let parsedReply: any = parser.toJson(reply, parseOptions)
+		let parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
 		// console.log('parsedReply',parsedReply.mos)
 
 		// expect(parsedReply.mos.roList).toMatchObject(roLight(xmlApiData.roCreate))
-		expect(parsedReply.mos.roList.roID + '').toEqual(xmlApiData.roCreate.ID.toString())
-		expect(parsedReply.mos.roList.roSlug + '').toEqual(xmlApiData.roCreate.Slug.toString())
+		expect(parsedReply.mos.roList.roID._text + '').toEqual(xmlApiData.roCreate.ID.toString())
+		expect(parsedReply.mos.roList.roSlug._text + '').toEqual(xmlApiData.roCreate.Slug.toString())
 		expect(parsedReply.mos.roList.story).toHaveLength(xmlApiData.roCreate.Stories.length)
-		expect(parsedReply.mos.roList.story[0].storyID + '').toEqual(xmlApiData.roCreate.Stories[0].ID.toString())
+		expect(parsedReply.mos.roList.story[0].storyID._text + '').toEqual(xmlApiData.roCreate.Stories[0].ID.toString())
 		expect(parsedReply.mos.roList.story[0].item).toBeTruthy()
-		expect(parsedReply.mos.roList.story[0].item.itemID + '').toEqual(xmlApiData.roCreate.Stories[0].Items[0].ID.toString())
-		expect(parsedReply.mos.roList.story[0].item.objID + '').toEqual(xmlApiData.roCreate.Stories[0].Items[0].ObjectID.toString())
+		expect(parsedReply.mos.roList.story[0].item.itemID._text + '').toEqual(xmlApiData.roCreate.Stories[0].Items[0].ID.toString())
+		expect(parsedReply.mos.roList.story[0].item.objID._text + '').toEqual(xmlApiData.roCreate.Stories[0].Items[0].ObjectID.toString())
 
 	})
 	test('getRunningOrder', async () => {
@@ -1174,14 +1164,33 @@ describe('MosDevice: Profile 4', () => {
 		expect(socketMockLower).toBeTruthy()
 		expect(socketMockUpper).toBeTruthy()
 	})
-	// test('onROStory', async () => {
-	// 	// Fake incoming message on socket:
+	test('onROStory', async () => {
+		// Fake incoming message on socket:
 
-	// 	let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySend)
-	// 	expect(onROStory).toHaveBeenCalledTimes(1)
-	// 	expect(onROStory.mock.calls[0][0]).toMatchObject(xmlApiData.roStorySend)
-	// 	await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
-	// })
+		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySend)
+		expect(onROStory).toHaveBeenCalledTimes(1)
+
+		let o = Object.assign({}, xmlApiData.roStorySend)
+		delete o.Body
+		expect(onROStory.mock.calls[0][0]).toMatchObject(o)
+		xmlApiData.roStorySend.Body.forEach((testItem, key) => {
+			let item: any
+			try {
+				item = onROStory.mock.calls[0][0].Body[key]
+				if (!testItem.Content) delete testItem.Content
+
+				expect(item).toMatchObject(testItem)
+			} catch (e) {
+				console.log(key)
+				console.log('item', item)
+				console.log('testItem', testItem)
+				throw e
+			}
+		})
+		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+
+		// expect(onROStory.mock.calls[0][0]).toMatchObject(xmlApiData.roStorySend)
+	})
 	test('getAllRunningOrders', async () => {
 		// Prepare server response
 		let mockReply = jest.fn((data) => {
