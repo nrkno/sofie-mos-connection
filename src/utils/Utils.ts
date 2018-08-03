@@ -139,7 +139,6 @@ export function xml2js (messageString: string): object {
 						}
 						delete element.elements
 					}
-				} else {
 				}
 			}
 		}

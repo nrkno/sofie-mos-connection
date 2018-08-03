@@ -447,10 +447,10 @@ export namespace Parser {
 		if (xml.elements && Array.isArray(xml.elements)) {
 			for (const item of xml.elements) {
 				let bodyItem: IMOSROFullStoryBodyItem = {
-					Type: item.name || item.type,
+					Type: item.$name || item.$type,
 					Content: item
 				}
-				if (item.name === 'storyItem') {
+				if (item.$name === 'storyItem') {
 					bodyItem.Content = xml2Item(item)
 				}
 				body.push(bodyItem)
