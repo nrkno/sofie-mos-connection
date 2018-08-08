@@ -3,11 +3,12 @@ import { Socket } from 'net'
 import { SocketConnectionEvent } from './socketConnection'
 import { MosMessage } from '../mosModel/MosMessage'
 import { xml2js } from '../utils/Utils'
+import { HandedOverQueue } from './NCSServerConnection'
 const iconv = require('iconv-lite')
 
 export type CallBackFunction = (err: any, data: object) => void
 
-interface QueueMessage {
+export interface QueueMessage {
 	time: number
 	msg: MosMessage
 }
@@ -114,12 +115,12 @@ export class MosSocketClient extends EventEmitter {
 		this.dispose()
 	}
 
-	queueCommand (message: MosMessage, cb: CallBackFunction): void {
+	queueCommand (message: MosMessage, cb: CallBackFunction, time?: number): void {
 
 		message.prepare()
 		// console.log('queueing', message.messageID, message.constructor.name )
 		this._queueCallback[message.messageID + ''] = cb
-		this._queueMessages.push({ time: Date.now(), msg: message })
+		this._queueMessages.push({ time: time || Date.now(), msg: message })
 
 		this.processQueue()
 	}
@@ -141,6 +142,17 @@ export class MosSocketClient extends EventEmitter {
 				this.processQueue()
 			}, 200)
 		}
+	}
+	handOverQueue (): HandedOverQueue {
+		const queue = {
+			messages: this._queueMessages,
+			callbacks: this._queueCallback
+		}
+		this._queueMessages = []
+		this._queueCallback = {}
+		this._sentMessage = null
+		clearTimeout(this.processQueueTimeout)
+		return queue
 	}
 
   /** */
@@ -203,7 +215,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 
   /** */
-	private executeCommand (message: QueueMessage): void {
+	private executeCommand (message: QueueMessage, isRetry?: boolean): void {
 		if (this._sentMessage) throw Error('executeCommand: there already is a sent Command!')
 
 		this._sentMessage = message
@@ -221,8 +233,13 @@ export class MosSocketClient extends EventEmitter {
 		global.setTimeout(() => {
 			if (this._sentMessage && this._sentMessage.msg.messageID === sentMessageId) {
 				if (this._debug) console.log('timeout ' + sentMessageId)
-				this._sendReply(sentMessageId, Error('Command timed out'), null)
-				this.processQueue()
+				if (isRetry) {
+					this._sendReply(sentMessageId, Error('Command timed out'), null)
+					this.processQueue()
+				} else {
+					this._sentMessage = null
+					this.executeCommand(message, true)
+				}
 			}
 		}, this._commandTimeout)
 		this._client.write(buf, 'ucs2')

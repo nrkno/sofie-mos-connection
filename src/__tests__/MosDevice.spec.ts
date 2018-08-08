@@ -106,7 +106,7 @@ describe('MosDevice: Profile 0', () => {
 
 		// jest.runOnlyPendingTimers() // allow for heartbeats to be sent
 		// jest.runOnlyPendingTimers() // allow for heartbeats to be received
-		await delay(300) // to allow for timeout:
+		await delay(500) // to allow for timeout:
 		// console.log('----------- after timeout')
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: false,
