@@ -353,8 +353,12 @@ export class MosSocketClient extends EventEmitter {
 				} else {
 					// error message?
 					if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
-						if (this._debug) console.log('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
-						this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
+						if (this._sentMessage && parsedData.mos.mosAck.statusDescription === 'Buddy server cannot respond because main server is available') {
+							this._sendReply(this._sentMessage.msg.messageID, 'Main server available', parsedData)
+						} else {
+							if (this._debug) console.log('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
+							this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
+						}
 					} else {
 						// unknown message..
 						this.emit('error', 'Unknown message: ' + messageString)
