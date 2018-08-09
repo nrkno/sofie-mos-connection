@@ -838,10 +838,12 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnROStory = cb
 	}
 
-	private executeCommand (message: MosMessage): Promise<any> {
+	private executeCommand (message: MosMessage, resend?: boolean): Promise<any> {
 		if (this._currentConnection) {
+			console.log('exec command', message)
 			return this._currentConnection.executeCommand(message).catch((e) => {
-				if (this._primaryConnection && this._secondaryConnection) {
+				console.log('errored', e)
+				if (this._primaryConnection && this._secondaryConnection && !resend) {
 					return this.switchConnections(message)
 				} else {
 					return Promise.reject(e)
@@ -854,10 +856,17 @@ export class MosDevice implements IMOSDevice {
 
 	private switchConnections (message?: MosMessage): Promise<any> {
 		if (this._currentConnection && this._primaryConnection && this._secondaryConnection) {
+			console.log('swithcing conn')
 			this._currentConnection = this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection
 			let p
 			if (message) {
-				p = this.executeCommand(message).catch((e) => {
+				console.log('resending msg')
+				p = this.executeCommand(message, true).catch((e) => {
+					if (e === 'Main server available') {
+						// @todo: we may deadlock if primary is down for us, but up for buddy
+						return this.switchConnections(message)
+					}
+					// @ts-ignore - following line will always resolve if called from here
 					this.switchConnections()
 					return Promise.reject(e)
 				})
