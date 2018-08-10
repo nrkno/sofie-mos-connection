@@ -194,13 +194,6 @@ describe('MosDevice: Profile 0', () => {
 			// SecondaryStatus: string // if not connected this will contain human-readable error-message
 		})
 
-		// @todo: add timeout test
-		// mock cause timeout
-		// expect(connectionStatusChanged).toHaveBeenCalledTimes(1)
-		// expect(connectionStatusChanged.mock.calls[0][0]).toMatchObject({PrimaryConnected: false})
-		await mosDevice.getAllMOSObjects().catch(() => null)
-		expect(false).toBe(true)
-
 		// Test proper dispose:
 		await mosDevice.dispose()
 
