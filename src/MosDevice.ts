@@ -850,7 +850,12 @@ export class MosDevice implements IMOSDevice {
 			if (!this._currentConnection.connected) {
 				return this.switchConnections(message)
 			}
-			return this._currentConnection.executeCommand(message).catch((e) => {
+			return this._currentConnection.executeCommand(message).then((res) => {
+				if (res.mos.roAck && res.mos.roAck.roStatus === 'Buddy server cannot respond because main server is available') {
+					return Promise.reject('Buddy server cannot respond because main server is available')
+				}
+				return res
+			}).catch((e) => {
 				console.log('errored', e)
 				if (this._primaryConnection && this._secondaryConnection && !resend) {
 					return this.switchConnections(message)
