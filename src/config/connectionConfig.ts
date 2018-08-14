@@ -7,6 +7,7 @@ export interface IConnectionConfig {
 	profiles: IProfiles
 	debug?: boolean
 	openRelay?: boolean
+	offspecFailover?: boolean
 }
 
 /** */
@@ -28,6 +29,7 @@ export class ConnectionConfig implements IConnectionConfig {
 	accepsConnectionsFrom: string[]
 	debug?: boolean
 	openRelay?: boolean
+	offspecFailover?: boolean
 
 	private _profiles: IProfiles = {
 		'0': false,

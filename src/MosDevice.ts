@@ -116,7 +116,8 @@ export class MosDevice implements IMOSDevice {
 		idSecondary: string | null,
 		connectionConfig: IConnectionConfig,
 		primaryConnection: NCSServerConnection | null,
-		secondaryConnection: NCSServerConnection | null
+		secondaryConnection: NCSServerConnection | null,
+		offSpecFailover?: boolean
 	) {
 		// this._id = new MosString128(connectionConfig.mosID).toString()
 		this._idPrimary = idPrimary
@@ -147,7 +148,12 @@ export class MosDevice implements IMOSDevice {
 		}
 		if (primaryConnection) {
 			this._primaryConnection = primaryConnection
-			this._primaryConnection.onConnectionChange(() => this.emitConnectionChange())
+			this._primaryConnection.onConnectionChange(() => {
+				this.emitConnectionChange()
+				if (offSpecFailover && this._currentConnection !== this._primaryConnection && this._primaryConnection!.connected) {
+					this.switchConnections() // and hope no current message goes lost
+				}
+			})
 		}
 		if (secondaryConnection) {
 			this._secondaryConnection = secondaryConnection
