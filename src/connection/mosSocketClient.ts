@@ -136,11 +136,20 @@ export class MosSocketClient extends EventEmitter {
 				// The queue is empty, do nothing
 			}
 		} else {
-			// Try again later:
-			clearTimeout(this.processQueueTimeout)
-			this.processQueueTimeout = setTimeout(() => {
-				this.processQueue()
-			}, 200)
+			if (!this._sentMessage && this._queueMessages.length > 0) {
+				if (Date.now() - this._queueMessages[0].time > this._commandTimeout) {
+					const msg = this._queueMessages.shift()!
+					this._queueCallback[msg.msg.messageID]('Command timed out', {})
+					delete this._queueCallback[msg.msg.messageID]
+					this.processQueue()
+				} else {
+					// Try again later:
+					clearTimeout(this.processQueueTimeout)
+					this.processQueueTimeout = setTimeout(() => {
+						this.processQueue()
+					}, 200)
+				}
+			}
 		}
 	}
 	handOverQueue (): HandedOverQueue {
