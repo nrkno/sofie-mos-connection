@@ -327,7 +327,6 @@ test('mos device secondary', async () => {
 	expect(SocketMock.instances[4].connectedHost).toEqual('192.168.0.2')
 	expect(SocketMock.instances[4].connectedPort).toEqual(10541)
 
-
 	// Prepare mock server response:
 	let mockReply = jest.fn((data) => {
 		let str = decode(data)

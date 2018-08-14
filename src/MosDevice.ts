@@ -151,7 +151,7 @@ export class MosDevice implements IMOSDevice {
 			this._primaryConnection.onConnectionChange(() => {
 				this.emitConnectionChange()
 				if (offSpecFailover && this._currentConnection !== this._primaryConnection && this._primaryConnection!.connected) {
-					this.switchConnections() // and hope no current message goes lost
+					this.switchConnections().catch(() => null) // and hope no current message goes lost
 				}
 			})
 		}
@@ -882,7 +882,9 @@ export class MosDevice implements IMOSDevice {
 						return this.switchConnections(message)
 					}
 					// @ts-ignore - following line will always resolve if called from here
-					this.switchConnections()
+					this.switchConnections().catch((e) => {
+						throw Error('e')
+					})
 					return Promise.reject(e)
 				})
 			}
