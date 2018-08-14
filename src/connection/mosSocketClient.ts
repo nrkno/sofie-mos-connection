@@ -262,7 +262,7 @@ export class MosSocketClient extends EventEmitter {
 	private _autoReconnectionAttempt (): void {
 		if (this._autoReconnect) {
 			if (this._reconnectAttempts > -1) {								// no reconnection if no valid reconnectionAttemps is set
-				if (this._reconnectAttempt > 0 && (this._reconnectAttempt >= this._reconnectAttempts)) {	// if current attempt is not less than max attempts
+				if (this._reconnectAttempts > 0 && (this._reconnectAttempt >= this._reconnectAttempts)) {	// if current attempt is not less than max attempts
 					// reset reconnection behaviour
 					this._clearConnectionAttemptTimer()
 					return
@@ -294,8 +294,8 @@ export class MosSocketClient extends EventEmitter {
   /** */
 	private _onConnected () {
 		this._client.emit(SocketConnectionEvent.ALIVE)
-		global.clearInterval(this._connectionAttemptTimer)
-		// this._clearConnectionAttemptTimer()
+		// global.clearInterval(this._connectionAttemptTimer)
+		this._clearConnectionAttemptTimer()
 		this.connected = true
 	}
 
