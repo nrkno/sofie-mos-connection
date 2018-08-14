@@ -841,6 +841,9 @@ export class MosDevice implements IMOSDevice {
 	private executeCommand (message: MosMessage, resend?: boolean): Promise<any> {
 		if (this._currentConnection) {
 			console.log('exec command', message)
+			if (!this._currentConnection.connected) {
+				return this.switchConnections(message)
+			}
 			return this._currentConnection.executeCommand(message).catch((e) => {
 				console.log('errored', e)
 				if (this._primaryConnection && this._secondaryConnection && !resend) {
@@ -858,6 +861,7 @@ export class MosDevice implements IMOSDevice {
 		if (this._currentConnection && this._primaryConnection && this._secondaryConnection) {
 			console.log('swithcing conn')
 			this._currentConnection = this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection
+			if (!this._currentConnection.connected) return Promise.reject('No connection available for failover')
 			let p
 			if (message) {
 				console.log('resending msg')
@@ -874,6 +878,6 @@ export class MosDevice implements IMOSDevice {
 			(this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection).handOverQueue(this._currentConnection)
 			return p || Promise.resolve()
 		}
-		return Promise.reject()
+		return Promise.reject('No connection available for failover')
 	}
 }
