@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.4.0...0.5.0) (2018-08-17)
+
+
+### Bug Fixes
+
+* 0 reconnects implies infinite reconnects ([7749dc3](https://github.com/nrkno/tv-automation-mos-connection/commit/7749dc3))
+* extra guards in switching logic ([a66584e](https://github.com/nrkno/tv-automation-mos-connection/commit/a66584e))
+* reconnect timer reset ([970da0d](https://github.com/nrkno/tv-automation-mos-connection/commit/970da0d))
+* roAck may contain error regarding buddy server ([4ef32ff](https://github.com/nrkno/tv-automation-mos-connection/commit/4ef32ff))
+* timeout messages even before being sent ([39ba705](https://github.com/nrkno/tv-automation-mos-connection/commit/39ba705))
+
+
+### Features
+
+* failover prototype ([2f979e6](https://github.com/nrkno/tv-automation-mos-connection/commit/2f979e6))
+* failover upon NACK: Main Available ([5bb64e4](https://github.com/nrkno/tv-automation-mos-connection/commit/5bb64e4))
+* option to enable offspec failover behaviour ([86f7b0d](https://github.com/nrkno/tv-automation-mos-connection/commit/86f7b0d))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.3.17...0.4.0) (2018-08-03)
 
