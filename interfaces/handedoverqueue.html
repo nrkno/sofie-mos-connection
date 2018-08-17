@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ClientDescription | mos-connection</title>
+	<title>HandedOverQueue | mos-connection</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
@@ -910,16 +910,13 @@ img { max-width: 100%; }
 <nav class="tsd-navigation secondary">
 	<ul>
 		<li class="current tsd-kind-interface tsd-is-external">
-			<a href="clientdescription.html" class="tsd-kind-icon">Client<wbr>Description</a>
+			<a href="handedoverqueue.html" class="tsd-kind-icon">Handed<wbr>Over<wbr>Queue</a>
 			<ul>
 				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a href="clientdescription.html#client" class="tsd-kind-icon">client</a>
+					<a href="handedoverqueue.html#callbacks" class="tsd-kind-icon">callbacks</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a href="clientdescription.html#clientdescription-1" class="tsd-kind-icon">client<wbr>Description</a>
-				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a href="clientdescription.html#heartbeatconnected" class="tsd-kind-icon">heartbeat<wbr>Connected</a>
+					<a href="handedoverqueue.html#messages" class="tsd-kind-icon">messages</a>
 				</li>
 			</ul>
 		</li>
@@ -931,7 +928,7 @@ img { max-width: 100%; }
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
 				<li>
-					<span class="target">ClientDescription</span>
+					<span class="target">HandedOverQueue</span>
 				</li>
 			</ul>
 		</section>
@@ -942,9 +939,8 @@ img { max-width: 100%; }
 					<section class="tsd-index-section tsd-is-external">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="clientdescription.html#client" class="tsd-kind-icon">client</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="clientdescription.html#clientdescription-1" class="tsd-kind-icon">client<wbr>Description</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="clientdescription.html#heartbeatconnected" class="tsd-kind-icon">heartbeat<wbr>Connected</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="handedoverqueue.html#callbacks" class="tsd-kind-icon">callbacks</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="handedoverqueue.html#messages" class="tsd-kind-icon">messages</a></li>
 						</ul>
 					</section>
 				</div>
@@ -953,32 +949,30 @@ img { max-width: 100%; }
 		<section class="tsd-panel-group tsd-member-group tsd-is-external">
 			<h2>Properties</h2>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-				<a name="client" class="tsd-anchor"></a>
-				<h3>client</h3>
-				<div class="tsd-signature tsd-kind-icon">client<span class="tsd-signature-symbol">:</span> <a href="../classes/mossocketclient.html" class="tsd-signature-type">MosSocketClient</a></div>
+				<a name="callbacks" class="tsd-anchor"></a>
+				<h3>callbacks</h3>
+				<div class="tsd-signature tsd-kind-icon">callbacks<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/nrkno/tv-automation-mos-connection/blob/e672ffe/src/connection/NCSServerConnection.ts#L11">connection/NCSServerConnection.ts:11</a></li>
+						<li>Defined in <a href="https://github.com/nrkno/tv-automation-mos-connection/blob/e672ffe/src/connection/NCSServerConnection.ts#L20">connection/NCSServerConnection.ts:20</a></li>
 					</ul>
 				</aside>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-				<a name="clientdescription-1" class="tsd-anchor"></a>
-				<h3>client<wbr>Description</h3>
-				<div class="tsd-signature tsd-kind-icon">client<wbr>Description<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-				<aside class="tsd-sources">
-					<ul>
-						<li>Defined in <a href="https://github.com/nrkno/tv-automation-mos-connection/blob/e672ffe/src/connection/NCSServerConnection.ts#L12">connection/NCSServerConnection.ts:12</a></li>
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+						<li class="tsd-parameter-index-signature">
+							<h5><span class="tsd-signature-symbol">[</span>messageId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="../globals.html#callbackfunction" class="tsd-signature-type">CallBackFunction</a></h5>
+						</li>
 					</ul>
-				</aside>
+				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-				<a name="heartbeatconnected" class="tsd-anchor"></a>
-				<h3>heartbeat<wbr>Connected</h3>
-				<div class="tsd-signature tsd-kind-icon">heartbeat<wbr>Connected<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<a name="messages" class="tsd-anchor"></a>
+				<h3>messages</h3>
+				<div class="tsd-signature tsd-kind-icon">messages<span class="tsd-signature-symbol">:</span> <a href="queuemessage.html" class="tsd-signature-type">QueueMessage</a><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/nrkno/tv-automation-mos-connection/blob/e672ffe/src/connection/NCSServerConnection.ts#L10">connection/NCSServerConnection.ts:10</a></li>
+						<li>Defined in <a href="https://github.com/nrkno/tv-automation-mos-connection/blob/e672ffe/src/connection/NCSServerConnection.ts#L20">connection/NCSServerConnection.ts:20</a></li>
 					</ul>
 				</aside>
 			</section>
