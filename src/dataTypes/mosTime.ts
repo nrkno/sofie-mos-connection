@@ -8,7 +8,6 @@ export class MosTime {
 	private _timezone: string = ''
 	private _timezoneZuluIndicator: string = ''
 	private _timezoneDeclaration: string = ''
-	private _timeOffsetValue: number = 0
 
 	/** */
 	constructor (timestamp?: Date | number | string) {
@@ -37,7 +36,6 @@ export class MosTime {
 					time = new Date(dateStr)
 				} else if (timezoneParseResult !== false) {
 					this._timezoneDeclaration = timezoneParseResult.timezoneDeclaration
-					this._timeOffsetValue = timezoneParseResult.timeOffsetValue
 
 					time = new Date(timestamp)
 
