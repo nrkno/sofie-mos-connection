@@ -39,6 +39,7 @@ import { MosListAll } from './mosModel/1_mosListAll'
 import { ReqMosObj } from './mosModel/1_reqMosObj'
 import { ReqMosObjAll } from './mosModel/1_reqMosObjAll'
 import { ROReqAll } from './mosModel/4_roReqAll'
+import { MosMessage } from './mosModel/MosMessage'
 
 export class MosDevice implements IMOSDevice {
 
@@ -115,7 +116,8 @@ export class MosDevice implements IMOSDevice {
 		idSecondary: string | null,
 		connectionConfig: IConnectionConfig,
 		primaryConnection: NCSServerConnection | null,
-		secondaryConnection: NCSServerConnection | null
+		secondaryConnection: NCSServerConnection | null,
+		offSpecFailover?: boolean
 	) {
 		// this._id = new MosString128(connectionConfig.mosID).toString()
 		this._idPrimary = idPrimary
@@ -146,7 +148,12 @@ export class MosDevice implements IMOSDevice {
 		}
 		if (primaryConnection) {
 			this._primaryConnection = primaryConnection
-			this._primaryConnection.onConnectionChange(() => this.emitConnectionChange())
+			this._primaryConnection.onConnectionChange(() => {
+				this.emitConnectionChange()
+				if (offSpecFailover && this._currentConnection !== this._primaryConnection && this._primaryConnection!.connected) {
+					this.switchConnections().catch(() => null) // and hope no current message goes lost
+				}
+			})
 		}
 		if (secondaryConnection) {
 			this._secondaryConnection = secondaryConnection
@@ -584,7 +591,7 @@ export class MosDevice implements IMOSDevice {
 		return new Promise((resolve, reject) => {
 			if (this._currentConnection) {
 
-				this._currentConnection.executeCommand(message).then((data) => {
+				this.executeCommand(message).then((data) => {
 					let listMachInfo = data.mos.listMachInfo
 					let list: IMOSListMachInfo = {
 						manufacturer: listMachInfo.manufacturer,
@@ -603,8 +610,6 @@ export class MosDevice implements IMOSDevice {
 					}
 					resolve(list)
 				}).catch(reject)
-			} else {
-				reject('No Connection')
 			}
 		})
 	}
@@ -640,7 +645,7 @@ export class MosDevice implements IMOSDevice {
 		let message = new ReqMosObj(objID)
 		return new Promise((resolve, reject) => {
 			if (this._currentConnection) {
-				this._currentConnection.executeCommand(message).then((data) => {
+				this.executeCommand(message).then((data) => {
 					if (data.mos.roAck) {
 						reject(Parser.xml2ROAck(data.mos.roAck))
 					} else if (data.mos.mosObj) {
@@ -650,8 +655,6 @@ export class MosDevice implements IMOSDevice {
 						reject('Unknown response')
 					}
 				}).catch(reject)
-			} else {
-				reject('No Connection')
 			}
 		})
 	}
@@ -660,7 +663,7 @@ export class MosDevice implements IMOSDevice {
 		let message = new ReqMosObjAll()
 		return new Promise((resolve, reject) => {
 			if (this._currentConnection) {
-				this._currentConnection.executeCommand(message).then((data) => {
+				this.executeCommand(message).then((data) => {
 					if (data.mos.roAck) {
 						reject(Parser.xml2ROAck(data.mos.roAck))
 					} else if (data.mos.mosListAll) {
@@ -670,8 +673,6 @@ export class MosDevice implements IMOSDevice {
 						reject('Unknown response')
 					}
 				}).catch(reject)
-			} else {
-				reject('No Connection')
 			}
 		})
 	}
@@ -699,7 +700,7 @@ export class MosDevice implements IMOSDevice {
 
 		return new Promise((resolve, reject) => {
 			if (this._currentConnection) {
-				this._currentConnection.executeCommand(message).then((data) => {
+				this.executeCommand(message).then((data) => {
 					if (data.mos.roAck) {
 						reject(Parser.xml2ROAck(data.mos.roAck))
 					} else if (data.mos.roList) {
@@ -710,8 +711,6 @@ export class MosDevice implements IMOSDevice {
 					}
 				})
 				.catch(reject)
-			} else {
-				reject('No Connection')
 			}
 		})
 	}
@@ -740,12 +739,10 @@ export class MosDevice implements IMOSDevice {
 		})
 		return new Promise((resolve, reject) => {
 			if (this._currentConnection) {
-				this._currentConnection.executeCommand(message).then((data) => {
+				this.executeCommand(message).then((data) => {
 					let roAck: ROAck = Parser.xml2ROAck(data.mos.roAck)
 					resolve(roAck)
 				}).catch(reject)
-			} else {
-				reject('No Connection')
 			}
 		})
 	}
@@ -759,12 +756,10 @@ export class MosDevice implements IMOSDevice {
 		})
 		return new Promise((resolve, reject) => {
 			if (this._currentConnection) {
-				this._currentConnection.executeCommand(message).then((data) => {
+				this.executeCommand(message).then((data) => {
 					let roAck: ROAck = Parser.xml2ROAck(data.mos.roAck)
 					resolve(roAck)
 				}).catch(reject)
-			} else {
-				reject('No Connection')
 			}
 		})
 	}
@@ -780,12 +775,10 @@ export class MosDevice implements IMOSDevice {
 		})
 		return new Promise((resolve, reject) => {
 			if (this._currentConnection) {
-				this._currentConnection.executeCommand(message).then((data) => {
+				this.executeCommand(message).then((data) => {
 					let roAck: ROAck = Parser.xml2ROAck(data.mos.roAck)
 					resolve(roAck)
 				}).catch(reject)
-			} else {
-				reject('No Connection')
 			}
 		})
 	}
@@ -828,7 +821,7 @@ export class MosDevice implements IMOSDevice {
 		let message = new ROReqAll()
 		return new Promise((resolve, reject) => {
 			if (this._currentConnection) {
-				this._currentConnection.executeCommand(message).then((data) => {
+				this.executeCommand(message).then((data) => {
 					if (data.mos.hasOwnProperty('roListAll')) {
 						let xmlRos: Array<any> = (data.mos.roListAll || {}).ro
 						if (!Array.isArray(xmlRos)) xmlRos = [xmlRos]
@@ -844,12 +837,60 @@ export class MosDevice implements IMOSDevice {
 						reject('Unknown reply')
 					}
 				}).catch(reject)
-			} else {
-				reject('No Connection')
 			}
 		})
 	}
 	onROStory (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) {
 		this._callbackOnROStory = cb
+	}
+
+	private executeCommand (message: MosMessage, resend?: boolean): Promise<any> {
+		if (this._currentConnection) {
+			console.log('exec command', message)
+			if (!this._currentConnection.connected) {
+				return this.switchConnections(message)
+			}
+			return this._currentConnection.executeCommand(message).then((res) => {
+				if (res.mos.roAck && res.mos.roAck.roStatus === 'Buddy server cannot respond because main server is available') {
+					return Promise.reject('Buddy server cannot respond because main server is available')
+				}
+				return res
+			}).catch((e) => {
+				console.log('errored', e)
+				if (this._primaryConnection && this._secondaryConnection && !resend) {
+					return this.switchConnections(message)
+				} else {
+					return Promise.reject(e)
+				}
+			})
+		} else {
+			return Promise.reject('No connection')
+		}
+	}
+
+	private switchConnections (message?: MosMessage): Promise<any> {
+		if (this._currentConnection && this._primaryConnection && this._secondaryConnection) {
+			console.log('swithcing conn')
+			this._currentConnection = this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection
+			if (!this._currentConnection.connected) return Promise.reject('No connection available for failover')
+			let p
+			if (message) {
+				console.log('resending msg')
+				p = this.executeCommand(message, true).catch((e) => {
+					if (e === 'Main server available') {
+						// @todo: we may deadlock if primary is down for us, but up for buddy
+						return this.switchConnections(message)
+					}
+					// @ts-ignore - following line will always resolve if called from here
+					this.switchConnections().catch((e) => {
+						throw Error('e')
+					})
+					return Promise.reject(e)
+				})
+			}
+			(this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection).handOverQueue(this._currentConnection)
+			return p || Promise.resolve()
+		}
+		return Promise.reject('No connection available for failover')
 	}
 }

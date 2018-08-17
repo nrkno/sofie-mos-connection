@@ -1,5 +1,5 @@
 import { ConnectionType } from './socketConnection'
-import { MosSocketClient } from '../connection/mosSocketClient'
+import { MosSocketClient, CallBackFunction, QueueMessage } from '../connection/mosSocketClient'
 import { MosMessage } from '../mosModel/MosMessage'
 import { HeartBeat } from '../mosModel/0_heartBeat'
 import { EventEmitter } from 'events'
@@ -14,6 +14,10 @@ export interface ClientDescription {
 
 export interface INCSServerConnection {
 	on (event: 'rawMessage', listener: (type: string, message: string) => void): this
+}
+
+export interface HandedOverQueue {
+	messages: QueueMessage[], callbacks: { [messageId: string]: CallBackFunction }
 }
 
 // Namnförslag: NCSServer
@@ -170,6 +174,36 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	}
 	get id (): string {
 		return this._id
+	}
+
+	handOverQueue (otherConnection: NCSServerConnection) {
+		const cmds: { [clientId: string]: HandedOverQueue } = {}
+		// this._clients.forEach((client, id) => {
+		// 	// cmds[id] = client.client.handOverQueue()
+		// })
+		for (const id in this._clients) {
+			cmds[id] = this._clients[id].client.handOverQueue()
+		}
+		otherConnection.receiveQueue(cmds)
+	}
+	receiveQueue (queue: { [clientId: string]: HandedOverQueue }) {
+		// @todo: keep order
+		// @todo: prevent callback-promise horror...
+		for (const clientId of Object.keys(queue)) {
+			for (const msg of queue[clientId].messages) {
+				this.executeCommand(msg.msg).then((data) => {
+					const cb = queue[clientId].callbacks[msg.msg.messageID]
+					if (cb) {
+						cb(null, data)
+					}
+				}, (err) => {
+					const cb = queue[clientId].callbacks[msg.msg.messageID]
+					if (cb) {
+						cb(null, err)
+					}
+				})
+			}
+		}
 	}
 
 	dispose (): Promise<void> {
