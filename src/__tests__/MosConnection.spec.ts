@@ -288,6 +288,67 @@ describe('MosDevice: General', () => {
 
 	})
 })
+test('mos device secondary', async () => {
+	let mos = new MosConnection({
+		mosID: 'jestMOS',
+		acceptsConnections: true,
+		profiles: {
+			'0': true,
+			'1': true
+		}
+	})
+	expect(mos.acceptsConnections).toBe(true)
+	await mos.init()
+	expect(mos.isListening).toBe(true)
+
+	let mosDevice = await mos.connect({
+		primary: {
+			id: 'primary',
+			host: '192.168.0.1',
+			timeout: 200
+		},
+		secondary: {
+			id: 'secondary',
+			host: '192.168.0.2',
+			timeout: 200
+		}
+	})
+	expect(mosDevice).toBeTruthy()
+	expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
+	// expect(mosDevice.secondaryId).toEqual('jestMOS_secondary')
+
+	expect(SocketMock.instances).toHaveLength(5)
+	expect(SocketMock.instances[1].connectedHost).toEqual('192.168.0.1')
+	expect(SocketMock.instances[1].connectedPort).toEqual(10540)
+	expect(SocketMock.instances[2].connectedHost).toEqual('192.168.0.1')
+	expect(SocketMock.instances[2].connectedPort).toEqual(10541)
+	expect(SocketMock.instances[3].connectedHost).toEqual('192.168.0.2')
+	expect(SocketMock.instances[3].connectedPort).toEqual(10540)
+	expect(SocketMock.instances[4].connectedHost).toEqual('192.168.0.2')
+	expect(SocketMock.instances[4].connectedPort).toEqual(10541)
+
+	// Prepare mock server response:
+	let mockReply = jest.fn((data) => {
+		let str = decode(data)
+		// console.log('mockReply', str)
+		let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)[1]
+		let repl = getXMLReply(messageID, xmlData.mosObj)
+
+		// console.log('repl', repl)
+		return encode(repl)
+	})
+
+	// add reply to secondary server, causes timeout on primary:
+	SocketMock.instances[3].mockAddReply(mockReply)
+	let returnedObj: IMOSObject = await mosDevice.getMOSObject(xmlApiData.mosObj.ID)
+	expect(returnedObj).toBeTruthy()
+
+	// add reply to primary server, causes timeout on secondary:
+	SocketMock.instances[1].mockAddReply(mockReply)
+	returnedObj = await mosDevice.getMOSObject(xmlApiData.mosObj.ID)
+	expect(returnedObj).toBeTruthy()
+
+})
 describe('MosDevice: Basic functionality', () => {
 	test('init and connectionStatusChanged', async () => {
 		SocketMock.mockClear()

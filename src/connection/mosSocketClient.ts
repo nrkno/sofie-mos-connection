@@ -3,11 +3,12 @@ import { Socket } from 'net'
 import { SocketConnectionEvent } from './socketConnection'
 import { MosMessage } from '../mosModel/MosMessage'
 import { xml2js } from '../utils/Utils'
+import { HandedOverQueue } from './NCSServerConnection'
 const iconv = require('iconv-lite')
 
 export type CallBackFunction = (err: any, data: object) => void
 
-interface QueueMessage {
+export interface QueueMessage {
 	time: number
 	msg: MosMessage
 }
@@ -114,12 +115,12 @@ export class MosSocketClient extends EventEmitter {
 		this.dispose()
 	}
 
-	queueCommand (message: MosMessage, cb: CallBackFunction): void {
+	queueCommand (message: MosMessage, cb: CallBackFunction, time?: number): void {
 
 		message.prepare()
 		// console.log('queueing', message.messageID, message.constructor.name )
 		this._queueCallback[message.messageID + ''] = cb
-		this._queueMessages.push({ time: Date.now(), msg: message })
+		this._queueMessages.push({ time: time || Date.now(), msg: message })
 
 		this.processQueue()
 	}
@@ -135,12 +136,32 @@ export class MosSocketClient extends EventEmitter {
 				// The queue is empty, do nothing
 			}
 		} else {
-			// Try again later:
-			clearTimeout(this.processQueueTimeout)
-			this.processQueueTimeout = setTimeout(() => {
-				this.processQueue()
-			}, 200)
+			if (!this._sentMessage && this._queueMessages.length > 0) {
+				if (Date.now() - this._queueMessages[0].time > this._commandTimeout) {
+					const msg = this._queueMessages.shift()!
+					this._queueCallback[msg.msg.messageID]('Command timed out', {})
+					delete this._queueCallback[msg.msg.messageID]
+					this.processQueue()
+				} else {
+					// Try again later:
+					clearTimeout(this.processQueueTimeout)
+					this.processQueueTimeout = setTimeout(() => {
+						this.processQueue()
+					}, 200)
+				}
+			}
 		}
+	}
+	handOverQueue (): HandedOverQueue {
+		const queue = {
+			messages: this._queueMessages,
+			callbacks: this._queueCallback
+		}
+		this._queueMessages = []
+		this._queueCallback = {}
+		this._sentMessage = null
+		clearTimeout(this.processQueueTimeout)
+		return queue
 	}
 
   /** */
@@ -203,7 +224,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 
   /** */
-	private executeCommand (message: QueueMessage): void {
+	private executeCommand (message: QueueMessage, isRetry?: boolean): void {
 		if (this._sentMessage) throw Error('executeCommand: there already is a sent Command!')
 
 		this._sentMessage = message
@@ -221,8 +242,13 @@ export class MosSocketClient extends EventEmitter {
 		global.setTimeout(() => {
 			if (this._sentMessage && this._sentMessage.msg.messageID === sentMessageId) {
 				if (this._debug) console.log('timeout ' + sentMessageId)
-				this._sendReply(sentMessageId, Error('Command timed out'), null)
-				this.processQueue()
+				if (isRetry) {
+					this._sendReply(sentMessageId, Error('Command timed out'), null)
+					this.processQueue()
+				} else {
+					this._sentMessage = null
+					this.executeCommand(message, true)
+				}
 			}
 		}, this._commandTimeout)
 		this._client.write(buf, 'ucs2')
@@ -235,8 +261,8 @@ export class MosSocketClient extends EventEmitter {
   /** */
 	private _autoReconnectionAttempt (): void {
 		if (this._autoReconnect) {
-			if (this._reconnectAttempts > 0) {								// no reconnection if no valid reconnectionAttemps is set
-				if ((this._reconnectAttempt >= this._reconnectAttempts)) {	// if current attempt is not less than max attempts
+			if (this._reconnectAttempts > -1) {								// no reconnection if no valid reconnectionAttemps is set
+				if (this._reconnectAttempts > 0 && (this._reconnectAttempt >= this._reconnectAttempts)) {	// if current attempt is not less than max attempts
 					// reset reconnection behaviour
 					this._clearConnectionAttemptTimer()
 					return
@@ -268,8 +294,8 @@ export class MosSocketClient extends EventEmitter {
   /** */
 	private _onConnected () {
 		this._client.emit(SocketConnectionEvent.ALIVE)
-		global.clearInterval(this._connectionAttemptTimer)
-		// this._clearConnectionAttemptTimer()
+		// global.clearInterval(this._connectionAttemptTimer)
+		this._clearConnectionAttemptTimer()
 		this.connected = true
 	}
 
@@ -336,8 +362,12 @@ export class MosSocketClient extends EventEmitter {
 				} else {
 					// error message?
 					if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
-						if (this._debug) console.log('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
-						this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
+						if (this._sentMessage && parsedData.mos.mosAck.statusDescription === 'Buddy server cannot respond because main server is available') {
+							this._sendReply(this._sentMessage.msg.messageID, 'Main server available', parsedData)
+						} else {
+							if (this._debug) console.log('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
+							this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
+						}
 					} else {
 						// unknown message..
 						this.emit('error', 'Unknown message: ' + messageString)

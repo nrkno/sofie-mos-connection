@@ -244,7 +244,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	): MosDevice {
 		let id0 = myMosID + '_' + theirMosId0
 		let id1 = (theirMosId1 ? myMosID + '_' + theirMosId1 : null)
-		let mosDevice = new MosDevice(id0, id1, this._conf, primary, secondary)
+		let mosDevice = new MosDevice(id0, id1, this._conf, primary, secondary, this._conf.offspecFailover)
 
 		// Add mosDevice to register:
 		if (this._mosDevices[id0]) {
