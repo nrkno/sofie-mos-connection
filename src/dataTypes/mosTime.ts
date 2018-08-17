@@ -3,10 +3,11 @@ import { pad } from './../utils/Utils'
 
 export class MosTime {
 
+	static _defaultTimezone: string = 'Z'
 	private _time: Date
+	private _timezone: string = ''
 	private _timezoneZuluIndicator: string = ''
 	private _timezoneDeclaration: string = ''
-	private _timeOffsetValue: number = 0
 
 	/** */
 	constructor (timestamp?: Date | number | string) {
@@ -21,29 +22,31 @@ export class MosTime {
 				// Sun Feb 25 2018 08:59:08 GMT+0100 (CET)
 				// 2018-02-25T08:00:45.528Z
 
-				// parse out custom timezones (mos local-local centric format)
-				let timezoneParseResult = this._parseTimeOffset(timestamp)
-				if (timezoneParseResult !== false) {
-					this._timezoneDeclaration = timezoneParseResult.timezoneDeclaration
-					this._timeOffsetValue = timezoneParseResult.timeOffsetValue
-				}
-
 				// parse out custom Z indicator (mos-centric)
 				let customFormatParseResult = this._parseMosCustomFormat(timestamp)
-				if (customFormatParseResult !== false) {
-					this._timezoneZuluIndicator = customFormatParseResult.timezoneIndicator
-				}
+				// parse out custom timezones (mos local-local centric format)
+				let timezoneParseResult = this._parseTimeOffset(timestamp)
 
-				// try to parse the time directly with Date, for Date-supported formats
-				time = new Date(timestamp)
-				if (isNaN(time.getTime())) {
-					if (customFormatParseResult !== false) {
-						let dateStr = `${customFormatParseResult.yy}-${customFormatParseResult.mm}-${customFormatParseResult.dd}T${customFormatParseResult.hh}:${customFormatParseResult.ii}:${customFormatParseResult.ss}${(customFormatParseResult.ms ? '.' + customFormatParseResult.ms : '')}${this._timezoneZuluIndicator}${this._timezoneDeclaration}`
-						time = new Date(dateStr)
-					} else {
-						// can't match custom format
-						// will be caught as invalid timestamp further down
-					}
+				if (customFormatParseResult !== false) {
+					this._timezone = customFormatParseResult.timezoneIndicator
+					this._timezoneZuluIndicator = customFormatParseResult.timezoneIndicator
+
+					const r = customFormatParseResult
+					let dateStr = `${r.yy}-${r.mm}-${r.dd}T${r.hh}:${r.ii}:${r.ss}${(r.ms ? '.' + r.ms : '')}${this._timezoneZuluIndicator}${this._timezoneDeclaration}`
+					time = new Date(dateStr)
+				} else if (timezoneParseResult !== false) {
+					this._timezoneDeclaration = timezoneParseResult.timezoneDeclaration
+
+					time = new Date(timestamp)
+
+				} else {
+
+					// try to parse the time directly with Date, for Date-supported formats
+					time = new Date(timestamp)
+					// if (isNaN(time.getTime())) {
+					// 	// can't match custom format
+					// 	// will be caught as invalid timestamp further down
+					// }
 				}
 			} else {
 				// received Date object
@@ -64,11 +67,11 @@ export class MosTime {
 
 	/** */
 	toString (): string {
-		if (!this._timezoneDeclaration) {
-			return moment.utc(this._time).format(`YYYY-MM-DDTHH:mm:ss,SSS${this._timezoneZuluIndicator.length ? '##!!##' : 'Z'}`).replace('+00:00', '').replace('##!!##', this._timezoneZuluIndicator)
-		} else {
-			return moment.utc(this.getTime()).add(this._timeOffsetValue, 'minutes').format(`YYYY-MM-DDTHH:mm:ss,SSS${this._timezoneDeclaration}`).replace('+00:00', '')
-		}
+
+		let t = moment.utc(this._time).utcOffset(this._timezone)
+
+		return t.format('YYYY-MM-DDTHH:mm:ss,SSS##!!##')
+		.replace('##!!##', this._timezone)
 	}
 
 	/** */
@@ -112,7 +115,6 @@ export class MosTime {
 	private _parseMosCustomFormat (timestamp: string): false | {yy: string, mm: string, dd: string, hh: string, ii: string, ss: string, ms: string, timezoneIndicator: string} {
 		const timestampRegex = /(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)([,\.](\d{3}))?(([+-Z])([:\d]+)?)?/i
 		let match = timestamp.match(timestampRegex)
-
 		if (match) {
 			let yy = pad(match[1], 4)
 			let mm = pad(match[2], 2)
@@ -121,8 +123,17 @@ export class MosTime {
 			let ii = pad(match[5], 2)
 			let ss = pad(match[6], 2)
 			let ms = match[8]
-			let timezoneIndicator = match[10] ? match[10].toUpperCase() : match[10]
-			timezoneIndicator = timezoneIndicator === 'Z' ? timezoneIndicator : ''
+			let timezoneIndicator = match[9] || MosTime._defaultTimezone
+
+			let m = timezoneIndicator.match(/([+-])(\d+):(\d+)/) // +5:00,  -05:00
+			if (m) {
+				let tzSign = m[1]
+				let tzHours = m[2]
+				let tzMinutes = m[3]
+				if (tzHours.length === 1) tzHours = '0' + tzHours
+				if (tzMinutes.length === 1) tzMinutes = '0' + tzMinutes
+				timezoneIndicator = tzSign + tzHours + ':' + tzMinutes
+			}
 
 			return {
 				yy,

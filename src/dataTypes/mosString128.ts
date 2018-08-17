@@ -27,6 +27,6 @@ export class MosString128 {
 
 	/** */
 	private _validate () {
-		if ((this._str || '').length > 128) throw new Error('String length is too long!')
+		if ((this._str || '').length > 128) throw new Error('MosString128 length is too long (' + this._str + ')!')
 	}
 }
