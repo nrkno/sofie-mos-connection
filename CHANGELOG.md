@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.0...0.5.1) (2018-08-17)
+
+
+### Bug Fixes
+
+* mosTime: implemented change from default local to UTC ([b93b8e5](https://github.com/nrkno/tv-automation-mos-connection/commit/b93b8e5))
+* updated mosTime tests: default timezone is UTC, not local ([be158a4](https://github.com/nrkno/tv-automation-mos-connection/commit/be158a4))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.4.0...0.5.0) (2018-08-17)
 
