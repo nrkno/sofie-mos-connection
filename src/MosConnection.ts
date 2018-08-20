@@ -87,6 +87,12 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			primary.on('rawMessage', (type: string, message: string) => {
 				this.emit('rawMessage', 'primary', type, message)
 			})
+			primary.on('warning', (str: string) => {
+				this.emit('warning', 'primary: ' + str)
+			})
+			primary.on('error', (str: string) => {
+				this.emit('error', 'primary: ' + str)
+			})
 
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
@@ -102,6 +108,12 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				this._ncsConnections[connectionOptions.secondary.host] = secondary
 				secondary.on('rawMessage', (type: string, message: string) => {
 					this.emit('rawMessage', 'secondary', type, message)
+				})
+				secondary.on('warning', (str: string) => {
+					this.emit('warning', 'secondary: ' + str)
+				})
+				secondary.on('error', (str: string) => {
+					this.emit('error', 'secondary: ' + str)
 				})
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
