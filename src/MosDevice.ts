@@ -846,7 +846,7 @@ export class MosDevice implements IMOSDevice {
 
 	private executeCommand (message: MosMessage, resend?: boolean): Promise<any> {
 		if (this._currentConnection) {
-			console.log('exec command', message)
+			if (this._debug) console.log('exec command', message)
 			if (!this._currentConnection.connected) {
 				return this.switchConnections(message)
 			}
@@ -856,7 +856,7 @@ export class MosDevice implements IMOSDevice {
 				}
 				return res
 			}).catch((e) => {
-				console.log('errored', e)
+				if (this._debug) console.log('errored', e)
 				if (this._primaryConnection && this._secondaryConnection && !resend) {
 					return this.switchConnections(message)
 				} else {
@@ -870,12 +870,12 @@ export class MosDevice implements IMOSDevice {
 
 	private switchConnections (message?: MosMessage): Promise<any> {
 		if (this._currentConnection && this._primaryConnection && this._secondaryConnection) {
-			console.log('swithcing conn')
+			if (this._debug) console.log('swithcing connection')
 			this._currentConnection = this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection
 			if (!this._currentConnection.connected) return Promise.reject('No connection available for failover')
 			let p
 			if (message) {
-				console.log('resending msg')
+				if (this._debug) console.log('resending msg')
 				p = this.executeCommand(message, true).catch((e) => {
 					if (e === 'Main server available') {
 						// @todo: we may deadlock if primary is down for us, but up for buddy
