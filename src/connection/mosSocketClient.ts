@@ -322,7 +322,7 @@ export class MosSocketClient extends EventEmitter {
 				this.dataChunks = ''
 			} else if (last === lastMatch) {
 				// Last chunk, ready to parse with saved data:
-				parsedData = xml2js(this.dataChunks)// , { compact: true, trim: true, nativeType: true })
+				parsedData = xml2js(this.dataChunks + messageString)// , { compact: true, trim: true, nativeType: true })
 				this.dataChunks = ''
 			} else if (first === firstMatch) {
 				// Chunk, save for later:
