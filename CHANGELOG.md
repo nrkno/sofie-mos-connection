@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.2"></a>
+## [0.5.2](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.1...0.5.2) (2018-08-20)
+
+
+### Bug Fixes
+
+* parse last chunk of xml data ([0e54f03](https://github.com/nrkno/tv-automation-mos-connection/commit/0e54f03))
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.0...0.5.1) (2018-08-17)
 
