@@ -383,7 +383,9 @@ export class MosSocketClient extends EventEmitter {
 			// console.log('messageString', messageString)
 			if (this._startingUp) {
 				// when starting up, we might get half a message, let's ignore this error then
-				console.log('Strange XML-message upon startup')
+				let a = Math.min(20, Math.floor(messageString.length / 2))
+				console.log('Strange XML-message upon startup: "' + messageString.slice(0, a) + '[...]' + messageString.slice(-a) + '" (length: ' + messageString.length + ')')
+				console.log('error', e)
 			} else {
 				console.log('dataChunks-------------\n', this.dataChunks)
 				console.log('messageString---------\n', messageString)

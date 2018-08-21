@@ -61,6 +61,12 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		client.on('rawMessage', (type: string, message: string) => {
 			this.emit('rawMessage', type, message)
 		})
+		client.on('warning', (str: string) => {
+			this.emit('warning', 'MosSocketClient: ' + str)
+		})
+		client.on('error', (str: string) => {
+			this.emit('error', 'MosSocketClient: ' + str)
+		})
 	}
 
 	/** */
