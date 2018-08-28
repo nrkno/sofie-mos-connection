@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.4"></a>
+## [0.5.4](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.3...0.5.4) (2018-08-28)
+
+
+### Bug Fixes
+
+* missing properties ObjDur and ObjTB ([1f6f564](https://github.com/nrkno/tv-automation-mos-connection/commit/1f6f564))
+
+
+
 <a name="0.5.3"></a>
 ## [0.5.3](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.2...0.5.3) (2018-08-21)
 
