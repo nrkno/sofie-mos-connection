@@ -190,8 +190,8 @@ describe('MosDevice: Profile 0', () => {
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: false,
 			PrimaryStatus: '', // if not connected this will contain human-readable error-message
-			SecondaryConnected: true
-			// SecondaryStatus: string // if not connected this will contain human-readable error-message
+			SecondaryConnected: true,
+			SecondaryStatus: '' // if not connected this will contain human-readable error-message
 		})
 
 		// Test proper dispose:
