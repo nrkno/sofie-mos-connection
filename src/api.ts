@@ -193,6 +193,8 @@ export interface IMOSItem {
 	Channel?: MosString128
 	EditorialStart?: number
 	EditorialDuration?: number
+	Duration?: number
+	TimeBase?: number
 	UserTimingDuration?: number
 	Trigger?: any // TODO: Johan frågar
 	MacroIn?: MosString128

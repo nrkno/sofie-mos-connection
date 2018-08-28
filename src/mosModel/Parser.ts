@@ -161,6 +161,8 @@ export namespace Parser {
 		if (xml.hasOwnProperty('mosAbstract')) item.mosAbstract = xml.mosAbstract + ''
 		if (xml.hasOwnProperty('objSlug')) item.ObjectSlug = new MosString128(xml.objSlug)
 		if (xml.hasOwnProperty('itemChannel')) item.Channel = new MosString128(xml.itemChannel)
+		if (xml.hasOwnProperty('objDur')) item.Duration = xml.objDur
+		if (xml.hasOwnProperty('objTB')) item.TimeBase = xml.objTB
 
 		if (xml.hasOwnProperty('mosObj')) {
 			// Note: the <mosObj> is sent in roStorySend
