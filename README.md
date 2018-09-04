@@ -1,4 +1,4 @@
-# MOS-Connection
+# Sofie: The Modern TV News Studio Automation System (MOS connection library)
 [![CircleCI](https://circleci.com/gh/nrkno/tv-automation-mos-connection.svg?style=svg)](https://circleci.com/gh/nrkno/tv-automation-mos-connection)
 
 Library for connecting to a Mos-device
