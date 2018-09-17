@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.5"></a>
+## [0.5.5](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.4...0.5.5) (2018-09-04)
+
+
+
+<a name="0.5.4"></a>
+## [0.5.4](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.3...0.5.4) (2018-08-28)
+
+
+### Bug Fixes
+
+* missing properties ObjDur and ObjTB ([1f6f564](https://github.com/nrkno/tv-automation-mos-connection/commit/1f6f564))
+
+
+
+<a name="0.5.3"></a>
+## [0.5.3](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.2...0.5.3) (2018-08-21)
+
+
+### Bug Fixes
+
+* proper bubbling of error & warning events ([5d14e55](https://github.com/nrkno/tv-automation-mos-connection/commit/5d14e55))
+
+
+
+<a name="0.5.2"></a>
+## [0.5.2](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.1...0.5.2) (2018-08-20)
+
+
+### Bug Fixes
+
+* parse last chunk of xml data ([0e54f03](https://github.com/nrkno/tv-automation-mos-connection/commit/0e54f03))
+
+
+
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.0...0.5.1) (2018-08-17)
+
+
+### Bug Fixes
+
+* mosTime: implemented change from default local to UTC ([b93b8e5](https://github.com/nrkno/tv-automation-mos-connection/commit/b93b8e5))
+* updated mosTime tests: default timezone is UTC, not local ([be158a4](https://github.com/nrkno/tv-automation-mos-connection/commit/be158a4))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.4.0...0.5.0) (2018-08-17)
 
