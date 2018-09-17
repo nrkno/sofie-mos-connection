@@ -49,12 +49,13 @@ export class ConnectionConfig implements IConnectionConfig {
 	}
 
 	constructor (init: IConnectionConfig) {
-		if (!init) 						throw new Error('Config object missing')
-		if (typeof init !== 'object')	throw new Error('Config object is not an object')
-
-		if (init.mosID === undefined) 				throw new Error('Config argument "mosID" missing')
-		if (init.acceptsConnections === undefined) 	throw new Error('Config argument "acceptsConnections" missing')
-		if (init.profiles === undefined) 			throw new Error('Config argument "profiles" missing')
+		/* tslint:disable */
+		if (!init) throw new Error('Config object missing')
+		if (typeof init !== 'object') throw new Error('Config object is not an object')
+		if (init.mosID === undefined) throw new Error('Config argument "mosID" missing')
+		if (init.acceptsConnections === undefined) throw new Error('Config argument "acceptsConnections" missing')
+		if (init.profiles === undefined) throw new Error('Config argument "profiles" missing')
+		/* tslint:enable */
 
 		this.mosID					= init.mosID
 		this.acceptsConnections		= init.acceptsConnections
