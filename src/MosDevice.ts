@@ -149,7 +149,7 @@ export class MosDevice implements IMOSDevice {
 		if (primaryConnection) {
 			this._primaryConnection = primaryConnection
 			this._primaryConnection.onConnectionChange(() => {
-				this.emitConnectionChange()
+				this._emitConnectionChange()
 				if (offSpecFailover && this._currentConnection !== this._primaryConnection && this._primaryConnection!.connected) {
 					this.switchConnections().catch(() => null) // and hope no current message goes lost
 				}
@@ -157,35 +157,37 @@ export class MosDevice implements IMOSDevice {
 		}
 		if (secondaryConnection) {
 			this._secondaryConnection = secondaryConnection
-			this._secondaryConnection.onConnectionChange(() => this.emitConnectionChange())
+			this._secondaryConnection.onConnectionChange(() => this._emitConnectionChange())
 		}
 		this._currentConnection = this._primaryConnection || this._primaryConnection || null
 	}
-
+	/** True if MOS-device has connection to server (can send messages) */
 	get hasConnection (): boolean {
 		return !!this._currentConnection
 	}
+	/** Primary ID (probably the NCS-ID) */
 	get idPrimary (): string {
 		return this._idPrimary
 	}
+	/** Secondary ID (probably the MOS-ID) */
 	get idSecondary (): string | null {
 		return this._idSecondary
 	}
+	/** Host name (IP-address) of the primary server */
 	get primaryHost (): string | null {
 		return (this._primaryConnection ? this._primaryConnection.host : null)
 	}
+	/** Name (ID) of the primary server */
 	get primaryId (): string | null {
 		return (this._primaryConnection ? this._primaryConnection.id : null)
 	}
+	/** Host name (IP-address) of the secondary (buddy) server */
 	get secondaryHost (): string | null {
 		return (this._secondaryConnection ? this._secondaryConnection.host : null)
 	}
+	/** Name (ID) of the secondary (buddy) server */
 	get secondaryId (): string | null {
 		return (this._secondaryConnection ? this._secondaryConnection.id : null)
-	}
-
-	emitConnectionChange (): void {
-		if (this._callbackOnConnectionChange) this._callbackOnConnectionChange(this.getConnectionStatus())
 	}
 
 	connect (): void {
@@ -867,7 +869,6 @@ export class MosDevice implements IMOSDevice {
 			return Promise.reject('No connection')
 		}
 	}
-
 	private switchConnections (message?: MosMessage): Promise<any> {
 		if (this._currentConnection && this._primaryConnection && this._secondaryConnection) {
 			if (this._debug) console.log('swithcing connection')
@@ -892,5 +893,8 @@ export class MosDevice implements IMOSDevice {
 			return p || Promise.resolve()
 		}
 		return Promise.reject('No connection available for failover')
+	}
+	private _emitConnectionChange (): void {
+		if (this._callbackOnConnectionChange) this._callbackOnConnectionChange(this.getConnectionStatus())
 	}
 }
