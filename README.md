@@ -1,11 +1,8 @@
 # Sofie: The Modern TV News Studio Automation System (MOS Connection library)
 [![CircleCI](https://circleci.com/gh/nrkno/tv-automation-mos-connection.svg?style=svg)](https://circleci.com/gh/nrkno/tv-automation-mos-connection)
 
-Library for connecting to a MOS device.
+Library for connecting to a MOS device using the [MOS Protocol](http://mosprotocol.com/).
 
-Based on the [MOS Protocol](http://mosprotocol.com/)
-
-*Note: This library is currently under heavy develpoment, expect breaking changes.*
 
 ## Getting started
 
@@ -49,12 +46,12 @@ Working in dev environment
 ### Profile 2
 * Implemented
 ### Profile 3
-* Not started
+* *Not started
 ### Profile 4
 * Implemented
 ### Profile 5
-* Not started
+* *Not started
 ### Profile 6
-* Not started
+* *Not started
 ### Profile 7
-* Not started
+* *Not started
