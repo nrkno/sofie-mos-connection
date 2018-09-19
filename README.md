@@ -40,18 +40,18 @@ mos.onConnection((device: MosDevice) => { // called whenever there is a new conn
 ### Basic connections
 Working in dev environment
 ### Profile 0
-* Implemented
+* **Implemented**
 ### Profile 1
-* Implemented
+* **Implemented**
 ### Profile 2
-* Implemented
+* **Implemented**
 ### Profile 3
-* *Not started
+* *Not started*
 ### Profile 4
-* Implemented
+* **Implemented**
 ### Profile 5
-* *Not started
+* *Not started*
 ### Profile 6
-* *Not started
+* *Not started*
 ### Profile 7
-* *Not started
+* *Not started*
