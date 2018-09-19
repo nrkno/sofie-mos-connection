@@ -3,6 +3,9 @@
 
 Library for connecting to a MOS device using the [MOS Protocol](http://mosprotocol.com/).
 
+This is a part of the [**Sofie** TV News Studio Automation System](https://github.com/nrkno/Sofie-TV-automation/).
+
+
 
 ## Getting started
 
