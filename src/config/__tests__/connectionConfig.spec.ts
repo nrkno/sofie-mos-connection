@@ -1,4 +1,4 @@
-import { ConnectionConfig } from '../ConnectionConfig'
+import { ConnectionConfig } from '../connectionConfig'
 
 describe('ConnectionConfig', () => {
 	test('new ConnectionConfig', () => {
