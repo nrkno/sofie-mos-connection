@@ -1,11 +1,17 @@
 
-/** */
+/** Config object for creating a MOS-device */
 export interface IConnectionConfig {
+	/** The ID of this mos-device */
 	mosID: string
+	/** Whether this mosConnection accepts new connections from othe MOS clients */
 	acceptsConnections: boolean
+	/** Only accept connections from this whitelist */
 	accepsConnectionsFrom?: string[]
+	/** A list of which profile this mos device is to support */
 	profiles: IProfiles
+	/** Debugging-mode: logs raw mos-messages */
 	debug?: boolean
+	/** Automatically create new mos-devices on-the-fly when receiving messages to unregistered MOS-ID:s */
 	openRelay?: boolean
 	offspecFailover?: boolean
 }
@@ -43,7 +49,21 @@ export class ConnectionConfig implements IConnectionConfig {
 	}
 
 	constructor (init: IConnectionConfig) {
-		Object.assign(this, init)
+		/* tslint:disable */
+		if (!init) throw new Error('Config object missing')
+		if (typeof init !== 'object') throw new Error('Config object is not an object')
+		if (init.mosID === undefined) throw new Error('Config argument "mosID" missing')
+		if (init.acceptsConnections === undefined) throw new Error('Config argument "acceptsConnections" missing')
+		if (init.profiles === undefined) throw new Error('Config argument "profiles" missing')
+		/* tslint:enable */
+
+		this.mosID					= init.mosID
+		this.acceptsConnections		= init.acceptsConnections
+		this.accepsConnectionsFrom	= init.accepsConnectionsFrom || []
+		this.debug					= init.debug || false
+		this.openRelay				= init.openRelay || false
+		this.offspecFailover		= init.offspecFailover || false
+		this.profiles				= init.profiles
 	}
 
 	/** */

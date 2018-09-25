@@ -228,7 +228,13 @@ describe('MosDevice: General', () => {
 
 		expect(mos.profiles).toMatchObject({
 			'0': true,
-			'1': true
+			'1': true,
+			'2': false,
+			'3': false,
+			'4': false,
+			'5': false,
+			'6': false,
+			'7': false
 		})
 
 		// expect(mos.complianceText).toBe('MOS Compatible – Profiles 0,1')

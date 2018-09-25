@@ -245,25 +245,35 @@ export interface IMOSConnectionStatus {
 }
 
 export interface IMOSDeviceConnectionOptions {
+	/** Connection options for the Primary NCS-server */
 	primary: {
-		id: string // hostname
+		/** Name (NCS ID) of the NCS-server */
+		id: string
+		/** Host address (IP-address) of the NCS-server  */
 		host: string // ip-addr
+		/** (Optional): Custom ports for communication */
 		ports?: {
 			upper: number
 			lower: number
 			query: number
 		},
-		timeout?: number // ms, fallback to default
+		/** (Optional) Timeout for commands (ms) */
+		timeout?: number
 	}
+	/** Connection options for the Secondary (Buddy) NCS-server */
 	secondary?: {
-		id: string // hostname
-		host: string // ip-addr
+		/** Name (NCS ID) of the Buddy NCS-server */
+		id: string
+		/** Host address (IP-address) of the NCS-server  */
+		host: string
+		/** (Optional): Custom ports for communication */
 		ports?: {
 			upper: number
 			lower: number
 			query: number
 		},
-		timeout?: number // ms, fallback to default
+		/** (Optional) Timeout for commands (ms) */
+		timeout?: number
 	}
 }
 
