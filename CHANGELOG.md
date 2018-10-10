@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.6...0.6.0) (2018-10-10)
+
+
+### Features
+
+* set debug flag dynamically ([51c3718](https://github.com/nrkno/tv-automation-mos-connection/commit/51c3718))
+
+
+
 <a name="0.5.6"></a>
 ## [0.5.6](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.5...0.5.6) (2018-09-25)
 
