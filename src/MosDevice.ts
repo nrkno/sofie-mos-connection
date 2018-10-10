@@ -845,6 +845,9 @@ export class MosDevice implements IMOSDevice {
 	onROStory (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) {
 		this._callbackOnROStory = cb
 	}
+	setDebug (debug: boolean) {
+		this._debug = debug
+	}
 
 	private executeCommand (message: MosMessage, resend?: boolean): Promise<any> {
 		if (this._currentConnection) {

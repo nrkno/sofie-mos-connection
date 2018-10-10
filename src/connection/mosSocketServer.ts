@@ -90,7 +90,9 @@ export class MosSocketServer extends EventEmitter {
 			}
 		})
 	}
-
+	public setDebug (debug: boolean) {
+		this._debug = debug
+	}
 	get port () {
 		return this._port
 	}
