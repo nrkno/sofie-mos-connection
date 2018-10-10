@@ -126,7 +126,16 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	onConnectionChange (cb: () => void) {
 		this._callbackOnConnectionChange = cb
 	}
+	public setDebug (debug: boolean) {
+		this._debug = debug
 
+		Object.keys(this._clients).forEach((clientID) => {
+			let cd = this._clients[clientID]
+			if (cd) {
+				cd.client.setDebug(debug)
+			}
+		})
+	}
 	get connected (): boolean {
 
 		if (!this._connected) return false

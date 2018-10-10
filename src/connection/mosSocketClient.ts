@@ -200,7 +200,9 @@ export class MosSocketClient extends EventEmitter {
 	log (args: any): void {
 		if (this._debug) console.log(args)
 	}
-
+	public setDebug (debug: boolean) {
+		this._debug = debug
+	}
   /** */
 	private set connected (connected: boolean) {
 		this._connected = connected === true

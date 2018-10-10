@@ -25,9 +25,9 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	private _conf: ConnectionConfig
 	private _debug: boolean = false
 
-	private _lowerSocketServer: MosSocketServer
-	private _upperSocketServer: MosSocketServer
-	private _querySocketServer: MosSocketServer
+	private _lowerSocketServer?: MosSocketServer
+	private _upperSocketServer?: MosSocketServer
+	private _querySocketServer?: MosSocketServer
 	private _incomingSockets: {[sockedId: string]: SocketDescription} = {}
 	private _ncsConnections: {[host: string]: NCSServerConnection} = {}
 	private _mosDevices: {[ncsID: string]: MosDevice} = {}
@@ -174,9 +174,9 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			})
 		})
 		let disposePromises1: Array<Promise<any>> = [
-			this._lowerSocketServer.dispose([]),
-			this._upperSocketServer.dispose([]),
-			this._querySocketServer.dispose([])
+			this._lowerSocketServer ? this._lowerSocketServer.dispose([]) : Promise.resolve(),
+			this._upperSocketServer ? this._upperSocketServer.dispose([]) : Promise.resolve(),
+			this._querySocketServer ? this._querySocketServer.dispose([]) : Promise.resolve()
 		]
 
 		let disposePromises2: Array<Promise<any>> = []
@@ -253,6 +253,22 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			return `MOS Compatible – Profiles ${profiles.join(',')}`
 		}
 		return 'Warning: Not MOS compatible'
+	}
+	public setDebug (debug: boolean) {
+		this._debug = debug
+
+		this.getDevices().forEach((device: MosDevice) => {
+			device.setDebug(debug)
+		})
+		Object.keys(this._ncsConnections).forEach((host) => {
+			let conn = this._ncsConnections[host]
+			if (conn) {
+				conn.setDebug(debug)
+			}
+		})
+		if (this._lowerSocketServer) this._lowerSocketServer.setDebug(debug)
+		if (this._upperSocketServer) this._upperSocketServer.setDebug(debug)
+		if (this._querySocketServer) this._querySocketServer.setDebug(debug)
 	}
 	private _registerMosDevice (
 		myMosID: string,
