@@ -196,6 +196,8 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		// this._clients.forEach((client, id) => {
 		// 	// cmds[id] = client.client.handOverQueue()
 		// })
+		if (this._debug) console.log(this.id + ' ' + this.host + ' handOverQueue')
+
 		for (const id in this._clients) {
 			cmds[id] = this._clients[id].client.handOverQueue()
 		}
