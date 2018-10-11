@@ -4,6 +4,7 @@ import { SocketConnectionEvent } from './socketConnection'
 import { MosMessage } from '../mosModel/MosMessage'
 import { xml2js } from '../utils/Utils'
 import { HandedOverQueue } from './NCSServerConnection'
+import { HeartBeat } from '../mosModel/0_heartBeat'
 const iconv = require('iconv-lite')
 
 export type CallBackFunction = (err: any, data: object) => void
@@ -33,9 +34,11 @@ export class MosSocketClient extends EventEmitter {
 	private _commandTimeout: number
 
 	private _queueCallback: {[messageId: string]: CallBackFunction} = {}
+	private _lingeringCallback: {[messageId: string]: CallBackFunction} = {} // for lingering messages
 	private _queueMessages: Array<QueueMessage> = []
 
-	private _sentMessage: QueueMessage | null = null
+	private _sentMessage: QueueMessage | null = null // sent message, waiting for reply
+	private _lingeringMessage: QueueMessage | null = null // sent message, NOT waiting for reply
 	// private _readyToSendMessage: boolean = true
 
 	private processQueueTimeout: NodeJS.Timer
@@ -157,6 +160,14 @@ export class MosSocketClient extends EventEmitter {
 			messages: this._queueMessages,
 			callbacks: this._queueCallback
 		}
+		if (this._sentMessage && this._sentMessage.msg instanceof HeartBeat) {
+			// Temporary hack, to allow heartbeats to be received after a handover:
+			this._lingeringMessage = this._sentMessage
+			this._lingeringCallback[this._sentMessage.msg.messageID + ''] = this._queueCallback[this._sentMessage.msg.messageID + '']
+		} else if (this._lingeringMessage) {
+			delete this._lingeringCallback[this._lingeringMessage.msg.messageID + '']
+			this._lingeringMessage = null
+		}
 		this._queueMessages = []
 		this._queueCallback = {}
 		this._sentMessage = null
@@ -215,7 +226,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 
 	private _sendReply (messageId: number, err: any, res: any) {
-		let cb: CallBackFunction | undefined = this._queueCallback[messageId + '']
+		let cb: CallBackFunction | undefined = this._queueCallback[messageId + ''] || this._lingeringCallback[messageId + '']
 		if (cb) {
 			cb(err, res)
 		} else {
@@ -223,7 +234,9 @@ export class MosSocketClient extends EventEmitter {
 			this.emit('error', `Error: No callback found for messageId ${messageId}`)
 		}
 		this._sentMessage = null
+		this._lingeringMessage = null
 		delete this._queueCallback[messageId + '']
+		delete this._lingeringCallback[messageId + '']
 	}
 
   /** */
@@ -231,6 +244,7 @@ export class MosSocketClient extends EventEmitter {
 		if (this._sentMessage) throw Error('executeCommand: there already is a sent Command!')
 
 		this._sentMessage = message
+		this._lingeringMessage = null
 
 		let sentMessageId = message.msg.messageID
 
@@ -249,6 +263,7 @@ export class MosSocketClient extends EventEmitter {
 					this.processQueue()
 				} else {
 					this._sentMessage = null
+					this._lingeringMessage = null
 					this.executeCommand(message, true)
 				}
 			}
@@ -337,14 +352,15 @@ export class MosSocketClient extends EventEmitter {
 				// console.log(parsedData, newParserData)
 				let messageId = parsedData.mos.messageID
 				if (messageId) {
-					if (this._sentMessage) {
-						if (this._sentMessage.msg.messageID.toString() === (messageId + '')) {
-							this._sendReply(this._sentMessage.msg.messageID, null, parsedData)
+					let sentMessage = this._sentMessage || this._lingeringMessage
+					if (sentMessage) {
+						if (sentMessage.msg.messageID.toString() === (messageId + '')) {
+							this._sendReply(sentMessage.msg.messageID, null, parsedData)
 						} else {
-							if (this._debug) console.log('Mos reply id diff: ' + messageId + ', ' + this._sentMessage.msg.messageID)
+							if (this._debug) console.log('Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
 							if (this._debug) console.log(parsedData)
 
-							this.emit('warning', 'Mos reply id diff: ' + messageId + ', ' + this._sentMessage.msg.messageID)
+							this.emit('warning', 'Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
 
 							this._triggerQueueCleanup()
 						}
