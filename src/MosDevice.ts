@@ -874,7 +874,7 @@ export class MosDevice implements IMOSDevice {
 	}
 	private switchConnections (message?: MosMessage): Promise<any> {
 		if (this._currentConnection && this._primaryConnection && this._secondaryConnection) {
-			if (this._debug) console.log('swithcing connection')
+			if (this._debug) console.log('switching connection')
 			this._currentConnection = this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection
 			if (!this._currentConnection.connected) return Promise.reject('No connection available for failover')
 			let p

@@ -220,6 +220,7 @@ export class MosSocketClient extends EventEmitter {
 			cb(err, res)
 		} else {
 			// this._onUnhandledCommandTimeout()
+			this.emit('error', `Error: No callback found for messageId ${messageId}`)
 		}
 		this._sentMessage = null
 		delete this._queueCallback[messageId + '']
@@ -236,14 +237,13 @@ export class MosSocketClient extends EventEmitter {
 		// console.log('executeCommand', message)
 		// message.prepare() // @todo, is prepared? is sent already? logic needed
 		let messageString: string = message.msg.toString()
-		if (this._debug) console.log('messageString', messageString)
 		let buf = iconv.encode(messageString, 'utf16-be')
 		// if (this._debug) console.log('sending',this._client.name, str)
 
 		// Command timeout:
 		global.setTimeout(() => {
 			if (this._sentMessage && this._sentMessage.msg.messageID === sentMessageId) {
-				if (this._debug) console.log('timeout ' + sentMessageId)
+				if (this._debug) console.log('timeout ' + sentMessageId + ' after ' + this._commandTimeout)
 				if (isRetry) {
 					this._sendReply(sentMessageId, Error('Command timed out'), null)
 					this.processQueue()
@@ -257,7 +257,6 @@ export class MosSocketClient extends EventEmitter {
 		if (this._debug) console.log(`MOS command sent from ${this._description} : ${messageString}\r\nbytes sent: ${this._client.bytesWritten}`)
 
 		this.emit('rawMessage','sent', messageString)
-
 	}
 
   /** */
@@ -425,7 +424,7 @@ export class MosSocketClient extends EventEmitter {
 	private _triggerQueueCleanup () {
 		// in case we're in unsync with messages, prevent deadlock:
 		setTimeout(() => {
-			console.log('QueueCleanup')
+			if (this._debug) console.log('QueueCleanup')
 			for (let i = this._queueMessages.length - 1; i >= 0; i--) {
 				let message = this._queueMessages[i]
 				if (Date.now() - message.time > this._commandTimeout) {
