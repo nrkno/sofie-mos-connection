@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.2"></a>
+## [0.6.2](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.1...0.6.2) (2018-10-11)
+
+
+### Bug Fixes
+
+* added _lingeringMessage, to allow heartbeat replies to come through, even after a handOver ([e515560](https://github.com/nrkno/tv-automation-mos-connection/commit/e515560))
+
+
+
 <a name="0.6.1"></a>
 ## [0.6.1](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.0...0.6.1) (2018-10-11)
 
