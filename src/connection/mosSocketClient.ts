@@ -90,7 +90,7 @@ export class MosSocketClient extends EventEmitter {
 					this._client.on('close', (hadError: boolean) => this._onClose(hadError))
 					this._client.on('connect', () => this._onConnected())
 					this._client.on('data', (data: Buffer) => this._onData(data))
-					this._client.on('error', this._onError)
+					this._client.on('error', (error) => this._onError(error))
 				}
 
 				// connect:

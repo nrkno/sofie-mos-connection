@@ -33,9 +33,9 @@ export class ConnectionConfig implements IConnectionConfig {
 	mosID: string
 	acceptsConnections: boolean
 	accepsConnectionsFrom: string[]
-	debug?: boolean
-	openRelay?: boolean
-	offspecFailover?: boolean
+	debug: boolean
+	openRelay: boolean
+	offspecFailover: boolean
 
 	private _profiles: IProfiles = {
 		'0': false,
