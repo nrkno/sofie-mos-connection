@@ -84,7 +84,7 @@ export class ConnectionConfig implements IConnectionConfig {
 
 		// Profile 1 depends on 0
 		if (profileSupport['1'] === true) {
-			if (!this._profiles['0'] === true) {
+			if (this._profiles['0'] !== true) {
 				throw new Error(`Invalid MOS configuration: Profile 1 depends on Profile 0.`)
 			} else {
 				this._profiles['1'] = true
