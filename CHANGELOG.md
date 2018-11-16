@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.3"></a>
+## [0.6.3](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.2...0.6.3) (2018-11-06)
+
+
+### Bug Fixes
+
+* method called with wrong context ([4768757](https://github.com/nrkno/tv-automation-mos-connection/commit/4768757))
+* proper handling of empty string ([22d8da6](https://github.com/nrkno/tv-automation-mos-connection/commit/22d8da6))
+
+
+
+<a name="0.6.2"></a>
+## [0.6.2](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.1...0.6.2) (2018-10-11)
+
+
+### Bug Fixes
+
+* added _lingeringMessage, to allow heartbeat replies to come through, even after a handOver ([e515560](https://github.com/nrkno/tv-automation-mos-connection/commit/e515560))
+
+
+
+<a name="0.6.1"></a>
+## [0.6.1](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.0...0.6.1) (2018-10-11)
+
+
+
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.6...0.6.0) (2018-10-10)
+
+
+### Features
+
+* set debug flag dynamically ([51c3718](https://github.com/nrkno/tv-automation-mos-connection/commit/51c3718))
+
+
+
+<a name="0.5.6"></a>
+## [0.5.6](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.5...0.5.6) (2018-09-25)
+
+
+### Bug Fixes
+
+* case sensitive import ([bc636b6](https://github.com/nrkno/tv-automation-mos-connection/commit/bc636b6))
+
+
+
 <a name="0.5.5"></a>
 ## [0.5.5](https://github.com/nrkno/tv-automation-mos-connection/compare/0.5.4...0.5.5) (2018-09-04)
 
