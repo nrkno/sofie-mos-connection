@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.4"></a>
+## [0.6.4](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.3...0.6.4) (2018-11-16)
+
+
+### Bug Fixes
+
+* new MosString from another MosString ([f694623](https://github.com/nrkno/tv-automation-mos-connection/commit/f694623))
+* refactor MosString128 & add tests ([0839e10](https://github.com/nrkno/tv-automation-mos-connection/commit/0839e10))
+
+
+
 <a name="0.6.3"></a>
 ## [0.6.3](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.2...0.6.3) (2018-11-06)
 
