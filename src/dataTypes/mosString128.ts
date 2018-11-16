@@ -4,17 +4,7 @@ export class MosString128 {
 
 	/** */
 	constructor (str: any) {
-		if (typeof str === 'object') {
-			if (str.text) {
-				this.string = str.text
-			} else if (Object.keys(str).length === 0) { // is empty?
-				this.string = ''
-			} else {
-				this.string = JSON.stringify(str)
-			}
-		} else {
-			this.string = '' + str + ''
-		}
+		this.string = str
 	}
 	/** */
 	toString (): string {
@@ -22,9 +12,17 @@ export class MosString128 {
 	}
 
 	/** */
-	set string (str: string | { text: string, type: string }) {
-		if (typeof str === 'object' && str.type === 'text') {
-			this._str = str.text
+	set string (str: string | { text: string, type: string } | MosString128 | any) {
+		if (typeof str === 'object' && str) {
+			if (str.text) {
+				this._str = '' + str.text + ''
+			} else if (str._str) {
+				this._str = '' + str._str + ''
+			} else if (Object.keys(str).length === 0) { // is empty?
+				this._str = ''
+			} else {
+				this._str = JSON.stringify(str)
+			}
 		} else {
 			this._str = '' + str + ''
 		}
