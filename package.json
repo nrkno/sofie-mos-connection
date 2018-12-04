@@ -118,6 +118,7 @@
   ],
   "dependencies": {
     "@types/xmlbuilder": "^0.0.32",
+    "iconv-lite": "^0.4.24",
     "moment": "^2.20.1",
     "tslib": "^1.6.0",
     "xml-js": "^1.6.4",
