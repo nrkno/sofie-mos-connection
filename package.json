@@ -50,7 +50,7 @@
     "release": "yarn reset && yarn test && yarn docs:publish && yarn changelog",
     "reset": "git clean -dfx && git reset --hard && yarn",
     "ci": "yarn test && yarn docs:test",
-    "validate:dependencies": "nsp check && yarn license-validate",
+    "validate:dependencies": "yarn audit",
     "license-validate": "node-license-validator -p -d --allow-licenses MIT BSD BSD-3-Clause ISC Apache"
   },
   "scripts-info": {
@@ -83,23 +83,22 @@
   "devDependencies": {
     "@types/jest": "^22.1.3",
     "@types/node": "^8.0.4",
-    "codecov": "^2.2.0",
+    "codecov": "^3.1.0",
     "cpx": "^1.5.0",
-    "gh-pages": "^1.0.0",
+    "gh-pages": "^2.0.1",
     "jest": "^22.4.2",
     "mkdirp": "^0.5.1",
     "node-license-validator": "^1.3.0",
-    "npm-scripts-info": "^0.3.6",
-    "nsp": "^3.2.1",
-    "nyc": "^11.0.3",
-    "opn-cli": "^3.1.0",
+    "npm-scripts-info": "^0.3.9",
+    "nyc": "^13.1.0",
+    "opn-cli": "^4.0.0",
     "sleep-ms": "^2.0.1",
-    "standard-version": "^4.0.0",
+    "standard-version": "^4.4.0",
     "trash-cli": "^1.4.0",
     "ts-jest": "^22.4.4",
     "tslint": "^5.10.0",
-    "tslint-config-standard": "^7.0.0",
-    "typedoc": "^0.11.1",
+    "tslint-config-standard": "^8.0.1",
+    "typedoc": "^0.13.0",
     "typescript": "^2.8.3"
   },
   "keywords": [
@@ -117,11 +116,12 @@
     "production"
   ],
   "dependencies": {
-    "@types/xmlbuilder": "^0.0.32",
-    "moment": "^2.20.1",
-    "tslib": "^1.6.0",
-    "xml-js": "^1.6.4",
-    "xmlbuilder": "^9.0.7"
+    "@types/xmlbuilder": "^0.0.34",
+    "iconv-lite": "^0.4.24",
+    "moment": "^2.22.2",
+    "tslib": "^1.9.3",
+    "xml-js": "^1.6.8",
+    "xmlbuilder": "^10.1.1"
   },
   "standard-version": {
     "message": "chore(release): %s [skip ci]",
