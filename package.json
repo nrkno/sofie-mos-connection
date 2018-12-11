@@ -116,12 +116,12 @@
     "production"
   ],
   "dependencies": {
-    "@types/xmlbuilder": "^0.0.32",
+    "@types/xmlbuilder": "^0.0.34",
     "iconv-lite": "^0.4.24",
-    "moment": "^2.20.1",
-    "tslib": "^1.6.0",
-    "xml-js": "^1.6.4",
-    "xmlbuilder": "^9.0.7"
+    "moment": "^2.22.2",
+    "tslib": "^1.9.3",
+    "xml-js": "^1.6.8",
+    "xmlbuilder": "^10.1.1"
   },
   "standard-version": {
     "message": "chore(release): %s [skip ci]",
