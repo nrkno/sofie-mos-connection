@@ -18,6 +18,7 @@ import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
 import { ROAck } from '../mosModel/ROAck'
+import { isObject } from 'util'
 
 function isEmpty (obj: any) {
 	if (typeof obj === 'object') {
@@ -197,10 +198,12 @@ export namespace Parser {
 			} else if (xmlPath.key === 'objMetadataPath') {
 				type = IMOSObjectPathType.METADATA_PATH
 			}
-			if (type && Object.keys(xmlPath.o).length > 0) {
+
+			const isObj = isObject(xmlPath.o)
+			if (type && isObj && Object.keys(xmlPath.o).length > 0) {
 				paths.push({
 					Type: type,
-					Description: xmlPath.o.techDescription || xmlPath.o.attributes.techDescription,
+					Description: xmlPath.o.techDescription || (xmlPath.o.attributes ? xmlPath.o.attributes.techDescription : undefined),
 					Target: xmlPath.o.text || xmlPath.o.$t
 				})
 			}
