@@ -174,38 +174,49 @@ export namespace Parser {
 	}
 	export function xml2ObjPaths (xml: any): Array<IMOSObjectPath> {
 		if (!xml) return []
+
+		const objToArray = (obj: any) => {
+			if (Array.isArray(obj)) {
+				return obj as any[]
+			} else {
+				let newArr: any = []
+				if (obj.hasOwnProperty('techDescription')) {
+					newArr.push(obj)
+				} else {
+					Object.keys(obj).forEach(key => {
+						if (Array.isArray(obj[key])) {
+							newArr = newArr.concat(obj[key])
+						} else {
+							newArr.push(obj[key])
+						}
+					})
+				}
+				return newArr
+			}
+		}
+		const xmlPaths = objToArray(xml)
+
 		let paths: Array<IMOSObjectPath> = []
 
-		let xmlPaths: Array<{key: string, o: any}> = []
-		Object.keys(xml).forEach((key) => {
-			let arr: Array<any> = xml[key]
-			if (!Array.isArray(arr)) arr = [arr]
+		xmlPaths.forEach((xmlPath: any) => {
+			const isObj = isObject(xmlPath)
+			if (isObj) {
+				let type: IMOSObjectPathType | null = null
+				if (xmlPath.hasOwnProperty('objPath') || xmlPath.$name === 'objPath') {
+					type = IMOSObjectPathType.PATH
+				} else if (xmlPath.hasOwnProperty('objProxyPath') || xmlPath.$name === 'objProxyPath') {
+					type = IMOSObjectPathType.PROXY_PATH
+				} else if (xmlPath.hasOwnProperty('objMetadataPath') || xmlPath.$name === 'objMetadataPath') {
+					type = IMOSObjectPathType.METADATA_PATH
+				}
 
-			arr.forEach((o) => {
-				xmlPaths.push({
-					key: key,
-					o: o
-				})
-			})
-		})
-
-		xmlPaths.forEach((xmlPath) => {
-			let type: IMOSObjectPathType | null = null
-			if (xmlPath.key === 'objPath') {
-				type = IMOSObjectPathType.PATH
-			} else if (xmlPath.key === 'objProxyPath') {
-				type = IMOSObjectPathType.PROXY_PATH
-			} else if (xmlPath.key === 'objMetadataPath') {
-				type = IMOSObjectPathType.METADATA_PATH
-			}
-
-			const isObj = isObject(xmlPath.o)
-			if (type && isObj && Object.keys(xmlPath.o).length > 0) {
-				paths.push({
-					Type: type,
-					Description: xmlPath.o.techDescription || (xmlPath.o.attributes ? xmlPath.o.attributes.techDescription : undefined),
-					Target: xmlPath.o.text || xmlPath.o.$t
-				})
+				if (type) {
+					paths.push({
+						Type: type,
+						Description: xmlPath.techDescription || (xmlPath.attributes ? xmlPath.attributes.techDescription : ''),
+						Target: xmlPath.text || xmlPath.$t
+					})
+				}
 			}
 		})
 		return paths
