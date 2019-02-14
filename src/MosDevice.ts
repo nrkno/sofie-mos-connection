@@ -4,9 +4,6 @@ import { MosString128 } from './dataTypes/mosString128'
 import { MosTime } from './dataTypes/mosTime'
 import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
 // import { MosDuration } from './dataTypes/mosDuration'
-import { IMOSListMachInfo, IMOSDefaultActiveX, ListMachineInfo } from './mosModel/0_listMachInfo'
-import { ROAck } from './mosModel/ROAck'
-import { ReqMachInfo } from './mosModel/0_reqMachInfo'
 import {
 	IMOSObject,
 	IMOSDevice,
@@ -29,16 +26,24 @@ import {
 } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
 import { Parser } from './mosModel/Parser'
-import { MOSAck } from './mosModel/mosAck'
-import { ROList } from './mosModel/ROList'
-import { HeartBeat } from './mosModel/0_heartBeat'
-import { ROReq } from './mosModel/2_roReq'
-import { ROElementStat, ROElementStatType } from './mosModel/2_roElementStat'
-import { MosObj } from './mosModel/1_mosObj'
-import { MosListAll } from './mosModel/1_mosListAll'
-import { ReqMosObj } from './mosModel/1_reqMosObj'
-import { ReqMosObjAll } from './mosModel/1_reqMosObjAll'
-import { ROReqAll } from './mosModel/4_roReqAll'
+import {
+	IMOSListMachInfo,
+	IMOSDefaultActiveX,
+	ListMachineInfo,
+	ROAck,
+	ReqMachInfo,
+	MOSAck,
+	ROList,
+	HeartBeat,
+	ROReq,
+	ROElementStat,
+	ROElementStatType,
+	MosObj,
+	MosListAll,
+	ReqMosObj,
+	ReqMosObjAll,
+	ROReqAll
+} from './mosModel'
 import { MosMessage } from './mosModel/MosMessage'
 
 export class MosDevice implements IMOSDevice {

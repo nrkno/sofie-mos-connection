@@ -1,7 +1,7 @@
-import { MosTime } from '../dataTypes/mosTime'
-import { MosString128 } from '../dataTypes/mosString128'
-import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
-import { MosMessage } from '../mosModel/MosMessage'
+import { MosTime } from '../../dataTypes/mosTime'
+import { MosString128 } from '../../dataTypes/mosString128'
+import { IMOSExternalMetaData } from '../../dataTypes/mosExternalMetaData'
+import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
 
 export enum IMOSListMachInfoDefaultActiveXMode {

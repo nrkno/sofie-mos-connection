@@ -1,10 +1,10 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { MosString128 } from './../dataTypes/mosString128'
-import { MosMessage } from './MosMessage'
+import { MosString128 } from '../../dataTypes/mosString128'
+import { MosMessage } from '../MosMessage'
 import {
 	IMOSAck,
 	IMOSAckStatus
-} from '../api'
+} from '../../api'
 
 export class MOSAck extends MosMessage implements IMOSAck {
 

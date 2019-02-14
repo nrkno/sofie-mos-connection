@@ -4,7 +4,7 @@ import { SocketConnectionEvent } from './socketConnection'
 import { MosMessage } from '../mosModel/MosMessage'
 import { xml2js } from '../utils/Utils'
 import { HandedOverQueue } from './NCSServerConnection'
-import { HeartBeat } from '../mosModel/0_heartBeat'
+import { HeartBeat } from '../mosModel'
 const iconv = require('iconv-lite')
 
 export type CallBackFunction = (err: any, data: object) => void

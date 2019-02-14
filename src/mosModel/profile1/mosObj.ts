@@ -1,7 +1,7 @@
-import { MosMessage } from '../mosModel/MosMessage'
+import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
-import { IMOSObject } from '../api'
-import { Parser } from './Parser'
+import { IMOSObject } from '../../api'
+import { Parser } from '../Parser'
 
 export class MosObj extends MosMessage {
 

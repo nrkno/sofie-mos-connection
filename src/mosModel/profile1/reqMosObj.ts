@@ -1,6 +1,6 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { MosMessage } from './MosMessage'
-import { MosString128 } from '../dataTypes/mosString128'
+import { MosMessage } from '../MosMessage'
+import { MosString128 } from '../../dataTypes/mosString128'
 
 export class ReqMosObj extends MosMessage {
 

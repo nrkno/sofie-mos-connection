@@ -11,7 +11,7 @@ import { SocketServerEvent, SocketDescription, IncomingConnectionType } from './
 import { NCSServerConnection } from './connection/NCSServerConnection'
 import { xml2js } from './utils/Utils'
 import { MosMessage } from './mosModel/MosMessage'
-import { MOSAck } from './mosModel/mosAck'
+import { MOSAck } from './mosModel'
 import { MosString128 } from './dataTypes/mosString128'
 import { EventEmitter } from 'events'
 const iconv = require('iconv-lite')

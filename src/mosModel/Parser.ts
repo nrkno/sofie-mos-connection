@@ -17,7 +17,7 @@ import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
-import { ROAck } from '../mosModel/ROAck'
+import { ROAck } from './index'
 import { isObject } from 'util'
 
 function isEmpty (obj: any) {

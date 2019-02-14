@@ -1,10 +1,10 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { MosMessage } from './MosMessage'
+import { MosMessage } from '../MosMessage'
 import {
 	IMOSRunningOrder,
 	IMOSROStory
-} from '../api'
-import { Parser } from './Parser'
+} from '../../api'
+import { Parser } from '../Parser'
 
 export class ROList extends MosMessage {
 

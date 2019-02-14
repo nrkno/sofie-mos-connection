@@ -3,7 +3,7 @@ import { MosTime } from './dataTypes/mosTime'
 import { MosDuration } from './dataTypes/mosDuration'
 import { MosString128 } from './dataTypes/mosString128'
 import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
-import { IMOSListMachInfo } from './mosModel/0_listMachInfo'
+import { IMOSListMachInfo } from './mosModel'
 import { MosDevice } from './MosDevice'
 
 // import {IMOSListMachInfo as IMOSP0ListMachineInfo, IMOSListMachInfo} from "./mosModel/0_listMachInfo"
