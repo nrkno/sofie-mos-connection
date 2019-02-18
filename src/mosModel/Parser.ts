@@ -398,7 +398,7 @@ export namespace Parser {
 		let xml = XMLBuilder.create('mosObj')
 
 		attachMosObj2xml(obj, xml)
-		
+
 		// Todo: metadata:
 		return xml
 	}

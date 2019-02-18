@@ -122,7 +122,7 @@ export class MosDevice implements IMOSDevice {
 	private _callbackOnRODeleteItems?: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>
 	private _callbackOnROSwapStories?: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>
 	private _callbackOnROSwapItems?: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
-	
+
 	// Profile 3
 	private _callbackOnMosItemReplace?: (roId: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>
 	private _callbackOnMosObjCreate?: (obj: IMOSObject) => Promise<IMOSROAck>
@@ -605,7 +605,7 @@ export class MosDevice implements IMOSDevice {
 					ack.Stories = resp.Stories
 					resolve(ack)
 				}).catch(reject)
-				
+
 			} else if (data.mosObjAction && typeof this._callbackOnMosObjAction === 'function') {
 				this._callbackOnMosObjAction(
 					data.mosObjCreate.operation,
@@ -632,7 +632,7 @@ export class MosDevice implements IMOSDevice {
 					resolve(reply)
 				})
 				.catch(reject)
-				
+
 			// Profile 4
 			} else if (data.roStorySend && typeof this._callbackOnROStory === 'function') {
 				let story: IMOSROFullStory = Parser.xml2FullStory(data.roStorySend)

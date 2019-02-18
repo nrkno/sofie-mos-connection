@@ -299,19 +299,19 @@ export interface IMOSObject {
 }
 
 export interface IMosObjectList {
-    username: string
-    queryID: string
-    listReturnStart: string
-    listReturnEnd: string
-    listReturnTotal: string
-    listReturnStatus?: string
-    list?: Array<IMOSObject>
+	username: string
+	queryID: string
+	listReturnStart: string
+	listReturnEnd: string
+	listReturnTotal: string
+	listReturnStatus?: string
+	list?: Array<IMOSObject>
 }
 
 export interface IMosRequestObjectList {
-    username: string
-    queryID: string
-    listReturnStart: string
+	username: string
+	queryID: string
+	listReturnStart: string
 	listReturnEnd: string
 	generalSearch: string
 	mosSchema: string
