@@ -397,7 +397,13 @@ export namespace Parser {
 	export function mosObj2xml (obj: IMOSObject): XMLBuilder.XMLElementOrXMLNode {
 		let xml = XMLBuilder.create('mosObj')
 
-		xml.ele('objID', {}, obj.ID)
+		attachMosObj2xml(obj, xml)
+		
+		// Todo: metadata:
+		return xml
+	}
+	export function attachMosObj2xml (obj: IMOSObject, xml: XMLBuilder.XMLElementOrXMLNode): void {
+		if (obj.ID) xml.ele('objID', {}, obj.ID)
 		xml.ele('objSlug', {}, obj.Slug)
 		if (obj.MosAbstract) 	xml.ele('mosAbstract', {}, obj.MosAbstract)
 		if (obj.Group) 			xml.ele('objGroup', {}, obj.Group)
@@ -424,8 +430,6 @@ export namespace Parser {
 				xml.importDocument(xmlMetaData)
 			})
 		}
-		// Todo: metadata:
-		return xml
 	}
 	export function xml2Body (xml: any): Array<IMOSROFullStoryBodyItem> {
 		let body: Array<IMOSROFullStoryBodyItem> = []

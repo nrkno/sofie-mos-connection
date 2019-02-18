@@ -278,7 +278,7 @@ export interface IMOSDeviceConnectionOptions {
 }
 
 export interface IMOSObject {
-	ID: MosString128
+	ID?: MosString128
 	Slug: MosString128
 	MosAbstract?: string
 	Group?: string
@@ -296,6 +296,39 @@ export interface IMOSObject {
 	Description?: any // xml json
 	MosExternalMetaData?: Array<IMOSExternalMetaData>
 	MosItemEditorProgID?: MosString128
+}
+
+export interface IMosObjectList {
+    username: string
+    queryID: string
+    listReturnStart: string
+    listReturnEnd: string
+    listReturnTotal: string
+    listReturnStatus?: string
+    list?: Array<IMOSObject>
+}
+
+export interface IMosRequestObjectList {
+    username: string
+    queryID: string
+    listReturnStart: string
+	listReturnEnd: string
+	generalSearch: string
+	mosSchema: string
+	searchGroups: Array<{
+		searchFields: Array<IMosSearchField>
+	}>
+}
+
+export interface IMosSearchField {
+	XPath: string
+	sortByOrder: number
+	sortType: string
+}
+
+export interface IMOSSearchableSchema {
+	username: string
+	mosSchema: string
 }
 
 export enum IMOSObjectType {

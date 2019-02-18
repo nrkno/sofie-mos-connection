@@ -22,7 +22,10 @@ import {
 	IMOSROAck,
 	IMOSConnectionStatus,
 	IMOSAckStatus,
-	IMOSObjectStatus
+	IMOSObjectStatus,
+	IMosObjectList,
+	IMosRequestObjectList,
+	IMOSSearchableSchema
 } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
 import { Parser } from './mosModel/Parser'
@@ -42,7 +45,14 @@ import {
 	MosListAll,
 	ReqMosObj,
 	ReqMosObjAll,
-	ROReqAll
+	ROReqAll,
+	MosObjList,
+	MosListSearchableSchema,
+	MosObjCreatee,
+	MosItemReplaceOptions,
+	MosItemReplace,
+	MosReqSearchableSchema,
+	MosReqObjList
 } from './mosModel'
 import { MosMessage } from './mosModel/MosMessage'
 
@@ -112,6 +122,13 @@ export class MosDevice implements IMOSDevice {
 	private _callbackOnRODeleteItems?: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>
 	private _callbackOnROSwapStories?: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>
 	private _callbackOnROSwapItems?: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
+	
+	// Profile 3
+	private _callbackOnMosItemReplace?: (roId: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>
+	private _callbackOnMosObjCreate?: (obj: IMOSObject) => Promise<IMOSROAck>
+	private _callbackOnMosObjAction?: (action: string, obj: IMOSObject) => Promise<IMOSROAck>
+	private _callbackOnMosReqObjList?: (objList: IMosRequestObjectList) => Promise<IMosObjectList>
+	private _callbackOnMosReqSearchableSchema?: (username: string) => Promise<IMOSSearchableSchema>
 
 	// Profile 4
 	private _callbackOnROStory?: (story: IMOSROFullStory) => Promise<IMOSROAck>
@@ -564,6 +581,58 @@ export class MosDevice implements IMOSDevice {
 					resolve(ack)
 				}).catch(reject)
 
+			// Profile 3
+			} else if (data.mosItemReplace && typeof this._callbackOnMosItemReplace === 'function') {
+				this._callbackOnMosItemReplace(
+					data.mosItemReplace.ID,
+					data.mosItemReplace.itemID,
+					data.mosItemReplace.item)
+				.then(resp => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
+
+			} else if (data.mosObjCreate && typeof this._callbackOnMosObjCreate === 'function') {
+				this._callbackOnMosObjCreate(
+					data.mosObjCreate)
+				.then(resp => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
+				
+			} else if (data.mosObjAction && typeof this._callbackOnMosObjAction === 'function') {
+				this._callbackOnMosObjAction(
+					data.mosObjCreate.operation,
+					data.mosObjCreate
+				).then(resp => {
+					let ack = new ROAck()
+					ack.ID = resp.ID
+					ack.Status = resp.Status
+					ack.Stories = resp.Stories
+					resolve(ack)
+				}).catch(reject)
+
+			} else if (data.mosReqObjList && typeof this._callbackOnMosReqObjList === 'function') {
+				this._callbackOnMosReqObjList(data.mosObjList)
+				.then(resp => {
+					const reply = new MosObjList(resp)
+					resolve(reply)
+				})
+				.catch(reject)
+			} else if (data.mosReqListSearchableSchema && typeof this._callbackOnMosReqSearchableSchema === 'function') {
+				this._callbackOnMosReqSearchableSchema(data.mosListSearchableSchema.username)
+				.then(resp => {
+					const reply = new MosListSearchableSchema(resp)
+					resolve(reply)
+				})
+				.catch(reject)
+				
 			// Profile 4
 			} else if (data.roStorySend && typeof this._callbackOnROStory === 'function') {
 				let story: IMOSROFullStory = Parser.xml2FullStory(data.roStorySend)
@@ -821,6 +890,47 @@ export class MosDevice implements IMOSDevice {
 	}
 	onROSwapItems (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) {
 		this._callbackOnROSwapItems = cb
+	}
+
+	/* Profile 3 */
+	onMosObjCreate (cb: (object: IMOSObject) => Promise<IMOSROAck>) {
+		this._callbackOnMosObjCreate = cb
+	}
+
+	mosObjCreate (object: IMOSObject): Promise<MOSAck> {
+		const message = new MosObjCreatee(object)
+		return this.executeCommand(message)
+	}
+
+	onMosItemReplace (cb: (roID: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>) {
+		this._callbackOnMosItemReplace = cb
+	}
+
+	mosItemReplace (options: MosItemReplaceOptions): Promise<IMOSROAck> {
+		const message = new MosItemReplace(options)
+		return this.executeCommand(message)
+	}
+
+	onMosReqSearchableSchema (cb: (username: string) => Promise<IMOSSearchableSchema>) {
+		this._callbackOnMosReqSearchableSchema = cb
+	}
+
+	mosRequestSearchableSchema (username: string): Promise<IMOSSearchableSchema> {
+		const message = new MosReqSearchableSchema({ username })
+		return this.executeCommand(message)
+	}
+
+	onMosReqObjectList (cb: (objList: IMosRequestObjectList) => Promise<IMosObjectList>) {
+		this._callbackOnMosReqObjList = cb
+	}
+
+	mosRequestObjectList (reqObjList: IMosRequestObjectList): Promise<IMosObjectList> {
+		const message = new MosReqObjList(reqObjList)
+		return this.executeCommand(message)
+	}
+
+	onMosReqObjectAction (cb: (action: string, obj: IMOSObject) => Promise<IMOSROAck>) {
+		this._callbackOnMosObjAction = cb
 	}
 
 	/* Profile 4 */
