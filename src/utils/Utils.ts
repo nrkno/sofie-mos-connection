@@ -127,6 +127,9 @@ export function xml2js (messageString: string): object {
 									childEl[key] = childEl.attributes[key]
 								}
 								delete childEl.attributes
+							} else {
+								if (childEl.$type) delete childEl.$type
+								if (childEl.$name) delete childEl.$name
 							}
 							if (holder[name]) {
 								holder[name].push(childEl)
