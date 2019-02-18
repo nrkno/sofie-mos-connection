@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.7](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.6...0.6.7) (2019-02-18)
+
+
+### Bug Fixes
+
+* add missing cleanup code ([c75606c](https://github.com/nrkno/tv-automation-mos-connection/commit/c75606c))
+* upd dependency ([ef14e4f](https://github.com/nrkno/tv-automation-mos-connection/commit/ef14e4f))
+
+
+
 <a name="0.6.6"></a>
 ## [0.6.6](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.5...0.6.6) (2019-01-29)
 
