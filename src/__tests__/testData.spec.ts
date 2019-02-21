@@ -25,7 +25,6 @@ import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
 import { IMOSScope, IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
-import { MosReqObjActionOptions } from '../mosModel';
 
 const literal = <T>(o: T) => o
 
@@ -1753,7 +1752,7 @@ let xmlApiData = {
 					efxTime: 15
 				}
 			})
-		], 
+		],
 		Paths: [
 			literal<IMOSObjectPath>({
 				Type: IMOSObjectPathType.PATH,
@@ -1770,7 +1769,7 @@ let xmlApiData = {
 				Description: 'MOS Object',
 				Target: 'http://server/proxy/clipe.xml'
 			})
-		],
+		]
 	}),
 	'mosReqSearchableSchema': 'jbob',
 	'mosReqObjList': literal<IMosRequestObjectList>({
@@ -1797,7 +1796,7 @@ let xmlApiData = {
 				literal<IMosSearchField>({
 					XPath: 'Producer [.!=\'Susan\']',
 					sortByOrder: 3
-				}),
+				})
 			] },
 			{ searchFields: [
 				literal<IMosSearchField>({
@@ -1815,7 +1814,7 @@ let xmlApiData = {
 				literal<IMosSearchField>({
 					XPath: 'Producer [.!=\'Susan\']',
 					sortByOrder: 3
-				}),
+				})
 			] }
 		]
 	}),

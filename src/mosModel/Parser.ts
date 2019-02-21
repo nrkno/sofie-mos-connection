@@ -501,7 +501,7 @@ export namespace Parser {
 			const i = list.searchGroups.push({ searchFields: searchGroup.searchField })
 
 			for (const searchField of list.searchGroups[i - 1].searchFields) {
-				if (searchField.sortByOrder) searchField.sortByOrder = parseInt(searchField.sortByOrder + '')
+				if (searchField.sortByOrder) searchField.sortByOrder = parseInt(searchField.sortByOrder + '', 10)
 			}
 		}
 
