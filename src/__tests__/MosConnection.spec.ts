@@ -538,7 +538,7 @@ describe('MosDevice: Profile 0', () => {
 
 		expect(serverReply).toHaveBeenCalledTimes(1)
 		let msg = serverSocketMockLower.decode(serverReply.mock.calls[0][0])
-		expect(msg).toMatch(/<roAck>/)
+		expect(msg).toMatch(/<mosAck>/)
 		expect(msg).toMatch('<messageID>' + sendMessageId)
 		expect(msg).toMatch('<status>NACK')
 
