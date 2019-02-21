@@ -930,7 +930,7 @@ export class MosDevice implements IMOSDevice {
 		return this.executeCommand(message)
 	}
 
-	onMosReqObjectAction (cb: (action: string, obj: IMOSObject) => Promise<IMOSROAck>) {
+	onMosReqObjectAction (cb: (action: string, obj: IMOSObject) => Promise<IMOSAck>) {
 		this._callbackOnMosObjAction = cb
 	}
 
