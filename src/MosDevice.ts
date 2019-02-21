@@ -894,7 +894,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	/* Profile 3 */
-	onMosObjCreate (cb: (object: IMOSObject) => Promise<IMOSROAck>) {
+	onMosObjCreate (cb: (object: IMOSObject) => Promise<IMOSAck>) {
 		this._callbackOnMosObjCreate = cb
 	}
 
