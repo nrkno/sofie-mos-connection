@@ -288,7 +288,7 @@ export interface IMOSObject {
 	Duration: number
 	Status?: IMOSObjectStatus
 	AirStatus?: IMOSObjectAirStatus
-	Paths: Array<IMOSObjectPath>
+	Paths?: Array<IMOSObjectPath>
 	CreatedBy?: MosString128
 	Created?: MosTime
 	ChangedBy?: MosString128 // if not present, defaults to CreatedBy
@@ -301,9 +301,9 @@ export interface IMOSObject {
 export interface IMosObjectList {
 	username: string
 	queryID: string
-	listReturnStart: string
-	listReturnEnd: string
-	listReturnTotal: string
+	listReturnStart: number
+	listReturnEnd: number
+	listReturnTotal: number
 	listReturnStatus?: string
 	list?: Array<IMOSObject>
 }
@@ -311,8 +311,8 @@ export interface IMosObjectList {
 export interface IMosRequestObjectList {
 	username: string
 	queryID: string
-	listReturnStart: string
-	listReturnEnd: string
+	listReturnStart: number | null
+	listReturnEnd: number | null
 	generalSearch: string
 	mosSchema: string
 	searchGroups: Array<{
@@ -322,8 +322,8 @@ export interface IMosRequestObjectList {
 
 export interface IMosSearchField {
 	XPath: string
-	sortByOrder: number
-	sortType: string
+	sortByOrder?: number
+	sortType?: string
 }
 
 export interface IMOSSearchableSchema {

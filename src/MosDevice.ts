@@ -25,7 +25,8 @@ import {
 	IMOSObjectStatus,
 	IMosObjectList,
 	IMosRequestObjectList,
-	IMOSSearchableSchema
+	IMOSSearchableSchema,
+	IMOSAck
 } from './api'
 import { IConnectionConfig } from './config/connectionConfig'
 import { Parser } from './mosModel/Parser'
@@ -125,8 +126,8 @@ export class MosDevice implements IMOSDevice {
 
 	// Profile 3
 	private _callbackOnMosItemReplace?: (roId: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>
-	private _callbackOnMosObjCreate?: (obj: IMOSObject) => Promise<IMOSROAck>
-	private _callbackOnMosObjAction?: (action: string, obj: IMOSObject) => Promise<IMOSROAck>
+	private _callbackOnMosObjCreate?: (obj: IMOSObject) => Promise<IMOSAck>
+	private _callbackOnMosObjAction?: (action: string, obj: IMOSObject) => Promise<IMOSAck>
 	private _callbackOnMosReqObjList?: (objList: IMosRequestObjectList) => Promise<IMosObjectList>
 	private _callbackOnMosReqSearchableSchema?: (username: string) => Promise<IMOSSearchableSchema>
 
@@ -586,7 +587,7 @@ export class MosDevice implements IMOSDevice {
 				this._callbackOnMosItemReplace(
 					data.mosItemReplace.ID,
 					data.mosItemReplace.itemID,
-					data.mosItemReplace.item)
+					Parser.xml2Item(data.mosItemReplace.item))
 				.then(resp => {
 					let ack = new ROAck()
 					ack.ID = resp.ID
@@ -597,36 +598,36 @@ export class MosDevice implements IMOSDevice {
 
 			} else if (data.mosObjCreate && typeof this._callbackOnMosObjCreate === 'function') {
 				this._callbackOnMosObjCreate(
-					data.mosObjCreate)
+					Parser.xml2MosObj(data.mosObjCreate))
 				.then(resp => {
-					let ack = new ROAck()
+					let ack = new MOSAck()
 					ack.ID = resp.ID
 					ack.Status = resp.Status
-					ack.Stories = resp.Stories
+					ack.Description = resp.Description
 					resolve(ack)
 				}).catch(reject)
 
-			} else if (data.mosObjAction && typeof this._callbackOnMosObjAction === 'function') {
+			} else if (data.mosReqObjAction && typeof this._callbackOnMosObjAction === 'function') {
 				this._callbackOnMosObjAction(
-					data.mosObjCreate.operation,
-					data.mosObjCreate
+					data.mosReqObjAction.operation,
+					Parser.xml2MosObj(data.mosReqObjAction)
 				).then(resp => {
-					let ack = new ROAck()
+					let ack = new MOSAck()
 					ack.ID = resp.ID
 					ack.Status = resp.Status
-					ack.Stories = resp.Stories
+					ack.Description = resp.Description
 					resolve(ack)
 				}).catch(reject)
 
 			} else if (data.mosReqObjList && typeof this._callbackOnMosReqObjList === 'function') {
-				this._callbackOnMosReqObjList(data.mosObjList)
+				this._callbackOnMosReqObjList(Parser.xml2ReqObjList(data.mosReqObjList))
 				.then(resp => {
 					const reply = new MosObjList(resp)
 					resolve(reply)
 				})
 				.catch(reject)
-			} else if (data.mosReqListSearchableSchema && typeof this._callbackOnMosReqSearchableSchema === 'function') {
-				this._callbackOnMosReqSearchableSchema(data.mosListSearchableSchema.username)
+			} else if (data.mosReqSearchableSchema && typeof this._callbackOnMosReqSearchableSchema === 'function') {
+				this._callbackOnMosReqSearchableSchema(data.mosReqSearchableSchema.username)
 				.then(resp => {
 					const reply = new MosListSearchableSchema(resp)
 					resolve(reply)
