@@ -1298,7 +1298,7 @@ describe('MosDevice: Profile 3', () => {
 		let messageId = await fakeIncomingMessage(serverSocketMockQuery, xmlData.mosReqSearchableSchema)
 		expect(onMosReqSearchableSchema).toHaveBeenCalledTimes(1)
 		expect(onMosReqSearchableSchema.mock.calls[0][0]).toMatch(xmlApiData.mosReqSearchableSchema)
-		await checkReplyToServer(serverSocketMockQuery, messageId, '<mosListSearchableSchema>')
+		await checkReplyToServer(serverSocketMockQuery, messageId, '<mosListSearchableSchema')
 	})
 	test('mosReqObjList', async () => {
 		let messageId = await fakeIncomingMessage(serverSocketMockQuery, xmlData.mosReqObjList)
