@@ -11,9 +11,8 @@ export class MosReqSearchableSchema extends MosMessage {
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
-		const xml = XMLBuilder.create('mosReqSearchableOptions', {
-			username: this.options.username
-		})
+		const xml = XMLBuilder.create('mosReqSearchableOptions')
+		xml.att('username', this.options.username)
 
 		return xml
 	}

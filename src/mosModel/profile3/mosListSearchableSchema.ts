@@ -12,9 +12,8 @@ export class MosListSearchableSchema extends MosMessage {
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
-		const xml = XMLBuilder.create('mosListSearchableSchema', {
-			username: this.options.username
-		})
+		const xml = XMLBuilder.create('mosListSearchableSchema')
+		xml.att('username', this.options.username)
 
 		xml.ele('mosSchema', {}, this.options.mosSchema)
 
