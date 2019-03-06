@@ -40,6 +40,7 @@ export class MosSocketClient extends EventEmitter {
 	private _sentMessage: QueueMessage | null = null // sent message, waiting for reply
 	private _lingeringMessage: QueueMessage | null = null // sent message, NOT waiting for reply
 	// private _readyToSendMessage: boolean = true
+	private _timedOutCommands: { [id: string]: number }
 
 	private processQueueTimeout: NodeJS.Timer
 	private _startingUp: boolean = true
@@ -154,6 +155,11 @@ export class MosSocketClient extends EventEmitter {
 				}
 			}
 		}
+		for (const t in this._timedOutCommands) {
+			if (Number(t) < Date.now() - 3600000) {
+				delete this._timedOutCommands[t]
+			}
+		}
 	}
 	handOverQueue (): HandedOverQueue {
 		const queue = {
@@ -241,7 +247,7 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	private executeCommand (message: QueueMessage, isRetry?: boolean): void {
-		if (this._sentMessage) throw Error('executeCommand: there already is a sent Command!')
+		if (this._sentMessage && !isRetry) throw Error('executeCommand: there already is a sent Command!')
 
 		this._sentMessage = message
 		this._lingeringMessage = null
@@ -260,10 +266,9 @@ export class MosSocketClient extends EventEmitter {
 				if (this._debug) console.log('timeout ' + sentMessageId + ' after ' + this._commandTimeout)
 				if (isRetry) {
 					this._sendReply(sentMessageId, Error('Command timed out'), null)
+					this._timedOutCommands[sentMessageId] = Date.now()
 					this.processQueue()
 				} else {
-					this._sentMessage = null
-					this._lingeringMessage = null
 					this.executeCommand(message, true)
 				}
 			}
@@ -370,6 +375,10 @@ export class MosSocketClient extends EventEmitter {
 						// }
 						// delete this._queueCallback[messageId]
 						// this._sentMessage = null
+					} else if (this._timedOutCommands[messageId]) {
+						if (this._debug) console.log('Got a reply (' + messageId + '), but command \
+							timed out ' + (Date.now() - this._timedOutCommands[messageId]) + 'ms ago', messageString)
+						delete this._timedOutCommands[messageId]
 					} else {
 						// huh, we've got a reply to something we've not sent.
 						if (this._debug) console.log('Got a reply (' + messageId + '), but we haven\'t sent any message', messageString)
