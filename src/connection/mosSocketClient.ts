@@ -40,7 +40,7 @@ export class MosSocketClient extends EventEmitter {
 	private _sentMessage: QueueMessage | null = null // sent message, waiting for reply
 	private _lingeringMessage: QueueMessage | null = null // sent message, NOT waiting for reply
 	// private _readyToSendMessage: boolean = true
-	private _timedOutCommands: { [id: string]: number }
+	private _timedOutCommands: { [id: string]: number } = {}
 
 	private processQueueTimeout: NodeJS.Timer
 	private _startingUp: boolean = true
@@ -376,8 +376,10 @@ export class MosSocketClient extends EventEmitter {
 						// delete this._queueCallback[messageId]
 						// this._sentMessage = null
 					} else if (this._timedOutCommands[messageId]) {
-						if (this._debug) console.log('Got a reply (' + messageId + '), but command \
+						if (this._debug) {
+							console.log('Got a reply (' + messageId + '), but command \
 							timed out ' + (Date.now() - this._timedOutCommands[messageId]) + 'ms ago', messageString)
+						}
 						delete this._timedOutCommands[messageId]
 					} else {
 						// huh, we've got a reply to something we've not sent.
