@@ -813,7 +813,165 @@ let xmlData = {
 			<Creator>SHOLMES</Creator>
 			</mosPayload>
 		</mosExternalMetadata>
-	</mosReqObjAction>`
+	</mosReqObjAction>`,
+	'mosListSearchableSchema': `<mosListSearchableSchema username="jbob">
+		<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+	</mosListSearchableSchema>`,
+	'mosObjList': `<mosObjList username="jbob">
+    <queryID>A392938329kdakd2039300d0s9l3l9d0bzAQ</queryID>
+    <listReturnStart>1</listReturnStart>
+    <listReturnEnd>20</listReturnEnd>
+    <listReturnTotal>128</listReturnTotal>
+    <list>
+        <mosObj>
+            <objID>M000121</objID>
+            <objSlug>Hotel Fire</objSlug>
+            <mosAbstract>
+                <b>Hotel Fire</b>
+                <em>vo</em>
+            </mosAbstract>
+            <objGroup>Show 7</objGroup>
+            <objType>VIDEO</objType>
+            <objTB>59.94</objTB>
+            <objRev>1</objRev>
+            <objDur>1800</objDur>
+            <status>NEW</status>
+            <objAir>READY</objAir>
+            <objPaths>
+                <objPath techDescription="MPEG2                            Video">\\server\media\clip392028cd2320s0d.mxf</objPath>
+                <objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
+                <objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
+            </objPaths>
+            <createdBy>Chris</createdBy>
+            <created>1998-10-31T23:39:12</created>
+            <changedBy>Chris</changedBy>
+            <changed>1998-10-31T23:39:12</changed>
+            <description>
+                <p>Exterior footage of
+                    <em>Baley Park Hotel</em> on fire with natural sound. Trucks are visible for the first portion of the clip.
+                    <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>
+                </p>
+                <p>
+                    <tab/>Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.
+                </p>
+                <p>
+                    <em>Clip has been doubled for pad on voice over.</em>
+                </p>
+            </description>
+            <mosExternalMetadata>
+                <mosScope>STORY</mosScope>
+                <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+                <mosPayload>
+                    <Owner>SHOLMES</Owner>
+                    <ModTime>20010308142001</ModTime>
+                    <mediaTime>0</mediaTime>
+                    <TextTime>278</TextTime>
+                    <ModBy>LJOHNSTON</ModBy>
+                    <Approved>0</Approved>
+                    <Creator>SHOLMES</Creator>
+                </mosPayload>
+            </mosExternalMetadata>
+        </mosObj>
+        <mosObj>
+            <objID>M000122</objID>
+            <objSlug>Another Hotel Fire</objSlug>
+            <mosAbstract>
+                <b>Hotel Fire</b>
+                <em>vo</em>
+            </mosAbstract>
+            <objGroup>Show 7</objGroup>
+            <objType>VIDEO</objType>
+            <objTB>59.94</objTB>
+            <objRev>1</objRev>
+            <objDur>1800</objDur>
+            <status>NEW</status>
+            <objAir>READY</objAir>
+            <objPaths>
+                <objPath techDescription="MPEG2 Video">\\server\media\clip392028cd2320s0d.mxf</objPath>
+                <objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
+                <objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
+            </objPaths>
+            <createdBy>Chris</createdBy>
+            <created>1998-10-31T23:39:12</created>
+            <changedBy>Chris</changedBy>
+            <changed>1998-10-31T23:39:12</changed>
+            <description>
+                <p>Exterior footage of
+                    <em>Baley Park Hotel</em> on fire with natural sound. Trucks are visible for the first portion of the clip.
+                    <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>
+                </p>
+                <p>
+                    <tab/>Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.
+                </p>
+                <p>
+                    <em>Clip has been doubled for pad on voice over.</em>
+                </p>
+            </description>
+            <mosExternalMetadata>
+                <mosScope>STORY</mosScope>
+                <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+                <mosPayload>
+                    <Owner>SHOLMES</Owner>
+                    <ModTime>20010308142001</ModTime>
+                    <mediaTime>0</mediaTime>
+                    <TextTime>278</TextTime>
+                    <ModBy>LJOHNSTON</ModBy>
+                    <Approved>0</Approved>
+                    <Creator>SHOLMES</Creator>
+                </mosPayload>
+            </mosExternalMetadata>
+        </mosObj>
+        <mosObj>
+            <objID>M000123</objID>
+            <objSlug>Yet Another Hotel Fire</objSlug>
+            <mosAbstract>
+                <b>Hotel Fire</b>
+                <em>vo</em>
+            </mosAbstract>
+            <objGroup>Show 7</objGroup>
+            <objType>VIDEO</objType>
+            <objTB>59.94</objTB>
+            <objRev>1</objRev>
+            <objDur>1800</objDur>
+            <status>NEW</status>
+            <objAir>READY</objAir>
+            <objPaths>
+                <objPath techDescription="MPEG2 Video">\\server\media\clip392028cd2320s0d.mxf</objPath>
+                <objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
+                <objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
+            </objPaths>
+            <createdBy>Chris</createdBy>
+            <created>1998-10-31T23:39:12</created>
+            <changedBy>Chris</changedBy>
+            <changed>1998-10-31T23:39:12</changed>
+            <description>
+                <p>Exterior footage of
+                    <em>Baley Park Hotel</em> on fire with natural sound. Trucks are visible for the first portion of the clip.
+                    <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>
+                </p>
+                <p>
+                    <tab/>Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.
+                </p>
+                <p>
+                    <em>Clip has been doubled for pad on voice over.</em>
+                </p>
+            </description>
+            <mosExternalMetadata>
+                <mosScope>STORY</mosScope>
+                <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+                <mosPayload>
+                    <Owner>SHOLMES</Owner>
+                    <ModTime>20010308142001</ModTime>
+                    <mediaTime>0</mediaTime>
+                    <TextTime>278</TextTime>
+                    <ModBy>LJOHNSTON</ModBy>
+                    <Approved>0</Approved>
+                    <Creator>SHOLMES</Creator>
+                </mosPayload>
+            </mosExternalMetadata>
+        </mosObj>
+    </list>
+</mosObjList>`
 }
 
 let xmlApiData = {
