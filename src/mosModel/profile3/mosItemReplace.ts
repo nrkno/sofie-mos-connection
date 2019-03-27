@@ -2,10 +2,11 @@ import { IMOSItem } from '../../api'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
 import { Parser } from '../Parser'
+import { MosString128 } from '../../dataTypes/mosString128'
 
 export interface MosItemReplaceOptions {
-	roID: string
-	storyID: string
+	roID: MosString128
+	storyID: MosString128
 	item: IMOSItem
 }
 

@@ -319,10 +319,10 @@ export interface IMosObjectList {
 
 export interface IMosRequestObjectList {
 	username: string
-	queryID: string
+	queryID: MosString128
 	listReturnStart: number | null
 	listReturnEnd: number | null
-	generalSearch: string
+	generalSearch: MosString128
 	mosSchema: string
 	searchGroups: Array<{
 		searchFields: Array<IMosSearchField>
