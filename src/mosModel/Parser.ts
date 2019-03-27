@@ -18,7 +18,6 @@ import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
 import { ROAck } from '../mosModel/ROAck'
-import { isObject } from 'util'
 
 function isEmpty (obj: any) {
 	if (typeof obj === 'object') {
@@ -174,41 +173,63 @@ export namespace Parser {
 	}
 	export function xml2ObjPaths (xml: any): Array<IMOSObjectPath> {
 		if (!xml) return []
-		let paths: Array<IMOSObjectPath> = []
-
-		let xmlPaths: Array<{key: string, o: any}> = []
-		Object.keys(xml).forEach((key) => {
-			let arr: Array<any> = xml[key]
-			if (!Array.isArray(arr)) arr = [arr]
-
-			arr.forEach((o) => {
-				xmlPaths.push({
-					key: key,
-					o: o
-				})
-			})
-		})
-
-		xmlPaths.forEach((xmlPath) => {
+		const getType = (xml: any) => {
 			let type: IMOSObjectPathType | null = null
-			if (xmlPath.key === 'objPath') {
+			if (xml.hasOwnProperty('objPath') || xml.$name === 'objPath') {
 				type = IMOSObjectPathType.PATH
-			} else if (xmlPath.key === 'objProxyPath') {
+			} else if (xml.hasOwnProperty('objProxyPath') || xml.$name === 'objProxyPath') {
 				type = IMOSObjectPathType.PROXY_PATH
-			} else if (xmlPath.key === 'objMetadataPath') {
+			} else if (xml.hasOwnProperty('objMetadataPath') || xml.$name === 'objMetadataPath') {
 				type = IMOSObjectPathType.METADATA_PATH
 			}
-
-			const isObj = isObject(xmlPath.o)
-			if (type && isObj && Object.keys(xmlPath.o).length > 0) {
-				paths.push({
+			return type
+		}
+		const getDescription = (xml: any) => {
+			return xml.techDescription || (xml.attributes ? xml.attributes.techDescription : '')
+		}
+		const getTarget = (xml: any) => {
+			return xml.text || xml.$t
+		}
+		const getMosObjectPath = (element: any, key?: any) => {
+			let type = getType(element)
+			if (!type && key) {
+				type = getType({ $name: key })
+			}
+			const target = getTarget(element)
+			const description = getDescription(element)
+			if (type && target) {
+				return {
 					Type: type,
-					Description: xmlPath.o.techDescription || (xmlPath.o.attributes ? xmlPath.o.attributes.techDescription : undefined),
-					Target: xmlPath.o.text || xmlPath.o.$t
+					Description: description,
+					Target: target
+				}
+			}
+			return undefined
+		}
+		const xmlToArray = (obj: any) => {
+			let paths: Array<IMOSObjectPath> = []
+			if (obj.hasOwnProperty('techDescription')) {
+				const mosObj = getMosObjectPath(obj)
+				if (mosObj) {
+					paths.push(mosObj)
+				}
+			} else {
+				Object.keys(obj).forEach(key => {
+					const element = obj[key]
+					if (Array.isArray(element)) {
+						paths = paths.concat(xmlToArray(element))
+					} else {
+						const mosObj = getMosObjectPath(element, key)
+						if (mosObj) {
+							paths.push(mosObj)
+						}
+					}
 				})
 			}
-		})
-		return paths
+			return paths
+		}
+		const xmlPaths = xmlToArray(xml)
+		return xmlPaths
 	}
 	export function objPaths2xml (paths: Array<IMOSObjectPath>): XMLBuilder.XMLElementOrXMLNode {
 		let xmlObjPaths = XMLBuilder.create('objPaths')
