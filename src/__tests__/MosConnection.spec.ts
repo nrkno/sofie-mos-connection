@@ -289,18 +289,21 @@ describe('MosDevice: General', () => {
 		expect(mosDevice).toBeTruthy()
 		expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
 
-		expect(SocketMock.instances).toHaveLength(3)
+		expect(SocketMock.instances).toHaveLength(4)
 		expect(SocketMock.instances[1].connectedHost).toEqual('192.168.0.1')
 		expect(SocketMock.instances[1].connectedPort).toEqual(10540)
 		expect(SocketMock.instances[2].connectedHost).toEqual('192.168.0.1')
 		expect(SocketMock.instances[2].connectedPort).toEqual(10541)
+		expect(SocketMock.instances[3].connectedHost).toEqual('192.168.0.1')
+		expect(SocketMock.instances[3].connectedPort).toEqual(10542)
 
 		// close sockets after test
 		await mos.dispose()
 
-		expect(SocketMock.instances).toHaveLength(3)
+		expect(SocketMock.instances).toHaveLength(4)
 		expect(SocketMock.instances[1].destroy).toHaveBeenCalledTimes(1)
 		expect(SocketMock.instances[2].destroy).toHaveBeenCalledTimes(1)
+		expect(SocketMock.instances[3].destroy).toHaveBeenCalledTimes(1)
 
 	})
 })
@@ -333,15 +336,20 @@ test('mos device secondary', async () => {
 	expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
 	// expect(mosDevice.secondaryId).toEqual('jestMOS_secondary')
 
-	expect(SocketMock.instances).toHaveLength(5)
+	expect(SocketMock.instances).toHaveLength(7)
 	expect(SocketMock.instances[1].connectedHost).toEqual('192.168.0.1')
 	expect(SocketMock.instances[1].connectedPort).toEqual(10540)
 	expect(SocketMock.instances[2].connectedHost).toEqual('192.168.0.1')
 	expect(SocketMock.instances[2].connectedPort).toEqual(10541)
-	expect(SocketMock.instances[3].connectedHost).toEqual('192.168.0.2')
-	expect(SocketMock.instances[3].connectedPort).toEqual(10540)
+	expect(SocketMock.instances[3].connectedHost).toEqual('192.168.0.1')
+	expect(SocketMock.instances[3].connectedPort).toEqual(10542)
+
 	expect(SocketMock.instances[4].connectedHost).toEqual('192.168.0.2')
-	expect(SocketMock.instances[4].connectedPort).toEqual(10541)
+	expect(SocketMock.instances[4].connectedPort).toEqual(10540)
+	expect(SocketMock.instances[5].connectedHost).toEqual('192.168.0.2')
+	expect(SocketMock.instances[5].connectedPort).toEqual(10541)
+	expect(SocketMock.instances[6].connectedHost).toEqual('192.168.0.2')
+	expect(SocketMock.instances[6].connectedPort).toEqual(10542)
 
 	// Prepare mock server response:
 	let mockReply = jest.fn((data) => {
@@ -392,7 +400,7 @@ describe('MosDevice: Basic functionality', () => {
 
 		expect(mosDevice).toBeTruthy()
 
-		expect(SocketMock.instances).toHaveLength(3)
+		expect(SocketMock.instances).toHaveLength(4)
 		let connMocks = SocketMock.instances
 		// expect(connMocks[0].connect).toHaveBeenCalledTimes(1)
 		// expect(connMocks[0].connect.mock.calls[0][0]).toEqual(10540)
@@ -403,6 +411,9 @@ describe('MosDevice: Basic functionality', () => {
 		expect(connMocks[2].connect).toHaveBeenCalledTimes(1)
 		expect(connMocks[2].connect.mock.calls[0][0]).toEqual(10541)
 		expect(connMocks[2].connect.mock.calls[0][1]).toEqual('127.0.0.1')
+		expect(connMocks[3].connect).toHaveBeenCalledTimes(1)
+		expect(connMocks[3].connect.mock.calls[0][0]).toEqual(10542)
+		expect(connMocks[3].connect.mock.calls[0][1]).toEqual('127.0.0.1')
 
 		let connectionStatusChanged = jest.fn()
 
