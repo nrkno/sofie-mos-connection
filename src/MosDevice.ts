@@ -49,7 +49,7 @@ import {
 	ROReqAll,
 	MosObjList,
 	MosListSearchableSchema,
-	MosObjCreatee,
+	MosObjCreate,
 	MosItemReplaceOptions,
 	MosItemReplace,
 	MosReqSearchableSchema,
@@ -899,7 +899,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	mosObjCreate (object: IMOSObject): Promise<MOSAck> {
-		const message = new MosObjCreatee(object)
+		const message = new MosObjCreate(object)
 		return this.executeCommand(message)
 	}
 
