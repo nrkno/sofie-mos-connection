@@ -1,10 +1,10 @@
 # Sofie: The Modern TV News Studio Automation System (MOS Connection library)
 [![CircleCI](https://circleci.com/gh/nrkno/tv-automation-mos-connection.svg?style=svg)](https://circleci.com/gh/nrkno/tv-automation-mos-connection)
+[![codecov](https://codecov.io/gh/nrkno/tv-automation-mos-connection/branch/master/graph/badge.svg)](https://codecov.io/gh/nrkno/tv-automation-mos-connection)
 
 Library for connecting to a MOS device using the [MOS Protocol](http://mosprotocol.com/).
 
 This is a part of the [**Sofie** TV News Studio Automation System](https://github.com/nrkno/Sofie-TV-automation/).
-
 
 
 ## Getting started
