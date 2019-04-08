@@ -3,7 +3,7 @@ import { MosTime } from './dataTypes/mosTime'
 import { MosDuration } from './dataTypes/mosDuration'
 import { MosString128 } from './dataTypes/mosString128'
 import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
-import { IMOSListMachInfo } from './mosModel/0_listMachInfo'
+import { IMOSListMachInfo, MOSAck, MosItemReplaceOptions } from './mosModel'
 import { MosDevice } from './MosDevice'
 
 // import {IMOSListMachInfo as IMOSP0ListMachineInfo, IMOSListMachInfo} from "./mosModel/0_listMachInfo"
@@ -113,6 +113,15 @@ export interface IMOSDevice {
 	onROSwapStories: (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>) => void
 	onROSwapItems: (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) => void
 	/* Profile 3 */
+	onMosObjCreate: (cb: (object: IMOSObject) => Promise<IMOSAck>) => void
+	mosObjCreate: (object: IMOSObject) => Promise<MOSAck>
+	onMosItemReplace: (cb: (roID: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>) => void
+	mosItemReplace: (options: MosItemReplaceOptions) => Promise<IMOSROAck>
+	onMosReqSearchableSchema: (cb: (username: string) => Promise<IMOSSearchableSchema>) => void
+	mosRequestSearchableSchema: (username: string) => Promise<IMOSSearchableSchema>
+	onMosReqObjectList: (cb: (objList: IMosRequestObjectList) => Promise<IMosObjectList>) => void
+	mosRequestObjectList: (reqObjList: IMosRequestObjectList) => Promise<IMosObjectList>
+	onMosReqObjectAction: (cb: (action: string, obj: IMOSObject) => Promise<IMOSAck>) => void
 	/* Profile 4 */
 	getAllRunningOrders: () => Promise<Array<IMOSRunningOrderBase>> // send roReqAll
 	onROStory: (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) => void // roStorySend
@@ -278,7 +287,7 @@ export interface IMOSDeviceConnectionOptions {
 }
 
 export interface IMOSObject {
-	ID: MosString128
+	ID?: MosString128
 	Slug: MosString128
 	MosAbstract?: string
 	Group?: string
@@ -288,7 +297,7 @@ export interface IMOSObject {
 	Duration: number
 	Status?: IMOSObjectStatus
 	AirStatus?: IMOSObjectAirStatus
-	Paths: Array<IMOSObjectPath>
+	Paths?: Array<IMOSObjectPath>
 	CreatedBy?: MosString128
 	Created?: MosTime
 	ChangedBy?: MosString128 // if not present, defaults to CreatedBy
@@ -296,6 +305,39 @@ export interface IMOSObject {
 	Description?: any // xml json
 	MosExternalMetaData?: Array<IMOSExternalMetaData>
 	MosItemEditorProgID?: MosString128
+}
+
+export interface IMosObjectList {
+	username: string
+	queryID: string
+	listReturnStart: number
+	listReturnEnd: number
+	listReturnTotal: number
+	listReturnStatus?: string
+	list?: Array<IMOSObject>
+}
+
+export interface IMosRequestObjectList {
+	username: string
+	queryID: MosString128
+	listReturnStart: number | null
+	listReturnEnd: number | null
+	generalSearch: MosString128
+	mosSchema: string
+	searchGroups: Array<{
+		searchFields: Array<IMosSearchField>
+	}>
+}
+
+export interface IMosSearchField {
+	XPath: string
+	sortByOrder?: number
+	sortType?: string
+}
+
+export interface IMOSSearchableSchema {
+	username: string
+	mosSchema: string
 }
 
 export enum IMOSObjectType {

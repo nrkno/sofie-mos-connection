@@ -11,7 +11,7 @@ import { SocketServerEvent, SocketDescription, IncomingConnectionType } from './
 import { NCSServerConnection } from './connection/NCSServerConnection'
 import { xml2js } from './utils/Utils'
 import { MosMessage } from './mosModel/MosMessage'
-import { MOSAck } from './mosModel/mosAck'
+import { MOSAck } from './mosModel'
 import { MosString128 } from './dataTypes/mosString128'
 import { EventEmitter } from 'events'
 const iconv = require('iconv-lite')
@@ -100,6 +100,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
+			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_QUERY, 'query')
 
 			if (connectionOptions.secondary) {
 				secondary = new NCSServerConnection(
@@ -121,6 +122,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				})
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower')
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper')
+				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_QUERY, 'query')
 			}
 
 			// Initialize mosDevice:

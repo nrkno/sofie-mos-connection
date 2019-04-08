@@ -1,12 +1,12 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { MosString128 } from './../dataTypes/mosString128'
-import { MosMessage } from './MosMessage'
+import { MosString128 } from '../../dataTypes/mosString128'
+import { MosMessage } from '../MosMessage'
 import {
 	IMOSROAck,
 	IMOSROAckStory /*,
 	IMOSROAckItem,
 	IMOSROAckObject*/
-} from '../api'
+} from '../../api'
 
 export class ROAck extends MosMessage implements IMOSROAck {
 

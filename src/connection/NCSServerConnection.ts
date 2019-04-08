@@ -1,7 +1,7 @@
 import { ConnectionType } from './socketConnection'
 import { MosSocketClient, CallBackFunction, QueueMessage } from '../connection/mosSocketClient'
 import { MosMessage } from '../mosModel/MosMessage'
-import { HeartBeat } from '../mosModel/0_heartBeat'
+import { HeartBeat } from '../mosModel'
 import { EventEmitter } from 'events'
 
 // import {ProfilesSupport} from '../config/connectionConfig';
