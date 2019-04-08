@@ -78,7 +78,7 @@ describe('MosDevice: Profile 0', () => {
 
 		expect(mosDevice).toBeTruthy()
 
-		expect(SocketMock.instances).toHaveLength(3)
+		expect(SocketMock.instances).toHaveLength(4)
 		// console.log(SocketMock.instances)
 		let connMocks = SocketMock.instances
 		// expect(connMocks[0].connect).toHaveBeenCalledTimes(1)
@@ -145,7 +145,7 @@ describe('MosDevice: Profile 0', () => {
 
 		expect(mosDevice).toBeTruthy()
 
-		expect(SocketMock.instances).toHaveLength(5)
+		expect(SocketMock.instances).toHaveLength(7)
 		// console.log(SocketMock.instances)
 		let connMocks = SocketMock.instances
 		// expect(connMocks[0].connect).toHaveBeenCalledTimes(1)

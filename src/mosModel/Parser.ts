@@ -11,13 +11,14 @@ import {
 	IMOSROAckObject,
 	IMOSObject,
 	IMOSROFullStory,
-	IMOSROFullStoryBodyItem
+	IMOSROFullStoryBodyItem,
+	IMosRequestObjectList
 } from '../api'
 import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
-import { ROAck } from '../mosModel/ROAck'
+import { ROAck } from './index'
 
 function isEmpty (obj: any) {
 	if (typeof obj === 'object') {
@@ -163,6 +164,9 @@ export namespace Parser {
 		if (xml.hasOwnProperty('itemChannel')) item.Channel = new MosString128(xml.itemChannel)
 		if (xml.hasOwnProperty('objDur')) item.Duration = xml.objDur
 		if (xml.hasOwnProperty('objTB')) item.TimeBase = xml.objTB
+
+		if (xml.hasOwnProperty('macroIn')) item.MacroIn = new MosString128(xml.macroIn)
+		if (xml.hasOwnProperty('macroOut')) item.MacroOut = new MosString128(xml.macroOut)
 
 		if (xml.hasOwnProperty('mosObj')) {
 			// Note: the <mosObj> is sent in roStorySend
@@ -418,7 +422,13 @@ export namespace Parser {
 	export function mosObj2xml (obj: IMOSObject): XMLBuilder.XMLElementOrXMLNode {
 		let xml = XMLBuilder.create('mosObj')
 
-		xml.ele('objID', {}, obj.ID)
+		attachMosObj2xml(obj, xml)
+
+		// Todo: metadata:
+		return xml
+	}
+	export function attachMosObj2xml (obj: IMOSObject, xml: XMLBuilder.XMLElementOrXMLNode): void {
+		if (obj.ID) xml.ele('objID', {}, obj.ID)
 		xml.ele('objSlug', {}, obj.Slug)
 		if (obj.MosAbstract) 	xml.ele('mosAbstract', {}, obj.MosAbstract)
 		if (obj.Group) 			xml.ele('objGroup', {}, obj.Group)
@@ -445,8 +455,6 @@ export namespace Parser {
 				xml.importDocument(xmlMetaData)
 			})
 		}
-		// Todo: metadata:
-		return xml
 	}
 	export function xml2Body (xml: any): Array<IMOSROFullStoryBodyItem> {
 		let body: Array<IMOSROFullStoryBodyItem> = []
@@ -495,5 +503,29 @@ export namespace Parser {
 			})
 		}
 		return body
+	}
+	export function xml2ReqObjList (xml: any): IMosRequestObjectList {
+		const list: IMosRequestObjectList = {
+			username: xml.username,
+			queryID: xml.queryID,
+			listReturnStart: xml.listReturnStart,
+			listReturnEnd: xml.listReturnEnd,
+			generalSearch: xml.generalSearch,
+			mosSchema: xml.mosSchema,
+			searchGroups: []
+		}
+
+		if (typeof list.listReturnStart === 'object') list.listReturnStart = null
+		if (typeof list.listReturnEnd === 'object') list.listReturnEnd = null
+
+		for (const searchGroup of xml.searchGroup) {
+			const i = list.searchGroups.push({ searchFields: searchGroup.searchField })
+
+			for (const searchField of list.searchGroups[i - 1].searchFields) {
+				if (searchField.sortByOrder) searchField.sortByOrder = parseInt(searchField.sortByOrder + '', 10)
+			}
+		}
+
+		return list
 	}
 }
