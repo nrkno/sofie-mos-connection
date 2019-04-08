@@ -918,7 +918,9 @@ export class MosDevice implements IMOSDevice {
 
 	mosRequestSearchableSchema (username: string): Promise<IMOSSearchableSchema> {
 		const message = new MosReqSearchableSchema({ username })
-		return this.executeCommand(message)
+		return this.executeCommand(message).then(response => {
+			return response.mos.mosListSearchableSchema
+		})
 	}
 
 	onMosReqObjectList (cb: (objList: IMosRequestObjectList) => Promise<IMosObjectList>) {
@@ -927,7 +929,11 @@ export class MosDevice implements IMOSDevice {
 
 	mosRequestObjectList (reqObjList: IMosRequestObjectList): Promise<IMosObjectList> {
 		const message = new MosReqObjList(reqObjList)
-		return this.executeCommand(message)
+		return this.executeCommand(message).then(response => {
+			const objList = response.mos.mosObjList
+			if (objList.list) objList.list = Parser.xml2MosObjs(objList.list.mosObj)
+			return objList
+		})
 	}
 
 	onMosReqObjectAction (cb: (action: string, obj: IMOSObject) => Promise<IMOSAck>) {

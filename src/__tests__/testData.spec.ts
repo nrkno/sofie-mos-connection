@@ -814,7 +814,7 @@ let xmlData = {
 			</mosPayload>
 		</mosExternalMetadata>
 	</mosReqObjAction>`,
-	'mosListSearchableSchema': `<mosListSearchableSchema username="jbob">
+	'mosListSearchableSchema': `<mosListSearchableSchema username="myUsername">
 		<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
 	</mosListSearchableSchema>`,
 	'mosObjList': `<mosObjList username="jbob">

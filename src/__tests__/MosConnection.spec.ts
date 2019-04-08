@@ -363,7 +363,7 @@ test('mos device secondary', async () => {
 	})
 
 	// add reply to secondary server, causes timeout on primary:
-	SocketMock.instances[3].mockAddReply(mockReply)
+	SocketMock.instances[4].mockAddReply(mockReply)
 	let returnedObj: IMOSObject = await mosDevice.getMOSObject(xmlApiData.mosObj.ID)
 	expect(returnedObj).toBeTruthy()
 
