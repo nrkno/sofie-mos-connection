@@ -292,7 +292,7 @@ export namespace Parser {
 		// strings with numbers and , grouped will trigger
 		if (prop && typeof prop === 'string' && prop.match(/[0-9]+[,][0-9]+/)) {
 
-			// this is the fix - replace , with . and parse to float
+			// here is the fix for replacing and casting
 			let commaCast = prop.replace(/,/, '.')
 			let floatCast = parseFloat(commaCast)
 
