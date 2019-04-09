@@ -77,4 +77,63 @@ describe('Parser', () => {
 			}
 		])
 	})
+	test('xml2MetaData: handle time formats with various decimal separators', () => {
+
+		const parsed: any = xml2js(`
+		<mosExternalMetadata>
+		<mosScope>PLAYLIST</mosScope>
+		<mosSchema>http://ROENPS01:10505/schema/enps.dtd</mosSchema>
+		<mosPayload>
+			<Approved>0</Approved>
+			<Creator>LINUXENPS</Creator>
+			<Estimated>20</Estimated>
+			<MediaTime>44.6</MediaTime>
+			<MediaTime2>44,6</MediaTime2>
+			<ModBy>TEDIAL.ROLXTEDPRDMAM01.DKRO.NRK.MOS</ModBy>
+			<ModTime>20190401T161849Z</ModTime>
+			<MOSItemDurations>27,56
+
+
+	</MOSItemDurations>
+			<MOSItemEdDurations/>
+			<MOSObjSlugs>TEASER-OLD-IRISH-010419-RO
+	M: Old Irish Pub kan bli stoppet
+	10 Tema|Vanlig (00:00, Auto/OnNext): Pub-kjede hisset på seg politikere
+	Story status</MOSObjSlugs>
+			<MOSSlugs>TEASER-OLD-IRISH;TEASER-OLD-IRISH-010419-RO-1
+	M: Old Irish Pub kan bli stoppet (01-04-19 17:59)
+	TEASER-OLD-IRISH;TEASER-OLD-IRISH-010419-RO-4
+	SAK 2-17</MOSSlugs>
+			<MOSStatus>READY
+
+
+	</MOSStatus>
+			<Owner>LINUXENPS</Owner>
+			<SourceMediaTime>0</SourceMediaTime>
+			<SourceTextTime>0</SourceTextTime>
+			<StoryLogPreview>Den danske pub-kjeda The Old Irish Pub har brutt fleire regelverk allerede før åpninga i Stavanger.  Det faller ikkje i god jord hos politikarane, som nå vil stoppa nyetableringa. </StoryLogPreview>
+			<TextTime>12</TextTime>
+			<Fylke>Rogaland</Fylke>
+			<Innslagstittel>Old Irish Pub kan bli stoppet</Innslagstittel>
+			<Kommune>Stavanger</Kommune>
+			<mosartTransition>effect 2</mosartTransition>
+			<mosartType>STK</mosartType>
+			<OpprLand>Norge</OpprLand>
+			<ReadTime>12.3</ReadTime>
+			<ReadTime2>12,3</ReadTime2>
+			<Rettigheter>Grønt</Rettigheter>
+			<Rettighetseier>NRK</Rettighetseier>
+			<Sted>Stavanger</Sted>
+			<Tags>nattklubb, de røde sjøhus, skjenkebevilgning</Tags>
+			<AUDIOGAIN/>
+			<ENPSItemType>3</ENPSItemType>
+		</mosPayload>
+	</mosExternalMetadata>
+		`)
+		expect(parsed).toBeTruthy()
+		expect(Parser.xml2MetaData(parsed.mosExternalMetadata)[0].MosPayload.MediaTime).toBe(44.6)
+		expect(Parser.xml2MetaData(parsed.mosExternalMetadata)[0].MosPayload.MediaTime2).toBe(44.6)
+		expect(Parser.xml2MetaData(parsed.mosExternalMetadata)[0].MosPayload.ReadTime).toBe(12.3)
+		expect(Parser.xml2MetaData(parsed.mosExternalMetadata)[0].MosPayload.ReadTime2).toBe(12.3)
+	})
 })
