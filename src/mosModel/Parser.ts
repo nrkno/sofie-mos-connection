@@ -287,6 +287,25 @@ export namespace Parser {
 		}
 		return xmlItem
 	}
+	function handlePayloadProperties (prop: any): any {
+		// prop is string, can be a mis-typing of number - if it contains numbers and comma
+		// strings with numbers and , grouped will trigger
+		if (prop && typeof prop === 'string' && prop.match(/[0-9]+[,][0-9]+/)) {
+
+			// this is the fix - replace , with . and parse to float
+			let commaCast = prop.replace(/,/, '.')
+			let floatCast = parseFloat(commaCast)
+
+			// ensure that the float hasn't changed value or content by checking it in reverse before returning the altered one
+			if (floatCast.toString() === commaCast) {
+				return floatCast
+			}
+		}
+
+		// return the original content if we failed to identify and mutate the content
+		return prop
+	}
+
 	function fixPayload (obj: any): any {
 		if (typeof obj === 'object') {
 			for (let key in obj) {
@@ -297,8 +316,14 @@ export namespace Parser {
 					} else {
 						fixPayload(o)
 					}
+				} else {
+					// do property-check on certain props (like MediaTime)
+					obj[key] = handlePayloadProperties(o)
 				}
 			}
+		} else {
+			// do property-check on certain props (like MediaTime)
+			obj = handlePayloadProperties(obj)
 		}
 		return obj
 	}
