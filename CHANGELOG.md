@@ -2,25 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-# [0.7.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.8...0.7.0) (2019-04-08)
-
-
-### Bug Fixes
-
-* _timedOutCommands should be defined ([292afd1](https://github.com/nrkno/tv-automation-mos-connection/commit/292afd1))
-* changed API according to mos protocol ([4384338](https://github.com/nrkno/tv-automation-mos-connection/commit/4384338))
-* file structure for profiles ([b41ad5e](https://github.com/nrkno/tv-automation-mos-connection/commit/b41ad5e))
-* mosAck ([aa2f110](https://github.com/nrkno/tv-automation-mos-connection/commit/aa2f110))
-* suppress logging for late replies ([97860c5](https://github.com/nrkno/tv-automation-mos-connection/commit/97860c5))
-* Update IMosDevice for profile3 ([b95c6b5](https://github.com/nrkno/tv-automation-mos-connection/commit/b95c6b5))
-* username is attribute not option for xml ([b2580f2](https://github.com/nrkno/tv-automation-mos-connection/commit/b2580f2))
+# [0.8.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.7.0...0.8.0) (2019-04-10)
 
 
 ### Features
 
-* enable query-port ([7506c3d](https://github.com/nrkno/tv-automation-mos-connection/commit/7506c3d))
-* profile 3 ([f4688c7](https://github.com/nrkno/tv-automation-mos-connection/commit/f4688c7))
-* profile 3 unit tests for MOS side ([992ec7c](https://github.com/nrkno/tv-automation-mos-connection/commit/992ec7c))
+* **mosExternalMetadata:** adds a very specific parser to eliminate known errors [in ENPS?] with some number values coming through as localized strings ([7ec7491](https://github.com/nrkno/tv-automation-mos-connection/commit/7ec7491))
 
 
 
