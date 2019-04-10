@@ -121,6 +121,8 @@ describe('Parser', () => {
 			<OpprLand>Norge</OpprLand>
 			<ReadTime>12.3</ReadTime>
 			<ReadTime2>12,3</ReadTime2>
+			<Diary>Dear diary, today I ordered number 1,2 and 4 from the resturant</Diary>
+			<ResturantOrders>1,2,4</ResturantOrders>
 			<Rettigheter>Grønt</Rettigheter>
 			<Rettighetseier>NRK</Rettighetseier>
 			<Sted>Stavanger</Sted>
@@ -135,5 +137,7 @@ describe('Parser', () => {
 		expect(Parser.xml2MetaData(parsed.mosExternalMetadata)[0].MosPayload.MediaTime2).toBe(44.6)
 		expect(Parser.xml2MetaData(parsed.mosExternalMetadata)[0].MosPayload.ReadTime).toBe(12.3)
 		expect(Parser.xml2MetaData(parsed.mosExternalMetadata)[0].MosPayload.ReadTime2).toBe(12.3)
+		expect(Parser.xml2MetaData(parsed.mosExternalMetadata)[0].MosPayload.Diary).toBe('Dear diary, today I ordered number 1,2 and 4 from the resturant')
+		expect(Parser.xml2MetaData(parsed.mosExternalMetadata)[0].MosPayload.ResturantOrders).toBe('1,2,4')
 	})
 })
