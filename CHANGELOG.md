@@ -2,6 +2,60 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [0.7.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.8...0.7.0) (2019-04-08)
+
+
+### Bug Fixes
+
+* _timedOutCommands should be defined ([292afd1](https://github.com/nrkno/tv-automation-mos-connection/commit/292afd1))
+* changed API according to mos protocol ([4384338](https://github.com/nrkno/tv-automation-mos-connection/commit/4384338))
+* file structure for profiles ([b41ad5e](https://github.com/nrkno/tv-automation-mos-connection/commit/b41ad5e))
+* mosAck ([aa2f110](https://github.com/nrkno/tv-automation-mos-connection/commit/aa2f110))
+* suppress logging for late replies ([97860c5](https://github.com/nrkno/tv-automation-mos-connection/commit/97860c5))
+* Update IMosDevice for profile3 ([b95c6b5](https://github.com/nrkno/tv-automation-mos-connection/commit/b95c6b5))
+* username is attribute not option for xml ([b2580f2](https://github.com/nrkno/tv-automation-mos-connection/commit/b2580f2))
+
+
+### Features
+
+* enable query-port ([7506c3d](https://github.com/nrkno/tv-automation-mos-connection/commit/7506c3d))
+* profile 3 ([f4688c7](https://github.com/nrkno/tv-automation-mos-connection/commit/f4688c7))
+* profile 3 unit tests for MOS side ([992ec7c](https://github.com/nrkno/tv-automation-mos-connection/commit/992ec7c))
+
+
+
+<a name="0.6.6"></a>
+## [0.6.6](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.5...0.6.6) (2019-01-29)
+
+
+### Bug Fixes
+
+* techDescription can be a string (Merge branch 'develop') ([d1f057f](https://github.com/nrkno/tv-automation-mos-connection/commit/d1f057f))
+
+
+
+<a name="0.6.5"></a>
+## [0.6.5](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.4...0.6.5) (2018-12-11)
+
+
+### Bug Fixes
+
+* add exports ([918f486](https://github.com/nrkno/tv-automation-mos-connection/commit/918f486))
+* add missing dependency ([22089f9](https://github.com/nrkno/tv-automation-mos-connection/commit/22089f9))
+
+
+
+<a name="0.6.4"></a>
+## [0.6.4](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.3...0.6.4) (2018-11-16)
+
+
+### Bug Fixes
+
+* new MosString from another MosString ([f694623](https://github.com/nrkno/tv-automation-mos-connection/commit/f694623))
+* refactor MosString128 & add tests ([0839e10](https://github.com/nrkno/tv-automation-mos-connection/commit/0839e10))
+
+
+
 <a name="0.6.3"></a>
 ## [0.6.3](https://github.com/nrkno/tv-automation-mos-connection/compare/0.6.2...0.6.3) (2018-11-06)
 
