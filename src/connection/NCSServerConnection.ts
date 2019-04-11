@@ -37,7 +37,6 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	private _clients: {[clientID: string]: ClientDescription} = {}
 	private _callbackOnConnectionChange: () => void
 
-	private _useHeartbeats: boolean
 	private _heartBeatsTimer: NodeJS.Timer
 	private _heartBeatsDelay: number
 
@@ -56,7 +55,6 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		let client = new MosSocketClient(this._host, port, clientDescription, this._timeout, this._debug)
 		if (this._debug) console.log('registerOutgoingConnection', clientID)
 
-		this._useHeartbeats = useHeartbeats
 		this._clients[clientID] = {
 			useHeartbeats: useHeartbeats,
 			heartbeatConnected: false,
