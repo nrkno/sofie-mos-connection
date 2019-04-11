@@ -86,6 +86,10 @@ export class SocketMock extends EventEmitter implements Socket {
 		this.connectedPort = port
 		this.connectedHost = host
 
+		if (this.connectedPort === 10542) { // don't reply on heartbeats on query port
+			this._replyToHeartBeat = false
+		}
+
 		this.emit('connect')
 		return this
 	}

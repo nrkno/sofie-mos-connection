@@ -7,6 +7,7 @@ import { EventEmitter } from 'events'
 // import {ProfilesSupport} from '../config/connectionConfig';
 // import {Socket} from 'net';
 export interface ClientDescription {
+	useHeartbeats: boolean
 	heartbeatConnected: boolean
 	client: MosSocketClient
 	clientDescription: string
@@ -50,10 +51,12 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		if (debug) this._debug = debug
 	}
 
-	createClient (clientID: string, port: number, clientDescription: ConnectionType) {
+	createClient (clientID: string, port: number, clientDescription: ConnectionType, useHeartbeats: boolean) {
 		let client = new MosSocketClient(this._host, port, clientDescription, this._timeout, this._debug)
 		if (this._debug) console.log('registerOutgoingConnection', clientID)
+
 		this._clients[clientID] = {
+			useHeartbeats: useHeartbeats,
 			heartbeatConnected: false,
 			client: client,
 			clientDescription: clientDescription
@@ -142,7 +145,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		let connected = true
 		Object.keys(this._clients).forEach(key => {
 			let client = this._clients[key]
-			if (!client.heartbeatConnected) {
+			if (client.useHeartbeats && !client.heartbeatConnected) {
 				connected = false
 			}
 		})
@@ -253,18 +256,23 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 			Object.keys(this._clients).map((key) => {
 				let client = this._clients[key]
 
-				let heartbeat = new HeartBeat()
-				heartbeat.port = this._clients[key].clientDescription
-				return this.executeCommand(heartbeat)
-				.then(() => {
-					client.heartbeatConnected = true
-					if (this._debug) console.log(`Heartbeat on ${this._clients[key].clientDescription} received.`)
-				})
-				.catch((e) => {
-					// probably a timeout
-					client.heartbeatConnected = false
-					if (this._debug) console.log(`Heartbeat on ${this._clients[key].clientDescription}: ${e.toString()}`)
-				})
+				if (client.useHeartbeats) {
+					let heartbeat = new HeartBeat()
+					heartbeat.port = this._clients[key].clientDescription
+					return this.executeCommand(heartbeat)
+					.then(() => {
+						client.heartbeatConnected = true
+						if (this._debug) console.log(`Heartbeat on ${this._clients[key].clientDescription} received.`)
+					})
+					.catch((e) => {
+						// probably a timeout
+						client.heartbeatConnected = false
+						if (this._debug) console.log(`Heartbeat on ${this._clients[key].clientDescription}: ${e.toString()}`)
+					})
+				} else {
+					return Promise.resolve()
+				}
+
 			})
 		)
 		.then(() => {
