@@ -2,12 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-# [0.8.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.7.0...0.8.0) (2019-04-10)
+## [0.8.1](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.0...0.8.1) (2019-04-11)
 
 
-### Features
+### Bug Fixes
 
-* **mosExternalMetadata:** adds a very specific parser to eliminate known errors [in ENPS?] with some number values coming through as localized strings ([7ec7491](https://github.com/nrkno/tv-automation-mos-connection/commit/7ec7491))
+* don't send heartbeat on query port ([fd1219f](https://github.com/nrkno/tv-automation-mos-connection/commit/fd1219f))
 
 
 
