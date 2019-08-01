@@ -81,10 +81,11 @@
     "node": ">=4.5"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.6",
+    "@types/jest": "^24.0.16",
     "@types/node": "^8.0.4",
+    "@types/xmlbuilder": "^0.0.34",
     "codecov": "^3.5.0",
-    "gh-pages": "^2.0.1",
+    "gh-pages": "^2.1.0",
     "jest": "^24.8.0",
     "mkdirp": "^0.5.1",
     "node-license-validator": "^1.3.0",
@@ -92,16 +93,13 @@
     "nyc": "^14.1.1",
     "open-cli": "^5.0.0",
     "sleep-ms": "^2.0.1",
-    "standard-version": "^6.0.1",
+    "standard-version": "^7.0.0",
     "trash-cli": "^3.0.0",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.17.0",
+    "tslint": "^5.18.0",
     "tslint-config-standard": "^8.0.1",
-    "typedoc": "^0.14.2",
+    "typedoc": "^0.15.0",
     "typescript": "^3.3.3"
-  },
-  "resolutions": {
-    "typedoc/**/marked": "^0.6.2"
   },
   "keywords": [
     "mos",
@@ -118,11 +116,10 @@
     "production"
   ],
   "dependencies": {
-    "@types/xmlbuilder": "^0.0.34",
-    "iconv-lite": "^0.4.24",
-    "moment": "^2.22.2",
+    "iconv-lite": "^0.5.0",
+    "moment": "^2.24.0",
     "tslib": "^1.9.3",
-    "xml-js": "^1.6.8",
+    "xml-js": "^1.6.11",
     "xmlbuilder": "^10.1.1"
   },
   "standard-version": {
