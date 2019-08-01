@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.3](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.2...0.8.3) (2019-08-01)
+
+
+### Bug Fixes
+
+* downgrade gh-pages dep, due to issues with it. ([1d852a9](https://github.com/nrkno/tv-automation-mos-connection/commit/1d852a9))
+* update dependencies, after security audit ([13b8e41](https://github.com/nrkno/tv-automation-mos-connection/commit/13b8e41))
+
 ### [0.8.2](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.1...0.8.2) (2019-06-07)
 
 
