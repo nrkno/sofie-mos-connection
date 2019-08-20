@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.4](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.3...0.8.4) (2019-08-20)
+
+
+### Bug Fixes
+
+* types/xmlbuilder must be a dependency for the library to work properly ([04f9181](https://github.com/nrkno/tv-automation-mos-connection/commit/04f9181))
+
 ### [0.8.3](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.2...0.8.3) (2019-08-01)
 
 
