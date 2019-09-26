@@ -12,7 +12,8 @@ import {
 	IMOSObject,
 	IMOSROFullStory,
 	IMOSROFullStoryBodyItem,
-	IMosRequestObjectList
+	IMosRequestObjectList,
+	IMOSAck
 } from '../api'
 import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 import { MosString128 } from '../dataTypes/mosString128'
@@ -411,6 +412,17 @@ export namespace Parser {
 
 		return roAck
 	}
+	
+	export function xml2Ack (xml: any): IMOSAck {
+		let ack: IMOSAck = {
+			ID: new MosString128(xml.objID),
+			Revision: typeof xml.objRev === 'number' ? xml.objRev : 0,
+			Status: typeof xml.status === 'string' ? xml.status : 'ACK',
+			Description: new MosString128(typeof xml.statusDescription === 'string' ? xml.statusDescription : '')
+		}
+		return ack
+	}
+
 	export function xml2MosObjs (xml: any): Array<IMOSObject> {
 		if (!xml) return []
 		let xmlObjs: Array<any> = []

@@ -78,9 +78,11 @@ export interface IMOSDevice {
 
 	/* Profile 1 */
 	onRequestMOSObject: (cb: (objId: string) => Promise<IMOSObject | null>) => void
-	onRequestAllMOSObjects: (cb: () => Promise<Array<IMOSObject>>) => void
+	onRequestAllMOSObjects: (cb: (pause: number) => Promise<Array< IMOSObject>|IMOSAck>) => void
 	getMOSObject: (objId: MosString128) => Promise<IMOSObject>
 	getAllMOSObjects: () => Promise<Array<IMOSObject>>
+	setMOSObject (obj: IMOSObject): Promise<IMOSAck>
+	setAllMOSObjects (objs: IMOSObject[]): Promise<IMOSAck>
 
 	/* Profile 2 */
 	onCreateRunningOrder: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
