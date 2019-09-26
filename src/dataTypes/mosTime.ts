@@ -1,11 +1,10 @@
-import * as moment from 'moment'
 import { pad } from './../utils/Utils'
 
 export class MosTime {
 
 	static _defaultTimezone: string = 'Z'
 	private _time: Date
-	private _timezone: string = ''
+	// private _timezone: string = ''
 	private _timezoneZuluIndicator: string = ''
 	private _timezoneDeclaration: string = ''
 
@@ -28,7 +27,7 @@ export class MosTime {
 				let timezoneParseResult = this._parseTimeOffset(timestamp)
 
 				if (customFormatParseResult !== false) {
-					this._timezone = customFormatParseResult.timezoneIndicator
+					// this._timezone = customFormatParseResult.timezoneIndicator
 					this._timezoneZuluIndicator = customFormatParseResult.timezoneIndicator
 
 					const r = customFormatParseResult
@@ -67,11 +66,7 @@ export class MosTime {
 
 	/** */
 	toString (): string {
-
-		let t = moment.utc(this._time).utcOffset(this._timezone)
-
-		return t.format('YYYY-MM-DDTHH:mm:ss,SSS##!!##')
-		.replace('##!!##', this._timezone)
+		return this._time.toISOString()
 	}
 
 	/** */

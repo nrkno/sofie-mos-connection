@@ -1,5 +1,4 @@
 export class MosString128 {
-
 	private _str: string
 
 	/** */
@@ -8,17 +7,18 @@ export class MosString128 {
 	}
 	/** */
 	toString (): string {
-		return this._str
+		return this._str !== `undefined` ? this._str : ''
 	}
 
 	/** */
-	set string (str: string | { text: string, type: string } | MosString128 | any) {
+	set string (str: string | { text: string; type: string } | MosString128 | any) {
 		if (typeof str === 'object' && str) {
 			if (str.text) {
 				this._str = '' + str.text + ''
 			} else if (str._str) {
 				this._str = '' + str._str + ''
-			} else if (Object.keys(str).length === 0) { // is empty?
+			} else if (Object.keys(str).length === 0) {
+				// is empty?
 				this._str = ''
 			} else {
 				this._str = JSON.stringify(str)
