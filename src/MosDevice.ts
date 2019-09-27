@@ -101,7 +101,7 @@ export class MosDevice implements IMOSDevice {
 
 	// Profile 1
 	private _callbackOnRequestMOSOBject?: (objId: string) => Promise<IMOSObject | null>
-	private _callbackOnRequestAllMOSObjects?: (pause: number) => Promise<Array<IMOSObject>|IMOSAck>
+	private _callbackOnRequestAllMOSObjects?: (pause: number) => Promise<Array<IMOSObject> | IMOSAck>
 
 	// Profile 2
 	private _callbackOnCreateRunningOrder?: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
@@ -256,7 +256,7 @@ export class MosDevice implements IMOSDevice {
 				const pause = data.mosReqAll.pause || 0
 				this._callbackOnRequestAllMOSObjects(pause)
 				.then(resp => {
-					if(Array.isArray(resp)){
+					if (Array.isArray(resp)) {
 						let list = new MosListAll(resp)
 						resolve(list)
 					} else {
@@ -725,7 +725,7 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRequestMOSOBject = cb
 	}
 
-	onRequestAllMOSObjects (cb: (pause: number) => Promise<Array<IMOSObject>|IMOSAck>) {
+	onRequestAllMOSObjects (cb: (pause: number) => Promise<Array<IMOSObject> | IMOSAck>) {
 		this._callbackOnRequestAllMOSObjects = cb
 	}
 

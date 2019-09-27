@@ -412,7 +412,7 @@ export namespace Parser {
 
 		return roAck
 	}
-	
+
 	export function xml2Ack (xml: any): IMOSAck {
 		let ack: IMOSAck = {
 			ID: new MosString128(xml.objID),

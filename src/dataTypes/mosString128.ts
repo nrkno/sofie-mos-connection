@@ -21,10 +21,10 @@ export class MosString128 {
 				// is empty?
 				this._str = ''
 			} else {
-				this._str = JSON.stringify(str);
+				this._str = JSON.stringify(str)
 			}
 		} else {
-			this._str = str !== `undefined` ? str.toString() : '' 
+			this._str = str !== `undefined` ? str.toString() : ''
 		}
 		this._validate()
 	}
