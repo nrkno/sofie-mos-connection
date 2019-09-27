@@ -27,11 +27,11 @@ describe('MosTime', () => {
 	})
 	test('format time strings correctly', () => {
 		let date = new Date(Date.UTC(2018, 1, 24, 23, 13, 52, 0)) // utc, zero-indexed month
-		expect(new MosTime(date).toString()).toBe('2018-02-24T23:13:52,000')
-		expect(new MosTime(1519514032000).toString()).toBe('2018-02-24T23:13:52,000') // date.getTime()
+		expect(new MosTime(date).toString()).toBe('2018-02-24T23:13:52.000Z')
+		expect(new MosTime(1519514032000).toString()).toBe('2018-02-24T23:13:52.000Z') // date.getTime()
 		// expect(new MosTime('Sun Feb 25 2018 00:13:52 GMT+0100 (W. Europe Standard Time)').toString()).toBe('2018-02-25T00:13:52,000+01:00') // date.toString() locale time
-		expect(new MosTime('Sat, 24 Feb 2018 23:13:52 GMT').toString()).toBe('2018-02-24T23:13:52,000') // date.toUTCString()
-		expect(new MosTime('2018-02-24T23:13:52.000Z').toString()).toBe('2018-02-24T23:13:52,000Z') // date.toISOString()
+		expect(new MosTime('Sat, 24 Feb 2018 23:13:52 GMT').toString()).toBe('2018-02-24T23:13:52.000Z') // date.toUTCString()
+		expect(new MosTime('2018-02-24T23:13:52.000Z').toString()).toBe('2018-02-24T23:13:52.000Z') // date.toISOString()
 
 		// mos-centric strings
 		// let localHours = 14
@@ -39,13 +39,13 @@ describe('MosTime', () => {
 		// expect(new MosTime('2009-04-11T14:22:07').toString()).toBe('2009-04-11T' + localHours + ':22:07,000Z')
 		// expect(new MosTime('2009-04-11T14:22:07.123').toString()).toBe('2009-04-11T' + localHours + ':22:07,123Z')
 		// expect(new MosTime('2009-04-11T14:22:07,123').toString()).toBe('2009-04-11T' + localHours + ':22:07,123Z')
-		expect(new MosTime('2009-04-11T14:22:07Z').toString()).toBe('2009-04-11T14:22:07,000Z')
-		expect(new MosTime('2009-04-11T14:22:07.123Z').toString()).toBe('2009-04-11T14:22:07,123Z')
-		expect(new MosTime('2009-04-11T14:22:07,123Z').toString()).toBe('2009-04-11T14:22:07,123Z')
-		expect(new MosTime('2009-04-11T14:22:07,123-05:00').toString()).toBe('2009-04-11T14:22:07,123-05:00')
-		expect(new MosTime('2009-04-11T14:22:07.123-05:00').toString()).toBe('2009-04-11T14:22:07,123-05:00')
-		expect(new MosTime('2009-04-11T14:22:07Z').toString()).toBe('2009-04-11T14:22:07,000Z')
-		expect(new MosTime('2009-04-11T14:22:07+5:00').toString()).toBe('2009-04-11T14:22:07,000+05:00')
+		expect(new MosTime('2009-04-11T14:22:07Z').toString()).toBe('2009-04-11T14:22:07.000Z')
+		expect(new MosTime('2009-04-11T14:22:07.123Z').toString()).toBe('2009-04-11T14:22:07.123Z')
+		expect(new MosTime('2009-04-11T14:22:07,123Z').toString()).toBe('2009-04-11T14:22:07.123Z')
+		expect(new MosTime('2009-04-11T14:22:07.123-05:00').toString()).toBe('2009-04-11T19:22:07.123Z') // JavaScript prefers to keep the final UTC time, instead of carrying timezone offset.
+		expect(new MosTime('2009-04-11T14:22:07,123-05:00').toString()).toBe('2009-04-11T19:22:07.123Z')
+		expect(new MosTime('2009-04-11T14:22:07Z').toString()).toBe('2009-04-11T14:22:07.000Z')
+		expect(new MosTime('2009-04-11T14:22:07+5:00').toString()).toBe('2009-04-11T09:22:07.000Z')
 	})
 	test('handles tricky (midnight, new year, summer time, leap year) corectly', () => {
 		const SEC = 1000
@@ -63,8 +63,8 @@ describe('MosTime', () => {
 		expect(new MosTime(date.toUTCString()).getTime()).toBe(new Date(Date.UTC(2018, 1, 25, 1, 13, 52)).getTime()) // locale time
 		expect(new MosTime(date.toISOString()).getTime()).toBe(new Date(Date.UTC(2018, 1, 25, 1, 13, 52)).getTime()) // locale time
 
-		expect(new MosTime(date).toString()).toBe('2018-02-25T01:13:52,000') // locale time
-		expect(new MosTime(date.toUTCString()).toString()).toBe('2018-02-25T01:13:52,000') // locale time
+		expect(new MosTime(date).toString()).toBe('2018-02-25T01:13:52.000Z') // locale time
+		expect(new MosTime(date.toUTCString()).toString()).toBe('2018-02-25T01:13:52.000Z') // locale time
 
 		// @todo: how to test with local time/offsets?
 
@@ -76,8 +76,8 @@ describe('MosTime', () => {
 		expect(new MosTime(date.toUTCString()).getTime()).toBe(new Date(Date.UTC(2019, 0, 1, 1, 13, 52)).getTime()) // locale time
 		expect(new MosTime(date.toISOString()).getTime()).toBe(new Date(Date.UTC(2019, 0, 1, 1, 13, 52)).getTime()) // locale time
 
-		expect(new MosTime(date).toString()).toBe('2019-01-01T01:13:52,000') // locale time
-		expect(new MosTime(date.toUTCString()).toString()).toBe('2019-01-01T01:13:52,000') // locale time
+		expect(new MosTime(date).toString()).toBe('2019-01-01T01:13:52.000Z') // locale time
+		expect(new MosTime(date.toUTCString()).toString()).toBe('2019-01-01T01:13:52.000Z') // locale time
 
 		// @todo: daylight savings spring
 

@@ -24,7 +24,7 @@ export class MosString128 {
 				this._str = JSON.stringify(str)
 			}
 		} else {
-			this._str = str !== `undefined` ? str.toString() : ''
+			this._str = str !== `undefined` ? String(str) : ''
 		}
 		this._validate()
 	}
