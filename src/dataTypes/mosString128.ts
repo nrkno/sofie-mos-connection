@@ -7,24 +7,24 @@ export class MosString128 {
 	}
 	/** */
 	toString (): string {
-		return this._str !== `undefined` ? this._str : ''
+		return this._str
 	}
 
 	/** */
 	set string (str: string | { text: string; type: string } | MosString128 | any) {
 		if (typeof str === 'object' && str) {
 			if (str.text) {
-				this._str = '' + str.text + ''
+				this._str = str.text.toString()
 			} else if (str._str) {
-				this._str = '' + str._str + ''
+				this._str = str._str.toString()
 			} else if (Object.keys(str).length === 0) {
 				// is empty?
 				this._str = ''
 			} else {
-				this._str = JSON.stringify(str)
+				this._str = JSON.stringify(str);
 			}
 		} else {
-			this._str = '' + str + ''
+			this._str = str !== `undefined` ? str.toString() : '' 
 		}
 		this._validate()
 	}
