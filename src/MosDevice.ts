@@ -101,7 +101,7 @@ export class MosDevice implements IMOSDevice {
 
 	// Profile 1
 	private _callbackOnRequestMOSOBject?: (objId: string) => Promise<IMOSObject | null>
-	private _callbackOnRequestAllMOSObjects?: () => Promise<Array< IMOSObject>>
+	private _callbackOnRequestAllMOSObjects?: (pause: number) => Promise<Array<IMOSObject> | IMOSAck>
 
 	// Profile 2
 	private _callbackOnCreateRunningOrder?: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
@@ -253,9 +253,20 @@ export class MosDevice implements IMOSDevice {
 					resolve(resp)
 				}).catch(reject)
 			} else if (data.mosReqAll && typeof this._callbackOnRequestAllMOSObjects === 'function') {
-				this._callbackOnRequestAllMOSObjects().then((mosObjs: Array<IMOSObject>) => {
-					let resp = new MosListAll(mosObjs)
-					resolve(resp)
+				const pause = data.mosReqAll.pause || 0
+				this._callbackOnRequestAllMOSObjects(pause)
+				.then(resp => {
+					if (Array.isArray(resp)) {
+						let list = new MosListAll(resp)
+						resolve(list)
+					} else {
+						const mosAck = new MOSAck()
+						mosAck.ID = resp.ID
+						mosAck.Revision = resp.Revision
+						mosAck.Status = resp.Status
+						mosAck.Description = resp.Description
+						resolve(mosAck)
+					}
 				}).catch(reject)
 			// Profile 2:
 			} else if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
@@ -714,7 +725,7 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRequestMOSOBject = cb
 	}
 
-	onRequestAllMOSObjects (cb: () => Promise<Array<IMOSObject>>) {
+	onRequestAllMOSObjects (cb: (pause: number) => Promise<Array<IMOSObject> | IMOSAck>) {
 		this._callbackOnRequestAllMOSObjects = cb
 	}
 
@@ -750,6 +761,42 @@ export class MosDevice implements IMOSDevice {
 						reject('Unknown response')
 					}
 				}).catch(reject)
+			}
+		})
+	}
+
+	setMOSObject (obj: IMOSObject): Promise<IMOSAck> {
+		let message = new MosObj(obj)
+		return new Promise((resolve, reject) => {
+			if (this._currentConnection) {
+				this.executeCommand(message)
+					.then(data => {
+						if (data.mos) {
+							let ack: IMOSAck = Parser.xml2Ack(data.mos.mosAck)
+							resolve(ack)
+						} else {
+							reject('Unknown response')
+						}
+					})
+					.catch(reject)
+			}
+		})
+	}
+
+	setAllMOSObjects (objs: IMOSObject[]): Promise<IMOSAck> {
+		let message = new MosListAll(objs)
+		return new Promise((resolve, reject) => {
+			if (this._currentConnection) {
+				this.executeCommand(message)
+					.then(data => {
+						if (data.mos) {
+							let ack: IMOSAck = Parser.xml2Ack(data.mos.mosAck)
+							resolve(ack)
+						} else {
+							reject('Unknown response')
+						}
+					})
+					.catch(reject)
 			}
 		})
 	}

@@ -11,6 +11,7 @@ export class MosObj extends MosMessage {
 	constructor (obj: IMOSObject) {
 		super()
 		this.obj = obj
+		this.port = 'lower'
 	}
 
   /** */
