@@ -419,7 +419,7 @@ export class MosDevice implements IMOSDevice {
 			) {
 				let action: IMOSStoryAction = {
 					RunningOrderID: new MosString128(data.roElementAction.roID),
-					StoryID: new MosString128(data.roElementAction.element_target.storyID)
+					StoryID: new MosString128((data.roElementAction.element_target || {}).storyID)
 				}
 				let stories: Array<IMOSROStory> = Parser.xml2Stories([data.roElementAction.element_source.story])
 				this._callbackOnROInsertStories(action, stories)
@@ -438,8 +438,8 @@ export class MosDevice implements IMOSDevice {
 			) {
 				let action: IMOSItemAction = {
 					RunningOrderID: new MosString128(data.roElementAction.roID),
-					StoryID: new MosString128(data.roElementAction.element_target.storyID),
-					ItemID:  new MosString128(data.roElementAction.element_target.itemID)
+					StoryID: new MosString128((data.roElementAction.element_target || {}).storyID),
+					ItemID:  new MosString128((data.roElementAction.element_target || {}).itemID)
 				}
 				let items: Array<IMOSItem> = Parser.xml2Items(data.roElementAction.element_source.item)
 				this._callbackOnROInsertItems(action, items)
@@ -458,7 +458,7 @@ export class MosDevice implements IMOSDevice {
 			) {
 				let action: IMOSStoryAction = {
 					RunningOrderID: new MosString128(data.roElementAction.roID),
-					StoryID: new MosString128(data.roElementAction.element_target.storyID)
+					StoryID: new MosString128((data.roElementAction.element_target || {}).storyID)
 				}
 				let stories: Array<IMOSROStory> = Parser.xml2Stories([data.roElementAction.element_source.story])
 				this._callbackOnROReplaceStories(action, stories).then((resp: IMOSROAck) => {
@@ -476,8 +476,8 @@ export class MosDevice implements IMOSDevice {
 			) {
 				let action: IMOSItemAction = {
 					RunningOrderID: new MosString128(data.roElementAction.roID),
-					StoryID: new MosString128(data.roElementAction.element_target.storyID),
-					ItemID:  new MosString128(data.roElementAction.element_target.itemID)
+					StoryID: new MosString128((data.roElementAction.element_target || {}).storyID),
+					ItemID:  new MosString128((data.roElementAction.element_target || {}).itemID)
 				}
 				let items: Array<IMOSItem> = Parser.xml2Items(data.roElementAction.element_source.item)
 				this._callbackOnROReplaceItems(action, items)
@@ -495,7 +495,7 @@ export class MosDevice implements IMOSDevice {
 			) {
 				let action: IMOSStoryAction = {
 					RunningOrderID: new MosString128(data.roElementAction.roID),
-					StoryID: new MosString128(data.roElementAction.element_target.storyID)
+					StoryID: new MosString128((data.roElementAction.element_target || {}).storyID)
 				}
 				let storyIDs: Array<MosString128> = Parser.xml2IDs(data.roElementAction.element_source.storyID)
 				this._callbackOnROMoveStories(action, storyIDs).then((resp: IMOSROAck) => {
@@ -512,8 +512,8 @@ export class MosDevice implements IMOSDevice {
 			) {
 				let action: IMOSItemAction = {
 					RunningOrderID: new MosString128(data.roElementAction.roID),
-					StoryID: new MosString128(data.roElementAction.element_target.storyID),
-					ItemID:  new MosString128(data.roElementAction.element_target.itemID)
+					StoryID: new MosString128((data.roElementAction.element_target || {}).storyID),
+					ItemID:  new MosString128((data.roElementAction.element_target || {}).itemID)
 				}
 				let itemIDs: Array<MosString128> = Parser.xml2IDs(data.roElementAction.element_source.itemID)
 				this._callbackOnROMoveItems(action, itemIDs).then((resp: IMOSROAck) => {
@@ -546,7 +546,7 @@ export class MosDevice implements IMOSDevice {
 			) {
 				let action: IMOSStoryAction = {
 					RunningOrderID: new MosString128(data.roElementAction.roID),
-					StoryID: new MosString128(data.roElementAction.element_target.storyID)
+					StoryID: new MosString128((data.roElementAction.element_target || {}).storyID)
 				}
 				let items: Array<MosString128> = Parser.xml2IDs(data.roElementAction.element_source.itemID)
 
@@ -584,7 +584,7 @@ export class MosDevice implements IMOSDevice {
 
 				this._callbackOnROSwapItems({
 					RunningOrderID: new MosString128(data.roElementAction.roID),
-					StoryID: new MosString128(data.roElementAction.element_target.storyID)
+					StoryID: new MosString128((data.roElementAction.element_target || {}).storyID)
 				}, items[0], items[1]).then((resp: IMOSROAck) => {
 					let ack = new ROAck()
 					ack.ID = resp.ID
