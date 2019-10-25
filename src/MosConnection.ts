@@ -354,19 +354,23 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		client.socket.on('drain', () => {
 			if (this._debug) console.log('Socket Drain')
 		})
-		client.socket.on('data', (data: Buffer) => {
-			let messageString = iconv.decode(data, 'utf16-be').trim()
+		client.socket.on('data', async (data: Buffer) => {
+			const messageString = iconv.decode(data, 'utf16-be').trim()
 
 			this.emit('rawMessage', 'incoming', 'recieved', messageString)
 
 			if (this._debug) console.log(`Socket got data (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${data}`)
+			const remoteAddressContent = client.socket.remoteAddress
+				? client.socket.remoteAddress.split(':')
+				: undefined
+			const remoteAddress = remoteAddressContent ? remoteAddressContent[remoteAddressContent.length - 1] : ''
 
 			// Figure out if the message buffer contains a complete MOS-message:
 			let parsed: any = null
-			let firstMatch = '<mos>'
-			let first = messageString.substr(0, firstMatch.length)
-			let lastMatch = '</mos>'
-			let last = messageString.substr(-lastMatch.length)
+			const firstMatch = '<mos>'
+			const first = messageString.substr(0, firstMatch.length)
+			const lastMatch = '</mos>'
+			const last = messageString.substr(-lastMatch.length)
 
 			if (!client.chunks) client.chunks = ''
 			try {
@@ -385,20 +389,18 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 					client.chunks += messageString
 				}
 				if (parsed !== null) {
-					let mosDevice = (
-						this._mosDevices[parsed.mos.ncsID + '_' + parsed.mos.mosID] ||
-						this._mosDevices[parsed.mos.mosID + '_' + parsed.mos.ncsID]
-					)
-					let mosMessageId: number = parsed.mos.messageID
-					let ncsID = parsed.mos.ncsID
-					let mosID = parsed.mos.mosID
+					const ncsID = parsed.mos.ncsID
+					const mosID = parsed.mos.mosID
+					const mosMessageId: number = parsed.mos.messageID
+
+					let mosDevice = this._mosDevices[ncsID + '_' + mosID] || this._mosDevices[mosID + '_' + ncsID]
 
 					let sendReply = (message: MosMessage) => {
 						message.ncsID = ncsID
 						message.mosID = mosID
 						message.prepare(mosMessageId)
-						let messageString: string = message.toString()
-						let buf = iconv.encode(messageString, 'utf16-be')
+						const messageString: string = message.toString()
+						const buf = iconv.encode(messageString, 'utf16-be')
 						client.socket.write(buf, 'usc2')
 
 						this.emit('rawMessage', 'incoming_' + socketID, 'sent', messageString)
@@ -406,16 +408,15 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 					if (!mosDevice && this._conf.openRelay) {
 						// No MOS-device found in the register
 						// Register a new mosDevice to use for this connection:
-						if (parsed.mos.ncsID === this._conf.mosID) {
-							mosDevice = this._registerMosDevice(
-								this._conf.mosID,
-								parsed.mos.mosID,
-								null,null, null)
-						} else if (parsed.mos.mosID === this._conf.mosID) {
-							mosDevice = this._registerMosDevice(
-								this._conf.mosID,
-								parsed.mos.ncsID,
-								null, null, null)
+						if (ncsID === this._conf.mosID) {
+							mosDevice = this._registerMosDevice(this._conf.mosID, mosID, null, null, null)
+						} else if (mosID === this._conf.mosID) {
+							mosDevice = await this.connect({
+								primary: {
+									id: ncsID,
+									host: remoteAddress
+								}
+							})
 						}
 					}
 					if (mosDevice) {
