@@ -87,6 +87,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.16",
     "@types/node": "^12.12.3",
+    "@types/xmlbuilder": "^0.0.34",
     "codecov": "^3.6.1",
     "gh-pages": "^2.0.1",
     "jest": "^24.9.0",
@@ -118,7 +119,6 @@
     "production"
   ],
   "dependencies": {
-    "@types/xmlbuilder": "^0.0.34",
     "iconv-lite": "^0.5.0",
     "moment": "^2.24.0",
     "tslib": "^1.9.3",
