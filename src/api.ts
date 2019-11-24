@@ -267,9 +267,13 @@ export interface IMOSDeviceConnectionOptions {
 			upper: number
 			lower: number
 			query: number
-		},
+		}
 		/** (Optional) Timeout for commands (ms) */
 		timeout?: number
+		/** (Optional) Some server doesn't expose the Query port, which can cause connection-errors.
+		 * Set this to true to not use that port (will cause some methods to stop working)
+		 */
+		dontUseQueryPort?: boolean
 	}
 	/** Connection options for the Secondary (Buddy) NCS-server */
 	secondary?: {
@@ -282,9 +286,14 @@ export interface IMOSDeviceConnectionOptions {
 			upper: number
 			lower: number
 			query: number
-		},
+		}
 		/** (Optional) Timeout for commands (ms) */
 		timeout?: number
+
+		/** (Optional) Some server doesn't expose the Query port, which can cause connection-errors.
+		 * Set this to true to not use that port (will cause some methods to stop working)
+		 */
+		dontUseQueryPort?: boolean
 	}
 }
 

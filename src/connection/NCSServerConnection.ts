@@ -109,7 +109,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		} else if (message.port === 'query') {
 			clients = this.queryPortClients
 		} else {
-			throw Error('Unknown port name: "' + message.port + '"')
+			throw Error(`No "${message.port}" ports found`)
 		}
 		return new Promise((resolve, reject) => {
 			if (clients && clients.length) {
