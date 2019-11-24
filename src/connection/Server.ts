@@ -21,39 +21,28 @@ export class Server {
 		delete this._sockets[socketID + '']
 	}
 
-	/** */
-	get lowerPortSockets (): Socket[] {
+	private _getSockets (portDescription: string): Socket[] {
 		let sockets: Socket[] = []
 		for (let i in this._sockets) {
-			if (this._sockets[i].portDescription === 'lower') {
+			if (this._sockets[i].portDescription === portDescription) {
 				sockets.push(this._sockets[i].socket)
 			}
 		}
 
 		return sockets
+	}
+	/** */
+	get lowerPortSockets (): Socket[] {
+		return this._getSockets('lower')
 	}
 
 	/** */
 	get upperPortSockets (): Socket[] {
-		let sockets: Socket[] = []
-		for (let i in this._sockets) {
-			if (this._sockets[i].portDescription === 'upper') {
-				sockets.push(this._sockets[i].socket)
-			}
-		}
-
-		return sockets
+		return this._getSockets('upper')
 	}
 
 	/** */
 	get queryPortSockets (): Socket[] {
-		let sockets: Socket[] = []
-		for (let i in this._sockets) {
-			if (this._sockets[i].portDescription === 'query') {
-				sockets.push(this._sockets[i].socket)
-			}
-		}
-
-		return sockets
+		return this._getSockets('query')
 	}
 }

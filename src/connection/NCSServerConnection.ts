@@ -152,40 +152,29 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		return connected
 	}
 
-	/** */
-	get lowerPortClients (): MosSocketClient[] {
+	private _getClients (clientDescription: string): MosSocketClient[] {
 		let clients: MosSocketClient[] = []
 		for (let i in this._clients) {
-			if (this._clients[i].clientDescription === 'lower') {
+			if (this._clients[i].clientDescription === clientDescription) {
 				clients.push(this._clients[i].client)
 			}
 		}
 
 		return clients
+	}
+	/** */
+	get lowerPortClients (): MosSocketClient[] {
+		return this._getClients('lower')
 	}
 
 	/** */
 	get upperPortClients (): MosSocketClient[] {
-		let clients: MosSocketClient[] = []
-		for (let i in this._clients) {
-			if (this._clients[i].clientDescription === 'upper') {
-				clients.push(this._clients[i].client)
-			}
-		}
-
-		return clients
+		return this._getClients('upper')
 	}
 
 	/** */
 	get queryPortClients (): MosSocketClient[] {
-		let clients: MosSocketClient[] = []
-		for (let i in this._clients) {
-			if (this._clients[i].clientDescription === 'query') {
-				clients.push(this._clients[i].client)
-			}
-		}
-
-		return clients
+		return this._getClients('query')
 	}
 	get host (): string {
 		return this._host
