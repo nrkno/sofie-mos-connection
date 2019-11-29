@@ -100,7 +100,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower', true)
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper', true)
-			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_QUERY, 'query', false)
+			if (!connectionOptions.primary.dontUseQueryPort) primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_QUERY, 'query', false)
 
 			if (connectionOptions.secondary) {
 				secondary = new NCSServerConnection(
@@ -122,7 +122,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				})
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower', true)
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper', true)
-				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_QUERY, 'query', false)
+				if (!connectionOptions.primary.dontUseQueryPort) secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_QUERY, 'query', false)
 			}
 
 			// Initialize mosDevice:
