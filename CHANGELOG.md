@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.6](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.5...0.8.6) (2020-01-08)
+
+
+### Features
+
+* add dontUseQueryPort option, to suppress some logging output ([41ca963](https://github.com/nrkno/tv-automation-mos-connection/commit/41ca9633a976de4199e0556ec0b6d2d977408ab1))
+* update ci to run for node 8,10,12 ([858ee35](https://github.com/nrkno/tv-automation-mos-connection/commit/858ee356d474b488c7c9d5f0ab5a64ec548cc80c))
+
 ### [0.8.5](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.4...0.8.5) (2019-10-25)
 
 ### [0.8.4](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.3...0.8.4) (2019-08-20)
