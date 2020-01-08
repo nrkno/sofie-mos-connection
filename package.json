@@ -128,5 +128,8 @@
   "standard-version": {
     "message": "chore(release): %s [skip ci]",
     "tagPrefix": ""
+  },
+  "resolutions": {
+    "**/**/handlebars": "^4.5.3"
   }
 }
