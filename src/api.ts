@@ -1,6 +1,6 @@
 import { IProfiles } from './config/connectionConfig'
 import { MosTime } from './dataTypes/mosTime'
-import { MosDuration } from './dataTypes/mosDuration'
+import { MosDuration as MosDurationDataType } from './dataTypes/mosDuration'
 import { MosString128 } from './dataTypes/mosString128'
 import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
 import { IMOSListMachInfo, MOSAck, MosItemReplaceOptions } from './mosModel'
@@ -214,7 +214,7 @@ export interface IMOSItem {
 	MosObjects?: Array<IMOSObject>
 }
 
-export type MosDuration = MosDuration // HH:MM:SS
+export type MosDuration = MosDurationDataType // HH:MM:SS
 
 export interface IMOSAck {
 	ID: MosString128
