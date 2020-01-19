@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.7](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.6...0.8.7) (2020-01-19)
+
+
+### Bug Fixes
+
+* resolve an issue with a duplicated type MosDuration ([60de1cc](https://github.com/nrkno/tv-automation-mos-connection/commit/60de1cc071b834a304381faa961b3a9b9bfc9643))
+
 ### [0.8.6](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.5...0.8.6) (2020-01-08)
 
 
