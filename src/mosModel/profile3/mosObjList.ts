@@ -2,6 +2,7 @@ import { IMosObjectList } from '../../api'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
 import { Parser } from '../Parser'
+import { addTextElement } from '../../utils/Utils'
 
 export class MosObjList extends MosMessage {
 	private options: IMosObjectList
@@ -16,14 +17,14 @@ export class MosObjList extends MosMessage {
 		const xml = XMLBuilder.create('mosObjList')
 		xml.att('username', this.options.username)
 
-		xml.ele('queryID', {}, this.options.queryID)
-		xml.ele('listReturnStart', {}, this.options.listReturnStart)
-		xml.ele('listReturnEnd', {}, this.options.listReturnEnd)
-		xml.ele('listReturnTotal', {}, this.options.listReturnTotal)
-		if (this.options.listReturnStatus) xml.ele('listReturnStatus', {}, this.options.listReturnStatus)
+		addTextElement(xml, 'queryID', {}, this.options.queryID)
+		addTextElement(xml, 'listReturnStart', {}, this.options.listReturnStart)
+		addTextElement(xml, 'listReturnEnd', {}, this.options.listReturnEnd)
+		addTextElement(xml, 'listReturnTotal', {}, this.options.listReturnTotal)
+		if (this.options.listReturnStatus) addTextElement(xml, 'listReturnStatus', {}, this.options.listReturnStatus)
 
 		if (this.options.list) {
-			const listEl = xml.ele('list')
+			const listEl = addTextElement(xml, 'list')
 			for (const object of this.options.list) {
 				listEl.importDocument(Parser.mosObj2xml(object))
 			}

@@ -5,11 +5,12 @@ import {
 	IMOSAck,
 	IMOSAckStatus
 } from '../../api'
+import { addTextElement } from '../../utils/Utils'
 
 export class MOSAck extends MosMessage implements IMOSAck {
 
 	ID: MosString128
-	Revision: Number // max 999
+	Revision: number // max 999
 	Status: IMOSAckStatus
 	Description: MosString128
 
@@ -22,10 +23,10 @@ export class MOSAck extends MosMessage implements IMOSAck {
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('mosAck')
 
-		root.ele('objID', {}, this.ID.toString())
-		root.ele('objRev', {}, this.Revision)
-		root.ele('status', {}, (IMOSAckStatus as any)[this.Status])
-		root.ele('statusDescription', {}, this.Description.toString())
+		addTextElement(root, 'objID', {}, this.ID)
+		addTextElement(root, 'objRev', {}, this.Revision)
+		addTextElement(root, 'status', {}, (IMOSAckStatus as any)[this.Status])
+		addTextElement(root, 'statusDescription', {}, this.Description)
 
 		return root
 	}

@@ -1,6 +1,7 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosTime } from '../../dataTypes/mosTime'
 import { MosMessage } from '../MosMessage'
+import { addTextElement } from '../../utils/Utils'
 
 export class HeartBeat extends MosMessage {
 
@@ -14,8 +15,7 @@ export class HeartBeat extends MosMessage {
 
   /** */
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
-		let messageBlock = XMLBuilder.create('heartbeat')
-		.element('time', {}, this.time.toString())
+		let messageBlock = addTextElement(XMLBuilder.create('heartbeat'), 'time', {}, this.time)
 		return messageBlock
 	}
 }

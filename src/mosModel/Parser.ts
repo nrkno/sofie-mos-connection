@@ -20,6 +20,7 @@ import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
 import { ROAck } from './index'
+import { addTextElement } from '../utils/Utils'
 
 function isEmpty (obj: any) {
 	if (typeof obj === 'object') {
@@ -116,10 +117,10 @@ export namespace Parser {
 	export function story2xml (story: IMOSROStory): XMLBuilder.XMLElement {
 		let xmlStory = XMLBuilder.create('story')
 
-		xmlStory.ele('storyID', {}, story.ID)
-		// if (story.Slug) xmlStory.ele('storySlug', {}, story.)
-		if (story.Slug) xmlStory.ele('storySlug', {}, story.Slug.toString())
-		if (story.Number) xmlStory.ele('storyNum', {}, story.Number.toString())
+		addTextElement(xmlStory, 'storyID', {}, story.ID)
+		// if (story.Slug) addTextElement(xmlStory, 'storySlug', {}, story.)
+		if (story.Slug) addTextElement(xmlStory, 'storySlug', {}, story.Slug)
+		if (story.Number) addTextElement(xmlStory, 'storyNum', {}, story.Number)
 
 		if (story.MosExternalMetaData) {
 			story.MosExternalMetaData.forEach((md: IMOSExternalMetaData) => {
@@ -240,15 +241,15 @@ export namespace Parser {
 		let xmlObjPaths = XMLBuilder.create('objPaths')
 		paths.forEach((path: IMOSObjectPath) => {
 			if (path.Type === IMOSObjectPathType.PATH) {
-				xmlObjPaths.ele('objPath', {
+				addTextElement(xmlObjPaths, 'objPath', {
 					techDescription: path.Description
 				}, path.Target)
 			} else if (path.Type === IMOSObjectPathType.PROXY_PATH) {
-				xmlObjPaths.ele('objProxyPath', {
+				addTextElement(xmlObjPaths, 'objProxyPath', {
 					techDescription: path.Description
 				}, path.Target)
 			} else if (path.Type === IMOSObjectPathType.METADATA_PATH) {
-				xmlObjPaths.ele('objMetadataPath', {
+				addTextElement(xmlObjPaths, 'objMetadataPath', {
 					techDescription: path.Description
 				}, path.Target)
 			}
@@ -257,11 +258,11 @@ export namespace Parser {
 	}
 	export function item2xml (item: IMOSItem): XMLBuilder.XMLElement {
 		let xmlItem = XMLBuilder.create('item')
-		xmlItem.ele('itemID', {}, item.ID)
-		if (item.Slug) 					xmlItem.ele('itemSlug', {}, item.Slug)
-		xmlItem.ele('objID', {}, item.ObjectID)
-		xmlItem.ele('mosID', {}, item.MOSID)
-		if (item.mosAbstract) 			xmlItem.ele('mosAbstract', {}, item.mosAbstract)
+		addTextElement(xmlItem, 'itemID', {}, item.ID)
+		if (item.Slug) 					addTextElement(xmlItem, 'itemSlug', {}, item.Slug)
+		addTextElement(xmlItem, 'objID', {}, item.ObjectID)
+		addTextElement(xmlItem, 'mosID', {}, item.MOSID)
+		if (item.mosAbstract) 			addTextElement(xmlItem, 'mosAbstract', {}, item.mosAbstract)
 
 		if (item.Paths) {
 			let xmlObjPaths = objPaths2xml(item.Paths)
@@ -272,14 +273,14 @@ export namespace Parser {
 		// 	  objProxyPath*
 		// 	  objMetadataPath*
 
-		if (item.Channel) 				xmlItem.ele('itemChannel', {}, item.Channel)
-		if (item.EditorialStart) 		xmlItem.ele('itemEdStart', {}, item.EditorialStart)
-		if (item.EditorialDuration) 	xmlItem.ele('itemEdDur', {}, item.EditorialDuration)
-		if (item.UserTimingDuration) 	xmlItem.ele('itemUserTimingDur', {}, item.UserTimingDuration)
-		if (item.Trigger) 				xmlItem.ele('itemTrigger', {}, item.Trigger)
-		if (item.MacroIn) 				xmlItem.ele('macroIn', {}, item.MacroIn)
-		if (item.MacroOut) 				xmlItem.ele('macroOut', {}, item.MacroOut)
-		if (item.MacroOut)				xmlItem.ele('mosExternalMetadata', {}, item.MacroOut)
+		if (item.Channel) 				addTextElement(xmlItem, 'itemChannel', {}, item.Channel)
+		if (item.EditorialStart) 		addTextElement(xmlItem, 'itemEdStart', {}, item.EditorialStart)
+		if (item.EditorialDuration) 	addTextElement(xmlItem, 'itemEdDur', {}, item.EditorialDuration)
+		if (item.UserTimingDuration) 	addTextElement(xmlItem, 'itemUserTimingDur', {}, item.UserTimingDuration)
+		if (item.Trigger) 				addTextElement(xmlItem, 'itemTrigger', {}, item.Trigger)
+		if (item.MacroIn) 				addTextElement(xmlItem, 'macroIn', {}, item.MacroIn)
+		if (item.MacroOut) 				addTextElement(xmlItem, 'macroOut', {}, item.MacroOut)
+		if (item.MacroOut)				addTextElement(xmlItem, 'mosExternalMetadata', {}, item.MacroOut)
 		if (item.MosExternalMetaData) {
 			item.MosExternalMetaData.forEach((md) => {
 				let xmlMetaData = metaData2xml(md)
@@ -344,13 +345,13 @@ export namespace Parser {
 	export function metaData2xml (md: IMOSExternalMetaData): XMLBuilder.XMLElement {
 		// let xmlMD = XMLBuilder.create('mosExternalMetadata')
 
-		// if (md.MosScope) xmlMD.ele('mosScope', {}, md.MosScope)
-		// xmlMD.ele('mosSchema', {}, md.MosSchema)
+		// if (md.MosScope) addTextElement(xmlMD, 'mosScope', {}, md.MosScope)
+		// addTextElement(xmlMD, 'mosSchema', {}, md.MosSchema)
 
 		// let payload = parser.toXml(md.MosPayload)  // TODO: implement this properly, convert to xml
 		// let payload = js2xml({ mosExternalMetadata: md }, { compact: true })
 		return XMLBuilder.create({ mosExternalMetadata: md })
-		// xmlMD.ele('mosPayload', {}, payload)
+		// addTextElement(xmlMD, 'mosPayload', {}, payload)
 		// return xmlMD
 	}
 	export function xml2IDs (xml: any): Array<MosString128> {
@@ -465,27 +466,27 @@ export namespace Parser {
 		return xml
 	}
 	export function attachMosObj2xml (obj: IMOSObject, xml: XMLBuilder.XMLElement): void {
-		if (obj.ID) xml.ele('objID', {}, obj.ID)
-		xml.ele('objSlug', {}, obj.Slug)
-		if (obj.MosAbstract) 	xml.ele('mosAbstract', {}, obj.MosAbstract)
-		if (obj.Group) 			xml.ele('objGroup', {}, obj.Group)
-		xml.ele('objType', {}, obj.Type)
-		xml.ele('objTB', {}, obj.TimeBase)
-		xml.ele('objRev', {}, obj.Revision)
-		xml.ele('objDur', {}, obj.Duration)
-		xml.ele('status', {}, obj.Status)
-		xml.ele('objAir', {}, obj.AirStatus)
+		if (obj.ID) addTextElement(xml, 'objID', {}, obj.ID)
+		addTextElement(xml, 'objSlug', {}, obj.Slug)
+		if (obj.MosAbstract) 	addTextElement(xml, 'mosAbstract', {}, obj.MosAbstract)
+		if (obj.Group) 			addTextElement(xml, 'objGroup', {}, obj.Group)
+		addTextElement(xml, 'objType', {}, obj.Type)
+		addTextElement(xml, 'objTB', {}, obj.TimeBase)
+		addTextElement(xml, 'objRev', {}, obj.Revision)
+		addTextElement(xml, 'objDur', {}, obj.Duration)
+		addTextElement(xml, 'status', {}, obj.Status)
+		addTextElement(xml, 'objAir', {}, obj.AirStatus)
 
 		if (obj.Paths) {
 			let xmlObjPaths = objPaths2xml(obj.Paths)
 			xml.importDocument(xmlObjPaths)
 		}
 
-		xml.ele('createdBy', {}, obj.CreatedBy)
-		xml.ele('created', {}, obj.Created)
-		if (obj.ChangedBy) xml.ele('changedBy', {}, 	obj.ChangedBy)
-		if (obj.Changed) xml.ele('changed', {}, 		obj.Changed)
-		if (obj.Description) xml.ele('description', {}, 	obj.Description)
+		addTextElement(xml, 'createdBy', {}, obj.CreatedBy)
+		addTextElement(xml, 'created', {}, obj.Created)
+		if (obj.ChangedBy) addTextElement(xml, 'changedBy', {}, 	obj.ChangedBy)
+		if (obj.Changed) addTextElement(xml, 'changed', {}, 		obj.Changed)
+		if (obj.Description) addTextElement(xml, 'description', {}, 	obj.Description)
 		if (obj.MosExternalMetaData) {
 			obj.MosExternalMetaData.forEach((md) => {
 				let xmlMetaData = metaData2xml(md)

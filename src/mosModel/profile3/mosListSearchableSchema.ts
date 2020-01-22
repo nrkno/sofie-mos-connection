@@ -1,6 +1,7 @@
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
 import { IMOSSearchableSchema } from '../../api'
+import { addTextElement } from '../../utils/Utils'
 
 export class MosListSearchableSchema extends MosMessage {
 	private options: IMOSSearchableSchema
@@ -15,7 +16,7 @@ export class MosListSearchableSchema extends MosMessage {
 		const xml = XMLBuilder.create('mosListSearchableSchema')
 		xml.att('username', this.options.username)
 
-		xml.ele('mosSchema', {}, this.options.mosSchema)
+		addTextElement(xml, 'mosSchema', {}, this.options.mosSchema)
 
 		return xml
 	}
