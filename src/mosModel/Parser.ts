@@ -248,7 +248,7 @@ export namespace Parser {
 					techDescription: path.Description
 				}, path.Target)
 			} else if (path.Type === IMOSObjectPathType.METADATA_PATH) {
-				xmlObjPaths.ele('objMetadataPath ', {
+				xmlObjPaths.ele('objMetadataPath', {
 					techDescription: path.Description
 				}, path.Target)
 			}
