@@ -12,7 +12,7 @@ export class MosObjList extends MosMessage {
 		this.port = 'upper'
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		const xml = XMLBuilder.create('mosObjList')
 		xml.att('username', this.options.username)
 

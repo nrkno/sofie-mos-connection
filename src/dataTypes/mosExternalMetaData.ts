@@ -36,7 +36,7 @@ export class MosExternalMetaData {
 		return this._payload
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('mosExternalMetadata') // config headless
 		root.ele('mosScope', this._scope)
 		root.ele('mosSchema', this._schema)

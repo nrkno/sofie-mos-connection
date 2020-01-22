@@ -19,7 +19,7 @@ export class MOSAck extends MosMessage implements IMOSAck {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('mosAck')
 
 		root.ele('objID', {}, this.ID.toString())

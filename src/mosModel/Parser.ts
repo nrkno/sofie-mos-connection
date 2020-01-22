@@ -64,7 +64,7 @@ export namespace Parser {
 		ro.Stories = stories
 		return ro
 	}
-	// export function ro2xml (ro: IMOSRunningOrder): XMLBuilder.XMLElementOrXMLNode {
+	// export function ro2xml (ro: IMOSRunningOrder): XMLBuilder.XMLElement {
 	// 	// too implement
 	// 	return XMLBuilder.create('ro')
 	// }
@@ -113,7 +113,7 @@ export namespace Parser {
 
 		return story
 	}
-	export function story2xml (story: IMOSROStory): XMLBuilder.XMLElementOrXMLNode {
+	export function story2xml (story: IMOSROStory): XMLBuilder.XMLElement {
 		let xmlStory = XMLBuilder.create('story')
 
 		xmlStory.ele('storyID', {}, story.ID)
@@ -236,7 +236,7 @@ export namespace Parser {
 		const xmlPaths = xmlToArray(xml)
 		return xmlPaths
 	}
-	export function objPaths2xml (paths: Array<IMOSObjectPath>): XMLBuilder.XMLElementOrXMLNode {
+	export function objPaths2xml (paths: Array<IMOSObjectPath>): XMLBuilder.XMLElement {
 		let xmlObjPaths = XMLBuilder.create('objPaths')
 		paths.forEach((path: IMOSObjectPath) => {
 			if (path.Type === IMOSObjectPathType.PATH) {
@@ -255,7 +255,7 @@ export namespace Parser {
 		})
 		return xmlObjPaths
 	}
-	export function item2xml (item: IMOSItem): XMLBuilder.XMLElementOrXMLNode {
+	export function item2xml (item: IMOSItem): XMLBuilder.XMLElement {
 		let xmlItem = XMLBuilder.create('item')
 		xmlItem.ele('itemID', {}, item.ID)
 		if (item.Slug) 					xmlItem.ele('itemSlug', {}, item.Slug)
@@ -341,7 +341,7 @@ export namespace Parser {
 			return md
 		})
 	}
-	export function metaData2xml (md: IMOSExternalMetaData): XMLBuilder.XMLElementOrXMLNode {
+	export function metaData2xml (md: IMOSExternalMetaData): XMLBuilder.XMLElement {
 		// let xmlMD = XMLBuilder.create('mosExternalMetadata')
 
 		// if (md.MosScope) xmlMD.ele('mosScope', {}, md.MosScope)
@@ -456,7 +456,7 @@ export namespace Parser {
 		if (xml.hasOwnProperty('mosItemEditorProgID')) mosObj.MosItemEditorProgID = new MosString128(xml.mosItemEditorProgID)
 		return mosObj
 	}
-	export function mosObj2xml (obj: IMOSObject): XMLBuilder.XMLElementOrXMLNode {
+	export function mosObj2xml (obj: IMOSObject): XMLBuilder.XMLElement {
 		let xml = XMLBuilder.create('mosObj')
 
 		attachMosObj2xml(obj, xml)
@@ -464,7 +464,7 @@ export namespace Parser {
 		// Todo: metadata:
 		return xml
 	}
-	export function attachMosObj2xml (obj: IMOSObject, xml: XMLBuilder.XMLElementOrXMLNode): void {
+	export function attachMosObj2xml (obj: IMOSObject, xml: XMLBuilder.XMLElement): void {
 		if (obj.ID) xml.ele('objID', {}, obj.ID)
 		xml.ele('objSlug', {}, obj.Slug)
 		if (obj.MosAbstract) 	xml.ele('mosAbstract', {}, obj.MosAbstract)

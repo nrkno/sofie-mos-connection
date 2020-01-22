@@ -58,7 +58,7 @@ export class ListMachineInfo extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 
 		let root = XMLBuilder.create('listMachInfo')
 		root.ele('manufacturer', this.info.manufacturer.toString())

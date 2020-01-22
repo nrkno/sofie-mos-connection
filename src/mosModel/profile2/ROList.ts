@@ -17,7 +17,7 @@ export class ROList extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roList')
 
 		root.ele('roID', {}, this.RO.ID)

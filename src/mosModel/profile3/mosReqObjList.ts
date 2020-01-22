@@ -11,7 +11,7 @@ export class MosReqObjList extends MosMessage {
 		this.port = 'query'
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		const xml = XMLBuilder.create('mosReqObjList')
 		xml.att('username', this.options.username)
 

@@ -19,7 +19,7 @@ export class MosItemReplace extends MosMessage {
 		this.port = 'upper'
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		const item = this.options.item
 		const root = XMLBuilder.create('mosItemReplace')
 

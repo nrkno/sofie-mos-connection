@@ -14,7 +14,7 @@ export class MosListAll extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('mosListAll')
 
 		this.objs.forEach((obj: IMOSObject) => {

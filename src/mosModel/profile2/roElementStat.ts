@@ -30,7 +30,7 @@ export class ROElementStat extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roElementStat')
 		root.attribute('element', this.options.type.toString())
 

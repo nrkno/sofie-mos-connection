@@ -13,7 +13,7 @@ export class HeartBeat extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let messageBlock = XMLBuilder.create('heartbeat')
 		.element('time', {}, this.time.toString())
 		return messageBlock

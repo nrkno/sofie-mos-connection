@@ -20,7 +20,7 @@ export class ROAck extends MosMessage implements IMOSROAck {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roAck')
 
 		root.ele('roID', {}, this.ID.toString())

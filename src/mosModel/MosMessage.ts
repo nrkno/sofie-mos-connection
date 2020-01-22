@@ -45,7 +45,7 @@ export abstract class MosMessage {
 	}
 
   /** */
-	protected abstract get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode
+	protected abstract get messageXMLBlocks (): XMLBuilder.XMLElement
 
    /**  */
 }
