@@ -218,7 +218,7 @@ export type MosDuration = MosDurationDataType // HH:MM:SS
 
 export interface IMOSAck {
 	ID: MosString128
-	Revision: Number // max 999
+	Revision: number // max 999
 	Status: IMOSAckStatus
 	Description: MosString128
 }

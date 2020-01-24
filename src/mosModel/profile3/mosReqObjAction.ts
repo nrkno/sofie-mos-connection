@@ -17,7 +17,7 @@ export class MosReqObjAction extends MosMessage {
 		this.port = 'lower'
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		const xml = XMLBuilder.create('mosReqObjAction')
 		xml.att('operation', this.options.action)
 		if (this.options.action !== 'NEW') xml.att('objID', this.options.object.ID)

@@ -1,5 +1,6 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
+import { addTextElement } from '../../utils/Utils'
 
 export class ReqMosObjAll extends MosMessage {
 
@@ -12,9 +13,9 @@ export class ReqMosObjAll extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('mosReqAll')
-		root.ele('pause', {}, this.pause + '')
+		addTextElement(root, 'pause', {}, this.pause + '')
 		return root
 	}
 }

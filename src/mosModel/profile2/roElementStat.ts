@@ -3,6 +3,7 @@ import { MosMessage } from '../MosMessage'
 import { MosString128 } from '../../dataTypes/mosString128'
 import { IMOSObjectStatus } from '../../api'
 import { MosTime } from '../../dataTypes/mosTime'
+import { addTextElement } from '../../utils/Utils'
 
 export enum ROElementStatType {
 	RO = 'RO',
@@ -30,17 +31,17 @@ export class ROElementStat extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roElementStat')
 		root.attribute('element', this.options.type.toString())
 
-		root.ele('roID', {}, this.options.roId.toString())
-		if (this.options.storyId) 		root.ele('storyID', {}, this.options.storyId.toString())
-		if (this.options.itemId) 		root.ele('itemID', {}, this.options.itemId.toString())
-		if (this.options.objId) 		root.ele('objID', {}, this.options.objId.toString())
-		if (this.options.itemChannel) 	root.ele('itemChannel', {}, this.options.itemChannel.toString())
-		root.ele('status', {}, this.options.status.toString())
-		root.ele('time', {}, this.time.toString())
+		addTextElement(root, 'roID', {}, this.options.roId)
+		if (this.options.storyId) 		addTextElement(root, 'storyID', {}, this.options.storyId)
+		if (this.options.itemId) 		addTextElement(root, 'itemID', {}, this.options.itemId)
+		if (this.options.objId) 		addTextElement(root, 'objID', {}, this.options.objId)
+		if (this.options.itemChannel) 	addTextElement(root, 'itemChannel', {}, this.options.itemChannel)
+		addTextElement(root, 'status', {}, this.options.status)
+		addTextElement(root, 'time', {}, this.time)
 		return root
 	}
 }

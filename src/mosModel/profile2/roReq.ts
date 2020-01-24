@@ -1,6 +1,7 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
 import { MosString128 } from '../../dataTypes/mosString128'
+import { addTextElement } from '../../utils/Utils'
 
 export class ROReq extends MosMessage {
 
@@ -13,9 +14,9 @@ export class ROReq extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roReq')
-		root.ele('roID', {}, this.roId.toString())
+		addTextElement(root, 'roID', {}, this.roId)
 		return root
 	}
 }

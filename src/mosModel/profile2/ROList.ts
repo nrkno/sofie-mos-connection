@@ -5,6 +5,7 @@ import {
 	IMOSROStory
 } from '../../api'
 import { Parser } from '../Parser'
+import { addTextElement } from '../../utils/Utils'
 
 export class ROList extends MosMessage {
 
@@ -17,11 +18,11 @@ export class ROList extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roList')
 
-		root.ele('roID', {}, this.RO.ID)
-		root.ele('roSlug', {}, this.RO.Slug)
+		addTextElement(root, 'roID', {}, this.RO.ID)
+		addTextElement(root, 'roSlug', {}, this.RO.Slug)
 
 		this.RO.Stories.forEach((story: IMOSROStory) => {
 			let xmlStory = Parser.story2xml(story)

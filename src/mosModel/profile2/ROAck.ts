@@ -7,6 +7,7 @@ import {
 	IMOSROAckItem,
 	IMOSROAckObject*/
 } from '../../api'
+import { addTextElement } from '../../utils/Utils'
 
 export class ROAck extends MosMessage implements IMOSROAck {
 
@@ -20,11 +21,11 @@ export class ROAck extends MosMessage implements IMOSROAck {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roAck')
 
-		root.ele('roID', {}, this.ID.toString())
-		root.ele('roStatus', {}, this.Status.toString())
+		addTextElement(root, 'roID', {}, this.ID)
+		addTextElement(root, 'roStatus', {}, this.Status)
 
 		// TODO: Loop over Stories, Items and Object
 

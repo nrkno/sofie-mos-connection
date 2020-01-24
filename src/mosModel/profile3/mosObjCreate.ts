@@ -12,7 +12,7 @@ export class MosObjCreate extends MosMessage {
 		this.port = 'lower'
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let xml = XMLBuilder.create('mosObjCreate')
 
 		Parser.attachMosObj2xml(this.object, xml)

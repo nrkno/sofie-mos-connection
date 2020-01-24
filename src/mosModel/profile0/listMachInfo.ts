@@ -3,6 +3,7 @@ import { MosString128 } from '../../dataTypes/mosString128'
 import { IMOSExternalMetaData } from '../../dataTypes/mosExternalMetaData'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
+import { addTextElement } from '../../utils/Utils'
 
 export enum IMOSListMachInfoDefaultActiveXMode {
 	MODALDIALOG = 'MODALDIALOG',
@@ -58,23 +59,23 @@ export class ListMachineInfo extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 
 		let root = XMLBuilder.create('listMachInfo')
-		root.ele('manufacturer', this.info.manufacturer.toString())
-		root.ele('model', this.info.model.toString())
-		root.ele('hwRev', this.info.hwRev.toString())
-		root.ele('swRev', this.info.swRev.toString())
-		root.ele('DOM', this.info.DOM.toString())
-		root.ele('SN', this.info.SN.toString())
-		root.ele('ID', this.info.ID.toString())
-		root.ele('time', this.info.time.toString())
-		if (this.info.opTime) root.ele('opTime', this.info.opTime.toString())
-		root.ele('mosRev', this.info.mosRev.toString())
+		addTextElement(root, 'manufacturer', this.info.manufacturer)
+		addTextElement(root, 'model', this.info.model)
+		addTextElement(root, 'hwRev', this.info.hwRev)
+		addTextElement(root, 'swRev', this.info.swRev)
+		addTextElement(root, 'DOM', this.info.DOM)
+		addTextElement(root, 'SN', this.info.SN)
+		addTextElement(root, 'ID', this.info.ID)
+		addTextElement(root, 'time', this.info.time)
+		if (this.info.opTime) addTextElement(root, 'opTime', this.info.opTime)
+		addTextElement(root, 'mosRev', this.info.mosRev)
 
-		let p = root.ele('supportedProfiles').att('deviceType', this.info.supportedProfiles.deviceType)
+		let p = addTextElement(root, 'supportedProfiles').att('deviceType', this.info.supportedProfiles.deviceType)
 		for (let i = 0; i < 8; i++) {
-			p.ele('mosProfile', ((this as any).info.supportedProfiles['profile' + i] ? 'YES' : 'NO')).att('number', i)
+			addTextElement(p, 'mosProfile', ((this as any).info.supportedProfiles['profile' + i] ? 'YES' : 'NO')).att('number', i)
 		}
 		return root
 	}
