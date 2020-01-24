@@ -482,7 +482,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		if (this._debug) console.log('removed: ', socketID, '\n')
 	}
 	/** Get new unique id */
-	private static get nextSocketID (): string {
+	static get nextSocketID (): string {
 		return this._nextSocketID++ + ''
 	}
 }
