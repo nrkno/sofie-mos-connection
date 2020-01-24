@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.9](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.8...0.8.9) (2020-01-24)
+
+
+### Bug Fixes
+
+* A private static does not set a return value when compiled, which gives errors downstream. ([44d8b65](https://github.com/nrkno/tv-automation-mos-connection/commit/44d8b6562672df671818d8ce6c2f88aa7d0ac981))
+
 ### [0.8.8](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.7...0.8.8) (2020-01-24)
 
 
