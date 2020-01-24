@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.8](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.7...0.8.8) (2020-01-24)
+
+
+### Bug Fixes
+
+* corrected <objMetadataPath> name (it had a space in it) ([9a8dbe0](https://github.com/nrkno/tv-automation-mos-connection/commit/9a8dbe068769f10ef72e3cb8af9d2d7e5b85d14b))
+* update xmlBuilder and typescript dependency ([cb5e985](https://github.com/nrkno/tv-automation-mos-connection/commit/cb5e985c6d424c4d18a64d6dc0fe23874cf18ef1))
+* wrap all xml.ele() into addTextElement() in order to make sure that what's added is a string (through .toString() ). ([e56a75e](https://github.com/nrkno/tv-automation-mos-connection/commit/e56a75ecbdb34adc42109f250f0592daf433e259))
+
 ### [0.8.7](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.6...0.8.7) (2020-01-19)
 
 
