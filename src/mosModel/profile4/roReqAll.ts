@@ -10,7 +10,7 @@ export class ROReqAll extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roReqAll')
 		return root
 	}

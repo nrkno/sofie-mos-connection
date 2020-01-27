@@ -1,4 +1,5 @@
 import * as XMLBuilder from 'xmlbuilder'
+import { addTextElement } from '../utils/Utils'
 
 export abstract class MosMessage {
 
@@ -36,16 +37,16 @@ export abstract class MosMessage {
 		let xml = XMLBuilder.create('mos', undefined, undefined, {
 			headless: true
 		})
-		xml.ele('ncsID', this.ncsID)
-		xml.ele('mosID', this.mosID)
-		xml.ele('messageID', this.messageID)
+		addTextElement(xml, 'ncsID', this.ncsID)
+		addTextElement(xml, 'mosID', this.mosID)
+		addTextElement(xml, 'messageID', this.messageID)
 		xml.importDocument(this.messageXMLBlocks)
 
 		return xml.end({ pretty: true })
 	}
 
   /** */
-	protected abstract get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode
+	protected abstract get messageXMLBlocks (): XMLBuilder.XMLElement
 
    /**  */
 }

@@ -15,7 +15,7 @@ export class MosObj extends MosMessage {
 	}
 
   /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		return Parser.mosObj2xml(this.obj)
 	}
 }

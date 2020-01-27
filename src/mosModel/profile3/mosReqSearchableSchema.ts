@@ -10,7 +10,7 @@ export class MosReqSearchableSchema extends MosMessage {
 		this.port = 'query'
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElementOrXMLNode {
+	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		const xml = XMLBuilder.create('mosReqSearchableSchema')
 		xml.att('username', this.options.username)
 
