@@ -1,5 +1,5 @@
 /** Mock the Date object, to make sure that stuff that's using the "current time" in tests run fine */
-const DATE_TO_USE = new Date('2019-01-01 17:14:42')
+const DATE_TO_USE = new Date('2019-01-01 17:14:42+00:00')
 const _Date = Date
 // @ts-ignore
 global.Date = jest.fn(() => DATE_TO_USE)

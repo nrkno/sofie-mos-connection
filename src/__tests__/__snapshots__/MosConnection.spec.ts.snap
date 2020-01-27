@@ -16,7 +16,7 @@ Array [
   Object {
     "AirStatus": undefined,
     "Changed": MosTime {
-      "_time": 2019-01-01T16:14:42.000Z,
+      "_time": 2019-01-01T17:14:42.000Z,
       "_timezone": "Z",
       "_timezoneDeclaration": "",
       "_timezoneZuluIndicator": "Z",
@@ -25,7 +25,7 @@ Array [
       "_str": "Chris",
     },
     "Created": MosTime {
-      "_time": 2019-01-01T16:14:42.000Z,
+      "_time": 2019-01-01T17:14:42.000Z,
       "_timezone": "Z",
       "_timezoneDeclaration": "",
       "_timezoneZuluIndicator": "Z",
@@ -115,7 +115,7 @@ Array [
   Object {
     "AirStatus": "READY",
     "Changed": MosTime {
-      "_time": 2019-01-01T16:14:42.000Z,
+      "_time": 2019-01-01T17:14:42.000Z,
       "_timezone": "Z",
       "_timezoneDeclaration": "",
       "_timezoneZuluIndicator": "Z",
@@ -124,7 +124,7 @@ Array [
       "_str": "Chris",
     },
     "Created": MosTime {
-      "_time": 2019-01-01T16:14:42.000Z,
+      "_time": 2019-01-01T17:14:42.000Z,
       "_timezone": "Z",
       "_timezoneDeclaration": "",
       "_timezoneZuluIndicator": "Z",
@@ -198,7 +198,7 @@ exports[`MosDevice: Profile 1 getMOSObject 2`] = `
 Object {
   "AirStatus": "READY",
   "Changed": MosTime {
-    "_time": 2019-01-01T16:14:42.000Z,
+    "_time": 2019-01-01T17:14:42.000Z,
     "_timezone": "Z",
     "_timezoneDeclaration": "",
     "_timezoneZuluIndicator": "Z",
@@ -207,7 +207,7 @@ Object {
     "_str": "Chris",
   },
   "Created": MosTime {
-    "_time": 2019-01-01T16:14:42.000Z,
+    "_time": 2019-01-01T17:14:42.000Z,
     "_timezone": "Z",
     "_timezoneDeclaration": "",
     "_timezoneZuluIndicator": "Z",
@@ -348,7 +348,7 @@ Object {
       "mosObj": Array [
         Object {
           "created": Object {
-            "_text": "2019-01-01T16:14:42,000",
+            "_text": "2019-01-01T17:14:42,000",
           },
           "createdBy": Object {
             "_text": "Jonas",
@@ -431,7 +431,7 @@ Object {
         },
         Object {
           "created": Object {
-            "_text": "2019-01-01T16:14:42,000",
+            "_text": "2019-01-01T17:14:42,000",
           },
           "createdBy": Object {
             "_text": "Jonas",
@@ -509,7 +509,7 @@ Object {
     },
     "mosObj": Object {
       "created": Object {
-        "_text": "2019-01-01T16:14:42,000",
+        "_text": "2019-01-01T17:14:42,000",
       },
       "createdBy": Object {
         "_text": "Jonas",
@@ -725,7 +725,7 @@ Array [
         "_duration": 3505,
       },
       "EditorialStart": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "Z",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "Z",
@@ -908,7 +908,7 @@ Array [
         "_str": "HOTEL FIRE",
       },
       "Time": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "Z",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "Z",
@@ -946,7 +946,7 @@ Array [
         "_duration": 3505,
       },
       "EditorialStart": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "Z",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "Z",
@@ -2079,7 +2079,7 @@ Array [
       },
       "Status": "MANUAL CTRL",
       "Time": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "Z",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "Z",
@@ -2121,7 +2121,7 @@ Array [
       },
       "Status": "PLAY",
       "Time": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "Z",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "Z",
@@ -2409,7 +2409,7 @@ Object {
     Object {
       "AirStatus": "READY",
       "Changed": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "Z",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "Z",
@@ -2418,7 +2418,7 @@ Object {
         "_str": "Chris",
       },
       "Created": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "Z",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "Z",
@@ -2537,7 +2537,7 @@ Object {
     Object {
       "AirStatus": "READY",
       "Changed": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "Z",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "Z",
@@ -2546,7 +2546,7 @@ Object {
         "_str": "Chris",
       },
       "Created": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "Z",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "Z",
@@ -2665,7 +2665,7 @@ Object {
     Object {
       "AirStatus": "READY",
       "Changed": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "Z",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "Z",
@@ -2674,7 +2674,7 @@ Object {
         "_str": "Chris",
       },
       "Created": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "Z",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "Z",
@@ -2881,7 +2881,7 @@ Array [
     Object {
       "AirStatus": undefined,
       "Changed": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "",
@@ -2890,7 +2890,7 @@ Array [
         "_str": "undefined",
       },
       "Created": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "",
@@ -3014,7 +3014,7 @@ Array [
     Object {
       "AirStatus": undefined,
       "Changed": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "",
@@ -3023,7 +3023,7 @@ Array [
         "_str": "undefined",
       },
       "Created": MosTime {
-        "_time": 2019-01-01T16:14:42.000Z,
+        "_time": 2019-01-01T17:14:42.000Z,
         "_timezone": "",
         "_timezoneDeclaration": "",
         "_timezoneZuluIndicator": "",
@@ -3263,7 +3263,7 @@ Array [
       "_duration": 1800,
     },
     "EditorialStart": MosTime {
-      "_time": 2019-01-01T16:14:42.000Z,
+      "_time": 2019-01-01T17:14:42.000Z,
       "_timezone": "Z",
       "_timezoneDeclaration": "",
       "_timezoneZuluIndicator": "Z",
@@ -3298,7 +3298,7 @@ Array [
       "_duration": 1800,
     },
     "EditorialStart": MosTime {
-      "_time": 2019-01-01T16:14:42.000Z,
+      "_time": 2019-01-01T17:14:42.000Z,
       "_timezone": "Z",
       "_timezoneDeclaration": "",
       "_timezoneZuluIndicator": "Z",
@@ -3421,7 +3421,7 @@ Array [
               Object {
                 "AirStatus": undefined,
                 "Changed": MosTime {
-                  "_time": 2019-01-01T16:14:42.000Z,
+                  "_time": 2019-01-01T17:14:42.000Z,
                   "_timezone": "",
                   "_timezoneDeclaration": "",
                   "_timezoneZuluIndicator": "",
@@ -3430,7 +3430,7 @@ Array [
                   "_str": "undefined",
                 },
                 "Created": MosTime {
-                  "_time": 2019-01-01T16:14:42.000Z,
+                  "_time": 2019-01-01T17:14:42.000Z,
                   "_timezone": "",
                   "_timezoneDeclaration": "",
                   "_timezoneZuluIndicator": "",
@@ -3518,7 +3518,7 @@ Array [
               Object {
                 "AirStatus": undefined,
                 "Changed": MosTime {
-                  "_time": 2019-01-01T16:14:42.000Z,
+                  "_time": 2019-01-01T17:14:42.000Z,
                   "_timezone": "",
                   "_timezoneDeclaration": "",
                   "_timezoneZuluIndicator": "",
@@ -3527,7 +3527,7 @@ Array [
                   "_str": "undefined",
                 },
                 "Created": MosTime {
-                  "_time": 2019-01-01T16:14:42.000Z,
+                  "_time": 2019-01-01T17:14:42.000Z,
                   "_timezone": "",
                   "_timezoneDeclaration": "",
                   "_timezoneZuluIndicator": "",
@@ -3615,7 +3615,7 @@ Array [
               Object {
                 "AirStatus": undefined,
                 "Changed": MosTime {
-                  "_time": 2019-01-01T16:14:42.000Z,
+                  "_time": 2019-01-01T17:14:42.000Z,
                   "_timezone": "",
                   "_timezoneDeclaration": "",
                   "_timezoneZuluIndicator": "",
@@ -3624,7 +3624,7 @@ Array [
                   "_str": "undefined",
                 },
                 "Created": MosTime {
-                  "_time": 2019-01-01T16:14:42.000Z,
+                  "_time": 2019-01-01T17:14:42.000Z,
                   "_timezone": "",
                   "_timezoneDeclaration": "",
                   "_timezoneZuluIndicator": "",
@@ -3712,7 +3712,7 @@ Array [
               Object {
                 "AirStatus": undefined,
                 "Changed": MosTime {
-                  "_time": 2019-01-01T16:14:42.000Z,
+                  "_time": 2019-01-01T17:14:42.000Z,
                   "_timezone": "",
                   "_timezoneDeclaration": "",
                   "_timezoneZuluIndicator": "",
@@ -3721,7 +3721,7 @@ Array [
                   "_str": "undefined",
                 },
                 "Created": MosTime {
-                  "_time": 2019-01-01T16:14:42.000Z,
+                  "_time": 2019-01-01T17:14:42.000Z,
                   "_timezone": "",
                   "_timezoneDeclaration": "",
                   "_timezoneZuluIndicator": "",
@@ -3809,7 +3809,7 @@ Array [
               Object {
                 "AirStatus": undefined,
                 "Changed": MosTime {
-                  "_time": 2019-01-01T16:14:42.000Z,
+                  "_time": 2019-01-01T17:14:42.000Z,
                   "_timezone": "",
                   "_timezoneDeclaration": "",
                   "_timezoneZuluIndicator": "",
@@ -3818,7 +3818,7 @@ Array [
                   "_str": "undefined",
                 },
                 "Created": MosTime {
-                  "_time": 2019-01-01T16:14:42.000Z,
+                  "_time": 2019-01-01T17:14:42.000Z,
                   "_timezone": "",
                   "_timezoneDeclaration": "",
                   "_timezoneZuluIndicator": "",
