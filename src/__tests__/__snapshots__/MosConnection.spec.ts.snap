@@ -1961,7 +1961,7 @@ exports[`MosDevice: Profile 2 onRequestRunningOrder: <mos>
         <objPaths>
           <objPath techDescription="MPEG2 Video">\\servermediaclip392028cd2320s0d.mxf</objPath>
           <objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
-          <objMetadataPath  techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath >
+          <objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
         </objPaths>
         <itemEdDur>645</itemEdDur>
         <itemUserTimingDur>310</itemUserTimingDur>
@@ -2024,7 +2024,7 @@ exports[`MosDevice: Profile 2 onRequestRunningOrder: <mos>
         <objPaths>
           <objPath techDescription=\\"MPEG2 Video\\">\\\\servermediaclip392028cd2320s0d.mxf</objPath>
           <objProxyPath techDescription=\\"WM9 750Kbps\\">http://server/proxy/clipe.wmv</objProxyPath>
-          <objMetadataPath  techDescription=\\"MOS Object\\">http://server/proxy/clipe.xml</objMetadataPath >
+          <objMetadataPath techDescription=\\"MOS Object\\">http://server/proxy/clipe.xml</objMetadataPath>
         </objPaths>
         <itemEdDur>645</itemEdDur>
         <itemUserTimingDur>310</itemUserTimingDur>
