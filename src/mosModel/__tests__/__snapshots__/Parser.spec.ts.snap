@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Parser xml2MetaData: handle time formats with various decimal separators 1`] = `
+Array [
+  Object {
+    "MosPayload": Object {
+      "AUDIOGAIN": "",
+      "Approved": 0,
+      "Creator": "LINUXENPS",
+      "Diary": "Dear diary, today I ordered number 1,2 and 4 from the resturant",
+      "ENPSItemType": 3,
+      "Estimated": 20,
+      "Fylke": "Rogaland",
+      "Innslagstittel": "Old Irish Pub kan bli stoppet",
+      "Kommune": "Stavanger",
+      "MOSItemDurations": 27.56,
+      "MOSItemEdDurations": "",
+      "MOSObjSlugs": "TEASER-OLD-IRISH-010419-RO
+	M: Old Irish Pub kan bli stoppet
+	10 Tema|Vanlig (00:00, Auto/OnNext): Pub-kjede hisset på seg politikere
+	Story status",
+      "MOSSlugs": "TEASER-OLD-IRISH;TEASER-OLD-IRISH-010419-RO-1
+	M: Old Irish Pub kan bli stoppet (01-04-19 17:59)
+	TEASER-OLD-IRISH;TEASER-OLD-IRISH-010419-RO-4
+	SAK 2-17",
+      "MOSStatus": "READY",
+      "MediaTime": 44.6,
+      "MediaTime2": 44.6,
+      "ModBy": "TEDIAL.ROLXTEDPRDMAM01.DKRO.NRK.MOS",
+      "ModTime": "20190401T161849Z",
+      "OpprLand": "Norge",
+      "Owner": "LINUXENPS",
+      "ReadTime": 12.3,
+      "ReadTime2": 12.3,
+      "ResturantOrders": "1,2,4",
+      "Rettigheter": "Grønt",
+      "Rettighetseier": "NRK",
+      "SourceMediaTime": 0,
+      "SourceTextTime": 0,
+      "Sted": "Stavanger",
+      "StoryLogPreview": "Den danske pub-kjeda The Old Irish Pub har brutt fleire regelverk allerede før åpninga i Stavanger.  Det faller ikkje i god jord hos politikarane, som nå vil stoppa nyetableringa.",
+      "Tags": "nattklubb, de røde sjøhus, skjenkebevilgning",
+      "TextTime": 12,
+      "mosartTransition": "effect 2",
+      "mosartType": "STK",
+      "text": 0,
+    },
+    "MosSchema": "http://ROENPS01:10505/schema/enps.dtd",
+    "MosScope": "PLAYLIST",
+  },
+]
+`;
+
+exports[`Parser xml2ObjPaths: only one objPath 1`] = `
+Array [
+  Object {
+    "Description": "",
+    "Target": "D:\\\\Videos\\\\1080p\\\\Wonderful Universe - Part 2 FULL HD.mp4",
+    "Type": "PATH",
+  },
+]
+`;
+
+exports[`Parser xml2ObjPaths: several objPaths 1`] = `
+Array [
+  Object {
+    "Description": "VIDEO",
+    "Target": "http://media.example.com.br:9000/mamfolders/Original/3afb7390-7f0c-4d52-ab74-159fad1df7ba.mp4",
+    "Type": "PATH",
+  },
+  Object {
+    "Description": "JPG",
+    "Target": "http://media.example.com.br:9000/mamfolders/Proxy/3afb7390-7f0c-4d52-ab74-159fad1df7ba_0.jpg",
+    "Type": "PROXY PATH",
+  },
+  Object {
+    "Description": "VIDEO",
+    "Target": "http://media.example.com.br:9000/mamfolders/Proxy/3afb7390-7f0c-4d52-ab74-159fad1df7ba_1.mp4",
+    "Type": "PROXY PATH",
+  },
+]
+`;
