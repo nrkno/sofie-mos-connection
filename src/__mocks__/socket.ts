@@ -27,9 +27,22 @@ export class SocketMock extends EventEmitter implements Socket {
 	writable: boolean
 	readable: boolean
 
+	readonly writableEnded: boolean
+	readonly writableFinished: boolean
+	readonly writableHighWaterMark: number
+	readonly writableLength: number
+	readonly writableObjectMode: boolean
+
+	readonly readableHighWaterMark: number
+	readonly readableLength: number
+	readonly readableObjectMode: boolean
+
 	public name: string
 	public connectedPort: number
 	public connectedHost: string
+
+	// @ts-ignore
+	[Symbol.asyncIterator] (): AsyncIterableIterator<any>
 
 	private _responses: Array<string | false | ((data: any) => string | Buffer | false) > = []
 	private _replyToHeartBeat: boolean = true
@@ -82,7 +95,7 @@ export class SocketMock extends EventEmitter implements Socket {
 		this.mockSentMessage0.apply(this, arguments)
 		return true
 	}
-	connect (port, host) {
+	connect (port: any, host: any) {
 		this.connectedPort = port
 		this.connectedHost = host
 
@@ -101,7 +114,7 @@ export class SocketMock extends EventEmitter implements Socket {
 	}
 	pause () { return this }
 	resume () { return this }
-	setTimeout (timeout: number, callback?: Function) { setTimeout(callback, timeout); return this }
+	setTimeout (timeout: number, callback?: (...args: any[]) => void) { if (callback) setTimeout(callback, timeout); return this }
 	setNoDelay (noDelay?: boolean) { noDelay = noDelay; return this }
 	setKeepAlive (enable?: boolean, initialDelay?: number) { enable = enable; initialDelay = initialDelay ;return this }
 	address () { return { port: 100, family: 'localhost', address: '127.0.0.1' } }
@@ -113,8 +126,8 @@ export class SocketMock extends EventEmitter implements Socket {
 	_read (size: number) { size = size }
 	read (size?: number) { size = size }
 	isPaused () { return false }
-	pipe (destination, options?: { end?: boolean; }) { options = options; return destination }
-	unpipe (destination) { destination = destination; return this }
+	pipe (destination: any, options?: { end?: boolean; }) { options = options; return destination }
+	unpipe (destination: any) { destination = destination; return this }
 	unshift (chunk: any) { chunk = chunk }
 	wrap (oldStream: NodeJS.ReadableStream) { oldStream = oldStream; return this }
 	push (chunk: any, encoding?: string) { chunk = chunk; encoding = encoding; return true }
@@ -125,20 +138,22 @@ export class SocketMock extends EventEmitter implements Socket {
 
 	// ------------------------------------------------------------------------
 	// Mock methods:
-	mockSentMessage0 (data, encoding) {
+	mockSentMessage0 (data: any, encoding: any) {
 		// console.log('mockSentMessage ' + this.name, this.decode(data))
 		encoding = encoding
 
 		if (this._replyToHeartBeat) {
-			let str
-			if (typeof data === 'string') str = data
-			else str = this.decode(data)
+			const str: string = (
+				typeof data === 'string' ?
+				data :
+				this.decode(data)
+			)
 
 			if (str.match(/<heartbeat>/)) {
 				try {
-					let mosID = str.match(/<mosID>([^<]+)<\/mosID>/)[1]
-					let ncsID = str.match(/<ncsID>([^<]+)<\/ncsID>/)[1]
-					let messageId = str.match(/<messageID>([^<]+)<\/messageID>/)[1]
+					let mosID = str.match(/<mosID>([^<]+)<\/mosID>/)![1]
+					let ncsID = str.match(/<ncsID>([^<]+)<\/ncsID>/)![1]
+					let messageId = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
 					let repl = '<mos>\
 						<mosID>' + mosID + '</mosID>\
 						<ncsID>' + ncsID + '</ncsID>\
@@ -160,7 +175,7 @@ export class SocketMock extends EventEmitter implements Socket {
 		}
 		this.mockSentMessage(data, encoding)
 	}
-	mockSentMessage (data, encoding) {
+	mockSentMessage (data: any, encoding: any) {
 
 		encoding = encoding
 		if (this._responses.length) {
@@ -192,6 +207,7 @@ export class SocketMock extends EventEmitter implements Socket {
 		this._responses.splice(0, 9999)
 		// @ts-ignore
 		this.mockSentMessage0['mockClear']()
+		// @ts-ignore
 		this.mockSentMessage['mockClear']()
 	}
 	mockWaitForSentMessages () {
@@ -217,7 +233,7 @@ export class SocketMock extends EventEmitter implements Socket {
 	encode (str: string) {
 		return iconv.encode(str, 'utf16-be')
 	}
-	setReplyToHeartBeat (replyToHeartBeat) {
+	setReplyToHeartBeat (replyToHeartBeat: boolean) {
 		this._replyToHeartBeat = replyToHeartBeat
 	}
 }
