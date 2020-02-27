@@ -273,14 +273,16 @@ export namespace Parser {
 		// 	  objProxyPath*
 		// 	  objMetadataPath*
 
-		if (item.Channel) 				addTextElement(xmlItem, 'itemChannel', {}, item.Channel)
-		if (item.EditorialStart) 		addTextElement(xmlItem, 'itemEdStart', {}, item.EditorialStart)
-		if (item.EditorialDuration) 	addTextElement(xmlItem, 'itemEdDur', {}, item.EditorialDuration)
-		if (item.UserTimingDuration) 	addTextElement(xmlItem, 'itemUserTimingDur', {}, item.UserTimingDuration)
-		if (item.Trigger) 				addTextElement(xmlItem, 'itemTrigger', {}, item.Trigger)
-		if (item.MacroIn) 				addTextElement(xmlItem, 'macroIn', {}, item.MacroIn)
-		if (item.MacroOut) 				addTextElement(xmlItem, 'macroOut', {}, item.MacroOut)
-		if (item.MacroOut)				addTextElement(xmlItem, 'mosExternalMetadata', {}, item.MacroOut)
+		if (item.Channel) 							addTextElement(xmlItem, 'itemChannel', {}, item.Channel)
+		if (item.EditorialStart !== undefined) 		addTextElement(xmlItem, 'itemEdStart', {}, item.EditorialStart)
+		if (item.EditorialDuration !== undefined) 	addTextElement(xmlItem, 'itemEdDur', {}, item.EditorialDuration)
+		if (item.UserTimingDuration !== undefined) {
+			addTextElement(xmlItem, 'itemUserTimingDur', {}, item.UserTimingDuration)
+		}
+		if (item.Trigger) 	addTextElement(xmlItem, 'itemTrigger', {}, item.Trigger)
+		if (item.MacroIn) 	addTextElement(xmlItem, 'macroIn', {}, item.MacroIn)
+		if (item.MacroOut) 	addTextElement(xmlItem, 'macroOut', {}, item.MacroOut)
+		if (item.MacroOut)	addTextElement(xmlItem, 'mosExternalMetadata', {}, item.MacroOut)
 		if (item.MosExternalMetaData) {
 			item.MosExternalMetaData.forEach((md) => {
 				let xmlMetaData = metaData2xml(md)
