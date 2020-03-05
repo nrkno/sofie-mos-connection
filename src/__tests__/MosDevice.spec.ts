@@ -11,7 +11,7 @@ require('iconv-lite').encodingExists('utf16-be')
 jest.mock('net')
 
 let setTimeoutOrg = setTimeout
-let delay = (ms) => {
+let delay = (ms: number) => {
 	return new Promise((resolve) => {
 		setTimeoutOrg(resolve, ms)
 	})
