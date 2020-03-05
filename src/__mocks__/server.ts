@@ -49,7 +49,7 @@ export class ServerMock extends EventEmitter implements Server {
 		return instances
 	}
 
-	listen (port) {
+	listen (port: any) {
 
 		this.listenToPort = port
 		setTimeoutOrg(() => {
@@ -90,7 +90,7 @@ export class ServerMock extends EventEmitter implements Server {
 		return socket
 	}
 
-	mockSentMessage (data, encoding) {
+	mockSentMessage (data: any, encoding: any) {
 		encoding = encoding
 		if (this._responses.length) {
 			// send reply:
