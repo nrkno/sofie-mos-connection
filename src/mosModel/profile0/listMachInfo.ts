@@ -33,7 +33,7 @@ export interface IMOSListMachInfo {
 	mosRev: MosString128     // MOS Revision: Text description. 128 chars max.
 
 	supportedProfiles: {
-		deviceType: string,                 // deviceType="NCS"
+		deviceType: 'NCS' | 'MOS',
 		profile0?: boolean,
 		profile1?: boolean,
 		profile2?: boolean,

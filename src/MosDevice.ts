@@ -79,7 +79,7 @@ export class MosDevice implements IMOSDevice {
 	private _idSecondary: string | null
 	private _debug: boolean = false
 
-	private supportedProfiles: {[profile: string]: (boolean | string), deviceType: string} = {
+	private supportedProfiles: {[profile: string]: (boolean | string), deviceType: 'NCS' | 'MOS'} = {
 		deviceType: 'MOS',
 		profile0: false,
 		profile1: false,
