@@ -15,7 +15,8 @@ export class HeartBeat extends MosMessage {
 
   /** */
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
-		let messageBlock = addTextElement(XMLBuilder.create('heartbeat'), 'time', {}, this.time)
-		return messageBlock
+		const heartbeat = XMLBuilder.create('heartbeat')
+		addTextElement(heartbeat, 'time', this.time)
+		return heartbeat
 	}
 }

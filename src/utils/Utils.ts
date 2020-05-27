@@ -156,16 +156,20 @@ export function xml2js (messageString: string): object {
 export function addTextElement (
 	root: XMLBuilder.XMLElement,
 	elementName: string,
-	attributes?: Object, text?: string | number | null | MosString128 | MosTime
+	text?: string | number | null | MosString128 | MosTime,
+	attributes?: { [key: string]: string}
 ): XMLBuilder.XMLElement {
-	root.element(
-		elementName,
-		attributes,
+	const txt = (
 		text === null ?
 			null :
 		text !== undefined ?
 			text.toString() :
 		undefined
 	)
-	return root
+	const element = root.element(
+		elementName,
+		attributes || {},
+		txt
+	)
+	return element
 }

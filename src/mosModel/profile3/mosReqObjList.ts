@@ -13,23 +13,30 @@ export class MosReqObjList extends MosMessage {
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
-		const xml = XMLBuilder.create('mosReqObjList')
-		xml.att('username', this.options.username)
+		const xmlMosReqObjList = XMLBuilder.create('mosReqObjList')
+		xmlMosReqObjList.att('username', this.options.username)
 
-		addTextElement(xml, 'username', {}, this.options.username)
-		addTextElement(xml, 'queryID', {}, this.options.queryID)
-		addTextElement(xml, 'listReturnStart', {}, this.options.listReturnStart)
-		addTextElement(xml, 'listReturnEnd', {}, this.options.listReturnEnd)
-		addTextElement(xml, 'generalSearch', {}, this.options.generalSearch)
-		addTextElement(xml, 'mosSchema', {}, this.options.mosSchema)
+		addTextElement(xmlMosReqObjList, 'username', this.options.username)
+		addTextElement(xmlMosReqObjList, 'queryID', this.options.queryID)
+		addTextElement(xmlMosReqObjList, 'listReturnStart', this.options.listReturnStart)
+		addTextElement(xmlMosReqObjList, 'listReturnEnd', this.options.listReturnEnd)
+		addTextElement(xmlMosReqObjList, 'generalSearch', this.options.generalSearch)
+		addTextElement(xmlMosReqObjList, 'mosSchema', this.options.mosSchema)
 
 		for (const searchGroup of this.options.searchGroups) {
-			const groupEle = addTextElement(xml, 'searchGroup')
+			const xmlSearchGroup = XMLBuilder.create('searchGroup')
 			for (const searchField of searchGroup.searchFields) {
-				addTextElement(groupEle, 'searchField', searchField)
+
+				const attributes: {[key: string]: string} = {}
+				Object.keys(searchField).forEach(key => {
+					// @ts-ignore
+					attributes[key] = searchField[key] + ''
+				})
+				addTextElement(xmlSearchGroup, 'searchField', '', attributes)
 			}
+			xmlMosReqObjList.importDocument(xmlSearchGroup)
 		}
 
-		return xml
+		return xmlMosReqObjList
 	}
 }

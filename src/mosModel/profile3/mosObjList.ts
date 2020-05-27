@@ -14,22 +14,23 @@ export class MosObjList extends MosMessage {
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
-		const xml = XMLBuilder.create('mosObjList')
-		xml.att('username', this.options.username)
+		const xmlMosObjList = XMLBuilder.create('mosObjList')
+		xmlMosObjList.att('username', this.options.username)
 
-		addTextElement(xml, 'queryID', {}, this.options.queryID)
-		addTextElement(xml, 'listReturnStart', {}, this.options.listReturnStart)
-		addTextElement(xml, 'listReturnEnd', {}, this.options.listReturnEnd)
-		addTextElement(xml, 'listReturnTotal', {}, this.options.listReturnTotal)
-		if (this.options.listReturnStatus) addTextElement(xml, 'listReturnStatus', {}, this.options.listReturnStatus)
+		addTextElement(xmlMosObjList, 'queryID', this.options.queryID)
+		addTextElement(xmlMosObjList, 'listReturnStart', this.options.listReturnStart)
+		addTextElement(xmlMosObjList, 'listReturnEnd', this.options.listReturnEnd)
+		addTextElement(xmlMosObjList, 'listReturnTotal', this.options.listReturnTotal)
+		if (this.options.listReturnStatus) addTextElement(xmlMosObjList, 'listReturnStatus', this.options.listReturnStatus)
 
 		if (this.options.list) {
-			const listEl = addTextElement(xml, 'list')
+			const xmlList = XMLBuilder.create('list')
 			for (const object of this.options.list) {
-				listEl.importDocument(Parser.mosObj2xml(object))
+				xmlList.importDocument(Parser.mosObj2xml(object))
 			}
+			xmlMosObjList.importDocument(xmlList)
 		}
 
-		return xml
+		return xmlMosObjList
 	}
 }

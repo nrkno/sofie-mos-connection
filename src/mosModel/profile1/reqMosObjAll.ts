@@ -15,7 +15,7 @@ export class ReqMosObjAll extends MosMessage {
   /** */
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('mosReqAll')
-		addTextElement(root, 'pause', {}, this.pause + '')
+		addTextElement(root, 'pause', this.pause + '')
 		return root
 	}
 }

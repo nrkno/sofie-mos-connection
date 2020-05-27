@@ -21,8 +21,8 @@ export class ROList extends MosMessage {
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roList')
 
-		addTextElement(root, 'roID', {}, this.RO.ID)
-		addTextElement(root, 'roSlug', {}, this.RO.Slug)
+		addTextElement(root, 'roID', this.RO.ID)
+		addTextElement(root, 'roSlug', this.RO.Slug)
 
 		this.RO.Stories.forEach((story: IMOSROStory) => {
 			let xmlStory = Parser.story2xml(story)

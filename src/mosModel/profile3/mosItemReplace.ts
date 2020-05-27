@@ -24,8 +24,8 @@ export class MosItemReplace extends MosMessage {
 		const item = this.options.item
 		const root = XMLBuilder.create('mosItemReplace')
 
-		addTextElement(root, 'roID', {}, this.options.roID)
-		addTextElement(root, 'storyID', {}, this.options.storyID)
+		addTextElement(root, 'roID', this.options.roID)
+		addTextElement(root, 'storyID', this.options.storyID)
 		root.importDocument(Parser.item2xml(item))
 
 		return root

@@ -117,10 +117,10 @@ export namespace Parser {
 	export function story2xml (story: IMOSROStory): XMLBuilder.XMLElement {
 		let xmlStory = XMLBuilder.create('story')
 
-		addTextElement(xmlStory, 'storyID', {}, story.ID)
+		addTextElement(xmlStory, 'storyID', story.ID)
 		// if (story.Slug) addTextElement(xmlStory, 'storySlug', {}, story.)
-		if (story.Slug) addTextElement(xmlStory, 'storySlug', {}, story.Slug)
-		if (story.Number) addTextElement(xmlStory, 'storyNum', {}, story.Number)
+		if (story.Slug) addTextElement(xmlStory, 'storySlug', story.Slug)
+		if (story.Number) addTextElement(xmlStory, 'storyNum', story.Number)
 
 		if (story.MosExternalMetaData) {
 			story.MosExternalMetaData.forEach((md: IMOSExternalMetaData) => {
@@ -241,28 +241,28 @@ export namespace Parser {
 		let xmlObjPaths = XMLBuilder.create('objPaths')
 		paths.forEach((path: IMOSObjectPath) => {
 			if (path.Type === IMOSObjectPathType.PATH) {
-				addTextElement(xmlObjPaths, 'objPath', {
+				addTextElement(xmlObjPaths, 'objPath', path.Target, {
 					techDescription: path.Description
-				}, path.Target)
+				})
 			} else if (path.Type === IMOSObjectPathType.PROXY_PATH) {
-				addTextElement(xmlObjPaths, 'objProxyPath', {
+				addTextElement(xmlObjPaths, 'objProxyPath', path.Target, {
 					techDescription: path.Description
-				}, path.Target)
+				})
 			} else if (path.Type === IMOSObjectPathType.METADATA_PATH) {
-				addTextElement(xmlObjPaths, 'objMetadataPath', {
+				addTextElement(xmlObjPaths, 'objMetadataPath', path.Target, {
 					techDescription: path.Description
-				}, path.Target)
+				})
 			}
 		})
 		return xmlObjPaths
 	}
 	export function item2xml (item: IMOSItem): XMLBuilder.XMLElement {
 		let xmlItem = XMLBuilder.create('item')
-		addTextElement(xmlItem, 'itemID', {}, item.ID)
-		if (item.Slug) 					addTextElement(xmlItem, 'itemSlug', {}, item.Slug)
-		addTextElement(xmlItem, 'objID', {}, item.ObjectID)
-		addTextElement(xmlItem, 'mosID', {}, item.MOSID)
-		if (item.mosAbstract) 			addTextElement(xmlItem, 'mosAbstract', {}, item.mosAbstract)
+		addTextElement(xmlItem, 'itemID', item.ID)
+		if (item.Slug) 					addTextElement(xmlItem, 'itemSlug', item.Slug)
+		addTextElement(xmlItem, 'objID', item.ObjectID)
+		addTextElement(xmlItem, 'mosID', item.MOSID)
+		if (item.mosAbstract) 			addTextElement(xmlItem, 'mosAbstract', item.mosAbstract)
 
 		if (item.Paths) {
 			let xmlObjPaths = objPaths2xml(item.Paths)
@@ -273,16 +273,16 @@ export namespace Parser {
 		// 	  objProxyPath*
 		// 	  objMetadataPath*
 
-		if (item.Channel) 							addTextElement(xmlItem, 'itemChannel', {}, item.Channel)
-		if (item.EditorialStart !== undefined) 		addTextElement(xmlItem, 'itemEdStart', {}, item.EditorialStart)
-		if (item.EditorialDuration !== undefined) 	addTextElement(xmlItem, 'itemEdDur', {}, item.EditorialDuration)
+		if (item.Channel) 							addTextElement(xmlItem, 'itemChannel', item.Channel)
+		if (item.EditorialStart !== undefined) 		addTextElement(xmlItem, 'itemEdStart', item.EditorialStart)
+		if (item.EditorialDuration !== undefined) 	addTextElement(xmlItem, 'itemEdDur', item.EditorialDuration)
 		if (item.UserTimingDuration !== undefined) {
-			addTextElement(xmlItem, 'itemUserTimingDur', {}, item.UserTimingDuration)
+			addTextElement(xmlItem, 'itemUserTimingDur', item.UserTimingDuration)
 		}
-		if (item.Trigger) 	addTextElement(xmlItem, 'itemTrigger', {}, item.Trigger)
-		if (item.MacroIn) 	addTextElement(xmlItem, 'macroIn', {}, item.MacroIn)
-		if (item.MacroOut) 	addTextElement(xmlItem, 'macroOut', {}, item.MacroOut)
-		if (item.MacroOut)	addTextElement(xmlItem, 'mosExternalMetadata', {}, item.MacroOut)
+		if (item.Trigger) 	addTextElement(xmlItem, 'itemTrigger', item.Trigger)
+		if (item.MacroIn) 	addTextElement(xmlItem, 'macroIn', item.MacroIn)
+		if (item.MacroOut) 	addTextElement(xmlItem, 'macroOut', item.MacroOut)
+		if (item.MacroOut)	addTextElement(xmlItem, 'mosExternalMetadata', item.MacroOut)
 		if (item.MosExternalMetaData) {
 			item.MosExternalMetaData.forEach((md) => {
 				let xmlMetaData = metaData2xml(md)
@@ -468,27 +468,27 @@ export namespace Parser {
 		return xml
 	}
 	export function attachMosObj2xml (obj: IMOSObject, xml: XMLBuilder.XMLElement): void {
-		if (obj.ID) addTextElement(xml, 'objID', {}, obj.ID)
-		addTextElement(xml, 'objSlug', {}, obj.Slug)
-		if (obj.MosAbstract) 	addTextElement(xml, 'mosAbstract', {}, obj.MosAbstract)
-		if (obj.Group) 			addTextElement(xml, 'objGroup', {}, obj.Group)
-		addTextElement(xml, 'objType', {}, obj.Type)
-		addTextElement(xml, 'objTB', {}, obj.TimeBase)
-		addTextElement(xml, 'objRev', {}, obj.Revision)
-		addTextElement(xml, 'objDur', {}, obj.Duration)
-		addTextElement(xml, 'status', {}, obj.Status)
-		addTextElement(xml, 'objAir', {}, obj.AirStatus)
+		if (obj.ID) addTextElement(xml, 'objID', obj.ID)
+		addTextElement(xml, 'objSlug', obj.Slug)
+		if (obj.MosAbstract) 	addTextElement(xml, 'mosAbstract', obj.MosAbstract)
+		if (obj.Group) 			addTextElement(xml, 'objGroup', obj.Group)
+		addTextElement(xml, 'objType', obj.Type)
+		addTextElement(xml, 'objTB', obj.TimeBase)
+		addTextElement(xml, 'objRev', obj.Revision)
+		addTextElement(xml, 'objDur', obj.Duration)
+		addTextElement(xml, 'status', obj.Status)
+		addTextElement(xml, 'objAir', obj.AirStatus)
 
 		if (obj.Paths) {
 			let xmlObjPaths = objPaths2xml(obj.Paths)
 			xml.importDocument(xmlObjPaths)
 		}
 
-		addTextElement(xml, 'createdBy', {}, obj.CreatedBy)
-		addTextElement(xml, 'created', {}, obj.Created)
-		if (obj.ChangedBy) addTextElement(xml, 'changedBy', {}, 	obj.ChangedBy)
-		if (obj.Changed) addTextElement(xml, 'changed', {}, 		obj.Changed)
-		if (obj.Description) addTextElement(xml, 'description', {}, 	obj.Description)
+		addTextElement(xml, 'createdBy', obj.CreatedBy)
+		addTextElement(xml, 'created', obj.Created)
+		if (obj.ChangedBy) addTextElement(xml, 'changedBy', obj.ChangedBy)
+		if (obj.Changed) addTextElement(xml, 'changed', obj.Changed)
+		if (obj.Description) addTextElement(xml, 'description', obj.Description)
 		if (obj.MosExternalMetaData) {
 			obj.MosExternalMetaData.forEach((md) => {
 				let xmlMetaData = metaData2xml(md)
