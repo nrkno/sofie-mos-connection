@@ -56,6 +56,7 @@ import {
 	MosReqObjList
 } from './mosModel'
 import { MosMessage } from './mosModel/MosMessage'
+import { ROListAll } from './mosModel/profile2/ROListAll'
 
 export class MosDevice implements IMOSDevice {
 
@@ -132,6 +133,7 @@ export class MosDevice implements IMOSDevice {
 	private _callbackOnMosReqSearchableSchema?: (username: string) => Promise<IMOSSearchableSchema>
 
 	// Profile 4
+	private _callbackOnROReqAll?: () => Promise<IMOSRunningOrder[]>
 	private _callbackOnROStory?: (story: IMOSROFullStory) => Promise<IMOSROAck>
 
 	constructor (
@@ -646,6 +648,13 @@ export class MosDevice implements IMOSDevice {
 				.catch(reject)
 
 			// Profile 4
+			} else if (data.roReqAll && typeof this._callbackOnROReqAll === 'function') {
+				this._callbackOnROReqAll().then((list: IMOSRunningOrder[]) => {
+					let roListAll = new ROListAll()
+					roListAll.ROs = list
+					resolve(roListAll)
+				}).catch(reject)
+
 			} else if (data.roStorySend && typeof this._callbackOnROStory === 'function') {
 				let story: IMOSROFullStory = Parser.xml2FullStory(data.roStorySend)
 				this._callbackOnROStory(story).then((resp: IMOSROAck) => {
@@ -988,6 +997,9 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	/* Profile 4 */
+	onROReqAll (cb: () => Promise<IMOSRunningOrder[]>) {
+		this._callbackOnROReqAll = cb
+	}
 	getAllRunningOrders (): Promise<Array<IMOSRunningOrderBase>> {
 		let message = new ROReqAll()
 		return new Promise((resolve, reject) => {

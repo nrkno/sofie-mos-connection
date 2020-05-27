@@ -125,6 +125,7 @@ export interface IMOSDevice {
 	mosRequestObjectList: (reqObjList: IMosRequestObjectList) => Promise<IMosObjectList>
 	onMosReqObjectAction: (cb: (action: string, obj: IMOSObject) => Promise<IMOSAck>) => void
 	/* Profile 4 */
+	onROReqAll: (cb: () => Promise<IMOSRunningOrder[]>) => void
 	getAllRunningOrders: () => Promise<Array<IMOSRunningOrderBase>> // send roReqAll
 	onROStory: (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) => void // roStorySend
 }
