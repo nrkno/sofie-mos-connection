@@ -86,13 +86,19 @@ export interface IMOSDevice {
 
 	/* Profile 2 */
 	onCreateRunningOrder: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
+	sendCreateRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
 	onReplaceRunningOrder: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
+	sendReplaceRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
 	onDeleteRunningOrder: (cb: (runningOrderId: MosString128) => Promise<IMOSROAck>) => void
+	sendDeleteRunningOrder: (runningOrderId: MosString128) => Promise<IMOSROAck>
 
 	onRequestRunningOrder: (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) => void // get roReq, send roList
-	getRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null> // send roReq, get roList
+	sendRequestRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null> // send roReq, get roList
+	/** @deprecated getRunningOrder is deprecated, use sendRequestRunningOrder instead */
+	getRunningOrder: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>
 
 	onMetadataReplace: (cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>) => void
+	sendMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
 
 	onRunningOrderStatus: (cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>) => void // get roElementStat
 	onStoryStatus: (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) => void // get roElementStat
@@ -105,15 +111,25 @@ export interface IMOSDevice {
 	onReadyToAir: (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) => void
 
 	onROInsertStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) => void
+	sendROInsertStories: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
 	onROInsertItems: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) => void
+	sendROInsertItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
 	onROReplaceStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) => void
+	sendROReplaceStories: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
 	onROReplaceItems: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) => void
+	sendROReplaceItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
 	onROMoveStories: (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) => void
+	sendROMoveStories: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
 	onROMoveItems: (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>) => void
+	sendROMoveItems: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>
 	onRODeleteStories: (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) => void
+	sendRODeleteStories: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>
 	onRODeleteItems: (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>) => void
+	sendRODeleteItems: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>
 	onROSwapStories: (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>) => void
+	sendROSwapStories: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>
 	onROSwapItems: (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) => void
+	sendROSwapItems: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
 	/* Profile 3 */
 	onMosObjCreate: (cb: (object: IMOSObject) => Promise<IMOSAck>) => void
 	mosObjCreate: (object: IMOSObject) => Promise<MOSAck>
@@ -128,6 +144,7 @@ export interface IMOSDevice {
 	onROReqAll: (cb: () => Promise<IMOSRunningOrder[]>) => void
 	getAllRunningOrders: () => Promise<Array<IMOSRunningOrderBase>> // send roReqAll
 	onROStory: (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) => void // roStorySend
+	sendROStory: (story: IMOSROFullStory) => Promise<IMOSROAck>// roStorySend
 }
 export { IMOSListMachInfo }
 export interface IMOSROAction {
