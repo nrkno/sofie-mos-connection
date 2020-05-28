@@ -129,7 +129,7 @@ function checkMessageSnapshot (msg: string) {
 	).toMatchSnapshot()
 
 }
-function checkAckSnapshot (ack: MOSAck) {
+function checkAckSnapshot (ack: MOSAck | IMOSROAck) {
 	const ack2: any = {
 		...ack
 		// messageID: 999
@@ -1028,7 +1028,7 @@ describe('MosDevice: Profile 2', () => {
 
 		})
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.getRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
