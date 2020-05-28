@@ -1,7 +1,7 @@
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
 import { IMOSObject } from '../../api'
-import { Parser } from '../Parser'
+import { XMLMosObject } from '../profile1/xmlConversion'
 
 export class MosListAll extends MosMessage {
 
@@ -18,7 +18,9 @@ export class MosListAll extends MosMessage {
 		let root = XMLBuilder.create('mosListAll')
 
 		this.objs.forEach((obj: IMOSObject) => {
-			root.importDocument(Parser.mosObj2xml(obj))
+			let xmlMosObj = XMLBuilder.create('mosObj')
+			XMLMosObject.toXML(xmlMosObj, obj)
+			root.importDocument(xmlMosObj)
 		})
 
 		return root

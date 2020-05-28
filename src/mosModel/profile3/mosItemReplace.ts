@@ -1,9 +1,9 @@
 import { IMOSItem } from '../../api'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
-import { Parser } from '../Parser'
 import { MosString128 } from '../../dataTypes/mosString128'
 import { addTextElement } from '../../utils/Utils'
+import { XMLMosItem } from '../profile2/xmlConversion'
 
 export interface MosItemReplaceOptions {
 	roID: MosString128
@@ -26,7 +26,8 @@ export class MosItemReplace extends MosMessage {
 
 		addTextElement(root, 'roID', this.options.roID)
 		addTextElement(root, 'storyID', this.options.storyID)
-		root.importDocument(Parser.item2xml(item))
+
+		XMLMosItem.toXML(root, item)
 
 		return root
 	}

@@ -63,7 +63,6 @@ export class ListMachineInfo extends MosMessage {
 
 		let xmlListMachInfo = XMLBuilder.create('listMachInfo')
 		addTextElement(xmlListMachInfo, 'manufacturer', this.info.manufacturer)
-		console.log('this.info.manufacturer', this.info.manufacturer, this.info.manufacturer.toString())
 		addTextElement(xmlListMachInfo, 'model', this.info.model)
 		addTextElement(xmlListMachInfo, 'hwRev', this.info.hwRev)
 		addTextElement(xmlListMachInfo, 'swRev', this.info.swRev)
@@ -82,7 +81,6 @@ export class ListMachineInfo extends MosMessage {
 			addTextElement(xmlSupportedProfiles, 'mosProfile', ((this as any).info.supportedProfiles['profile' + i] ? 'YES' : 'NO')).att('number', i)
 		}
 		xmlListMachInfo.importDocument(xmlSupportedProfiles)
-		console.log('xml', xmlListMachInfo.end({ pretty: true }))
 		return xmlListMachInfo
 	}
 }

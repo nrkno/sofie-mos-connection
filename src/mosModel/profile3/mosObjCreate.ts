@@ -1,7 +1,7 @@
 import { IMOSObject } from '../../api'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
-import { Parser } from '../Parser'
+import { XMLMosObject } from '../profile1/xmlConversion'
 
 export class MosObjCreate extends MosMessage {
 	private object: IMOSObject
@@ -15,7 +15,7 @@ export class MosObjCreate extends MosMessage {
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let xml = XMLBuilder.create('mosObjCreate')
 
-		Parser.attachMosObj2xml(this.object, xml)
+		XMLMosObject.toXML(xml, this.object)
 
 		return xml
 	}

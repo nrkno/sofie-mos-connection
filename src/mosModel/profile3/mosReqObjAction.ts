@@ -1,7 +1,7 @@
 import { IMOSObject } from '../../api'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
-import { Parser } from '../Parser'
+import { XMLMosObject } from '../profile1/xmlConversion'
 
 export interface MosReqObjActionOptions {
 	object: IMOSObject
@@ -22,7 +22,7 @@ export class MosReqObjAction extends MosMessage {
 		xml.att('operation', this.options.action)
 		if (this.options.action !== 'NEW') xml.att('objID', this.options.object.ID)
 
-		Parser.attachMosObj2xml(this.options.object, xml)
+		XMLMosObject.toXML(xml, this.options.object)
 
 		return xml
 	}

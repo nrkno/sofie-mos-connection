@@ -1,8 +1,8 @@
 import { IMosObjectList } from '../../api'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
-import { Parser } from '../Parser'
 import { addTextElement } from '../../utils/Utils'
+import { XMLMosObjects } from '../profile1/xmlConversion'
 
 export class MosObjList extends MosMessage {
 	private options: IMosObjectList
@@ -25,9 +25,8 @@ export class MosObjList extends MosMessage {
 
 		if (this.options.list) {
 			const xmlList = XMLBuilder.create('list')
-			for (const object of this.options.list) {
-				xmlList.importDocument(Parser.mosObj2xml(object))
-			}
+			XMLMosObjects.toXML(xmlList, this.options.list)
+
 			xmlMosObjList.importDocument(xmlList)
 		}
 
