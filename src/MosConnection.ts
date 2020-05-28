@@ -409,7 +409,32 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 						// No MOS-device found in the register
 						// Register a new mosDevice to use for this connection:
 						if (ncsID === this._conf.mosID) {
-							mosDevice = this._registerMosDevice(this._conf.mosID, mosID, null, null, null)
+							// Setup a "primary" connection back to the mos-device, so that we can automatically
+							// send commands to it through the mosDevice
+
+							let primary = new NCSServerConnection(
+								mosID,
+								remoteAddress,
+								this._conf.mosID,
+								undefined,
+								this._debug
+							)
+							this._ncsConnections[remoteAddress] = primary
+
+							primary.on('rawMessage', (type: string, message: string) => {
+								this.emit('rawMessage', 'primary', type, message)
+							})
+							primary.on('warning', (str: string) => {
+								this.emit('warning', 'primary: ' + str)
+							})
+							primary.on('error', (str: string) => {
+								this.emit('error', 'primary: ' + str)
+							})
+
+							primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower', true)
+							primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper', true)
+
+							mosDevice = this._registerMosDevice(this._conf.mosID, mosID, null, primary, null)
 						} else if (mosID === this._conf.mosID) {
 							mosDevice = await this.connect({
 								primary: {
@@ -449,7 +474,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 						let msg = new MOSAck()
 						msg.ID = new MosString128(0)
 						msg.Revision = 0
-						msg.Description = new MosString128('MosDevice not found')
+						msg.Description = new MosString128(`MosDevice "${ncsID + '_' + mosID}" not found`)
 						msg.Status = IMOSAckStatus.NACK
 						sendReply(msg) // TODO: Need tests
 					}
