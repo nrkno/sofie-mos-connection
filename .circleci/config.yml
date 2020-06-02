@@ -204,7 +204,7 @@ workflows:
   version: 2
   build-test-publish:
     jobs:
-      - test-latest(node-12)
+      - test-node-12
       - test-node-10
       - test-node-latest
       - validate-dependencies:
@@ -222,7 +222,7 @@ workflows:
       - release:
           requires:
             - validate-dependencies
-            - test-latest(node-12)
+            - test-node-12
             - test-node-10
           filters:
             branches:
@@ -230,7 +230,7 @@ workflows:
                 - master
       - prerelease:
           requires:
-            - test-latest(node-12)
+            - test-node-12
             - test-node-10
           filters:
             tags:
