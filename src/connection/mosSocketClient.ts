@@ -428,6 +428,7 @@ export class MosSocketClient extends EventEmitter {
   /** */
 	private _onError (error: Error) {
 		// dispatch error!!!!!
+		this.emit('error', `Socket event error: ${error.message}`)
 		if (this._debug) console.log(`Socket event error: ${error.message}`)
 	}
 
@@ -436,6 +437,7 @@ export class MosSocketClient extends EventEmitter {
 		this.connected = false
 		// this._readyToSendMessage = false
 		if (hadError) {
+			this.emit('warning', 'Scoket closed with error')
 			if (this._debug) console.log('Socket closed with error')
 		} else {
 			if (this._debug) console.log('Socket closed without error')
@@ -444,6 +446,7 @@ export class MosSocketClient extends EventEmitter {
 		this.emit(SocketConnectionEvent.DISCONNECTED)
 
 		if (this._shouldBeConnected === true) {
+			this.emit('warning', 'Socket shouod reconnect')
 			if (this._debug) console.log('Socket should reconnect')
 			this.connect()
 		}
