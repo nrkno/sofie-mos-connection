@@ -201,7 +201,7 @@ describe('MosDevice: Profile 0', () => {
 		})
 
 		expect(errorReported).toHaveBeenCalledTimes(1)
-		
+
 		// Test proper dispose:
 		await mosDevice.dispose()
 
