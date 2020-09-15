@@ -446,7 +446,7 @@ export class MosSocketClient extends EventEmitter {
 		this.emit(SocketConnectionEvent.DISCONNECTED)
 
 		if (this._shouldBeConnected === true) {
-			this.emit('warning', 'Socket shouod reconnect')
+			this.emit('warning', 'Socket should reconnect')
 			if (this._debug) console.log('Socket should reconnect')
 			this.connect()
 		}
