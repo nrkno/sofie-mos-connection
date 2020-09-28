@@ -92,6 +92,8 @@ describe('MosDevice: Profile 0', () => {
 		expect(connMocks[2].connect.mock.calls[0][1]).toEqual('127.0.0.1')
 
 		let connectionStatusChanged = jest.fn()
+		let errorReported = jest.fn()
+		mos.on('error', errorReported)
 
 		mosDevice.onConnectionChange((connectionStatus: IMOSConnectionStatus) => {
 			connectionStatusChanged(connectionStatus)
@@ -127,6 +129,8 @@ describe('MosDevice: Profile 0', () => {
 			// SecondaryStatus: string // if not connected this will contain human-readable error-message
 		})
 
+		expect(errorReported).toHaveBeenCalledTimes(2)
+
 		// @todo: add timeout test
 		// mock cause timeout
 		// expect(connectionStatusChanged).toHaveBeenCalledTimes(1)
@@ -159,6 +163,8 @@ describe('MosDevice: Profile 0', () => {
 		expect(connMocks[2].connect.mock.calls[0][1]).toEqual('127.0.0.1')
 
 		let connectionStatusChanged = jest.fn()
+		let errorReported = jest.fn()
+		mos.on('error', errorReported)
 
 		mosDevice.onConnectionChange((connectionStatus: IMOSConnectionStatus) => {
 			connectionStatusChanged(connectionStatus)
@@ -193,6 +199,8 @@ describe('MosDevice: Profile 0', () => {
 			SecondaryConnected: true,
 			SecondaryStatus: '' // if not connected this will contain human-readable error-message
 		})
+
+		expect(errorReported).toHaveBeenCalledTimes(1)
 
 		// Test proper dispose:
 		await mosDevice.dispose()
