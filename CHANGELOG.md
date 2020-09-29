@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.9.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.10...0.9.0) (2020-09-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop support for node 8
+
+### Features
+
+* drop support for node 8 ([d42e556](https://github.com/nrkno/tv-automation-mos-connection/commit/d42e55601f1a6b5e3d5b8d12829ec88e3f0a9eb8))
+* drop support for node 8 ([9a2d44c](https://github.com/nrkno/tv-automation-mos-connection/commit/9a2d44c07c6803a09385f30864035cfec708f272))
+
 ### [0.8.10](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.9...0.8.10) (2020-03-24)
 
 
