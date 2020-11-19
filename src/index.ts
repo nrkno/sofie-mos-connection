@@ -3,7 +3,8 @@ export * from './MosConnection'
 export * from './api'
 export {
 	IConnectionConfig,
-	ConnectionConfig
+	ConnectionConfig,
+	IProfiles
 } from './config/connectionConfig'
 
 export { MosString128 } from './dataTypes/mosString128'

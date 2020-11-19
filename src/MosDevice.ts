@@ -85,7 +85,17 @@ export class MosDevice implements IMOSDevice {
 	private _idSecondary: string | null
 	private _debug: boolean = false
 
-	private supportedProfiles: {[profile: string]: (boolean | string), deviceType: 'NCS' | 'MOS'} = {
+	private supportedProfiles: {
+		deviceType: 'NCS' | 'MOS',
+		profile0: boolean,
+		profile1: boolean,
+		profile2: boolean,
+		profile3: boolean,
+		profile4: boolean,
+		profile5: boolean,
+		profile6: boolean,
+		profile7: boolean
+	} = {
 		deviceType: 'MOS',
 		profile0: false,
 		profile1: false,
@@ -96,6 +106,10 @@ export class MosDevice implements IMOSDevice {
 		profile6: false,
 		profile7: false
 	} // Use same names as IProfiles?
+
+	/** If set, will do more checks that mos-protocol is properly implemented */
+	private _strict: boolean | undefined
+	private _disposed: boolean = false
 
 	// private _profiles: ProfilesSupport
 	private _primaryConnection: NCSServerConnection | null = null
@@ -148,7 +162,8 @@ export class MosDevice implements IMOSDevice {
 		connectionConfig: IConnectionConfig,
 		primaryConnection: NCSServerConnection | null,
 		secondaryConnection: NCSServerConnection | null,
-		offSpecFailover?: boolean
+		offSpecFailover?: boolean,
+		strict?: boolean
 	) {
 		// this._id = new MosString128(connectionConfig.mosID).toString()
 		this._idPrimary = idPrimary
@@ -166,6 +181,8 @@ export class MosDevice implements IMOSDevice {
 		this.opTime = new MosTime()
 		this.mosRev = new MosString128('2.8.5')
 
+		this._strict = strict
+
 		if (connectionConfig) {
 			if (connectionConfig.profiles['0']) this.supportedProfiles.profile0 = true
 			if (connectionConfig.profiles['1']) this.supportedProfiles.profile1 = true
@@ -175,6 +192,7 @@ export class MosDevice implements IMOSDevice {
 			if (connectionConfig.profiles['5']) this.supportedProfiles.profile5 = true
 			if (connectionConfig.profiles['6']) this.supportedProfiles.profile6 = true
 			if (connectionConfig.profiles['7']) this.supportedProfiles.profile7 = true
+			if (connectionConfig.isNCS) this.supportedProfiles.deviceType = 'NCS'
 			if (connectionConfig.debug) this._debug = connectionConfig.debug
 		}
 		if (primaryConnection) {
@@ -191,6 +209,16 @@ export class MosDevice implements IMOSDevice {
 			this._secondaryConnection.onConnectionChange(() => this._emitConnectionChange())
 		}
 		this._currentConnection = this._primaryConnection || this._primaryConnection || null
+		if (this._strict) {
+			setTimeout(() => {
+				if (this._disposed) return
+				try {
+					this._checkProfileValidness()
+				} catch (e) {
+					console.error(e)
+				}
+			}, 1000)
+		}
 	}
 	/** True if MOS-device has connection to server (can send messages) */
 	get hasConnection (): boolean {
@@ -1135,6 +1163,9 @@ export class MosDevice implements IMOSDevice {
 	setDebug (debug: boolean) {
 		this._debug = debug
 	}
+	checkProfileValidness (): void {
+		this._checkProfileValidness()
+	}
 
 	private executeCommand (message: MosMessage, resend?: boolean): Promise<any> {
 		if (this._currentConnection) {
@@ -1202,5 +1233,99 @@ export class MosDevice implements IMOSDevice {
 	/** throws if there is no connection */
 	private _checkCurrentConnection () {
 		if (!this._currentConnection) throw new Error(`Unable to send message due to no current connection`)
+	}
+	/** throws if something's wrong
+	 */
+	private _checkProfileValidness (): void {
+		if (!this._strict) return
+		/** For MOS-devices: Require a callback to have been set */
+		const requireCallback = (profile: string, callbackName: string, method: Function) => {
+			// @ts-ignore no index signature
+			if (!this[callbackName]) {
+				throw new Error(`Error: This MOS-device is configured to support Profile ${profile}, but callback ${method.name} has not been set!`)
+			}
+		}
+		const requireMOSCallback = (profile: string, callbackName: string, method: Function) => {
+			if (this.supportedProfiles.deviceType !== 'MOS') return
+			requireCallback(profile, callbackName, method)
+		}
+		// const requireNCSCallback = (profile: string, callbackName: string, method: Function) => {
+		// 	if (this.supportedProfiles.deviceType !== 'NCS') return
+		// 	requireCallback(profile, callbackName, method)
+		// }
+		/** Require another profile to have been set  */
+		const requireProfile = (profile: string, requiredProfile: string) => {
+			// @ts-ignore no index signature
+			if (!this.supportedProfiles[requiredProfile]) {
+				throw new Error(`Error: This MOS-device is configured to support Profile ${profile}, therefore it must also support Profile ${requireProfile}!`)
+			}
+		}
+		if (this.supportedProfiles.profile0) {
+			requireCallback('0', '_callbackOnGetMachineInfo', this.onGetMachineInfo)
+			requireCallback('0', '_callbackOnConnectionChange', this.onConnectionChange)
+		}
+		if (this.supportedProfiles.profile1) {
+			requireProfile('1', '0')
+			requireMOSCallback('1', '_callbackOnRequestMOSOBject', this.onRequestMOSObject)
+			requireMOSCallback('1', '_callbackOnRequestAllMOSObjects', this.onRequestAllMOSObjects)
+		}
+		if (this.supportedProfiles.profile2) {
+			requireProfile('2', '0')
+			requireProfile('2', '1')
+			requireMOSCallback('2', '_callbackOnCreateRunningOrder', this.onCreateRunningOrder)
+			requireMOSCallback('2', '_callbackOnReplaceRunningOrder', this.onReplaceRunningOrder)
+			requireMOSCallback('2', '_callbackOnDeleteRunningOrder', this.onDeleteRunningOrder)
+			requireMOSCallback('2', '_callbackOnRequestRunningOrder', this.onRequestRunningOrder)
+			requireMOSCallback('2', '_callbackOnMetadataReplace', this.onMetadataReplace)
+			requireMOSCallback('2', '_callbackOnRunningOrderStatus', this.onRunningOrderStatus)
+			requireMOSCallback('2', '_callbackOnStoryStatus', this.onStoryStatus)
+			requireMOSCallback('2', '_callbackOnItemStatus', this.onItemStatus)
+			requireMOSCallback('2', '_callbackOnReadyToAir', this.onReadyToAir)
+			requireMOSCallback('2', '_callbackOnROInsertStories', this.onROInsertStories)
+			requireMOSCallback('2', '_callbackOnROInsertItems', this.onROInsertItems)
+			requireMOSCallback('2', '_callbackOnROReplaceStories', this.onROReplaceStories)
+			requireMOSCallback('2', '_callbackOnROReplaceItems', this.onROReplaceItems)
+			requireMOSCallback('2', '_callbackOnROMoveStories', this.onROMoveStories)
+			requireMOSCallback('2', '_callbackOnROMoveItems', this.onROMoveItems)
+			requireMOSCallback('2', '_callbackOnRODeleteStories', this.onRODeleteStories)
+			requireMOSCallback('2', '_callbackOnRODeleteItems', this.onRODeleteItems)
+			requireMOSCallback('2', '_callbackOnROSwapStories', this.onROSwapStories)
+			requireMOSCallback('2', '_callbackOnROSwapItems', this.onROSwapItems)
+		}
+		if (this.supportedProfiles.profile3) {
+			requireProfile('3', '0')
+			requireProfile('3', '1')
+			requireProfile('3', '2')
+			requireMOSCallback('3', '_callbackOnMosItemReplace', this.onMosItemReplace)
+			requireMOSCallback('3', '_callbackOnMosObjCreate', this.onMosObjCreate)
+			requireMOSCallback('3', '_callbackOnMosObjAction', this.onMosReqObjectAction)
+			requireMOSCallback('3', '_callbackOnMosReqObjList', this.onMosReqObjectList)
+			requireMOSCallback('3', '_callbackOnMosReqSearchableSchema', this.onMosReqSearchableSchema)
+		}
+		if (this.supportedProfiles.profile4) {
+			requireProfile('4', '0')
+			requireProfile('4', '1')
+			requireProfile('4', '2')
+			requireMOSCallback('4', '_callbackOnROReqAll', this.onROReqAll)
+			requireMOSCallback('4', '_callbackOnROStory', this.onROStory)
+		}
+		if (this.supportedProfiles.profile5) {
+			requireProfile('5', '0')
+			requireProfile('5', '1')
+			requireProfile('5', '2')
+			throw new Error('Erorr: Profile 5 is not currently implemented!')
+		}
+		if (this.supportedProfiles.profile6) {
+			requireProfile('6', '0')
+			requireProfile('6', '1')
+			requireProfile('6', '2')
+			throw new Error('Erorr: Profile 6 is not currently implemented!')
+		}
+		if (this.supportedProfiles.profile7) {
+			requireProfile('7', '0')
+			requireProfile('7', '1')
+			requireProfile('7', '2')
+			throw new Error('Erorr: Profile 7 is not currently implemented!')
+		}
 	}
 }

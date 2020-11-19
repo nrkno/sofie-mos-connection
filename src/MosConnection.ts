@@ -256,7 +256,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		}
 		return 'Warning: Not MOS compatible'
 	}
-	public setDebug (debug: boolean) {
+	public setDebug (debug: boolean): void {
 		this._debug = debug
 
 		this.getDevices().forEach((device: MosDevice) => {
@@ -280,7 +280,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	): MosDevice {
 		let id0 = myMosID + '_' + theirMosId0
 		let id1 = (theirMosId1 ? myMosID + '_' + theirMosId1 : null)
-		let mosDevice = new MosDevice(id0, id1, this._conf, primary, secondary, this._conf.offspecFailover)
+		let mosDevice = new MosDevice(id0, id1, this._conf, primary, secondary, this._conf.offspecFailover, this._conf.strict)
 		mosDevice.setDebug(this._debug)
 		// Add mosDevice to register:
 		if (this._mosDevices[id0]) {
