@@ -12,3 +12,7 @@ export { MosDuration } from './dataTypes/mosDuration'
 export { IMOSScope, IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
 export { MosTime } from './dataTypes/mosTime'
 export { MosDevice } from './MosDevice'
+
+export {
+	MosItemReplaceOptions
+} from './mosModel'

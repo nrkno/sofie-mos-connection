@@ -77,15 +77,49 @@ export interface IMOSDevice {
 	getConnectionStatus: () => IMOSConnectionStatus
 
 	/* Profile 1 */
+	/**
+	 * Contains information that describes a unique MOS Object to the NCS.
+	 * The NCS uses this information to search for and reference the MOS Object.
+	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObj
+	 */
+	sendMOSObject (obj: IMOSObject): Promise<IMOSAck>
+	/**
+	 * Request from the NCS for a description of an Object.
+	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqObj
+	 */
 	onRequestMOSObject: (cb: (objId: string) => Promise<IMOSObject | null>) => void
-	onRequestAllMOSObjects: (cb: (pause: number) => Promise<Array< IMOSObject> | IMOSAck>) => void
+	/**
+	 * Message used by the NCS to request the description of an object.
+	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqObj
+	 */
 	getMOSObject: (objId: MosString128) => Promise<IMOSObject>
+	/**
+	 * Request from the NCS for all Objects.
+	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqAll
+	 */
+	onRequestAllMOSObjects: (cb: () => Promise<Array<IMOSObject>>) => void
+	/**
+	 * Method for the NCS to request the MOS to send it a mosObj message for every Object in the MOS.
+	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqAll
+	 */
 	getAllMOSObjects: () => Promise<Array<IMOSObject>>
-	setMOSObject (obj: IMOSObject): Promise<IMOSAck>
-	setAllMOSObjects (objs: IMOSObject[]): Promise<IMOSAck>
+	/**
+	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosListAll
+	 * @param objs List of mosObjects to send
+	 */
+	sendAllMOSObjects (objs: IMOSObject[]): Promise<IMOSAck>
 
+	// ============================================================================================
 	/* Profile 2 */
+	/**
+	 * Message received from the NCS to the MOS that defines a new Running Order.
+	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roCreate
+	 */
 	onCreateRunningOrder: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
+	/**
+	 * Message from the NCS to the MOS that defines a new Running Order.
+	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roCreate
+	 */
 	sendCreateRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
 	onReplaceRunningOrder: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
 	sendReplaceRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>

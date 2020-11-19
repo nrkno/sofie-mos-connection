@@ -53,7 +53,9 @@ import {
 	MosItemReplaceOptions,
 	MosItemReplace,
 	MosReqSearchableSchema,
-	MosReqObjList
+	MosReqObjList,
+	ROElementStatOptionsStory,
+	ROElementStatOptionsRunningOrder
 } from './mosModel'
 import { MosMessage } from './mosModel/MosMessage'
 import { ROListAll } from './mosModel/profile2/ROListAll'
@@ -122,7 +124,7 @@ export class MosDevice implements IMOSDevice {
 
 	// Profile 1
 	private _callbackOnRequestMOSOBject?: (objId: string) => Promise<IMOSObject | null>
-	private _callbackOnRequestAllMOSObjects?: (pause: number) => Promise<Array<IMOSObject> | IMOSAck>
+	private _callbackOnRequestAllMOSObjects?: () => Promise<Array<IMOSObject>>
 
 	// Profile 2
 	private _callbackOnCreateRunningOrder?: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
@@ -290,18 +292,39 @@ export class MosDevice implements IMOSDevice {
 				}).catch(reject)
 			} else if (data.mosReqAll && typeof this._callbackOnRequestAllMOSObjects === 'function') {
 				const pause = data.mosReqAll.pause || 0
-				this._callbackOnRequestAllMOSObjects(pause)
-				.then(resp => {
-					if (Array.isArray(resp)) {
-						let list = new MosListAll(resp)
-						resolve(list)
+				this._callbackOnRequestAllMOSObjects()
+				.then(mosObjects => {
+					const mosAck = new MOSAck()
+					resolve(mosAck)
+
+					// spec: Pause, when greater than zero, indicates the number of seconds to pause
+					// between individual mosObj messages.
+					// Pause of zero indicates that all objects will be sent using the mosListAll message..
+					if (pause > 0) {
+						if (mosObjects.length) {
+							const firstObject = mosObjects.shift() as IMOSObject
+							let resp = new MosObj(firstObject)
+							resolve(resp)
+							const sendNextObject = () => {
+								if (this._disposed) return
+								const nextObject = mosObjects.shift()
+								if (nextObject) {
+									this.sendMOSObject(nextObject)
+									.then(() => {
+										setTimeout(sendNextObject, pause * 1000)
+									})
+									.catch(e => {
+										console.error('Error in async mosObj response to mosReqAll', e)
+									})
+								}
+							}
+							setTimeout(sendNextObject, pause * 1000)
+						}
 					} else {
-						const mosAck = new MOSAck()
-						mosAck.ID = resp.ID
-						mosAck.Revision = resp.Revision
-						mosAck.Status = resp.Status
-						mosAck.Description = resp.Description
-						resolve(mosAck)
+						this.sendAllMOSObjects(mosObjects)
+						.catch(e => {
+							console.error('Error in async mosListAll response to mosReqAll', e)
+						})
 					}
 				}).catch(reject)
 			// Profile 2:
@@ -761,11 +784,29 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	/* Profile 1 */
+	sendMOSObject (obj: IMOSObject): Promise<IMOSAck> {
+		let message = new MosObj(obj)
+		return new Promise((resolve, reject) => {
+			if (this._currentConnection) {
+				this.executeCommand(message)
+					.then(data => {
+						if (data.mos) {
+							let ack: IMOSAck = Parser.xml2Ack(data.mos.mosAck)
+							resolve(ack)
+						} else {
+							reject('Unknown response')
+						}
+					})
+					.catch(reject)
+			}
+		})
+	}
+
 	onRequestMOSObject (cb: (objId: string) => Promise<IMOSObject | null>) {
 		this._callbackOnRequestMOSOBject = cb
 	}
 
-	onRequestAllMOSObjects (cb: (pause: number) => Promise<Array<IMOSObject> | IMOSAck>) {
+	onRequestAllMOSObjects (cb: () => Promise<Array<IMOSObject>>) {
 		this._callbackOnRequestAllMOSObjects = cb
 	}
 
@@ -805,25 +846,7 @@ export class MosDevice implements IMOSDevice {
 		})
 	}
 
-	setMOSObject (obj: IMOSObject): Promise<IMOSAck> {
-		let message = new MosObj(obj)
-		return new Promise((resolve, reject) => {
-			if (this._currentConnection) {
-				this.executeCommand(message)
-					.then(data => {
-						if (data.mos) {
-							let ack: IMOSAck = Parser.xml2Ack(data.mos.mosAck)
-							resolve(ack)
-						} else {
-							reject('Unknown response')
-						}
-					})
-					.catch(reject)
-			}
-		})
-	}
-
-	setAllMOSObjects (objs: IMOSObject[]): Promise<IMOSAck> {
+	sendAllMOSObjects (objs: IMOSObject[]): Promise<IMOSAck> {
 		let message = new MosListAll(objs)
 		return new Promise((resolve, reject) => {
 			if (this._currentConnection) {
@@ -912,8 +935,25 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRunningOrderStatus = cb
 	}
 
+	async sendRunningOrderStatus (status: ROElementStatOptionsRunningOrder): Promise<IMOSROAck> {
+		this._checkCurrentConnection()
+		let message = new ROElementStat(status)
+		const data = await this.executeCommand(message)
+		this._handleBadResponseData(data)
+		return Parser.xml2ROAck(data.mos.roAck)
+	}
+
+	/** Set up a callback to be called when a roElementStat message for a story is received */
 	onStoryStatus (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) {
 		this._callbackOnStoryStatus = cb
+	}
+
+	async sendStoryStatus (status: ROElementStatOptionsStory): Promise<IMOSROAck> {
+		this._checkCurrentConnection()
+		let message = new ROElementStat(status)
+		const data = await this.executeCommand(message)
+		this._handleBadResponseData(data)
+		return Parser.xml2ROAck(data.mos.roAck)
 	}
 
 	onItemStatus (cb: (status: IMOSItemStatus) => Promise<IMOSROAck>) {
