@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MosDevice: Profile 1 getAllMOSObjects 1`] = `
+exports[`Profile 1 getAllMOSObjects 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -11,7 +11,7 @@ exports[`MosDevice: Profile 1 getAllMOSObjects 1`] = `
 </mos>"
 `;
 
-exports[`MosDevice: Profile 1 getAllMOSObjects 2`] = `
+exports[`Profile 1 getAllMOSObjects 2`] = `
 Array [
   Object {
     "AirStatus": undefined,
@@ -183,7 +183,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 1 getMOSObject 1`] = `
+exports[`Profile 1 getMOSObject 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -194,7 +194,7 @@ exports[`MosDevice: Profile 1 getMOSObject 1`] = `
 </mos>"
 `;
 
-exports[`MosDevice: Profile 1 getMOSObject 2`] = `
+exports[`Profile 1 getMOSObject 2`] = `
 Object {
   "AirStatus": "READY",
   "Changed": MosTime {
@@ -329,13 +329,13 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 1 onRequestAllMOSObjects 1`] = `
+exports[`Profile 1 onRequestAllMOSObjects 1`] = `
 Array [
   Array [],
 ]
 `;
 
-exports[`MosDevice: Profile 1 onRequestAllMOSObjects 2`] = `
+exports[`Profile 1 onRequestAllMOSObjects 2`] = `
 Object {
   "mos": Object {
     "messageID": Object {
@@ -490,7 +490,7 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 1 onRequestMOSObject 1`] = `
+exports[`Profile 1 onRequestMOSObject 1`] = `
 Array [
   Array [
     "M000123",
@@ -498,7 +498,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 1 onRequestMOSObject 2`] = `
+exports[`Profile 1 onRequestMOSObject 2`] = `
 Object {
   "mos": Object {
     "messageID": Object {
@@ -597,7 +597,7 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 2 sendRequestRunningOrder 1`] = `
+exports[`Profile 2 sendRequestRunningOrder 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -608,7 +608,7 @@ exports[`MosDevice: Profile 2 sendRequestRunningOrder 1`] = `
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 sendRequestRunningOrder 2`] = `
+exports[`Profile 2 sendRequestRunningOrder 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
@@ -717,7 +717,7 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 2 onCreateRunningOrder 1`] = `
+exports[`Profile 2 onCreateRunningOrder 1`] = `
 Array [
   Array [
     Object {
@@ -839,7 +839,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onCreateRunningOrder: <mos>
+exports[`Profile 2 onCreateRunningOrder: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1638</messageID>
@@ -859,7 +859,7 @@ exports[`MosDevice: Profile 2 onCreateRunningOrder: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onDeleteRunningOrder 1`] = `
+exports[`Profile 2 onDeleteRunningOrder 1`] = `
 Array [
   Array [
     49478285,
@@ -867,7 +867,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onDeleteRunningOrder: <mos>
+exports[`Profile 2 onDeleteRunningOrder: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1640</messageID>
@@ -887,7 +887,7 @@ exports[`MosDevice: Profile 2 onDeleteRunningOrder: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onItemStatus 1`] = `
+exports[`Profile 2 onItemStatus 1`] = `
 Array [
   Array [
     Object {
@@ -918,7 +918,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onItemStatus: <mos>
+exports[`Profile 2 onItemStatus: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1645</messageID>
@@ -938,7 +938,7 @@ exports[`MosDevice: Profile 2 onItemStatus: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onMetadataReplace 1`] = `
+exports[`Profile 2 onMetadataReplace 1`] = `
 Array [
   Array [
     Object {
@@ -975,7 +975,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onMetadataReplace: <mos>
+exports[`Profile 2 onMetadataReplace: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1642</messageID>
@@ -995,7 +995,7 @@ exports[`MosDevice: Profile 2 onMetadataReplace: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onRODeleteItems 1`] = `
+exports[`Profile 2 onRODeleteItems 1`] = `
 Array [
   Array [
     Object {
@@ -1018,7 +1018,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onRODeleteItems: <mos>
+exports[`Profile 2 onRODeleteItems: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1655</messageID>
@@ -1038,7 +1038,7 @@ exports[`MosDevice: Profile 2 onRODeleteItems: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onRODeleteStories 1`] = `
+exports[`Profile 2 onRODeleteStories 1`] = `
 Array [
   Array [
     Object {
@@ -1055,7 +1055,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onRODeleteStories: <mos>
+exports[`Profile 2 onRODeleteStories: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1654</messageID>
@@ -1075,7 +1075,7 @@ exports[`MosDevice: Profile 2 onRODeleteStories: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onROInsertItems 1`] = `
+exports[`Profile 2 onROInsertItems 1`] = `
 Array [
   Array [
     Object {
@@ -1127,7 +1127,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onROInsertItems: <mos>
+exports[`Profile 2 onROInsertItems: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1648</messageID>
@@ -1147,7 +1147,7 @@ exports[`MosDevice: Profile 2 onROInsertItems: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onROInsertStories 1`] = `
+exports[`Profile 2 onROInsertStories 1`] = `
 Array [
   Array [
     Object {
@@ -1217,7 +1217,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onROInsertStories: <mos>
+exports[`Profile 2 onROInsertStories: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1647</messageID>
@@ -1237,7 +1237,7 @@ exports[`MosDevice: Profile 2 onROInsertStories: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onROMoveItems 1`] = `
+exports[`Profile 2 onROMoveItems 1`] = `
 Array [
   Array [
     Object {
@@ -1263,7 +1263,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onROMoveItems: <mos>
+exports[`Profile 2 onROMoveItems: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1653</messageID>
@@ -1283,7 +1283,7 @@ exports[`MosDevice: Profile 2 onROMoveItems: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onROMoveStories 1`] = `
+exports[`Profile 2 onROMoveStories 1`] = `
 Array [
   Array [
     Object {
@@ -1306,7 +1306,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onROMoveStories: <mos>
+exports[`Profile 2 onROMoveStories: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1652</messageID>
@@ -1326,7 +1326,7 @@ exports[`MosDevice: Profile 2 onROMoveStories: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onROMoveStory 1`] = `
+exports[`Profile 2 onROMoveStory 1`] = `
 Array [
   Array [
     Object {
@@ -1346,7 +1346,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onROMoveStory: <mos>
+exports[`Profile 2 onROMoveStory: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1651</messageID>
@@ -1366,7 +1366,7 @@ exports[`MosDevice: Profile 2 onROMoveStory: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onROReplaceItems 1`] = `
+exports[`Profile 2 onROReplaceItems 1`] = `
 Array [
   Array [
     Object {
@@ -1418,7 +1418,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onROReplaceItems: <mos>
+exports[`Profile 2 onROReplaceItems: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1650</messageID>
@@ -1438,7 +1438,7 @@ exports[`MosDevice: Profile 2 onROReplaceItems: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onROReplaceStories 1`] = `
+exports[`Profile 2 onROReplaceStories 1`] = `
 Array [
   Array [
     Object {
@@ -1508,7 +1508,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onROReplaceStories: <mos>
+exports[`Profile 2 onROReplaceStories: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1649</messageID>
@@ -1528,7 +1528,7 @@ exports[`MosDevice: Profile 2 onROReplaceStories: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onROSwapItems 1`] = `
+exports[`Profile 2 onROSwapItems 1`] = `
 Array [
   Array [
     Object {
@@ -1549,7 +1549,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onROSwapItems: <mos>
+exports[`Profile 2 onROSwapItems: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1657</messageID>
@@ -1569,7 +1569,7 @@ exports[`MosDevice: Profile 2 onROSwapItems: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onROSwapStories 1`] = `
+exports[`Profile 2 onROSwapStories 1`] = `
 Array [
   Array [
     Object {
@@ -1587,7 +1587,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onROSwapStories: <mos>
+exports[`Profile 2 onROSwapStories: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1656</messageID>
@@ -1607,7 +1607,7 @@ exports[`MosDevice: Profile 2 onROSwapStories: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onReadyToAir 1`] = `
+exports[`Profile 2 onReadyToAir 1`] = `
 Array [
   Array [
     Object {
@@ -1620,7 +1620,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onReadyToAir: <mos>
+exports[`Profile 2 onReadyToAir: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1646</messageID>
@@ -1640,7 +1640,7 @@ exports[`MosDevice: Profile 2 onReadyToAir: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onReplaceRunningOrder 1`] = `
+exports[`Profile 2 onReplaceRunningOrder 1`] = `
 Array [
   Array [
     Object {
@@ -1753,7 +1753,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onReplaceRunningOrder: <mos>
+exports[`Profile 2 onReplaceRunningOrder: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1639</messageID>
@@ -1773,7 +1773,7 @@ exports[`MosDevice: Profile 2 onReplaceRunningOrder: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onRequestRunningOrder 1`] = `
+exports[`Profile 2 onRequestRunningOrder 1`] = `
 Array [
   Array [
     96857485,
@@ -1781,7 +1781,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onRequestRunningOrder 2`] = `
+exports[`Profile 2 onRequestRunningOrder 2`] = `
 Object {
   "mos": Object {
     "messageID": Object {
@@ -1942,7 +1942,7 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 2 onRequestRunningOrder: <mos>
+exports[`Profile 2 onRequestRunningOrder: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1641</messageID>
@@ -2070,7 +2070,7 @@ exports[`MosDevice: Profile 2 onRequestRunningOrder: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onRunningOrderStatus 1`] = `
+exports[`Profile 2 onRunningOrderStatus 1`] = `
 Array [
   Array [
     Object {
@@ -2089,7 +2089,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onRunningOrderStatus: <mos>
+exports[`Profile 2 onRunningOrderStatus: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1643</messageID>
@@ -2109,7 +2109,7 @@ exports[`MosDevice: Profile 2 onRunningOrderStatus: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 onStoryStatus 1`] = `
+exports[`Profile 2 onStoryStatus 1`] = `
 Array [
   Array [
     Object {
@@ -2131,7 +2131,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 2 onStoryStatus: <mos>
+exports[`Profile 2 onStoryStatus: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1644</messageID>
@@ -2151,7 +2151,7 @@ exports[`MosDevice: Profile 2 onStoryStatus: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 setItemStatus 1`] = `
+exports[`Profile 2 setItemStatus 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -2168,7 +2168,7 @@ exports[`MosDevice: Profile 2 setItemStatus 1`] = `
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 setItemStatus 2`] = `
+exports[`Profile 2 setItemStatus 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
@@ -2193,7 +2193,7 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 2 setRunningOrderStatus 1`] = `
+exports[`Profile 2 setRunningOrderStatus 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -2206,7 +2206,7 @@ exports[`MosDevice: Profile 2 setRunningOrderStatus 1`] = `
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 setRunningOrderStatus 2`] = `
+exports[`Profile 2 setRunningOrderStatus 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
@@ -2231,7 +2231,7 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 2 setStoryStatus 1`] = `
+exports[`Profile 2 setStoryStatus 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -2245,7 +2245,7 @@ exports[`MosDevice: Profile 2 setStoryStatus 1`] = `
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 setStoryStatus 2`] = `
+exports[`Profile 2 setStoryStatus 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
@@ -2270,7 +2270,7 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 3 mosItemReplace 1`] = `
+exports[`Profile 3 mosItemReplace 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -2288,7 +2288,7 @@ exports[`MosDevice: Profile 3 mosItemReplace 1`] = `
 </mos>"
 `;
 
-exports[`MosDevice: Profile 3 mosItemReplace 2`] = `
+exports[`Profile 3 mosItemReplace 2`] = `
 Object {
   "mos": Object {
     "messageID": 999,
@@ -2319,7 +2319,7 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 3 mosObjCreate 1`] = `
+exports[`Profile 3 mosObjCreate 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -2339,7 +2339,7 @@ exports[`MosDevice: Profile 3 mosObjCreate 1`] = `
 </mos>"
 `;
 
-exports[`MosDevice: Profile 3 mosObjCreate 2`] = `
+exports[`Profile 3 mosObjCreate 2`] = `
 Object {
   "mos": Object {
     "messageID": 999,
@@ -2370,7 +2370,7 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 3 mosReqSearchableSchema 1`] = `
+exports[`Profile 3 mosReqSearchableSchema 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -2379,7 +2379,7 @@ exports[`MosDevice: Profile 3 mosReqSearchableSchema 1`] = `
 </mos>"
 `;
 
-exports[`MosDevice: Profile 3 mosReqSearchableSchema 2`] = `
+exports[`Profile 3 mosReqSearchableSchema 2`] = `
 Object {
   "mosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
   "text": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
@@ -2387,7 +2387,7 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 3 mosRequestObjectList 1`] = `
+exports[`Profile 3 mosRequestObjectList 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -2403,7 +2403,7 @@ exports[`MosDevice: Profile 3 mosRequestObjectList 1`] = `
 </mos>"
 `;
 
-exports[`MosDevice: Profile 3 mosRequestObjectList 2`] = `
+exports[`Profile 3 mosRequestObjectList 2`] = `
 Object {
   "list": Array [
     Object {
@@ -2799,7 +2799,7 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 3 onMosItemReplace 1`] = `
+exports[`Profile 3 onMosItemReplace 1`] = `
 Array [
   Array [
     undefined,
@@ -2855,7 +2855,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 3 onMosItemReplace: <mos>
+exports[`Profile 3 onMosItemReplace: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1659</messageID>
@@ -2875,7 +2875,7 @@ exports[`MosDevice: Profile 3 onMosItemReplace: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 3 onMosObjCreate 1`] = `
+exports[`Profile 3 onMosObjCreate 1`] = `
 Array [
   Array [
     Object {
@@ -2983,7 +2983,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 3 onMosObjCreate: <mos>
+exports[`Profile 3 onMosObjCreate: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1658</messageID>
@@ -3007,7 +3007,7 @@ exports[`MosDevice: Profile 3 onMosObjCreate: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 3 onMosReqObjectAction 1`] = `
+exports[`Profile 3 onMosReqObjectAction 1`] = `
 Array [
   Array [
     "NEW",
@@ -3116,7 +3116,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 3 onMosReqObjectAction: <mos>
+exports[`Profile 3 onMosReqObjectAction: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1662</messageID>
@@ -3140,7 +3140,7 @@ exports[`MosDevice: Profile 3 onMosReqObjectAction: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 3 onMosReqObjectList 1`] = `
+exports[`Profile 3 onMosReqObjectList 1`] = `
 Array [
   Array [
     Object {
@@ -3197,7 +3197,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 3 onMosReqObjectList: <mos>
+exports[`Profile 3 onMosReqObjectList: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1661</messageID>
@@ -3221,7 +3221,7 @@ exports[`MosDevice: Profile 3 onMosReqObjectList: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 3 onMosReqSearchableSchema 1`] = `
+exports[`Profile 3 onMosReqSearchableSchema 1`] = `
 Array [
   Array [
     "jbob",
@@ -3229,7 +3229,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 3 onMosReqSearchableSchema: <mos>
+exports[`Profile 3 onMosReqSearchableSchema: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1660</messageID>
@@ -3247,7 +3247,7 @@ exports[`MosDevice: Profile 3 onMosReqSearchableSchema: <mos>
 </mos>"
 `;
 
-exports[`MosDevice: Profile 4 getAllRunningOrders 1`] = `
+exports[`Profile 4 getAllRunningOrders 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -3256,7 +3256,7 @@ exports[`MosDevice: Profile 4 getAllRunningOrders 1`] = `
 </mos>"
 `;
 
-exports[`MosDevice: Profile 4 getAllRunningOrders 2`] = `
+exports[`Profile 4 getAllRunningOrders 2`] = `
 Array [
   Object {
     "EditorialDuration": MosDuration {
@@ -3331,7 +3331,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 4 onROStory 1`] = `
+exports[`Profile 4 onROStory 1`] = `
 Array [
   Array [
     Object {
@@ -3968,7 +3968,7 @@ Array [
 ]
 `;
 
-exports[`MosDevice: Profile 4 onROStory: <mos>
+exports[`Profile 4 onROStory: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1663</messageID>
