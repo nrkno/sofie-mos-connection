@@ -597,7 +597,7 @@ Object {
 }
 `;
 
-exports[`MosDevice: Profile 2 getRunningOrder 1`] = `
+exports[`MosDevice: Profile 2 sendRequestRunningOrder 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -608,7 +608,7 @@ exports[`MosDevice: Profile 2 getRunningOrder 1`] = `
 </mos>"
 `;
 
-exports[`MosDevice: Profile 2 getRunningOrder 2`] = `
+exports[`MosDevice: Profile 2 sendRequestRunningOrder 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
