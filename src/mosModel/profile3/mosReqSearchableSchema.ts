@@ -5,9 +5,8 @@ export class MosReqSearchableSchema extends MosMessage {
 	private options: { username: string }
 
 	constructor (options: { username: string }) {
-		super()
+		super('query')
 		this.options = options
-		this.port = 'query'
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElement {

@@ -11,8 +11,7 @@ export class ROStory extends MosMessage {
 	constructor (
 		private fullStory: IMOSROFullStory
 	) {
-		super()
-		this.port = 'upper'
+		super('upper')
 	}
 
   /** */

@@ -8,8 +8,7 @@ export class ReqMosObj extends MosMessage {
 	private objId: MosString128
   /** */
 	constructor (objId: MosString128) {
-		super()
-		this.port = 'lower'
+		super('lower')
 		this.objId = objId
 	}
 

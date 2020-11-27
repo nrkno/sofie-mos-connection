@@ -16,7 +16,7 @@ export class MOSAck extends MosMessage implements IMOSAck {
 
   /** */
 	constructor () {
-		super()
+		super('lower')
 	}
 
   /** */

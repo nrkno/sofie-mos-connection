@@ -304,8 +304,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			return Promise.reject('Not configured for accepting connections')
 		}
 
-		let initSocket = (port: number, description: IncomingConnectionType) => {
-			let socketServer = new MosSocketServer(port, description)
+		let initSocket = (port: number, portType: IncomingConnectionType) => {
+			let socketServer = new MosSocketServer(port, portType)
 			socketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) => this._registerIncomingClient(e))
 			socketServer.on(SocketServerEvent.ERROR, (e) => {
 				// handle error
@@ -445,7 +445,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 						}
 					}
 					if (mosDevice) {
-						mosDevice.routeData(parsed).then((message: MosMessage) => {
+
+						mosDevice.routeData(parsed, client.portDescription).then((message: MosMessage) => {
 							sendReply(message)
 						}).catch((err: Error | MosMessage) => {
 							// Something went wrong

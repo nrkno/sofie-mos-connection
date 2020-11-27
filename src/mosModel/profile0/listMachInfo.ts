@@ -53,8 +53,8 @@ export class ListMachineInfo extends MosMessage {
 	info: IMOSListMachInfo
 
   /** */
-	constructor (info: IMOSListMachInfo) {
-		super()
+	constructor (info: IMOSListMachInfo, port: 'upper' | 'lower') {
+		super(port)
 		this.info = info
 	}
 
@@ -73,7 +73,8 @@ export class ListMachineInfo extends MosMessage {
 		if (this.info.opTime) addTextElement(xmlListMachInfo, 'opTime', this.info.opTime)
 		addTextElement(xmlListMachInfo, 'mosRev', this.info.mosRev)
 
-		// let p = addTextElement(root, 'supportedProfiles').att('deviceType', this.info.supportedProfiles.deviceType)
+		// TODO: the supportedProfiles should be changed to an Array
+
 		const xmlSupportedProfiles = XMLBuilder.create('supportedProfiles')
 		xmlSupportedProfiles.att('deviceType', this.info.supportedProfiles.deviceType)
 		// let p = addTextElement(root, 'supportedProfiles').att('deviceType', this.info.supportedProfiles.deviceType)

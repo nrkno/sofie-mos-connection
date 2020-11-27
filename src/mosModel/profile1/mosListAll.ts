@@ -9,7 +9,7 @@ export class MosListAll extends MosMessage {
 
   /** */
 	constructor (objs: Array<IMOSObject>) {
-		super()
+		super('lower')
 		this.objs = objs
 	}
 

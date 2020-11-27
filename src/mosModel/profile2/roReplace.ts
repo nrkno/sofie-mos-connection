@@ -6,7 +6,6 @@ export class ROReplace extends ROCreate {
 
 	constructor (ro: IMOSRunningOrder) {
 		super(ro)
-		this.port = 'upper'
 	}
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roReplace')

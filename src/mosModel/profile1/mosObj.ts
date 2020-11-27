@@ -9,9 +9,8 @@ export class MosObj extends MosMessage {
 
   /** */
 	constructor (obj: IMOSObject) {
-		super()
+		super('lower')
 		this.obj = obj
-		this.port = 'lower'
 	}
 
   /** */

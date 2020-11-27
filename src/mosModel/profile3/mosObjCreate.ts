@@ -7,9 +7,8 @@ export class MosObjCreate extends MosMessage {
 	private object: IMOSObject
 
 	constructor (object: IMOSObject) {
-		super()
+		super('lower')
 		this.object = object
-		this.port = 'lower'
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElement {

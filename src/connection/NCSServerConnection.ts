@@ -1,6 +1,6 @@
 import { ConnectionType } from './socketConnection'
 import { MosSocketClient, CallBackFunction, QueueMessage } from '../connection/mosSocketClient'
-import { MosMessage } from '../mosModel/MosMessage'
+import { MosMessage, PortType } from '../mosModel/MosMessage'
 import { HeartBeat } from '../mosModel'
 import { EventEmitter } from 'events'
 
@@ -10,7 +10,7 @@ export interface ClientDescription {
 	useHeartbeats: boolean
 	heartbeatConnected: boolean
 	client: MosSocketClient
-	clientDescription: string
+	clientDescription: PortType
 }
 
 export interface INCSServerConnection {
@@ -246,8 +246,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 				let client = this._clients[key]
 
 				if (client.useHeartbeats) {
-					let heartbeat = new HeartBeat()
-					heartbeat.port = this._clients[key].clientDescription
+					let heartbeat = new HeartBeat(this._clients[key].clientDescription)
 					return this.executeCommand(heartbeat)
 					.then(() => {
 						client.heartbeatConnected = true

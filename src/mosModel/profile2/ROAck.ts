@@ -17,7 +17,7 @@ export class ROAck extends MosMessage implements IMOSROAck {
 
   /** */
 	constructor () {
-		super()
+		super('upper')
 	}
 
   /** */

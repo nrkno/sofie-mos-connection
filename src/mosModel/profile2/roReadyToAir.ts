@@ -13,9 +13,8 @@ export class ROReadyToAir extends MosMessage {
 	private options: ROReadyToAirOptions
 
 	constructor (options: ROReadyToAirOptions) {
-		super()
+		super('upper')
 		this.options = options
-		this.port = 'upper'
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElement {

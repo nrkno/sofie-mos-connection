@@ -44,10 +44,9 @@ export class ROElementStat extends MosMessage {
 	private time: MosTime
   /** */
 	constructor (options: ROElementStatOptions) {
-		super()
+		super('upper')
 		this.options = options
 		this.time = new MosTime()
-		this.port = 'upper'
 	}
 
   /** */

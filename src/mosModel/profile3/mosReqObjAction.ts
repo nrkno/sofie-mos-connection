@@ -12,9 +12,8 @@ export class MosReqObjAction extends MosMessage {
 	private options: MosReqObjActionOptions
 
 	constructor (options: MosReqObjActionOptions) {
-		super()
+		super('lower')
 		this.options = options
-		this.port = 'lower'
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElement {

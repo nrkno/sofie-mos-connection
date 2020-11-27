@@ -13,8 +13,7 @@ import { XMLROStory, XMLMosItem } from './xmlConversion'
 
 export abstract class MosSendMessage extends MosMessage {
 	constructor () {
-		super()
-		this.port = 'upper'
+		super('upper')
 	}
 }
 export class ROInsertStories extends MosSendMessage {

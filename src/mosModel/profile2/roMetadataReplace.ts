@@ -6,8 +6,7 @@ import { XMLRunningOrderBase } from './xmlConversion'
 export class ROMetadataReplace extends MosMessage {
 
 	constructor (private metadata: IMOSRunningOrderBase) {
-		super()
-		this.port = 'upper'
+		super('upper')
 	}
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roMetadataReplace')

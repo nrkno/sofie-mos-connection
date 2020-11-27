@@ -8,9 +8,8 @@ export class MosObjList extends MosMessage {
 	private options: IMosObjectList
 
 	constructor (options: IMosObjectList) {
-		super()
+		super('upper')
 		this.options = options
-		this.port = 'upper'
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElement {

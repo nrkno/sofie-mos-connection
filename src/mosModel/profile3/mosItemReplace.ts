@@ -15,9 +15,8 @@ export class MosItemReplace extends MosMessage {
 	private options: MosItemReplaceOptions
 
 	constructor (options: MosItemReplaceOptions) {
-		super()
+		super('upper')
 		this.options = options
-		this.port = 'upper'
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElement {

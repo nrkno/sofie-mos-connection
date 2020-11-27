@@ -5,8 +5,7 @@ export class ROReqAll extends MosMessage {
 
   /** */
 	constructor () {
-		super()
-		this.port = 'upper'
+		super('upper')
 	}
 
   /** */

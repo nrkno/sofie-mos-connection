@@ -11,7 +11,7 @@ export class ROListAll extends MosMessage {
 
   /** */
 	constructor () {
-		super()
+		super('upper')
 	}
 
   /** */

@@ -1,6 +1,7 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { addTextElement } from '../utils/Utils'
 
+export type PortType = 'upper' | 'lower' | 'query'
 export abstract class MosMessage {
 
 	private static MAX_MESSAGE_ID = Math.pow(2, 31) - 2
@@ -8,7 +9,11 @@ export abstract class MosMessage {
 
 	mosID: string
 	ncsID: string
-	port: string
+	port: PortType
+
+	constructor (port: PortType) {
+		this.port = port
+	}
 
 	private _messageID: number
 

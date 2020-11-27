@@ -7,8 +7,7 @@ export class RODelete extends MosMessage {
 	constructor (
 		private roId: MosString128
 	) {
-		super()
-		this.port = 'upper'
+		super('upper')
 	}
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roDelete')

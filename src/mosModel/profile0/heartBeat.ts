@@ -1,6 +1,6 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosTime } from '../../dataTypes/mosTime'
-import { MosMessage } from '../MosMessage'
+import { MosMessage, PortType } from '../MosMessage'
 import { addTextElement } from '../../utils/Utils'
 
 export class HeartBeat extends MosMessage {
@@ -8,8 +8,8 @@ export class HeartBeat extends MosMessage {
 	time: MosTime
 
   /** */
-	constructor (time: MosTime = new MosTime()) {
-		super()
+	constructor (port: PortType, time: MosTime = new MosTime()) {
+		super(port)
 		this.time = time
 	}
 

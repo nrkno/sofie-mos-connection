@@ -57,7 +57,7 @@ import {
 	ROElementStatOptionsStory,
 	ROElementStatOptionsRunningOrder
 } from './mosModel'
-import { MosMessage } from './mosModel/MosMessage'
+import { MosMessage, PortType } from './mosModel/MosMessage'
 import { ROListAll } from './mosModel/profile2/ROListAll'
 import { ROCreate } from './mosModel/profile2/roCreate'
 import { ROReplace } from './mosModel/profile2/roReplace'
@@ -266,7 +266,7 @@ export class MosDevice implements IMOSDevice {
 		})
 	}
 
-	routeData (data: any): Promise<any> {
+	routeData (data: any, port: PortType): Promise<any> {
 		if (data && data.hasOwnProperty('mos')) data = data['mos']
 		return new Promise((resolve, reject) => {
 			if (this._debug) console.log('parsedData', data)
@@ -276,13 +276,14 @@ export class MosDevice implements IMOSDevice {
 			// Route and format data:
 			// Profile 0:
 			if (data.heartbeat) {
-				// send immediate reply:
-				let ack = new HeartBeat()
+				// send immediate reply on the same port:
+				let ack = new HeartBeat(port)
 				resolve(ack)
 
 			} else if (data.reqMachInfo && typeof this._callbackOnGetMachineInfo === 'function') {
+				if (port === 'query') return reject('message "reqMachInfo" is invalid on query port')
 				this._callbackOnGetMachineInfo().then((m: IMOSListMachInfo) => {
-					let resp = new ListMachineInfo(m)
+					let resp = new ListMachineInfo(m, port)
 					resolve(resp)
 				}).catch(reject)
 			// Profile 1:

@@ -7,9 +7,8 @@ export class MosListSearchableSchema extends MosMessage {
 	private options: IMOSSearchableSchema
 
 	constructor (options: IMOSSearchableSchema) {
-		super()
+		super('query')
 		this.options = options
-		this.port = 'query'
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElement {

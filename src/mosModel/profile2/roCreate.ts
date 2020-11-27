@@ -9,8 +9,7 @@ export class ROCreate extends MosMessage {
 	constructor (
 		private ro: IMOSRunningOrder
 	) {
-		super()
-		this.port = 'upper'
+		super('upper')
 	}
 
   /** */
