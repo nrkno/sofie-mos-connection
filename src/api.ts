@@ -121,6 +121,10 @@ export interface IMOSDevice {
 	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roCreate
 	 */
 	sendCreateRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
+	/**
+	 * Message received from the NCS to the MOS that defines a new Running Order, replacing an existing one.
+	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReplace
+	 */
 	onReplaceRunningOrder: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
 	sendReplaceRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
 	onDeleteRunningOrder: (cb: (runningOrderId: MosString128) => Promise<IMOSROAck>) => void
@@ -150,6 +154,7 @@ export interface IMOSDevice {
 	sendItemStatus: (status: IMOSItemStatus) => Promise<IMOSROAck> // send roElementStat
 
 	onReadyToAir: (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) => void
+	sendReadyToAir: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>
 
 	onROInsertStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) => void
 	sendROInsertStories: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>

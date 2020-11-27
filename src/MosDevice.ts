@@ -65,6 +65,7 @@ import { RODelete } from './mosModel/profile2/roDelete'
 import { ROInsertStories, ROInsertItems, ROReplaceStories, ROMoveStories, ROMoveItems, RODeleteStories, RODeleteItems, ROSwapStories, ROSwapItems, ROReplaceItems } from './mosModel/profile2/roActions'
 import { ROStory } from './mosModel/profile4/roStory'
 import { ROMetadataReplace } from './mosModel/profile2/roMetadataReplace'
+import { ROReadyToAir } from './mosModel/profile2/roReadyToAir'
 
 export class MosDevice implements IMOSDevice {
 
@@ -965,6 +966,16 @@ export class MosDevice implements IMOSDevice {
 	}
 	onReadyToAir (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) {
 		this._callbackOnReadyToAir = cb
+	}
+	async sendReadyToAir (Action: IMOSROReadyToAir): Promise<IMOSROAck> {
+		let message = new ROReadyToAir({
+			roId: Action.ID,
+			roAir: Action.Status
+		})
+
+		const reply = await this.executeCommand(message)
+		let roAck: ROAck = Parser.xml2ROAck(reply.mos.roAck)
+		return roAck
 	}
 	onROInsertStories (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {
 		this._callbackOnROInsertStories = cb
