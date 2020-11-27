@@ -597,126 +597,6 @@ Object {
 }
 `;
 
-exports[`Profile 2 sendRequestRunningOrder 1`] = `
-"<mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>xx</messageID>
-  <roReq>
-    <roID>M000123</roID>
-  </roReq>
-</mos>"
-`;
-
-exports[`Profile 2 sendRequestRunningOrder 2`] = `
-Object {
-  "ID": MosString128 {
-    "_str": "96857485",
-  },
-  "Slug": MosString128 {
-    "_str": "5PM RUNDOWN",
-  },
-  "Stories": Array [
-    Object {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-      },
-      "Items": Array [
-        Object {
-          "EditorialDuration": 645,
-          "ID": MosString128 {
-            "_str": "0",
-          },
-          "MOSID": "testmos.enps.com",
-          "MosExternalMetaData": Array [
-            Object {
-              "MosPayload": Object {
-                "Owner": "SHOLMES",
-                "destination": "b",
-                "source": "a",
-                "transitionMode": 2,
-                "transitionPoint": 463,
-              },
-              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
-              "MosScope": "PLAYLIST",
-            },
-          ],
-          "ObjectID": MosString128 {
-            "_str": "M000224",
-          },
-          "Paths": Array [
-            Object {
-              "Description": "MPEG2 Video",
-              "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
-              "Type": "PATH",
-            },
-            Object {
-              "Description": "WM9 750Kbps",
-              "Target": "http://server/proxy/clipe.wmv",
-              "Type": "PROXY PATH",
-            },
-            Object {
-              "Description": "MOS Object",
-              "Target": "http://server/proxy/clipe.xml",
-              "Type": "METADATA PATH",
-            },
-          ],
-          "Slug": MosString128 {
-            "_str": "COLSTAT MURDER:VO",
-          },
-          "Trigger": "CHAINED",
-          "UserTimingDuration": 310,
-        },
-      ],
-      "Number": MosString128 {
-        "_str": "B10",
-      },
-      "Slug": MosString128 {
-        "_str": "Colstat Murder",
-      },
-    },
-    Object {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-      },
-      "Items": Array [
-        Object {
-          "EditorialDuration": 310,
-          "EditorialStart": 55,
-          "ID": MosString128 {
-            "_str": "0",
-          },
-          "MOSID": "testmos.enps.com",
-          "MosExternalMetaData": Array [
-            Object {
-              "MosPayload": Object {
-                "Owner": "SHOLMES",
-                "destination": "b",
-                "source": "a",
-                "transitionMode": 2,
-                "transitionPoint": 463,
-              },
-              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
-              "MosScope": "PLAYLIST",
-            },
-          ],
-          "ObjectID": MosString128 {
-            "_str": "M000133",
-          },
-          "UserTimingDuration": 310,
-        },
-      ],
-      "Number": MosString128 {
-        "_str": "B11",
-      },
-      "Slug": MosString128 {
-        "_str": "Test MOS",
-      },
-    },
-  ],
-}
-`;
-
 exports[`Profile 2 onCreateRunningOrder 1`] = `
 Array [
   Array [
@@ -2151,7 +2031,7 @@ exports[`Profile 2 onStoryStatus: <mos>
 </mos>"
 `;
 
-exports[`Profile 2 setItemStatus 1`] = `
+exports[`Profile 2 sendItemStatus 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -2168,7 +2048,7 @@ exports[`Profile 2 setItemStatus 1`] = `
 </mos>"
 `;
 
-exports[`Profile 2 setItemStatus 2`] = `
+exports[`Profile 2 sendItemStatus 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
@@ -2193,7 +2073,127 @@ Object {
 }
 `;
 
-exports[`Profile 2 setRunningOrderStatus 1`] = `
+exports[`Profile 2 sendRequestRunningOrder 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roReq>
+    <roID>M000123</roID>
+  </roReq>
+</mos>"
+`;
+
+exports[`Profile 2 sendRequestRunningOrder 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+  },
+  "Slug": MosString128 {
+    "_str": "5PM RUNDOWN",
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+      },
+      "Items": Array [
+        Object {
+          "EditorialDuration": 645,
+          "ID": MosString128 {
+            "_str": "0",
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": Array [
+            Object {
+              "MosPayload": Object {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": MosString128 {
+            "_str": "M000224",
+          },
+          "Paths": Array [
+            Object {
+              "Description": "MPEG2 Video",
+              "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+              "Type": "PATH",
+            },
+            Object {
+              "Description": "WM9 750Kbps",
+              "Target": "http://server/proxy/clipe.wmv",
+              "Type": "PROXY PATH",
+            },
+            Object {
+              "Description": "MOS Object",
+              "Target": "http://server/proxy/clipe.xml",
+              "Type": "METADATA PATH",
+            },
+          ],
+          "Slug": MosString128 {
+            "_str": "COLSTAT MURDER:VO",
+          },
+          "Trigger": "CHAINED",
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": MosString128 {
+        "_str": "B10",
+      },
+      "Slug": MosString128 {
+        "_str": "Colstat Murder",
+      },
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+      },
+      "Items": Array [
+        Object {
+          "EditorialDuration": 310,
+          "EditorialStart": 55,
+          "ID": MosString128 {
+            "_str": "0",
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": Array [
+            Object {
+              "MosPayload": Object {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": MosString128 {
+            "_str": "M000133",
+          },
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": MosString128 {
+        "_str": "B11",
+      },
+      "Slug": MosString128 {
+        "_str": "Test MOS",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Profile 2 sendRunningOrderStatus 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -2206,7 +2206,7 @@ exports[`Profile 2 setRunningOrderStatus 1`] = `
 </mos>"
 `;
 
-exports[`Profile 2 setRunningOrderStatus 2`] = `
+exports[`Profile 2 sendRunningOrderStatus 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
@@ -2231,7 +2231,7 @@ Object {
 }
 `;
 
-exports[`Profile 2 setStoryStatus 1`] = `
+exports[`Profile 2 sendStoryStatus 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -2245,7 +2245,7 @@ exports[`Profile 2 setStoryStatus 1`] = `
 </mos>"
 `;
 
-exports[`Profile 2 setStoryStatus 2`] = `
+exports[`Profile 2 sendStoryStatus 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",

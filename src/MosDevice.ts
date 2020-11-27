@@ -784,84 +784,59 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	/* Profile 1 */
-	sendMOSObject (obj: IMOSObject): Promise<IMOSAck> {
+	async sendMOSObject (obj: IMOSObject): Promise<IMOSAck> {
 		let message = new MosObj(obj)
-		return new Promise((resolve, reject) => {
-			if (this._currentConnection) {
-				this.executeCommand(message)
-					.then(data => {
-						if (data.mos) {
-							let ack: IMOSAck = Parser.xml2Ack(data.mos.mosAck)
-							resolve(ack)
-						} else {
-							reject('Unknown response')
-						}
-					})
-					.catch(reject)
-			}
-		})
+
+		const reply = await this.executeCommand(message)
+
+		let ack: IMOSAck = Parser.xml2Ack(reply.mos.mosAck)
+		return ack
 	}
 
 	onRequestMOSObject (cb: (objId: string) => Promise<IMOSObject | null>) {
 		this._callbackOnRequestMOSOBject = cb
 	}
 
+	async getMOSObject (objID: MosString128): Promise <IMOSObject> {
+		let message = new ReqMosObj(objID)
+
+		const reply = await this.executeCommand(message)
+		if (reply.mos.roAck) {
+			throw new Error(Parser.xml2ROAck(reply.mos.roAck).toString())
+		} else if (reply.mos.mosObj) {
+			let obj: IMOSObject = Parser.xml2MosObj(reply.mos.mosObj)
+			return obj
+		} else {
+			throw new Error('Unknown response')
+		}
+	}
+
 	onRequestAllMOSObjects (cb: () => Promise<Array<IMOSObject>>) {
 		this._callbackOnRequestAllMOSObjects = cb
 	}
 
-	getMOSObject (objID: MosString128): Promise <IMOSObject> {
-		let message = new ReqMosObj(objID)
-		return new Promise((resolve, reject) => {
-			if (this._currentConnection) {
-				this.executeCommand(message).then((data) => {
-					if (data.mos.roAck) {
-						reject(Parser.xml2ROAck(data.mos.roAck))
-					} else if (data.mos.mosObj) {
-						let obj: IMOSObject = Parser.xml2MosObj(data.mos.mosObj)
-						resolve(obj)
-					} else {
-						reject('Unknown response')
-					}
-				}).catch(reject)
-			}
-		})
+	async getAllMOSObjects (): Promise <Array<IMOSObject>> {
+		const message = new ReqMosObjAll()
+		const reply = await this.executeCommand(message)
+		if (reply.mos.roAck) {
+			throw new Error(Parser.xml2ROAck(reply.mos.roAck).toString())
+		} else if (reply.mos.mosListAll) {
+			const objs: Array<IMOSObject> = Parser.xml2MosObjs(reply.mos.mosListAll.mosObj)
+			return objs
+		} else {
+			throw new Error('Unknown response')
+		}
 	}
 
-	getAllMOSObjects (): Promise <Array<IMOSObject>> {
-		let message = new ReqMosObjAll()
-		return new Promise((resolve, reject) => {
-			if (this._currentConnection) {
-				this.executeCommand(message).then((data) => {
-					if (data.mos.roAck) {
-						reject(Parser.xml2ROAck(data.mos.roAck))
-					} else if (data.mos.mosListAll) {
-						let objs: Array<IMOSObject> = Parser.xml2MosObjs(data.mos.mosListAll.mosObj)
-						resolve(objs)
-					} else {
-						reject('Unknown response')
-					}
-				}).catch(reject)
-			}
-		})
-	}
-
-	sendAllMOSObjects (objs: IMOSObject[]): Promise<IMOSAck> {
-		let message = new MosListAll(objs)
-		return new Promise((resolve, reject) => {
-			if (this._currentConnection) {
-				this.executeCommand(message)
-					.then(data => {
-						if (data.mos) {
-							let ack: IMOSAck = Parser.xml2Ack(data.mos.mosAck)
-							resolve(ack)
-						} else {
-							reject('Unknown response')
-						}
-					})
-					.catch(reject)
-			}
-		})
+	async sendAllMOSObjects (objs: IMOSObject[]): Promise<IMOSAck> {
+		const message = new MosListAll(objs)
+		const reply = await this.executeCommand(message)
+		if (reply.mos) {
+			const ack: IMOSAck = Parser.xml2Ack(reply.mos.mosAck)
+			return ack
+		} else {
+			throw new Error('Unknown response')
+		}
 	}
 
 	/* Profile 2 */
@@ -935,64 +910,47 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRunningOrderStatus = cb
 	}
 
-	async sendRunningOrderStatus (status: ROElementStatOptionsRunningOrder): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
-		let message = new ROElementStat(status)
-		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
-		return Parser.xml2ROAck(data.mos.roAck)
-	}
-
-	/** Set up a callback to be called when a roElementStat message for a story is received */
 	onStoryStatus (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) {
 		this._callbackOnStoryStatus = cb
 	}
-
-	async sendStoryStatus (status: ROElementStatOptionsStory): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
-		let message = new ROElementStat(status)
-		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
-		return Parser.xml2ROAck(data.mos.roAck)
-	}
-
 	onItemStatus (cb: (status: IMOSItemStatus) => Promise<IMOSROAck>) {
 		this._callbackOnItemStatus = cb
 	}
 
-	setRunningOrderStatus (status: IMOSRunningOrderStatus): Promise < IMOSROAck > {
+	/** @deprecated setRunningOrderStatus is deprecated, use sendRunningOrderStatus instead */
+	setRunningOrderStatus (status: IMOSRunningOrderStatus): Promise<IMOSROAck> {
+		return this.sendRunningOrderStatus(status)
+	}
+	/** @deprecated setStoryStatus is deprecated, use sendStoryStatus instead */
+	setStoryStatus (status: IMOSStoryStatus): Promise<IMOSROAck> {
+		return this.sendStoryStatus(status)
+	}
+	/** @deprecated setItemStatus is deprecated, use sendItemStatus instead */
+	setItemStatus (status: IMOSItemStatus): Promise<IMOSROAck> {
+		return this.sendItemStatus(status)
+	}
+
+	async sendRunningOrderStatus (status: IMOSRunningOrderStatus): Promise<IMOSROAck> {
 		let message = new ROElementStat({
 			type: ROElementStatType.RO,
 			roId: new MosString128(status.ID),
 			status: status.Status
 		})
-		return new Promise((resolve, reject) => {
-			if (this._currentConnection) {
-				this.executeCommand(message).then((data) => {
-					let roAck: ROAck = Parser.xml2ROAck(data.mos.roAck)
-					resolve(roAck)
-				}).catch(reject)
-			}
-		})
+		const reply = await this.executeCommand(message)
+		return Parser.xml2ROAck(reply.mos.roAck)
 	}
 
-	setStoryStatus (status: IMOSStoryStatus): Promise < IMOSROAck > {
+	async sendStoryStatus (status: IMOSStoryStatus): Promise<IMOSROAck> {
 		let message = new ROElementStat({
 			type: ROElementStatType.STORY,
 			roId: new MosString128(status.RunningOrderId),
 			storyId: new MosString128(status.ID),
 			status: status.Status
 		})
-		return new Promise((resolve, reject) => {
-			if (this._currentConnection) {
-				this.executeCommand(message).then((data) => {
-					let roAck: ROAck = Parser.xml2ROAck(data.mos.roAck)
-					resolve(roAck)
-				}).catch(reject)
-			}
-		})
+		const reply = await this.executeCommand(message)
+		return Parser.xml2ROAck(reply.mos.roAck)
 	}
-	setItemStatus (status: IMOSItemStatus): Promise < IMOSROAck > {
+	async sendItemStatus (status: IMOSItemStatus): Promise<IMOSROAck> {
 		let message = new ROElementStat({
 			type: ROElementStatType.ITEM,
 			roId: new MosString128(status.RunningOrderId),
@@ -1002,14 +960,8 @@ export class MosDevice implements IMOSDevice {
 			itemChannel: new MosString128(status.Channel),
 			status: status.Status
 		})
-		return new Promise((resolve, reject) => {
-			if (this._currentConnection) {
-				this.executeCommand(message).then((data) => {
-					let roAck: ROAck = Parser.xml2ROAck(data.mos.roAck)
-					resolve(roAck)
-				}).catch(reject)
-			}
-		})
+		const reply = await this.executeCommand(message)
+		return Parser.xml2ROAck(reply.mos.roAck)
 	}
 	onReadyToAir (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) {
 		this._callbackOnReadyToAir = cb

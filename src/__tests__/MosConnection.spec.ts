@@ -1154,7 +1154,7 @@ describe('Profile 2', () => {
 		expect(onItemStatus.mock.calls).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
-	test('setRunningOrderStatus', async () => {
+	test('sendRunningOrderStatus', async () => {
 		// Prepare server response
 		let mockReply = jest.fn((data) => {
 			let str = decode(data)
@@ -1163,7 +1163,7 @@ describe('Profile 2', () => {
 			return encode(repl)
 		})
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedAck: IMOSROAck = await mosDevice.setRunningOrderStatus(xmlApiData.roElementStat_ro)
+		let returnedAck: IMOSROAck = await mosDevice.sendRunningOrderStatus(xmlApiData.roElementStat_ro)
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
@@ -1173,7 +1173,7 @@ describe('Profile 2', () => {
 		expect(returnedAck.ID.toString()).toEqual('96857485')
 		checkAckSnapshot(returnedAck)
 	})
-	test('setStoryStatus', async () => {
+	test('sendStoryStatus', async () => {
 		// Prepare server response
 		let mockReply = jest.fn((data) => {
 			let str = decode(data)
@@ -1181,7 +1181,7 @@ describe('Profile 2', () => {
 			return encode(getXMLReply(messageID, xmlData.roAck))
 		})
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedAck: IMOSROAck = await mosDevice.setStoryStatus(xmlApiData.roElementStat_story)
+		let returnedAck: IMOSROAck = await mosDevice.sendStoryStatus(xmlApiData.roElementStat_story)
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
@@ -1191,7 +1191,7 @@ describe('Profile 2', () => {
 		expect(returnedAck.ID.toString()).toEqual('96857485')
 		checkAckSnapshot(returnedAck)
 	})
-	test('setItemStatus', async () => {
+	test('sendItemStatus', async () => {
 		// Prepare server response
 		let mockReply = jest.fn((data) => {
 			let str = decode(data)
@@ -1199,7 +1199,7 @@ describe('Profile 2', () => {
 			return encode(getXMLReply(messageID, xmlData.roAck))
 		})
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedAck: IMOSROAck = await mosDevice.setItemStatus(xmlApiData.roElementStat_item)
+		let returnedAck: IMOSROAck = await mosDevice.sendItemStatus(xmlApiData.roElementStat_item)
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])

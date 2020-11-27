@@ -138,9 +138,16 @@ export interface IMOSDevice {
 	onStoryStatus: (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) => void // get roElementStat
 	onItemStatus: (cb: (status: IMOSItemStatus) => Promise<IMOSROAck>) => void // get roElementStat
 
-	setRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck> // send roElementStat
-	setStoryStatus: (status: IMOSStoryStatus) => Promise<IMOSROAck> // send roElementStat
-	setItemStatus: (status: IMOSItemStatus) => Promise<IMOSROAck> // send roElementStat
+	/** @deprecated setRunningOrderStatus is deprecated, use sendRunningOrderStatus instead */
+	setRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>
+	/** @deprecated setStoryStatus is deprecated, use sendStoryStatus instead */
+	setStoryStatus: (status: IMOSStoryStatus) => Promise<IMOSROAck>
+	/** @deprecated setItemStatus is deprecated, use sendItemStatus instead */
+	setItemStatus: (status: IMOSItemStatus) => Promise<IMOSROAck>
+
+	sendRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck> // send roElementStat
+	sendStoryStatus: (status: IMOSStoryStatus) => Promise<IMOSROAck> // send roElementStat
+	sendItemStatus: (status: IMOSItemStatus) => Promise<IMOSROAck> // send roElementStat
 
 	onReadyToAir: (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) => void
 

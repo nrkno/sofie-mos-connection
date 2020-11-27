@@ -93,9 +93,9 @@ test('api & exports', () => {
 			f = function (cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>): void { return mosDevice.onRunningOrderStatus(cb) }
 			f = function (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>): void { return mosDevice.onStoryStatus(cb) }
 			f = function (cb: (status: IMOSItemStatus) => Promise<IMOSROAck>): void { return mosDevice.onItemStatus(cb) }
-			f = function (status: IMOSRunningOrderStatus): Promise<IMOSROAck> { return mosDevice.setRunningOrderStatus(status) }
-			f = function (status: IMOSStoryStatus): Promise<IMOSROAck> { return mosDevice.setStoryStatus(status) }
-			f = function (status: IMOSItemStatus): Promise<IMOSROAck> { return mosDevice.setItemStatus(status) }
+			f = function (status: IMOSRunningOrderStatus): Promise<IMOSROAck> { return mosDevice.sendRunningOrderStatus(status) }
+			f = function (status: IMOSStoryStatus): Promise<IMOSROAck> { return mosDevice.sendStoryStatus(status) }
+			f = function (status: IMOSItemStatus): Promise<IMOSROAck> { return mosDevice.sendItemStatus(status) }
 			f = function (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>): void { return mosDevice.onReadyToAir(cb) }
 			f = function (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>): void { return mosDevice.onROInsertStories(cb) }
 			f = function (Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> { return mosDevice.sendROInsertStories(Action, Stories) }
