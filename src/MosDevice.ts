@@ -53,9 +53,7 @@ import {
 	MosItemReplaceOptions,
 	MosItemReplace,
 	MosReqSearchableSchema,
-	MosReqObjList,
-	ROElementStatOptionsStory,
-	ROElementStatOptionsRunningOrder
+	MosReqObjList
 } from './mosModel'
 import { MosMessage, PortType } from './mosModel/MosMessage'
 import { ROListAll } from './mosModel/profile2/ROListAll'
@@ -1052,18 +1050,20 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnMosObjCreate = cb
 	}
 
-	mosObjCreate (object: IMOSObject): Promise<MOSAck> {
+	async mosObjCreate (object: IMOSObject): Promise<IMOSAck> {
 		const message = new MosObjCreate(object)
-		return this.executeCommand(message)
+		const data = await this.executeCommand(message)
+		return Parser.xml2Ack(data.mos.mosAck)
 	}
 
 	onMosItemReplace (cb: (roID: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>) {
 		this._callbackOnMosItemReplace = cb
 	}
 
-	mosItemReplace (options: MosItemReplaceOptions): Promise<IMOSROAck> {
+	async mosItemReplace (options: MosItemReplaceOptions): Promise<IMOSROAck> {
 		const message = new MosItemReplace(options)
-		return this.executeCommand(message)
+		const data = await this.executeCommand(message)
+		return Parser.xml2ROAck(data.mos.roAck)
 	}
 
 	onMosReqSearchableSchema (cb: (username: string) => Promise<IMOSSearchableSchema>) {

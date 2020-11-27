@@ -3,7 +3,7 @@ import { MosTime } from './dataTypes/mosTime'
 import { MosDuration as MosDurationDataType } from './dataTypes/mosDuration'
 import { MosString128 } from './dataTypes/mosString128'
 import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
-import { IMOSListMachInfo, MOSAck, MosItemReplaceOptions } from './mosModel'
+import { IMOSListMachInfo, MosItemReplaceOptions } from './mosModel'
 import { MosDevice } from './MosDevice'
 
 // import {IMOSListMachInfo as IMOSP0ListMachineInfo, IMOSListMachInfo} from "./mosModel/0_listMachInfo"
@@ -178,7 +178,7 @@ export interface IMOSDevice {
 	sendROSwapItems: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
 	/* Profile 3 */
 	onMosObjCreate: (cb: (object: IMOSObject) => Promise<IMOSAck>) => void
-	mosObjCreate: (object: IMOSObject) => Promise<MOSAck>
+	mosObjCreate: (object: IMOSObject) => Promise<IMOSAck>
 	onMosItemReplace: (cb: (roID: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>) => void
 	mosItemReplace: (options: MosItemReplaceOptions) => Promise<IMOSROAck>
 	onMosReqSearchableSchema: (cb: (username: string) => Promise<IMOSSearchableSchema>) => void
