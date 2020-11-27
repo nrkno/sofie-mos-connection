@@ -341,151 +341,98 @@ Object {
     "messageID": Object {
       "_text": 1637,
     },
+    "mosAck": Object {
+      "objID": Object {},
+      "objRev": Object {},
+      "status": Object {},
+      "statusDescription": Object {},
+    },
     "mosID": Object {
       "_text": "our.mos.id",
-    },
-    "mosListAll": Object {
-      "mosObj": Array [
-        Object {
-          "created": Object {
-            "_text": "2019-01-01T17:14:42,000",
-          },
-          "createdBy": Object {
-            "_text": "Jonas",
-          },
-          "mosExternalMetadata": Object {
-            "mosPayload": Object {
-              "Approved": Object {
-                "_text": 0,
-              },
-              "Creator": Object {
-                "_text": "SHOLMES",
-              },
-              "ModBy": Object {
-                "_text": "LJOHNSTON",
-              },
-              "ModTime": Object {
-                "_text": 20010308142001,
-              },
-              "Owner": Object {
-                "_text": "SHOLMES",
-              },
-              "TextTime": Object {
-                "_text": 278,
-              },
-              "mediaTime": Object {
-                "_text": 0,
-              },
-            },
-            "mosSchema": Object {
-              "_text": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>",
-            },
-            "mosScope": Object {
-              "_text": "STORY",
-            },
-          },
-          "objAir": Object {
-            "_text": "READY",
-          },
-          "objDur": Object {
-            "_text": 1500,
-          },
-          "objID": Object {
-            "_text": "M000123",
-          },
-          "objPaths": Object {
-            "objMetadataPath": Object {
-              "_attributes": Object {
-                "techDescription": "MOS Object",
-              },
-              "_text": "http://server/proxy/clipe.xml",
-            },
-            "objPath": Object {
-              "_attributes": Object {
-                "techDescription": "MPEG2 Video",
-              },
-              "_text": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
-            },
-            "objProxyPath": Object {
-              "_attributes": Object {
-                "techDescription": "WM9 750Kbps",
-              },
-              "_text": "http://server/proxy/clipe.wmv",
-            },
-          },
-          "objRev": Object {
-            "_text": 1,
-          },
-          "objSlug": Object {
-            "_text": "My new object",
-          },
-          "objTB": Object {
-            "_text": 50,
-          },
-          "objType": Object {
-            "_text": "VIDEO",
-          },
-          "status": Object {
-            "_text": "READY",
-          },
-        },
-        Object {
-          "created": Object {
-            "_text": "2019-01-01T17:14:42,000",
-          },
-          "createdBy": Object {
-            "_text": "Jonas",
-          },
-          "objAir": Object {
-            "_text": "READY",
-          },
-          "objDur": Object {
-            "_text": 1000,
-          },
-          "objID": Object {
-            "_text": "M0003523",
-          },
-          "objPaths": Object {
-            "objMetadataPath": Object {
-              "_attributes": Object {
-                "techDescription": "MOS Object",
-              },
-              "_text": "http://server/proxy/clipe.xml",
-            },
-            "objPath": Object {
-              "_attributes": Object {
-                "techDescription": "MPEG2 Video",
-              },
-              "_text": "\\\\servermediaclip392028cd2320s0d.mxf",
-            },
-            "objProxyPath": Object {
-              "_attributes": Object {
-                "techDescription": "WM9 750Kbps",
-              },
-              "_text": "http://server/proxy/clipe.wmv",
-            },
-          },
-          "objRev": Object {
-            "_text": 1,
-          },
-          "objSlug": Object {
-            "_text": "My new object 2",
-          },
-          "objTB": Object {
-            "_text": 50,
-          },
-          "objType": Object {
-            "_text": "VIDEO",
-          },
-          "status": Object {
-            "_text": "READY",
-          },
-        },
-      ],
     },
     "ncsID": Object {
       "_text": "their.mos.id",
     },
+  },
+}
+`;
+
+exports[`Profile 1 onRequestAllMOSObjects 3`] = `
+Object {
+  "mos": Object {
+    "messageID": 86,
+    "mosID": "our.mos.id",
+    "mosListAll": Object {
+      "mosObj": Array [
+        Object {
+          "created": "2019-01-01T17:14:42,000",
+          "createdBy": "Jonas",
+          "mosExternalMetadata": Object {
+            "mosPayload": Object {
+              "Approved": 0,
+              "Creator": "SHOLMES",
+              "ModBy": "LJOHNSTON",
+              "ModTime": 20010308142001,
+              "Owner": "SHOLMES",
+              "TextTime": 278,
+              "mediaTime": 0,
+              "text": 0,
+            },
+            "mosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>",
+            "mosScope": "STORY",
+          },
+          "objAir": "READY",
+          "objDur": 1500,
+          "objID": "M000123",
+          "objPaths": Object {
+            "objMetadataPath": Object {
+              "techDescription": "MOS Object",
+              "text": "http://server/proxy/clipe.xml",
+            },
+            "objPath": Object {
+              "techDescription": "MPEG2 Video",
+              "text": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+            },
+            "objProxyPath": Object {
+              "techDescription": "WM9 750Kbps",
+              "text": "http://server/proxy/clipe.wmv",
+            },
+          },
+          "objRev": 1,
+          "objSlug": "My new object",
+          "objTB": 50,
+          "objType": "VIDEO",
+          "status": "READY",
+        },
+        Object {
+          "created": "2019-01-01T17:14:42,000",
+          "createdBy": "Jonas",
+          "objAir": "READY",
+          "objDur": 1000,
+          "objID": "M0003523",
+          "objPaths": Object {
+            "objMetadataPath": Object {
+              "techDescription": "MOS Object",
+              "text": "http://server/proxy/clipe.xml",
+            },
+            "objPath": Object {
+              "techDescription": "MPEG2 Video",
+              "text": "\\\\servermediaclip392028cd2320s0d.mxf",
+            },
+            "objProxyPath": Object {
+              "techDescription": "WM9 750Kbps",
+              "text": "http://server/proxy/clipe.wmv",
+            },
+          },
+          "objRev": 1,
+          "objSlug": "My new object 2",
+          "objTB": 50,
+          "objType": "VIDEO",
+          "status": "READY",
+        },
+      ],
+    },
+    "ncsID": "their.mos.id",
   },
 }
 `;
@@ -2070,6 +2017,7 @@ Object {
       "Items": Array [],
     },
   ],
+  "port": "upper",
 }
 `;
 
@@ -2228,6 +2176,7 @@ Object {
       "Items": Array [],
     },
   ],
+  "port": "upper",
 }
 `;
 
@@ -2267,6 +2216,7 @@ Object {
       "Items": Array [],
     },
   ],
+  "port": "upper",
 }
 `;
 
@@ -2290,32 +2240,27 @@ exports[`Profile 3 mosItemReplace 1`] = `
 
 exports[`Profile 3 mosItemReplace 2`] = `
 Object {
-  "mos": Object {
-    "messageID": 999,
-    "mosID": "our.mos.id",
-    "ncsID": "their.mos.id",
-    "roAck": Object {
-      "itemChannel": "A",
-      "itemID": Array [
-        0,
-        0,
-      ],
-      "objID": Array [
-        "M000224",
-        "M000133",
-      ],
-      "roID": 96857485,
-      "roStatus": "Unknown object M000133",
-      "status": Array [
-        "LOADED",
-        "UNKNOWN",
-      ],
-      "storyID": Array [
-        "5983A501:0049B924:8390EF2B",
-        "3854737F:0003A34D:983A0B28",
-      ],
-    },
+  "ID": MosString128 {
+    "_str": "96857485",
   },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+      },
+      "Items": Array [],
+    },
+  ],
+  "port": "upper",
 }
 `;
 
