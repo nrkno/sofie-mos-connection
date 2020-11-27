@@ -203,7 +203,7 @@ export class MosDevice implements IMOSDevice {
 			this._primaryConnection.onConnectionChange(() => {
 				this._emitConnectionChange()
 				if (offSpecFailover && this._currentConnection !== this._primaryConnection && this._primaryConnection!.connected) {
-					this.switchConnections().catch(() => null) // and hope no current message goes lost
+					this.switchConnections() // and hope no current message goes lost
 				}
 			})
 		}
@@ -231,7 +231,7 @@ export class MosDevice implements IMOSDevice {
 	get idPrimary (): string {
 		return this._idPrimary
 	}
-	/** Secondary ID (probably the MOS-ID) */
+	/** Secondary / Buddy ID (probably the MOS-ID) */
 	get idSecondary (): string | null {
 		return this._idSecondary
 	}
@@ -741,11 +741,9 @@ export class MosDevice implements IMOSDevice {
 
 	/* Profile 0 */
 	async getMachineInfo (): Promise<IMOSListMachInfo> {
-		this._checkCurrentConnection()
 		let message = new ReqMachInfo()
 
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 
 		let listMachInfo = data.mos.listMachInfo
 		let list: IMOSListMachInfo = {
@@ -845,10 +843,8 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnCreateRunningOrder = cb
 	}
 	async sendCreateRunningOrder (ro: IMOSRunningOrder): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new ROCreate(ro)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 
@@ -856,10 +852,8 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnReplaceRunningOrder = cb
 	}
 	async sendReplaceRunningOrder (ro: IMOSRunningOrder): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new ROReplace(ro)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 
@@ -867,23 +861,18 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnDeleteRunningOrder = cb
 	}
 	async sendDeleteRunningOrder (runningOrderId: MosString128): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new RODelete(runningOrderId)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 
-	// onRequestRunningOrder: (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) => void // get roReq, send roList
 	onRequestRunningOrder (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) {
 		this._callbackOnRequestRunningOrder = cb
 	}
 
 	async sendRequestRunningOrder (runningOrderId: MosString128): Promise<IMOSRunningOrder | null > {
-		this._checkCurrentConnection()
 		let message = new ROReq(runningOrderId)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		if (data.mos.roList) {
 			let ro: IMOSRunningOrder = Parser.xml2RO(data.mos.roList)
 			return ro
@@ -900,10 +889,8 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnMetadataReplace = cb
 	}
 	async sendMetadataReplace (metadata: IMOSRunningOrderBase): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new ROMetadataReplace(metadata)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 
@@ -981,100 +968,81 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnROInsertStories = cb
 	}
 	async sendROInsertStories (Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new ROInsertStories(Action, Stories)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROInsertItems (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {
 		this._callbackOnROInsertItems = cb
 	}
 	async sendROInsertItems (Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
+
 		let message = new ROInsertItems(Action, Items)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROReplaceStories (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {
 		this._callbackOnROReplaceStories = cb
 	}
 	async sendROReplaceStories (Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new ROReplaceStories(Action, Stories)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROReplaceItems (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {
 		this._callbackOnROReplaceItems = cb
 	}
 	async sendROReplaceItems (Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new ROReplaceItems(Action, Items)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROMoveStories (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {
 		this._callbackOnROMoveStories = cb
 	}
 	async sendROMoveStories (Action: IMOSStoryAction, Stories: Array<MosString128>): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new ROMoveStories(Action, Stories)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROMoveItems (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {
 		this._callbackOnROMoveItems = cb
 	}
 	async sendROMoveItems (Action: IMOSItemAction, Items: Array<MosString128>): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new ROMoveItems(Action, Items)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onRODeleteStories (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {
 		this._callbackOnRODeleteStories = cb
 	}
 	async sendRODeleteStories (Action: IMOSROAction, Stories: Array<MosString128>): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new RODeleteStories(Action, Stories)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onRODeleteItems (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {
 		this._callbackOnRODeleteItems = cb
 	}
 	async sendRODeleteItems (Action: IMOSStoryAction, Items: Array<MosString128>): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new RODeleteItems(Action, Items)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROSwapStories (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>) {
 		this._callbackOnROSwapStories = cb
 	}
 	async sendROSwapStories (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new ROSwapStories(Action, StoryID0, StoryID1)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROSwapItems (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) {
 		this._callbackOnROSwapItems = cb
 	}
 	async sendROSwapItems (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new ROSwapItems(Action, ItemID0, ItemID1)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 
@@ -1157,10 +1125,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendROStory (story: IMOSROFullStory): Promise<IMOSROAck> {
 	// async sendROSwapItems (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> {
-		this._checkCurrentConnection()
 		let message = new ROStory(story)
 		const data = await this.executeCommand(message)
-		this._handleBadResponseData(data)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	setDebug (debug: boolean) {
@@ -1170,72 +1136,84 @@ export class MosDevice implements IMOSDevice {
 		this._checkProfileValidness()
 	}
 
-	private executeCommand (message: MosMessage, resend?: boolean): Promise<any> {
+	private async executeCommand (message: MosMessage, resend?: boolean): Promise<MosReply> {
+
 		if (this._currentConnection) {
 			if (this._debug) console.log('exec command', message)
 			if (!this._currentConnection.connected) {
-				return this.switchConnections(message)
+				return this.switchConnectionsAndExecuteCommand(message)
 			}
-			return this._currentConnection.executeCommand(message).then((res) => {
-				if (res.mos.roAck && res.mos.roAck.roStatus === 'Buddy server cannot respond because main server is available') {
-					return Promise.reject('Buddy server cannot respond because main server is available')
-				} else {
-					return res
-				}
-			}).catch((e) => {
+
+			try {
+				const reply = await this._currentConnection.executeCommand(message)
+				return this._ensureReply(reply)
+
+			} catch (e) {
 				if (this._debug) console.log('errored', e)
 				if (this._primaryConnection && this._secondaryConnection && !resend) {
-					return this.switchConnections(message)
+					return this.switchConnectionsAndExecuteCommand(message)
 				} else {
-					return Promise.reject(e)
+					throw e
 				}
-			})
+			}
 		} else {
-			return Promise.reject('No connection')
+			throw new Error(`Unable to send message due to no current connection`)
 		}
 	}
-	private switchConnections (message?: MosMessage): Promise<any> {
-		if (this._currentConnection && this._primaryConnection && this._secondaryConnection) {
-			if (this._debug) console.log('switching connection')
-			this._currentConnection = this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection
-			if (!this._currentConnection.connected) return Promise.reject('No connection available for failover')
-			let p
-			if (message) {
-				if (this._debug) console.log('resending msg')
-				p = this.executeCommand(message, true).catch((e) => {
-					if (e === 'Main server available') {
-						// @todo: we may deadlock if primary is down for us, but up for buddy
-						return this.switchConnections(message)
-					}
-					// @ts-ignore - following line will always resolve if called from here
-					this.switchConnections().catch((e) => {
-						throw Error('e')
-					})
-					return Promise.reject(e)
-				})
+	private switchConnections (): void {
+		if (!this._currentConnection) throw new Error('Unable to failover connection: No current connection')
+		if (!this._primaryConnection) throw new Error('Unable to failover connection: No primary connection')
+		if (!this._secondaryConnection) throw new Error('Unable to failover connection: No secondary connection')
+
+		if (this._debug) console.log('switching connection')
+
+		let otherConnection = this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection
+		let currentConnection = this._currentConnection
+
+		if (!otherConnection.connected) throw new Error('Unable to failover connection: Other connection is not connected')
+
+		// Switch:
+		this._currentConnection = otherConnection
+		otherConnection = currentConnection // former current connection
+
+		otherConnection.handOverQueue(this._currentConnection)
+	}
+	private async switchConnectionsAndExecuteCommand (message: MosMessage): Promise<MosReply> {
+		this.switchConnections()
+
+		if (this._debug) console.log('resending msg')
+
+		try {
+			return await this.executeCommand(message, true)
+		} catch (e) {
+			if (e.toString() === 'Main server available') {
+				// @todo: we may deadlock if primary is down for us, but up for buddy
+				return this.switchConnectionsAndExecuteCommand(message)
 			}
-			(this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection).handOverQueue(this._currentConnection)
-			return p || Promise.resolve()
+			this.switchConnections()
+
+			throw e
 		}
-		return Promise.reject('No connection available for failover')
 	}
 	private _emitConnectionChange (): void {
 		if (this._callbackOnConnectionChange) this._callbackOnConnectionChange(this.getConnectionStatus())
 	}
 	/** throws if there is an error */
-	private _handleBadResponseData (data: any): void {
-		if (!data.mos) throw new Error(`Unknown data: <mos> missing from message`)
+	private _ensureReply (reply: any): MosReply {
+		if (!reply.mos) throw new Error(`Unknown data: <mos> missing from message`)
+
+		if (reply.mos.roAck && reply.mos.roAck.roStatus === 'Buddy server cannot respond because main server is available') {
+			throw new Error('Buddy server cannot respond because main server is available')
+		}
 
 		if (
-			data.mos.mosAck &&
-			data.mos.mosAck.status === 'NACK'
+			reply.mos.mosAck &&
+			reply.mos.mosAck.status === 'NACK'
 		) {
-			throw new Error(`Error in response: ${data.mos.mosAck.statusDescription || 'No statusDescription given'}`)
+			throw new Error(`Error in response: ${reply.mos.mosAck.statusDescription || 'No statusDescription given'}`)
 		}
-	}
-	/** throws if there is no connection */
-	private _checkCurrentConnection () {
-		if (!this._currentConnection) throw new Error(`Unable to send message due to no current connection`)
+
+		return reply
 	}
 	/** throws if something's wrong
 	 */
@@ -1331,4 +1309,8 @@ export class MosDevice implements IMOSDevice {
 			throw new Error('Erorr: Profile 7 is not currently implemented!')
 		}
 	}
+}
+
+interface MosReply {
+	mos: any
 }
