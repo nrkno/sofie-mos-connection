@@ -527,7 +527,8 @@ describe('MosDevice: General', () => {
 			SecondaryStatus: '' // if not connected this will contain human-readable error-message
 		})
 
-		expect(errorReported).toHaveBeenCalledTimes(2)
+		expect(errorReported).toHaveBeenCalledTimes(1)
+		expect(errorReported).nthCalledWith(1, 'primary: Heartbeat error on lower: Error: Command timed out')
 
 		// Test proper dispose:
 		await mosDevice.dispose()
