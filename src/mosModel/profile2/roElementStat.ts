@@ -19,26 +19,6 @@ export interface ROElementStatOptions {
 	itemChannel?: MosString128
 	status: IMOSObjectStatus
 }
-export interface ROElementStatOptionsStory extends ROElementStatOptions {
-	type: ROElementStatType.STORY
-	roId: MosString128
-	storyId: MosString128
-	status: IMOSObjectStatus
-}
-export interface ROElementStatOptionsItem extends ROElementStatOptions {
-	type: ROElementStatType.ITEM
-	roId: MosString128
-	storyId: MosString128
-	itemId: MosString128
-	objId?: MosString128
-	itemChannel?: MosString128
-	status: IMOSObjectStatus
-}
-export interface ROElementStatOptionsRunningOrder extends ROElementStatOptions {
-	type: ROElementStatType.ITEM
-	roId: MosString128
-	status: IMOSObjectStatus
-}
 export class ROElementStat extends MosMessage {
 	private options: ROElementStatOptions
 	private time: MosTime
