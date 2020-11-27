@@ -39,7 +39,9 @@ import { ServerMock } from '../__mocks__/server'
 
 import { xmlData, xmlApiData } from '../__mocks__/testData'
 import { xml2js } from 'xml-js'
+
 import { MOSAck } from '../mosModel'
+import * as Utils from '../utils/Utils'
 
 const iconv = require('iconv-lite')
 iconv.encodingExists('utf16-be')
@@ -783,6 +785,16 @@ describe('Profile 1', () => {
 		expect(parsedReply).toMatchSnapshot()
 	})
 	test('onRequestAllMOSObjects', async () => {
+
+		let mockReply = jest.fn((data) => {
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
+			let repl = getXMLReply(messageID, '<mosAck></mosAck>')
+
+			return encode(repl)
+		})
+		socketMockLower.mockAddReply(mockReply)
+
 		// Fake incoming message on socket:
 		await fakeIncomingMessage(serverSocketMockLower, xmlData.mosReqAll)
 		expect(onRequestAllMOSObjects).toHaveBeenCalledTimes(1)
@@ -796,12 +808,24 @@ describe('Profile 1', () => {
 		// @ts-ignore mock
 		let reply = decode(serverSocketMockLower.mockSentMessage.mock.calls[0][0])
 		let parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
-		expect(parsedReply.mos.mosListAll.mosObj).toHaveLength(2)
-		expect(parsedReply.mos.mosListAll.mosObj[0].objID._text + '').toEqual(xmlApiData.mosObj.ID!.toString())
-		expect(parsedReply.mos.mosListAll.mosObj[0].objSlug._text + '').toEqual(xmlApiData.mosObj.Slug.toString())
-		expect(parsedReply.mos.mosListAll.mosObj[1].objID._text + '').toEqual(xmlApiData.mosObj2.ID!.toString())
-		expect(parsedReply.mos.mosListAll.mosObj[1].objSlug._text + '').toEqual(xmlApiData.mosObj2.Slug.toString())
+		expect(parsedReply.mos.mosAck).toBeTruthy()
 		expect(parsedReply).toMatchSnapshot()
+
+		// @ts-ignore mock
+		serverSocketMockLower.mockSentMessage.mockClear()
+		await delay(50)
+		await serverSocketMockLower.mockWaitForSentMessages()
+
+		expect(mockReply).toHaveBeenCalledTimes(1)
+
+		const sentData = Utils.xml2js(decode(mockReply.mock.calls[0][0])) as any
+
+		expect(sentData.mos.mosListAll.mosObj).toHaveLength(2)
+		expect(sentData.mos.mosListAll.mosObj[0].objID + '').toEqual(xmlApiData.mosObj.ID!.toString())
+		expect(sentData.mos.mosListAll.mosObj[0].objSlug + '').toEqual(xmlApiData.mosObj.Slug.toString())
+		expect(sentData.mos.mosListAll.mosObj[1].objID + '').toEqual(xmlApiData.mosObj2.ID!.toString())
+		expect(sentData.mos.mosListAll.mosObj[1].objSlug + '').toEqual(xmlApiData.mosObj2.Slug.toString())
+		expect(sentData).toMatchSnapshot()
 	})
 	test('getMOSObject', async () => {
 
