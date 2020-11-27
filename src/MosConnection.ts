@@ -97,6 +97,9 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			primary.on('error', (str: string) => {
 				this.emit('error', 'primary: ' + str)
 			})
+			primary.on('info', (str: string) => {
+				this.emit('info', 'primary: ' + str)
+			})
 
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower', true)
 			primary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper', true)
@@ -119,6 +122,9 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				})
 				secondary.on('error', (str: string) => {
 					this.emit('error', 'secondary: ' + str)
+				})
+				secondary.on('info', (str: string) => {
+					this.emit('info', 'secondary: ' + str)
 				})
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_LOWER, 'lower', true)
 				secondary.createClient(MosConnection.nextSocketID, MosConnection.CONNECTION_PORT_UPPER, 'upper', true)
@@ -490,6 +496,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			}
 		})
 		client.socket.on('error', (e: Error) => {
+			this.emit('error', `Socket had error (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${e}`)
 			if (this._debug) console.log(`Socket had error (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${e}`)
 		})
 

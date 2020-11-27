@@ -493,6 +493,9 @@ describe('MosDevice: General', () => {
 
 		let connectionStatusChanged = jest.fn()
 
+		let errorReported = jest.fn()
+		mos.on('error', errorReported)
+
 		mosDevice.onConnectionChange((connectionStatus: IMOSConnectionStatus) => {
 			connectionStatusChanged(connectionStatus)
 		})
@@ -523,6 +526,8 @@ describe('MosDevice: General', () => {
 			SecondaryConnected: true,
 			SecondaryStatus: '' // if not connected this will contain human-readable error-message
 		})
+
+		expect(errorReported).toHaveBeenCalledTimes(2)
 
 		// Test proper dispose:
 		await mosDevice.dispose()

@@ -81,6 +81,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	connect () {
 		for (let i in this._clients) {
 			// Connect client
+			this.emit('info', `Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
 			if (this._debug) console.log(`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
 			this._clients[i].client.connect()
 		}
@@ -255,6 +256,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 					.catch((e) => {
 						// probably a timeout
 						client.heartbeatConnected = false
+						this.emit('error', `Heartbeat error on ${this._clients[key].clientDescription}: ${e.toString()}`)
 						if (this._debug) console.log(`Heartbeat on ${this._clients[key].clientDescription}: ${e.toString()}`)
 					})
 				} else {

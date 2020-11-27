@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.9.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.10...0.9.0) (2020-09-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop support for node 8
+
+### Features
+
+* drop support for node 8 ([d42e556](https://github.com/nrkno/tv-automation-mos-connection/commit/d42e55601f1a6b5e3d5b8d12829ec88e3f0a9eb8))
+* drop support for node 8 ([9a2d44c](https://github.com/nrkno/tv-automation-mos-connection/commit/9a2d44c07c6803a09385f30864035cfec708f272))
+
+### [0.8.10](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.9...0.8.10) (2020-03-24)
+
+
+### Features
+
+* **ci:** optionally skip the audit [skip ci] ([df946f2](https://github.com/nrkno/tv-automation-mos-connection/commit/df946f21d21d45b186ae70bea5b71f3918e2b50d))
+* add prerelease flow [publish] ([1acec89](https://github.com/nrkno/tv-automation-mos-connection/commit/1acec894f5902a751b07450d19beb0ed6fb22baa))
+
+
+### Bug Fixes
+
+* start and duration can be 0 ([b5f47a5](https://github.com/nrkno/tv-automation-mos-connection/commit/b5f47a52c69fbad41a840ea29688f0bcaf41b1e4))
+
 ### [0.8.9](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.8...0.8.9) (2020-01-24)
 
 
