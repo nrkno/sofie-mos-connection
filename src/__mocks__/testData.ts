@@ -971,7 +971,13 @@ const xmlData = {
             </mosExternalMetadata>
         </mosObj>
     </list>
-</mosObjList>`
+</mosObjList>`,
+	'mosAck': `<mosAck>
+        <objID>M000123</objID>
+        <objRev>1</objRev>
+        <status>ACK</status>
+        <statusDescription></statusDescription>
+</mosAck>`
 }
 
 const xmlApiData = {

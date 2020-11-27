@@ -2286,32 +2286,14 @@ exports[`Profile 3 mosObjCreate 1`] = `
 
 exports[`Profile 3 mosObjCreate 2`] = `
 Object {
-  "mos": Object {
-    "messageID": 999,
-    "mosID": "our.mos.id",
-    "ncsID": "their.mos.id",
-    "roAck": Object {
-      "itemChannel": "A",
-      "itemID": Array [
-        0,
-        0,
-      ],
-      "objID": Array [
-        "M000224",
-        "M000133",
-      ],
-      "roID": 96857485,
-      "roStatus": "Unknown object M000133",
-      "status": Array [
-        "LOADED",
-        "UNKNOWN",
-      ],
-      "storyID": Array [
-        "5983A501:0049B924:8390EF2B",
-        "3854737F:0003A34D:983A0B28",
-      ],
-    },
+  "Description": MosString128 {
+    "_str": "",
   },
+  "ID": MosString128 {
+    "_str": "M000123",
+  },
+  "Revision": 1,
+  "Status": "ACK",
 }
 `;
 

@@ -131,7 +131,7 @@ function checkMessageSnapshot (msg: string) {
 	).toMatchSnapshot()
 
 }
-function checkAckSnapshot (ack: MOSAck | IMOSROAck) {
+function checkAckSnapshot (ack: IMOSAck | IMOSROAck) {
 	const ack2: any = {
 		...ack
 		// messageID: 999
@@ -1480,7 +1480,7 @@ describe('Profile 3', () => {
 		let mockReply = jest.fn((data) => {
 			let str = decode(data)
 			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
-			return encode(getXMLReply(messageID, xmlData.roAck))
+			return encode(getXMLReply(messageID, xmlData.mosAck))
 		})
 		socketMockLower.mockAddReply(mockReply)
 		let returnedAck = await mosDevice.mosObjCreate({
