@@ -19,6 +19,7 @@ export class ROStory extends MosMessage {
 		let xmlStory = XMLBuilder.create('roStorySend')
 
 		XMLROStoryBase.toXML(xmlStory, this.fullStory)
+		addTextElement(xmlStory, 'roID', this.fullStory.RunningOrderId)
 
 		const xmlStoryBody = addTextElement(xmlStory, 'storyBody')
 		this.fullStory.Body.forEach(bodyItem => {
