@@ -22,8 +22,8 @@ describe('mosExternalMetaData', () => {
 	})
 
 	test('Detect and parse Nora content JSON payload', () => {
-		const contentPayload = {"uuid":"b665e0f0-9b44-496a-8753-676d81f33ab7","metadata":{"modul":"no"}}
-	
+		const contentPayload = { 'uuid': 'b665e0f0-9b44-496a-8753-676d81f33ab7','metadata': { 'modul': 'no' } }
+
 		const actual = new MosExternalMetaData({
 			MosScope: IMOSScope.PLAYLIST,
 			MosSchema: 'https://nora.nrk.no/mos/content',
@@ -34,8 +34,8 @@ describe('mosExternalMetaData', () => {
 	})
 
 	test('Detect and parse Nora timing JSON payload', () => {
-		const timingPayload = {"timeIn":0,"duration":5000,"in":"auto","out":"auto"}
-	
+		const timingPayload = { 'timeIn': 0,'duration': 5000,'in': 'auto','out': 'auto' }
+
 		const actual = new MosExternalMetaData({
 			MosScope: IMOSScope.PLAYLIST,
 			MosSchema: 'https://nora.nrk.no/mos/timing',

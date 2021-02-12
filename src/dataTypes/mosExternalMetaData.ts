@@ -22,15 +22,14 @@ export class MosExternalMetaData {
 	constructor (obj: IMOSExternalMetaData) {
 		this._scope = obj.MosScope
 		this._schema = obj.MosSchema
-		try{
+		try {
 			const decoded = decodeURI(obj.MosPayload).trim()
-			if(decoded.startsWith('{')) {
+			if (decoded.startsWith('{')) {
 				this._payload = JSON.parse(decoded)
 			} else {
 				this._payload = obj.MosPayload
 			}
-		}
-		catch (err) {
+		} catch (err) {
 			this._payload = obj.MosPayload
 		}
 		// this._payload = obj.MosPayload
