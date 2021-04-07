@@ -3338,6 +3338,53 @@ exports[`Profile 3 onMosReqSearchableSchema: <mos>
 </mos>"
 `;
 
+exports[`Profile 3 sendMosReqObjectActionNew 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <mosReqObjAction operation=\\"NEW\\">
+    <objSlug>abc123</objSlug>
+    <objType>VIDEO</objType>
+    <objTB>25</objTB>
+    <objRev/>
+    <objDur>500</objDur>
+    <status/>
+    <objAir/>
+    <createdBy/>
+    <created/>
+  </mosReqObjAction>
+</mos>"
+`;
+
+exports[`Profile 3 sendMosReqObjectActionUpdateDelete 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <mosReqObjAction operation=\\"DELETE\\" objID=\\"OBJID1234\\"/>
+</mos>"
+`;
+
+exports[`Profile 3 sendMosReqObjectActionUpdateUpdate 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <mosReqObjAction operation=\\"UPDATE\\" objID=\\"OBJID1234\\">
+    <objSlug>abc123</objSlug>
+    <objType>VIDEO</objType>
+    <objTB>25</objTB>
+    <objRev/>
+    <objDur>500</objDur>
+    <status/>
+    <objAir/>
+    <createdBy/>
+    <created/>
+  </mosReqObjAction>
+</mos>"
+`;
+
 exports[`Profile 4 getAllRunningOrders 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>

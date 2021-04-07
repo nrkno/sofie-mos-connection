@@ -41,6 +41,7 @@ import { xmlData, xmlApiData } from '../__mocks__/testData'
 import { xml2js } from 'xml-js'
 
 import * as Utils from '../utils/Utils'
+import { MOSAck } from 'src/mosModel'
 
 const iconv = require('iconv-lite')
 iconv.encodingExists('utf16-be')
@@ -65,7 +66,8 @@ async function getMosConnection (profiles: IProfiles): Promise<MosConnection> {
 		mosID: 'our.mos.id',
 		acceptsConnections: true,
 		profiles: profiles,
-		strict: true
+		strict: true,
+		debug: false
 	})
 	await mos.init()
 
@@ -1648,6 +1650,62 @@ describe('Profile 3', () => {
 		expect(onRequestObjectActionDelete.mock.calls).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockQuery, messageId, '<mosAck>')
 	})
+	test('sendMosReqObjectActionNew', async () => {
+		// Prepare server response:
+		let mockReply = jest.fn((data) => {
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
+			return encode(getXMLReply(messageID, xmlData.mosAck))
+		})
+		socketMockLower.mockAddReply(mockReply)
+		await mosDevice.sendRequestObjectActionNew({
+			Slug: new MosString128('abc123'),
+			Type: IMOSObjectType.VIDEO,
+			TimeBase: 25,
+			Duration: 500
+		})
+		await socketMockQuery.mockWaitForSentMessages()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<mosReqObjAction operation="NEW">/)
+		checkMessageSnapshot(msg)
+	})
+	test('sendMosReqObjectActionUpdateUpdate', async () => {
+		// Prepare server response:
+		let mockReply = jest.fn((data) => {
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
+			return encode(getXMLReply(messageID, xmlData.mosAck))
+		})
+		socketMockLower.mockAddReply(mockReply)
+		await mosDevice.sendRequestObjectActionUpdate(new MosString128('OBJID1234'),{
+			Slug: new MosString128('abc123'),
+			Type: IMOSObjectType.VIDEO,
+			TimeBase: 25,
+			Duration: 500
+		})
+		await socketMockQuery.mockWaitForSentMessages()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<mosReqObjAction operation="UPDATE" objID="OBJID1234">/)
+		checkMessageSnapshot(msg)
+	})
+	test('sendMosReqObjectActionUpdateDelete', async () => {
+		// Prepare server response:
+		let mockReply = jest.fn((data) => {
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
+			return encode(getXMLReply(messageID, xmlData.mosAck))
+		})
+		socketMockLower.mockAddReply(mockReply)
+		await mosDevice.sendRequestObjectActionDelete(new MosString128('OBJID1234'))
+		await socketMockQuery.mockWaitForSentMessages()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<mosReqObjAction operation="DELETE" objID="OBJID1234"\/>/)
+		checkMessageSnapshot(msg)
+	})
+
 })
 
 describe('Profile 4', () => {
