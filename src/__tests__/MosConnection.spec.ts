@@ -834,6 +834,7 @@ describe('Profile 1', () => {
 		expect(sentData.mos.mosListAll.mosObj[0].objSlug + '').toEqual(xmlApiData.mosObj.Slug.toString())
 		expect(sentData.mos.mosListAll.mosObj[1].objID + '').toEqual(xmlApiData.mosObj2.ID!.toString())
 		expect(sentData.mos.mosListAll.mosObj[1].objSlug + '').toEqual(xmlApiData.mosObj2.Slug.toString())
+		sentData.mos.messageID = 99999 // not important
 		expect(sentData).toMatchSnapshot()
 	})
 	test('getMOSObject', async () => {
