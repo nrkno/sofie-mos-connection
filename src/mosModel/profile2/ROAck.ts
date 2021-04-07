@@ -16,8 +16,13 @@ export class ROAck extends MosMessage implements IMOSROAck {
 	Stories: Array<IMOSROAckStory>
 
   /** */
-	constructor () {
+	constructor (roAck?: IMOSROAck) {
 		super('upper')
+		if (roAck) {
+			this.ID = roAck.ID
+			this.Status = roAck.Status
+			this.Stories = roAck.Stories
+		}
 	}
 
   /** */
