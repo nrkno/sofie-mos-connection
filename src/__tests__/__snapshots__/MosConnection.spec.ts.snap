@@ -4148,10 +4148,19 @@ Array [
             "Approved": 0,
             "Creator": "LINUXENPS",
             "ENPSItemType": 3,
-            "MOSItemDurations": "0    0    0    0    0",
+            "MOSItemDurations": "0 0 0 0 0",
             "MOSItemEdDurations": "",
-            "MOSObjSlugs": "M:    01 ett navn 1:  2:    01 ett navn 1:  2:    01 ett navn 1:  2:    01 ett navn 1:  2:    24 foto/red 1:Foto og redigering:  2:    Story status",
-            "MOSSlugs": "SAK BUSKERUD;SAK-14    01 ett navn 1:  2:    01 ett navn 1:  2:    01 ett navn 1:  2:    01 ett navn 1:  2:    24 foto/red 1:Foto og redigering:  2:    SAK BUSKERUD;SAK-20",
+            "MOSObjSlugs": "M:   01 ett navn 1:  2:
+   01 ett navn 1:  2:
+   01 ett navn 1:  2:
+   01 ett navn 1:  2:
+   24 foto/red 1:Foto og redigering:  2:   Story status",
+            "MOSSlugs": "SAK BUSKERUD;SAK-14
+   01 ett navn 1:  2:
+   01 ett navn 1:  2:
+   01 ett navn 1:  2:
+   01 ett navn 1:  2:
+   24 foto/red 1:Foto og redigering:  2:   SAK BUSKERUD;SAK-20",
             "MediaTime": 0,
             "ModBy": "LINUXENPS",
             "ModTime": "20180227T004205Z",
