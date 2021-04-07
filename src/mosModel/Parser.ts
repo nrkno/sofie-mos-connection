@@ -7,7 +7,7 @@ import {
 	IMOSRunningOrderBase,
 	IMOSObject,
 	IMOSROFullStory,
-	IMosRequestObjectList,
+	IMOSRequestObjectList,
 	IMOSAck
 } from '../api'
 import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
@@ -103,7 +103,7 @@ export namespace Parser {
 	// 	// Todo: metadata:
 	// 	return xml
 	// }
-	export function xml2ReqObjList (xml: any): IMosRequestObjectList {
+	export function xml2ReqObjList (xml: any): IMOSRequestObjectList {
 		return XMLMosRequestObjectList.fromXML(xml)
 	}
 }

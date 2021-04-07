@@ -1,12 +1,12 @@
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
-import { IMOSSearchableSchema } from '../../api'
+import { IMOSListSearchableSchema } from '../../api'
 import { addTextElement } from '../../utils/Utils'
 
 export class MosListSearchableSchema extends MosMessage {
-	private options: IMOSSearchableSchema
+	private options: IMOSListSearchableSchema
 
-	constructor (options: IMOSSearchableSchema) {
+	constructor (options: IMOSListSearchableSchema) {
 		super('query')
 		this.options = options
 	}

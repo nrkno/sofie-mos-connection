@@ -18,8 +18,8 @@ import {
 	IMOSROAction,
 	IMOSROFullStory,
 	IMOSROFullStoryBodyItem,
-	IMosRequestObjectList,
-	IMosSearchField
+	IMOSRequestObjectList,
+	IMOSSearchField
 } from '../api'
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
@@ -776,7 +776,7 @@ const xmlData = {
 			<searchField XPath="Producer [.!='Susan']" sortByOrder="3"/>
 		</searchGroup>
 	</mosReqObjList>`,
-	'mosReqObjAction': `<mosReqObjAction operation="NEW" >
+	'mosReqObjActionNew': `<mosReqObjAction operation="NEW" >
 		<objSlug>Hotel Fire</objSlug>
 		<objGroup>Show 7</objGroup>
 		<objType>VIDEO</objType>
@@ -813,6 +813,46 @@ const xmlData = {
 			<Creator>SHOLMES</Creator>
 			</mosPayload>
 		</mosExternalMetadata>
+	</mosReqObjAction>`,
+	'mosReqObjActionUpdate': `<mosReqObjAction operation="UPDATE" objID="1EFA3009233F8329C1">
+	      <objSlug>Hotel Fire</objSlug>
+		  <objGroup>Show 7</objGroup>
+		  <objType>VIDEO</objType>
+		  <objTB>59.94</objTB>
+		  <objDur>1800</objDur>
+		  <createdBy>Chris</createdBy>
+		  <description>
+			 <p>
+				Exterior footage of
+				<em>Baley Park Hotel</em>
+				 on fire with natural sound. Trucks are
+			visible for the first portion of the clip.
+				<em>CG locator at 0:04 and duration 0:05, Baley Park
+			Hotel.</em>
+			 </p>
+			 <p>
+				<tab/>
+				Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.
+			 </p>
+			 <p>
+				<em>Clip has been doubled for pad on voice over.</em>
+			 </p>
+		  </description>
+		  <mosExternalMetadata>
+			 <mosScope>STORY</mosScope>
+			 <mosSchema>http://NCSA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>
+			 <mosPayload>
+				<Owner>SHOLMES</Owner>
+				<ModTime>20010308142001</ModTime>
+				<mediaTime>0</mediaTime>
+				<TextTime>278</TextTime>
+				<ModBy>LJOHNSTON</ModBy>
+				<Approved>0</Approved>
+				<Creator>SHOLMES</Creator>
+			 </mosPayload>
+		  </mosExternalMetadata>
+	   </mosReqObjAction>`,
+	'mosReqObjActionDelete': `<mosReqObjAction operation="DELETE" objID="1EFA3009233F8329C1">
 	</mosReqObjAction>`,
 	'mosListSearchableSchema': `<mosListSearchableSchema username="myUsername">
 		<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
@@ -1936,7 +1976,7 @@ const xmlApiData = {
 		]
 	}),
 	'mosReqSearchableSchema': 'jbob',
-	'mosReqObjList': literal<IMosRequestObjectList>({
+	'mosReqObjList': literal<IMOSRequestObjectList>({
 		username: 'jbob',
 		queryID: '123439392039393ade0393zdkdls',
 		listReturnStart: 1,
@@ -1945,51 +1985,61 @@ const xmlApiData = {
 		mosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 		searchGroups: [
 			{ searchFields: [
-				literal<IMosSearchField>({
+				literal<IMOSSearchField>({
 					XPath: '/Presenter [. =\'Bob\']',
 					sortByOrder: 1
 				}),
-				literal<IMosSearchField>({
+				literal<IMOSSearchField>({
 					XPath: '/Slug [.=\'Dog Abuse\']'
 				}),
-				literal<IMosSearchField>({
+				literal<IMOSSearchField>({
 					XPath: '/Video/Length [.>60 AND <120]',
 					sortByOrder: 2,
 					sortType: 'DESCENDING'
 				}),
-				literal<IMosSearchField>({
+				literal<IMOSSearchField>({
 					XPath: 'Producer [.!=\'Susan\']',
 					sortByOrder: 3
 				})
 			] },
 			{ searchFields: [
-				literal<IMosSearchField>({
+				literal<IMOSSearchField>({
 					XPath: '/Presenter [. =\'Jennifer\']',
 					sortByOrder: 1
 				}),
-				literal<IMosSearchField>({
+				literal<IMOSSearchField>({
 					XPath: '/Slug [.=\'Big Mice in City\']'
 				}),
-				literal<IMosSearchField>({
+				literal<IMOSSearchField>({
 					XPath: '/Video/Length [.>60 AND <120]',
 					sortByOrder: 2,
 					sortType: 'DESCENDING'
 				}),
-				literal<IMosSearchField>({
+				literal<IMOSSearchField>({
 					XPath: 'Producer [.!=\'Susan\']',
 					sortByOrder: 3
 				})
 			] }
 		]
 	}),
-	'mosObjReqObjAction': literal<IMOSObject>({
+	'mosObjReqObjActionNew': literal<IMOSObject>({
 		Slug: new MosString128('Hotel Fire'),
 		Group: 'Show 7',
 		Type: IMOSObjectType.VIDEO,
 		TimeBase: 59.94,
 		Duration: 1800,
 		CreatedBy: new MosString128('Chris')
-	})
+	}),
+	'mosObjReqObjActionUpdateObjId': '1EFA3009233F8329C1',
+	'mosObjReqObjActionUpdate': literal<IMOSObject>({
+		Slug: new MosString128('Hotel Fire'),
+		Group: 'Show 7',
+		Type: IMOSObjectType.VIDEO,
+		TimeBase: 59.94,
+		Duration: 1800,
+		CreatedBy: new MosString128('Chris')
+	}),
+	'mosObjReqObjActionDeleteObjId': '1EFA3009233F8329C1'
 }
 
 export { xmlData, xmlApiData }

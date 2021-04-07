@@ -2934,10 +2934,41 @@ exports[`Profile 3 onMosObjCreate: <mos>
 </mos>"
 `;
 
-exports[`Profile 3 onMosReqObjectAction 1`] = `
+exports[`Profile 3 onMosReqObjectActionDelete  1`] = `
 Array [
   Array [
-    "NEW",
+    "1EFA3009233F8329C1",
+  ],
+]
+`;
+
+exports[`Profile 3 onMosReqObjectActionDelete : <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1664</messageID>
+  <mosAck>
+    <objID>runningOrderId</objID>
+    <objRev/>
+    <status>ACK</status>
+    <statusDescription/>
+  </mosAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1664</messageID>
+  <mosAck>
+    <objID>runningOrderId</objID>
+    <objRev/>
+    <status>ACK</status>
+    <statusDescription/>
+  </mosAck>
+</mos>"
+`;
+
+exports[`Profile 3 onMosReqObjectActionNew 1`] = `
+Array [
+  Array [
     Object {
       "AirStatus": undefined,
       "Changed": MosTime {
@@ -3043,7 +3074,7 @@ Array [
 ]
 `;
 
-exports[`Profile 3 onMosReqObjectAction: <mos>
+exports[`Profile 3 onMosReqObjectActionNew: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1662</messageID>
@@ -3058,6 +3089,139 @@ exports[`Profile 3 onMosReqObjectAction: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1662</messageID>
+  <mosAck>
+    <objID>runningOrderId</objID>
+    <objRev/>
+    <status>ACK</status>
+    <statusDescription/>
+  </mosAck>
+</mos>"
+`;
+
+exports[`Profile 3 onMosReqObjectActionUpdate 1`] = `
+Array [
+  Array [
+    "1EFA3009233F8329C1",
+    Object {
+      "AirStatus": undefined,
+      "Changed": MosTime {
+        "_time": 2019-01-01T17:14:42.000Z,
+        "_timezone": "",
+        "_timezoneDeclaration": "",
+        "_timezoneZuluIndicator": "",
+      },
+      "ChangedBy": MosString128 {
+        "_str": "undefined",
+      },
+      "Created": MosTime {
+        "_time": 2019-01-01T17:14:42.000Z,
+        "_timezone": "",
+        "_timezoneDeclaration": "",
+        "_timezoneZuluIndicator": "",
+      },
+      "CreatedBy": MosString128 {
+        "_str": "Chris",
+      },
+      "Description": Object {
+        "elements": Array [
+          Object {
+            "$name": "p",
+            "$type": "element",
+            "elements": Array [
+              Object {
+                "$type": "text",
+                "text": "Exterior footage of",
+              },
+              Object {
+                "$name": "em",
+                "$type": "text",
+                "text": "Baley Park Hotel",
+              },
+              Object {
+                "$type": "text",
+                "text": "on fire with natural sound. Trucks are
+			visible for the first portion of the clip.",
+              },
+              Object {
+                "$name": "em",
+                "$type": "text",
+                "text": "CG locator at 0:04 and duration 0:05, Baley Park
+			Hotel.",
+              },
+            ],
+          },
+          Object {
+            "$name": "p",
+            "$type": "element",
+            "elements": Array [
+              Object {
+                "$name": "tab",
+                "$type": "element",
+              },
+              Object {
+                "$type": "text",
+                "text": "Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.",
+              },
+            ],
+          },
+          Object {
+            "$name": "p",
+            "$type": "text",
+            "em": "Clip has been doubled for pad on voice over.",
+            "text": "Clip has been doubled for pad on voice over.",
+          },
+        ],
+      },
+      "Duration": 1800,
+      "Group": "Show 7",
+      "ID": MosString128 {
+        "_str": "1EFA3009233F8329C1",
+      },
+      "MosAbstract": undefined,
+      "MosExternalMetaData": Array [
+        Object {
+          "MosPayload": Object {
+            "Approved": 0,
+            "Creator": "SHOLMES",
+            "ModBy": "LJOHNSTON",
+            "ModTime": 20010308142001,
+            "Owner": "SHOLMES",
+            "TextTime": 278,
+            "mediaTime": 0,
+            "text": 0,
+          },
+          "MosSchema": "http://NCSA4.com/mos/supported_schemas/NCSAXML2.08",
+          "MosScope": "STORY",
+        },
+      ],
+      "Paths": Array [],
+      "Revision": undefined,
+      "Slug": MosString128 {
+        "_str": "Hotel Fire",
+      },
+      "Status": undefined,
+      "TimeBase": 59.94,
+      "Type": "VIDEO",
+    },
+  ],
+]
+`;
+
+exports[`Profile 3 onMosReqObjectActionUpdate: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1663</messageID>
+  <mosAck>
+    <objID>runningOrderId</objID>
+    <objRev/>
+    <status>ACK</status>
+    <statusDescription/>
+  </mosAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1663</messageID>
   <mosAck>
     <objID>runningOrderId</objID>
     <objRev/>
@@ -3898,7 +4062,7 @@ Array [
 exports[`Profile 4 onROStory: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1663</messageID>
+  <messageID>1665</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -3907,7 +4071,7 @@ exports[`Profile 4 onROStory: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1663</messageID>
+  <messageID>1665</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>

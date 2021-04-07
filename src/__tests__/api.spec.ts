@@ -14,8 +14,8 @@ import {
 	IMOSItem,
 	IMOSItemAction,
 	IMOSItemStatus,
-	IMosObjectList,
-	IMosRequestObjectList,
+	IMOSObjectList,
+	IMOSRequestObjectList,
 	IMOSROAck,
 	IMOSROAction,
 	IMOSROFullStory,
@@ -24,7 +24,7 @@ import {
 	IMOSRunningOrder,
 	IMOSRunningOrderBase,
 	IMOSRunningOrderStatus,
-	IMOSSearchableSchema,
+	IMOSListSearchableSchema,
 	IMOSStoryAction,
 	IMOSStoryStatus,
 	MosString128
@@ -65,17 +65,17 @@ test('api & exports', () => {
 			f = function (): string { return mosDevice.idPrimary }
 			f = function (): string | null { return mosDevice.idSecondary }
 			/* Profile 0 */
-			f = function (): Promise<IMOSListMachInfo> { return mosDevice.getMachineInfo() }
-			f = function (cb: () => Promise<IMOSListMachInfo>): void { return mosDevice.onGetMachineInfo(cb) }
+			f = function (): Promise<IMOSListMachInfo> { return mosDevice.requestMachineInfo() }
+			f = function (cb: () => Promise<IMOSListMachInfo>): void { return mosDevice.onRequestMachineInfo(cb) }
 			f = function (cb: (connectionStatus: IMOSConnectionStatus) => void): void { return mosDevice.onConnectionChange(cb) }
 			f = function (): IMOSConnectionStatus { return mosDevice.getConnectionStatus() }
 
 			/* Profile 1 */
 			f = function (obj: IMOSObject): Promise<IMOSAck> { return mosDevice.sendMOSObject(obj) }
 			f = function (cb: (objId: string) => Promise<IMOSObject | null>): void { return mosDevice.onRequestMOSObject(cb) }
-			f = function (objId: MosString128): Promise<IMOSObject> { return mosDevice.getMOSObject(objId) }
+			f = function (objId: MosString128): Promise<IMOSObject> { return mosDevice.sendRequestMOSObject(objId) }
 			f = function (cb: () => Promise<Array<IMOSObject>>): void { return mosDevice.onRequestAllMOSObjects(cb) }
-			f = function (): Promise<Array<IMOSObject>> { return mosDevice.getAllMOSObjects() }
+			f = function (): Promise<Array<IMOSObject>> { return mosDevice.sendRequestAllMOSObjects() }
 			f = function (objs: IMOSObject[]): Promise<IMOSAck> { return mosDevice.sendAllMOSObjects(objs) }
 
 			/* Profile 2 */
@@ -119,21 +119,21 @@ test('api & exports', () => {
 			f = function (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> { return mosDevice.sendROSwapItems(Action, ItemID0, ItemID1) }
 
 			/* Profile 3 */
-			f = function (cb: (object: IMOSObject) => Promise<IMOSAck>): void { return mosDevice.onMosObjCreate(cb) }
-			f = function (object: IMOSObject): Promise<IMOSAck> { return mosDevice.mosObjCreate(object) }
-			f = function (cb: (roID: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>): void { return mosDevice.onMosItemReplace(cb) }
-			f = function (options: MosItemReplaceOptions): Promise<IMOSROAck> { return mosDevice.mosItemReplace(options) }
-			f = function (cb: (username: string) => Promise<IMOSSearchableSchema>): void { return mosDevice.onMosReqSearchableSchema(cb) }
-			f = function (username: string): Promise<IMOSSearchableSchema> { return mosDevice.mosRequestSearchableSchema(username) }
-			f = function (cb: (objList: IMosRequestObjectList) => Promise<IMosObjectList>): void { return mosDevice.onMosReqObjectList(cb) }
-			f = function (reqObjList: IMosRequestObjectList): Promise<IMosObjectList> { return mosDevice.mosRequestObjectList(reqObjList) }
-			f = function (cb: (action: string, obj: IMOSObject) => Promise<IMOSAck>): void { return mosDevice.onMosReqObjectAction(cb) }
+			f = function (cb: (object: IMOSObject) => Promise<IMOSAck>): void { return mosDevice.onObjectCreate(cb) }
+			f = function (object: IMOSObject): Promise<IMOSAck> { return mosDevice.sendObjectCreate(object) }
+			f = function (cb: (roID: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>): void { return mosDevice.onItemReplace(cb) }
+			f = function (options: MosItemReplaceOptions): Promise<IMOSROAck> { return mosDevice.sendItemReplace(options) }
+			f = function (cb: (username: string) => Promise<IMOSListSearchableSchema>): void { return mosDevice.onRequestSearchableSchema(cb) }
+			f = function (username: string): Promise<IMOSListSearchableSchema> { return mosDevice.sendRequestSearchableSchema(username) }
+			f = function (cb: (objList: IMOSRequestObjectList) => Promise<IMOSObjectList>): void { return mosDevice.onRequestObjectList(cb) }
+			f = function (reqObjList: IMOSRequestObjectList): Promise<IMOSObjectList> { return mosDevice.sendRequestObjectList(reqObjList) }
+			f = function (cb: (action: string, obj: IMOSObject) => Promise<IMOSAck>): void { return mosDevice.onRequestObjectAction(cb) }
 
 			/* Profile 4 */
-			f = function (cb: () => Promise<IMOSRunningOrder[]>): void { return mosDevice.onROReqAll(cb) }
-			f = function (): Promise<Array<IMOSRunningOrderBase>> { return mosDevice.getAllRunningOrders() }
-			f = function (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>): void { return mosDevice.onROStory(cb) }
-			f = function (story: IMOSROFullStory): Promise<IMOSROAck> { return mosDevice.sendROStory(story) }
+			f = function (cb: () => Promise<IMOSRunningOrder[]>): void { return mosDevice.onRequestAllRunningOrders(cb) }
+			f = function (): Promise<Array<IMOSRunningOrderBase>> { return mosDevice.sendRequestAllRunningOrders() }
+			f = function (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>): void { return mosDevice.onRunningOrderStory(cb) }
+			f = function (story: IMOSROFullStory): Promise<IMOSROAck> { return mosDevice.sendRunningOrderStory(story) }
 		}
 	}
 })

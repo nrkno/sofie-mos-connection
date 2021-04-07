@@ -1,13 +1,13 @@
-import { IMosObjectList } from '../../api'
+import { IMOSObjectList } from '../../api'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
 import { addTextElement } from '../../utils/Utils'
 import { XMLMosObjects } from '../profile1/xmlConversion'
 
 export class MosObjList extends MosMessage {
-	private options: IMosObjectList
+	private options: IMOSObjectList
 
-	constructor (options: IMosObjectList) {
+	constructor (options: IMOSObjectList) {
 		super('upper')
 		this.options = options
 	}

@@ -1,12 +1,12 @@
-import { IMosRequestObjectList } from '../../api'
+import { IMOSRequestObjectList } from '../../api'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
 import { addTextElement } from '../../utils/Utils'
 
 export class MosReqObjList extends MosMessage {
-	private options: IMosRequestObjectList
+	private options: IMOSRequestObjectList
 
-	constructor (options: IMosRequestObjectList) {
+	constructor (options: IMOSRequestObjectList) {
 		super('query')
 		this.options = options
 	}

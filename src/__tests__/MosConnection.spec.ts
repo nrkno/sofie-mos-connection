@@ -8,8 +8,8 @@ import {
 	IMOSItem,
 	IMOSItemAction,
 	IMOSItemStatus,
-	IMosObjectList,
-	IMosRequestObjectList,
+	IMOSObjectList,
+	IMOSRequestObjectList,
 	IMOSROAck,
 	IMOSROAction,
 	IMOSROFullStory,
@@ -18,7 +18,7 @@ import {
 	IMOSRunningOrder,
 	IMOSRunningOrderBase,
 	IMOSRunningOrderStatus,
-	IMOSSearchableSchema,
+	IMOSListSearchableSchema,
 	IMOSStoryAction,
 	IMOSStoryStatus,
 	MosString128,
@@ -40,7 +40,6 @@ import { ServerMock } from '../__mocks__/server'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
 import { xml2js } from 'xml-js'
 
-import { MOSAck } from '../mosModel'
 import * as Utils from '../utils/Utils'
 
 const iconv = require('iconv-lite')
@@ -381,12 +380,12 @@ describe('MosDevice: General', () => {
 
 		// add reply to secondary server, causes timeout on primary:
 		SocketMock.instances[4].mockAddReply(mockReply)
-		let returnedObj: IMOSObject = await mosDevice.getMOSObject(xmlApiData.mosObj.ID!)
+		let returnedObj: IMOSObject = await mosDevice.sendRequestMOSObject(xmlApiData.mosObj.ID!)
 		expect(returnedObj).toBeTruthy()
 
 		// add reply to primary server, causes timeout on secondary:
 		SocketMock.instances[1].mockAddReply(mockReply)
-		returnedObj = await mosDevice.getMOSObject(xmlApiData.mosObj.ID!)
+		returnedObj = await mosDevice.sendRequestMOSObject(xmlApiData.mosObj.ID!)
 		expect(returnedObj).toBeTruthy()
 
 	})
@@ -844,7 +843,7 @@ describe('Profile 1', () => {
 			return encode(repl)
 		})
 		socketMockLower.mockAddReply(mockReply)
-		let returnedObj: IMOSObject = await mosDevice.getMOSObject(xmlApiData.mosObj.ID!)
+		let returnedObj: IMOSObject = await mosDevice.sendRequestMOSObject(xmlApiData.mosObj.ID!)
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<mosReqObj>/)
@@ -864,7 +863,7 @@ describe('Profile 1', () => {
 			return encode(repl)
 		})
 		socketMockLower.mockAddReply(mockReply)
-		let returnedObjs: Array<IMOSObject> = await mosDevice.getAllMOSObjects()
+		let returnedObjs: Array<IMOSObject> = await mosDevice.sendRequestAllMOSObjects()
 
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
@@ -1369,7 +1368,9 @@ describe('Profile 3', () => {
 	let onMosItemReplace: jest.Mock<any, any>
 	let onMosReqSearchableSchema: jest.Mock<any, any>
 	let onMosReqObjectList: jest.Mock<any, any>
-	let onMosReqObjectAction: jest.Mock<any, any>
+	let onRequestObjectActionNew: jest.Mock<any, any>
+	let onRequestObjectActionUpdate: jest.Mock<any, any>
+	let onRequestObjectActionDelete: jest.Mock<any, any>
 
 	let roAckReply = () => {
 		let ack: IMOSROAck = {
@@ -1412,14 +1413,14 @@ describe('Profile 3', () => {
 		onMosObjCreate = jest.fn(mosAckReply)
 		onMosItemReplace = jest.fn(roAckReply)
 		onMosReqSearchableSchema = jest.fn((username: string) => {
-			let response: IMOSSearchableSchema = {
+			let response: IMOSListSearchableSchema = {
 				username,
 				mosSchema: 'http://example.com/mosSearchableSchema'
 			}
 			return Promise.resolve(response)
 		})
-		onMosReqObjectList = jest.fn((options: IMosRequestObjectList) => {
-			let response: IMosObjectList = {
+		onMosReqObjectList = jest.fn((options: IMOSRequestObjectList) => {
+			let response: IMOSObjectList = {
 				username: options.username,
 				queryID: 'A392938329kdakd2039300d0s9l3l9d0bzAQ',
 				listReturnStart: 0,
@@ -1428,22 +1429,30 @@ describe('Profile 3', () => {
 			}
 			return Promise.resolve(response)
 		})
-		onMosReqObjectAction = jest.fn(mosAckReply)
+		onRequestObjectActionNew = jest.fn(mosAckReply)
+		onRequestObjectActionUpdate = jest.fn(mosAckReply)
+		onRequestObjectActionDelete = jest.fn(mosAckReply)
 
-		mosDevice.onMosObjCreate((obj: IMOSObject) => {
+		mosDevice.onObjectCreate((obj: IMOSObject) => {
 			return onMosObjCreate(obj)
 		})
-		mosDevice.onMosItemReplace((roID, storyID, item) => {
+		mosDevice.onItemReplace((roID, storyID, item) => {
 			return onMosItemReplace(roID, storyID, item)
 		})
-		mosDevice.onMosReqSearchableSchema((username) => {
+		mosDevice.onRequestSearchableSchema((username) => {
 			return onMosReqSearchableSchema(username)
 		})
-		mosDevice.onMosReqObjectList((options: IMosRequestObjectList) => {
+		mosDevice.onRequestObjectList((options: IMOSRequestObjectList) => {
 			return onMosReqObjectList(options)
 		})
-		mosDevice.onMosReqObjectAction((action, obj) => {
-			return onMosReqObjectAction(action, obj)
+		mosDevice.onRequestObjectActionNew((obj) => {
+			return onRequestObjectActionNew(obj)
+		})
+		mosDevice.onRequestObjectActionUpdate((objId, obj) => {
+			return onRequestObjectActionUpdate(objId, obj)
+		})
+		mosDevice.onRequestObjectActionDelete((objId) => {
+			return onRequestObjectActionDelete(objId)
 		})
 		let b = doBeforeAll()
 		socketMockLower = b.socketMockLower
@@ -1461,7 +1470,9 @@ describe('Profile 3', () => {
 		onMosItemReplace.mockClear()
 		onMosReqSearchableSchema.mockClear()
 		onMosReqObjectList.mockClear()
-		onMosReqObjectAction.mockClear()
+		onRequestObjectActionNew.mockClear()
+		onRequestObjectActionUpdate.mockClear()
+		onRequestObjectActionDelete.mockClear()
 
 		serverSocketMockLower.mockClear()
 		serverSocketMockUpper.mockClear()
@@ -1489,7 +1500,7 @@ describe('Profile 3', () => {
 			return encode(getXMLReply(messageID, xmlData.mosAck))
 		})
 		socketMockLower.mockAddReply(mockReply)
-		let returnedAck = await mosDevice.mosObjCreate({
+		let returnedAck = await mosDevice.sendObjectCreate({
 			ID: new MosString128('abc'),
 			Slug: new MosString128('my cool Object'),
 			Type: IMOSObjectType.VIDEO,
@@ -1519,7 +1530,7 @@ describe('Profile 3', () => {
 			return encode(getXMLReply(messageID, xmlData.roAck))
 		})
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedAck: IMOSROAck = await mosDevice.mosItemReplace({
+		let returnedAck: IMOSROAck = await mosDevice.sendItemReplace({
 			roID: new MosString128('roX'),
 			storyID: new MosString128('storyY'),
 			item: {
@@ -1557,7 +1568,7 @@ describe('Profile 3', () => {
 			return encode(getXMLReply(messageID, xmlData.mosListSearchableSchema))
 		})
 		socketMockQuery.mockAddReply(mockReply)
-		let returnedSchema: IMOSSearchableSchema = await mosDevice.mosRequestSearchableSchema('myUsername')
+		let returnedSchema: IMOSListSearchableSchema = await mosDevice.sendRequestSearchableSchema('myUsername')
 
 		await socketMockQuery.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
@@ -1584,7 +1595,7 @@ describe('Profile 3', () => {
 			return encode(getXMLReply(messageID, xmlData.mosObjList))
 		})
 		socketMockQuery.mockAddReply(mockReply)
-		let returnedObjList: IMosObjectList = await mosDevice.mosRequestObjectList({
+		let returnedObjList: IMOSObjectList = await mosDevice.sendRequestObjectList({
 			username: 'jbob',
 			queryID: new MosString128('A392938329kdakd2039300d0s9l3l9d0bzAQ'),
 			listReturnStart: 1,
@@ -1615,12 +1626,26 @@ describe('Profile 3', () => {
 		})
 		expect(returnedObjList).toMatchSnapshot()
 	})
-	test('onMosReqObjectAction', async () => {
-		let messageId = await fakeIncomingMessage(serverSocketMockQuery, xmlData.mosReqObjAction)
-		expect(onMosReqObjectAction).toHaveBeenCalledTimes(1)
-		expect(onMosReqObjectAction.mock.calls[0][0]).toMatch('NEW')
-		expect(onMosReqObjectAction.mock.calls[0][1]).toMatchObject(xmlApiData.mosObjReqObjAction)
-		expect(onMosReqObjectAction.mock.calls).toMatchSnapshot()
+	test('onMosReqObjectActionNew', async () => {
+		let messageId = await fakeIncomingMessage(serverSocketMockQuery, xmlData.mosReqObjActionNew)
+		expect(onRequestObjectActionNew).toHaveBeenCalledTimes(1)
+		expect(onRequestObjectActionNew.mock.calls[0][0]).toMatchObject(xmlApiData.mosObjReqObjActionNew)
+		expect(onRequestObjectActionNew.mock.calls).toMatchSnapshot()
+		await checkReplyToServer(serverSocketMockQuery, messageId, '<mosAck>')
+	})
+	test('onMosReqObjectActionUpdate', async () => {
+		let messageId = await fakeIncomingMessage(serverSocketMockQuery, xmlData.mosReqObjActionUpdate)
+		expect(onRequestObjectActionUpdate).toHaveBeenCalledTimes(1)
+		expect(onRequestObjectActionUpdate.mock.calls[0][0]).toBe(xmlApiData.mosObjReqObjActionUpdateObjId)
+		expect(onRequestObjectActionUpdate.mock.calls[0][1]).toMatchObject(xmlApiData.mosObjReqObjActionUpdate)
+		expect(onRequestObjectActionUpdate.mock.calls).toMatchSnapshot()
+		await checkReplyToServer(serverSocketMockQuery, messageId, '<mosAck>')
+	})
+	test('onMosReqObjectActionDelete ', async () => {
+		let messageId = await fakeIncomingMessage(serverSocketMockQuery, xmlData.mosReqObjActionDelete)
+		expect(onRequestObjectActionDelete).toHaveBeenCalledTimes(1)
+		expect(onRequestObjectActionDelete.mock.calls[0][0]).toBe(xmlApiData.mosObjReqObjActionDeleteObjId)
+		expect(onRequestObjectActionDelete.mock.calls).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockQuery, messageId, '<mosAck>')
 	})
 })
@@ -1665,7 +1690,7 @@ describe('Profile 4', () => {
 		// Profile 2:
 		onROStory = jest.fn(roAckReply)
 
-		mosDevice.onROStory((story: IMOSROFullStory): Promise<IMOSROAck> => {
+		mosDevice.onRunningOrderStory((story: IMOSROFullStory): Promise<IMOSROAck> => {
 			return onROStory(story)
 		})
 		let b = doBeforeAll()
@@ -1721,9 +1746,9 @@ describe('Profile 4', () => {
 
 				expect(item).toMatchObject(testItem)
 			} catch (e) {
-				console.log(key)
-				console.log('item', item)
-				console.log('testItem', testItem)
+				console.error(key)
+				console.error('item', item)
+				console.error('testItem', testItem)
 				throw e
 			}
 		})
@@ -1739,7 +1764,7 @@ describe('Profile 4', () => {
 			return encode(getXMLReply(messageID, xmlData.roListAll))
 		})
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedListAll = await mosDevice.getAllRunningOrders()
+		let returnedListAll = await mosDevice.sendRequestAllRunningOrders()
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])

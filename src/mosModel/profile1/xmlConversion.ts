@@ -1,5 +1,5 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { IMosRequestObjectList, IMOSObject, IMOSAck } from '../../api'
+import { IMOSRequestObjectList, IMOSObject, IMOSAck } from '../../api'
 import { MosString128 } from '../../dataTypes/mosString128'
 import { MosTime } from '../../dataTypes/mosTime'
 import { XMLObjectPaths, XMLMosExternalMetaData } from '../profile2/xmlConversion'
@@ -86,8 +86,8 @@ export namespace XMLMosObject {
 	}
 }
 export namespace XMLMosRequestObjectList {
-	export function fromXML (xml: any): IMosRequestObjectList {
-		const list: IMosRequestObjectList = {
+	export function fromXML (xml: any): IMOSRequestObjectList {
+		const list: IMOSRequestObjectList = {
 			username: xml.username,
 			queryID: xml.queryID,
 			listReturnStart: xml.listReturnStart,
