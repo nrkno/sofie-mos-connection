@@ -515,7 +515,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	static get nextSocketID (): string {
 		return this._nextSocketID++ + ''
 	}
-	private debugTrace(...strs: any[]) {
+	private debugTrace (...strs: any[]) {
 		if (this._debug) console.log(...strs)
 	}
 }

@@ -126,7 +126,7 @@ export class MosSocketServer extends EventEmitter {
 		// @todo: implement
 		this.debugTrace(`Server closed: on port ${this._port}`)
 	}
-	private debugTrace(...strs: any[]) {
+	private debugTrace (...strs: any[]) {
 		if (this._debug) console.log(...strs)
 	}
 }

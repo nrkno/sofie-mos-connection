@@ -1458,7 +1458,7 @@ export class MosDevice implements IMOSDevice {
 			throw new Error('Erorr: Profile 7 is not currently implemented!')
 		}
 	}
-	private debugTrace(...strs: any[]) {
+	private debugTrace (...strs: any[]) {
 		if (this._debug) console.log(...strs)
 	}
 }

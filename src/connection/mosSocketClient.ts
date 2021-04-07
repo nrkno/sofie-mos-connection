@@ -463,7 +463,7 @@ export class MosSocketClient extends EventEmitter {
 
 		}, this._commandTimeout)
 	}
-	private debugTrace(...strs: any[]) {
+	private debugTrace (...strs: any[]) {
 		if (this._debug) console.log(...strs)
 	}
 }

@@ -279,7 +279,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 			this.emit('error', e)
 		})
 	}
-	private debugTrace(...strs: any[]) {
+	private debugTrace (...strs: any[]) {
 		if (this._debug) console.log(...strs)
 	}
 }
