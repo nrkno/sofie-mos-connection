@@ -26,9 +26,7 @@ import {
 	IMOSObjectType,
 	IMOSObjectStatus,
 	IMOSObjectAirStatus,
-	IProfiles,
-	IMOSObjectPathType,
-	MosTime
+	IProfiles
 } from '../'
 
 import { ConnectionConfig } from '../config/connectionConfig'
@@ -43,13 +41,11 @@ import { xmlData, xmlApiData } from '../__mocks__/testData'
 import { xml2js } from 'xml-js'
 
 import * as Utils from '../utils/Utils'
-import { MOSAck } from 'src/mosModel'
 
 const iconv = require('iconv-lite')
 iconv.encodingExists('utf16-be')
 
 // breaks net.Server, disabled for now
-// jest.mock('net')
 jest.mock('net')
 
 let setTimeoutOrg = setTimeout
@@ -58,8 +54,6 @@ let delay = (ms: number) => {
 		setTimeoutOrg(resolve, ms)
 	})
 }
-
-// const literal = <T>(o: T) => o
 
 async function getMosConnection (profiles: IProfiles): Promise<MosConnection> {
 	ServerMock.mockClear()
@@ -88,7 +82,6 @@ async function getMosDevice (mos: MosConnection): Promise<MosDevice> {
 		}
 	})
 
-	// jest.advanceTimersByTime(10) // allow for heartbeats to be sent
 	await delay(10) // to allow for async timers & events to triggered
 
 	return Promise.resolve(device)
@@ -137,7 +130,6 @@ function checkMessageSnapshot (msg: string) {
 function checkAckSnapshot (ack: IMOSAck | IMOSROAck) {
 	const ack2: any = {
 		...ack
-		// messageID: 999
 	}
 	if (ack2.mos) {
 		ack2.mos = {
@@ -158,8 +150,6 @@ function doBeforeAll () {
 	expect(socketMockQuery).toBeTruthy()
 
 	expect(ServerMock.instances).toHaveLength(3)
-	// ServerMock.instances.forEach((s) => {
-	// })
 
 	let serverMockLower = ServerMock.instances[0]
 	let serverMockUpper = ServerMock.instances[2]
@@ -200,7 +190,6 @@ beforeAll(() => {
 	Socket = SocketMock
 	// @ts-ignore Replace Server with the mocked varaint:
 	Server = ServerMock
-	// jest.useFakeTimers()
 })
 beforeEach(() => {
 	SocketMock.mockClear()
@@ -270,7 +259,6 @@ describe('MosDevice: General', () => {
 			'7': false
 		})
 
-		// expect(mos.complianceText).toBe('MOS Compatible – Profiles 0,1')
 	})
 	test('Incoming connections', async () => {
 		let mos = new MosConnection({
@@ -307,7 +295,6 @@ describe('MosDevice: General', () => {
 				id: 'primary',
 				host: '192.168.0.1'
 			}
-			// todo: secondary
 		})
 		expect(mosDevice).toBeTruthy()
 		expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
@@ -356,7 +343,6 @@ describe('MosDevice: General', () => {
 		})
 		expect(mosDevice).toBeTruthy()
 		expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
-		// expect(mosDevice.secondaryId).toEqual('jestMOS_secondary')
 
 		expect(SocketMock.instances).toHaveLength(7)
 		expect(SocketMock.instances[1].connectedHost).toEqual('192.168.0.1')
@@ -414,16 +400,12 @@ describe('MosDevice: General', () => {
 				timeout: 200
 			}
 		})
-		// jest.advanceTimersByTime(10) // allow for heartbeats to be sent
 		await delay(10) // to allow for async timers & events to triggered
 
 		expect(mosDevice).toBeTruthy()
 
 		expect(SocketMock.instances).toHaveLength(4)
 		let connMocks = SocketMock.instances
-		// expect(connMocks[0].connect).toHaveBeenCalledTimes(1)
-		// expect(connMocks[0].connect.mock.calls[0][0]).toEqual(10540)
-		// expect(connMocks[0].connect.mock.calls[0][1]).toEqual('127.0.0.1')
 		expect(connMocks[1].connect).toHaveBeenCalledTimes(1)
 		expect(connMocks[1].connect.mock.calls[0][0]).toEqual(10540)
 		expect(connMocks[1].connect.mock.calls[0][1]).toEqual('127.0.0.1')
@@ -440,8 +422,6 @@ describe('MosDevice: General', () => {
 			connectionStatusChanged(connectionStatus)
 		})
 
-		// expect(connectionStatusChanged).toHaveBeenCalledTimes(1) // dunno if it really should have been called, maybe remove
-
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: true,
 			PrimaryStatus: '', // if not connected this will contain human-readable error-message
@@ -453,8 +433,6 @@ describe('MosDevice: General', () => {
 
 		// @todo: add timeout test
 		// mock cause timeout
-		// expect(connectionStatusChanged).toHaveBeenCalledTimes(1)
-		// expect(connectionStatusChanged.mock.calls[0][0]).toMatchObject({PrimaryConnected: false})
 	})
 	test('buddy failover', async () => {
 
@@ -484,9 +462,6 @@ describe('MosDevice: General', () => {
 
 		expect(SocketMock.instances).toHaveLength(7)
 		let connMocks = SocketMock.instances
-		// expect(connMocks[0].connect).toHaveBeenCalledTimes(1)
-		// expect(connMocks[0].connect.mock.calls[0][0]).toEqual(10540)
-		// expect(connMocks[0].connect.mock.calls[0][1]).toEqual('127.0.0.1')
 		expect(connMocks[1].connect).toHaveBeenCalledTimes(1)
 		expect(connMocks[1].connect.mock.calls[0][0]).toEqual(10540)
 		expect(connMocks[1].connect.mock.calls[0][1]).toEqual('127.0.0.1')
@@ -503,8 +478,6 @@ describe('MosDevice: General', () => {
 			connectionStatusChanged(connectionStatus)
 		})
 
-		// expect(connectionStatusChanged).toHaveBeenCalledTimes(1) // dunno if it really should have been called, maybe remove
-		// jest.runOnlyPendingTimers()
 		await delay(10) // to allow for async timers & events to triggered
 
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
@@ -520,8 +493,6 @@ describe('MosDevice: General', () => {
 		connMocks[1].setReplyToHeartBeat(false)
 		connMocks[2].setReplyToHeartBeat(true)
 
-		// jest.runOnlyPendingTimers() // allow for heartbeats to be sent
-		// jest.runOnlyPendingTimers() // allow for heartbeats to be received
 		await delay(500) // to allow for timeout:
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: false,
@@ -607,7 +578,6 @@ describe('Profile 0', () => {
 		await mosConnection.dispose()
 	})
 	beforeEach(() => {
-		// SocketMock.mockClear()
 		onRequestMOSObject.mockClear()
 		onRequestAllMOSObjects.mockClear()
 
@@ -807,7 +777,6 @@ describe('Profile 1', () => {
 		// Fake incoming message on socket:
 		await fakeIncomingMessage(serverSocketMockLower, xmlData.mosReqAll)
 		expect(onRequestAllMOSObjects).toHaveBeenCalledTimes(1)
-		// expect(onRequestMOSObject.mock.calls[0][0]).toEqual(xmlApiData.mosObj.ID.toString())
 		expect(onRequestAllMOSObjects.mock.calls).toMatchSnapshot()
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(0)
 
@@ -1043,7 +1012,6 @@ describe('Profile 2', () => {
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
-		// expect(SocketMock.instances[0].connect).toHaveBeenCalledTimes(1)
 	})
 	beforeEach(() => {
 		onRequestMOSObject.mockClear()
@@ -1122,7 +1090,6 @@ describe('Profile 2', () => {
 		let reply = decode(serverSocketMockUpper.mockSentMessage.mock.calls[0][0])
 		let parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
 
-		// expect(parsedReply.mos.roList).toMatchObject(roLight(xmlApiData.roCreate))
 		expect(parsedReply.mos.roList.roID._text + '').toEqual(xmlApiData.roCreate.ID.toString())
 		expect(parsedReply.mos.roList.roSlug._text + '').toEqual(xmlApiData.roCreate.Slug.toString())
 		expect(parsedReply.mos.roList.story).toHaveLength(xmlApiData.roCreate.Stories.length)
@@ -1781,7 +1748,6 @@ describe('Profile 4', () => {
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
-		// expect(SocketMock.instances[0].connect).toHaveBeenCalledTimes(1)
 	})
 	beforeEach(() => {
 
@@ -1832,7 +1798,6 @@ describe('Profile 4', () => {
 		})
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 
-		// expect(onROStory.mock.calls[0][0]).toMatchObject(xmlApiData.roStorySend)
 	})
 	test('getAllRunningOrders', async () => {
 		// Prepare server response

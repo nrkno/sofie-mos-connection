@@ -18,7 +18,6 @@ import {
 	IMOSROAction,
 	IMOSROFullStory,
 	IMOSROFullStoryBodyItem,
-	IMOSRequestObjectList,
 	IMOSSearchField
 } from '../api'
 import { MosString128 } from '../dataTypes/mosString128'
@@ -513,7 +512,7 @@ const xmlApiData = {
 	}),
 
 	'mosListAll': [
-		literal<IMOSObject>({
+		{
 			ID: new MosString128('M000123'),
 			Slug: new MosString128('HOTEL FIRE'),
 			// MosAbstract: ''
@@ -546,7 +545,7 @@ const xmlApiData = {
 			ChangedBy: new MosString128('Chris'),
 			Changed: new MosTime('2009-11-01T14:35:55'),
 			Description: {}
-		}),
+		},
 		literal<IMOSObject>({
 			ID: new MosString128('M000224'),
 			Slug: new MosString128('COLSTAT MURDER:VO'),
@@ -1189,7 +1188,7 @@ const xmlApiData = {
 					// 	}
 					// })],
 					MosObjects: [
-						literal<IMOSObject>({
+						{
 							ID: new MosString128('NYHETER\\00039287?version=1'),
 							Slug: new MosString128('01 ett navn 1:\xa0\xa02:'), // &nbsp = 160
 							// MosAbstract?: '',
@@ -1228,7 +1227,7 @@ const xmlApiData = {
 								}
 							})],
 							MosItemEditorProgID: new MosString128('Chymox.AssetBrowser.1')
-						})
+						}
 					]
 				}
 			}),
@@ -1378,7 +1377,7 @@ const xmlApiData = {
 		]
 	}),
 	'mosReqSearchableSchema': 'jbob',
-	'mosReqObjList': literal<IMOSRequestObjectList>({
+	'mosReqObjList': {
 		username: 'jbob',
 		queryID: '123439392039393ade0393zdkdls',
 		listReturnStart: 1,
@@ -1423,7 +1422,7 @@ const xmlApiData = {
 				})
 			] }
 		]
-	}),
+	},
 	'mosObjReqObjActionNew': literal<IMOSObject>({
 		Slug: new MosString128('Hotel Fire'),
 		Group: 'Show 7',

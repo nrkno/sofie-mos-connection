@@ -5,7 +5,6 @@ import { MosTime } from '../dataTypes/mosTime'
 
 const iconv = require('iconv-lite')
 iconv.encodingExists('utf16-be')
-// import { Writable } from 'stream'
 
 // Mock the Socket class in 'net':
 let setTimeoutOrg = setTimeout

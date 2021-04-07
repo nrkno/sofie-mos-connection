@@ -2,7 +2,9 @@ module.exports = {
 	globals: {
 		'ts-jest': {
 			tsConfig: 'tsconfig.json',
-			diagnostics: false
+			diagnostics: {
+				ignoreCodes: []
+			}
 		}
 	},
 	moduleFileExtensions: [
@@ -17,7 +19,7 @@ module.exports = {
 	],
 	testPathIgnorePatterns: [
 		'integrationTests'
-	],	
+	],
 	testEnvironment: 'node',
 	coverageThreshold: {
 		global: {

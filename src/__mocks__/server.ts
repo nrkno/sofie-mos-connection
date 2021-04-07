@@ -2,7 +2,6 @@ import { EventEmitter } from 'events'
 
 import { Server } from 'net'
 import { SocketMock } from './socket'
-// import { Writable } from 'stream'
 
 const iconv = require('iconv-lite')
 iconv.encodingExists('utf16-be')
@@ -34,12 +33,6 @@ export class ServerMock extends EventEmitter implements Server {
 		this.getConnections = jest.fn(this.getConnections)
 		this.ref = jest.fn(this.ref)
 		this.unref = jest.fn(this.unref)
-		// this.addListener = jest.fn(this.addListener)
-		// this.emit = jest.fn(this.emit)
-		// this.on = jest.fn(this.on)
-		// this.once = jest.fn(this.once)
-		// this.prependListener = jest.fn(this.prependListener)
-		// this.prependOnceListener = jest.fn(this.prependOnceListener)
 
 	}
 	static mockClear () {
@@ -69,13 +62,7 @@ export class ServerMock extends EventEmitter implements Server {
 	getConnections (cb: (error: Error | null, count: number) => void) { cb(null, 0) }
 	ref () { return this }
 	unref () { return this }
-	// addListener (event: string, listener: (...args: any[]) => void) { return this }
-	// emit (event: string | symbol, ...args: any[]) { return true }
-	// on (event: string, listener: (...args: any[]) => void) { return this }
-	// once (event: string, listener: (...args: any[]) => void) { return this }
-	// prependListener (event: string, listener: (...args: any[]) => void) { return this }
-	// prependOnceListener (event: string, listener: (...args: any[]) => void) { return this }
-	// ------------------------------------------------------------------------
+
 	// Mock methods:
 	mockNewConnection () {
 		// "Someone has connected"

@@ -36,6 +36,7 @@ test('api & exports', () => {
 	// @ts-ignore not used
 	function justTestTypings () {
 		let f: any
+		f = f
 
 		// MosConnection
 		f = function (options: IConnectionConfig) {
@@ -76,7 +77,6 @@ test('api & exports', () => {
 			f = function (objId: MosString128): Promise<IMOSObject> { return mosDevice.sendRequestMOSObject(objId) }
 			f = function (cb: () => Promise<Array<IMOSObject>>): void { return mosDevice.onRequestAllMOSObjects(cb) }
 			f = function (): Promise<Array<IMOSObject>> { return mosDevice.sendRequestAllMOSObjects() }
-			f = function (objs: IMOSObject[]): Promise<IMOSAck> { return mosDevice.sendAllMOSObjects(objs) }
 
 			/* Profile 2 */
 			f = function (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>): void { return mosDevice.onCreateRunningOrder(cb) }
@@ -127,7 +127,9 @@ test('api & exports', () => {
 			f = function (username: string): Promise<IMOSListSearchableSchema> { return mosDevice.sendRequestSearchableSchema(username) }
 			f = function (cb: (objList: IMOSRequestObjectList) => Promise<IMOSObjectList>): void { return mosDevice.onRequestObjectList(cb) }
 			f = function (reqObjList: IMOSRequestObjectList): Promise<IMOSObjectList> { return mosDevice.sendRequestObjectList(reqObjList) }
-			f = function (cb: (action: string, obj: IMOSObject) => Promise<IMOSAck>): void { return mosDevice.onRequestObjectAction(cb) }
+			f = function (cb: (obj: IMOSObject) => Promise<IMOSAck>): void { return mosDevice.onRequestObjectActionNew(cb) }
+			f = function (cb: (objId: MosString128, obj: IMOSObject) => Promise<IMOSAck>): void { return mosDevice.onRequestObjectActionUpdate(cb) }
+			f = function (cb: (objId: MosString128) => Promise<IMOSAck>): void { return mosDevice.onRequestObjectActionDelete(cb) }
 
 			/* Profile 4 */
 			f = function (cb: () => Promise<IMOSRunningOrder[]>): void { return mosDevice.onRequestAllRunningOrders(cb) }
