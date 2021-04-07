@@ -2039,7 +2039,81 @@ const xmlApiData = {
 		Duration: 1800,
 		CreatedBy: new MosString128('Chris')
 	}),
-	'mosObjReqObjActionDeleteObjId': '1EFA3009233F8329C1'
+	'mosObjReqObjActionDeleteObjId': '1EFA3009233F8329C1',
+	'sendRunningOrderStory': literal<IMOSROFullStory>({
+		ID: new MosString128('5983A501:0049B924:8390EF1F'),
+		RunningOrderId: new MosString128('96857485'),
+		Body: [
+			{
+				Type: 'storyItem',
+				Content: literal<IMOSItem>({
+					ID: new MosString128('ID'),
+					Slug: new MosString128('Slug'),
+					ObjectSlug: new MosString128('ObjectSlug'),
+					ObjectID: new MosString128('ObjectID'),
+					MOSID: 'MOSID',
+					mosAbstract: 'mosAbstract',
+					Paths: [{
+						Type: IMOSObjectPathType.PATH,
+						Description: 'The one true path',
+						Target: '/asdfasdf/asdf/asdf/qwerty'
+					}],
+					Channel: new MosString128('Channel'),
+					EditorialStart: 1,
+					EditorialDuration: 2,
+					Duration: 3,
+					TimeBase: 4,
+					UserTimingDuration: 5,
+					Trigger: 'Trigger',
+					MacroIn: new MosString128('MacroIn'),
+					MacroOut: new MosString128('MacroOut'),
+					MosExternalMetaData: [{
+						MosScope: IMOSScope.PLAYLIST,
+						MosSchema: 'schema://mock',
+						MosPayload: {
+							attr0: 1,
+							attr1: {
+								inner: 'two'
+							}
+						}
+					}],
+					MosObjects: [{
+						ID: new MosString128('ID'),
+						Slug: new MosString128('Slug'),
+						MosAbstract: 'MosAbstract',
+						Group: 'Group',
+						Type: IMOSObjectType.OTHER,
+						TimeBase: 25,
+						Revision: 123, // max 999
+						Duration: 510,
+						Status: IMOSObjectStatus.READY,
+						AirStatus: IMOSObjectAirStatus.READY,
+						Paths: [{
+							Type: IMOSObjectPathType.PATH,
+							Description: 'The one true path',
+							Target: '/asdfasdf/asdf/asdf/qwerty/mosobject'
+						}],
+						CreatedBy: new MosString128('CreatedBy'),
+						Created: new MosTime(123456),
+						ChangedBy: new MosString128('ChangedBy'),
+						Changed: new MosTime(123457),
+						Description: 'this is a description',
+						MosExternalMetaData: [{
+							MosScope: IMOSScope.STORY,
+							MosSchema: 'schema://mock',
+							MosPayload: {
+								attr0: 1,
+								attr1: {
+									inner: 'two'
+								}
+							}
+						}],
+						MosItemEditorProgID: new MosString128('MosItemEditorProgID')
+					}]
+				})
+			}
+		]
+	})
 }
 
 export { xmlData, xmlApiData }

@@ -26,7 +26,9 @@ import {
 	IMOSObjectType,
 	IMOSObjectStatus,
 	IMOSObjectAirStatus,
-	IProfiles
+	IProfiles,
+	IMOSObjectPathType,
+	MosTime
 } from '../'
 
 import { ConnectionConfig } from '../config/connectionConfig'
@@ -1703,6 +1705,23 @@ describe('Profile 3', () => {
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<mosReqObjAction operation="DELETE" objID="OBJID1234"\/>/)
+		checkMessageSnapshot(msg)
+	})
+	test('sendRunningOrderStory', async () => {
+		// Prepare server response:
+		let mockReply = jest.fn((data) => {
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
+			return encode(getXMLReply(messageID, xmlData.roAck))
+		})
+		socketMockUpper.mockAddReply(mockReply)
+		await mosDevice.sendRunningOrderStory(xmlApiData.sendRunningOrderStory)
+		await socketMockQuery.mockWaitForSentMessages()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<roStorySend>/)
+		expect(msg).toMatch(/<roID>96857485<\/roID>/)
+		expect(msg).toMatch(/<storyID>5983A501:0049B924:8390EF1F<\/storyID>/)
 		checkMessageSnapshot(msg)
 	})
 

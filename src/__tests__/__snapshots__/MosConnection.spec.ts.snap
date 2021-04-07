@@ -3385,6 +3385,80 @@ exports[`Profile 3 sendMosReqObjectActionUpdateUpdate 1`] = `
 </mos>"
 `;
 
+exports[`Profile 3 sendRunningOrderStory 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roStorySend>
+    <storyID>5983A501:0049B924:8390EF1F</storyID>
+    <roID>96857485</roID>
+    <storyBody>
+      <storyItem>
+        <itemID>ID</itemID>
+        <objID>ObjectID</objID>
+        <mosID>MOSID</mosID>
+        <objPaths>
+          <objPath techDescription=\\"The one true path\\">/asdfasdf/asdf/asdf/qwerty</objPath>
+        </objPaths>
+        <mosExternalMetadata>
+          <mosSchema>schema://mock</mosSchema>
+          <mosPayload>
+            <attr0>1</attr0>
+            <attr1>
+              <inner>two</inner>
+            </attr1>
+          </mosPayload>
+          <mosScope>PLAYLIST</mosScope>
+        </mosExternalMetadata>
+        <itemSlug>Slug</itemSlug>
+        <itemEdStart>1</itemEdStart>
+        <itemEdDur>2</itemEdDur>
+        <itemUserTimingDur>5</itemUserTimingDur>
+        <itemTrigger>Trigger</itemTrigger>
+        <mosAbstract>mosAbstract</mosAbstract>
+        <objSlug>ObjectSlug</objSlug>
+        <itemChannel>Channel</itemChannel>
+        <objDur>3</objDur>
+        <objTB>4</objTB>
+        <macroIn>MacroIn</macroIn>
+        <macroOut>MacroOut</macroOut>
+        <mosObj>
+          <objID>ID</objID>
+          <objSlug>Slug</objSlug>
+          <mosAbstract>MosAbstract</mosAbstract>
+          <objGroup>Group</objGroup>
+          <objType>OTHER</objType>
+          <objTB>25</objTB>
+          <objRev>123</objRev>
+          <objDur>510</objDur>
+          <status>READY</status>
+          <objAir>READY</objAir>
+          <objPaths>
+            <objPath techDescription=\\"The one true path\\">/asdfasdf/asdf/asdf/qwerty/mosobject</objPath>
+          </objPaths>
+          <createdBy>CreatedBy</createdBy>
+          <created>2019-01-01T17:14:42,000</created>
+          <changedBy>ChangedBy</changedBy>
+          <changed>2019-01-01T17:14:42,000</changed>
+          <description>this is a description</description>
+          <mosExternalMetadata>
+            <mosSchema>schema://mock</mosSchema>
+            <mosPayload>
+              <attr0>1</attr0>
+              <attr1>
+                <inner>two</inner>
+              </attr1>
+            </mosPayload>
+            <mosScope>STORY</mosScope>
+          </mosExternalMetadata>
+        </mosObj>
+      </storyItem>
+    </storyBody>
+  </roStorySend>
+</mos>"
+`;
+
 exports[`Profile 4 getAllRunningOrders 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
