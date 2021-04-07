@@ -54,14 +54,14 @@ export class MosSocketServer extends EventEmitter {
 
 	/** */
 	listen (): Promise<void> {
-		if (this._debug) console.log('listen', this._portDescription, this._port)
+		this.debugTrace('listen', this._portDescription, this._port)
 		return new Promise((resolve, reject) => {
 			try {
 
-				if (this._debug) console.log('inside promise', this._portDescription, this._port)
+				this.debugTrace('inside promise', this._portDescription, this._port)
 				// already listening
 				if (this._socketServer.listening) {
-					if (this._debug) console.log('already listening', this._portDescription, this._port)
+					this.debugTrace('already listening', this._portDescription, this._port)
 					resolve()
 					return
 				}
@@ -118,12 +118,15 @@ export class MosSocketServer extends EventEmitter {
 	/** */
 	private _onServerError (error: Error) {
 		// @todo: implement
-		if (this._debug) console.log('Server error:', error)
+		this.debugTrace('Server error:', error)
 	}
 
 	/** */
 	private _onServerClose () {
 		// @todo: implement
-		if (this._debug) console.log(`Server closed: on port ${this._port}`)
+		this.debugTrace(`Server closed: on port ${this._port}`)
+	}
+	private debugTrace(...strs: any[]) {
+		if (this._debug) console.log(...strs)
 	}
 }

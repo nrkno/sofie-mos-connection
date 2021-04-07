@@ -271,9 +271,9 @@ export class MosDevice implements IMOSDevice {
 	routeData (data: any, port: PortType): Promise<any> {
 		if (data && data.hasOwnProperty('mos')) data = data['mos']
 		return new Promise((resolve, reject) => {
-			if (this._debug) console.log('parsedData', data)
-			// if (this._debug) console.log('parsedTest', keys)
-			if (this._debug) console.log('keys', Object.keys(data))
+			this.debugTrace('parsedData', data)
+			// this.debugTrace('parsedTest', keys)
+			this.debugTrace('keys', Object.keys(data))
 
 			// Route and format data:
 			// Profile 0:
@@ -759,7 +759,7 @@ export class MosDevice implements IMOSDevice {
 			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
 			} else {
-				if (this._debug) console.log(data)
+				this.debugTrace(data)
 				let msg = new MOSAck()
 				msg.ID = new MosString128(0) // Depends on type of message, needs logic
 				msg.Revision = 0
@@ -1238,7 +1238,7 @@ export class MosDevice implements IMOSDevice {
 						})
 						resolve(ros)
 					} else {
-						console.log(data.mos)
+						console.error(data.mos)
 						reject('Unknown reply')
 					}
 				}).catch(reject)
@@ -1285,7 +1285,7 @@ export class MosDevice implements IMOSDevice {
 	private async executeCommand (message: MosMessage, resend?: boolean): Promise<MosReply> {
 
 		if (this._currentConnection) {
-			if (this._debug) console.log('exec command', message)
+			this.debugTrace('exec command', message)
 			if (!this._currentConnection.connected) {
 				return this.switchConnectionsAndExecuteCommand(message)
 			}
@@ -1295,7 +1295,7 @@ export class MosDevice implements IMOSDevice {
 				return this._ensureReply(reply)
 
 			} catch (e) {
-				if (this._debug) console.log('errored', e)
+				this.debugTrace('errored', e)
 				if (this._primaryConnection && this._secondaryConnection && !resend) {
 					return this.switchConnectionsAndExecuteCommand(message)
 				} else {
@@ -1311,7 +1311,7 @@ export class MosDevice implements IMOSDevice {
 		if (!this._primaryConnection) throw new Error('Unable to failover connection: No primary connection')
 		if (!this._secondaryConnection) throw new Error('Unable to failover connection: No secondary connection')
 
-		if (this._debug) console.log('switching connection')
+		this.debugTrace('switching connection')
 
 		let otherConnection = this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection
 		let currentConnection = this._currentConnection
@@ -1327,7 +1327,7 @@ export class MosDevice implements IMOSDevice {
 	private async switchConnectionsAndExecuteCommand (message: MosMessage): Promise<MosReply> {
 		this.switchConnections()
 
-		if (this._debug) console.log('resending msg')
+		this.debugTrace('resending msg')
 
 		try {
 			return await this.executeCommand(message, true)
@@ -1457,6 +1457,9 @@ export class MosDevice implements IMOSDevice {
 			requireProfile('7', '2')
 			throw new Error('Erorr: Profile 7 is not currently implemented!')
 		}
+	}
+	private debugTrace(...strs: any[]) {
+		if (this._debug) console.log(...strs)
 	}
 }
 

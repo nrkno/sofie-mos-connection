@@ -95,8 +95,8 @@ export class MosSocketClient extends EventEmitter {
 				}
 
 				// connect:
-				if (this._debug) console.log(new Date(), `Socket ${this._description} attempting connection`)
-				if (this._debug) console.log('port', this._port, 'host', this._host)
+				this.debugTrace(new Date(), `Socket ${this._description} attempting connection`)
+				this.debugTrace('port', this._port, 'host', this._host)
 				this._client.connect(this._port, this._host)
 				this._shouldBeConnected = true
 				this._lastConnectionAttempt = Date.now()
@@ -122,14 +122,14 @@ export class MosSocketClient extends EventEmitter {
 	queueCommand (message: MosMessage, cb: CallBackFunction, time?: number): void {
 
 		message.prepare()
-		// console.log('queueing', message.messageID, message.constructor.name )
+		// this.debugTrace('queueing', message.messageID, message.constructor.name )
 		this._queueCallback[message.messageID + ''] = cb
 		this._queueMessages.push({ time: time || Date.now(), msg: message })
 
 		this.processQueue()
 	}
 	processQueue () {
-		// console.log('this.connected', this.connected)
+		// this.debugTrace('this.connected', this.connected)
 		if (!this._sentMessage && this.connected) {
 			if (this.processQueueTimeout) clearTimeout(this.processQueueTimeout)
 			let message = this._queueMessages.shift()
@@ -215,7 +215,7 @@ export class MosSocketClient extends EventEmitter {
    * convenience wrapper to expose all logging calls to parent object
    */
 	log (args: any): void {
-		if (this._debug) console.log(args)
+		this.debugTrace(args)
 	}
 	public setDebug (debug: boolean) {
 		this._debug = debug
@@ -254,16 +254,16 @@ export class MosSocketClient extends EventEmitter {
 
 		let sentMessageId = message.msg.messageID
 
-		// console.log('executeCommand', message)
+		// this.debugTrace('executeCommand', message)
 		// message.prepare() // @todo, is prepared? is sent already? logic needed
 		let messageString: string = message.msg.toString()
 		let buf = iconv.encode(messageString, 'utf16-be')
-		// if (this._debug) console.log('sending',this._client.name, str)
+		// this.debugTrace('sending',this._client.name, str)
 
 		// Command timeout:
 		global.setTimeout(() => {
 			if (this._sentMessage && this._sentMessage.msg.messageID === sentMessageId) {
-				if (this._debug) console.log('timeout ' + sentMessageId + ' after ' + this._commandTimeout)
+				this.debugTrace('timeout ' + sentMessageId + ' after ' + this._commandTimeout)
 				if (isRetry) {
 					this._sendReply(sentMessageId, Error('Command timed out'), null)
 					this._timedOutCommands[sentMessageId] = Date.now()
@@ -274,7 +274,7 @@ export class MosSocketClient extends EventEmitter {
 			}
 		}, this._commandTimeout)
 		this._client.write(buf, 'ucs2')
-		if (this._debug) console.log(`MOS command sent from ${this._description} : ${messageString}\r\nbytes sent: ${this._client.bytesWritten}`)
+		this.debugTrace(`MOS command sent from ${this._description} : ${messageString}\r\nbytes sent: ${this._client.bytesWritten}`)
 
 		this.emit('rawMessage','sent', messageString)
 	}
@@ -327,7 +327,7 @@ export class MosSocketClient extends EventEmitter {
 		let messageString: string = iconv.decode(data, 'utf16-be').trim()
 
 		this.emit('rawMessage','recieved', messageString)
-		if (this._debug) console.log(`${this._description} Received: ${messageString}`)
+		this.debugTrace(`${this._description} Received: ${messageString}`)
 
 		let firstMatch = '<mos>' // <mos>
 		let first = messageString.substr(0, firstMatch.length)
@@ -336,7 +336,7 @@ export class MosSocketClient extends EventEmitter {
 
 		let parsedData: any
 		try {
-			// console.log(first === firstMatch, last === lastMatch, last, lastMatch)
+			// this.debugTrace(first === firstMatch, last === lastMatch, last, lastMatch)
 			if (first === firstMatch && last === lastMatch) {
 				// Data ready to be parsed:
 				parsedData = xml2js(messageString)// , { compact: true, trim: true, nativeType: true })
@@ -354,7 +354,7 @@ export class MosSocketClient extends EventEmitter {
 			}
 			// let parsedData: any = parser.toJson(messageString, )
 			if (parsedData) {
-				// console.log(parsedData, newParserData)
+				// this.debugTrace(parsedData, newParserData)
 				let messageId = parsedData.mos.messageID
 				if (messageId) {
 					let sentMessage = this._sentMessage || this._lingeringMessage
@@ -362,8 +362,8 @@ export class MosSocketClient extends EventEmitter {
 						if (sentMessage.msg.messageID.toString() === (messageId + '')) {
 							this._sendReply(sentMessage.msg.messageID, null, parsedData)
 						} else {
-							if (this._debug) console.log('Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
-							if (this._debug) console.log(parsedData)
+							this.debugTrace('Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
+							this.debugTrace(parsedData)
 
 							this.emit('warning', 'Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
 
@@ -376,14 +376,11 @@ export class MosSocketClient extends EventEmitter {
 						// delete this._queueCallback[messageId]
 						// this._sentMessage = null
 					} else if (this._timedOutCommands[messageId]) {
-						if (this._debug) {
-							console.log('Got a reply (' + messageId + '), but command \
-							timed out ' + (Date.now() - this._timedOutCommands[messageId]) + 'ms ago', messageString)
-						}
+						this.debugTrace(`Got a reply (${messageId}), but command timed out ${(Date.now() - this._timedOutCommands[messageId]) }ms ago`, messageString)
 						delete this._timedOutCommands[messageId]
 					} else {
 						// huh, we've got a reply to something we've not sent.
-						if (this._debug) console.log('Got a reply (' + messageId + '), but we haven\'t sent any message', messageString)
+						this.debugTrace('Got a reply (' + messageId + '), but we haven\'t sent any message', messageString)
 						this.emit('warning', 'Got a reply (' + messageId + '), but we haven\'t sent any message ' + messageString)
 					}
 					clearTimeout(this._commandTimeoutTimer)
@@ -393,7 +390,7 @@ export class MosSocketClient extends EventEmitter {
 						if (this._sentMessage && parsedData.mos.mosAck.statusDescription === 'Buddy server cannot respond because main server is available') {
 							this._sendReply(this._sentMessage.msg.messageID, 'Main server available', parsedData)
 						} else {
-							if (this._debug) console.log('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
+							this.debugTrace('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
 							this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
 						}
 					} else {
@@ -404,19 +401,19 @@ export class MosSocketClient extends EventEmitter {
 			} else {
 				return
 			}
-			// console.log('messageString', messageString)
-			// console.log('first msg', messageString)
+			// this.debugTrace('messageString', messageString)
+			// this.debugTrace('first msg', messageString)
 			this._startingUp = false
 		} catch (e) {
-			// console.log('messageString', messageString)
+			// this.debugTrace('messageString', messageString)
 			if (this._startingUp) {
 				// when starting up, we might get half a message, let's ignore this error then
 				let a = Math.min(20, Math.floor(messageString.length / 2))
-				console.log('Strange XML-message upon startup: "' + messageString.slice(0, a) + '[...]' + messageString.slice(-a) + '" (length: ' + messageString.length + ')')
-				console.log('error', e)
+				console.error('Strange XML-message upon startup: "' + messageString.slice(0, a) + '[...]' + messageString.slice(-a) + '" (length: ' + messageString.length + ')')
+				console.error('error', e)
 			} else {
-				console.log('dataChunks-------------\n', this.dataChunks)
-				console.log('messageString---------\n', messageString)
+				console.error('dataChunks-------------\n', this.dataChunks)
+				console.error('messageString---------\n', messageString)
 				this.emit('error', e)
 			}
 		}
@@ -429,7 +426,7 @@ export class MosSocketClient extends EventEmitter {
 	private _onError (error: Error) {
 		// dispatch error!!!!!
 		this.emit('error', `Socket event error: ${error.message}`)
-		if (this._debug) console.log(`Socket event error: ${error.message}`)
+		this.debugTrace(`Socket event error: ${error.message}`)
 	}
 
 	/** */
@@ -438,23 +435,23 @@ export class MosSocketClient extends EventEmitter {
 		// this._readyToSendMessage = false
 		if (hadError) {
 			this.emit('warning', 'Scoket closed with error')
-			if (this._debug) console.log('Socket closed with error')
+			this.debugTrace('Socket closed with error')
 		} else {
-			if (this._debug) console.log('Socket closed without error')
+			this.debugTrace('Socket closed without error')
 		}
 
 		this.emit(SocketConnectionEvent.DISCONNECTED)
 
 		if (this._shouldBeConnected === true) {
 			this.emit('warning', 'Socket should reconnect')
-			if (this._debug) console.log('Socket should reconnect')
+			this.debugTrace('Socket should reconnect')
 			this.connect()
 		}
 	}
 	private _triggerQueueCleanup () {
 		// in case we're in unsync with messages, prevent deadlock:
 		setTimeout(() => {
-			if (this._debug) console.log('QueueCleanup')
+			this.debugTrace('QueueCleanup')
 			for (let i = this._queueMessages.length - 1; i >= 0; i--) {
 				let message = this._queueMessages[i]
 				if (Date.now() - message.time > this._commandTimeout) {
@@ -465,5 +462,8 @@ export class MosSocketClient extends EventEmitter {
 			}
 
 		}, this._commandTimeout)
+	}
+	private debugTrace(...strs: any[]) {
+		if (this._debug) console.log(...strs)
 	}
 }

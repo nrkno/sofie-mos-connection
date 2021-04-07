@@ -53,7 +53,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 
 	createClient (clientID: string, port: number, clientDescription: ConnectionType, useHeartbeats: boolean) {
 		let client = new MosSocketClient(this._host, port, clientDescription, this._timeout, this._debug)
-		if (this._debug) console.log('registerOutgoingConnection', clientID)
+		this.debugTrace('registerOutgoingConnection', clientID)
 
 		this._clients[clientID] = {
 			useHeartbeats: useHeartbeats,
@@ -82,7 +82,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		for (let i in this._clients) {
 			// Connect client
 			this.emit('info', `Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
-			if (this._debug) console.log(`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
+			this.debugTrace(`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
 			this._clients[i].client.connect()
 		}
 		this._connected = true
@@ -189,7 +189,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		// this._clients.forEach((client, id) => {
 		// 	// cmds[id] = client.client.handOverQueue()
 		// })
-		if (this._debug) console.log(this.id + ' ' + this.host + ' handOverQueue')
+		this.debugTrace(this.id + ' ' + this.host + ' handOverQueue')
 
 		for (const id in this._clients) {
 			cmds[id] = this._clients[id].client.handOverQueue()
@@ -251,13 +251,13 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 					return this.executeCommand(heartbeat)
 					.then(() => {
 						client.heartbeatConnected = true
-						if (this._debug) console.log(`Heartbeat on ${this._clients[key].clientDescription} received.`)
+						this.debugTrace(`Heartbeat on ${this._clients[key].clientDescription} received.`)
 					})
 					.catch((e) => {
 						// probably a timeout
 						client.heartbeatConnected = false
 						this.emit('error', `Heartbeat error on ${this._clients[key].clientDescription}: ${e.toString()}`)
-						if (this._debug) console.log(`Heartbeat on ${this._clients[key].clientDescription}: ${e.toString()}`)
+						this.debugTrace(`Heartbeat on ${this._clients[key].clientDescription}: ${e.toString()}`)
 					})
 				} else {
 					return Promise.resolve()
@@ -278,5 +278,8 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 			triggerNextHeartBeat()
 			this.emit('error', e)
 		})
+	}
+	private debugTrace(...strs: any[]) {
+		if (this._debug) console.log(...strs)
 	}
 }

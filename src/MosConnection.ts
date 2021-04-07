@@ -355,17 +355,17 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			this.emit('rawMessage', 'incoming_' + socketID, 'closedConnection', '')
 		})
 		client.socket.on('end', () => {
-			if (this._debug) console.log('Socket End')
+			this.debugTrace('Socket End')
 		})
 		client.socket.on('drain', () => {
-			if (this._debug) console.log('Socket Drain')
+			this.debugTrace('Socket Drain')
 		})
 		client.socket.on('data', async (data: Buffer) => {
 			const messageString = iconv.decode(data, 'utf16-be').trim()
 
 			this.emit('rawMessage', 'incoming', 'recieved', messageString)
 
-			if (this._debug) console.log(`Socket got data (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${data}`)
+			this.debugTrace(`Socket got data (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${data}`)
 			const remoteAddressContent = client.socket.remoteAddress
 				? client.socket.remoteAddress.split(':')
 				: undefined
@@ -461,7 +461,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 							} else {
 								// Unknown / internal error
 								// Log error:
-								console.log(err)
+								console.error(err)
 								// reply with NACK:
 								// TODO: implement ACK
 								// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
@@ -472,7 +472,6 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 								msg.Status = IMOSAckStatus.NACK
 								sendReply(msg) // TODO: Need tests
 							}
-							// console.log(err)
 						})
 					} else {
 						// No MOS-device found in the register
@@ -487,22 +486,20 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 					}
 				}
 			} catch (e) {
-				if (this._debug) {
-					console.log('chunks-------------\n', client.chunks)
-					console.log('messageString---------\n', messageString)
-					console.log('error', e)
-				}
+				this.debugTrace('chunks-------------\n', client.chunks)
+				this.debugTrace('messageString---------\n', messageString)
+				this.debugTrace('error', e)
 				this.emit('error', e)
 			}
 		})
 		client.socket.on('error', (e: Error) => {
 			this.emit('error', `Socket had error (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${e}`)
-			if (this._debug) console.log(`Socket had error (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${e}`)
+			this.debugTrace(`Socket had error (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${e}`)
 		})
 
 		// Register this socket:
 		this._incomingSockets[socketID + ''] = client
-		if (this._debug) console.log('Added socket: ', socketID)
+		this.debugTrace('Added socket: ', socketID)
 	}
 	/** Close socket and clean up */
 	private _disposeIncomingSocket (socketID: string) {
@@ -512,10 +509,13 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			e.socket.destroy()
 		}
 		delete this._incomingSockets[socketID + '']
-		if (this._debug) console.log('removed: ', socketID, '\n')
+		this.debugTrace('removed: ', socketID, '\n')
 	}
 	/** Get new unique id */
 	static get nextSocketID (): string {
 		return this._nextSocketID++ + ''
+	}
+	private debugTrace(...strs: any[]) {
+		if (this._debug) console.log(...strs)
 	}
 }

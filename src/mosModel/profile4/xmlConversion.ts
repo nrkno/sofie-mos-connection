@@ -36,7 +36,6 @@ export namespace XMLROFullStory {
 				body.push(bodyItem)
 			})
 		})
-		console.log('xml2Body', body)
 		*/
 		if (xml.elements && Array.isArray(xml.elements)) {
 			for (const item of xml.elements) {
