@@ -272,6 +272,9 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 			}
 			triggerNextHeartBeat()
 		})
+		.catch((e) => {
+			this.emit('error', e)
+		})
 	}
 	private debugTrace (...strs: any[]) {
 		if (this._debug) console.log(...strs)
