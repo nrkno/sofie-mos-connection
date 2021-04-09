@@ -21,9 +21,7 @@ export interface HandedOverQueue {
 	messages: QueueMessage[], callbacks: { [messageId: string]: CallBackFunction }
 }
 
-// Namnförslag: NCSServer
-// Vi ansluter från oss till NCS
-/** */
+/** Handles connections to a NCS (server) */
 export class NCSServerConnection extends EventEmitter implements INCSServerConnection {
 	private _connected: boolean
 	// private _lastSeen: number
@@ -50,7 +48,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		this._connected = false
 		if (debug) this._debug = debug
 	}
-
+	/** Create a MOS client, which talks to  */
 	createClient (clientID: string, port: number, clientDescription: ConnectionType, useHeartbeats: boolean) {
 		let client = new MosSocketClient(this._host, port, clientDescription, this._timeout, this._debug)
 		this.debugTrace('registerOutgoingConnection', clientID)
