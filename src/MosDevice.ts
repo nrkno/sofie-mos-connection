@@ -1241,24 +1241,24 @@ export class MosDevice implements IMOSDevice {
 		// 	requireCallback(profile, callbackName, method)
 		// }
 		/** Require another profile to have been set  */
-		const requireProfile = (profile: string, requiredProfile: string) => {
+		const requireProfile = (profile: number, requiredProfile: number) => {
 			// @ts-ignore no index signature
-			if (!this.supportedProfiles[requiredProfile]) {
-				throw new Error(`Error: This MOS-device is configured to support Profile ${profile}, therefore it must also support Profile ${requireProfile}!`)
+			if (!this.supportedProfiles['profile' + requiredProfile]) {
+				throw new Error(`Error: This MOS-device is configured to support Profile ${profile}, therefore it must also support Profile ${requiredProfile}!`)
 			}
 		}
 		if (this.supportedProfiles.profile0) {
 			requireCallback('0', '_callbackOnGetMachineInfo', this.onRequestMachineInfo)
-			requireCallback('0', '_callbackOnConnectionChange', this.onConnectionChange)
+			// _callbackOnConnectionChange not required
 		}
 		if (this.supportedProfiles.profile1) {
-			requireProfile('1', '0')
+			requireProfile(1, 0)
 			requireMOSCallback('1', '_callbackOnRequestMOSOBject', this.onRequestMOSObject)
 			requireMOSCallback('1', '_callbackOnRequestAllMOSObjects', this.onRequestAllMOSObjects)
 		}
 		if (this.supportedProfiles.profile2) {
-			requireProfile('2', '0')
-			requireProfile('2', '1')
+			requireProfile(2, 0)
+			requireProfile(2, 1)
 			requireMOSCallback('2', '_callbackOnCreateRunningOrder', this.onCreateRunningOrder)
 			requireMOSCallback('2', '_callbackOnReplaceRunningOrder', this.onReplaceRunningOrder)
 			requireMOSCallback('2', '_callbackOnDeleteRunningOrder', this.onDeleteRunningOrder)
@@ -1280,9 +1280,9 @@ export class MosDevice implements IMOSDevice {
 			requireMOSCallback('2', '_callbackOnROSwapItems', this.onROSwapItems)
 		}
 		if (this.supportedProfiles.profile3) {
-			requireProfile('3', '0')
-			requireProfile('3', '1')
-			requireProfile('3', '2')
+			requireProfile(3, 0)
+			requireProfile(3, 1)
+			requireProfile(3, 2)
 			requireMOSCallback('3', '_callbackOnMosItemReplace', this.onItemReplace)
 			requireMOSCallback('3', '_callbackOnMosObjCreate', this.onObjectCreate)
 			requireMOSCallback('3', '_callbackOnRequestObjectActionNew', this.onRequestObjectActionNew)
@@ -1292,28 +1292,28 @@ export class MosDevice implements IMOSDevice {
 			requireMOSCallback('3', '_callbackOnMosReqSearchableSchema', this.onRequestSearchableSchema)
 		}
 		if (this.supportedProfiles.profile4) {
-			requireProfile('4', '0')
-			requireProfile('4', '1')
-			requireProfile('4', '2')
+			requireProfile(4, 0)
+			requireProfile(4, 1)
+			requireProfile(4, 2)
 			requireMOSCallback('4', '_callbackOnROReqAll', this.onRequestAllRunningOrders)
 			requireMOSCallback('4', '_callbackOnROStory', this.onRunningOrderStory)
 		}
 		if (this.supportedProfiles.profile5) {
-			requireProfile('5', '0')
-			requireProfile('5', '1')
-			requireProfile('5', '2')
+			requireProfile(5, 0)
+			requireProfile(5, 1)
+			requireProfile(5, 2)
 			throw new Error('Erorr: Profile 5 is not currently implemented!')
 		}
 		if (this.supportedProfiles.profile6) {
-			requireProfile('6', '0')
-			requireProfile('6', '1')
-			requireProfile('6', '2')
+			requireProfile(6, 0)
+			requireProfile(6, 1)
+			requireProfile(6, 2)
 			throw new Error('Erorr: Profile 6 is not currently implemented!')
 		}
 		if (this.supportedProfiles.profile7) {
-			requireProfile('7', '0')
-			requireProfile('7', '1')
-			requireProfile('7', '2')
+			requireProfile(7, 0)
+			requireProfile(7, 1)
+			requireProfile(7, 2)
 			throw new Error('Erorr: Profile 7 is not currently implemented!')
 		}
 	}
