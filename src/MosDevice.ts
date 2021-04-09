@@ -26,9 +26,9 @@ import {
 	IMOSObjectList,
 	IMOSRequestObjectList,
 	IMOSListSearchableSchema,
-	IMOSAck
+	IMOSAck,
+	IConnectionConfig
 } from './api'
-import { IConnectionConfig } from './config/connectionConfig'
 import { Parser } from './mosModel/Parser'
 import {
 	IMOSListMachInfo,

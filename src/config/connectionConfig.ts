@@ -1,24 +1,4 @@
-
-/** Config object for creating a MOS-device */
-export interface IConnectionConfig {
-	/** The ID of this mos-device */
-	mosID: string
-	/** Whether this mosConnection accepts new connections from othe MOS clients */
-	acceptsConnections: boolean
-	/** Only accept connections from this whitelist */
-	accepsConnectionsFrom?: string[]
-	/** A list of which profile this mos device is to support */
-	profiles: IProfiles
-	/** If true, this device is assumed to be an NCS (server). Defaults to a MOS (client). */
-	isNCS?: boolean
-	/** Debugging-mode: logs raw mos-messages */
-	debug?: boolean
-	/** Automatically create new mos-devices on-the-fly when receiving messages to unregistered MOS-ID:s */
-	openRelay?: boolean
-	offspecFailover?: boolean
-	/** If set to true, a strict check is performed to ensure that all required callbacks are set up for specified profiles */
-	strict?: boolean
-}
+import { IConnectionConfig, IMOSDeviceConnectionOptions } from '../api'
 
 /** */
 export interface IProfiles {
@@ -38,9 +18,17 @@ export class ConnectionConfig implements IConnectionConfig {
 	acceptsConnections: boolean
 	accepsConnectionsFrom: string[]
 	debug: boolean
-	openRelay: boolean
+	openRelay: boolean | undefined | {
+		// options for on-the-fly-created connections
+		options: IMOSDeviceConnectionOptions['primary']
+	}
 	offspecFailover: boolean
 	strict?: boolean
+	ports?: {
+		lower: number
+		upper: number
+		query: number
+	}
 
 	private _profiles: IProfiles = {
 		'0': false,
@@ -66,9 +54,11 @@ export class ConnectionConfig implements IConnectionConfig {
 		this.acceptsConnections		= init.acceptsConnections
 		this.accepsConnectionsFrom	= init.accepsConnectionsFrom || []
 		this.debug					= init.debug || false
-		this.openRelay				= init.openRelay || false
+		this.openRelay				= init.openRelay || undefined
 		this.offspecFailover		= init.offspecFailover || false
 		this.profiles				= init.profiles
+		this.strict					= init.strict
+		this.ports		= init.ports
 	}
 
 	/** */

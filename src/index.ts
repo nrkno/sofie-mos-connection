@@ -2,7 +2,6 @@
 export * from './MosConnection'
 export * from './api'
 export {
-	IConnectionConfig,
 	ConnectionConfig,
 	IProfiles
 } from './config/connectionConfig'

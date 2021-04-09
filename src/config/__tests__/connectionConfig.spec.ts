@@ -19,9 +19,9 @@ describe('ConnectionConfig', () => {
 		expect(config.mosID).toEqual('test')
 		expect(config.acceptsConnections).toEqual(true)
 		expect(config.accepsConnectionsFrom).toEqual([])
-		expect(config.debug).toEqual(false)
-		expect(config.openRelay).toEqual(false)
-		expect(config.offspecFailover).toEqual(false)
+		expect(config.debug).toBeFalsy()
+		expect(config.openRelay).toBeFalsy()
+		expect(config.offspecFailover).toBeFalsy()
 	})
 
 	test('invalid ConnectionConfig', () => {

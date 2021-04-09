@@ -668,6 +668,38 @@ export interface IMOSConnectionStatus {
  	SecondaryConnected: boolean
 	SecondaryStatus: string // if not connected this will contain human-readable error-message
 }
+/** Config object for creating a MOS-device */
+export interface IConnectionConfig {
+	/** The ID of this mos-device */
+	mosID: string
+	/** Whether this mosConnection accepts new connections from othe MOS clients (ie acts as an NCS) */
+	acceptsConnections: boolean
+	/** Only accept connections from this whitelist */
+	accepsConnectionsFrom?: string[]
+	/** A list of which profile this mos device is to support */
+	profiles: IProfiles
+	/** If true, this device is assumed to be an NCS (server). Defaults to a MOS (client). */
+	isNCS?: boolean
+	/** Debugging-mode: logs raw mos-messages */
+	debug?: boolean
+	offspecFailover?: boolean
+	/** If set to true, a strict check is performed to ensure that all required callbacks are set up for specified profiles */
+	strict?: boolean
+	/** If set, overrides the standard port numbers */
+	ports?: {
+		/** Set MOS Lower port (standard: 10540) */
+		lower: number
+		/** Set MOS Upper port (standard: 10541) */
+		upper: number
+		/** Set MOS Query port (standard: 10542) */
+		query: number
+	}
+	/** When enabled, automatically create new mos-devices on-the-fly when receiving messages to unregistered MOS-ID:s */
+	openRelay?: boolean | {
+		// options for on-the-fly-created connections
+		options: IMOSDeviceConnectionOptions['primary']
+	}
+}
 
 export interface IMOSDeviceConnectionOptions {
 	/** Connection options for the Primary NCS-server */
