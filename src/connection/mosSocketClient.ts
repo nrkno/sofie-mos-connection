@@ -45,6 +45,7 @@ export class MosSocketClient extends EventEmitter {
 	private processQueueTimeout: NodeJS.Timer
 	private _startingUp: boolean = true
 	private dataChunks: string = ''
+	private _disposed: boolean = false
 
   /** */
 	constructor (host: string, port: number, description: string, timeout?: number, debug?: boolean) {
@@ -130,6 +131,7 @@ export class MosSocketClient extends EventEmitter {
 		this.processQueue()
 	}
 	processQueue () {
+		if (this._disposed) return
 		// this.debugTrace('this.connected', this.connected)
 		if (!this._sentMessage && this.connected) {
 			if (this.processQueueTimeout) clearTimeout(this.processQueueTimeout)
@@ -200,6 +202,7 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	dispose (): void {
+		this._disposed = true
 		// this._readyToSendMessage = false
 		this.connected = false
 		this._shouldBeConnected = false
@@ -264,6 +267,7 @@ export class MosSocketClient extends EventEmitter {
 
 		// Command timeout:
 		global.setTimeout(() => {
+			if (this._disposed) return
 			if (this._sentMessage && this._sentMessage.msg.messageID === sentMessageId) {
 				this.debugTrace('timeout ' + sentMessageId + ' after ' + this._commandTimeout)
 				if (isRetry) {
@@ -453,6 +457,7 @@ export class MosSocketClient extends EventEmitter {
 	private _triggerQueueCleanup () {
 		// in case we're in unsync with messages, prevent deadlock:
 		setTimeout(() => {
+			if (this._disposed) return
 			this.debugTrace('QueueCleanup')
 			for (let i = this._queueMessages.length - 1; i >= 0; i--) {
 				let message = this._queueMessages[i]
