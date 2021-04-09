@@ -64,9 +64,9 @@ export interface IMOSDeviceProfile0 {
 
 	// Deprecated methods:
 	/** @deprecated getMachineInfo is deprecated, use requestMachineInfo instead */
-	// getMachineInfo: () => Promise<IMOSListMachInfo>
+	getMachineInfo: () => Promise<IMOSListMachInfo>
 	/** @deprecated onGetMachineInfo is deprecated, use onRequestMachineInfo instead */
-	// onGetMachineInfo: (cb: () => Promise<IMOSListMachInfo>) => void
+	onGetMachineInfo: (cb: () => Promise<IMOSListMachInfo>) => void
 }
 /**
  * Method definitions for Profile 1

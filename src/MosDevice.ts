@@ -677,6 +677,16 @@ export class MosDevice implements IMOSDevice {
 		}
 	}
 
+	// Deprecated methods:
+	/** @deprecated getMachineInfo is deprecated, use requestMachineInfo instead */
+	getMachineInfo (): Promise<IMOSListMachInfo> {
+		return this.requestMachineInfo()
+	}
+	/** @deprecated onGetMachineInfo is deprecated, use onRequestMachineInfo instead */
+	onGetMachineInfo (cb: () => Promise<IMOSListMachInfo>): void {
+		return this.onRequestMachineInfo(cb)
+	}
+
 	// ============================================================================================================
 	// ==========================   Profile 1   ===================================================================
 	// ============================================================================================================
