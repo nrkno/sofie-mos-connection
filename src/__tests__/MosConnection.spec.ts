@@ -42,7 +42,7 @@ import { xml2js } from 'xml-js'
 
 import * as Utils from '../utils/Utils'
 
-const iconv = require('iconv-lite')
+import * as iconv from 'iconv-lite'
 iconv.encodingExists('utf16-be')
 
 // breaks net.Server, disabled for now

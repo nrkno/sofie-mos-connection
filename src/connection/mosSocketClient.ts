@@ -5,7 +5,7 @@ import { MosMessage } from '../mosModel/MosMessage'
 import { xml2js } from '../utils/Utils'
 import { HandedOverQueue } from './NCSServerConnection'
 import { HeartBeat } from '../mosModel'
-const iconv = require('iconv-lite')
+import * as iconv from 'iconv-lite'
 
 export type CallBackFunction = (err: any, data: object) => void
 

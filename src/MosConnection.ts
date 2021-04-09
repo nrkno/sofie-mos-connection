@@ -15,7 +15,7 @@ import { MosMessage } from './mosModel/MosMessage'
 import { MOSAck } from './mosModel'
 import { MosString128 } from './dataTypes/mosString128'
 import { EventEmitter } from 'events'
-const iconv = require('iconv-lite')
+import * as iconv from 'iconv-lite'
 
 export class MosConnection extends EventEmitter implements IMosConnection {
 	static CONNECTION_PORT_LOWER: number = 10540
@@ -410,8 +410,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 						message.ncsID = ncsID
 						message.mosID = mosID
 						message.prepare(mosMessageId)
-						const messageString: string = message.toString()
-						const buf = iconv.encode(messageString, 'utf16-be')
+						const buf = iconv.encode(message.toString(), 'utf16-be')
 						client.socket.write(buf, 'usc2')
 
 						this.emit('rawMessage', 'incoming_' + socketID, 'sent', messageString)

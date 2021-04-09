@@ -3,7 +3,7 @@ import { EventEmitter } from 'events'
 import { Socket } from 'net'
 import { MosTime } from '../dataTypes/mosTime'
 
-const iconv = require('iconv-lite')
+import * as iconv from 'iconv-lite'
 iconv.encodingExists('utf16-be')
 
 // Mock the Socket class in 'net':

@@ -3,7 +3,7 @@ import { EventEmitter } from 'events'
 import { Server } from 'net'
 import { SocketMock } from './socket'
 
-const iconv = require('iconv-lite')
+import * as iconv from 'iconv-lite'
 iconv.encodingExists('utf16-be')
 
 // Mock the Server class in 'net':
