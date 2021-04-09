@@ -26,7 +26,8 @@ import {
 	IMOSObjectType,
 	IMOSObjectStatus,
 	IMOSObjectAirStatus,
-	IProfiles
+	IProfiles,
+	IMOSListMachInfo
 } from '../'
 
 import { ConnectionConfig } from '../config/connectionConfig'
@@ -55,14 +56,14 @@ let delay = (ms: number) => {
 	})
 }
 
-async function getMosConnection (profiles: IProfiles): Promise<MosConnection> {
+async function getMosConnection (profiles: IProfiles, strict: boolean): Promise<MosConnection> {
 	ServerMock.mockClear()
 
 	let mos = new MosConnection({
 		mosID: 'our.mos.id',
 		acceptsConnections: true,
 		profiles: profiles,
-		strict: true,
+		strict: strict,
 		debug: false
 	})
 	await mos.init()
@@ -86,13 +87,13 @@ async function getMosDevice (mos: MosConnection): Promise<MosDevice> {
 
 	return Promise.resolve(device)
 }
-let sendMessageId = 1632
+let fakeIncomingMessageMessageId = 1632
 function fakeIncomingMessage (socketMockLower: SocketMock, message: string, ourMosId?: string, theirMosId?: string): Promise<number> {
-	sendMessageId++
-	let fullMessage = getXMLReply(sendMessageId, message, ourMosId, theirMosId)
+	fakeIncomingMessageMessageId++
+	let fullMessage = getXMLReply(fakeIncomingMessageMessageId, message, ourMosId, theirMosId)
 	socketMockLower.mockReceiveMessage(encode(fullMessage))
 
-	return Promise.resolve(sendMessageId)
+	return Promise.resolve(fakeIncomingMessageMessageId)
 }
 function getXMLReply (messageId: string | number, content: string, ourMosId?: string, theirMosId?: string): string {
 	return '<mos>' +
@@ -516,10 +517,6 @@ describe('Profile 0', () => {
 	let mosDevice: MosDevice
 	let mosConnection: MosConnection
 
-	let serverMockLower: ServerMock
-	let serverMockUpper: ServerMock
-	let serverMockQuery: ServerMock
-
 	let socketMockLower: SocketMock
 	let socketMockUpper: SocketMock
 	let socketMockQuery: SocketMock
@@ -528,24 +525,25 @@ describe('Profile 0', () => {
 	let serverSocketMockUpper: SocketMock
 	let serverSocketMockQuery: SocketMock
 
+	let onRequestMachineInfo: jest.Mock<any, any>
 	let onRequestMOSObject: jest.Mock<any, any>
 	let onRequestAllMOSObjects: jest.Mock<any, any>
 
 	beforeAll(async () => {
 
-		serverMockLower = serverMockLower // lintfix: never read
-		serverMockUpper = serverMockUpper // lintfix: never read
-		serverMockQuery = serverMockQuery // lintfix: never read
-		socketMockLower = socketMockLower // lintfix: never read
-		socketMockUpper = socketMockUpper // lintfix: never read
-		socketMockQuery = socketMockQuery // lintfix: never read
-
 		mosConnection = await getMosConnection({
 			'0': true,
 			'1': true // Must support at least one other profile
-		})
+		}, true)
 		mosDevice = await getMosDevice(mosConnection)
 
+		// Profile 0:
+		onRequestMachineInfo = jest.fn(() => {
+			return Promise.resolve(xmlApiData.machineInfo)
+		})
+		mosDevice.onRequestMachineInfo((): Promise<IMOSListMachInfo> => {
+			return onRequestMachineInfo()
+		})
 		// Profile 1:
 		onRequestMOSObject = jest.fn(() => {
 			return Promise.resolve(xmlApiData.mosObj)
@@ -566,9 +564,6 @@ describe('Profile 0', () => {
 		socketMockLower = b.socketMockLower
 		socketMockUpper = b.socketMockUpper
 		socketMockQuery = b.socketMockQuery
-		serverMockLower = b.serverMockLower
-		serverMockUpper = b.serverMockUpper
-		serverMockQuery = b.serverMockQuery
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
@@ -664,10 +659,6 @@ describe('Profile 1', () => {
 	let mosDevice: MosDevice
 	let mosConnection: MosConnection
 
-	let serverMockLower: ServerMock
-	let serverMockUpper: ServerMock
-	let serverMockQuery: ServerMock
-
 	let socketMockLower: SocketMock
 	let socketMockUpper: SocketMock
 	let socketMockQuery: SocketMock
@@ -676,24 +667,25 @@ describe('Profile 1', () => {
 	let serverSocketMockUpper: SocketMock
 	let serverSocketMockQuery: SocketMock
 
+	let onRequestMachineInfo: jest.Mock<any, any>
 	let onRequestMOSObject: jest.Mock<any, any>
 	let onRequestAllMOSObjects: jest.Mock<any, any>
 
 	beforeAll(async () => {
 
-		serverMockLower = serverMockLower // lintfix: never read
-		serverMockUpper = serverMockUpper // lintfix: never read
-		serverMockQuery = serverMockQuery // lintfix: never read
-		socketMockLower = socketMockLower // lintfix: never read
-		socketMockUpper = socketMockUpper // lintfix: never read
-		socketMockQuery = socketMockQuery // lintfix: never read
-
 		mosConnection = await getMosConnection({
 			'0': true,
 			'1': true
-		})
+		}, true)
 		mosDevice = await getMosDevice(mosConnection)
 
+		// Profile 0:
+		onRequestMachineInfo = jest.fn(() => {
+			return Promise.resolve(xmlApiData.machineInfo)
+		})
+		mosDevice.onRequestMachineInfo((): Promise<IMOSListMachInfo> => {
+			return onRequestMachineInfo()
+		})
 		// Profile 1:
 		onRequestMOSObject = jest.fn(() => {
 			return Promise.resolve(xmlApiData.mosObj)
@@ -714,9 +706,6 @@ describe('Profile 1', () => {
 		socketMockLower = b.socketMockLower
 		socketMockUpper = b.socketMockUpper
 		socketMockQuery = b.socketMockQuery
-		serverMockLower = b.serverMockLower
-		serverMockUpper = b.serverMockUpper
-		serverMockQuery = b.serverMockQuery
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
@@ -854,16 +843,12 @@ describe('Profile 2', () => {
 	let mosConnection: MosConnection
 	let socketMockLower: SocketMock
 	let socketMockUpper: SocketMock
-	let socketMockQuery: SocketMock
-
-	let serverMockLower: ServerMock
-	let serverMockUpper: ServerMock
-	let serverMockQuery: ServerMock
 
 	let serverSocketMockLower: SocketMock
 	let serverSocketMockUpper: SocketMock
 	let serverSocketMockQuery: SocketMock
 
+	let onRequestMachineInfo: jest.Mock<any, any>
 	let onRequestMOSObject: jest.Mock<any, any>
 	let onRequestAllMOSObjects: jest.Mock<any, any>
 	let onCreateRunningOrder: jest.Mock<any, any>
@@ -890,25 +875,32 @@ describe('Profile 2', () => {
 		SocketMock.mockClear()
 		ServerMock.mockClear()
 
-		socketMockLower = socketMockLower // lintfix: never read
-		socketMockUpper = socketMockUpper // lintfix: never read
-		socketMockQuery = socketMockQuery // lintfix: never read
-		serverMockLower = serverMockLower // lintfix: never read
-		serverMockUpper = serverMockUpper // lintfix: never read
-		serverMockQuery = serverMockQuery // lintfix: never read
-
 		mosConnection = await getMosConnection({
 			'0': true,
 			'1': true,
 			'2': true
-		})
+		}, true)
 		mosDevice = await getMosDevice(mosConnection)
 
+		// Profile 0:
+		onRequestMachineInfo = jest.fn(() => {
+			return Promise.resolve(xmlApiData.machineInfo)
+		})
+		mosDevice.onRequestMachineInfo((): Promise<IMOSListMachInfo> => {
+			return onRequestMachineInfo()
+		})
 		// Profile 1:
 		onRequestMOSObject = jest.fn()
 		onRequestAllMOSObjects = jest.fn()
+		mosDevice.onRequestMOSObject((objId: string): Promise<IMOSObject | null> => {
+			return onRequestMOSObject(objId)
+		})
+		mosDevice.onRequestAllMOSObjects((): Promise<Array<IMOSObject>> => {
+			return onRequestAllMOSObjects()
+		})
 
-		let roAckReply = () => {
+		// Profile 2:
+		const roAckReply = () => {
 			let ack: IMOSROAck = {
 				ID: new MosString128('runningOrderId'),
 				Status: new MosString128('OK'),
@@ -916,7 +908,6 @@ describe('Profile 2', () => {
 			}
 			return Promise.resolve(ack)
 		}
-		// Profile 2:
 		onCreateRunningOrder = jest.fn(roAckReply)
 		onReplaceRunningOrder = jest.fn(roAckReply)
 		onDeleteRunningOrder = jest.fn(roAckReply)
@@ -939,12 +930,6 @@ describe('Profile 2', () => {
 		onROSwapStories = jest.fn(roAckReply)
 		onROSwapItems = jest.fn(roAckReply)
 
-		mosDevice.onRequestMOSObject((objId: string): Promise<IMOSObject | null> => {
-			return onRequestMOSObject(objId)
-		})
-		mosDevice.onRequestAllMOSObjects((): Promise<Array<IMOSObject>> => {
-			return onRequestAllMOSObjects()
-		})
 		mosDevice.onCreateRunningOrder((ro: IMOSRunningOrder): Promise<IMOSROAck> => {
 			return onCreateRunningOrder(ro)
 		})
@@ -1005,10 +990,6 @@ describe('Profile 2', () => {
 		let b = doBeforeAll()
 		socketMockLower = b.socketMockLower
 		socketMockUpper = b.socketMockUpper
-		socketMockQuery = b.socketMockQuery
-		serverMockLower = b.serverMockLower
-		serverMockUpper = b.serverMockUpper
-		serverMockQuery = b.serverMockQuery
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
@@ -1328,10 +1309,6 @@ describe('Profile 3', () => {
 	let socketMockUpper: SocketMock
 	let socketMockQuery: SocketMock
 
-	let serverMockLower: ServerMock
-	let serverMockUpper: ServerMock
-	let serverMockQuery: ServerMock
-
 	let serverSocketMockLower: SocketMock
 	let serverSocketMockUpper: SocketMock
 	let serverSocketMockQuery: SocketMock
@@ -1367,20 +1344,15 @@ describe('Profile 3', () => {
 		SocketMock.mockClear()
 		ServerMock.mockClear()
 
-		socketMockLower = socketMockLower // lintfix: never read
-		socketMockUpper = socketMockUpper // lintfix: never read
-		socketMockQuery = socketMockQuery // lintfix: never read
-		serverMockLower = serverMockLower // lintfix: never read
-		serverMockUpper = serverMockUpper // lintfix: never read
-		serverMockQuery = serverMockQuery // lintfix: never read
-
 		mosConnection = await getMosConnection({
 			'0': true,
 			'1': true,
 			'2': true,
 			'3': true
-		})
+		}, false)
 		mosDevice = await getMosDevice(mosConnection)
+
+		// Profile 3:
 
 		onMosObjCreate = jest.fn(mosAckReply)
 		onMosItemReplace = jest.fn(roAckReply)
@@ -1430,9 +1402,6 @@ describe('Profile 3', () => {
 		socketMockLower = b.socketMockLower
 		socketMockUpper = b.socketMockUpper
 		socketMockQuery = b.socketMockQuery
-		serverMockLower = b.serverMockLower
-		serverMockUpper = b.serverMockUpper
-		serverMockQuery = b.serverMockQuery
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
@@ -1700,11 +1669,6 @@ describe('Profile 4', () => {
 	let mosConnection: MosConnection
 	let socketMockLower: SocketMock
 	let socketMockUpper: SocketMock
-	let socketMockQuery: SocketMock
-
-	let serverMockLower: ServerMock
-	let serverMockUpper: ServerMock
-	let serverMockQuery: ServerMock
 
 	let serverSocketMockLower: SocketMock
 	let serverSocketMockUpper: SocketMock
@@ -1721,7 +1685,7 @@ describe('Profile 4', () => {
 			'1': true,
 			'2': true,
 			'4': true
-		})
+		}, false)
 		mosDevice = await getMosDevice(mosConnection)
 
 		let roAckReply = () => {
@@ -1741,22 +1705,11 @@ describe('Profile 4', () => {
 		let b = doBeforeAll()
 		socketMockLower = b.socketMockLower
 		socketMockUpper = b.socketMockUpper
-		socketMockQuery = b.socketMockQuery
-		serverMockLower = b.serverMockLower
-		serverMockUpper = b.serverMockUpper
-		serverMockQuery = b.serverMockQuery
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
 	})
 	beforeEach(() => {
-
-		socketMockLower = socketMockLower // lintfix: never read
-		socketMockUpper = socketMockUpper // lintfix: never read
-		socketMockQuery = socketMockQuery // lintfix: never read
-		serverMockLower = serverMockLower // lintfix: never read
-		serverMockUpper = serverMockUpper // lintfix: never read
-		serverMockQuery = serverMockQuery // lintfix: never read
 
 		onROStory.mockClear()
 

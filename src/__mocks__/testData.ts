@@ -18,7 +18,8 @@ import {
 	IMOSROAction,
 	IMOSROFullStory,
 	IMOSROFullStoryBodyItem,
-	IMOSSearchField
+	IMOSSearchField,
+	IMOSListMachInfo
 } from '../api'
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
@@ -425,6 +426,25 @@ const xmlData = {
 }
 
 const xmlApiData = {
+	'machineInfo': literal<IMOSListMachInfo>({
+		manufacturer: new MosString128('manufacturer'),
+		model: new MosString128('model'),
+		hwRev: new MosString128('hwRev'),
+		swRev: new MosString128('swRev'),
+		DOM: new MosTime(1234),
+		SN: new MosString128('SN'),
+		ID: new MosString128('ID'),
+		time: new MosTime(1234),
+		opTime: new MosTime(1234),
+		mosRev: new MosString128('mosRev'),
+
+		supportedProfiles: {
+			deviceType: 'MOS',
+			profile0: true,
+			profile1: true
+
+		}
+	}),
 	'mosObj': literal<IMOSObject>({
 		ID: new MosString128('M000123'),
 		Slug: new MosString128('My new object'),
