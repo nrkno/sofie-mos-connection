@@ -202,7 +202,7 @@ export class MosDevice implements IMOSDevice {
 		}
 		if (primaryConnection) {
 			this._primaryConnection = primaryConnection
-			this._primaryConnection.onConnectionChange(() => {
+			this._primaryConnection.on('connectionChanged', () => {
 				this._emitConnectionChange()
 				if (offSpecFailover && this._currentConnection !== this._primaryConnection && this._primaryConnection!.connected) {
 					this.switchConnections() // and hope no current message goes lost
@@ -211,7 +211,7 @@ export class MosDevice implements IMOSDevice {
 		}
 		if (secondaryConnection) {
 			this._secondaryConnection = secondaryConnection
-			this._secondaryConnection.onConnectionChange(() => this._emitConnectionChange())
+			this._secondaryConnection.on('connectionChanged', () => this._emitConnectionChange())
 		}
 		this._currentConnection = this._primaryConnection || this._primaryConnection || null
 		if (this._strict) {

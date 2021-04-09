@@ -33,7 +33,8 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	private _disposed: boolean = false
 
 	private _clients: {[clientID: string]: ClientDescription} = {}
-	private _callbackOnConnectionChange: () => void
+
+	private _emittedConnected = false
 
 	private _heartBeatsTimer: NodeJS.Timer
 	private _heartBeatsDelay: number
@@ -125,9 +126,6 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		})
 	}
 
-	onConnectionChange (cb: () => void) {
-		this._callbackOnConnectionChange = cb
-	}
 	public setDebug (debug: boolean) {
 		this._debug = debug
 
@@ -222,7 +220,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 			}
 			global.clearTimeout(this._heartBeatsTimer)
 			this._connected = false
-			if (this._callbackOnConnectionChange) this._callbackOnConnectionChange()
+			this.emit('connectionChanged')
 			resolveDispose()
 		})
 	}
@@ -239,7 +237,6 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 			}, this._heartBeatsDelay)
 		}
 
-		let connected = this.connected
 		Promise.all(
 			Object.keys(this._clients).map((key) => {
 				let client = this._clients[key]
@@ -263,18 +260,17 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 
 			})
 		)
-		.then(() => {
-			if (connected !== this.connected) {
-				if (this._callbackOnConnectionChange) this._callbackOnConnectionChange()
-			}
-			triggerNextHeartBeat()
-		})
 		.catch((e) => {
-			if (connected !== this.connected) {
-				if (this._callbackOnConnectionChange) this._callbackOnConnectionChange()
-			}
 			triggerNextHeartBeat()
 			this.emit('error', e)
+		})
+		.then(() => {
+			let connected = this.connected
+			if (connected !== this._emittedConnected) {
+				this._emittedConnected = connected
+				this.emit('connectionChanged')
+			}
+			triggerNextHeartBeat()
 		})
 	}
 	private debugTrace (...strs: any[]) {
