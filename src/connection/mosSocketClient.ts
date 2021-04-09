@@ -28,7 +28,7 @@ export class MosSocketClient extends EventEmitter {
 	private _connected: boolean = false
 	private _lastConnectionAttempt: number
 	private _reconnectAttempt: number = 0
-	private _connectionAttemptTimer: NodeJS.Timer
+	private _connectionAttemptTimer: NodeJS.Timer | undefined
 
 	private _commandTimeoutTimer: NodeJS.Timer
 	private _commandTimeout: number
@@ -82,6 +82,7 @@ export class MosSocketClient extends EventEmitter {
 				if (this._client && this._client.connecting) {
 					this._client.destroy()
 					this._client.removeAllListeners()
+					// @ts-expect-error optional property
 					delete this._client
 				}
 
@@ -207,6 +208,7 @@ export class MosSocketClient extends EventEmitter {
 			this._client.once('close', () => { this.emit(SocketConnectionEvent.DISPOSED) })
 			this._client.end()
 			this._client.destroy()
+			// @ts-expect-error optional property
 			delete this._client
 		}
 	}
@@ -299,11 +301,11 @@ export class MosSocketClient extends EventEmitter {
 
 	/** */
 	private _clearConnectionAttemptTimer (): void {
-		// @todo create event telling reconnection ended with result: true/false
-		// only if reconnection interval is true
 		this._reconnectAttempt = 0
-		global.clearInterval(this._connectionAttemptTimer)
-		delete this._connectionAttemptTimer
+		if (this._connectionAttemptTimer) {
+			global.clearInterval(this._connectionAttemptTimer)
+			delete this._connectionAttemptTimer
+		}
 	}
 
   /** */
