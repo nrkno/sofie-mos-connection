@@ -52,6 +52,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	 * Initiate the MosConnection, start accepting connections
 	 */
 	init (): Promise<boolean> {
+		this.emit('info', `Initializing MOS-Connection, id: ${this._conf.mosID}`)
 		this._initialized = true
 		if (this._conf.acceptsConnections) {
 			return new Promise((resolve, reject) => {

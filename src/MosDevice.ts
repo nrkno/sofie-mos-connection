@@ -1185,7 +1185,7 @@ export class MosDevice implements IMOSDevice {
 		let otherConnection = this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection
 		let currentConnection = this._currentConnection
 
-		if (!otherConnection.connected) throw new Error('Unable to failover connection: Other connection is not connected')
+		if (!otherConnection.connected) throw new Error(`Unable to failover connection: Other connection is not connected (${otherConnection.host})`)
 
 		// Switch:
 		this._currentConnection = otherConnection
