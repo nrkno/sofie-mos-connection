@@ -120,7 +120,7 @@ export class MosDevice implements IMOSDevice {
 	private _currentConnection: NCSServerConnection | null = null
 
 	// Callbacks for Profile 0:
-	private _callbackOnGetMachineInfo?: () => Promise<IMOSListMachInfo>
+	private _callbackOnRequestMachineInfo?: () => Promise<IMOSListMachInfo>
 	private _callbackOnConnectionChange?: (connectionStatus: IMOSConnectionStatus) => void
 
 	// Callbacks for Profile 1:
@@ -149,17 +149,17 @@ export class MosDevice implements IMOSDevice {
 	private _callbackOnROSwapItems?: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
 
 	// Callbacks for Profile 3:
-	private _callbackOnMosItemReplace?: (roId: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>
-	private _callbackOnMosObjCreate?: (obj: IMOSObject) => Promise<IMOSAck>
+	private _callbackOnItemReplace?: (roId: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>
+	private _callbackOnObjectCreate?: (obj: IMOSObject) => Promise<IMOSAck>
 	private _callbackOnRequestObjectActionNew?: (obj: IMOSObject) => Promise<IMOSAck>
 	private _callbackOnRequestObjectActionUpdate?: (objId: MosString128, obj: IMOSObject) => Promise<IMOSAck>
 	private _callbackOnRequestObjectActionDelete?: (objId: MosString128) => Promise<IMOSAck>
-	private _callbackOnMosReqObjList?: (objList: IMOSRequestObjectList) => Promise<IMOSObjectList>
-	private _callbackOnMosReqSearchableSchema?: (username: string) => Promise<IMOSListSearchableSchema>
+	private _callbackOnRequestObjectList?: (objList: IMOSRequestObjectList) => Promise<IMOSObjectList>
+	private _callbackOnRequestSearchableSchema?: (username: string) => Promise<IMOSListSearchableSchema>
 
 	// Callbacks for Profile 4:
-	private _callbackOnROReqAll?: () => Promise<IMOSRunningOrder[]>
-	private _callbackOnROStory?: (story: IMOSROFullStory) => Promise<IMOSROAck>
+	private _callbackOnRequestAllRunningOrders?: () => Promise<IMOSRunningOrder[]>
+	private _callbackOnRunningOrderStory?: (story: IMOSROFullStory) => Promise<IMOSROAck>
 
 	constructor (
 		idPrimary: string,
@@ -281,9 +281,9 @@ export class MosDevice implements IMOSDevice {
 			// send immediate reply on the same port:
 			return new HeartBeat(port)
 
-		} else if (data.reqMachInfo && typeof this._callbackOnGetMachineInfo === 'function') {
+		} else if (data.reqMachInfo && typeof this._callbackOnRequestMachineInfo === 'function') {
 			if (port === 'query') throw new Error('message "reqMachInfo" is invalid on query port')
-			const m = await this._callbackOnGetMachineInfo()
+			const m = await this._callbackOnRequestMachineInfo()
 			return new ListMachineInfo(m, port)
 		// Profile 1:
 		} else if (data.mosReqObj && typeof this._callbackOnRequestMOSOBject === 'function') {
@@ -556,15 +556,15 @@ export class MosDevice implements IMOSDevice {
 			return new ROAck(resp)
 
 		// Profile 3
-		} else if (data.mosItemReplace && typeof this._callbackOnMosItemReplace === 'function') {
-			const resp = await this._callbackOnMosItemReplace(
+		} else if (data.mosItemReplace && typeof this._callbackOnItemReplace === 'function') {
+			const resp = await this._callbackOnItemReplace(
 				data.mosItemReplace.ID,
 				data.mosItemReplace.itemID,
 				Parser.xml2Item(data.mosItemReplace.item))
 			return new ROAck(resp)
 
-		} else if (data.mosObjCreate && typeof this._callbackOnMosObjCreate === 'function') {
-			const resp = await this._callbackOnMosObjCreate(
+		} else if (data.mosObjCreate && typeof this._callbackOnObjectCreate === 'function') {
+			const resp = await this._callbackOnObjectCreate(
 				Parser.xml2MosObj(data.mosObjCreate))
 
 			const ack = new MOSAck(resp)
@@ -598,24 +598,24 @@ export class MosDevice implements IMOSDevice {
 			)
 			return new MOSAck(resp)
 
-		} else if (data.mosReqObjList && typeof this._callbackOnMosReqObjList === 'function') {
-			const resp = await this._callbackOnMosReqObjList(Parser.xml2ReqObjList(data.mosReqObjList))
+		} else if (data.mosReqObjList && typeof this._callbackOnRequestObjectList === 'function') {
+			const resp = await this._callbackOnRequestObjectList(Parser.xml2ReqObjList(data.mosReqObjList))
 			return new MosObjList(resp)
 
-		} else if (data.mosReqSearchableSchema && typeof this._callbackOnMosReqSearchableSchema === 'function') {
-			const resp = await this._callbackOnMosReqSearchableSchema(data.mosReqSearchableSchema.username)
+		} else if (data.mosReqSearchableSchema && typeof this._callbackOnRequestSearchableSchema === 'function') {
+			const resp = await this._callbackOnRequestSearchableSchema(data.mosReqSearchableSchema.username)
 			return new MosListSearchableSchema(resp)
 
 		// Profile 4
-		} else if (data.roReqAll && typeof this._callbackOnROReqAll === 'function') {
-			const list = await this._callbackOnROReqAll()
+		} else if (data.roReqAll && typeof this._callbackOnRequestAllRunningOrders === 'function') {
+			const list = await this._callbackOnRequestAllRunningOrders()
 			const roListAll = new ROListAll()
 			roListAll.ROs = list
 			return roListAll
 
-		} else if (data.roStorySend && typeof this._callbackOnROStory === 'function') {
+		} else if (data.roStorySend && typeof this._callbackOnRunningOrderStory === 'function') {
 			const story: IMOSROFullStory = Parser.xml2FullStory(data.roStorySend)
-			const resp = await this._callbackOnROStory(story)
+			const resp = await this._callbackOnRunningOrderStory(story)
 			return new ROAck(resp)
 
 		// TODO: Use MosMessage instead of string
@@ -660,7 +660,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRequestMachineInfo (cb: () => Promise<IMOSListMachInfo>) {
-		this._callbackOnGetMachineInfo = cb
+		this._callbackOnRequestMachineInfo = cb
 	}
 
 	onConnectionChange (cb: (connectionStatus: IMOSConnectionStatus) => void) {
@@ -972,7 +972,7 @@ export class MosDevice implements IMOSDevice {
 	// ==========================   Profile 3   ===================================================================
 	// ============================================================================================================
 	onObjectCreate (cb: (object: IMOSObject) => Promise<IMOSAck>) {
-		this._callbackOnMosObjCreate = cb
+		this._callbackOnObjectCreate = cb
 	}
 
 	async sendObjectCreate (object: IMOSObject): Promise<IMOSAck> {
@@ -982,7 +982,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onItemReplace (cb: (roID: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>) {
-		this._callbackOnMosItemReplace = cb
+		this._callbackOnItemReplace = cb
 	}
 
 	async sendItemReplace (options: MosItemReplaceOptions): Promise<IMOSROAck> {
@@ -992,7 +992,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRequestSearchableSchema (cb: (username: string) => Promise<IMOSListSearchableSchema>) {
-		this._callbackOnMosReqSearchableSchema = cb
+		this._callbackOnRequestSearchableSchema = cb
 	}
 
 	sendRequestSearchableSchema (username: string): Promise<IMOSListSearchableSchema> {
@@ -1003,7 +1003,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRequestObjectList (cb: (objList: IMOSRequestObjectList) => Promise<IMOSObjectList>) {
-		this._callbackOnMosReqObjList = cb
+		this._callbackOnRequestObjectList = cb
 	}
 
 	sendRequestObjectList (reqObjList: IMOSRequestObjectList): Promise<IMOSObjectList> {
@@ -1089,7 +1089,7 @@ export class MosDevice implements IMOSDevice {
 	// ==========================   Profile 4   ===================================================================
 	// ============================================================================================================
 	onRequestAllRunningOrders (cb: () => Promise<IMOSRunningOrder[]>) {
-		this._callbackOnROReqAll = cb
+		this._callbackOnRequestAllRunningOrders = cb
 	}
 	sendRequestAllRunningOrders (): Promise<Array<IMOSRunningOrderBase>> {
 		const message = new ROReqAll()
@@ -1115,7 +1115,7 @@ export class MosDevice implements IMOSDevice {
 		})
 	}
 	onRunningOrderStory (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) {
-		this._callbackOnROStory = cb
+		this._callbackOnRunningOrderStory = cb
 	}
 	async sendRunningOrderStory (story: IMOSROFullStory): Promise<IMOSROAck> {
 	// async sendROSwapItems (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> {
@@ -1258,7 +1258,7 @@ export class MosDevice implements IMOSDevice {
 			}
 		}
 		if (this.supportedProfiles.profile0) {
-			requireCallback('0', '_callbackOnGetMachineInfo', this.onRequestMachineInfo)
+			requireCallback('0', '_callbackOnRequestMachineInfo', this.onRequestMachineInfo)
 			// _callbackOnConnectionChange not required
 		}
 		if (this.supportedProfiles.profile1) {
@@ -1293,20 +1293,20 @@ export class MosDevice implements IMOSDevice {
 			requireProfile(3, 0)
 			requireProfile(3, 1)
 			requireProfile(3, 2)
-			requireMOSCallback('3', '_callbackOnMosItemReplace', this.onItemReplace)
-			requireMOSCallback('3', '_callbackOnMosObjCreate', this.onObjectCreate)
+			requireMOSCallback('3', '_callbackOnItemReplace', this.onItemReplace)
+			requireMOSCallback('3', '_callbackOnObjectCreate', this.onObjectCreate)
 			requireMOSCallback('3', '_callbackOnRequestObjectActionNew', this.onRequestObjectActionNew)
 			requireMOSCallback('3', '_callbackOnRequestObjectActionUpdate', this.onRequestObjectActionUpdate)
 			requireMOSCallback('3', '_callbackOnRequestObjectActionDelete', this.onRequestObjectActionDelete)
-			requireMOSCallback('3', '_callbackOnMosReqObjList', this.onRequestObjectList)
-			requireMOSCallback('3', '_callbackOnMosReqSearchableSchema', this.onRequestSearchableSchema)
+			requireMOSCallback('3', '_callbackOnRequestObjectList', this.onRequestObjectList)
+			requireMOSCallback('3', '_callbackOnRequestSearchableSchema', this.onRequestSearchableSchema)
 		}
 		if (this.supportedProfiles.profile4) {
 			requireProfile(4, 0)
 			requireProfile(4, 1)
 			requireProfile(4, 2)
-			requireMOSCallback('4', '_callbackOnROReqAll', this.onRequestAllRunningOrders)
-			requireMOSCallback('4', '_callbackOnROStory', this.onRunningOrderStory)
+			requireMOSCallback('4', '_callbackOnRequestAllRunningOrders', this.onRequestAllRunningOrders)
+			requireMOSCallback('4', '_callbackOnRunningOrderStory', this.onRunningOrderStory)
 		}
 		if (this.supportedProfiles.profile5) {
 			requireProfile(5, 0)
