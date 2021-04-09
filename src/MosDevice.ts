@@ -213,7 +213,7 @@ export class MosDevice implements IMOSDevice {
 			this._secondaryConnection = secondaryConnection
 			this._secondaryConnection.on('connectionChanged', () => this._emitConnectionChange())
 		}
-		this._currentConnection = this._primaryConnection || this._primaryConnection || null
+		this._currentConnection = this._primaryConnection || this._secondaryConnection || null
 		if (this._strict) {
 			setTimeout(() => {
 				if (this._disposed) return
