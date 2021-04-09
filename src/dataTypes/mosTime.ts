@@ -78,6 +78,9 @@ export class MosTime {
 	getTime (): number {
 		return this._time.getTime()
 	}
+	setTime (timestamp: number): number {
+		return this._time.setTime(timestamp)
+	}
 
 	/** */
 	private _parseTimeOffset (timestamp: string): false | {timeOffsetValue: number, timezoneDeclaration: string} {
