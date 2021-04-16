@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.9.0...1.0.0) (2021-04-16)
+
+
+### Features
+
+* add many of the ncs-triggerable functions (wip) ([11636a2](https://github.com/nrkno/tv-automation-mos-connection/commit/11636a25cd44c29ccf359752f3e0b16dc5a38d64))
+* add sendReadyToAir message ([8ad31f3](https://github.com/nrkno/tv-automation-mos-connection/commit/8ad31f30bcc7fc25d92aabaa5d721b772c84036a))
+* added support for roReqAll command ([2f6d6da](https://github.com/nrkno/tv-automation-mos-connection/commit/2f6d6da40f9b5fa0112ca9719af28f1c2b93eed5))
+* allow using non-standard ports ([6a12942](https://github.com/nrkno/tv-automation-mos-connection/commit/6a1294296aec97dca93f2bbd6b67ec0fe0654852))
+* continued work on NCS functionality (wip) ([b462a95](https://github.com/nrkno/tv-automation-mos-connection/commit/b462a95c52dfb7ae21293fe386259c1009ea7061))
+* strict mode, which when set will trace to console if not all callbacks are set up for a certain profile ([3f1d132](https://github.com/nrkno/tv-automation-mos-connection/commit/3f1d1321476d464d475b8a4a3985dddd9da05d6a))
+* when a mos-client connects, set up a "primary" connection back to it, so that data can be pushed back ([0ab244e](https://github.com/nrkno/tv-automation-mos-connection/commit/0ab244e3f65ea438e89f3e27fff114697845d4a4))
+
+
+### Bug Fixes
+
+* add setTime property ([9eef2e5](https://github.com/nrkno/tv-automation-mos-connection/commit/9eef2e57837790e3a2050de0267c72ef40196ee8))
+* bug in _checkProfileValidness ([0a7ecbf](https://github.com/nrkno/tv-automation-mos-connection/commit/0a7ecbfce8bcee43c292eec4f654a7e8fc0d18d7))
+* bug in currentConnection ([2d3a69b](https://github.com/nrkno/tv-automation-mos-connection/commit/2d3a69bb65440cda04ae701c7388f46bd2ca3ab7))
+* correct return type for mosObjCreate ([93441d0](https://github.com/nrkno/tv-automation-mos-connection/commit/93441d0fa31edea16f32ea2d529782304cabc0d5))
+* encoding ROStory missing roId ([0304e92](https://github.com/nrkno/tv-automation-mos-connection/commit/0304e920279f7d16491717b8628b0e1691b4c20f))
+* ensure all message constructors has a defined port ([0196407](https://github.com/nrkno/tv-automation-mos-connection/commit/019640745de45aa3262a68dc364e7228607ddce8))
+* issue where socket could be tried written to after being disposed ([fe121da](https://github.com/nrkno/tv-automation-mos-connection/commit/fe121daaec14f2db862ac8b1cd001c2be05a06c6))
+* made listMachInfo.supportedProfiles.deviceTypes stricter, according to spec ([47ada35](https://github.com/nrkno/tv-automation-mos-connection/commit/47ada35c7c0740649dbad0636534ff97c1c98b54))
+* minor bug in return values ([52157c2](https://github.com/nrkno/tv-automation-mos-connection/commit/52157c2206c02471d56418288c500f67e35a48a3))
+* refactor mosDevice.routeData into async/await [publish] ([1e7cc3c](https://github.com/nrkno/tv-automation-mos-connection/commit/1e7cc3c78f246dab08eb78b356532c55589739e3))
+* refactor: moved the xml-parsing functions into separate files under each profile ([e97e196](https://github.com/nrkno/tv-automation-mos-connection/commit/e97e196b85bb768d5b66536b3db5164036152085))
+* rename setXXXStatus to sendXXXStatus ([5dc63c6](https://github.com/nrkno/tv-automation-mos-connection/commit/5dc63c69bcdb311efd94d57c0ffaaf8d5a6aace9))
+* reversed order of parameters in addTextElement. This reduces complexity in the code, and fixes a bug in retuned data from reqMachInfo. ([4f35b2f](https://github.com/nrkno/tv-automation-mos-connection/commit/4f35b2ffeb07aba277357a1f3d2bbe5a2bb6a325))
+* update api.ts: rename/clarify/harminize method names & add documentation. ([7a8d6a6](https://github.com/nrkno/tv-automation-mos-connection/commit/7a8d6a62b1bde00dee2f427dbcf5dbd86aabf551))
+
 ## [0.9.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.8.10...0.9.0) (2020-09-29)
 
 
