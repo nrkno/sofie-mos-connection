@@ -440,7 +440,7 @@ export class MosSocketClient extends EventEmitter {
 		this.connected = false
 		// this._readyToSendMessage = false
 		if (hadError) {
-			this.emit('warning', 'Scoket closed with error')
+			this.emit('warning', 'Socket closed with error')
 			this.debugTrace('Socket closed with error')
 		} else {
 			this.debugTrace('Socket closed without error')
