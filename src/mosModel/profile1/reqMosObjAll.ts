@@ -7,15 +7,14 @@ export class ReqMosObjAll extends MosMessage {
 	private pause: number
   /** */
 	constructor (pause: number = 0) {
-		super()
+		super('lower')
 		this.pause = pause
-		this.port = 'lower'
 	}
 
   /** */
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('mosReqAll')
-		addTextElement(root, 'pause', {}, this.pause + '')
+		addTextElement(root, 'pause', this.pause + '')
 		return root
 	}
 }

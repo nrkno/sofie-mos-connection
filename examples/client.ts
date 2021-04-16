@@ -55,7 +55,7 @@ mos.onConnection((dev: MosDevice) => {
 		})
 	}
 
-	dev.onGetMachineInfo(() => {
+	dev.onRequestMachineInfo(() => {
 		return new Promise((resolve) => {
 			let m: IMOSListMachInfo = {
 				manufacturer: new MosString128('mommy'),
@@ -74,7 +74,7 @@ mos.onConnection((dev: MosDevice) => {
 					profile0: true
 				}
 			}
-			// console.log('onGetMachineInfo', m)
+			// console.log('onRequestMachineInfo', m)
 			resolve(m)
 		})
 	})

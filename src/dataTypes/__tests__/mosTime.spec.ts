@@ -3,6 +3,7 @@ import { MosTime } from '../mosTime'
 describe('MosTime', () => {
 	test('parse time correctly', () => {
 		// test invalid date formats
+		// @ts-ignore
 		let date = new Date(undefined)
 		expect(() => new MosTime(date)).toThrow(/Invalid timestamp/)
 

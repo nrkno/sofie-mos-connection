@@ -1,0 +1,1677 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Profile 2 onCreateRunningOrder 1`] = `
+Array [
+  Array [
+    Object {
+      "EditorialDuration": MosDuration {
+        "_duration": 3505,
+      },
+      "EditorialStart": MosTime {
+        "_time": 2009-04-17T17:02:00.000Z,
+        "_timezone": "Z",
+        "_timezoneDeclaration": "",
+        "_timezoneZuluIndicator": "Z",
+      },
+      "ID": MosString128 {
+        "_str": "96857485",
+      },
+      "Slug": MosString128 {
+        "_str": "5PM RUNDOWN",
+      },
+      "Stories": Array [
+        Object {
+          "ID": MosString128 {
+            "_str": "5983A501:0049B924:8390EF2B",
+          },
+          "Items": Array [
+            Object {
+              "EditorialDuration": 645,
+              "ID": MosString128 {
+                "_str": "0",
+              },
+              "MOSID": "testmos.enps.com",
+              "MosExternalMetaData": Array [
+                Object {
+                  "MosPayload": Object {
+                    "Owner": "SHOLMES",
+                    "destination": "b",
+                    "source": "a",
+                    "transitionMode": 2,
+                    "transitionPoint": 463,
+                  },
+                  "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                  "MosScope": "PLAYLIST",
+                },
+              ],
+              "ObjectID": MosString128 {
+                "_str": "M000224",
+              },
+              "Paths": Array [
+                Object {
+                  "Description": "MPEG2 Video",
+                  "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+                  "Type": "PATH",
+                },
+                Object {
+                  "Description": "WM9 750Kbps",
+                  "Target": "http://server/proxy/clipe.wmv",
+                  "Type": "PROXY PATH",
+                },
+                Object {
+                  "Description": "MOS Object",
+                  "Target": "http://server/proxy/clipe.xml",
+                  "Type": "METADATA PATH",
+                },
+              ],
+              "Slug": MosString128 {
+                "_str": "COLSTAT MURDER:VO",
+              },
+              "Trigger": "CHAINED",
+              "UserTimingDuration": 310,
+            },
+          ],
+          "Number": MosString128 {
+            "_str": "A5",
+          },
+          "Slug": MosString128 {
+            "_str": "COLSTAT MURDER",
+          },
+        },
+        Object {
+          "ID": MosString128 {
+            "_str": "3854737F:0003A34D:983A0B28",
+          },
+          "Items": Array [
+            Object {
+              "EditorialDuration": 310,
+              "EditorialStart": 55,
+              "ID": MosString128 {
+                "_str": "0",
+              },
+              "MOSID": "testmos.enps.com",
+              "MosExternalMetaData": Array [
+                Object {
+                  "MosPayload": Object {
+                    "Owner": "SHOLMES",
+                    "destination": "b",
+                    "source": "a",
+                    "transitionMode": 2,
+                    "transitionPoint": 463,
+                  },
+                  "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                  "MosScope": "PLAYLIST",
+                },
+              ],
+              "ObjectID": MosString128 {
+                "_str": "M000133",
+              },
+              "UserTimingDuration": 200,
+            },
+          ],
+          "Number": MosString128 {
+            "_str": "A6",
+          },
+          "Slug": MosString128 {
+            "_str": "AIRLINE INSPECTIONS",
+          },
+        },
+      ],
+    },
+  ],
+]
+`;
+
+exports[`Profile 2 onCreateRunningOrder: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1633</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1633</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onDeleteRunningOrder 1`] = `
+Array [
+  Array [
+    49478285,
+  ],
+]
+`;
+
+exports[`Profile 2 onDeleteRunningOrder: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1635</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1635</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onItemStatus 1`] = `
+Array [
+  Array [
+    Object {
+      "Channel": MosString128 {
+        "_str": "B",
+      },
+      "ID": MosString128 {
+        "_str": "0",
+      },
+      "ObjectId": MosString128 {
+        "_str": "A0295",
+      },
+      "RunningOrderId": MosString128 {
+        "_str": "5PM",
+      },
+      "Status": "PLAY",
+      "StoryId": MosString128 {
+        "_str": "HOTEL FIRE",
+      },
+      "Time": MosTime {
+        "_time": 2009-04-11T14:13:53.000Z,
+        "_timezone": "Z",
+        "_timezoneDeclaration": "",
+        "_timezoneZuluIndicator": "Z",
+      },
+    },
+  ],
+]
+`;
+
+exports[`Profile 2 onItemStatus: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1640</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1640</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onMetadataReplace 1`] = `
+Array [
+  Array [
+    Object {
+      "EditorialDuration": MosDuration {
+        "_duration": 3505,
+      },
+      "EditorialStart": MosTime {
+        "_time": 2009-04-17T17:02:00.000Z,
+        "_timezone": "Z",
+        "_timezoneDeclaration": "",
+        "_timezoneZuluIndicator": "Z",
+      },
+      "ID": MosString128 {
+        "_str": "96857485",
+      },
+      "MosExternalMetaData": Array [
+        Object {
+          "MosPayload": Object {
+            "Owner": "SHOLMES",
+            "destination": "b",
+            "source": "a",
+            "transitionMode": 2,
+            "transitionPoint": 463,
+          },
+          "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+          "MosScope": "PLAYLIST",
+        },
+      ],
+      "Slug": MosString128 {
+        "_str": "5PM RUNDOWN",
+      },
+    },
+  ],
+]
+`;
+
+exports[`Profile 2 onMetadataReplace: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1637</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1637</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onRODeleteItems 1`] = `
+Array [
+  Array [
+    Object {
+      "RunningOrderID": MosString128 {
+        "_str": "5PM",
+      },
+      "StoryID": MosString128 {
+        "_str": "2",
+      },
+    },
+    Array [
+      MosString128 {
+        "_str": "23",
+      },
+      MosString128 {
+        "_str": "24",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 onRODeleteItems: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1650</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1650</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onRODeleteStories 1`] = `
+Array [
+  Array [
+    Object {
+      "RunningOrderID": MosString128 {
+        "_str": "5PM",
+      },
+    },
+    Array [
+      MosString128 {
+        "_str": "3",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 onRODeleteStories: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1649</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1649</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onROInsertItems 1`] = `
+Array [
+  Array [
+    Object {
+      "ItemID": MosString128 {
+        "_str": "23",
+      },
+      "RunningOrderID": MosString128 {
+        "_str": "5PM",
+      },
+      "StoryID": MosString128 {
+        "_str": "2",
+      },
+    },
+    Array [
+      Object {
+        "EditorialDuration": 700,
+        "EditorialStart": 0,
+        "ID": MosString128 {
+          "_str": "27",
+        },
+        "MOSID": "testmos",
+        "ObjectID": MosString128 {
+          "_str": "M19873",
+        },
+        "Paths": Array [
+          Object {
+            "Description": "MPEG2 Video",
+            "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+            "Type": "PATH",
+          },
+          Object {
+            "Description": "WM9 750Kbps",
+            "Target": "http://server/proxy/clipe.wmv",
+            "Type": "PROXY PATH",
+          },
+          Object {
+            "Description": "MOS Object",
+            "Target": "http://server/proxy/clipe.xml",
+            "Type": "METADATA PATH",
+          },
+        ],
+        "Slug": MosString128 {
+          "_str": "NHL PKG",
+        },
+        "UserTimingDuration": 690,
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 onROInsertItems: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1643</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1643</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onROInsertStories 1`] = `
+Array [
+  Array [
+    Object {
+      "RunningOrderID": MosString128 {
+        "_str": "5PM",
+      },
+      "StoryID": MosString128 {
+        "_str": "2",
+      },
+    },
+    Array [
+      Object {
+        "ID": MosString128 {
+          "_str": "17",
+        },
+        "Items": Array [
+          Object {
+            "EditorialDuration": 715,
+            "EditorialStart": 0,
+            "ID": MosString128 {
+              "_str": "27",
+            },
+            "MOSID": "testmos",
+            "ObjectID": MosString128 {
+              "_str": "M73627",
+            },
+            "Paths": Array [
+              Object {
+                "Description": "MPEG2 Video",
+                "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+                "Type": "PATH",
+              },
+              Object {
+                "Description": "WM9 750Kbps",
+                "Target": "http://server/proxy/clipe.wmv",
+                "Type": "PROXY PATH",
+              },
+              Object {
+                "Description": "MOS Object",
+                "Target": "http://server/proxy/clipe.xml",
+                "Type": "METADATA PATH",
+              },
+            ],
+            "UserTimingDuration": 415,
+          },
+          Object {
+            "EditorialDuration": 315,
+            "EditorialStart": 0,
+            "ID": MosString128 {
+              "_str": "28",
+            },
+            "MOSID": "testmos",
+            "ObjectID": MosString128 {
+              "_str": "M73628",
+            },
+          },
+        ],
+        "Number": MosString128 {
+          "_str": "A2",
+        },
+        "Slug": MosString128 {
+          "_str": "Barcelona Football",
+        },
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 onROInsertStories: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1642</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1642</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onROMoveItems 1`] = `
+Array [
+  Array [
+    Object {
+      "ItemID": MosString128 {
+        "_str": "12",
+      },
+      "RunningOrderID": MosString128 {
+        "_str": "5PM",
+      },
+      "StoryID": MosString128 {
+        "_str": "2",
+      },
+    },
+    Array [
+      MosString128 {
+        "_str": "23",
+      },
+      MosString128 {
+        "_str": "24",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 onROMoveItems: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1648</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1648</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onROMoveStories 1`] = `
+Array [
+  Array [
+    Object {
+      "RunningOrderID": MosString128 {
+        "_str": "5PM",
+      },
+      "StoryID": MosString128 {
+        "_str": "2",
+      },
+    },
+    Array [
+      MosString128 {
+        "_str": "7",
+      },
+      MosString128 {
+        "_str": "12",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 onROMoveStories: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1647</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1647</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onROMoveStory 1`] = `
+Array [
+  Array [
+    Object {
+      "RunningOrderID": MosString128 {
+        "_str": "5PM",
+      },
+      "StoryID": MosString128 {
+        "_str": "2",
+      },
+    },
+    Array [
+      MosString128 {
+        "_str": "7",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 onROMoveStory: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1646</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1646</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onROReplaceItems 1`] = `
+Array [
+  Array [
+    Object {
+      "ItemID": MosString128 {
+        "_str": "23",
+      },
+      "RunningOrderID": MosString128 {
+        "_str": "5PM",
+      },
+      "StoryID": MosString128 {
+        "_str": "2",
+      },
+    },
+    Array [
+      Object {
+        "EditorialDuration": 700,
+        "EditorialStart": 0,
+        "ID": MosString128 {
+          "_str": "27",
+        },
+        "MOSID": "testmos",
+        "ObjectID": MosString128 {
+          "_str": "M19873",
+        },
+        "Paths": Array [
+          Object {
+            "Description": "MPEG2 Video",
+            "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+            "Type": "PATH",
+          },
+          Object {
+            "Description": "WM9 750Kbps",
+            "Target": "http://server/proxy/clipe.wmv",
+            "Type": "PROXY PATH",
+          },
+          Object {
+            "Description": "MOS Object",
+            "Target": "http://server/proxy/clipe.xml",
+            "Type": "METADATA PATH",
+          },
+        ],
+        "Slug": MosString128 {
+          "_str": "NHL PKG",
+        },
+        "UserTimingDuration": 690,
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 onROReplaceItems: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1645</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1645</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onROReplaceStories 1`] = `
+Array [
+  Array [
+    Object {
+      "RunningOrderID": MosString128 {
+        "_str": "5PM",
+      },
+      "StoryID": MosString128 {
+        "_str": "2",
+      },
+    },
+    Array [
+      Object {
+        "ID": MosString128 {
+          "_str": "17",
+        },
+        "Items": Array [
+          Object {
+            "EditorialDuration": 715,
+            "EditorialStart": 0,
+            "ID": MosString128 {
+              "_str": "27",
+            },
+            "MOSID": "testmos",
+            "ObjectID": MosString128 {
+              "_str": "M73627",
+            },
+            "Paths": Array [
+              Object {
+                "Description": "MPEG2 Video",
+                "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+                "Type": "PATH",
+              },
+              Object {
+                "Description": "WM9 750Kbps",
+                "Target": "http://server/proxy/clipe.wmv",
+                "Type": "PROXY PATH",
+              },
+              Object {
+                "Description": "MOS Object",
+                "Target": "http://server/proxy/clipe.xml",
+                "Type": "METADATA PATH",
+              },
+            ],
+            "UserTimingDuration": 415,
+          },
+          Object {
+            "EditorialDuration": 315,
+            "EditorialStart": 0,
+            "ID": MosString128 {
+              "_str": "28",
+            },
+            "MOSID": "testmos",
+            "ObjectID": MosString128 {
+              "_str": "M73628",
+            },
+          },
+        ],
+        "Number": MosString128 {
+          "_str": "A2",
+        },
+        "Slug": MosString128 {
+          "_str": "Porto Football",
+        },
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 onROReplaceStories: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1644</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1644</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onROSwapItems 1`] = `
+Array [
+  Array [
+    Object {
+      "RunningOrderID": MosString128 {
+        "_str": "5PM",
+      },
+      "StoryID": MosString128 {
+        "_str": "2",
+      },
+    },
+    MosString128 {
+      "_str": "23",
+    },
+    MosString128 {
+      "_str": "24",
+    },
+  ],
+]
+`;
+
+exports[`Profile 2 onROSwapItems: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1652</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1652</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onROSwapStories 1`] = `
+Array [
+  Array [
+    Object {
+      "RunningOrderID": MosString128 {
+        "_str": "5PM",
+      },
+    },
+    MosString128 {
+      "_str": "3",
+    },
+    MosString128 {
+      "_str": "5",
+    },
+  ],
+]
+`;
+
+exports[`Profile 2 onROSwapStories: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1651</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1651</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onReadyToAir 1`] = `
+Array [
+  Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5PM",
+      },
+      "Status": "READY",
+    },
+  ],
+]
+`;
+
+exports[`Profile 2 onReadyToAir: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1641</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1641</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onReplaceRunningOrder 1`] = `
+Array [
+  Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "96857485",
+      },
+      "Slug": MosString128 {
+        "_str": "5PM RUNDOWN",
+      },
+      "Stories": Array [
+        Object {
+          "ID": MosString128 {
+            "_str": "5983A501:0049B924:8390EF2B",
+          },
+          "Items": Array [
+            Object {
+              "EditorialDuration": 645,
+              "ID": MosString128 {
+                "_str": "0",
+              },
+              "MOSID": "testmos.enps.com",
+              "MosExternalMetaData": Array [
+                Object {
+                  "MosPayload": Object {
+                    "Owner": "SHOLMES",
+                    "destination": "b",
+                    "source": "a",
+                    "transitionMode": 2,
+                    "transitionPoint": 463,
+                  },
+                  "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                  "MosScope": "PLAYLIST",
+                },
+              ],
+              "ObjectID": MosString128 {
+                "_str": "M000224",
+              },
+              "Paths": Array [
+                Object {
+                  "Description": "MPEG2 Video",
+                  "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+                  "Type": "PATH",
+                },
+                Object {
+                  "Description": "WM9 750Kbps",
+                  "Target": "http://server/proxy/clipe.wmv",
+                  "Type": "PROXY PATH",
+                },
+                Object {
+                  "Description": "MOS Object",
+                  "Target": "http://server/proxy/clipe.xml",
+                  "Type": "METADATA PATH",
+                },
+              ],
+              "Slug": MosString128 {
+                "_str": "COLSTAT MURDER:VO",
+              },
+              "Trigger": "CHAINED",
+              "UserTimingDuration": 310,
+            },
+          ],
+          "Number": MosString128 {
+            "_str": "A1",
+          },
+          "Slug": MosString128 {
+            "_str": "COLSTAT MURDER",
+          },
+        },
+        Object {
+          "ID": MosString128 {
+            "_str": "3852737F:0013A64D:923A0B28",
+          },
+          "Items": Array [
+            Object {
+              "EditorialDuration": 600,
+              "EditorialStart": 500,
+              "ID": MosString128 {
+                "_str": "0",
+              },
+              "MOSID": "testmos.enps.com",
+              "MosExternalMetaData": Array [
+                Object {
+                  "MosPayload": Object {
+                    "Owner": "SHOLMES",
+                    "destination": "b",
+                    "source": "a",
+                    "transitionMode": 2,
+                    "transitionPoint": 463,
+                  },
+                  "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                  "MosScope": "PLAYLIST",
+                },
+              ],
+              "ObjectID": MosString128 {
+                "_str": "M000295",
+              },
+              "UserTimingDuration": 310,
+            },
+          ],
+          "Number": MosString128 {
+            "_str": "A2",
+          },
+          "Slug": MosString128 {
+            "_str": "AIRLINE SAFETY",
+          },
+        },
+      ],
+    },
+  ],
+]
+`;
+
+exports[`Profile 2 onReplaceRunningOrder: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1634</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1634</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onRequestRunningOrder 1`] = `
+Array [
+  Array [
+    96857485,
+  ],
+]
+`;
+
+exports[`Profile 2 onRequestRunningOrder 2`] = `
+Object {
+  "mos": Object {
+    "messageID": Object {
+      "_text": 1636,
+    },
+    "mosID": Object {
+      "_text": "our.mos.id",
+    },
+    "ncsID": Object {
+      "_text": "their.mos.id",
+    },
+    "roList": Object {
+      "roID": Object {
+        "_text": 96857485,
+      },
+      "roSlug": Object {
+        "_text": "5PM RUNDOWN",
+      },
+      "story": Array [
+        Object {
+          "item": Object {
+            "itemEdDur": Object {
+              "_text": 645,
+            },
+            "itemID": Object {
+              "_text": 0,
+            },
+            "itemSlug": Object {
+              "_text": "COLSTAT MURDER:VO",
+            },
+            "itemTrigger": Object {
+              "_text": "CHAINED",
+            },
+            "itemUserTimingDur": Object {
+              "_text": 310,
+            },
+            "mosExternalMetadata": Object {
+              "mosPayload": Object {
+                "Owner": Object {
+                  "_text": "SHOLMES",
+                },
+                "destination": Object {
+                  "_text": "b",
+                },
+                "source": Object {
+                  "_text": "a",
+                },
+                "transitionMode": Object {
+                  "_text": 2,
+                },
+                "transitionPoint": Object {
+                  "_text": 463,
+                },
+              },
+              "mosSchema": Object {
+                "_text": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              },
+              "mosScope": Object {
+                "_text": "PLAYLIST",
+              },
+            },
+            "mosID": Object {
+              "_text": "testmos.enps.com",
+            },
+            "objID": Object {
+              "_text": "M000224",
+            },
+            "objPaths": Object {
+              "objMetadataPath": Object {
+                "_attributes": Object {
+                  "techDescription": "MOS Object",
+                },
+                "_text": "http://server/proxy/clipe.xml",
+              },
+              "objPath": Object {
+                "_attributes": Object {
+                  "techDescription": "MPEG2 Video",
+                },
+                "_text": "\\\\servermediaclip392028cd2320s0d.mxf",
+              },
+              "objProxyPath": Object {
+                "_attributes": Object {
+                  "techDescription": "WM9 750Kbps",
+                },
+                "_text": "http://server/proxy/clipe.wmv",
+              },
+            },
+          },
+          "storyID": Object {
+            "_text": "5983A501:0049B924:8390EF2B",
+          },
+          "storyNum": Object {
+            "_text": "A5",
+          },
+          "storySlug": Object {
+            "_text": "COLSTAT MURDER",
+          },
+        },
+        Object {
+          "item": Object {
+            "itemEdDur": Object {
+              "_text": 310,
+            },
+            "itemEdStart": Object {
+              "_text": 55,
+            },
+            "itemID": Object {
+              "_text": 0,
+            },
+            "itemUserTimingDur": Object {
+              "_text": 200,
+            },
+            "mosExternalMetadata": Object {
+              "mosPayload": Object {
+                "Owner": Object {
+                  "_text": "SHOLMES",
+                },
+                "destination": Object {
+                  "_text": "b",
+                },
+                "source": Object {
+                  "_text": "a",
+                },
+                "transitionMode": Object {
+                  "_text": 2,
+                },
+                "transitionPoint": Object {
+                  "_text": 463,
+                },
+              },
+              "mosSchema": Object {
+                "_text": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              },
+              "mosScope": Object {
+                "_text": "PLAYLIST",
+              },
+            },
+            "mosID": Object {
+              "_text": "testmos.enps.com",
+            },
+            "objID": Object {
+              "_text": "M000133",
+            },
+          },
+          "storyID": Object {
+            "_text": "3854737F:0003A34D:983A0B28",
+          },
+          "storyNum": Object {
+            "_text": "A6",
+          },
+          "storySlug": Object {
+            "_text": "AIRLINE INSPECTIONS",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`Profile 2 onRequestRunningOrder: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1636</messageID>
+  <roList>
+    <roID>96857485</roID>
+    <roSlug>5PM RUNDOWN</roSlug>
+    <story>
+      <storyID>5983A501:0049B924:8390EF2B</storyID>
+      <storySlug>COLSTAT MURDER</storySlug>
+      <storyNum>A5</storyNum>
+      <item>
+        <itemID>0</itemID>
+        <objID>M000224</objID>
+        <mosID>testmos.enps.com</mosID>
+        <itemSlug>COLSTAT MURDER:VO</itemSlug>
+        <itemEdDur>645</itemEdDur>
+        <itemUserTimingDur>310</itemUserTimingDur>
+        <itemTrigger>CHAINED</itemTrigger>
+        <mosExternalMetadata>
+          <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+          <mosPayload>
+            <Owner>SHOLMES</Owner>
+            <transitionMode>2</transitionMode>
+            <transitionPoint>463</transitionPoint>
+            <source>a</source>
+            <destination>b</destination>
+          </mosPayload>
+          <mosScope>PLAYLIST</mosScope>
+        </mosExternalMetadata>
+        <objPaths>
+          <objPath techDescription="MPEG2 Video">\\servermediaclip392028cd2320s0d.mxf</objPath>
+          <objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
+          <objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
+        </objPaths>
+      </item>
+    </story>
+    <story>
+      <storyID>3854737F:0003A34D:983A0B28</storyID>
+      <storySlug>AIRLINE INSPECTIONS</storySlug>
+      <storyNum>A6</storyNum>
+      <item>
+        <itemID>0</itemID>
+        <objID>M000133</objID>
+        <mosID>testmos.enps.com</mosID>
+        <itemEdStart>55</itemEdStart>
+        <itemEdDur>310</itemEdDur>
+        <itemUserTimingDur>200</itemUserTimingDur>
+        <mosExternalMetadata>
+          <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+          <mosPayload>
+            <Owner>SHOLMES</Owner>
+            <transitionMode>2</transitionMode>
+            <transitionPoint>463</transitionPoint>
+            <source>a</source>
+            <destination>b</destination>
+          </mosPayload>
+          <mosScope>PLAYLIST</mosScope>
+        </mosExternalMetadata>
+      </item>
+    </story>
+  </roList>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1636</messageID>
+  <roList>
+    <roID>96857485</roID>
+    <roSlug>5PM RUNDOWN</roSlug>
+    <story>
+      <storyID>5983A501:0049B924:8390EF2B</storyID>
+      <storySlug>COLSTAT MURDER</storySlug>
+      <storyNum>A5</storyNum>
+      <item>
+        <itemID>0</itemID>
+        <objID>M000224</objID>
+        <mosID>testmos.enps.com</mosID>
+        <itemSlug>COLSTAT MURDER:VO</itemSlug>
+        <itemEdDur>645</itemEdDur>
+        <itemUserTimingDur>310</itemUserTimingDur>
+        <itemTrigger>CHAINED</itemTrigger>
+        <mosExternalMetadata>
+          <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+          <mosPayload>
+            <Owner>SHOLMES</Owner>
+            <transitionMode>2</transitionMode>
+            <transitionPoint>463</transitionPoint>
+            <source>a</source>
+            <destination>b</destination>
+          </mosPayload>
+          <mosScope>PLAYLIST</mosScope>
+        </mosExternalMetadata>
+        <objPaths>
+          <objPath techDescription=\\"MPEG2 Video\\">\\\\servermediaclip392028cd2320s0d.mxf</objPath>
+          <objProxyPath techDescription=\\"WM9 750Kbps\\">http://server/proxy/clipe.wmv</objProxyPath>
+          <objMetadataPath techDescription=\\"MOS Object\\">http://server/proxy/clipe.xml</objMetadataPath>
+        </objPaths>
+      </item>
+    </story>
+    <story>
+      <storyID>3854737F:0003A34D:983A0B28</storyID>
+      <storySlug>AIRLINE INSPECTIONS</storySlug>
+      <storyNum>A6</storyNum>
+      <item>
+        <itemID>0</itemID>
+        <objID>M000133</objID>
+        <mosID>testmos.enps.com</mosID>
+        <itemEdStart>55</itemEdStart>
+        <itemEdDur>310</itemEdDur>
+        <itemUserTimingDur>200</itemUserTimingDur>
+        <mosExternalMetadata>
+          <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+          <mosPayload>
+            <Owner>SHOLMES</Owner>
+            <transitionMode>2</transitionMode>
+            <transitionPoint>463</transitionPoint>
+            <source>a</source>
+            <destination>b</destination>
+          </mosPayload>
+          <mosScope>PLAYLIST</mosScope>
+        </mosExternalMetadata>
+      </item>
+    </story>
+  </roList>
+</mos>"
+`;
+
+exports[`Profile 2 onRunningOrderStatus 1`] = `
+Array [
+  Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5PM",
+      },
+      "Status": "MANUAL CTRL",
+      "Time": MosTime {
+        "_time": 2009-04-11T14:13:53.000Z,
+        "_timezone": "Z",
+        "_timezoneDeclaration": "",
+        "_timezoneZuluIndicator": "Z",
+      },
+    },
+  ],
+]
+`;
+
+exports[`Profile 2 onRunningOrderStatus: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1638</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1638</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 onStoryStatus 1`] = `
+Array [
+  Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "HOTEL FIRE",
+      },
+      "RunningOrderId": MosString128 {
+        "_str": "5PM",
+      },
+      "Status": "PLAY",
+      "Time": MosTime {
+        "_time": 1999-04-11T14:13:53.000Z,
+        "_timezone": "Z",
+        "_timezoneDeclaration": "",
+        "_timezoneZuluIndicator": "Z",
+      },
+    },
+  ],
+]
+`;
+
+exports[`Profile 2 onStoryStatus: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1639</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1639</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 sendItemStatus 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementStat element=\\"ITEM\\">
+    <roID>5PM</roID>
+    <storyID>HOTEL FIRE</storyID>
+    <itemID>0</itemID>
+    <objID>A0295</objID>
+    <itemChannel>B</itemChannel>
+    <status>PLAY</status>
+    <time>xx</time>
+  </roElementStat>
+</mos>"
+`;
+
+exports[`Profile 2 sendItemStatus 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+      },
+      "Items": Array [],
+    },
+  ],
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendRequestRunningOrder 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roReq>
+    <roID>M000123</roID>
+  </roReq>
+</mos>"
+`;
+
+exports[`Profile 2 sendRequestRunningOrder 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+  },
+  "Slug": MosString128 {
+    "_str": "5PM RUNDOWN",
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+      },
+      "Items": Array [
+        Object {
+          "EditorialDuration": 645,
+          "ID": MosString128 {
+            "_str": "0",
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": Array [
+            Object {
+              "MosPayload": Object {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": MosString128 {
+            "_str": "M000224",
+          },
+          "Paths": Array [
+            Object {
+              "Description": "MPEG2 Video",
+              "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+              "Type": "PATH",
+            },
+            Object {
+              "Description": "WM9 750Kbps",
+              "Target": "http://server/proxy/clipe.wmv",
+              "Type": "PROXY PATH",
+            },
+            Object {
+              "Description": "MOS Object",
+              "Target": "http://server/proxy/clipe.xml",
+              "Type": "METADATA PATH",
+            },
+          ],
+          "Slug": MosString128 {
+            "_str": "COLSTAT MURDER:VO",
+          },
+          "Trigger": "CHAINED",
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": MosString128 {
+        "_str": "B10",
+      },
+      "Slug": MosString128 {
+        "_str": "Colstat Murder",
+      },
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+      },
+      "Items": Array [
+        Object {
+          "EditorialDuration": 310,
+          "EditorialStart": 55,
+          "ID": MosString128 {
+            "_str": "0",
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": Array [
+            Object {
+              "MosPayload": Object {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": MosString128 {
+            "_str": "M000133",
+          },
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": MosString128 {
+        "_str": "B11",
+      },
+      "Slug": MosString128 {
+        "_str": "Test MOS",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Profile 2 sendRunningOrderStatus 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementStat element=\\"RO\\">
+    <roID>5PM</roID>
+    <status>MANUAL CTRL</status>
+    <time>xx</time>
+  </roElementStat>
+</mos>"
+`;
+
+exports[`Profile 2 sendRunningOrderStatus 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+      },
+      "Items": Array [],
+    },
+  ],
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendStoryStatus 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementStat element=\\"STORY\\">
+    <roID>5PM</roID>
+    <storyID>HOTEL FIRE</storyID>
+    <status>PLAY</status>
+    <time>xx</time>
+  </roElementStat>
+</mos>"
+`;
+
+exports[`Profile 2 sendStoryStatus 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+      },
+      "Items": Array [],
+    },
+  ],
+  "port": "upper",
+}
+`;

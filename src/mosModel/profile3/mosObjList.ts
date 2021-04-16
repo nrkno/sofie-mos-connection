@@ -1,35 +1,34 @@
-import { IMosObjectList } from '../../api'
+import { IMOSObjectList } from '../../api'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
-import { Parser } from '../Parser'
 import { addTextElement } from '../../utils/Utils'
+import { XMLMosObjects } from '../profile1/xmlConversion'
 
 export class MosObjList extends MosMessage {
-	private options: IMosObjectList
+	private options: IMOSObjectList
 
-	constructor (options: IMosObjectList) {
-		super()
+	constructor (options: IMOSObjectList) {
+		super('upper')
 		this.options = options
-		this.port = 'upper'
 	}
 
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
-		const xml = XMLBuilder.create('mosObjList')
-		xml.att('username', this.options.username)
+		const xmlMosObjList = XMLBuilder.create('mosObjList')
+		xmlMosObjList.att('username', this.options.username)
 
-		addTextElement(xml, 'queryID', {}, this.options.queryID)
-		addTextElement(xml, 'listReturnStart', {}, this.options.listReturnStart)
-		addTextElement(xml, 'listReturnEnd', {}, this.options.listReturnEnd)
-		addTextElement(xml, 'listReturnTotal', {}, this.options.listReturnTotal)
-		if (this.options.listReturnStatus) addTextElement(xml, 'listReturnStatus', {}, this.options.listReturnStatus)
+		addTextElement(xmlMosObjList, 'queryID', this.options.queryID)
+		addTextElement(xmlMosObjList, 'listReturnStart', this.options.listReturnStart)
+		addTextElement(xmlMosObjList, 'listReturnEnd', this.options.listReturnEnd)
+		addTextElement(xmlMosObjList, 'listReturnTotal', this.options.listReturnTotal)
+		if (this.options.listReturnStatus) addTextElement(xmlMosObjList, 'listReturnStatus', this.options.listReturnStatus)
 
 		if (this.options.list) {
-			const listEl = addTextElement(xml, 'list')
-			for (const object of this.options.list) {
-				listEl.importDocument(Parser.mosObj2xml(object))
-			}
+			const xmlList = XMLBuilder.create('list')
+			XMLMosObjects.toXML(xmlList, this.options.list)
+
+			xmlMosObjList.importDocument(xmlList)
 		}
 
-		return xml
+		return xmlMosObjList
 	}
 }

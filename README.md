@@ -31,7 +31,7 @@ mos.onConnection((device: MosDevice) => { // called whenever there is a new conn
 		})
 	}
 	// Setup callbacks to pipe data:
-	device.onGetMachineInfo(() => {})
+	device.onRequestMachineInfo(() => {})
 	device.onCreateRunningOrder((ro) => {})
 	device.onDeleteRunningOrder((RunningOrderID: MosString128) => {})
 	device.onReadyToAir(() => {})

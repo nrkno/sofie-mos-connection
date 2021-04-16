@@ -5,8 +5,7 @@ export class ReqMachInfo extends MosMessage {
 
   /** */
 	constructor () {
-		super()
-		this.port = 'lower'
+		super('lower')
 	}
 
   /** */

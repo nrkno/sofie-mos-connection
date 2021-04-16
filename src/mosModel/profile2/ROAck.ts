@@ -16,16 +16,21 @@ export class ROAck extends MosMessage implements IMOSROAck {
 	Stories: Array<IMOSROAckStory>
 
   /** */
-	constructor () {
-		super()
+	constructor (roAck?: IMOSROAck) {
+		super('upper')
+		if (roAck) {
+			this.ID = roAck.ID
+			this.Status = roAck.Status
+			this.Stories = roAck.Stories
+		}
 	}
 
   /** */
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roAck')
 
-		addTextElement(root, 'roID', {}, this.ID)
-		addTextElement(root, 'roStatus', {}, this.Status)
+		addTextElement(root, 'roID', this.ID)
+		addTextElement(root, 'roStatus', this.Status)
 
 		// TODO: Loop over Stories, Items and Object
 

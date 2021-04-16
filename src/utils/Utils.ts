@@ -2,6 +2,7 @@ import { xml2js as xmlParser } from 'xml-js'
 import * as XMLBuilder from 'xmlbuilder'
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
+import { MosDuration } from '../dataTypes/mosDuration'
 
 /** */
 export function pad (n: string, width: number, z?: string): string {
@@ -156,16 +157,20 @@ export function xml2js (messageString: string): object {
 export function addTextElement (
 	root: XMLBuilder.XMLElement,
 	elementName: string,
-	attributes?: Object, text?: string | number | null | MosString128 | MosTime
+	text?: string | number | null | MosString128 | MosTime | MosDuration,
+	attributes?: { [key: string]: string}
 ): XMLBuilder.XMLElement {
-	root.element(
-		elementName,
-		attributes,
+	const txt = (
 		text === null ?
 			null :
 		text !== undefined ?
 			text.toString() :
 		undefined
 	)
-	return root
+	const element = root.element(
+		elementName,
+		attributes || {},
+		txt
+	)
+	return element
 }

@@ -3,9 +3,8 @@ import { EventEmitter } from 'events'
 import { Socket } from 'net'
 import { MosTime } from '../dataTypes/mosTime'
 
-const iconv = require('iconv-lite')
+import * as iconv from 'iconv-lite'
 iconv.encodingExists('utf16-be')
-// import { Writable } from 'stream'
 
 // Mock the Socket class in 'net':
 let setTimeoutOrg = setTimeout
@@ -139,8 +138,6 @@ export class SocketMock extends EventEmitter implements Socket {
 	// ------------------------------------------------------------------------
 	// Mock methods:
 	mockSentMessage0 (data: any, encoding: any) {
-		// console.log('mockSentMessage ' + this.name, this.decode(data))
-		encoding = encoding
 
 		if (this._replyToHeartBeat) {
 			const str: string = (
@@ -154,20 +151,19 @@ export class SocketMock extends EventEmitter implements Socket {
 					let mosID = str.match(/<mosID>([^<]+)<\/mosID>/)![1]
 					let ncsID = str.match(/<ncsID>([^<]+)<\/ncsID>/)![1]
 					let messageId = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
-					let repl = '<mos>\
-						<mosID>' + mosID + '</mosID>\
-						<ncsID>' + ncsID + '</ncsID>\
-						<messageID>' + messageId + '</messageID>\
-							<heartbeat>\
-								<time>' + (new MosTime()).toString() + '</time>\
-							</heartbeat>\
-					</mos>\r\n'
-					// console.log('repl', repl)
+					let repl = `<mos>
+<mosID>${mosID}</mosID>
+<ncsID>${ncsID}</ncsID>
+<messageID>${messageId}</messageID>\
+  <heartbeat>
+    <time>${(new MosTime()).toString()}</time>
+  </heartbeat>
+</mos>\r\n`
 					this.mockReceiveMessage(
 						this.encode(repl)
 					)
 				} catch (e) {
-					console.log('mockReply', str)
+					console.error('mockReply', str)
 					throw e
 				}
 				return
@@ -175,9 +171,8 @@ export class SocketMock extends EventEmitter implements Socket {
 		}
 		this.mockSentMessage(data, encoding)
 	}
-	mockSentMessage (data: any, encoding: any) {
+	mockSentMessage (data: any, _encoding: any) {
 
-		encoding = encoding
 		if (this._responses.length) {
 			// send reply:
 
@@ -210,8 +205,8 @@ export class SocketMock extends EventEmitter implements Socket {
 		// @ts-ignore
 		this.mockSentMessage['mockClear']()
 	}
-	mockWaitForSentMessages () {
-		return new Promise((resolve) => {
+	mockWaitForSentMessages (): Promise<void> {
+		return new Promise<void>((resolve) => {
 
 			let check = () => {
 				if (this._responses.length === 0) {

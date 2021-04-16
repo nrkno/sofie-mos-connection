@@ -8,15 +8,14 @@ export class ROReq extends MosMessage {
 	private roId: MosString128
   /** */
 	constructor (roId: MosString128) {
-		super()
-		this.port = 'upper'
+		super('upper')
 		this.roId = roId
 	}
 
   /** */
 	get messageXMLBlocks (): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roReq')
-		addTextElement(root, 'roID', {}, this.roId)
+		addTextElement(root, 'roID', this.roId)
 		return root
 	}
 }

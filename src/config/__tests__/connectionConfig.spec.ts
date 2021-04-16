@@ -19,26 +19,26 @@ describe('ConnectionConfig', () => {
 		expect(config.mosID).toEqual('test')
 		expect(config.acceptsConnections).toEqual(true)
 		expect(config.accepsConnectionsFrom).toEqual([])
-		expect(config.debug).toEqual(false)
-		expect(config.openRelay).toEqual(false)
-		expect(config.offspecFailover).toEqual(false)
+		expect(config.debug).toBeFalsy()
+		expect(config.openRelay).toBeFalsy()
+		expect(config.offspecFailover).toBeFalsy()
 	})
 
 	test('invalid ConnectionConfig', () => {
 
 		expect(() => {
 			// @ts-ignore
-			const config = new ConnectionConfig()
+			return new ConnectionConfig(undefined)
 		}).toThrowError(/object.*missing/)
 
 		expect(() => {
 			// @ts-ignore
-			const config = new ConnectionConfig(1)
+			return new ConnectionConfig(1)
 		}).toThrowError(/not an object/)
 
 		expect(() => {
 			// @ts-ignore
-			const config = new ConnectionConfig({
+			return new ConnectionConfig({
 				mosID: 'test',
 				acceptsConnections: true
 			})
@@ -46,7 +46,7 @@ describe('ConnectionConfig', () => {
 
 		expect(() => {
 			// @ts-ignore
-			const config = new ConnectionConfig({
+			return new ConnectionConfig({
 				mosID: 'test',
 				profiles: {
 					'0': true,
@@ -57,7 +57,7 @@ describe('ConnectionConfig', () => {
 
 		expect(() => {
 			// @ts-ignore
-			const config = new ConnectionConfig({
+			return new ConnectionConfig({
 				acceptsConnections: true,
 				profiles: {
 					'0': true,
@@ -67,10 +67,11 @@ describe('ConnectionConfig', () => {
 		}).toThrowError(/mosID.*missing/)
 
 		expect(() => {
-			// @ts-ignore
-			const config = new ConnectionConfig({
+
+			return new ConnectionConfig({
 				mosID: 'test',
 				acceptsConnections: true,
+				// @ts-ignore
 				profiles: {
 					'1': true
 				}
@@ -78,8 +79,7 @@ describe('ConnectionConfig', () => {
 		}).toThrowError(/profile.*0.*mandatory/i)
 
 		expect(() => {
-			// @ts-ignore
-			const config = new ConnectionConfig({
+			return new ConnectionConfig({
 				mosID: 'test',
 				acceptsConnections: true,
 				profiles: {
