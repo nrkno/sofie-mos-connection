@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.0...1.0.1) (2021-04-21)
+
+
+### Bug Fixes
+
+* stricter handling of the debug flag, to fix minor bug; The debug flag wasn't properly passed into MosSocketServer on init. [release] ([47abd73](https://github.com/nrkno/tv-automation-mos-connection/commit/47abd73e8015dda839ec54948299f21dc6c36ae9))
+
 ## [1.0.0](https://github.com/nrkno/tv-automation-mos-connection/compare/0.9.0...1.0.0) (2021-04-16)
 
 
