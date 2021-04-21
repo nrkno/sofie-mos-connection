@@ -174,3 +174,49 @@ export function addTextElement (
 	)
 	return element
 }
+/**
+ * Utility-function to convert a XMLBuilder.XMLElement into the generic object which can be sent
+ * into the ***.fromXML(xml:any) methods in MosModel
+ */
+export function xmlToObject (root: XMLBuilder.XMLElement): any {
+
+	const obj: any = {}
+	let hasAttribs = false
+
+	if (root.attribs) {
+		for (const attr of Object.values(root.attribs)) {
+			hasAttribs = true
+			if (!obj.attributes) obj.attributes = {}
+			obj.attributes[attr.name] = attr.value
+		}
+
+	}
+	// @ts-expect-error hack
+	if (root.children.length === 1 && root.children[0].name === '#text') {
+		if (hasAttribs) {
+			// @ts-expect-error hack
+			obj.text = root.children[0].value
+			return obj
+		} else {
+			// @ts-expect-error hack
+			return root.children[0].value
+		}
+	}
+
+	for (const child of root.children) {
+
+		if ((child as any).name) {
+			const ch = child as XMLBuilder.XMLElement
+			if (obj[ch.name]) {
+				if (!Array.isArray(obj[ch.name])) {
+					obj[ch.name] = [obj[ch.name]] // make an array
+				}
+				obj[ch.name].push(xmlToObject(ch))
+			} else {
+				obj[ch.name] = xmlToObject(ch)
+			}
+		}
+	}
+
+	return obj
+}

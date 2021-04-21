@@ -10,3 +10,9 @@ export function isEmpty (obj: any) {
 		return !obj
 	}
 }
+export function numberOrUndefined (value: any): number | undefined {
+	if (typeof value === 'object' && isEmpty(value)) {
+		return undefined
+	}
+	return parseFloat(value)
+}

@@ -13,7 +13,7 @@ import {
 	IMOSROAckObject
 } from '../../api'
 import { addTextElement } from '../../utils/Utils'
-import { isEmpty } from '../lib'
+import { isEmpty, numberOrUndefined } from '../lib'
 import { MosTime } from '../../dataTypes/mosTime'
 import { MosDuration } from '../../dataTypes/mosDuration'
 import { MosString128 } from '../../dataTypes/mosString128'
@@ -194,16 +194,16 @@ export namespace XMLMosItem {
 
 		if (xml.hasOwnProperty('itemSlug') && !isEmpty(xml.itemSlug)) item.Slug = new MosString128(xml.itemSlug)
 		if (xml.hasOwnProperty('objPaths')) item.Paths = XMLObjectPaths.fromXML(xml.objPaths)
-		if (xml.hasOwnProperty('itemEdStart')) item.EditorialStart = xml.itemEdStart
-		if (xml.hasOwnProperty('itemEdDur')) item.EditorialDuration = xml.itemEdDur
-		if (xml.hasOwnProperty('itemUserTimingDur')) item.UserTimingDuration = xml.itemUserTimingDur
+		if (xml.hasOwnProperty('itemEdStart')) item.EditorialStart = numberOrUndefined(xml.itemEdStart)
+		if (xml.hasOwnProperty('itemEdDur')) item.EditorialDuration = numberOrUndefined(xml.itemEdDur)
+		if (xml.hasOwnProperty('itemUserTimingDur')) item.UserTimingDuration = numberOrUndefined(xml.itemUserTimingDur)
 		if (xml.hasOwnProperty('itemTrigger')) item.Trigger = xml.itemTrigger
 		if (xml.hasOwnProperty('mosExternalMetadata')) item.MosExternalMetaData = XMLMosExternalMetaData.fromXML(xml.mosExternalMetadata)
 		if (xml.hasOwnProperty('mosAbstract')) item.mosAbstract = xml.mosAbstract + ''
 		if (xml.hasOwnProperty('objSlug')) item.ObjectSlug = new MosString128(xml.objSlug)
 		if (xml.hasOwnProperty('itemChannel')) item.Channel = new MosString128(xml.itemChannel)
-		if (xml.hasOwnProperty('objDur')) item.Duration = xml.objDur
-		if (xml.hasOwnProperty('objTB')) item.TimeBase = xml.objTB
+		if (xml.hasOwnProperty('objDur')) item.Duration = numberOrUndefined(xml.objDur)
+		if (xml.hasOwnProperty('objTB')) item.TimeBase = numberOrUndefined(xml.objTB)
 
 		if (xml.hasOwnProperty('macroIn')) item.MacroIn = new MosString128(xml.macroIn)
 		if (xml.hasOwnProperty('macroOut')) item.MacroOut = new MosString128(xml.macroOut)
@@ -223,6 +223,9 @@ export namespace XMLMosItem {
 		addTextElement(xmlItem, 'mosID', item.MOSID)
 
 		if (item.Slug) 				addTextElement(xmlItem, 'itemSlug', item.Slug)
+		if (item.ObjectSlug) 		addTextElement(xmlItem, 'objSlug', item.ObjectSlug)
+		if (item.Duration) 			addTextElement(xmlItem, 'objDur', item.Duration)
+		if (item.TimeBase) 			addTextElement(xmlItem, 'objTB', item.TimeBase)
 		if (item.mosAbstract) 		addTextElement(xmlItem, 'mosAbstract', item.mosAbstract)
 		if (item.Channel) 			addTextElement(xmlItem, 'itemChannel', item.Channel)
 		if (item.EditorialStart !== undefined)			addTextElement(xmlItem, 'itemEdStart', item.EditorialStart)

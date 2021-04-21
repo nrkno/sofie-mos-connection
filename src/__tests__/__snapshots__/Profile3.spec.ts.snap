@@ -13,6 +13,8 @@ exports[`Profile 3 mosItemReplace 1`] = `
       <objID>Object0</objID>
       <mosID>our.mos.id</mosID>
       <itemSlug>my cool Object</itemSlug>
+      <objDur>250</objDur>
+      <objTB>25</objTB>
     </item>
   </mosItemReplace>
 </mos>"
