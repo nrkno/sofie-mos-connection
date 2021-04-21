@@ -29,7 +29,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	private _host: string
 	private _timeout: number
 	private _mosID: string
-	private _debug: boolean = false
+	private _debug: boolean
 	private _disposed: boolean = false
 
 	private _clients: {[clientID: string]: ClientDescription} = {}
@@ -39,7 +39,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	private _heartBeatsTimer: NodeJS.Timer
 	private _heartBeatsDelay: number
 
-	constructor (id: string, host: string, mosID: string, timeout?: number, debug?: boolean) {
+	constructor (id: string, host: string, mosID: string, timeout: number | undefined, debug: boolean) {
 		super()
 		this._id = id
 		this._host = host
@@ -47,7 +47,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		this._heartBeatsDelay = this._timeout / 2
 		this._mosID = mosID
 		this._connected = false
-		if (debug) this._debug = debug
+		this._debug = debug ?? false
 	}
 	/** Create a MOS client, which talks to  */
 	createClient (clientID: string, port: number, clientDescription: ConnectionType, useHeartbeats: boolean) {

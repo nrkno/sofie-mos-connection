@@ -7,15 +7,15 @@ export class MosSocketServer extends EventEmitter {
 	private _port: number
 	private _portDescription: IncomingConnectionType
 	private _socketServer: Server
-	private _debug: boolean = false
+	private _debug: boolean
 	private _connectedSockets: Array<Socket> = []
 
 	/** */
-	constructor (port: number, description: IncomingConnectionType, debug?: boolean) {
+	constructor (port: number, description: IncomingConnectionType, debug: boolean) {
 		super()
 		this._port = port
 		this._portDescription = description
-		if (debug) this._debug = debug
+		this._debug = debug ?? false
 
 		this._socketServer = new Server()
 		this._socketServer.on('connection', (socket: Socket) => this._onClientConnection(socket))
