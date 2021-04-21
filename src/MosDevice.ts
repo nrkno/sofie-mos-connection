@@ -27,7 +27,8 @@ import {
 	IMOSRequestObjectList,
 	IMOSListSearchableSchema,
 	IMOSAck,
-	IConnectionConfig
+	IConnectionConfig,
+	MosItemReplaceOptions
 } from './api'
 import { Parser } from './mosModel/Parser'
 import {
@@ -50,7 +51,6 @@ import {
 	MosObjList,
 	MosListSearchableSchema,
 	MosObjCreate,
-	MosItemReplaceOptions,
 	MosItemReplace,
 	MosReqSearchableSchema,
 	MosReqObjList,

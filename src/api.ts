@@ -3,7 +3,7 @@ import { MosTime } from './dataTypes/mosTime'
 import { MosDuration as MosDurationDataType } from './dataTypes/mosDuration'
 import { MosString128 } from './dataTypes/mosString128'
 import { IMOSExternalMetaData } from './dataTypes/mosExternalMetaData'
-import { IMOSListMachInfo, MosItemReplaceOptions } from './mosModel'
+import { IMOSListMachInfo } from './mosModel'
 import { MosDevice } from './MosDevice'
 
 /*
@@ -852,3 +852,9 @@ export enum IMOSObjectPathType {
 	METADATA_PATH = 'METADATA PATH'
 }
 export { IMOSExternalMetaData }
+
+export interface MosItemReplaceOptions {
+	roID: MosString128
+	storyID: MosString128
+	item: IMOSItem
+}
