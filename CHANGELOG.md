@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.1...1.0.2) (2021-04-21)
+
+
+### Bug Fixes
+
+* add missing properties in xml-conversion of mosItem [release] ([4c20a6e](https://github.com/nrkno/tv-automation-mos-connection/commit/4c20a6e5aada2a772a6db6ccda0f2e2f7f4cf35c))
+* export MosModel methods ([8794b9d](https://github.com/nrkno/tv-automation-mos-connection/commit/8794b9ddab03b326877bb3ec501e0a74ab11fc59))
+* move interface into api.ts [release] ([0317ea2](https://github.com/nrkno/tv-automation-mos-connection/commit/0317ea28167f6a7b1dad22a5485eeb3785715a32))
+
 ### [1.0.1](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.0...1.0.1) (2021-04-21)
 
 
