@@ -12,6 +12,5 @@ export { IMOSScope, IMOSExternalMetaData } from './dataTypes/mosExternalMetaData
 export { MosTime } from './dataTypes/mosTime'
 export { MosDevice } from './MosDevice'
 
-export {
-	MosItemReplaceOptions
-} from './mosModel'
+export * as MosModel from './mosModel'
+export * as Utils from './utils/Utils'
