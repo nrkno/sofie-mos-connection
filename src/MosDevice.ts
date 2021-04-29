@@ -1123,19 +1123,19 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	// Deprecated methods:
-	/** @deprecated onROReqAll is deprecated use onRequestAllRunningOrders instead */
+	/** @deprecated onROReqAll is deprecated, use onRequestAllRunningOrders instead */
 	onROReqAll (cb: () => Promise<IMOSRunningOrder[]>): void {
 		return this.onRequestAllRunningOrders(cb)
 	}
-	/** @deprecated getAllRunningOrders is deprecated use sendRequestAllRunningOrders instead */
+	/** @deprecated getAllRunningOrders is deprecated, use sendRequestAllRunningOrders instead */
 	getAllRunningOrders (): Promise<Array<IMOSRunningOrderBase>> {
 		return this.sendRequestAllRunningOrders()
 	}
-	/** @deprecated onROStory is deprecated use onRunningOrderStory instead */
+	/** @deprecated onROStory is deprecated, use onRunningOrderStory instead */
 	onROStory (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>): void {
 		return this.onRunningOrderStory(cb)
 	}
-	/** @deprecated sendROStory is deprecated use sendRunningOrderStory instead */
+	/** @deprecated sendROStory is deprecated, use sendRunningOrderStory instead */
 	sendROStory (story: IMOSROFullStory): Promise<IMOSROAck> {
 		return this.sendRunningOrderStory(story)
 	}
