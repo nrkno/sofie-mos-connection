@@ -44,7 +44,7 @@ export class SocketMock extends EventEmitter implements Socket {
 	// @ts-ignore
 	[Symbol.asyncIterator] (): AsyncIterableIterator<any>
 
-	private _responses: Array<string | false | ((data: any) => string | Buffer | false) > = []
+	private _responses: Array<string | string[] | false | ((data: any) => string | string[] | Buffer | false) > = []
 	private _replyToHeartBeat: boolean = true
 
 	constructor () {
@@ -175,32 +175,28 @@ export class SocketMock extends EventEmitter implements Socket {
 		}
 		this.mockSentMessage(data, encoding)
 	}
-	mockSentMessage (data: any, encoding: any) {
-
-		encoding = encoding
-		if (this._responses.length) {
+	mockSentMessage (data: any, _encoding: any) {
+		const cb = this._responses.shift()
+		if (cb) {
 			// send reply:
-
-			let cb = this._responses.shift()
-			let msg: string | Buffer | false
-
 			setTimeoutOrg(() => {
-
-				if (typeof cb === 'string') {
-					msg = cb
-				} else if (cb === false) {
-					msg = cb
-				} else if (typeof cb === 'function') {
-					msg = cb(data)
+				const msg = typeof cb === 'function' ? cb(data) : cb
+				if (msg) {
+					if (Array.isArray(msg)) {
+						for (const m of msg) {
+							this.mockReceiveMessage(m)
+						}
+					} else {
+						this.mockReceiveMessage(msg)
+					}
 				}
-				if (msg !== false) this.mockReceiveMessage(msg)
 			},1)
 		}
 	}
 	mockReceiveMessage (msg: string | Buffer) {
 		this.emit('data', msg)
 	}
-	mockAddReply (cb: string | false | ((data: any) => string | Buffer | false)) {
+	mockAddReply (cb: string | string[] | false | ((data: any) => string | string[] | Buffer | false)) {
 		this._responses.push(cb)
 	}
 	mockClear () {

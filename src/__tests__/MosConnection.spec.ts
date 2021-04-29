@@ -1625,3 +1625,179 @@ describe('MosDevice: Profile 4', () => {
 		expect(returnedListAll).toMatchSnapshot()
 	})
 })
+
+describe('message chunking', () => {
+	let mosDevice: MosDevice
+	let mosConnection: MosConnection
+	let socketMockLower: SocketMock
+	let socketMockUpper: SocketMock
+	let socketMockQuery: SocketMock
+
+	let serverMockLower: ServerMock
+	let serverMockUpper: ServerMock
+	let serverMockQuery: ServerMock
+
+	let serverSocketMockLower: SocketMock
+	let serverSocketMockUpper: SocketMock
+	let serverSocketMockQuery: SocketMock
+
+	let onROStory: jest.Mock<any, any>
+
+	beforeAll(async () => {
+		SocketMock.mockClear()
+		ServerMock.mockClear()
+
+		mosConnection = await getMosConnection()
+		mosDevice = await getMosDevice(mosConnection)
+
+		let roAckReply = () => {
+			let ack: IMOSROAck = {
+				ID: new MosString128('runningOrderId'),
+				Status: new MosString128('OK'),
+				Stories: []
+			}
+			return Promise.resolve(ack)
+		}
+		// Profile 2:
+		onROStory = jest.fn(roAckReply)
+
+		mosDevice.onROStory((story: IMOSROFullStory): Promise<IMOSROAck> => {
+			return onROStory(story)
+		})
+		let b = doBeforeAll()
+		socketMockLower = b.socketMockLower
+		socketMockUpper = b.socketMockUpper
+		socketMockQuery = b.socketMockQuery
+		serverMockLower = b.serverMockLower
+		serverMockUpper = b.serverMockUpper
+		serverMockQuery = b.serverMockQuery
+		serverSocketMockLower = b.serverSocketMockLower
+		serverSocketMockUpper = b.serverSocketMockUpper
+		serverSocketMockQuery = b.serverSocketMockQuery
+		// expect(SocketMock.instances[0].connect).toHaveBeenCalledTimes(1)
+	})
+	beforeEach(() => {
+		onROStory.mockClear()
+
+		serverSocketMockLower.mockClear()
+		serverSocketMockUpper.mockClear()
+		serverSocketMockQuery.mockClear()
+
+	})
+	test('init', async () => {
+		expect(mosDevice).toBeTruthy()
+		expect(socketMockLower).toBeTruthy()
+		expect(socketMockUpper).toBeTruthy()
+	})
+
+	function chunkSubstr (str: string, size: number) {
+		const numChunks = Math.ceil(str.length / size)
+		const chunks = new Array(numChunks)
+
+		/* tslint:disable-next-line */
+		for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
+		  chunks[i] = str.substr(o, size)
+		}
+
+		return chunks
+	  }
+
+	test('chunks', async () => {
+		// Prepare server response
+		let mockReply = jest.fn((data) => {
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
+			let repl = getXMLReply(messageID, xmlData.roList)
+			let chunks = chunkSubstr(repl, 500)
+			expect(chunks).toHaveLength(4)
+			return chunks.map(c => encode(c))
+		})
+
+		socketMockUpper.mockAddReply(mockReply)
+		let returnedObj = await mosDevice.getRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		await socketMockUpper.mockWaitForSentMessages()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<roReq>/)
+		checkMessageSnapshot(msg)
+		expect(returnedObj).toMatchObject(xmlApiData.roList2)
+		expect(returnedObj).toMatchSnapshot()
+	})
+
+	test('chunk around space', async () => {
+		// Prepare server response
+		let mockReply = jest.fn((data) => {
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
+			let repl = getXMLReply(messageID, xmlData.roList)
+
+			const splitPoint = repl.indexOf('Test MOS')
+			expect(splitPoint).not.toEqual(-1)
+
+			const chunks = [
+				repl.substr(0, splitPoint + 4),
+				repl.substr(splitPoint + 4)
+			]
+			return chunks.map(c => encode(c))
+		})
+
+		socketMockUpper.mockAddReply(mockReply)
+		let returnedObj = await mosDevice.getRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		await socketMockUpper.mockWaitForSentMessages()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<roReq>/)
+		checkMessageSnapshot(msg)
+		expect(returnedObj).toMatchObject(xmlApiData.roList2)
+		expect(returnedObj).toMatchSnapshot()
+
+		// This is what we split in half
+		const storySlug = returnedObj.Stories[1].Slug as MosString128
+		expect(storySlug).toBeTruthy()
+		expect(storySlug.toString()).toEqual('Test MOS')
+	})
+
+	test('junk data before', async () => {
+		// Prepare server response
+		let mockReply = jest.fn((data) => {
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
+			let repl = getXMLReply(messageID, xmlData.roList)
+
+			const padded = '         JUNK DATA   ' + repl
+			return encode(padded)
+		})
+
+		socketMockUpper.mockAddReply(mockReply)
+		let returnedObj = await mosDevice.getRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		await socketMockUpper.mockWaitForSentMessages()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<roReq>/)
+		checkMessageSnapshot(msg)
+		expect(returnedObj).toMatchObject(xmlApiData.roList2)
+		expect(returnedObj).toMatchSnapshot()
+	})
+
+	test('junk data packet before', async () => {
+		// Prepare server response
+		let mockReply = jest.fn((data) => {
+			let str = decode(data)
+			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
+			let repl = getXMLReply(messageID, xmlData.roList)
+
+			const chunks = [ '         JUNK DATA   ' , repl]
+			return chunks.map(c => encode(c))
+		})
+
+		socketMockUpper.mockAddReply(mockReply)
+		let returnedObj = await mosDevice.getRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		await socketMockUpper.mockWaitForSentMessages()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		let msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<roReq>/)
+		checkMessageSnapshot(msg)
+		expect(returnedObj).toMatchObject(xmlApiData.roList2)
+		expect(returnedObj).toMatchSnapshot()
+	})
+})
