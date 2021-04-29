@@ -43,7 +43,7 @@ export class MosSocketClient extends EventEmitter {
 	private _timedOutCommands: { [id: string]: number } = {}
 
 	private processQueueTimeout: NodeJS.Timer
-	private _startingUp: boolean = true
+	// private _startingUp: boolean = true
 	private dataChunks: string = ''
 	private _disposed: boolean = false
 
@@ -330,33 +330,67 @@ export class MosSocketClient extends EventEmitter {
 	private _onData (data: Buffer) {
 		this.emit(SocketConnectionEvent.ALIVE)
 		// data = Buffer.from(data, 'ucs2').toString()
-		let messageString: string = iconv.decode(data, 'utf16-be').trim()
+		const messageString: string = iconv.decode(data, 'utf16-be')
 
 		this.emit('rawMessage','recieved', messageString)
 		this.debugTrace(`${this._description} Received: ${messageString}`)
 
-		let firstMatch = '<mos>' // <mos>
-		let first = messageString.substr(0, firstMatch.length)
-		let lastMatch = '</mos>' // </mos>
-		let last = messageString.substr(-lastMatch.length)
+		this.dataChunks += messageString
+
+		// parse as many messages as possible from the data
+		while (this.dataChunks.length > 0) {
+			// whitespace before a mos message is junk
+			this.dataChunks = this.dataChunks.trimLeft()
+
+			const lengthBefore = this.dataChunks.length
+			this._tryParseData()
+			const lengthAfter = this.dataChunks.length
+
+			if (lengthAfter === lengthBefore) {
+				// Nothing was plucked, so abort
+				break
+			}
+		}
+	}
+
+	private _tryParseData () {
+		const startMatch = '<mos>' // <mos>
+		const endMatch = '</mos>' // </mos>
+
+		let messageString: string | undefined
+
+		const startIndex = this.dataChunks.indexOf(startMatch)
+		if (startIndex === -1) {
+			// No start tag, so looks like we have jibberish
+			this.dataChunks = ''
+		} else {
+			if (startIndex > 0) {
+				const junkStr = this.dataChunks.substr(0, startIndex)
+				if (this._debug) {
+					console.log(
+						`${this._description} Discarding message fragment: ${junkStr}`
+					)
+				}
+
+				// trim off anything before <mos>, as we can't parse that
+				this.dataChunks = this.dataChunks.substr(startIndex)
+			}
+
+			const endIndex = this.dataChunks.indexOf(endMatch)
+			if (endIndex > 0) {
+				// We have an end too, so pull out the message
+				const endIndex2 = endIndex + endMatch.length
+				messageString = this.dataChunks.substr(0, endIndex2)
+				this.dataChunks = this.dataChunks.substr(endIndex2)
+
+				// parse our xml
+			}
+		}
 
 		let parsedData: any
 		try {
-			// this.debugTrace(first === firstMatch, last === lastMatch, last, lastMatch)
-			if (first === firstMatch && last === lastMatch) {
-				// Data ready to be parsed:
-				parsedData = xml2js(messageString)// , { compact: true, trim: true, nativeType: true })
-				this.dataChunks = ''
-			} else if (last === lastMatch) {
-				// Last chunk, ready to parse with saved data:
-				parsedData = xml2js(this.dataChunks + messageString)// , { compact: true, trim: true, nativeType: true })
-				this.dataChunks = ''
-			} else if (first === firstMatch) {
-				// Chunk, save for later:
-				this.dataChunks = messageString
-			} else {
-				// Chunk, save for later:
-				this.dataChunks += messageString
+			if (messageString) {
+				parsedData = xml2js(messageString) // , { compact: true, trim: true, nativeType: true })
 			}
 			// let parsedData: any = parser.toJson(messageString, )
 			if (parsedData) {
@@ -407,21 +441,21 @@ export class MosSocketClient extends EventEmitter {
 			} else {
 				return
 			}
-			// this.debugTrace('messageString', messageString)
-			// this.debugTrace('first msg', messageString)
-			this._startingUp = false
+			// console.log('messageString', messageString)
+			// console.log('first msg', messageString)
+			// this._startingUp = false
 		} catch (e) {
-			// this.debugTrace('messageString', messageString)
-			if (this._startingUp) {
-				// when starting up, we might get half a message, let's ignore this error then
-				let a = Math.min(20, Math.floor(messageString.length / 2))
-				console.error('Strange XML-message upon startup: "' + messageString.slice(0, a) + '[...]' + messageString.slice(-a) + '" (length: ' + messageString.length + ')')
-				console.error('error', e)
-			} else {
-				console.error('dataChunks-------------\n', this.dataChunks)
-				console.error('messageString---------\n', messageString)
-				this.emit('error', e)
-			}
+			// console.log('messageString', messageString)
+			// if (this._startingUp) {
+			// 	// when starting up, we might get half a message, let's ignore this error then
+			// 	let a = Math.min(20, Math.floor(messageString.length / 2))
+			// 	console.log('Strange XML-message upon startup: "' + messageString.slice(0, a) + '[...]' + messageString.slice(-a) + '" (length: ' + messageString.length + ')')
+			// 	console.log('error', e)
+			// } else {
+			console.log('dataChunks-------------\n', this.dataChunks)
+			console.log('messageString---------\n', messageString)
+			this.emit('error', e)
+			// }
 		}
 
 		// this._readyToSendMessage = true
