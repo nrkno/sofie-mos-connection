@@ -127,5 +127,8 @@
   "standard-version": {
     "message": "chore(release): %s [skip ci]",
     "tagPrefix": ""
+  },
+  "resolutions": {
+    "node-license-validator/**/minimist": "^1.2.5"
   }
 }
