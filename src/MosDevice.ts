@@ -352,9 +352,7 @@ export class MosDevice implements IMOSDevice {
 		} else if (data.roReq && typeof this._callbackOnRequestRunningOrder === 'function') {
 			const ro = await this._callbackOnRequestRunningOrder(data.roReq.roID)
 			if (ro) {
-				const resp = new ROList()
-				resp.RO = ro
-				return resp
+				return new ROList(ro)
 			} else {
 				// RO not found
 				const ack = new ROAck()

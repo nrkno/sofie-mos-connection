@@ -1077,6 +1077,12 @@ Object {
       "_text": "their.mos.id",
     },
     "roList": Object {
+      "roEdDur": Object {
+        "_text": "0:58:25",
+      },
+      "roEdStart": Object {
+        "_text": "2009-04-17T17:02:00,000Z",
+      },
       "roID": Object {
         "_text": 96857485,
       },
@@ -1232,6 +1238,8 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
   <roList>
     <roID>96857485</roID>
     <roSlug>5PM RUNDOWN</roSlug>
+    <roEdStart>2009-04-17T17:02:00,000Z</roEdStart>
+    <roEdDur>0:58:25</roEdDur>
     <story>
       <storyID>5983A501:0049B924:8390EF2B</storyID>
       <storySlug>COLSTAT MURDER</storySlug>
@@ -1295,6 +1303,8 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
   <roList>
     <roID>96857485</roID>
     <roSlug>5PM RUNDOWN</roSlug>
+    <roEdStart>2009-04-17T17:02:00,000Z</roEdStart>
+    <roEdDur>0:58:25</roEdDur>
     <story>
       <storyID>5983A501:0049B924:8390EF2B</storyID>
       <storySlug>COLSTAT MURDER</storySlug>
