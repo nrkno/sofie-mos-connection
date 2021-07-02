@@ -162,7 +162,7 @@ export namespace Parser {
 		if (xml.hasOwnProperty('itemTrigger')) item.Trigger = xml.itemTrigger
 		if (xml.hasOwnProperty('mosExternalMetadata')) item.MosExternalMetaData = xml2MetaData(xml.mosExternalMetadata)
 		if (xml.hasOwnProperty('mosAbstract')) item.mosAbstract = xml.mosAbstract + ''
-		if (xml.hasOwnProperty('objSlug')) item.ObjectSlug = new MosString128(xml.objSlug)
+		if (xml.hasOwnProperty('objSlug')) item.ObjectSlug = new MosString128(xml.objSlug, false)
 		if (xml.hasOwnProperty('itemChannel')) item.Channel = new MosString128(xml.itemChannel)
 		if (xml.hasOwnProperty('objDur')) item.Duration = xml.objDur
 		if (xml.hasOwnProperty('objTB')) item.TimeBase = xml.objTB
