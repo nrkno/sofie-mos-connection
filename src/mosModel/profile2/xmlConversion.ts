@@ -200,7 +200,7 @@ export namespace XMLMosItem {
 		if (xml.hasOwnProperty('itemTrigger')) item.Trigger = xml.itemTrigger
 		if (xml.hasOwnProperty('mosExternalMetadata')) item.MosExternalMetaData = XMLMosExternalMetaData.fromXML(xml.mosExternalMetadata)
 		if (xml.hasOwnProperty('mosAbstract')) item.mosAbstract = xml.mosAbstract + ''
-		if (xml.hasOwnProperty('objSlug')) item.ObjectSlug = new MosString128(xml.objSlug)
+		if (xml.hasOwnProperty('objSlug')) item.ObjectSlug = new MosString128(xml.objSlug, false) // temporary fix for long slugs
 		if (xml.hasOwnProperty('itemChannel')) item.Channel = new MosString128(xml.itemChannel)
 		if (xml.hasOwnProperty('objDur')) item.Duration = numberOrUndefined(xml.objDur)
 		if (xml.hasOwnProperty('objTB')) item.TimeBase = numberOrUndefined(xml.objTB)
