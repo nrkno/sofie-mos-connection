@@ -454,7 +454,6 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				sendReply(msg) // TODO: Need tests
 			}
 
-
 		}
 		client.socket.on('error', (e: Error) => {
 			this.emit('error', `Socket had error (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${e}`)
