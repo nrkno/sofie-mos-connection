@@ -328,7 +328,7 @@ describe('MosDevice: General', () => {
 		connMocks[1].setReplyToHeartBeat(false)
 		connMocks[2].setReplyToHeartBeat(true)
 
-		await delay(600) // to allow for timeout:
+		await delay(800) // to allow for timeout:
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: false,
 			PrimaryStatus: '', // if not connected this will contain human-readable error-message
