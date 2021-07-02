@@ -272,7 +272,9 @@ export class MosSocketClient extends EventEmitter {
 					this._timedOutCommands[sentMessageId] = Date.now()
 					this.processQueue()
 				} else {
-					this.executeCommand(message, true)
+					if (this._client) {
+						this.executeCommand(message, true)
+					}
 				}
 			}
 		}, this._commandTimeout)
