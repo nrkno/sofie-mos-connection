@@ -2,10 +2,10 @@ import { EventEmitter } from 'events'
 import { Socket } from 'net'
 import { SocketConnectionEvent } from './socketConnection'
 import { MosMessage } from '../mosModel/MosMessage'
-import { xml2js } from '../utils/Utils'
 import { HandedOverQueue } from './NCSServerConnection'
 import { HeartBeat } from '../mosModel'
 import * as iconv from 'iconv-lite'
+import { MosMessageParser } from './mosMessageParser'
 
 export type CallBackFunction = (err: any, data: object) => void
 
@@ -44,8 +44,8 @@ export class MosSocketClient extends EventEmitter {
 
 	private processQueueTimeout: NodeJS.Timer
 	// private _startingUp: boolean = true
-	private dataChunks: string = ''
 	private _disposed: boolean = false
+	private messageParser: MosMessageParser
 
   /** */
 	constructor (host: string, port: number, description: string, timeout: number, debug: boolean) {
@@ -56,6 +56,11 @@ export class MosSocketClient extends EventEmitter {
 		this._commandTimeout = timeout || 5000
 		this._debug = debug ?? false
 
+		this.messageParser = new MosMessageParser(description)
+		this.messageParser.debug = this._debug
+		this.messageParser.on('message', (message: any, messageString: string) => {
+			this._handleMessage(message, messageString)
+		})
 	}
 
   /** */
@@ -110,9 +115,6 @@ export class MosSocketClient extends EventEmitter {
 					this._autoReconnectionAttempt()
 				}, this._reconnectDelay)
 			}
-
-			// this._readyToSendMessage = true
-			// this._sentMessage = null
 		}
 	}
 
@@ -224,6 +226,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 	public setDebug (debug: boolean) {
 		this._debug = debug
+		this.messageParser.debug = this._debug
 	}
   /** */
 	private set connected (connected: boolean) {
@@ -335,62 +338,40 @@ export class MosSocketClient extends EventEmitter {
 		this.emit('rawMessage','recieved', messageString)
 		this.debugTrace(`${this._description} Received: ${messageString}`)
 
-		this.dataChunks += messageString
-
-		// parse as many messages as possible from the data
-		while (this.dataChunks.length > 0) {
-			// whitespace before a mos message is junk
-			this.dataChunks = this.dataChunks.trimLeft()
-
-			const lengthBefore = this.dataChunks.length
-			this._tryParseData()
-			const lengthAfter = this.dataChunks.length
-
-			if (lengthAfter === lengthBefore) {
-				// Nothing was plucked, so abort
-				break
-			}
+		try {
+			this.messageParser.parseMessage(messageString)
+		} catch (err) {
+			this.emit('error', err)
 		}
 	}
 
-	private _tryParseData () {
-		const startMatch = '<mos>' // <mos>
-		const endMatch = '</mos>' // </mos>
+	private _handleMessage (parsedData: any, messageString: string) {
 
-		let messageString: string | undefined
+		// console.log(parsedData, newParserData)
+		let messageId = parsedData.mos.messageID
+		if (messageId) {
+			let sentMessage = this._sentMessage || this._lingeringMessage
+			if (sentMessage) {
+				if (sentMessage.msg.messageID.toString() === (messageId + '')) {
+					this._sendReply(sentMessage.msg.messageID, null, parsedData)
+				} else {
+					if (this._debug) console.log('Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
+					if (this._debug) console.log(parsedData)
 
-		const startIndex = this.dataChunks.indexOf(startMatch)
-		if (startIndex === -1) {
-			// No start tag, so looks like we have jibberish
-			this.dataChunks = ''
-		} else {
-			if (startIndex > 0) {
-				const junkStr = this.dataChunks.substr(0, startIndex)
-				if (this._debug) {
-					console.log(
-						`${this._description} Discarding message fragment: ${junkStr}`
-					)
+					this.emit('warning', 'Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
+
+					this._triggerQueueCleanup()
 				}
 
-				// trim off anything before <mos>, as we can't parse that
-				this.dataChunks = this.dataChunks.substr(startIndex)
-			}
-
-			const endIndex = this.dataChunks.indexOf(endMatch)
-			if (endIndex > 0) {
-				// We have an end too, so pull out the message
-				const endIndex2 = endIndex + endMatch.length
-				messageString = this.dataChunks.substr(0, endIndex2)
-				this.dataChunks = this.dataChunks.substr(endIndex2)
-
-				// parse our xml
-			}
-		}
-
-		let parsedData: any
-		try {
-			if (messageString) {
-				parsedData = xml2js(messageString) // , { compact: true, trim: true, nativeType: true })
+			} else if (this._timedOutCommands[messageId]) {
+				if (this._debug) {
+					console.log(`Got a reply (${messageId}), but command timed out ${(Date.now() - this._timedOutCommands[messageId])} ms ago`, messageString)
+				}
+				delete this._timedOutCommands[messageId]
+			} else {
+				// huh, we've got a reply to something we've not sent.
+				if (this._debug) console.log('Got a reply (' + messageId + '), but we haven\'t sent any message', messageString)
+				this.emit('warning', 'Got a reply (' + messageId + '), but we haven\'t sent any message ' + messageString)
 			}
 			// let parsedData: any = parser.toJson(messageString, )
 			if (parsedData) {
@@ -439,23 +420,9 @@ export class MosSocketClient extends EventEmitter {
 					}
 				}
 			} else {
-				return
+				// unknown message..
+				this.emit('error', 'Unknown message: ' + messageString)
 			}
-			// console.log('messageString', messageString)
-			// console.log('first msg', messageString)
-			// this._startingUp = false
-		} catch (e) {
-			// console.log('messageString', messageString)
-			// if (this._startingUp) {
-			// 	// when starting up, we might get half a message, let's ignore this error then
-			// 	let a = Math.min(20, Math.floor(messageString.length / 2))
-			// 	console.log('Strange XML-message upon startup: "' + messageString.slice(0, a) + '[...]' + messageString.slice(-a) + '" (length: ' + messageString.length + ')')
-			// 	console.log('error', e)
-			// } else {
-			console.log('dataChunks-------------\n', this.dataChunks)
-			console.log('messageString---------\n', messageString)
-			this.emit('error', e)
-			// }
 		}
 
 		// this._readyToSendMessage = true

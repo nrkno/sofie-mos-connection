@@ -10,12 +10,12 @@ import {
 import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription, IncomingConnectionType } from './connection/socketConnection'
 import { NCSServerConnection } from './connection/NCSServerConnection'
-import { xml2js } from './utils/Utils'
 import { MosMessage } from './mosModel/MosMessage'
 import { MOSAck } from './mosModel'
 import { MosString128 } from './dataTypes/mosString128'
 import { EventEmitter } from 'events'
 import * as iconv from 'iconv-lite'
+import { MosMessageParser } from './connection/mosMessageParser'
 
 export class MosConnection extends EventEmitter implements IMosConnection {
 	static CONNECTION_PORT_LOWER: number = 10540
@@ -355,6 +355,13 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 
 		this.emit('rawMessage', 'incoming_' + socketID, 'newConnection', 'From ' + client.socket.remoteAddress + ':' + client.socket.remotePort)
 
+		const messageParser = new MosMessageParser(`${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}`)
+		// messageParser.debug = this._debug
+		messageParser.on('message', (message: any, messageString: string) => {
+			handleMessage(message, messageString)
+			.catch((err) => this.emit('error', err))
+		})
+
 		// handles socket listeners
 		client.socket.on('close', (/*hadError: boolean*/) => {
 			this._disposeIncomingSocket(socketID)
@@ -366,127 +373,103 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		client.socket.on('drain', () => {
 			this.debugTrace('Socket Drain')
 		})
-		client.socket.on('data', async (data: Buffer) => {
-			const messageString = iconv.decode(data, 'utf16-be').trim()
+		client.socket.on('data', (data: Buffer) => {
+			const messageString = iconv.decode(data, 'utf16-be')
 
 			this.emit('rawMessage', 'incoming', 'recieved', messageString)
 
-			this.debugTrace(`Socket got data (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${data}`)
+			if (this._debug) console.log(`Socket got data (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): "${data}"`)
+
+			try {
+				messageParser.debug = this._debug
+				messageParser.parseMessage(messageString)
+			} catch (err) {
+				this.emit('error', err)
+			}
+
+		})
+		const handleMessage = async (parsed: any, _messageString: string) => {
+
 			const remoteAddressContent = client.socket.remoteAddress
 				? client.socket.remoteAddress.split(':')
 				: undefined
 			const remoteAddress = remoteAddressContent ? remoteAddressContent[remoteAddressContent.length - 1] : ''
 
-			// Figure out if the message buffer contains a complete MOS-message:
-			let parsed: any = null
-			const firstMatch = '<mos>'
-			const first = messageString.substr(0, firstMatch.length)
-			const lastMatch = '</mos>'
-			const last = messageString.substr(-lastMatch.length)
+			const ncsID = parsed.mos.ncsID
+			const mosID = parsed.mos.mosID
+			const mosMessageId: number = parsed.mos.messageID
 
-			if (!client.chunks) client.chunks = ''
-			try {
-				if (first === firstMatch && last === lastMatch) {
-					// Data is ready to be parsed:
-					parsed = xml2js(messageString)
-				} else if (last === lastMatch) {
-					// Last chunk, ready to parse with saved data:
-					parsed = xml2js(client.chunks + messageString)
-					client.chunks = ''
-				} else if (first === firstMatch) {
-					// First chunk, save for later:
-					client.chunks = messageString
-				} else {
-					// Chunk, save for later:
-					client.chunks += messageString
-				}
-				if (parsed !== null) {
-					const ncsID = parsed.mos.ncsID
-					const mosID = parsed.mos.mosID
-					const mosMessageId: number = parsed.mos.messageID
+			let mosDevice = this._mosDevices[ncsID + '_' + mosID] || this._mosDevices[mosID + '_' + ncsID]
 
-					let mosDevice = this._mosDevices[ncsID + '_' + mosID] || this._mosDevices[mosID + '_' + ncsID]
+			let sendReply = (message: MosMessage) => {
+				message.ncsID = ncsID
+				message.mosID = mosID
+				message.prepare(mosMessageId)
+				const sendMessageString: string = message.toString()
+				const buf = iconv.encode(sendMessageString, 'utf16-be')
+				client.socket.write(buf, 'usc2')
 
-					let sendReply = (message: MosMessage) => {
-						message.ncsID = ncsID
-						message.mosID = mosID
-						message.prepare(mosMessageId)
-						const buf = iconv.encode(message.toString(), 'utf16-be')
-						client.socket.write(buf, 'usc2')
+				this.emit('rawMessage', 'incoming_' + socketID, 'sent', sendMessageString)
+			}
+			if (!mosDevice && this._conf.openRelay) {
+				// No MOS-device found in the register
+				// Register a new mosDevice to use for this connection:
+				if (ncsID === this._conf.mosID) {
+					// Setup a "primary" connection back to the mos-device, so that we can automatically
+					// send commands to it through the mosDevice
 
-						this.emit('rawMessage', 'incoming_' + socketID, 'sent', messageString)
-					}
-					if (!mosDevice && this._conf.openRelay) {
-						// No MOS-device found in the register
-						// Register a new mosDevice to use for this connection:
-						if (ncsID === this._conf.mosID) {
-							// Setup a "primary" connection back to the mos-device, so that we can automatically
-							// send commands to it through the mosDevice
+					let primary = new NCSServerConnection(
+						mosID,
+						remoteAddress,
+						this._conf.mosID,
+						undefined,
+						this._debug
+					)
+					this._ncsConnections[remoteAddress] = primary
 
-							let primary = new NCSServerConnection(
-								mosID,
-								remoteAddress,
-								this._conf.mosID,
-								undefined,
-								this._debug
-							)
-							this._ncsConnections[remoteAddress] = primary
+					primary.on('rawMessage', (type: string, message: string) => {
+						this.emit('rawMessage', 'primary', type, message)
+					})
+					primary.on('warning', (str: string) => {
+						this.emit('warning', 'primary: ' + str)
+					})
+					primary.on('error', (str: string) => {
+						this.emit('error', 'primary: ' + str)
+					})
+					const openRelayOptions: IMOSDeviceConnectionOptions['primary'] | undefined = (
+						typeof this._conf.openRelay === 'object'
+						? this._conf.openRelay.options
+						: undefined
+					)
 
-							primary.on('rawMessage', (type: string, message: string) => {
-								this.emit('rawMessage', 'primary', type, message)
-							})
-							primary.on('warning', (str: string) => {
-								this.emit('warning', 'primary: ' + str)
-							})
-							primary.on('error', (str: string) => {
-								this.emit('error', 'primary: ' + str)
-							})
-							const openRelayOptions: IMOSDeviceConnectionOptions['primary'] | undefined = (
-								typeof this._conf.openRelay === 'object'
-								? this._conf.openRelay.options
-								: undefined
-							)
+					primary.createClient(MosConnection.nextSocketID, openRelayOptions?.ports?.lower ?? MosConnection.CONNECTION_PORT_LOWER, 'lower', true)
+					primary.createClient(MosConnection.nextSocketID, openRelayOptions?.ports?.upper ?? MosConnection.CONNECTION_PORT_UPPER, 'upper', true)
 
-							primary.createClient(MosConnection.nextSocketID, openRelayOptions?.ports?.lower ?? MosConnection.CONNECTION_PORT_LOWER, 'lower', true)
-							primary.createClient(MosConnection.nextSocketID, openRelayOptions?.ports?.upper ?? MosConnection.CONNECTION_PORT_UPPER, 'upper', true)
-
-							mosDevice = this._registerMosDevice(this._conf.mosID, mosID, null, primary, null)
-						} else if (mosID === this._conf.mosID) {
-							mosDevice = await this.connect({
-								primary: {
-									id: ncsID,
-									host: remoteAddress
-								}
-							})
+					mosDevice = this._registerMosDevice(this._conf.mosID, mosID, null, primary, null)
+				} else if (mosID === this._conf.mosID) {
+					mosDevice = await this.connect({
+						primary: {
+							id: ncsID,
+							host: remoteAddress
 						}
-					}
-					if (mosDevice) {
+					})
+				}
+			}
+			if (mosDevice) {
 
-						mosDevice.routeData(parsed, client.portDescription).then((message: MosMessage) => {
-							sendReply(message)
-						}).catch((err: Error | MosMessage) => {
-							// Something went wrong
-							if (err instanceof MosMessage) {
-								sendReply(err)
-							} else {
-								// Unknown / internal error
-								// Log error:
-								console.error(err)
-								// reply with NACK:
-								// TODO: implement ACK
-								// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
-								let msg = new MOSAck()
-								msg.ID = new MosString128(0)
-								msg.Revision = 0
-								msg.Description = new MosString128('Internal Error')
-								msg.Status = IMOSAckStatus.NACK
-								sendReply(msg) // TODO: Need tests
-							}
-						})
+				mosDevice.routeData(parsed, client.portDescription).then((message: MosMessage) => {
+					sendReply(message)
+				}).catch((err: Error | MosMessage) => {
+					// Something went wrong
+					if (err instanceof MosMessage) {
+						sendReply(err)
 					} else {
-						// No MOS-device found in the register
-
-						// We can't handle the message, reply with a NACK:
+						// Unknown / internal error
+						// Log error:
+						console.error(err)
+						// reply with NACK:
+						// TODO: implement ACK
+						// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
 						let msg = new MOSAck()
 						msg.ID = new MosString128(0)
 						msg.Revision = 0
@@ -494,14 +477,21 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 						msg.Status = IMOSAckStatus.NACK
 						sendReply(msg) // TODO: Need tests
 					}
-				}
-			} catch (e) {
-				this.debugTrace('chunks-------------\n', client.chunks)
-				this.debugTrace('messageString---------\n', messageString)
-				this.debugTrace('error', e)
-				this.emit('error', e)
+				})
+			} else {
+				// No MOS-device found in the register
+
+				// We can't handle the message, reply with a NACK:
+				let msg = new MOSAck()
+				msg.ID = new MosString128(0)
+				msg.Revision = 0
+				msg.Description = new MosString128('MosDevice not found')
+				msg.Status = IMOSAckStatus.NACK
+				sendReply(msg) // TODO: Need tests
+
 			}
-		})
+
+		}
 		client.socket.on('error', (e: Error) => {
 			this.emit('error', `Socket had error (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${e}`)
 			this.debugTrace(`Socket had error (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${e}`)

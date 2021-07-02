@@ -11,8 +11,7 @@ export class Server {
 	registerIncomingConnection (socketID: number, socket: Socket, portDescription: ConnectionType) {
 		this._sockets[socketID + ''] = {
 			socket: socket,
-			portDescription: portDescription,
-			chunks: ''
+			portDescription: portDescription
 		}
 	}
 

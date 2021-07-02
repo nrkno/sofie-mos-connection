@@ -29,6 +29,5 @@ export type OutgoingConnectionType = 'lower' | 'upper'
 /** */
 export type SocketDescription = {
 	socket: Socket,
-	portDescription: ConnectionType,
-	chunks: string // temporary storage for chunks
+	portDescription: ConnectionType
 }
