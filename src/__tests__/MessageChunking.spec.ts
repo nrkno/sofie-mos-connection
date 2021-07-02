@@ -52,7 +52,6 @@ describe('message chunking', () => {
 		}, false)
 		mosDevice = await getMosDevice(mosConnection)
 
-
 		// Profile 0:
 		onRequestMachineInfo = jest.fn(() => {
 			return Promise.resolve(xmlApiData.machineInfo)
@@ -88,7 +87,7 @@ describe('message chunking', () => {
 		// Profile 3:
 		onRunningOrderStory = jest.fn(roAckReply)
 
-		mosDevice.onRunningOrderStory ((story: IMOSROFullStory): Promise<IMOSROAck> => {
+		mosDevice.onRunningOrderStory((story: IMOSROFullStory): Promise<IMOSROAck> => {
 			return onRunningOrderStory(story)
 		})
 		let b = doBeforeAll()
@@ -166,7 +165,7 @@ describe('message chunking', () => {
 		})
 
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.sendRequestRunningOrder (xmlApiData.roList.ID!) as IMOSRunningOrder
+		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
@@ -193,7 +192,7 @@ describe('message chunking', () => {
 		})
 
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.getRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
@@ -215,7 +214,7 @@ describe('message chunking', () => {
 		})
 
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.getRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])

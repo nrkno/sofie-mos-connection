@@ -90,7 +90,7 @@ export class MosDevice implements IMOSDevice {
 	private _debug: boolean = false
 
 	private supportedProfiles: {
-		deviceType: 'NCS' | 'MOS',
+		deviceType: 'NCS' | 'MOS'
 	} & IProfiles = {
 		deviceType: 'MOS',
 		profile0: false,
@@ -1174,7 +1174,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	/** Does a check if the specified profile is set, and throws otherwise */
-	private checkProfile(methodName: string, profile: keyof IProfiles) {
+	private checkProfile (methodName: string, profile: keyof IProfiles) {
 		if (this._strict && !this.supportedProfiles[profile]) throw new Error(`"${methodName}" cannot be set while "Profile 2" is not enabled.`)
 	}
 
