@@ -23,7 +23,7 @@ export class MosSocketClient extends EventEmitter {
 	private _debug: boolean
 
 	private _description: string
-	private _client: Socket
+	private _client: Socket | undefined
 	private _shouldBeConnected: boolean = false
 	private _connected: boolean = false
 	private _lastConnectionAttempt: number
@@ -88,7 +88,6 @@ export class MosSocketClient extends EventEmitter {
 				if (this._client && this._client.connecting) {
 					this._client.destroy()
 					this._client.removeAllListeners()
-					// @ts-expect-error optional property
 					delete this._client
 				}
 
@@ -213,7 +212,6 @@ export class MosSocketClient extends EventEmitter {
 			this._client.once('close', () => { this.emit(SocketConnectionEvent.DISPOSED) })
 			this._client.end()
 			this._client.destroy()
-			// @ts-expect-error optional property
 			delete this._client
 		}
 	}
@@ -256,6 +254,7 @@ export class MosSocketClient extends EventEmitter {
   /** */
 	private executeCommand (message: QueueMessage, isRetry?: boolean): void {
 		if (this._sentMessage && !isRetry) throw Error('executeCommand: there already is a sent Command!')
+		if (!this._client) throw Error('executeCommand: No client socket connection set up!')
 
 		this._sentMessage = message
 		this._lingeringMessage = null
