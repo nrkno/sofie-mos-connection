@@ -348,7 +348,6 @@ export class MosSocketClient extends EventEmitter {
 
 	private _handleMessage (parsedData: any, messageString: string) {
 
-		// console.log(parsedData, newParserData)
 		let messageId = parsedData.mos.messageID
 		if (messageId) {
 			let sentMessage = this._sentMessage || this._lingeringMessage
@@ -356,8 +355,8 @@ export class MosSocketClient extends EventEmitter {
 				if (sentMessage.msg.messageID.toString() === (messageId + '')) {
 					this._sendReply(sentMessage.msg.messageID, null, parsedData)
 				} else {
-					if (this._debug) console.log('Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
-					if (this._debug) console.log(parsedData)
+					this.debugTrace('Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
+					this.debugTrace(parsedData)
 
 					this.emit('warning', 'Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
 
@@ -365,60 +364,23 @@ export class MosSocketClient extends EventEmitter {
 				}
 
 			} else if (this._timedOutCommands[messageId]) {
-				if (this._debug) {
-					console.log(`Got a reply (${messageId}), but command timed out ${(Date.now() - this._timedOutCommands[messageId])} ms ago`, messageString)
-				}
+				this.debugTrace(`Got a reply (${messageId}), but command timed out ${(Date.now() - this._timedOutCommands[messageId])} ms ago`, messageString)
+
 				delete this._timedOutCommands[messageId]
 			} else {
 				// huh, we've got a reply to something we've not sent.
-				if (this._debug) console.log('Got a reply (' + messageId + '), but we haven\'t sent any message', messageString)
-				this.emit('warning', 'Got a reply (' + messageId + '), but we haven\'t sent any message ' + messageString)
+				this.debugTrace(`Got a reply (${messageId}), but we haven't sent any message: "${messageString}"`)
+				this.emit('warning', `Got a reply (${messageId}), but we haven't sent any message: "${messageString}"`)
 			}
-			// let parsedData: any = parser.toJson(messageString, )
-			if (parsedData) {
-				// this.debugTrace(parsedData, newParserData)
-				let messageId = parsedData.mos.messageID
-				if (messageId) {
-					let sentMessage = this._sentMessage || this._lingeringMessage
-					if (sentMessage) {
-						if (sentMessage.msg.messageID.toString() === (messageId + '')) {
-							this._sendReply(sentMessage.msg.messageID, null, parsedData)
-						} else {
-							this.debugTrace('Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
-							this.debugTrace(parsedData)
-
-							this.emit('warning', 'Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
-
-							this._triggerQueueCleanup()
-						}
-						// let cb: CallBackFunction | undefined = this._queueCallback[messageId]
-						// if (cb) {
-						// 	cb(null, parsedData)
-						// }
-						// delete this._queueCallback[messageId]
-						// this._sentMessage = null
-					} else if (this._timedOutCommands[messageId]) {
-						this.debugTrace(`Got a reply (${messageId}), but command timed out ${(Date.now() - this._timedOutCommands[messageId]) }ms ago`, messageString)
-						delete this._timedOutCommands[messageId]
-					} else {
-						// huh, we've got a reply to something we've not sent.
-						this.debugTrace('Got a reply (' + messageId + '), but we haven\'t sent any message', messageString)
-						this.emit('warning', 'Got a reply (' + messageId + '), but we haven\'t sent any message ' + messageString)
-					}
-					clearTimeout(this._commandTimeoutTimer)
+			clearTimeout(this._commandTimeoutTimer)
+		} else {
+			// error message?
+			if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
+				if (this._sentMessage && parsedData.mos.mosAck.statusDescription === 'Buddy server cannot respond because main server is available') {
+					this._sendReply(this._sentMessage.msg.messageID, 'Main server available', parsedData)
 				} else {
-					// error message?
-					if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
-						if (this._sentMessage && parsedData.mos.mosAck.statusDescription === 'Buddy server cannot respond because main server is available') {
-							this._sendReply(this._sentMessage.msg.messageID, 'Main server available', parsedData)
-						} else {
-							this.debugTrace('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
-							this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
-						}
-					} else {
-						// unknown message..
-						this.emit('error', 'Unknown message: ' + messageString)
-					}
+					this.debugTrace('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
+					this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
 				}
 			} else {
 				// unknown message..
@@ -464,7 +426,6 @@ export class MosSocketClient extends EventEmitter {
 			for (let i = this._queueMessages.length - 1; i >= 0; i--) {
 				let message = this._queueMessages[i]
 				if (Date.now() - message.time > this._commandTimeout) {
-
 					this._sendReply(message.msg.messageID, Error('Command Timeout'), null)
 					this._queueMessages.splice(i, 1)
 				}
