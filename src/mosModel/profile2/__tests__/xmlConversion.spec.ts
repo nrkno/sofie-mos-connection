@@ -14,7 +14,7 @@ describe('XMLMosItem', () => {
 		const refItem: IMOSItem = {
 			ID: new MosString128('ID'),
 			Slug: new MosString128('Slug'),
-			ObjectSlug: new MosString128('ObjectSlug'),
+			ObjectSlug: new MosString128('ObjectSlug', false),
 			ObjectID: new MosString128('ObjectID'),
 			MOSID: 'MOSID',
 			mosAbstract: 'mosAbstract',

@@ -1113,7 +1113,7 @@ const xmlApiData = {
 					ObjectID: new MosString128('N11580_1412594672'),
 					MOSID: 'METADATA.NRK.MOS',
 					mosAbstract: 'METADATA',
-					ObjectSlug: new MosString128('M:'),
+					ObjectSlug: new MosString128('M:', false),
 					// Paths?: Array<IMOSObjectPath>,
 					// Channel?: new MosString128(''),
 					// EditorialStart?: number,

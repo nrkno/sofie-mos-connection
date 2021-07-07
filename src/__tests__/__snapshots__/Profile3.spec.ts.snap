@@ -24,20 +24,24 @@ exports[`Profile 3 mosItemReplace 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
+    "strict": true,
   },
   "Status": MosString128 {
     "_str": "Unknown object M000133",
+    "strict": true,
   },
   "Stories": Array [
     Object {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
       },
       "Items": Array [],
     },
     Object {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
       },
       "Items": Array [],
     },
@@ -70,9 +74,11 @@ exports[`Profile 3 mosObjCreate 2`] = `
 Object {
   "Description": MosString128 {
     "_str": "",
+    "strict": true,
   },
   "ID": MosString128 {
     "_str": "M000123",
+    "strict": true,
   },
   "Revision": 1,
   "Status": "ACK",
@@ -125,6 +131,7 @@ Object {
       },
       "ChangedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Created": MosTime {
         "_time": 1998-10-31T23:39:12.000Z,
@@ -134,6 +141,7 @@ Object {
       },
       "CreatedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Description": Object {
         "elements": Array [
@@ -187,6 +195,7 @@ Object {
       "Group": "Show 7",
       "ID": MosString128 {
         "_str": "M000121",
+        "strict": true,
       },
       "MosAbstract": Object {
         "elements": Array [
@@ -238,6 +247,7 @@ Object {
       "Revision": 1,
       "Slug": MosString128 {
         "_str": "Hotel Fire",
+        "strict": true,
       },
       "Status": "NEW",
       "TimeBase": 59.94,
@@ -253,6 +263,7 @@ Object {
       },
       "ChangedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Created": MosTime {
         "_time": 1998-10-31T23:39:12.000Z,
@@ -262,6 +273,7 @@ Object {
       },
       "CreatedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Description": Object {
         "elements": Array [
@@ -315,6 +327,7 @@ Object {
       "Group": "Show 7",
       "ID": MosString128 {
         "_str": "M000122",
+        "strict": true,
       },
       "MosAbstract": Object {
         "elements": Array [
@@ -366,6 +379,7 @@ Object {
       "Revision": 1,
       "Slug": MosString128 {
         "_str": "Another Hotel Fire",
+        "strict": true,
       },
       "Status": "NEW",
       "TimeBase": 59.94,
@@ -381,6 +395,7 @@ Object {
       },
       "ChangedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Created": MosTime {
         "_time": 1998-10-31T23:39:12.000Z,
@@ -390,6 +405,7 @@ Object {
       },
       "CreatedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Description": Object {
         "elements": Array [
@@ -443,6 +459,7 @@ Object {
       "Group": "Show 7",
       "ID": MosString128 {
         "_str": "M000123",
+        "strict": true,
       },
       "MosAbstract": Object {
         "elements": Array [
@@ -494,6 +511,7 @@ Object {
       "Revision": 1,
       "Slug": MosString128 {
         "_str": "Yet Another Hotel Fire",
+        "strict": true,
       },
       "Status": "NEW",
       "TimeBase": 59.94,
@@ -518,13 +536,16 @@ Array [
       "EditorialStart": 0,
       "ID": MosString128 {
         "_str": "30848",
+        "strict": true,
       },
       "MOSID": "testmos.enps.com",
       "MacroIn": MosString128 {
         "_str": "c01/l04/dve07",
+        "strict": true,
       },
       "MacroOut": MosString128 {
         "_str": "r00",
+        "strict": true,
       },
       "MosExternalMetaData": Array [
         Object {
@@ -540,6 +561,7 @@ Array [
       ],
       "ObjectID": MosString128 {
         "_str": "M000627",
+        "strict": true,
       },
       "Paths": Array [
         Object {
@@ -597,6 +619,7 @@ Array [
       },
       "ChangedBy": MosString128 {
         "_str": "undefined",
+        "strict": true,
       },
       "Created": MosTime {
         "_time": 2021-01-01T00:00:00.000Z,
@@ -606,6 +629,7 @@ Array [
       },
       "CreatedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Description": Object {
         "elements": Array [
@@ -661,6 +685,7 @@ Array [
       "Group": "Show 7",
       "ID": MosString128 {
         "_str": "undefined",
+        "strict": true,
       },
       "MosAbstract": undefined,
       "MosExternalMetaData": Array [
@@ -683,6 +708,7 @@ Array [
       "Revision": undefined,
       "Slug": MosString128 {
         "_str": "Hotel Fire",
+        "strict": true,
       },
       "Status": undefined,
       "TimeBase": 59.94,
@@ -761,6 +787,7 @@ Array [
       },
       "ChangedBy": MosString128 {
         "_str": "undefined",
+        "strict": true,
       },
       "Created": MosTime {
         "_time": 2021-01-01T00:00:00.000Z,
@@ -770,6 +797,7 @@ Array [
       },
       "CreatedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Description": Object {
         "elements": Array [
@@ -825,6 +853,7 @@ Array [
       "Group": "Show 7",
       "ID": MosString128 {
         "_str": "undefined",
+        "strict": true,
       },
       "MosAbstract": undefined,
       "MosExternalMetaData": Array [
@@ -847,6 +876,7 @@ Array [
       "Revision": undefined,
       "Slug": MosString128 {
         "_str": "Hotel Fire",
+        "strict": true,
       },
       "Status": undefined,
       "TimeBase": 59.94,
@@ -894,6 +924,7 @@ Array [
       },
       "ChangedBy": MosString128 {
         "_str": "undefined",
+        "strict": true,
       },
       "Created": MosTime {
         "_time": 2021-01-01T00:00:00.000Z,
@@ -903,6 +934,7 @@ Array [
       },
       "CreatedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Description": Object {
         "elements": Array [
@@ -958,6 +990,7 @@ Array [
       "Group": "Show 7",
       "ID": MosString128 {
         "_str": "1EFA3009233F8329C1",
+        "strict": true,
       },
       "MosAbstract": undefined,
       "MosExternalMetaData": Array [
@@ -980,6 +1013,7 @@ Array [
       "Revision": undefined,
       "Slug": MosString128 {
         "_str": "Hotel Fire",
+        "strict": true,
       },
       "Status": undefined,
       "TimeBase": 59.94,

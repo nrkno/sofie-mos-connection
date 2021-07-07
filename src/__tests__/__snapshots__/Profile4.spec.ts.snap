@@ -23,6 +23,7 @@ Array [
     },
     "ID": MosString128 {
       "_str": "5PM",
+      "strict": true,
     },
     "MosExternalMetaData": Array [
       Object {
@@ -41,9 +42,11 @@ Array [
     ],
     "Slug": MosString128 {
       "_str": "5PM Rundown",
+      "strict": true,
     },
     "Trigger": MosString128 {
       "_str": "MANUAL",
+      "strict": true,
     },
   },
   Object {
@@ -58,6 +61,7 @@ Array [
     },
     "ID": MosString128 {
       "_str": "6PM",
+      "strict": true,
     },
     "MosExternalMetaData": Array [
       Object {
@@ -76,9 +80,11 @@ Array [
     ],
     "Slug": MosString128 {
       "_str": "6PM Rundown",
+      "strict": true,
     },
     "Trigger": MosString128 {
       "_str": "MANUAL",
+      "strict": true,
     },
   },
 ]
@@ -100,6 +106,7 @@ Array [
           "Content": Object {
             "ID": MosString128 {
               "_str": "2",
+              "strict": true,
             },
             "MOSID": "METADATA.NRK.MOS",
             "MosExternalMetaData": Array [
@@ -129,12 +136,15 @@ Array [
             ],
             "ObjectID": MosString128 {
               "_str": "N11580_1412594672",
+              "strict": true,
             },
             "ObjectSlug": MosString128 {
               "_str": "M:",
+              "strict": false,
             },
             "Slug": MosString128 {
               "_str": "SAK BUSKERUD;SAK-14",
+              "strict": true,
             },
             "mosAbstract": "METADATA",
           },
@@ -165,9 +175,11 @@ Array [
           "Content": Object {
             "Channel": MosString128 {
               "_str": "CG1",
+              "strict": true,
             },
             "ID": MosString128 {
               "_str": "3",
+              "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": Array [
@@ -181,6 +193,7 @@ Array [
                 },
                 "ChangedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Created": MosTime {
                   "_time": 2021-01-01T00:00:00.000Z,
@@ -190,12 +203,14 @@ Array [
                 },
                 "CreatedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
                   "_str": "NYHETER\\\\00039287?version=1",
+                  "strict": true,
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": Array [
@@ -217,6 +232,7 @@ Array [
                 ],
                 "MosItemEditorProgID": MosString128 {
                   "_str": "Chymox.AssetBrowser.1",
+                  "strict": true,
                 },
                 "Paths": Array [
                   Object {
@@ -228,6 +244,7 @@ Array [
                 "Revision": undefined,
                 "Slug": MosString128 {
                   "_str": "01 ett navn 1:  2:",
+                  "strict": true,
                 },
                 "Status": undefined,
                 "TimeBase": 0,
@@ -236,6 +253,7 @@ Array [
             ],
             "ObjectID": MosString128 {
               "_str": "undefined",
+              "strict": true,
             },
             "Paths": Array [
               Object {
@@ -246,6 +264,7 @@ Array [
             ],
             "Slug": MosString128 {
               "_str": "01 ett navn 1:  2:",
+              "strict": true,
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -262,9 +281,11 @@ Array [
           "Content": Object {
             "Channel": MosString128 {
               "_str": "CG1",
+              "strict": true,
             },
             "ID": MosString128 {
               "_str": "4",
+              "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": Array [
@@ -278,6 +299,7 @@ Array [
                 },
                 "ChangedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Created": MosTime {
                   "_time": 2021-01-01T00:00:00.000Z,
@@ -287,12 +309,14 @@ Array [
                 },
                 "CreatedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
                   "_str": "NYHETER\\\\00039288?version=1",
+                  "strict": true,
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": Array [
@@ -314,6 +338,7 @@ Array [
                 ],
                 "MosItemEditorProgID": MosString128 {
                   "_str": "Chymox.AssetBrowser.1",
+                  "strict": true,
                 },
                 "Paths": Array [
                   Object {
@@ -325,6 +350,7 @@ Array [
                 "Revision": undefined,
                 "Slug": MosString128 {
                   "_str": "01 ett navn 1:  2:",
+                  "strict": true,
                 },
                 "Status": undefined,
                 "TimeBase": 0,
@@ -333,6 +359,7 @@ Array [
             ],
             "ObjectID": MosString128 {
               "_str": "undefined",
+              "strict": true,
             },
             "Paths": Array [
               Object {
@@ -343,6 +370,7 @@ Array [
             ],
             "Slug": MosString128 {
               "_str": "01 ett navn 1:  2:",
+              "strict": true,
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -359,9 +387,11 @@ Array [
           "Content": Object {
             "Channel": MosString128 {
               "_str": "CG1",
+              "strict": true,
             },
             "ID": MosString128 {
               "_str": "5",
+              "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": Array [
@@ -375,6 +405,7 @@ Array [
                 },
                 "ChangedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Created": MosTime {
                   "_time": 2021-01-01T00:00:00.000Z,
@@ -384,12 +415,14 @@ Array [
                 },
                 "CreatedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
                   "_str": "NYHETER\\\\00039289?version=1",
+                  "strict": true,
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": Array [
@@ -411,6 +444,7 @@ Array [
                 ],
                 "MosItemEditorProgID": MosString128 {
                   "_str": "Chymox.AssetBrowser.1",
+                  "strict": true,
                 },
                 "Paths": Array [
                   Object {
@@ -422,6 +456,7 @@ Array [
                 "Revision": undefined,
                 "Slug": MosString128 {
                   "_str": "01 ett navn 1:  2:",
+                  "strict": true,
                 },
                 "Status": undefined,
                 "TimeBase": 0,
@@ -430,6 +465,7 @@ Array [
             ],
             "ObjectID": MosString128 {
               "_str": "undefined",
+              "strict": true,
             },
             "Paths": Array [
               Object {
@@ -440,6 +476,7 @@ Array [
             ],
             "Slug": MosString128 {
               "_str": "01 ett navn 1:  2:",
+              "strict": true,
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -456,9 +493,11 @@ Array [
           "Content": Object {
             "Channel": MosString128 {
               "_str": "CG1",
+              "strict": true,
             },
             "ID": MosString128 {
               "_str": "6",
+              "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": Array [
@@ -472,6 +511,7 @@ Array [
                 },
                 "ChangedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Created": MosTime {
                   "_time": 2021-01-01T00:00:00.000Z,
@@ -481,12 +521,14 @@ Array [
                 },
                 "CreatedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
                   "_str": "NYHETER\\\\00039290?version=1",
+                  "strict": true,
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": Array [
@@ -508,6 +550,7 @@ Array [
                 ],
                 "MosItemEditorProgID": MosString128 {
                   "_str": "Chymox.AssetBrowser.1",
+                  "strict": true,
                 },
                 "Paths": Array [
                   Object {
@@ -519,6 +562,7 @@ Array [
                 "Revision": undefined,
                 "Slug": MosString128 {
                   "_str": "01 ett navn 1:  2:",
+                  "strict": true,
                 },
                 "Status": undefined,
                 "TimeBase": 0,
@@ -527,6 +571,7 @@ Array [
             ],
             "ObjectID": MosString128 {
               "_str": "undefined",
+              "strict": true,
             },
             "Paths": Array [
               Object {
@@ -537,6 +582,7 @@ Array [
             ],
             "Slug": MosString128 {
               "_str": "01 ett navn 1:  2:",
+              "strict": true,
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -553,9 +599,11 @@ Array [
           "Content": Object {
             "Channel": MosString128 {
               "_str": "CG1",
+              "strict": true,
             },
             "ID": MosString128 {
               "_str": "7",
+              "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": Array [
@@ -569,6 +617,7 @@ Array [
                 },
                 "ChangedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Created": MosTime {
                   "_time": 2021-01-01T00:00:00.000Z,
@@ -578,12 +627,14 @@ Array [
                 },
                 "CreatedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
                   "_str": "NYHETER\\\\00039291?version=1",
+                  "strict": true,
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": Array [
@@ -605,6 +656,7 @@ Array [
                 ],
                 "MosItemEditorProgID": MosString128 {
                   "_str": "Chymox.AssetBrowser.1",
+                  "strict": true,
                 },
                 "Paths": Array [
                   Object {
@@ -616,6 +668,7 @@ Array [
                 "Revision": undefined,
                 "Slug": MosString128 {
                   "_str": "24 foto/red 1:Foto og redigering:  2:",
+                  "strict": true,
                 },
                 "Status": undefined,
                 "TimeBase": 0,
@@ -624,6 +677,7 @@ Array [
             ],
             "ObjectID": MosString128 {
               "_str": "undefined",
+              "strict": true,
             },
             "Paths": Array [
               Object {
@@ -634,6 +688,7 @@ Array [
             ],
             "Slug": MosString128 {
               "_str": "24 foto/red 1:Foto og redigering:  2:",
+              "strict": true,
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 24 foto/red | 1:Foto og redigering: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -657,16 +712,20 @@ Array [
           "Content": Object {
             "ID": MosString128 {
               "_str": "8",
+              "strict": true,
             },
             "MOSID": "mosart.morten.mos",
             "ObjectID": MosString128 {
               "_str": "STORYSTATUS",
+              "strict": true,
             },
             "ObjectSlug": MosString128 {
               "_str": "Story status",
+              "strict": false,
             },
             "Slug": MosString128 {
               "_str": "SAK BUSKERUD;SAK-20",
+              "strict": true,
             },
             "mosAbstract": "TIDSMARKØR IKKE RØR",
           },
@@ -682,6 +741,7 @@ Array [
       ],
       "ID": MosString128 {
         "_str": "2012R2ENPS8VM;P_ENPSNEWS\\\\W\\\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB",
+        "strict": true,
       },
       "MosExternalMetaData": Array [
         Object {
@@ -721,9 +781,11 @@ Array [
       "Number": undefined,
       "RunningOrderId": MosString128 {
         "_str": "2012R2ENPS8VM;P_ENPSNEWS\\\\W;696297DF-1568-4B36-B43B3B79514B40D4",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "KRITIKK ETTER BRANN KONGSBERG;SAK",
+        "strict": true,
       },
     },
   ],

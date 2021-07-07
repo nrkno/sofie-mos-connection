@@ -15,20 +15,24 @@ exports[`message chunking chunk around space 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
+    "strict": true,
   },
   "Slug": MosString128 {
     "_str": "5PM RUNDOWN",
+    "strict": true,
   },
   "Stories": Array [
     Object {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
       },
       "Items": Array [
         Object {
           "EditorialDuration": 645,
           "ID": MosString128 {
             "_str": "0",
+            "strict": true,
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": Array [
@@ -46,6 +50,7 @@ Object {
           ],
           "ObjectID": MosString128 {
             "_str": "M000224",
+            "strict": true,
           },
           "Paths": Array [
             Object {
@@ -66,6 +71,7 @@ Object {
           ],
           "Slug": MosString128 {
             "_str": "COLSTAT MURDER:VO",
+            "strict": true,
           },
           "Trigger": "CHAINED",
           "UserTimingDuration": 310,
@@ -73,14 +79,17 @@ Object {
       ],
       "Number": MosString128 {
         "_str": "B10",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "Colstat Murder",
+        "strict": true,
       },
     },
     Object {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
       },
       "Items": Array [
         Object {
@@ -88,6 +97,7 @@ Object {
           "EditorialStart": 55,
           "ID": MosString128 {
             "_str": "0",
+            "strict": true,
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": Array [
@@ -105,15 +115,18 @@ Object {
           ],
           "ObjectID": MosString128 {
             "_str": "M000133",
+            "strict": true,
           },
           "UserTimingDuration": 310,
         },
       ],
       "Number": MosString128 {
         "_str": "B11",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "Test MOS",
+        "strict": true,
       },
     },
   ],
@@ -135,20 +148,24 @@ exports[`message chunking chunks 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
+    "strict": true,
   },
   "Slug": MosString128 {
     "_str": "5PM RUNDOWN",
+    "strict": true,
   },
   "Stories": Array [
     Object {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
       },
       "Items": Array [
         Object {
           "EditorialDuration": 645,
           "ID": MosString128 {
             "_str": "0",
+            "strict": true,
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": Array [
@@ -166,6 +183,7 @@ Object {
           ],
           "ObjectID": MosString128 {
             "_str": "M000224",
+            "strict": true,
           },
           "Paths": Array [
             Object {
@@ -186,6 +204,7 @@ Object {
           ],
           "Slug": MosString128 {
             "_str": "COLSTAT MURDER:VO",
+            "strict": true,
           },
           "Trigger": "CHAINED",
           "UserTimingDuration": 310,
@@ -193,14 +212,17 @@ Object {
       ],
       "Number": MosString128 {
         "_str": "B10",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "Colstat Murder",
+        "strict": true,
       },
     },
     Object {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
       },
       "Items": Array [
         Object {
@@ -208,6 +230,7 @@ Object {
           "EditorialStart": 55,
           "ID": MosString128 {
             "_str": "0",
+            "strict": true,
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": Array [
@@ -225,15 +248,18 @@ Object {
           ],
           "ObjectID": MosString128 {
             "_str": "M000133",
+            "strict": true,
           },
           "UserTimingDuration": 310,
         },
       ],
       "Number": MosString128 {
         "_str": "B11",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "Test MOS",
+        "strict": true,
       },
     },
   ],
@@ -255,20 +281,24 @@ exports[`message chunking junk data before 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
+    "strict": true,
   },
   "Slug": MosString128 {
     "_str": "5PM RUNDOWN",
+    "strict": true,
   },
   "Stories": Array [
     Object {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
       },
       "Items": Array [
         Object {
           "EditorialDuration": 645,
           "ID": MosString128 {
             "_str": "0",
+            "strict": true,
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": Array [
@@ -286,6 +316,7 @@ Object {
           ],
           "ObjectID": MosString128 {
             "_str": "M000224",
+            "strict": true,
           },
           "Paths": Array [
             Object {
@@ -306,6 +337,7 @@ Object {
           ],
           "Slug": MosString128 {
             "_str": "COLSTAT MURDER:VO",
+            "strict": true,
           },
           "Trigger": "CHAINED",
           "UserTimingDuration": 310,
@@ -313,14 +345,17 @@ Object {
       ],
       "Number": MosString128 {
         "_str": "B10",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "Colstat Murder",
+        "strict": true,
       },
     },
     Object {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
       },
       "Items": Array [
         Object {
@@ -328,6 +363,7 @@ Object {
           "EditorialStart": 55,
           "ID": MosString128 {
             "_str": "0",
+            "strict": true,
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": Array [
@@ -345,15 +381,18 @@ Object {
           ],
           "ObjectID": MosString128 {
             "_str": "M000133",
+            "strict": true,
           },
           "UserTimingDuration": 310,
         },
       ],
       "Number": MosString128 {
         "_str": "B11",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "Test MOS",
+        "strict": true,
       },
     },
   ],
@@ -375,20 +414,24 @@ exports[`message chunking junk data packet before 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
+    "strict": true,
   },
   "Slug": MosString128 {
     "_str": "5PM RUNDOWN",
+    "strict": true,
   },
   "Stories": Array [
     Object {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
       },
       "Items": Array [
         Object {
           "EditorialDuration": 645,
           "ID": MosString128 {
             "_str": "0",
+            "strict": true,
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": Array [
@@ -406,6 +449,7 @@ Object {
           ],
           "ObjectID": MosString128 {
             "_str": "M000224",
+            "strict": true,
           },
           "Paths": Array [
             Object {
@@ -426,6 +470,7 @@ Object {
           ],
           "Slug": MosString128 {
             "_str": "COLSTAT MURDER:VO",
+            "strict": true,
           },
           "Trigger": "CHAINED",
           "UserTimingDuration": 310,
@@ -433,14 +478,17 @@ Object {
       ],
       "Number": MosString128 {
         "_str": "B10",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "Colstat Murder",
+        "strict": true,
       },
     },
     Object {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
       },
       "Items": Array [
         Object {
@@ -448,6 +496,7 @@ Object {
           "EditorialStart": 55,
           "ID": MosString128 {
             "_str": "0",
+            "strict": true,
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": Array [
@@ -465,15 +514,18 @@ Object {
           ],
           "ObjectID": MosString128 {
             "_str": "M000133",
+            "strict": true,
           },
           "UserTimingDuration": 310,
         },
       ],
       "Number": MosString128 {
         "_str": "B11",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "Test MOS",
+        "strict": true,
       },
     },
   ],
