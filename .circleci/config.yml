@@ -57,20 +57,6 @@ jobs:
           paths: [node_modules]
 
       - run: yarn testci
-      - run: yarn send-coverage
-      - run: yarn docs:test
-
-      - persist_to_workspace:
-          root: .
-          paths: [.]
-      - store_artifacts:
-          path: ./coverage/clover.xml
-          prefix: tests
-      - store_artifacts:
-          path: coverage
-          prefix: coverage
-      - store_test_results:
-          path: ./coverage/clover.xml
 
   test-node-latest:
     docker:
