@@ -23,12 +23,12 @@ export class MosSocketClient extends EventEmitter {
 	private _debug: boolean = false
 
 	private _description: string
-	private _client: Socket
+	private _client: Socket | undefined
 	private _shouldBeConnected: boolean = false
 	private _connected: boolean = false
 	private _lastConnectionAttempt: number
 	private _reconnectAttempt: number = 0
-	private _connectionAttemptTimer: NodeJS.Timer
+	private _connectionAttemptTimer: NodeJS.Timer | undefined
 
 	private _commandTimeoutTimer: NodeJS.Timer
 	private _commandTimeout: number
@@ -251,6 +251,7 @@ export class MosSocketClient extends EventEmitter {
   /** */
 	private executeCommand (message: QueueMessage, isRetry?: boolean): void {
 		if (this._sentMessage && !isRetry) throw Error('executeCommand: there already is a sent Command!')
+		if (!this._client) throw Error('executeCommand: No client socket connection set up!')
 
 		this._sentMessage = message
 		this._lingeringMessage = null
@@ -307,7 +308,7 @@ export class MosSocketClient extends EventEmitter {
 		// @todo create event telling reconnection ended with result: true/false
 		// only if reconnection interval is true
 		this._reconnectAttempt = 0
-		global.clearInterval(this._connectionAttemptTimer)
+		if (this._connectionAttemptTimer) global.clearInterval(this._connectionAttemptTimer)
 		delete this._connectionAttemptTimer
 	}
 
@@ -319,7 +320,7 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	private _onConnected () {
-		this._client.emit(SocketConnectionEvent.ALIVE)
+		this._client?.emit(SocketConnectionEvent.ALIVE)
 		// global.clearInterval(this._connectionAttemptTimer)
 		this._clearConnectionAttemptTimer()
 		this.connected = true
@@ -327,7 +328,7 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	private _onData (data: Buffer) {
-		this._client.emit(SocketConnectionEvent.ALIVE)
+		this._client?.emit(SocketConnectionEvent.ALIVE)
 		// data = Buffer.from(data, 'ucs2').toString()
 		const messageString: string = iconv.decode(data, 'utf16-be')
 
