@@ -1,22 +1,5 @@
 version: 2
 jobs:
-  test-node-10:
-    docker:
-      - image: circleci/node:10
-    working_directory: ~/project
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - yarn-cache-10-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-cache-10-{{ .Branch }}
-            - yarn-cache-10-
-      - run: yarn install
-      - save_cache:
-          key: yarn-cache-10-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths: [node_modules]
-      - run: yarn test
-
   test-node-12:
     docker:
       - image: circleci/node:12
@@ -140,7 +123,7 @@ jobs:
               echo "Release"
             fi
       - run: yarn release $RELEASE_ARGS
-      - run: 
+      - run:
           name: Git push
           command: |
             if ! [ "$RELEASE_ARGS" ]; then
@@ -182,7 +165,7 @@ jobs:
       # Clean working tree, tag, and push
       - run: git config --global user.email "info@superfly.tv"
       - run: git config --global user.name "superflytvab"
-      - run: 
+      - run:
           name: yarn release
           command: |
             COMMIT_TIMESTAMP=$(git log -1 --pretty=format:%ct HEAD)
@@ -205,7 +188,6 @@ workflows:
   build-test-publish:
     jobs:
       - test-node-12
-      - test-node-10
       - test-node-latest
       - validate-dependencies:
           filters:
@@ -223,7 +205,6 @@ workflows:
           requires:
             - validate-dependencies
             - test-node-12
-            - test-node-10
           filters:
             branches:
               only:
@@ -231,7 +212,6 @@ workflows:
       - prerelease:
           requires:
             - test-node-12
-            - test-node-10
           filters:
             tags:
               ignore: /.*/
