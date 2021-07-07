@@ -36,6 +36,42 @@ jobs:
       - store_test_results:
           path: ./coverage/clover.xml
 
+test-node-14:
+    docker:
+      - image: circleci/node:14
+    working_directory: ~/project
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - yarn-cache-14-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-cache-14-{{ .Branch }}
+            - yarn-cache-14-
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-cache-14-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths: [node_modules]
+
+      - run: yarn test
+      - run: yarn send-coverage
+      - run: yarn docs:test
+
+      - persist_to_workspace:
+          root: .
+          paths: [.]
+      - store_artifacts:
+          path: ./coverage/clover.xml
+          prefix: tests
+      - store_artifacts:
+          path: coverage
+          prefix: coverage
+      - store_test_results:
+          path: ./coverage/clover.xml
+
   test-node-latest:
     docker:
       - image: circleci/node
@@ -188,6 +224,7 @@ workflows:
   build-test-publish:
     jobs:
       - test-node-12
+      - test-node-14
       - test-node-latest
       - validate-dependencies:
           filters:
@@ -205,6 +242,7 @@ workflows:
           requires:
             - validate-dependencies
             - test-node-12
+            - test-node-14
           filters:
             branches:
               only:
@@ -212,6 +250,7 @@ workflows:
       - prerelease:
           requires:
             - test-node-12
+            - test-node-14
           filters:
             tags:
               ignore: /.*/
