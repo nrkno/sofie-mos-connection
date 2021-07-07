@@ -533,13 +533,13 @@ export interface IMOSDeviceProfile4 {
 	sendRunningOrderStory: (story: IMOSROFullStory) => Promise<IMOSROAck>
 
 	// Deprecated methods:
-	/** @deprecated onROReqAll is deprecated use onRequestAllRunningOrders instead */
+	/** @deprecated onROReqAll is deprecated, use onRequestAllRunningOrders instead */
 	onROReqAll: (cb: () => Promise<IMOSRunningOrder[]>) => void
-	/** @deprecated getAllRunningOrders is deprecated use sendRequestAllRunningOrders instead */
+	/** @deprecated getAllRunningOrders is deprecated, use sendRequestAllRunningOrders instead */
 	getAllRunningOrders: () => Promise<Array<IMOSRunningOrderBase>> // send roReqAll
-	/** @deprecated onROStory is deprecated use onRunningOrderStory instead */
+	/** @deprecated onROStory is deprecated, use onRunningOrderStory instead */
 	onROStory: (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) => void // roStorySend
-	/** @deprecated sendROStory is deprecated use sendRunningOrderStory instead */
+	/** @deprecated sendROStory is deprecated, use sendRunningOrderStory instead */
 	sendROStory: (story: IMOSROFullStory) => Promise<IMOSROAck>// roStorySend
 }
 export { IMOSListMachInfo }

@@ -23,6 +23,7 @@ Array [
     },
     "ChangedBy": MosString128 {
       "_str": "Chris",
+      "strict": true,
     },
     "Created": MosTime {
       "_time": 2009-10-31T23:39:12.000Z,
@@ -32,6 +33,7 @@ Array [
     },
     "CreatedBy": MosString128 {
       "_str": "Chris",
+      "strict": true,
     },
     "Description": Object {
       "elements": Array [
@@ -85,6 +87,7 @@ Array [
     "Group": undefined,
     "ID": MosString128 {
       "_str": "M000123",
+      "strict": true,
     },
     "MosAbstract": undefined,
     "Paths": Array [
@@ -107,6 +110,7 @@ Array [
     "Revision": undefined,
     "Slug": MosString128 {
       "_str": "HOTEL FIRE",
+      "strict": true,
     },
     "Status": undefined,
     "TimeBase": undefined,
@@ -122,6 +126,7 @@ Array [
     },
     "ChangedBy": MosString128 {
       "_str": "Chris",
+      "strict": true,
     },
     "Created": MosTime {
       "_time": 2009-11-01T15:19:01.000Z,
@@ -131,12 +136,14 @@ Array [
     },
     "CreatedBy": MosString128 {
       "_str": "Phil",
+      "strict": true,
     },
     "Description": "VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.",
     "Duration": 800,
     "Group": undefined,
     "ID": MosString128 {
       "_str": "M000224",
+      "strict": true,
     },
     "MosAbstract": undefined,
     "MosExternalMetaData": Array [
@@ -175,6 +182,7 @@ Array [
     "Revision": 4,
     "Slug": MosString128 {
       "_str": "COLSTAT MURDER:VO",
+      "strict": true,
     },
     "Status": "UPDATED",
     "TimeBase": 59.94,
@@ -205,6 +213,7 @@ Object {
   },
   "ChangedBy": MosString128 {
     "_str": "Chris",
+    "strict": true,
   },
   "Created": MosTime {
     "_time": 2009-10-31T23:39:12.000Z,
@@ -214,6 +223,7 @@ Object {
   },
   "CreatedBy": MosString128 {
     "_str": "Chris",
+    "strict": true,
   },
   "Description": Object {
     "elements": Array [
@@ -267,6 +277,7 @@ Object {
   "Group": "Show 7",
   "ID": MosString128 {
     "_str": "M000123",
+    "strict": true,
   },
   "MosAbstract": Object {
     "elements": Array [
@@ -322,6 +333,7 @@ Object {
   "Revision": 1,
   "Slug": MosString128 {
     "_str": "Hotel Fire",
+    "strict": true,
   },
   "Status": "NEW",
   "TimeBase": 59.94,

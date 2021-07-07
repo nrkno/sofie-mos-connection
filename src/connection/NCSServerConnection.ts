@@ -80,8 +80,8 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	connect () {
 		for (let i in this._clients) {
 			// Connect client
-			this.emit('info', `Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
-			this.debugTrace(`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host}`)
+			this.emit('info', `Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host} (${this._clients[i].client.port})`)
+			this.debugTrace(`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host} (${this._clients[i].client.port})`)
 			this._clients[i].client.connect()
 		}
 		this._connected = true

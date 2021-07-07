@@ -90,16 +90,8 @@ export class MosDevice implements IMOSDevice {
 	private _debug: boolean = false
 
 	private supportedProfiles: {
-		deviceType: 'NCS' | 'MOS',
-		profile0: boolean,
-		profile1: boolean,
-		profile2: boolean,
-		profile3: boolean,
-		profile4: boolean,
-		profile5: boolean,
-		profile6: boolean,
-		profile7: boolean
-	} = {
+		deviceType: 'NCS' | 'MOS'
+	} & IProfiles = {
 		deviceType: 'MOS',
 		profile0: false,
 		profile1: false,
@@ -658,10 +650,12 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRequestMachineInfo (cb: () => Promise<IMOSListMachInfo>) {
+		this.checkProfile('onRequestMachineInfo', 'profile1')
 		this._callbackOnRequestMachineInfo = cb
 	}
 
 	onConnectionChange (cb: (connectionStatus: IMOSConnectionStatus) => void) {
+		this.checkProfile('onConnectionChange', 'profile1')
 		this._callbackOnConnectionChange = cb
 	}
 
@@ -698,6 +692,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRequestMOSObject (cb: (objId: string) => Promise<IMOSObject | null>) {
+		this.checkProfile('onRequestMOSObject', 'profile1')
 		this._callbackOnRequestMOSOBject = cb
 	}
 
@@ -716,6 +711,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRequestAllMOSObjects (cb: () => Promise<Array<IMOSObject>>) {
+		this.checkProfile('onRequestAllMOSObjects', 'profile1')
 		this._callbackOnRequestAllMOSObjects = cb
 	}
 
@@ -761,6 +757,7 @@ export class MosDevice implements IMOSDevice {
 	// ==========================   Profile 2   ===================================================================
 	// ============================================================================================================
 	onCreateRunningOrder (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) {
+		this.checkProfile('onCreateRunningOrder', 'profile2')
 		this._callbackOnCreateRunningOrder = cb
 	}
 	async sendCreateRunningOrder (ro: IMOSRunningOrder): Promise<IMOSROAck> {
@@ -770,6 +767,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onReplaceRunningOrder (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) {
+		this.checkProfile('onReplaceRunningOrder', 'profile2')
 		this._callbackOnReplaceRunningOrder = cb
 	}
 	async sendReplaceRunningOrder (ro: IMOSRunningOrder): Promise<IMOSROAck> {
@@ -779,6 +777,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onDeleteRunningOrder (cb: (runningOrderId: MosString128) => Promise<IMOSROAck>) {
+		this.checkProfile('onDeleteRunningOrder', 'profile2')
 		this._callbackOnDeleteRunningOrder = cb
 	}
 	async sendDeleteRunningOrder (runningOrderId: MosString128): Promise<IMOSROAck> {
@@ -788,6 +787,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRequestRunningOrder (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) {
+		this.checkProfile('onRequestRunningOrder', 'profile2')
 		this._callbackOnRequestRunningOrder = cb
 	}
 
@@ -807,6 +807,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onMetadataReplace (cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>) {
+		this.checkProfile('onMetadataReplace', 'profile2')
 		this._callbackOnMetadataReplace = cb
 	}
 	async sendMetadataReplace (metadata: IMOSRunningOrderBase): Promise<IMOSROAck> {
@@ -816,13 +817,16 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRunningOrderStatus (cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>) {
+		this.checkProfile('onRunningOrderStatus', 'profile2')
 		this._callbackOnRunningOrderStatus = cb
 	}
 
 	onStoryStatus (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) {
+		this.checkProfile('onStoryStatus', 'profile2')
 		this._callbackOnStoryStatus = cb
 	}
 	onItemStatus (cb: (status: IMOSItemStatus) => Promise<IMOSROAck>) {
+		this.checkProfile('onItemStatus', 'profile2')
 		this._callbackOnItemStatus = cb
 	}
 
@@ -873,6 +877,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(reply.mos.roAck)
 	}
 	onReadyToAir (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) {
+		this.checkProfile('onReadyToAir', 'profile2')
 		this._callbackOnReadyToAir = cb
 	}
 	async sendReadyToAir (Action: IMOSROReadyToAir): Promise<IMOSROAck> {
@@ -885,6 +890,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(reply.mos.roAck)
 	}
 	onROInsertStories (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {
+		this.checkProfile('onROInsertStories', 'profile2')
 		this._callbackOnROInsertStories = cb
 	}
 	async sendROInsertStories (Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> {
@@ -893,6 +899,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROInsertItems (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {
+		this.checkProfile('onROInsertItems', 'profile2')
 		this._callbackOnROInsertItems = cb
 	}
 	async sendROInsertItems (Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> {
@@ -902,6 +909,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROReplaceStories (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {
+		this.checkProfile('onROReplaceStories', 'profile2')
 		this._callbackOnROReplaceStories = cb
 	}
 	async sendROReplaceStories (Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> {
@@ -910,6 +918,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROReplaceItems (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {
+		this.checkProfile('onROReplaceItems', 'profile2')
 		this._callbackOnROReplaceItems = cb
 	}
 	async sendROReplaceItems (Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> {
@@ -918,6 +927,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROMoveStories (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {
+		this.checkProfile('onROMoveStories', 'profile2')
 		this._callbackOnROMoveStories = cb
 	}
 	async sendROMoveStories (Action: IMOSStoryAction, Stories: Array<MosString128>): Promise<IMOSROAck> {
@@ -926,6 +936,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROMoveItems (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {
+		this.checkProfile('onROMoveItems', 'profile2')
 		this._callbackOnROMoveItems = cb
 	}
 	async sendROMoveItems (Action: IMOSItemAction, Items: Array<MosString128>): Promise<IMOSROAck> {
@@ -934,6 +945,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onRODeleteStories (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {
+		this.checkProfile('onRODeleteStories', 'profile2')
 		this._callbackOnRODeleteStories = cb
 	}
 	async sendRODeleteStories (Action: IMOSROAction, Stories: Array<MosString128>): Promise<IMOSROAck> {
@@ -942,6 +954,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onRODeleteItems (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {
+		this.checkProfile('onRODeleteItems', 'profile2')
 		this._callbackOnRODeleteItems = cb
 	}
 	async sendRODeleteItems (Action: IMOSStoryAction, Items: Array<MosString128>): Promise<IMOSROAck> {
@@ -950,6 +963,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROSwapStories (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>) {
+		this.checkProfile('onROSwapStories', 'profile2')
 		this._callbackOnROSwapStories = cb
 	}
 	async sendROSwapStories (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128): Promise<IMOSROAck> {
@@ -958,6 +972,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 	onROSwapItems (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) {
+		this.checkProfile('onROSwapItems', 'profile2')
 		this._callbackOnROSwapItems = cb
 	}
 	async sendROSwapItems (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> {
@@ -970,6 +985,7 @@ export class MosDevice implements IMOSDevice {
 	// ==========================   Profile 3   ===================================================================
 	// ============================================================================================================
 	onObjectCreate (cb: (object: IMOSObject) => Promise<IMOSAck>) {
+		this.checkProfile('', 'profile3')
 		this._callbackOnObjectCreate = cb
 	}
 
@@ -980,6 +996,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onItemReplace (cb: (roID: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>) {
+		this.checkProfile('onItemReplace', 'profile3')
 		this._callbackOnItemReplace = cb
 	}
 
@@ -990,6 +1007,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRequestSearchableSchema (cb: (username: string) => Promise<IMOSListSearchableSchema>) {
+		this.checkProfile('onRequestSearchableSchema', 'profile3')
 		this._callbackOnRequestSearchableSchema = cb
 	}
 
@@ -1001,6 +1019,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRequestObjectList (cb: (objList: IMOSRequestObjectList) => Promise<IMOSObjectList>) {
+		this.checkProfile('onRequestObjectList', 'profile3')
 		this._callbackOnRequestObjectList = cb
 	}
 
@@ -1014,6 +1033,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRequestObjectActionNew (cb: (obj: IMOSObject) => Promise<IMOSAck>): void {
+		this.checkProfile('onRequestObjectActionNew', 'profile3')
 		this._callbackOnRequestObjectActionNew = cb
 	}
 	async sendRequestObjectActionNew (obj: IMOSObject): Promise<IMOSAck> {
@@ -1025,6 +1045,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	onRequestObjectActionUpdate (cb: (objId: MosString128, obj: IMOSObject) => Promise<IMOSAck>): void {
+		this.checkProfile('onRequestObjectActionUpdate', 'profile3')
 		this._callbackOnRequestObjectActionUpdate = cb
 	}
 	async sendRequestObjectActionUpdate (objId: MosString128, obj: IMOSObject): Promise<IMOSAck> {
@@ -1035,6 +1056,7 @@ export class MosDevice implements IMOSDevice {
 		})
 	}
 	onRequestObjectActionDelete (cb: (objId: MosString128) => Promise<IMOSAck>): void {
+		this.checkProfile('onRequestObjectActionDelete', 'profile3')
 		this._callbackOnRequestObjectActionDelete = cb
 	}
 	async sendRequestObjectActionDelete (objId: MosString128): Promise<IMOSAck> {
@@ -1087,6 +1109,7 @@ export class MosDevice implements IMOSDevice {
 	// ==========================   Profile 4   ===================================================================
 	// ============================================================================================================
 	onRequestAllRunningOrders (cb: () => Promise<IMOSRunningOrder[]>) {
+		this.checkProfile('onRequestAllRunningOrders', 'profile4')
 		this._callbackOnRequestAllRunningOrders = cb
 	}
 	sendRequestAllRunningOrders (): Promise<Array<IMOSRunningOrderBase>> {
@@ -1113,6 +1136,7 @@ export class MosDevice implements IMOSDevice {
 		})
 	}
 	onRunningOrderStory (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) {
+		this.checkProfile('onRunningOrderStory', 'profile4')
 		this._callbackOnRunningOrderStory = cb
 	}
 	async sendRunningOrderStory (story: IMOSROFullStory): Promise<IMOSROAck> {
@@ -1123,19 +1147,19 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	// Deprecated methods:
-	/** @deprecated onROReqAll is deprecated use onRequestAllRunningOrders instead */
+	/** @deprecated onROReqAll is deprecated, use onRequestAllRunningOrders instead */
 	onROReqAll (cb: () => Promise<IMOSRunningOrder[]>): void {
 		return this.onRequestAllRunningOrders(cb)
 	}
-	/** @deprecated getAllRunningOrders is deprecated use sendRequestAllRunningOrders instead */
+	/** @deprecated getAllRunningOrders is deprecated, use sendRequestAllRunningOrders instead */
 	getAllRunningOrders (): Promise<Array<IMOSRunningOrderBase>> {
 		return this.sendRequestAllRunningOrders()
 	}
-	/** @deprecated onROStory is deprecated use onRunningOrderStory instead */
+	/** @deprecated onROStory is deprecated, use onRunningOrderStory instead */
 	onROStory (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>): void {
 		return this.onRunningOrderStory(cb)
 	}
-	/** @deprecated sendROStory is deprecated use sendRunningOrderStory instead */
+	/** @deprecated sendROStory is deprecated, use sendRunningOrderStory instead */
 	sendROStory (story: IMOSROFullStory): Promise<IMOSROAck> {
 		return this.sendRunningOrderStory(story)
 	}
@@ -1147,6 +1171,11 @@ export class MosDevice implements IMOSDevice {
 	}
 	checkProfileValidness (): void {
 		this._checkProfileValidness()
+	}
+
+	/** Does a check if the specified profile is set, and throws otherwise */
+	private checkProfile (methodName: string, profile: keyof IProfiles) {
+		if (this._strict && !this.supportedProfiles[profile]) throw new Error(`"${methodName}" cannot be set while "Profile 2" is not enabled.`)
 	}
 
 	private async executeCommand (message: MosMessage, resend?: boolean): Promise<MosReply> {
@@ -1328,6 +1357,17 @@ export class MosDevice implements IMOSDevice {
 	private debugTrace (...strs: any[]) {
 		if (this._debug) console.log(...strs)
 	}
+}
+
+export interface IProfiles {
+	profile0: boolean,
+	profile1: boolean,
+	profile2: boolean,
+	profile3: boolean,
+	profile4: boolean,
+	profile5: boolean,
+	profile6: boolean,
+	profile7: boolean
 }
 
 interface MosReply {
