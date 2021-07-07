@@ -378,8 +378,6 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 
 			this.emit('rawMessage', 'incoming', 'recieved', messageString)
 
-			if (this._debug) console.log(`Socket got data (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): "${data}"`)
-
 			try {
 				messageParser.debug = this._debug
 				messageParser.parseMessage(messageString)

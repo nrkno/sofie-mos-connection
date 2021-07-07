@@ -41,11 +41,11 @@ export class MosMessageParser extends EventEmitter {
 			// No start tag, so looks like we have jibberish
 			this.dataChunks = ''
 		} else {
-			if (startIndex >= 0) {
+			if (startIndex > 0) {
 				const junkStr = this.dataChunks.substr(0, startIndex)
 				if (this.debug) {
 					console.log(
-						`${this.description} Discarding message fragment: ${junkStr}`
+						`${this.description} Discarding message fragment: "${junkStr}"`
 					)
 				}
 
