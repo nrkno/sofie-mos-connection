@@ -156,8 +156,8 @@ describe('Profile 1', () => {
 
 		// @ts-ignore mock
 		serverSocketMockLower.mockSentMessage.mockClear()
-		await delay(50)
 		await serverSocketMockLower.mockWaitForSentMessages()
+		await delay(10) // to allow for async timers & events to triggered
 
 		expect(mockReply).toHaveBeenCalledTimes(1)
 
