@@ -320,7 +320,7 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	private _onConnected () {
-		this._client?.emit(SocketConnectionEvent.ALIVE)
+		if (this._client) this._client.emit(SocketConnectionEvent.ALIVE)
 		// global.clearInterval(this._connectionAttemptTimer)
 		this._clearConnectionAttemptTimer()
 		this.connected = true
@@ -328,7 +328,7 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	private _onData (data: Buffer) {
-		this._client?.emit(SocketConnectionEvent.ALIVE)
+		if (this._client) this._client.emit(SocketConnectionEvent.ALIVE)
 		// data = Buffer.from(data, 'ucs2').toString()
 		const messageString: string = iconv.decode(data, 'utf16-be')
 
