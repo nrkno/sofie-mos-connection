@@ -1,5 +1,5 @@
 # Sofie: The Modern TV News Studio Automation System (MOS Connection library)
-[![CircleCI](https://circleci.com/gh/nrkno/tv-automation-mos-connection.svg?style=svg)](https://circleci.com/gh/nrkno/tv-automation-mos-connection)
+[![CircleCI](https://circleci.com/gh/nrkno/tv-automation-mos-connection/tree/master.svg?style=svg)](https://circleci.com/gh/nrkno/tv-automation-mos-connection/tree/master)
 [![codecov](https://codecov.io/gh/nrkno/tv-automation-mos-connection/branch/master/graph/badge.svg)](https://codecov.io/gh/nrkno/tv-automation-mos-connection)
 
 Library for connecting to a MOS device using the [MOS Protocol](http://mosprotocol.com/).
@@ -39,22 +39,17 @@ mos.onConnection((device: MosDevice) => { // called whenever there is a new conn
 })
 ```
 
-## Development status:
-### Basic connections
-Working in dev environment
-### Profile 0
-* **Implemented**
-### Profile 1
-* **Implemented**
-### Profile 2
-* **Implemented**
-### Profile 3
-* *Not started*
-### Profile 4
-* **Implemented**
-### Profile 5
-* *Not started*
-### Profile 6
-* *Not started*
-### Profile 7
-* *Not started*
+## Supported MOS profiles
+
+| Profile | Status |
+| -- | -- |
+| Profile 0 | Implemented |
+| Profile 1 | Implemented |
+| Profile 2 | Implemented |
+| Profile 3 | Implemented |
+| Profile 4 | Implemented |
+| Profile 5 | Not implemented (yet) |
+| Profile 6 | Not implemented (yet) |
+| Profile 7 | Not implemented (yet) |
+
+Pull Requests for the remaining profiles would be happily accepted!
