@@ -25,6 +25,9 @@ export class SocketMock extends EventEmitter implements Socket {
 	destroyed: boolean
 	writable: boolean
 	readable: boolean
+	readonly readableEncoding: BufferEncoding | null
+	readonly readableEnded: boolean
+	readonly readableFlowing: boolean | null
 
 	readonly writableEnded: boolean
 	readonly writableFinished: boolean
