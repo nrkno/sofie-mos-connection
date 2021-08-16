@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.3](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.2...1.0.3) (2021-08-16)
+
+
+### Bug Fixes
+
+* add check for that the profile is set when registering a method (strict mode only) ([800f63c](https://github.com/nrkno/tv-automation-mos-connection/commit/800f63cbc9a08a61a93a62f4c495ad0300e52676))
+* bad merge [publish] ([8f29ca9](https://github.com/nrkno/tv-automation-mos-connection/commit/8f29ca93b613467c9b45f4ce259b19db0f2de8ff))
+* bug in index ([45af280](https://github.com/nrkno/tv-automation-mos-connection/commit/45af280c8a10fa436e5356c363993542c61b1cee))
+* minor typings issues ([68f4b20](https://github.com/nrkno/tv-automation-mos-connection/commit/68f4b20888c4c00a61cf0d72b791e6328f0cda15))
+* rare issue on closed connection / timeout ([457992d](https://github.com/nrkno/tv-automation-mos-connection/commit/457992df5092db47f9eb033ecfdd68f237942a2c))
+* roList encoding missing most properties ([a2d7650](https://github.com/nrkno/tv-automation-mos-connection/commit/a2d765097994e9b8de343a6bd567fd115a267533))
+* temporary fix for a long objSlug we've encountered ([0e0b694](https://github.com/nrkno/tv-automation-mos-connection/commit/0e0b694384656242949d7630d45f89e8f27c5cc2))
+
 ### [1.0.2](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.1...1.0.2) (2021-04-21)
 
 
