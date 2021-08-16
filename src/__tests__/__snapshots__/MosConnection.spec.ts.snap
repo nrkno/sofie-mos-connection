@@ -23,6 +23,7 @@ Array [
     },
     "ChangedBy": MosString128 {
       "_str": "Chris",
+      "strict": true,
     },
     "Created": MosTime {
       "_time": 2019-01-01T17:14:42.000Z,
@@ -32,6 +33,7 @@ Array [
     },
     "CreatedBy": MosString128 {
       "_str": "Chris",
+      "strict": true,
     },
     "Description": Object {
       "elements": Array [
@@ -85,6 +87,7 @@ Array [
     "Group": undefined,
     "ID": MosString128 {
       "_str": "M000123",
+      "strict": true,
     },
     "MosAbstract": undefined,
     "Paths": Array [
@@ -107,6 +110,7 @@ Array [
     "Revision": undefined,
     "Slug": MosString128 {
       "_str": "HOTEL FIRE",
+      "strict": true,
     },
     "Status": undefined,
     "TimeBase": undefined,
@@ -122,6 +126,7 @@ Array [
     },
     "ChangedBy": MosString128 {
       "_str": "Chris",
+      "strict": true,
     },
     "Created": MosTime {
       "_time": 2019-01-01T17:14:42.000Z,
@@ -131,12 +136,14 @@ Array [
     },
     "CreatedBy": MosString128 {
       "_str": "Phil",
+      "strict": true,
     },
     "Description": "VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.",
     "Duration": 800,
     "Group": undefined,
     "ID": MosString128 {
       "_str": "M000224",
+      "strict": true,
     },
     "MosAbstract": undefined,
     "MosExternalMetaData": Array [
@@ -175,6 +182,7 @@ Array [
     "Revision": 4,
     "Slug": MosString128 {
       "_str": "COLSTAT MURDER:VO",
+      "strict": true,
     },
     "Status": "UPDATED",
     "TimeBase": 59.94,
@@ -205,6 +213,7 @@ Object {
   },
   "ChangedBy": MosString128 {
     "_str": "Chris",
+    "strict": true,
   },
   "Created": MosTime {
     "_time": 2019-01-01T17:14:42.000Z,
@@ -214,6 +223,7 @@ Object {
   },
   "CreatedBy": MosString128 {
     "_str": "Chris",
+    "strict": true,
   },
   "Description": Object {
     "elements": Array [
@@ -267,6 +277,7 @@ Object {
   "Group": "Show 7",
   "ID": MosString128 {
     "_str": "M000123",
+    "strict": true,
   },
   "MosAbstract": Object {
     "elements": Array [
@@ -322,6 +333,7 @@ Object {
   "Revision": 1,
   "Slug": MosString128 {
     "_str": "Hotel Fire",
+    "strict": true,
   },
   "Status": "NEW",
   "TimeBase": 59.94,
@@ -612,20 +624,24 @@ exports[`MosDevice: Profile 2 getRunningOrder 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
+    "strict": true,
   },
   "Slug": MosString128 {
     "_str": "5PM RUNDOWN",
+    "strict": true,
   },
   "Stories": Array [
     Object {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
       },
       "Items": Array [
         Object {
           "EditorialDuration": 645,
           "ID": MosString128 {
             "_str": "0",
+            "strict": true,
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": Array [
@@ -643,6 +659,7 @@ Object {
           ],
           "ObjectID": MosString128 {
             "_str": "M000224",
+            "strict": true,
           },
           "Paths": Array [
             Object {
@@ -663,6 +680,7 @@ Object {
           ],
           "Slug": MosString128 {
             "_str": "COLSTAT MURDER:VO",
+            "strict": true,
           },
           "Trigger": "CHAINED",
           "UserTimingDuration": 310,
@@ -670,14 +688,17 @@ Object {
       ],
       "Number": MosString128 {
         "_str": "B10",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "Colstat Murder",
+        "strict": true,
       },
     },
     Object {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
       },
       "Items": Array [
         Object {
@@ -685,6 +706,7 @@ Object {
           "EditorialStart": 55,
           "ID": MosString128 {
             "_str": "0",
+            "strict": true,
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": Array [
@@ -702,15 +724,18 @@ Object {
           ],
           "ObjectID": MosString128 {
             "_str": "M000133",
+            "strict": true,
           },
           "UserTimingDuration": 310,
         },
       ],
       "Number": MosString128 {
         "_str": "B11",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "Test MOS",
+        "strict": true,
       },
     },
   ],
@@ -732,20 +757,24 @@ Array [
       },
       "ID": MosString128 {
         "_str": "96857485",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "5PM RUNDOWN",
+        "strict": true,
       },
       "Stories": Array [
         Object {
           "ID": MosString128 {
             "_str": "5983A501:0049B924:8390EF2B",
+            "strict": true,
           },
           "Items": Array [
             Object {
               "EditorialDuration": 645,
               "ID": MosString128 {
                 "_str": "0",
+                "strict": true,
               },
               "MOSID": "testmos.enps.com",
               "MosExternalMetaData": Array [
@@ -763,6 +792,7 @@ Array [
               ],
               "ObjectID": MosString128 {
                 "_str": "M000224",
+                "strict": true,
               },
               "Paths": Array [
                 Object {
@@ -783,6 +813,7 @@ Array [
               ],
               "Slug": MosString128 {
                 "_str": "COLSTAT MURDER:VO",
+                "strict": true,
               },
               "Trigger": "CHAINED",
               "UserTimingDuration": 310,
@@ -790,14 +821,17 @@ Array [
           ],
           "Number": MosString128 {
             "_str": "A5",
+            "strict": true,
           },
           "Slug": MosString128 {
             "_str": "COLSTAT MURDER",
+            "strict": true,
           },
         },
         Object {
           "ID": MosString128 {
             "_str": "3854737F:0003A34D:983A0B28",
+            "strict": true,
           },
           "Items": Array [
             Object {
@@ -805,6 +839,7 @@ Array [
               "EditorialStart": 55,
               "ID": MosString128 {
                 "_str": "0",
+                "strict": true,
               },
               "MOSID": "testmos.enps.com",
               "MosExternalMetaData": Array [
@@ -822,15 +857,18 @@ Array [
               ],
               "ObjectID": MosString128 {
                 "_str": "M000133",
+                "strict": true,
               },
               "UserTimingDuration": 200,
             },
           ],
           "Number": MosString128 {
             "_str": "A6",
+            "strict": true,
           },
           "Slug": MosString128 {
             "_str": "AIRLINE INSPECTIONS",
+            "strict": true,
           },
         },
       ],
@@ -893,19 +931,24 @@ Array [
     Object {
       "Channel": MosString128 {
         "_str": "B",
+        "strict": true,
       },
       "ID": MosString128 {
         "_str": "0",
+        "strict": true,
       },
       "ObjectId": MosString128 {
         "_str": "A0295",
+        "strict": true,
       },
       "RunningOrderId": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "Status": "PLAY",
       "StoryId": MosString128 {
         "_str": "HOTEL FIRE",
+        "strict": true,
       },
       "Time": MosTime {
         "_time": 2019-01-01T17:14:42.000Z,
@@ -953,6 +996,7 @@ Array [
       },
       "ID": MosString128 {
         "_str": "96857485",
+        "strict": true,
       },
       "MosExternalMetaData": Array [
         Object {
@@ -969,6 +1013,7 @@ Array [
       ],
       "Slug": MosString128 {
         "_str": "5PM RUNDOWN",
+        "strict": true,
       },
     },
   ],
@@ -1001,17 +1046,21 @@ Array [
     Object {
       "RunningOrderID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "StoryID": MosString128 {
         "_str": "2",
+        "strict": true,
       },
     },
     Array [
       MosString128 {
         "_str": "23",
+        "strict": true,
       },
       MosString128 {
         "_str": "24",
+        "strict": true,
       },
     ],
   ],
@@ -1044,11 +1093,13 @@ Array [
     Object {
       "RunningOrderID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
     },
     Array [
       MosString128 {
         "_str": "3",
+        "strict": true,
       },
     ],
   ],
@@ -1081,12 +1132,15 @@ Array [
     Object {
       "ItemID": MosString128 {
         "_str": "23",
+        "strict": true,
       },
       "RunningOrderID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "StoryID": MosString128 {
         "_str": "2",
+        "strict": true,
       },
     },
     Array [
@@ -1095,10 +1149,12 @@ Array [
         "EditorialStart": 0,
         "ID": MosString128 {
           "_str": "27",
+          "strict": true,
         },
         "MOSID": "testmos",
         "ObjectID": MosString128 {
           "_str": "M19873",
+          "strict": true,
         },
         "Paths": Array [
           Object {
@@ -1119,6 +1175,7 @@ Array [
         ],
         "Slug": MosString128 {
           "_str": "NHL PKG",
+          "strict": true,
         },
         "UserTimingDuration": 690,
       },
@@ -1153,15 +1210,18 @@ Array [
     Object {
       "RunningOrderID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "StoryID": MosString128 {
         "_str": "2",
+        "strict": true,
       },
     },
     Array [
       Object {
         "ID": MosString128 {
           "_str": "17",
+          "strict": true,
         },
         "Items": Array [
           Object {
@@ -1169,10 +1229,12 @@ Array [
             "EditorialStart": 0,
             "ID": MosString128 {
               "_str": "27",
+              "strict": true,
             },
             "MOSID": "testmos",
             "ObjectID": MosString128 {
               "_str": "M73627",
+              "strict": true,
             },
             "Paths": Array [
               Object {
@@ -1198,18 +1260,22 @@ Array [
             "EditorialStart": 0,
             "ID": MosString128 {
               "_str": "28",
+              "strict": true,
             },
             "MOSID": "testmos",
             "ObjectID": MosString128 {
               "_str": "M73628",
+              "strict": true,
             },
           },
         ],
         "Number": MosString128 {
           "_str": "A2",
+          "strict": true,
         },
         "Slug": MosString128 {
           "_str": "Barcelona Football",
+          "strict": true,
         },
       },
     ],
@@ -1243,20 +1309,25 @@ Array [
     Object {
       "ItemID": MosString128 {
         "_str": "12",
+        "strict": true,
       },
       "RunningOrderID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "StoryID": MosString128 {
         "_str": "2",
+        "strict": true,
       },
     },
     Array [
       MosString128 {
         "_str": "23",
+        "strict": true,
       },
       MosString128 {
         "_str": "24",
+        "strict": true,
       },
     ],
   ],
@@ -1289,17 +1360,21 @@ Array [
     Object {
       "RunningOrderID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "StoryID": MosString128 {
         "_str": "2",
+        "strict": true,
       },
     },
     Array [
       MosString128 {
         "_str": "7",
+        "strict": true,
       },
       MosString128 {
         "_str": "12",
+        "strict": true,
       },
     ],
   ],
@@ -1332,14 +1407,17 @@ Array [
     Object {
       "RunningOrderID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "StoryID": MosString128 {
         "_str": "2",
+        "strict": true,
       },
     },
     Array [
       MosString128 {
         "_str": "7",
+        "strict": true,
       },
     ],
   ],
@@ -1372,12 +1450,15 @@ Array [
     Object {
       "ItemID": MosString128 {
         "_str": "23",
+        "strict": true,
       },
       "RunningOrderID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "StoryID": MosString128 {
         "_str": "2",
+        "strict": true,
       },
     },
     Array [
@@ -1386,10 +1467,12 @@ Array [
         "EditorialStart": 0,
         "ID": MosString128 {
           "_str": "27",
+          "strict": true,
         },
         "MOSID": "testmos",
         "ObjectID": MosString128 {
           "_str": "M19873",
+          "strict": true,
         },
         "Paths": Array [
           Object {
@@ -1410,6 +1493,7 @@ Array [
         ],
         "Slug": MosString128 {
           "_str": "NHL PKG",
+          "strict": true,
         },
         "UserTimingDuration": 690,
       },
@@ -1444,15 +1528,18 @@ Array [
     Object {
       "RunningOrderID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "StoryID": MosString128 {
         "_str": "2",
+        "strict": true,
       },
     },
     Array [
       Object {
         "ID": MosString128 {
           "_str": "17",
+          "strict": true,
         },
         "Items": Array [
           Object {
@@ -1460,10 +1547,12 @@ Array [
             "EditorialStart": 0,
             "ID": MosString128 {
               "_str": "27",
+              "strict": true,
             },
             "MOSID": "testmos",
             "ObjectID": MosString128 {
               "_str": "M73627",
+              "strict": true,
             },
             "Paths": Array [
               Object {
@@ -1489,18 +1578,22 @@ Array [
             "EditorialStart": 0,
             "ID": MosString128 {
               "_str": "28",
+              "strict": true,
             },
             "MOSID": "testmos",
             "ObjectID": MosString128 {
               "_str": "M73628",
+              "strict": true,
             },
           },
         ],
         "Number": MosString128 {
           "_str": "A2",
+          "strict": true,
         },
         "Slug": MosString128 {
           "_str": "Porto Football",
+          "strict": true,
         },
       },
     ],
@@ -1534,16 +1627,20 @@ Array [
     Object {
       "RunningOrderID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "StoryID": MosString128 {
         "_str": "2",
+        "strict": true,
       },
     },
     MosString128 {
       "_str": "23",
+      "strict": true,
     },
     MosString128 {
       "_str": "24",
+      "strict": true,
     },
   ],
 ]
@@ -1575,13 +1672,16 @@ Array [
     Object {
       "RunningOrderID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
     },
     MosString128 {
       "_str": "3",
+      "strict": true,
     },
     MosString128 {
       "_str": "5",
+      "strict": true,
     },
   ],
 ]
@@ -1613,6 +1713,7 @@ Array [
     Object {
       "ID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "Status": "READY",
     },
@@ -1646,20 +1747,24 @@ Array [
     Object {
       "ID": MosString128 {
         "_str": "96857485",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "5PM RUNDOWN",
+        "strict": true,
       },
       "Stories": Array [
         Object {
           "ID": MosString128 {
             "_str": "5983A501:0049B924:8390EF2B",
+            "strict": true,
           },
           "Items": Array [
             Object {
               "EditorialDuration": 645,
               "ID": MosString128 {
                 "_str": "0",
+                "strict": true,
               },
               "MOSID": "testmos.enps.com",
               "MosExternalMetaData": Array [
@@ -1677,6 +1782,7 @@ Array [
               ],
               "ObjectID": MosString128 {
                 "_str": "M000224",
+                "strict": true,
               },
               "Paths": Array [
                 Object {
@@ -1697,6 +1803,7 @@ Array [
               ],
               "Slug": MosString128 {
                 "_str": "COLSTAT MURDER:VO",
+                "strict": true,
               },
               "Trigger": "CHAINED",
               "UserTimingDuration": 310,
@@ -1704,14 +1811,17 @@ Array [
           ],
           "Number": MosString128 {
             "_str": "A1",
+            "strict": true,
           },
           "Slug": MosString128 {
             "_str": "COLSTAT MURDER",
+            "strict": true,
           },
         },
         Object {
           "ID": MosString128 {
             "_str": "3852737F:0013A64D:923A0B28",
+            "strict": true,
           },
           "Items": Array [
             Object {
@@ -1719,6 +1829,7 @@ Array [
               "EditorialStart": 500,
               "ID": MosString128 {
                 "_str": "0",
+                "strict": true,
               },
               "MOSID": "testmos.enps.com",
               "MosExternalMetaData": Array [
@@ -1736,15 +1847,18 @@ Array [
               ],
               "ObjectID": MosString128 {
                 "_str": "M000295",
+                "strict": true,
               },
               "UserTimingDuration": 310,
             },
           ],
           "Number": MosString128 {
             "_str": "A2",
+            "strict": true,
           },
           "Slug": MosString128 {
             "_str": "AIRLINE SAFETY",
+            "strict": true,
           },
         },
       ],
@@ -2076,6 +2190,7 @@ Array [
     Object {
       "ID": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "Status": "MANUAL CTRL",
       "Time": MosTime {
@@ -2115,9 +2230,11 @@ Array [
     Object {
       "ID": MosString128 {
         "_str": "HOTEL FIRE",
+        "strict": true,
       },
       "RunningOrderId": MosString128 {
         "_str": "5PM",
+        "strict": true,
       },
       "Status": "PLAY",
       "Time": MosTime {
@@ -2172,20 +2289,24 @@ exports[`MosDevice: Profile 2 setItemStatus 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
+    "strict": true,
   },
   "Status": MosString128 {
     "_str": "Unknown object M000133",
+    "strict": true,
   },
   "Stories": Array [
     Object {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
       },
       "Items": Array [],
     },
     Object {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
       },
       "Items": Array [],
     },
@@ -2210,20 +2331,24 @@ exports[`MosDevice: Profile 2 setRunningOrderStatus 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
+    "strict": true,
   },
   "Status": MosString128 {
     "_str": "Unknown object M000133",
+    "strict": true,
   },
   "Stories": Array [
     Object {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
       },
       "Items": Array [],
     },
     Object {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
       },
       "Items": Array [],
     },
@@ -2249,20 +2374,24 @@ exports[`MosDevice: Profile 2 setStoryStatus 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
+    "strict": true,
   },
   "Status": MosString128 {
     "_str": "Unknown object M000133",
+    "strict": true,
   },
   "Stories": Array [
     Object {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
       },
       "Items": Array [],
     },
     Object {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
       },
       "Items": Array [],
     },
@@ -2416,6 +2545,7 @@ Object {
       },
       "ChangedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Created": MosTime {
         "_time": 2019-01-01T17:14:42.000Z,
@@ -2425,6 +2555,7 @@ Object {
       },
       "CreatedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Description": Object {
         "elements": Array [
@@ -2478,6 +2609,7 @@ Object {
       "Group": "Show 7",
       "ID": MosString128 {
         "_str": "M000121",
+        "strict": true,
       },
       "MosAbstract": Object {
         "elements": Array [
@@ -2529,6 +2661,7 @@ Object {
       "Revision": 1,
       "Slug": MosString128 {
         "_str": "Hotel Fire",
+        "strict": true,
       },
       "Status": "NEW",
       "TimeBase": 59.94,
@@ -2544,6 +2677,7 @@ Object {
       },
       "ChangedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Created": MosTime {
         "_time": 2019-01-01T17:14:42.000Z,
@@ -2553,6 +2687,7 @@ Object {
       },
       "CreatedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Description": Object {
         "elements": Array [
@@ -2606,6 +2741,7 @@ Object {
       "Group": "Show 7",
       "ID": MosString128 {
         "_str": "M000122",
+        "strict": true,
       },
       "MosAbstract": Object {
         "elements": Array [
@@ -2657,6 +2793,7 @@ Object {
       "Revision": 1,
       "Slug": MosString128 {
         "_str": "Another Hotel Fire",
+        "strict": true,
       },
       "Status": "NEW",
       "TimeBase": 59.94,
@@ -2672,6 +2809,7 @@ Object {
       },
       "ChangedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Created": MosTime {
         "_time": 2019-01-01T17:14:42.000Z,
@@ -2681,6 +2819,7 @@ Object {
       },
       "CreatedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Description": Object {
         "elements": Array [
@@ -2734,6 +2873,7 @@ Object {
       "Group": "Show 7",
       "ID": MosString128 {
         "_str": "M000123",
+        "strict": true,
       },
       "MosAbstract": Object {
         "elements": Array [
@@ -2785,6 +2925,7 @@ Object {
       "Revision": 1,
       "Slug": MosString128 {
         "_str": "Yet Another Hotel Fire",
+        "strict": true,
       },
       "Status": "NEW",
       "TimeBase": 59.94,
@@ -2809,13 +2950,16 @@ Array [
       "EditorialStart": 0,
       "ID": MosString128 {
         "_str": "30848",
+        "strict": true,
       },
       "MOSID": "testmos.enps.com",
       "MacroIn": MosString128 {
         "_str": "c01/l04/dve07",
+        "strict": true,
       },
       "MacroOut": MosString128 {
         "_str": "r00",
+        "strict": true,
       },
       "MosExternalMetaData": Array [
         Object {
@@ -2831,6 +2975,7 @@ Array [
       ],
       "ObjectID": MosString128 {
         "_str": "M000627",
+        "strict": true,
       },
       "Paths": Array [
         Object {
@@ -2888,6 +3033,7 @@ Array [
       },
       "ChangedBy": MosString128 {
         "_str": "undefined",
+        "strict": true,
       },
       "Created": MosTime {
         "_time": 2019-01-01T17:14:42.000Z,
@@ -2897,6 +3043,7 @@ Array [
       },
       "CreatedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Description": Object {
         "elements": Array [
@@ -2952,6 +3099,7 @@ Array [
       "Group": "Show 7",
       "ID": MosString128 {
         "_str": "undefined",
+        "strict": true,
       },
       "MosAbstract": undefined,
       "MosExternalMetaData": Array [
@@ -2974,6 +3122,7 @@ Array [
       "Revision": undefined,
       "Slug": MosString128 {
         "_str": "Hotel Fire",
+        "strict": true,
       },
       "Status": undefined,
       "TimeBase": 59.94,
@@ -3021,6 +3170,7 @@ Array [
       },
       "ChangedBy": MosString128 {
         "_str": "undefined",
+        "strict": true,
       },
       "Created": MosTime {
         "_time": 2019-01-01T17:14:42.000Z,
@@ -3030,6 +3180,7 @@ Array [
       },
       "CreatedBy": MosString128 {
         "_str": "Chris",
+        "strict": true,
       },
       "Description": Object {
         "elements": Array [
@@ -3085,6 +3236,7 @@ Array [
       "Group": "Show 7",
       "ID": MosString128 {
         "_str": "undefined",
+        "strict": true,
       },
       "MosAbstract": undefined,
       "MosExternalMetaData": Array [
@@ -3107,6 +3259,7 @@ Array [
       "Revision": undefined,
       "Slug": MosString128 {
         "_str": "Hotel Fire",
+        "strict": true,
       },
       "Status": undefined,
       "TimeBase": 59.94,
@@ -3270,6 +3423,7 @@ Array [
     },
     "ID": MosString128 {
       "_str": "5PM",
+      "strict": true,
     },
     "MosExternalMetaData": Array [
       Object {
@@ -3288,9 +3442,11 @@ Array [
     ],
     "Slug": MosString128 {
       "_str": "5PM Rundown",
+      "strict": true,
     },
     "Trigger": MosString128 {
       "_str": "MANUAL",
+      "strict": true,
     },
   },
   Object {
@@ -3305,6 +3461,7 @@ Array [
     },
     "ID": MosString128 {
       "_str": "6PM",
+      "strict": true,
     },
     "MosExternalMetaData": Array [
       Object {
@@ -3323,9 +3480,11 @@ Array [
     ],
     "Slug": MosString128 {
       "_str": "6PM Rundown",
+      "strict": true,
     },
     "Trigger": MosString128 {
       "_str": "MANUAL",
+      "strict": true,
     },
   },
 ]
@@ -3347,6 +3506,7 @@ Array [
           "Content": Object {
             "ID": MosString128 {
               "_str": "2",
+              "strict": true,
             },
             "MOSID": "METADATA.NRK.MOS",
             "MosExternalMetaData": Array [
@@ -3376,12 +3536,15 @@ Array [
             ],
             "ObjectID": MosString128 {
               "_str": "N11580_1412594672",
+              "strict": true,
             },
             "ObjectSlug": MosString128 {
               "_str": "M:",
+              "strict": false,
             },
             "Slug": MosString128 {
               "_str": "SAK BUSKERUD;SAK-14",
+              "strict": true,
             },
             "mosAbstract": "METADATA",
           },
@@ -3412,9 +3575,11 @@ Array [
           "Content": Object {
             "Channel": MosString128 {
               "_str": "CG1",
+              "strict": true,
             },
             "ID": MosString128 {
               "_str": "3",
+              "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": Array [
@@ -3428,6 +3593,7 @@ Array [
                 },
                 "ChangedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Created": MosTime {
                   "_time": 2019-01-01T17:14:42.000Z,
@@ -3437,12 +3603,14 @@ Array [
                 },
                 "CreatedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
                   "_str": "NYHETER\\\\00039287?version=1",
+                  "strict": true,
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": Array [
@@ -3464,6 +3632,7 @@ Array [
                 ],
                 "MosItemEditorProgID": MosString128 {
                   "_str": "Chymox.AssetBrowser.1",
+                  "strict": true,
                 },
                 "Paths": Array [
                   Object {
@@ -3475,6 +3644,7 @@ Array [
                 "Revision": undefined,
                 "Slug": MosString128 {
                   "_str": "01 ett navn 1:  2:",
+                  "strict": true,
                 },
                 "Status": undefined,
                 "TimeBase": 0,
@@ -3483,6 +3653,7 @@ Array [
             ],
             "ObjectID": MosString128 {
               "_str": "undefined",
+              "strict": true,
             },
             "Paths": Array [
               Object {
@@ -3493,6 +3664,7 @@ Array [
             ],
             "Slug": MosString128 {
               "_str": "01 ett navn 1:  2:",
+              "strict": true,
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -3509,9 +3681,11 @@ Array [
           "Content": Object {
             "Channel": MosString128 {
               "_str": "CG1",
+              "strict": true,
             },
             "ID": MosString128 {
               "_str": "4",
+              "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": Array [
@@ -3525,6 +3699,7 @@ Array [
                 },
                 "ChangedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Created": MosTime {
                   "_time": 2019-01-01T17:14:42.000Z,
@@ -3534,12 +3709,14 @@ Array [
                 },
                 "CreatedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
                   "_str": "NYHETER\\\\00039288?version=1",
+                  "strict": true,
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": Array [
@@ -3561,6 +3738,7 @@ Array [
                 ],
                 "MosItemEditorProgID": MosString128 {
                   "_str": "Chymox.AssetBrowser.1",
+                  "strict": true,
                 },
                 "Paths": Array [
                   Object {
@@ -3572,6 +3750,7 @@ Array [
                 "Revision": undefined,
                 "Slug": MosString128 {
                   "_str": "01 ett navn 1:  2:",
+                  "strict": true,
                 },
                 "Status": undefined,
                 "TimeBase": 0,
@@ -3580,6 +3759,7 @@ Array [
             ],
             "ObjectID": MosString128 {
               "_str": "undefined",
+              "strict": true,
             },
             "Paths": Array [
               Object {
@@ -3590,6 +3770,7 @@ Array [
             ],
             "Slug": MosString128 {
               "_str": "01 ett navn 1:  2:",
+              "strict": true,
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -3606,9 +3787,11 @@ Array [
           "Content": Object {
             "Channel": MosString128 {
               "_str": "CG1",
+              "strict": true,
             },
             "ID": MosString128 {
               "_str": "5",
+              "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": Array [
@@ -3622,6 +3805,7 @@ Array [
                 },
                 "ChangedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Created": MosTime {
                   "_time": 2019-01-01T17:14:42.000Z,
@@ -3631,12 +3815,14 @@ Array [
                 },
                 "CreatedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
                   "_str": "NYHETER\\\\00039289?version=1",
+                  "strict": true,
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": Array [
@@ -3658,6 +3844,7 @@ Array [
                 ],
                 "MosItemEditorProgID": MosString128 {
                   "_str": "Chymox.AssetBrowser.1",
+                  "strict": true,
                 },
                 "Paths": Array [
                   Object {
@@ -3669,6 +3856,7 @@ Array [
                 "Revision": undefined,
                 "Slug": MosString128 {
                   "_str": "01 ett navn 1:  2:",
+                  "strict": true,
                 },
                 "Status": undefined,
                 "TimeBase": 0,
@@ -3677,6 +3865,7 @@ Array [
             ],
             "ObjectID": MosString128 {
               "_str": "undefined",
+              "strict": true,
             },
             "Paths": Array [
               Object {
@@ -3687,6 +3876,7 @@ Array [
             ],
             "Slug": MosString128 {
               "_str": "01 ett navn 1:  2:",
+              "strict": true,
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -3703,9 +3893,11 @@ Array [
           "Content": Object {
             "Channel": MosString128 {
               "_str": "CG1",
+              "strict": true,
             },
             "ID": MosString128 {
               "_str": "6",
+              "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": Array [
@@ -3719,6 +3911,7 @@ Array [
                 },
                 "ChangedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Created": MosTime {
                   "_time": 2019-01-01T17:14:42.000Z,
@@ -3728,12 +3921,14 @@ Array [
                 },
                 "CreatedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
                   "_str": "NYHETER\\\\00039290?version=1",
+                  "strict": true,
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": Array [
@@ -3755,6 +3950,7 @@ Array [
                 ],
                 "MosItemEditorProgID": MosString128 {
                   "_str": "Chymox.AssetBrowser.1",
+                  "strict": true,
                 },
                 "Paths": Array [
                   Object {
@@ -3766,6 +3962,7 @@ Array [
                 "Revision": undefined,
                 "Slug": MosString128 {
                   "_str": "01 ett navn 1:  2:",
+                  "strict": true,
                 },
                 "Status": undefined,
                 "TimeBase": 0,
@@ -3774,6 +3971,7 @@ Array [
             ],
             "ObjectID": MosString128 {
               "_str": "undefined",
+              "strict": true,
             },
             "Paths": Array [
               Object {
@@ -3784,6 +3982,7 @@ Array [
             ],
             "Slug": MosString128 {
               "_str": "01 ett navn 1:  2:",
+              "strict": true,
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -3800,9 +3999,11 @@ Array [
           "Content": Object {
             "Channel": MosString128 {
               "_str": "CG1",
+              "strict": true,
             },
             "ID": MosString128 {
               "_str": "7",
+              "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": Array [
@@ -3816,6 +4017,7 @@ Array [
                 },
                 "ChangedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Created": MosTime {
                   "_time": 2019-01-01T17:14:42.000Z,
@@ -3825,12 +4027,14 @@ Array [
                 },
                 "CreatedBy": MosString128 {
                   "_str": "undefined",
+                  "strict": true,
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
                   "_str": "NYHETER\\\\00039291?version=1",
+                  "strict": true,
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": Array [
@@ -3852,6 +4056,7 @@ Array [
                 ],
                 "MosItemEditorProgID": MosString128 {
                   "_str": "Chymox.AssetBrowser.1",
+                  "strict": true,
                 },
                 "Paths": Array [
                   Object {
@@ -3863,6 +4068,7 @@ Array [
                 "Revision": undefined,
                 "Slug": MosString128 {
                   "_str": "24 foto/red 1:Foto og redigering:  2:",
+                  "strict": true,
                 },
                 "Status": undefined,
                 "TimeBase": 0,
@@ -3871,6 +4077,7 @@ Array [
             ],
             "ObjectID": MosString128 {
               "_str": "undefined",
+              "strict": true,
             },
             "Paths": Array [
               Object {
@@ -3881,6 +4088,7 @@ Array [
             ],
             "Slug": MosString128 {
               "_str": "24 foto/red 1:Foto og redigering:  2:",
+              "strict": true,
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 24 foto/red | 1:Foto og redigering: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -3904,16 +4112,20 @@ Array [
           "Content": Object {
             "ID": MosString128 {
               "_str": "8",
+              "strict": true,
             },
             "MOSID": "mosart.morten.mos",
             "ObjectID": MosString128 {
               "_str": "STORYSTATUS",
+              "strict": true,
             },
             "ObjectSlug": MosString128 {
               "_str": "Story status",
+              "strict": false,
             },
             "Slug": MosString128 {
               "_str": "SAK BUSKERUD;SAK-20",
+              "strict": true,
             },
             "mosAbstract": "TIDSMARKØR IKKE RØR",
           },
@@ -3929,6 +4141,7 @@ Array [
       ],
       "ID": MosString128 {
         "_str": "2012R2ENPS8VM;P_ENPSNEWS\\\\W\\\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB",
+        "strict": true,
       },
       "MosExternalMetaData": Array [
         Object {
@@ -3959,9 +4172,11 @@ Array [
       "Number": undefined,
       "RunningOrderId": MosString128 {
         "_str": "2012R2ENPS8VM;P_ENPSNEWS\\\\W;696297DF-1568-4B36-B43B3B79514B40D4",
+        "strict": true,
       },
       "Slug": MosString128 {
         "_str": "KRITIKK ETTER BRANN KONGSBERG;SAK",
+        "strict": true,
       },
     },
   ],
@@ -3986,4 +4201,536 @@ exports[`MosDevice: Profile 4 onROStory: <mos>
     <roStatus>OK</roStatus>
   </roAck>
 </mos>"
+`;
+
+exports[`message chunking chunk around space 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roReq>
+    <roID>M000123</roID>
+  </roReq>
+</mos>"
+`;
+
+exports[`message chunking chunk around space 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Slug": MosString128 {
+    "_str": "5PM RUNDOWN",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [
+        Object {
+          "EditorialDuration": 645,
+          "ID": MosString128 {
+            "_str": "0",
+            "strict": true,
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": Array [
+            Object {
+              "MosPayload": Object {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": MosString128 {
+            "_str": "M000224",
+            "strict": true,
+          },
+          "Paths": Array [
+            Object {
+              "Description": "MPEG2 Video",
+              "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+              "Type": "PATH",
+            },
+            Object {
+              "Description": "WM9 750Kbps",
+              "Target": "http://server/proxy/clipe.wmv",
+              "Type": "PROXY PATH",
+            },
+            Object {
+              "Description": "MOS Object",
+              "Target": "http://server/proxy/clipe.xml",
+              "Type": "METADATA PATH",
+            },
+          ],
+          "Slug": MosString128 {
+            "_str": "COLSTAT MURDER:VO",
+            "strict": true,
+          },
+          "Trigger": "CHAINED",
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": MosString128 {
+        "_str": "B10",
+        "strict": true,
+      },
+      "Slug": MosString128 {
+        "_str": "Colstat Murder",
+        "strict": true,
+      },
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [
+        Object {
+          "EditorialDuration": 310,
+          "EditorialStart": 55,
+          "ID": MosString128 {
+            "_str": "0",
+            "strict": true,
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": Array [
+            Object {
+              "MosPayload": Object {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": MosString128 {
+            "_str": "M000133",
+            "strict": true,
+          },
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": MosString128 {
+        "_str": "B11",
+        "strict": true,
+      },
+      "Slug": MosString128 {
+        "_str": "Test MOS",
+        "strict": true,
+      },
+    },
+  ],
+}
+`;
+
+exports[`message chunking chunks 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roReq>
+    <roID>M000123</roID>
+  </roReq>
+</mos>"
+`;
+
+exports[`message chunking chunks 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Slug": MosString128 {
+    "_str": "5PM RUNDOWN",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [
+        Object {
+          "EditorialDuration": 645,
+          "ID": MosString128 {
+            "_str": "0",
+            "strict": true,
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": Array [
+            Object {
+              "MosPayload": Object {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": MosString128 {
+            "_str": "M000224",
+            "strict": true,
+          },
+          "Paths": Array [
+            Object {
+              "Description": "MPEG2 Video",
+              "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+              "Type": "PATH",
+            },
+            Object {
+              "Description": "WM9 750Kbps",
+              "Target": "http://server/proxy/clipe.wmv",
+              "Type": "PROXY PATH",
+            },
+            Object {
+              "Description": "MOS Object",
+              "Target": "http://server/proxy/clipe.xml",
+              "Type": "METADATA PATH",
+            },
+          ],
+          "Slug": MosString128 {
+            "_str": "COLSTAT MURDER:VO",
+            "strict": true,
+          },
+          "Trigger": "CHAINED",
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": MosString128 {
+        "_str": "B10",
+        "strict": true,
+      },
+      "Slug": MosString128 {
+        "_str": "Colstat Murder",
+        "strict": true,
+      },
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [
+        Object {
+          "EditorialDuration": 310,
+          "EditorialStart": 55,
+          "ID": MosString128 {
+            "_str": "0",
+            "strict": true,
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": Array [
+            Object {
+              "MosPayload": Object {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": MosString128 {
+            "_str": "M000133",
+            "strict": true,
+          },
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": MosString128 {
+        "_str": "B11",
+        "strict": true,
+      },
+      "Slug": MosString128 {
+        "_str": "Test MOS",
+        "strict": true,
+      },
+    },
+  ],
+}
+`;
+
+exports[`message chunking junk data before 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roReq>
+    <roID>M000123</roID>
+  </roReq>
+</mos>"
+`;
+
+exports[`message chunking junk data before 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Slug": MosString128 {
+    "_str": "5PM RUNDOWN",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [
+        Object {
+          "EditorialDuration": 645,
+          "ID": MosString128 {
+            "_str": "0",
+            "strict": true,
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": Array [
+            Object {
+              "MosPayload": Object {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": MosString128 {
+            "_str": "M000224",
+            "strict": true,
+          },
+          "Paths": Array [
+            Object {
+              "Description": "MPEG2 Video",
+              "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+              "Type": "PATH",
+            },
+            Object {
+              "Description": "WM9 750Kbps",
+              "Target": "http://server/proxy/clipe.wmv",
+              "Type": "PROXY PATH",
+            },
+            Object {
+              "Description": "MOS Object",
+              "Target": "http://server/proxy/clipe.xml",
+              "Type": "METADATA PATH",
+            },
+          ],
+          "Slug": MosString128 {
+            "_str": "COLSTAT MURDER:VO",
+            "strict": true,
+          },
+          "Trigger": "CHAINED",
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": MosString128 {
+        "_str": "B10",
+        "strict": true,
+      },
+      "Slug": MosString128 {
+        "_str": "Colstat Murder",
+        "strict": true,
+      },
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [
+        Object {
+          "EditorialDuration": 310,
+          "EditorialStart": 55,
+          "ID": MosString128 {
+            "_str": "0",
+            "strict": true,
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": Array [
+            Object {
+              "MosPayload": Object {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": MosString128 {
+            "_str": "M000133",
+            "strict": true,
+          },
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": MosString128 {
+        "_str": "B11",
+        "strict": true,
+      },
+      "Slug": MosString128 {
+        "_str": "Test MOS",
+        "strict": true,
+      },
+    },
+  ],
+}
+`;
+
+exports[`message chunking junk data packet before 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roReq>
+    <roID>M000123</roID>
+  </roReq>
+</mos>"
+`;
+
+exports[`message chunking junk data packet before 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Slug": MosString128 {
+    "_str": "5PM RUNDOWN",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [
+        Object {
+          "EditorialDuration": 645,
+          "ID": MosString128 {
+            "_str": "0",
+            "strict": true,
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": Array [
+            Object {
+              "MosPayload": Object {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": MosString128 {
+            "_str": "M000224",
+            "strict": true,
+          },
+          "Paths": Array [
+            Object {
+              "Description": "MPEG2 Video",
+              "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+              "Type": "PATH",
+            },
+            Object {
+              "Description": "WM9 750Kbps",
+              "Target": "http://server/proxy/clipe.wmv",
+              "Type": "PROXY PATH",
+            },
+            Object {
+              "Description": "MOS Object",
+              "Target": "http://server/proxy/clipe.xml",
+              "Type": "METADATA PATH",
+            },
+          ],
+          "Slug": MosString128 {
+            "_str": "COLSTAT MURDER:VO",
+            "strict": true,
+          },
+          "Trigger": "CHAINED",
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": MosString128 {
+        "_str": "B10",
+        "strict": true,
+      },
+      "Slug": MosString128 {
+        "_str": "Colstat Murder",
+        "strict": true,
+      },
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [
+        Object {
+          "EditorialDuration": 310,
+          "EditorialStart": 55,
+          "ID": MosString128 {
+            "_str": "0",
+            "strict": true,
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": Array [
+            Object {
+              "MosPayload": Object {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": MosString128 {
+            "_str": "M000133",
+            "strict": true,
+          },
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": MosString128 {
+        "_str": "B11",
+        "strict": true,
+      },
+      "Slug": MosString128 {
+        "_str": "Test MOS",
+        "strict": true,
+      },
+    },
+  ],
+}
 `;

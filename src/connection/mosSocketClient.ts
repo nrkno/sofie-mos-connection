@@ -2,9 +2,9 @@ import { EventEmitter } from 'events'
 import { Socket } from 'net'
 import { SocketConnectionEvent } from './socketConnection'
 import { MosMessage } from '../mosModel/MosMessage'
-import { xml2js } from '../utils/Utils'
 import { HandedOverQueue } from './NCSServerConnection'
 import { HeartBeat } from '../mosModel'
+import { MosMessageParser } from './mosMessageParser'
 const iconv = require('iconv-lite')
 
 export type CallBackFunction = (err: any, data: object) => void
@@ -23,12 +23,12 @@ export class MosSocketClient extends EventEmitter {
 	private _debug: boolean = false
 
 	private _description: string
-	private _client: Socket
+	private _client: Socket | undefined
 	private _shouldBeConnected: boolean = false
 	private _connected: boolean = false
 	private _lastConnectionAttempt: number
 	private _reconnectAttempt: number = 0
-	private _connectionAttemptTimer: NodeJS.Timer
+	private _connectionAttemptTimer: NodeJS.Timer | undefined
 
 	private _commandTimeoutTimer: NodeJS.Timer
 	private _commandTimeout: number
@@ -43,8 +43,8 @@ export class MosSocketClient extends EventEmitter {
 	private _timedOutCommands: { [id: string]: number } = {}
 
 	private processQueueTimeout: NodeJS.Timer
-	private _startingUp: boolean = true
-	private dataChunks: string = ''
+	// private _startingUp: boolean = true
+	private messageParser: MosMessageParser
 
   /** */
 	constructor (host: string, port: number, description: string, timeout?: number, debug?: boolean) {
@@ -55,6 +55,11 @@ export class MosSocketClient extends EventEmitter {
 		this._commandTimeout = timeout || 5000
 		if (debug) this._debug = debug
 
+		this.messageParser = new MosMessageParser(description)
+		this.messageParser.debug = this._debug
+		this.messageParser.on('message', (message: any, messageString: string) => {
+			this._handleMessage(message, messageString)
+		})
 	}
 
   /** */
@@ -108,9 +113,6 @@ export class MosSocketClient extends EventEmitter {
 					this._autoReconnectionAttempt()
 				}, this._reconnectDelay)
 			}
-
-			// this._readyToSendMessage = true
-			// this._sentMessage = null
 		}
 	}
 
@@ -219,6 +221,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 	public setDebug (debug: boolean) {
 		this._debug = debug
+		this.messageParser.debug = this._debug
 	}
   /** */
 	private set connected (connected: boolean) {
@@ -248,6 +251,7 @@ export class MosSocketClient extends EventEmitter {
   /** */
 	private executeCommand (message: QueueMessage, isRetry?: boolean): void {
 		if (this._sentMessage && !isRetry) throw Error('executeCommand: there already is a sent Command!')
+		if (!this._client) throw Error('executeCommand: No client socket connection set up!')
 
 		this._sentMessage = message
 		this._lingeringMessage = null
@@ -269,7 +273,9 @@ export class MosSocketClient extends EventEmitter {
 					this._timedOutCommands[sentMessageId] = Date.now()
 					this.processQueue()
 				} else {
-					this.executeCommand(message, true)
+					if (this._client) {
+						this.executeCommand(message, true)
+					}
 				}
 			}
 		}, this._commandTimeout)
@@ -302,7 +308,7 @@ export class MosSocketClient extends EventEmitter {
 		// @todo create event telling reconnection ended with result: true/false
 		// only if reconnection interval is true
 		this._reconnectAttempt = 0
-		global.clearInterval(this._connectionAttemptTimer)
+		if (this._connectionAttemptTimer) global.clearInterval(this._connectionAttemptTimer)
 		delete this._connectionAttemptTimer
 	}
 
@@ -314,7 +320,7 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	private _onConnected () {
-		this._client.emit(SocketConnectionEvent.ALIVE)
+		if (this._client) this._client.emit(SocketConnectionEvent.ALIVE)
 		// global.clearInterval(this._connectionAttemptTimer)
 		this._clearConnectionAttemptTimer()
 		this.connected = true
@@ -322,102 +328,61 @@ export class MosSocketClient extends EventEmitter {
 
   /** */
 	private _onData (data: Buffer) {
-		this._client.emit(SocketConnectionEvent.ALIVE)
+		if (this._client) this._client.emit(SocketConnectionEvent.ALIVE)
 		// data = Buffer.from(data, 'ucs2').toString()
-		let messageString: string = iconv.decode(data, 'utf16-be').trim()
+		const messageString: string = iconv.decode(data, 'utf16-be')
 
 		this.emit('rawMessage','recieved', messageString)
 		if (this._debug) console.log(`${this._description} Received: ${messageString}`)
 
-		let firstMatch = '<mos>' // <mos>
-		let first = messageString.substr(0, firstMatch.length)
-		let lastMatch = '</mos>' // </mos>
-		let last = messageString.substr(-lastMatch.length)
-
-		let parsedData: any
 		try {
-			// console.log(first === firstMatch, last === lastMatch, last, lastMatch)
-			if (first === firstMatch && last === lastMatch) {
-				// Data ready to be parsed:
-				parsedData = xml2js(messageString)// , { compact: true, trim: true, nativeType: true })
-				this.dataChunks = ''
-			} else if (last === lastMatch) {
-				// Last chunk, ready to parse with saved data:
-				parsedData = xml2js(this.dataChunks + messageString)// , { compact: true, trim: true, nativeType: true })
-				this.dataChunks = ''
-			} else if (first === firstMatch) {
-				// Chunk, save for later:
-				this.dataChunks = messageString
-			} else {
-				// Chunk, save for later:
-				this.dataChunks += messageString
-			}
-			// let parsedData: any = parser.toJson(messageString, )
-			if (parsedData) {
-				// console.log(parsedData, newParserData)
-				let messageId = parsedData.mos.messageID
-				if (messageId) {
-					let sentMessage = this._sentMessage || this._lingeringMessage
-					if (sentMessage) {
-						if (sentMessage.msg.messageID.toString() === (messageId + '')) {
-							this._sendReply(sentMessage.msg.messageID, null, parsedData)
-						} else {
-							if (this._debug) console.log('Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
-							if (this._debug) console.log(parsedData)
+			this.messageParser.parseMessage(messageString)
+		} catch (err) {
+			this.emit('error', err)
+		}
+	}
 
-							this.emit('warning', 'Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
+	private _handleMessage (parsedData: any, messageString: string) {
 
-							this._triggerQueueCleanup()
-						}
-						// let cb: CallBackFunction | undefined = this._queueCallback[messageId]
-						// if (cb) {
-						// 	cb(null, parsedData)
-						// }
-						// delete this._queueCallback[messageId]
-						// this._sentMessage = null
-					} else if (this._timedOutCommands[messageId]) {
-						if (this._debug) {
-							console.log('Got a reply (' + messageId + '), but command \
-							timed out ' + (Date.now() - this._timedOutCommands[messageId]) + 'ms ago', messageString)
-						}
-						delete this._timedOutCommands[messageId]
-					} else {
-						// huh, we've got a reply to something we've not sent.
-						if (this._debug) console.log('Got a reply (' + messageId + '), but we haven\'t sent any message', messageString)
-						this.emit('warning', 'Got a reply (' + messageId + '), but we haven\'t sent any message ' + messageString)
-					}
-					clearTimeout(this._commandTimeoutTimer)
+		// console.log(parsedData, newParserData)
+		let messageId = parsedData.mos.messageID
+		if (messageId) {
+			let sentMessage = this._sentMessage || this._lingeringMessage
+			if (sentMessage) {
+				if (sentMessage.msg.messageID.toString() === (messageId + '')) {
+					this._sendReply(sentMessage.msg.messageID, null, parsedData)
 				} else {
-					// error message?
-					if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
-						if (this._sentMessage && parsedData.mos.mosAck.statusDescription === 'Buddy server cannot respond because main server is available') {
-							this._sendReply(this._sentMessage.msg.messageID, 'Main server available', parsedData)
-						} else {
-							if (this._debug) console.log('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
-							this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
-						}
-					} else {
-						// unknown message..
-						this.emit('error', 'Unknown message: ' + messageString)
-					}
+					if (this._debug) console.log('Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
+					if (this._debug) console.log(parsedData)
+
+					this.emit('warning', 'Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
+
+					this._triggerQueueCleanup()
+				}
+
+			} else if (this._timedOutCommands[messageId]) {
+				if (this._debug) {
+					console.log(`Got a reply (${messageId}), but command timed out ${(Date.now() - this._timedOutCommands[messageId])} ms ago`, messageString)
+				}
+				delete this._timedOutCommands[messageId]
+			} else {
+				// huh, we've got a reply to something we've not sent.
+				if (this._debug) console.log('Got a reply (' + messageId + '), but we haven\'t sent any message', messageString)
+				this.emit('warning', 'Got a reply (' + messageId + '), but we haven\'t sent any message ' + messageString)
+			}
+			clearTimeout(this._commandTimeoutTimer)
+		} else {
+			// error message?
+			if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
+				if (this._sentMessage && parsedData.mos.mosAck.statusDescription === 'Buddy server cannot respond because main server is available') {
+					this._sendReply(this._sentMessage.msg.messageID, 'Main server available', parsedData)
+				} else {
+					if (this._debug) console.log('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
+					this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
 				}
 			} else {
-				return
-			}
-			// console.log('messageString', messageString)
-			// console.log('first msg', messageString)
-			this._startingUp = false
-		} catch (e) {
-			// console.log('messageString', messageString)
-			if (this._startingUp) {
-				// when starting up, we might get half a message, let's ignore this error then
-				let a = Math.min(20, Math.floor(messageString.length / 2))
-				console.log('Strange XML-message upon startup: "' + messageString.slice(0, a) + '[...]' + messageString.slice(-a) + '" (length: ' + messageString.length + ')')
-				console.log('error', e)
-			} else {
-				console.log('dataChunks-------------\n', this.dataChunks)
-				console.log('messageString---------\n', messageString)
-				this.emit('error', e)
+				// unknown message..
+				this.emit('error', 'Unknown message: ' + messageString)
 			}
 		}
 

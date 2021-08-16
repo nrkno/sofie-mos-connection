@@ -2,7 +2,7 @@ export class MosString128 {
 	private _str: string
 
 	/** */
-	constructor (str: any) {
+	constructor (str: any, private strict: boolean = true) {
 		this.string = str
 	}
 	/** */
@@ -31,6 +31,8 @@ export class MosString128 {
 
 	/** */
 	private _validate () {
-		if ((this._str || '').length > 128) throw new Error('MosString128 length is too long (' + this._str + ')!')
+		if (this.strict) {
+			if ((this._str || '').length > 128) throw new Error('MosString128 length is too long (' + this._str + ')!')
+		}
 	}
 }
