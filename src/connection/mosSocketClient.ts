@@ -284,7 +284,6 @@ export class MosSocketClient extends EventEmitter {
 			}
 		}, this._commandTimeout)
 		this._client.write(buf, 'ucs2')
-		this.debugTrace(`MOS command sent from ${this._description} : ${messageString}\r\nbytes sent: ${this._client.bytesWritten}`)
 
 		this.emit('rawMessage','sent', messageString)
 	}
@@ -337,7 +336,6 @@ export class MosSocketClient extends EventEmitter {
 		const messageString: string = iconv.decode(data, 'utf16-be')
 
 		this.emit('rawMessage','recieved', messageString)
-		this.debugTrace(`${this._description} Received: ${messageString}`)
 
 		try {
 			this.messageParser.parseMessage(messageString)
