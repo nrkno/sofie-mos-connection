@@ -246,7 +246,6 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 					return this.executeCommand(heartbeat)
 					.then(() => {
 						client.heartbeatConnected = true
-						this.debugTrace(`Heartbeat on ${this._clients[key].clientDescription} received.`)
 					})
 					.catch((e) => {
 						// probably a timeout
