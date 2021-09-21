@@ -12,14 +12,12 @@ module.exports = {
 		'js'
 	],
 	transform: {
-		'^.+\\.(ts|tsx)$': 'ts-jest'
+		'^.+\\.(ts|tsx)$': 'ts-jest',
 	},
 	testMatch: [
 		'**/__tests__/**/*.(spec|test).(ts|js)'
 	],
-	testPathIgnorePatterns: [
-		'integrationTests'
-	],
+	setupFilesAfterEnv: ['jest-extended'],
 	testEnvironment: 'node',
 	coverageThreshold: {
 		global: {
@@ -30,5 +28,13 @@ module.exports = {
 		}
 	},
 	coverageDirectory: "./coverage/",
-	collectCoverage: true
+	collectCoverage: true,
+	collectCoverageFrom: [
+		'src/**/*.{js,ts}',
+		'!**/@types/**',
+		'!**/__tests__/**',
+		'!**/__mocks__/**',
+		'!**/node_modules/**',
+		'!**/dist/**',
+	],
 }
