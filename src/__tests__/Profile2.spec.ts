@@ -1,4 +1,5 @@
-import { checkAckSnapshot,
+import {
+	checkAckSnapshot,
 	checkMessageSnapshot,
 	checkReplyToServer,
 	clearMocks,
@@ -10,7 +11,7 @@ import { checkAckSnapshot,
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
-	setupMocks
+	setupMocks,
 } from './lib'
 import {
 	MosConnection,
@@ -29,7 +30,7 @@ import {
 	IMOSStoryAction,
 	IMOSStoryStatus,
 	MosString128,
-	IMOSListMachInfo
+	IMOSListMachInfo,
 } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
@@ -82,11 +83,14 @@ describe('Profile 2', () => {
 		SocketMock.mockClear()
 		ServerMock.mockClear()
 
-		mosConnection = await getMosConnection({
-			'0': true,
-			'1': true,
-			'2': true
-		}, true)
+		mosConnection = await getMosConnection(
+			{
+				'0': true,
+				'1': true,
+				'2': true,
+			},
+			true
+		)
 		mosDevice = await getMosDevice(mosConnection)
 
 		// Profile 0:
@@ -111,7 +115,7 @@ describe('Profile 2', () => {
 			let ack: IMOSROAck = {
 				ID: new MosString128('runningOrderId'),
 				Status: new MosString128('OK'),
-				Stories: []
+				Stories: [],
 			}
 			return Promise.resolve(ack)
 		}
@@ -188,12 +192,16 @@ describe('Profile 2', () => {
 		mosDevice.onRODeleteItems((Action: IMOSStoryAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
 			return onRODeleteItems(Action, Items)
 		})
-		mosDevice.onROSwapStories((Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128): Promise<IMOSROAck> => {
-			return onROSwapStories(Action, StoryID0, StoryID1)
-		})
-		mosDevice.onROSwapItems((Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> => {
-			return onROSwapItems(Action, ItemID0, ItemID1)
-		})
+		mosDevice.onROSwapStories(
+			(Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128): Promise<IMOSROAck> => {
+				return onROSwapStories(Action, StoryID0, StoryID1)
+			}
+		)
+		mosDevice.onROSwapItems(
+			(Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> => {
+				return onROSwapItems(Action, ItemID0, ItemID1)
+			}
+		)
 		let b = doBeforeAll()
 		socketMockLower = b.socketMockLower
 		socketMockUpper = b.socketMockUpper
@@ -228,7 +236,6 @@ describe('Profile 2', () => {
 		serverSocketMockLower.mockClear()
 		serverSocketMockUpper.mockClear()
 		serverSocketMockQuery.mockClear()
-
 	})
 	afterAll(async () => {
 		await mosConnection.dispose()
@@ -286,24 +293,25 @@ describe('Profile 2', () => {
 		expect(parsedReply.mos.roList.story).toHaveLength(xmlApiData.roCreate.Stories.length)
 		expect(parsedReply.mos.roList.story[0].storyID._text + '').toEqual(xmlApiData.roCreate.Stories[0].ID.toString())
 		expect(parsedReply.mos.roList.story[0].item).toBeTruthy()
-		expect(parsedReply.mos.roList.story[0].item.itemID._text + '').toEqual(xmlApiData.roCreate.Stories[0].Items[0].ID.toString())
-		expect(parsedReply.mos.roList.story[0].item.objID._text + '').toEqual(xmlApiData.roCreate.Stories[0].Items[0].ObjectID.toString())
+		expect(parsedReply.mos.roList.story[0].item.itemID._text + '').toEqual(
+			xmlApiData.roCreate.Stories[0].Items[0].ID.toString()
+		)
+		expect(parsedReply.mos.roList.story[0].item.objID._text + '').toEqual(
+			xmlApiData.roCreate.Stories[0].Items[0].ObjectID.toString()
+		)
 
 		expect(parsedReply).toMatchSnapshot()
-
 	})
 	test('sendRequestRunningOrder', async () => {
-
 		// Prepare server response
 		let mockReply = jest.fn((data) => {
 			let str = decode(data)
 			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
 			let repl = getXMLReply(messageID, xmlData.roList)
 			return encode(repl)
-
 		})
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		let returnedObj = (await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!)) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])

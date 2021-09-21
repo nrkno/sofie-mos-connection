@@ -41,15 +41,17 @@ export class SocketMock extends EventEmitter implements Socket {
 
 	public name: string
 	public connectedPort: number
-	public connectedHost: string
+	public connectedHost: string;
 
 	// @ts-ignore
-	[Symbol.asyncIterator] (): AsyncIterableIterator<any>
+	[Symbol.asyncIterator](): AsyncIterableIterator<any>
 
-	private _responses: Array<string | string[] | false | ((data: any) => string | string[] | Buffer | Buffer[] | false) > = []
+	private _responses: Array<
+		string | string[] | false | ((data: any) => string | string[] | Buffer | Buffer[] | false)
+	> = []
 	private _replyToHeartBeat: boolean = true
 
-	constructor () {
+	constructor() {
 		super()
 
 		// @ts-ignore this is comparable with ISocketMock
@@ -86,68 +88,124 @@ export class SocketMock extends EventEmitter implements Socket {
 		this.mockSentMessage0 = jest.fn(this.mockSentMessage0)
 		this.mockSentMessage = jest.fn(this.mockSentMessage)
 	}
-	static mockClear () {
+	static mockClear() {
 		instances.splice(0, 9999)
 	}
-	static get instances () {
+	static get instances() {
 		return instances
 	}
 
-	write () {
+	write() {
 		this.mockSentMessage0.apply(this, arguments)
 		return true
 	}
-	connect (port: any, host: any) {
+	connect(port: any, host: any) {
 		this.connectedPort = port
 		this.connectedHost = host
 
-		if (this.connectedPort === 10542) { // don't reply on heartbeats on query port
+		if (this.connectedPort === 10542) {
+			// don't reply on heartbeats on query port
 			this._replyToHeartBeat = false
 		}
 
 		this.emit('connect')
 		return this
 	}
-	setEncoding () { return this }
-	destroy () {
+	setEncoding() {
+		return this
+	}
+	destroy() {
 		this.destroyed = true
 		this.emit('close')
 		/* nothing */
 	}
-	pause () { return this }
-	resume () { return this }
-	setTimeout (timeout: number, callback?: (...args: any[]) => void) { if (callback) setTimeout(callback, timeout); return this }
-	setNoDelay (noDelay?: boolean) { noDelay = noDelay; return this }
-	setKeepAlive (enable?: boolean, initialDelay?: number) { enable = enable; initialDelay = initialDelay ;return this }
-	address () { return { port: 100, family: 'localhost', address: '127.0.0.1' } }
-	unref () { /* nothing */ }
-	ref () { /* nothing */ }
-	end () { /* nothing */ }
-	_write (chunk: any, encoding: string, callback: Function) { chunk = chunk; encoding = encoding; callback() /* nothing */ }
-	setDefaultEncoding (encoding: string) { encoding = encoding; return this }
-	_read (size: number) { size = size }
-	read (size?: number) { size = size }
-	isPaused () { return false }
-	pipe (destination: any, options?: { end?: boolean; }) { options = options; return destination }
-	unpipe (destination: any) { destination = destination; return this }
-	unshift (chunk: any) { chunk = chunk }
-	wrap (oldStream: NodeJS.ReadableStream) { oldStream = oldStream; return this }
-	push (chunk: any, encoding?: string) { chunk = chunk; encoding = encoding; return true }
-	_destroy () { /* nothing */ }
-	_final () { /* nothing */ }
-	cork () { /* nothing */ }
-	uncork () { /* nothing */ }
+	pause() {
+		return this
+	}
+	resume() {
+		return this
+	}
+	setTimeout(timeout: number, callback?: (...args: any[]) => void) {
+		if (callback) setTimeout(callback, timeout)
+		return this
+	}
+	setNoDelay(noDelay?: boolean) {
+		noDelay = noDelay
+		return this
+	}
+	setKeepAlive(enable?: boolean, initialDelay?: number) {
+		enable = enable
+		initialDelay = initialDelay
+		return this
+	}
+	address() {
+		return { port: 100, family: 'localhost', address: '127.0.0.1' }
+	}
+	unref() {
+		/* nothing */
+	}
+	ref() {
+		/* nothing */
+	}
+	end() {
+		/* nothing */
+	}
+	_write(chunk: any, encoding: string, callback: Function) {
+		chunk = chunk
+		encoding = encoding
+		callback() /* nothing */
+	}
+	setDefaultEncoding(encoding: string) {
+		encoding = encoding
+		return this
+	}
+	_read(size: number) {
+		size = size
+	}
+	read(size?: number) {
+		size = size
+	}
+	isPaused() {
+		return false
+	}
+	pipe(destination: any, options?: { end?: boolean }) {
+		options = options
+		return destination
+	}
+	unpipe(destination: any) {
+		destination = destination
+		return this
+	}
+	unshift(chunk: any) {
+		chunk = chunk
+	}
+	wrap(oldStream: NodeJS.ReadableStream) {
+		oldStream = oldStream
+		return this
+	}
+	push(chunk: any, encoding?: string) {
+		chunk = chunk
+		encoding = encoding
+		return true
+	}
+	_destroy() {
+		/* nothing */
+	}
+	_final() {
+		/* nothing */
+	}
+	cork() {
+		/* nothing */
+	}
+	uncork() {
+		/* nothing */
+	}
 
 	// ------------------------------------------------------------------------
 	// Mock methods:
-	mockSentMessage0 (data: any, encoding: any) {
-
+	mockSentMessage0(data: any, encoding: any) {
 		if (this._replyToHeartBeat) {
-			const str: string = (
-				typeof data === 'string' ?
-				data :
-				this.decode(data)
-			)
+			const str: string = typeof data === 'string' ? data : this.decode(data)
 
 			if (str.match(/<heartbeat>/)) {
 				try {
@@ -159,12 +217,10 @@ export class SocketMock extends EventEmitter implements Socket {
 <ncsID>${ncsID}</ncsID>
 <messageID>${messageId}</messageID>\
   <heartbeat>
-    <time>${(new MosTime()).toString()}</time>
+    <time>${new MosTime().toString()}</time>
   </heartbeat>
 </mos>\r\n`
-					this.mockReceiveMessage(
-						this.encode(repl)
-					)
+					this.mockReceiveMessage(this.encode(repl))
 				} catch (e) {
 					console.error('mockReply', str)
 					throw e
@@ -174,7 +230,7 @@ export class SocketMock extends EventEmitter implements Socket {
 		}
 		this.mockSentMessage(data, encoding)
 	}
-	mockSentMessage (data: any, _encoding: any) {
+	mockSentMessage(data: any, _encoding: any) {
 		const cb = this._responses.shift()
 		if (cb) {
 			// send reply:
@@ -189,46 +245,44 @@ export class SocketMock extends EventEmitter implements Socket {
 						this.mockReceiveMessage(msg)
 					}
 				}
-			},1)
+			}, 1)
 		}
 	}
-	mockReceiveMessage (msg: string | Buffer) {
+	mockReceiveMessage(msg: string | Buffer) {
 		this.emit('data', msg)
 	}
-	mockAddReply (cb: string | string[] | false | ((data: any) => string | string[] | Buffer | Buffer[] | false)) {
+	mockAddReply(cb: string | string[] | false | ((data: any) => string | string[] | Buffer | Buffer[] | false)) {
 		this._responses.push(cb)
 	}
-	mockClear () {
+	mockClear() {
 		this._responses.splice(0, 9999)
 		// @ts-ignore
 		this.mockSentMessage0['mockClear']()
 		// @ts-ignore
 		this.mockSentMessage['mockClear']()
 	}
-	mockWaitForSentMessages (): Promise<void> {
+	mockWaitForSentMessages(): Promise<void> {
 		return new Promise<void>((resolve) => {
-
 			let check = () => {
 				if (this._responses.length === 0) {
 					resolve()
 				} else {
 					setTimeoutOrg(() => {
 						check()
-					},1)
+					}, 1)
 				}
 			}
 			check()
-
 		})
 	}
 
-	decode (data: Buffer): string {
+	decode(data: Buffer): string {
 		return iconv.decode(data, 'utf16-be')
 	}
-	encode (str: string) {
+	encode(str: string) {
 		return iconv.encode(str, 'utf16-be')
 	}
-	setReplyToHeartBeat (replyToHeartBeat: boolean) {
+	setReplyToHeartBeat(replyToHeartBeat: boolean) {
 		this._replyToHeartBeat = replyToHeartBeat
 	}
 }

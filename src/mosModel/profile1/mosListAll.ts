@@ -4,17 +4,16 @@ import { IMOSObject } from '../../api'
 import { XMLMosObject } from '../profile1/xmlConversion'
 
 export class MosListAll extends MosMessage {
-
 	objs: Array<IMOSObject>
 
-  /** */
-	constructor (objs: Array<IMOSObject>) {
+	/** */
+	constructor(objs: Array<IMOSObject>) {
 		super('lower')
 		this.objs = objs
 	}
 
-  /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
+	/** */
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('mosListAll')
 
 		this.objs.forEach((obj: IMOSObject) => {

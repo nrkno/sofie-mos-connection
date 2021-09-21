@@ -1,16 +1,5 @@
-import { clearMocks,
-	decode,
-	delay,
-	encode,
-	getXMLReply,
-	initMosConnection,
-	setupMocks
-} from './lib'
-import {
-	MosConnection,
-	MosDevice,
-	IMOSConnectionStatus,
-	IMOSObject} from '../'
+import { clearMocks, decode, delay, encode, getXMLReply, initMosConnection, setupMocks } from './lib'
+import { MosConnection, MosDevice, IMOSConnectionStatus, IMOSObject } from '../'
 import { ConnectionConfig } from '../config/connectionConfig'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
@@ -27,7 +16,6 @@ beforeEach(() => {
 })
 describe('MosDevice: General', () => {
 	test('Test the Socket mock', async () => {
-
 		let conn = new Socket()
 
 		let onData = jest.fn()
@@ -49,12 +37,14 @@ describe('MosDevice: General', () => {
 		let connMock = SocketMock.instances[0]
 
 		// Simulate us getting som data:
-		connMock.mockReceiveMessage('<mos>\
+		connMock.mockReceiveMessage(
+			'<mos>\
 			<mosID>me</mosID>\
 			<ncsID>you</ncsID>\
 			<messageID>42</messageID>\
 			<hello></hello>\
-		</mos>\r\n')
+		</mos>\r\n'
+		)
 
 		expect(onData).toHaveBeenCalledTimes(1)
 
@@ -67,17 +57,18 @@ describe('MosDevice: General', () => {
 		</mos>\r\n')
 
 		expect(connMock.mockSentMessage).toHaveBeenCalledTimes(1)
-
 	})
 	test('basic initialization', async () => {
-		let mos = new MosConnection(new ConnectionConfig({
-			mosID: 'jestMOS',
-			acceptsConnections: false,
-			profiles: {
-				'0': true,
-				'1': true
-			}
-		}))
+		let mos = new MosConnection(
+			new ConnectionConfig({
+				mosID: 'jestMOS',
+				acceptsConnections: false,
+				profiles: {
+					'0': true,
+					'1': true,
+				},
+			})
+		)
 
 		expect(mos.profiles).toMatchObject({
 			'0': true,
@@ -87,7 +78,7 @@ describe('MosDevice: General', () => {
 			'4': false,
 			'5': false,
 			'6': false,
-			'7': false
+			'7': false,
 		})
 
 		await mos.dispose()
@@ -98,8 +89,8 @@ describe('MosDevice: General', () => {
 			acceptsConnections: true,
 			profiles: {
 				'0': true,
-				'1': true
-			}
+				'1': true,
+			},
 		})
 		expect(mos.acceptsConnections).toBe(true)
 		await initMosConnection(mos)
@@ -115,8 +106,8 @@ describe('MosDevice: General', () => {
 			acceptsConnections: true,
 			profiles: {
 				'0': true,
-				'1': true
-			}
+				'1': true,
+			},
 		})
 		expect(mos.acceptsConnections).toBe(true)
 		await initMosConnection(mos)
@@ -125,8 +116,8 @@ describe('MosDevice: General', () => {
 		let mosDevice = await mos.connect({
 			primary: {
 				id: 'primary',
-				host: '192.168.0.1'
-			}
+				host: '192.168.0.1',
+			},
 		})
 		expect(mosDevice).toBeTruthy()
 		expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
@@ -146,7 +137,6 @@ describe('MosDevice: General', () => {
 		expect(SocketMock.instances[1].destroy).toHaveBeenCalledTimes(1)
 		expect(SocketMock.instances[2].destroy).toHaveBeenCalledTimes(1)
 		expect(SocketMock.instances[3].destroy).toHaveBeenCalledTimes(1)
-
 	})
 	test('MosDevice secondary', async () => {
 		let mos = new MosConnection({
@@ -154,8 +144,8 @@ describe('MosDevice: General', () => {
 			acceptsConnections: true,
 			profiles: {
 				'0': true,
-				'1': true
-			}
+				'1': true,
+			},
 		})
 		expect(mos.acceptsConnections).toBe(true)
 		await initMosConnection(mos)
@@ -165,13 +155,13 @@ describe('MosDevice: General', () => {
 			primary: {
 				id: 'primary',
 				host: '192.168.0.1',
-				timeout: 200
+				timeout: 200,
 			},
 			secondary: {
 				id: 'secondary',
 				host: '192.168.0.2',
-				timeout: 200
-			}
+				timeout: 200,
+			},
 		})
 		expect(mosDevice).toBeTruthy()
 		expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
@@ -216,22 +206,24 @@ describe('MosDevice: General', () => {
 		SocketMock.mockClear()
 		ServerMock.mockClear()
 
-		let mosConnection = new MosConnection(new ConnectionConfig({
-			mosID: 'jestMOS',
-			acceptsConnections: false,
-			profiles: {
-				'0': true,
-				'1': true
-			}
-		}))
+		let mosConnection = new MosConnection(
+			new ConnectionConfig({
+				mosID: 'jestMOS',
+				acceptsConnections: false,
+				profiles: {
+					'0': true,
+					'1': true,
+				},
+			})
+		)
 		await initMosConnection(mosConnection)
 
 		let mosDevice = await mosConnection.connect({
 			primary: {
 				id: 'mockServer',
 				host: '127.0.0.1',
-				timeout: 200
-			}
+				timeout: 200,
+			},
 		})
 		await delay(10) // to allow for async timers & events to triggered
 
@@ -258,7 +250,7 @@ describe('MosDevice: General', () => {
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: true,
 			PrimaryStatus: '', // if not connected this will contain human-readable error-message
-			SecondaryConnected: false
+			SecondaryConnected: false,
 			// SecondaryStatus: string // if not connected this will contain human-readable error-message
 		})
 
@@ -270,27 +262,26 @@ describe('MosDevice: General', () => {
 		await mosConnection.dispose()
 	})
 	test('buddy failover', async () => {
-
 		let mos = new MosConnection({
 			mosID: 'jestMOS',
 			acceptsConnections: false,
 			profiles: {
 				'0': true,
-				'1': true
-			}
+				'1': true,
+			},
 		})
 		await initMosConnection(mos)
 		let mosDevice: MosDevice = await mos.connect({
 			primary: {
 				id: 'mockServer',
 				host: '127.0.0.1',
-				timeout: 200
+				timeout: 200,
 			},
 			secondary: {
 				id: 'mockServer',
 				host: '127.0.0.2',
-				timeout: 200
-			}
+				timeout: 200,
+			},
 		})
 
 		expect(mosDevice).toBeTruthy()
@@ -318,7 +309,7 @@ describe('MosDevice: General', () => {
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: true,
 			PrimaryStatus: '', // if not connected this will contain human-readable error-message
-			SecondaryConnected: true
+			SecondaryConnected: true,
 			// SecondaryStatus: string // if not connected this will contain human-readable error-message
 		})
 
@@ -333,7 +324,7 @@ describe('MosDevice: General', () => {
 			PrimaryConnected: false,
 			PrimaryStatus: '', // if not connected this will contain human-readable error-message
 			SecondaryConnected: true,
-			SecondaryStatus: '' // if not connected this will contain human-readable error-message
+			SecondaryStatus: '', // if not connected this will contain human-readable error-message
 		})
 
 		expect(errorReported).toHaveBeenCalledTimes(1)

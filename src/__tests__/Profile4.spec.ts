@@ -1,4 +1,5 @@
-import { checkMessageSnapshot,
+import {
+	checkMessageSnapshot,
 	checkReplyToServer,
 	clearMocks,
 	decode,
@@ -9,14 +10,9 @@ import { checkMessageSnapshot,
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
-	setupMocks
+	setupMocks,
 } from './lib'
-import {
-	MosConnection,
-	MosDevice,
-	IMOSROAck,
-	IMOSROFullStory,
-	MosString128} from '..'
+import { MosConnection, MosDevice, IMOSROAck, IMOSROFullStory, MosString128 } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
@@ -47,19 +43,22 @@ describe('Profile 4', () => {
 		SocketMock.mockClear()
 		ServerMock.mockClear()
 
-		mosConnection = await getMosConnection({
-			'0': true,
-			'1': true,
-			'2': true,
-			'4': true
-		}, false)
+		mosConnection = await getMosConnection(
+			{
+				'0': true,
+				'1': true,
+				'2': true,
+				'4': true,
+			},
+			false
+		)
 		mosDevice = await getMosDevice(mosConnection)
 
 		let roAckReply = () => {
 			let ack: IMOSROAck = {
 				ID: new MosString128('runningOrderId'),
 				Status: new MosString128('OK'),
-				Stories: []
+				Stories: [],
 			}
 			return Promise.resolve(ack)
 		}
@@ -77,13 +76,11 @@ describe('Profile 4', () => {
 		serverSocketMockQuery = b.serverSocketMockQuery
 	})
 	beforeEach(() => {
-
 		onROStory.mockClear()
 
 		serverSocketMockLower.mockClear()
 		serverSocketMockUpper.mockClear()
 		serverSocketMockQuery.mockClear()
-
 	})
 	afterAll(async () => {
 		await mosConnection.dispose()
@@ -121,7 +118,6 @@ describe('Profile 4', () => {
 			}
 		})
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
-
 	})
 	test('getAllRunningOrders', async () => {
 		// Prepare server response

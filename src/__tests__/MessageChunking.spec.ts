@@ -1,11 +1,13 @@
-import { checkMessageSnapshot, clearMocks,
+import {
+	checkMessageSnapshot,
+	clearMocks,
 	decode,
 	doBeforeAll,
 	encode,
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
-	setupMocks
+	setupMocks,
 } from './lib'
 import {
 	IMOSListMachInfo,
@@ -15,7 +17,8 @@ import {
 	IMOSRunningOrder,
 	MosConnection,
 	MosDevice,
-	MosString128} from '..'
+	MosString128,
+} from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
 
@@ -46,10 +49,13 @@ describe('message chunking', () => {
 		SocketMock.mockClear()
 		// ServerMock.mockClear()
 
-		mosConnection = await getMosConnection({
-			'0': true,
-			'1': true // Must support at least one other profile
-		}, false)
+		mosConnection = await getMosConnection(
+			{
+				'0': true,
+				'1': true, // Must support at least one other profile
+			},
+			false
+		)
 		mosDevice = await getMosDevice(mosConnection)
 
 		// Profile 0:
@@ -64,10 +70,7 @@ describe('message chunking', () => {
 			return Promise.resolve(xmlApiData.mosObj)
 		})
 		onRequestAllMOSObjects = jest.fn(() => {
-			return Promise.resolve([
-				xmlApiData.mosObj,
-				xmlApiData.mosObj2
-			])
+			return Promise.resolve([xmlApiData.mosObj, xmlApiData.mosObj2])
 		})
 		mosDevice.onRequestMOSObject((objId: string): Promise<IMOSObject | null> => {
 			return onRequestMOSObject(objId)
@@ -80,7 +83,7 @@ describe('message chunking', () => {
 			let ack: IMOSROAck = {
 				ID: new MosString128('runningOrderId'),
 				Status: new MosString128('OK'),
-				Stories: []
+				Stories: [],
 			}
 			return Promise.resolve(ack)
 		}
@@ -97,7 +100,6 @@ describe('message chunking', () => {
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
-
 	})
 	beforeEach(() => {
 		onRunningOrderStory.mockClear()
@@ -105,7 +107,6 @@ describe('message chunking', () => {
 		serverSocketMockLower.mockClear()
 		serverSocketMockUpper.mockClear()
 		serverSocketMockQuery.mockClear()
-
 	})
 	test('init', async () => {
 		expect(mosDevice).toBeTruthy()
@@ -113,17 +114,17 @@ describe('message chunking', () => {
 		expect(socketMockUpper).toBeTruthy()
 	})
 
-	function chunkSubstr (str: string, size: number) {
+	function chunkSubstr(str: string, size: number) {
 		const numChunks = Math.ceil(str.length / size)
 		const chunks = new Array(numChunks)
 
 		/* tslint:disable-next-line */
 		for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
-		  chunks[i] = str.substr(o, size)
+			chunks[i] = str.substr(o, size)
 		}
 
 		return chunks
-	  }
+	}
 
 	test('chunks', async () => {
 		// Prepare server response
@@ -133,11 +134,11 @@ describe('message chunking', () => {
 			let repl = getXMLReply(messageID, xmlData.roList)
 			let chunks = chunkSubstr(repl, 500)
 			expect(chunks).toHaveLength(4)
-			return chunks.map(c => encode(c))
+			return chunks.map((c) => encode(c))
 		})
 
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		let returnedObj = (await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!)) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
@@ -157,15 +158,12 @@ describe('message chunking', () => {
 			const splitPoint = repl.indexOf('Test MOS')
 			expect(splitPoint).not.toEqual(-1)
 
-			const chunks = [
-				repl.substr(0, splitPoint + 4),
-				repl.substr(splitPoint + 4)
-			]
-			return chunks.map(c => encode(c))
+			const chunks = [repl.substr(0, splitPoint + 4), repl.substr(splitPoint + 4)]
+			return chunks.map((c) => encode(c))
 		})
 
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		let returnedObj = (await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!)) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
@@ -192,7 +190,7 @@ describe('message chunking', () => {
 		})
 
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		let returnedObj = (await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!)) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])
@@ -209,12 +207,12 @@ describe('message chunking', () => {
 			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
 			let repl = getXMLReply(messageID, xmlData.roList)
 
-			const chunks = [ '         JUNK DATA   ' , repl]
-			return chunks.map(c => encode(c))
+			const chunks = ['         JUNK DATA   ', repl]
+			return chunks.map((c) => encode(c))
 		})
 
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		let returnedObj = (await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!)) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		let msg = decode(mockReply.mock.calls[0][0])

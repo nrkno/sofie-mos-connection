@@ -10,39 +10,37 @@ export interface IMOSExternalMetaData {
 export enum IMOSScope {
 	OBJECT = 'OBJECT',
 	STORY = 'STORY',
-	PLAYLIST = 'PLAYLIST'
+	PLAYLIST = 'PLAYLIST',
 }
 
 export class MosExternalMetaData {
-
 	private _scope?: IMOSScope
 	private _schema: string
 	private _payload: any
 
-	constructor (obj: IMOSExternalMetaData) {
+	constructor(obj: IMOSExternalMetaData) {
 		this._scope = obj.MosScope
 		this._schema = obj.MosSchema
 		this._payload = obj.MosPayload
 	}
 
-	get scope (): IMOSScope | undefined {
+	get scope(): IMOSScope | undefined {
 		return this._scope
 	}
 
-	get schema (): string {
+	get schema(): string {
 		return this._schema
 	}
 
-	get payload (): any {
+	get payload(): any {
 		return this._payload
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('mosExternalMetadata') // config headless
 		addTextElement(root, 'mosScope', this._scope)
 		addTextElement(root, 'mosSchema', this._schema)
 		addTextElement(root, 'mosPayload', this._payload) // converts json to xml
 		return root
 	}
-
 }

@@ -1,4 +1,5 @@
-import { checkMessageSnapshot,
+import {
+	checkMessageSnapshot,
 	clearMocks,
 	decode,
 	delay,
@@ -9,14 +10,9 @@ import { checkMessageSnapshot,
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
-	setupMocks
+	setupMocks,
 } from './lib'
-import {
-	MosConnection,
-	MosDevice,
-	IMOSObject,
-	IMOSListMachInfo
-} from '..'
+import { MosConnection, MosDevice, IMOSObject, IMOSListMachInfo } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
 import { xml2js } from 'xml-js'
@@ -48,11 +44,13 @@ describe('Profile 1', () => {
 	let onRequestAllMOSObjects: jest.Mock<any, any>
 
 	beforeAll(async () => {
-
-		mosConnection = await getMosConnection({
-			'0': true,
-			'1': true
-		}, true)
+		mosConnection = await getMosConnection(
+			{
+				'0': true,
+				'1': true,
+			},
+			true
+		)
 		mosDevice = await getMosDevice(mosConnection)
 
 		// Profile 0:
@@ -67,10 +65,7 @@ describe('Profile 1', () => {
 			return Promise.resolve(xmlApiData.mosObj)
 		})
 		onRequestAllMOSObjects = jest.fn(() => {
-			return Promise.resolve([
-				xmlApiData.mosObj,
-				xmlApiData.mosObj2
-			])
+			return Promise.resolve([xmlApiData.mosObj, xmlApiData.mosObj2])
 		})
 		mosDevice.onRequestMOSObject((objId: string): Promise<IMOSObject | null> => {
 			return onRequestMOSObject(objId)
@@ -129,7 +124,6 @@ describe('Profile 1', () => {
 		expect(parsedReply).toMatchSnapshot()
 	})
 	test('onRequestAllMOSObjects', async () => {
-
 		let mockReply = jest.fn((data) => {
 			let str = decode(data)
 			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
@@ -172,7 +166,6 @@ describe('Profile 1', () => {
 		expect(sentData).toMatchSnapshot()
 	})
 	test('getMOSObject', async () => {
-
 		// Prepare mock server response:
 		let mockReply = jest.fn((data) => {
 			let str = decode(data)
@@ -192,7 +185,6 @@ describe('Profile 1', () => {
 		expect(returnedObj).toMatchSnapshot()
 	})
 	test('getAllMOSObjects', async () => {
-
 		expect(socketMockLower).toBeTruthy()
 		// Prepare mock server response:
 		let mockReply = jest.fn((data) => {

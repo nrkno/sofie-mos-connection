@@ -1,4 +1,5 @@
-import { checkAckSnapshot,
+import {
+	checkAckSnapshot,
 	checkMessageSnapshot,
 	checkReplyToServer,
 	clearMocks,
@@ -10,7 +11,7 @@ import { checkAckSnapshot,
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
-	setupMocks
+	setupMocks,
 } from './lib'
 import {
 	IMOSAck,
@@ -25,7 +26,8 @@ import {
 	IMOSAckStatus,
 	IMOSObjectType,
 	IMOSObjectStatus,
-	IMOSObjectAirStatus} from '..'
+	IMOSObjectAirStatus,
+} from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
@@ -62,7 +64,7 @@ describe('Profile 3', () => {
 		let ack: IMOSROAck = {
 			ID: new MosString128('runningOrderId'),
 			Status: new MosString128('OK'),
-			Stories: []
+			Stories: [],
 		}
 		return Promise.resolve(ack)
 	}
@@ -72,7 +74,7 @@ describe('Profile 3', () => {
 			ID: new MosString128('runningOrderId'),
 			Revision: 1,
 			Status: IMOSAckStatus.ACK,
-			Description: new MosString128('')
+			Description: new MosString128(''),
 		}
 		return Promise.resolve(ack)
 	}
@@ -81,12 +83,15 @@ describe('Profile 3', () => {
 		SocketMock.mockClear()
 		ServerMock.mockClear()
 
-		mosConnection = await getMosConnection({
-			'0': true,
-			'1': true,
-			'2': true,
-			'3': true
-		}, false)
+		mosConnection = await getMosConnection(
+			{
+				'0': true,
+				'1': true,
+				'2': true,
+				'3': true,
+			},
+			false
+		)
 		mosDevice = await getMosDevice(mosConnection)
 
 		// Profile 3:
@@ -96,7 +101,7 @@ describe('Profile 3', () => {
 		onMosReqSearchableSchema = jest.fn((username: string) => {
 			let response: IMOSListSearchableSchema = {
 				username,
-				mosSchema: 'http://example.com/mosSearchableSchema'
+				mosSchema: 'http://example.com/mosSearchableSchema',
 			}
 			return Promise.resolve(response)
 		})
@@ -106,7 +111,7 @@ describe('Profile 3', () => {
 				queryID: 'A392938329kdakd2039300d0s9l3l9d0bzAQ',
 				listReturnStart: 0,
 				listReturnEnd: 0,
-				listReturnTotal: 0
+				listReturnTotal: 0,
 			}
 			return Promise.resolve(response)
 		})
@@ -186,7 +191,7 @@ describe('Profile 3', () => {
 			Slug: new MosString128('my cool Object'),
 			Type: IMOSObjectType.VIDEO,
 			TimeBase: 25,
-			Duration: 250
+			Duration: 250,
 		})
 		await socketMockLower.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
@@ -221,8 +226,8 @@ describe('Profile 3', () => {
 				TimeBase: 25,
 				Duration: 250,
 				ObjectID: new MosString128('Object0'),
-				MOSID: 'our.mos.id'
-			}
+				MOSID: 'our.mos.id',
+			},
 		})
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
@@ -283,7 +288,7 @@ describe('Profile 3', () => {
 			listReturnEnd: 20,
 			generalSearch: new MosString128('boats'),
 			mosSchema: '',
-			searchGroups: []
+			searchGroups: [],
 		})
 
 		await socketMockQuery.mockWaitForSentMessages()
@@ -303,7 +308,7 @@ describe('Profile 3', () => {
 			Revision: 1,
 			Duration: 1800,
 			Status: IMOSObjectStatus.NEW,
-			AirStatus: IMOSObjectAirStatus.READY
+			AirStatus: IMOSObjectAirStatus.READY,
 		})
 		expect(returnedObjList).toMatchSnapshot()
 	})
@@ -341,7 +346,7 @@ describe('Profile 3', () => {
 			Slug: new MosString128('abc123'),
 			Type: IMOSObjectType.VIDEO,
 			TimeBase: 25,
-			Duration: 500
+			Duration: 500,
 		})
 		await socketMockQuery.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
@@ -357,11 +362,11 @@ describe('Profile 3', () => {
 			return encode(getXMLReply(messageID, xmlData.mosAck))
 		})
 		socketMockLower.mockAddReply(mockReply)
-		await mosDevice.sendRequestObjectActionUpdate(new MosString128('OBJID1234'),{
+		await mosDevice.sendRequestObjectActionUpdate(new MosString128('OBJID1234'), {
 			Slug: new MosString128('abc123'),
 			Type: IMOSObjectType.VIDEO,
 			TimeBase: 25,
-			Duration: 500
+			Duration: 500,
 		})
 		await socketMockQuery.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
@@ -401,5 +406,4 @@ describe('Profile 3', () => {
 		expect(msg).toMatch(/<storyID>5983A501:0049B924:8390EF1F<\/storyID>/)
 		checkMessageSnapshot(msg)
 	})
-
 })

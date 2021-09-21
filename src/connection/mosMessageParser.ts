@@ -6,11 +6,11 @@ export class MosMessageParser extends EventEmitter {
 
 	public debug: boolean = false
 
-	constructor (private description: string) {
+	constructor(private description: string) {
 		super()
 	}
 
-	public parseMessage (messageString: string) {
+	public parseMessage(messageString: string) {
 		this.debugTrace(`Socket got data (${this.description}): "${messageString}"`)
 
 		this.dataChunks += messageString
@@ -30,7 +30,7 @@ export class MosMessageParser extends EventEmitter {
 			}
 		}
 	}
-	private _tryParseData () {
+	private _tryParseData() {
 		const startMatch = '<mos>' // <mos>
 		const endMatch = '</mos>' // </mos>
 
@@ -44,9 +44,7 @@ export class MosMessageParser extends EventEmitter {
 			if (startIndex > 0) {
 				const junkStr = this.dataChunks.substr(0, startIndex)
 				if (this.debug) {
-					console.log(
-						`${this.description} Discarding message fragment: "${junkStr}"`
-					)
+					console.log(`${this.description} Discarding message fragment: "${junkStr}"`)
 				}
 
 				// trim off anything before <mos>, as we'll never be able to parse that anyway.
@@ -80,7 +78,7 @@ export class MosMessageParser extends EventEmitter {
 			this.emit('message', parsedData, messageString)
 		}
 	}
-	private debugTrace (...strs: any[]) {
+	private debugTrace(...strs: any[]) {
 		if (this.debug) console.log(...strs)
 	}
 }

@@ -20,8 +20,12 @@ describe('MosTime', () => {
 		expect(new MosTime('2009-04-11T14:22:07').getTime()).toBe(new Date('2009-04-11T14:22:07Z').getTime())
 		expect(new MosTime('2009-04-11T14:22:07.123').getTime()).toBe(new Date('2009-04-11T14:22:07.123Z').getTime())
 		expect(new MosTime('2009-04-11T14:22:07,123').getTime()).toBe(new Date('2009-04-11T14:22:07.123Z').getTime())
-		expect(new MosTime('2009-04-11T14:22:07.123-05:00').getTime()).toBe(new Date('2009-04-11T14:22:07-05:00').getTime() + 123)
-		expect(new MosTime('2009-04-11T14:22:07,123-05:00').getTime()).toBe(new Date('2009-04-11T14:22:07-05:00').getTime() + 123)
+		expect(new MosTime('2009-04-11T14:22:07.123-05:00').getTime()).toBe(
+			new Date('2009-04-11T14:22:07-05:00').getTime() + 123
+		)
+		expect(new MosTime('2009-04-11T14:22:07,123-05:00').getTime()).toBe(
+			new Date('2009-04-11T14:22:07-05:00').getTime() + 123
+		)
 		expect(new MosTime('2009-04-11T14:22:07Z').getTime()).toBe(new Date('2009-04-11T14:22:07Z').getTime())
 		expect(new MosTime('2009-04-11T14:22:07Z').getTime()).toBe(new Date('2009-04-11T14:22:07Z').getTime())
 		expect(new MosTime('2009-04-11T14:22:07+5:00').getTime()).toBe(new Date('2009-04-11T14:22:07+05:00').getTime())
@@ -58,7 +62,7 @@ describe('MosTime', () => {
 
 		// midnight
 		let date = new Date(Date.UTC(2018, 1, 24, 23, 13, 52, 0)) // utc, zero-indexed month
-		date.setTime(date.getTime() + (2 * HOUR))
+		date.setTime(date.getTime() + 2 * HOUR)
 		expect(new MosTime(date).getTime()).toBe(new Date(Date.UTC(2018, 1, 25, 1, 13, 52)).getTime()) // locale time
 		expect(new MosTime(date.toString()).getTime()).toBe(new Date(Date.UTC(2018, 1, 25, 1, 13, 52)).getTime()) // locale time
 		expect(new MosTime(date.toUTCString()).getTime()).toBe(new Date(Date.UTC(2018, 1, 25, 1, 13, 52)).getTime()) // locale time
@@ -71,7 +75,7 @@ describe('MosTime', () => {
 
 		// new year
 		date = new Date(Date.UTC(2018, 11, 31, 23, 13, 52, 0)) // utc, zero-indexed month
-		date.setTime(date.getTime() + (2 * HOUR))
+		date.setTime(date.getTime() + 2 * HOUR)
 		expect(new MosTime(date).getTime()).toBe(new Date(Date.UTC(2019, 0, 1, 1, 13, 52)).getTime()) // locale time
 		expect(new MosTime(date.toString()).getTime()).toBe(new Date(Date.UTC(2019, 0, 1, 1, 13, 52)).getTime()) // locale time
 		expect(new MosTime(date.toUTCString()).getTime()).toBe(new Date(Date.UTC(2019, 0, 1, 1, 13, 52)).getTime()) // locale time
@@ -85,6 +89,5 @@ describe('MosTime', () => {
 		// @todo: daylight savings fall
 
 		// @todo: leap year
-
 	})
 })

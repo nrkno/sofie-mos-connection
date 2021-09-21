@@ -18,10 +18,13 @@ export class ConnectionConfig implements IConnectionConfig {
 	acceptsConnections: boolean
 	accepsConnectionsFrom: string[]
 	debug: boolean
-	openRelay: boolean | undefined | {
-		// options for on-the-fly-created connections
-		options: IMOSDeviceConnectionOptions['primary']
-	}
+	openRelay:
+		| boolean
+		| undefined
+		| {
+				// options for on-the-fly-created connections
+				options: IMOSDeviceConnectionOptions['primary']
+		  }
 	offspecFailover: boolean
 	strict?: boolean
 	ports?: {
@@ -38,10 +41,10 @@ export class ConnectionConfig implements IConnectionConfig {
 		'4': false,
 		'5': false,
 		'6': false,
-		'7': false
+		'7': false,
 	}
 
-	constructor (init: IConnectionConfig) {
+	constructor(init: IConnectionConfig) {
 		/* tslint:disable */
 		if (!init) throw new Error('Config object missing')
 		if (typeof init !== 'object') throw new Error('Config object is not an object')
@@ -50,24 +53,24 @@ export class ConnectionConfig implements IConnectionConfig {
 		if (init.profiles === undefined) throw new Error('Config argument "profiles" missing')
 		/* tslint:enable */
 
-		this.mosID					= init.mosID
-		this.acceptsConnections		= init.acceptsConnections
-		this.accepsConnectionsFrom	= init.accepsConnectionsFrom || []
-		this.debug					= init.debug || false
-		this.openRelay				= init.openRelay || undefined
-		this.offspecFailover		= init.offspecFailover || false
-		this.profiles				= init.profiles
-		this.strict					= init.strict
-		this.ports		= init.ports
+		this.mosID = init.mosID
+		this.acceptsConnections = init.acceptsConnections
+		this.accepsConnectionsFrom = init.accepsConnectionsFrom || []
+		this.debug = init.debug || false
+		this.openRelay = init.openRelay || undefined
+		this.offspecFailover = init.offspecFailover || false
+		this.profiles = init.profiles
+		this.strict = init.strict
+		this.ports = init.ports
 	}
 
 	/** */
-	get profiles (): IProfiles {
+	get profiles(): IProfiles {
 		return this._profiles
 	}
 
 	/** */
-	set profiles (profileSupport: IProfiles) {
+	set profiles(profileSupport: IProfiles) {
 		let atLeastOneOtherProfile = false
 
 		// profile 0 is mandatory
@@ -149,7 +152,9 @@ export class ConnectionConfig implements IConnectionConfig {
 
 		// must support at least one other profile, other than Profile 0
 		if (!atLeastOneOtherProfile) {
-			throw new Error(`Invalid MOS configuration: Mos device must support at least one profile other than the mandantory Profile 0.`)
+			throw new Error(
+				`Invalid MOS configuration: Mos device must support at least one profile other than the mandantory Profile 0.`
+			)
 		}
 	}
 

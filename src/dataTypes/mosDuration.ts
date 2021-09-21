@@ -1,10 +1,8 @@
 export class MosDuration {
-
 	private _duration: number // seconds
 
 	/** */
-	constructor (str: string) {
-
+	constructor(str: string) {
 		let m = str.match(/([\d]+):([\d]+):([\d]+)/)
 		if (!m) throw Error('MosDuration: Invalid format!')
 
@@ -17,7 +15,7 @@ export class MosDuration {
 		this._duration = hh * 3600 + mm * 60 + ss
 	}
 	/** */
-	toString (): string {
+	toString(): string {
 		let s = this._duration
 
 		let hh = Math.floor(s / 3600)
@@ -32,7 +30,7 @@ export class MosDuration {
 	}
 
 	/** */
-	valueOf (): number {
+	valueOf(): number {
 		return this._duration
 	}
 }

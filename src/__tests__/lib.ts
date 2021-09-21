@@ -1,11 +1,4 @@
-import {
-	IMOSAck,
-	MosConnection,
-	MosDevice,
-	IMOSROAck,
-	IProfiles,
-	MosTime
-} from '../'
+import { IMOSAck, MosConnection, MosDevice, IMOSROAck, IProfiles, MosTime } from '../'
 
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
@@ -18,7 +11,7 @@ iconv.encodingExists('utf16-be')
 // breaks net.Server, disabled for now
 jest.mock('net')
 
-export function setupMocks () {
+export function setupMocks() {
 	// Mock tcp connection
 	// @ts-ignore Replace Socket with the mocked varaint:
 	Socket = SocketMock
@@ -26,17 +19,17 @@ export function setupMocks () {
 	Server = ServerMock
 }
 
-export function clearMocks () {
+export function clearMocks() {
 	SocketMock.mockClear()
 }
 
 let setTimeoutOrg = setTimeout
-export function delay (ms: number) {
+export function delay(ms: number) {
 	return new Promise((resolve) => {
 		setTimeoutOrg(resolve, ms)
 	})
 }
-export async function initMosConnection (mos: MosConnection) {
+export async function initMosConnection(mos: MosConnection) {
 	mos.on('error', (err) => {
 		if (!(err + '').match(/heartbeat/i)) {
 			console.error(err)
@@ -45,7 +38,7 @@ export async function initMosConnection (mos: MosConnection) {
 	await mos.init()
 }
 
-export async function getMosConnection (profiles: IProfiles, strict: boolean): Promise<MosConnection> {
+export async function getMosConnection(profiles: IProfiles, strict: boolean): Promise<MosConnection> {
 	ServerMock.mockClear()
 
 	let mos = new MosConnection({
@@ -53,7 +46,7 @@ export async function getMosConnection (profiles: IProfiles, strict: boolean): P
 		acceptsConnections: true,
 		profiles: profiles,
 		strict: strict,
-		debug: false
+		debug: false,
 	})
 	await initMosConnection(mos)
 
@@ -61,15 +54,15 @@ export async function getMosConnection (profiles: IProfiles, strict: boolean): P
 
 	return Promise.resolve(mos)
 }
-export async function getMosDevice (mos: MosConnection): Promise<MosDevice> {
+export async function getMosDevice(mos: MosConnection): Promise<MosDevice> {
 	SocketMock.mockClear()
 
 	let device = await mos.connect({
 		primary: {
 			id: 'their.mos.id',
 			host: '127.0.0.1',
-			timeout: 200
-		}
+			timeout: 200,
+		},
 	})
 
 	await delay(10) // to allow for async timers & events to triggered
@@ -77,28 +70,46 @@ export async function getMosDevice (mos: MosConnection): Promise<MosDevice> {
 	return Promise.resolve(device)
 }
 let fakeIncomingMessageMessageId = 1632
-export function fakeIncomingMessage (socketMockLower: SocketMock, message: string, ourMosId?: string, theirMosId?: string): Promise<number> {
+export function fakeIncomingMessage(
+	socketMockLower: SocketMock,
+	message: string,
+	ourMosId?: string,
+	theirMosId?: string
+): Promise<number> {
 	fakeIncomingMessageMessageId++
 	let fullMessage = getXMLReply(fakeIncomingMessageMessageId, message, ourMosId, theirMosId)
 	socketMockLower.mockReceiveMessage(encode(fullMessage))
 
 	return Promise.resolve(fakeIncomingMessageMessageId)
 }
-export function getXMLReply (messageId: string | number, content: string, ourMosId?: string, theirMosId?: string): string {
-	return '<mos>' +
-		'<mosID>' + (ourMosId || 'our.mos.id') + '</mosID>' +
-		'<ncsID>' + (theirMosId || 'their.mos.id') + '</ncsID>' +
-		'<messageID>' + messageId + '</messageID>' +
+export function getXMLReply(
+	messageId: string | number,
+	content: string,
+	ourMosId?: string,
+	theirMosId?: string
+): string {
+	return (
+		'<mos>' +
+		'<mosID>' +
+		(ourMosId || 'our.mos.id') +
+		'</mosID>' +
+		'<ncsID>' +
+		(theirMosId || 'their.mos.id') +
+		'</ncsID>' +
+		'<messageID>' +
+		messageId +
+		'</messageID>' +
 		content +
 		'</mos>\r\n'
+	)
 }
-export function decode (data: Buffer): string {
+export function decode(data: Buffer): string {
 	return iconv.decode(data, 'utf16-be')
 }
-export function encode (str: string) {
+export function encode(str: string) {
 	return iconv.encode(str, 'utf16-be')
 }
-export async function checkReplyToServer (socket: SocketMock, messageId: number, replyString: string) {
+export async function checkReplyToServer(socket: SocketMock, messageId: number, replyString: string) {
 	// check reply to server:
 	await socket.mockWaitForSentMessages()
 
@@ -109,31 +120,29 @@ export async function checkReplyToServer (socket: SocketMock, messageId: number,
 	expect(reply).toContain(replyString)
 	expect(reply).toMatchSnapshot(reply)
 }
-export function checkMessageSnapshot (msg: string) {
+export function checkMessageSnapshot(msg: string) {
 	expect(
 		msg
-		.replace(/<messageID>\d+<\/messageID>/, '<messageID>xx</messageID>')
-		.replace(/<time>[^<>]+<\/time>/, '<time>xx</time>')
+			.replace(/<messageID>\d+<\/messageID>/, '<messageID>xx</messageID>')
+			.replace(/<time>[^<>]+<\/time>/, '<time>xx</time>')
 	).toMatchSnapshot()
-
 }
-export function checkAckSnapshot (ack: IMOSAck | IMOSROAck) {
+export function checkAckSnapshot(ack: IMOSAck | IMOSROAck) {
 	const ack2: any = {
-		...ack
+		...ack,
 	}
 	if (ack2.mos) {
 		ack2.mos = {
 			...ack2.mos,
-			messageID: 999
+			messageID: 999,
 		}
 	}
 	expect(ack2).toMatchSnapshot()
-
 }
-export function doBeforeAll () {
-	let socketMockLower = SocketMock.instances.find(s => s.connectedPort === 10540) as SocketMock
-	let socketMockUpper = SocketMock.instances.find(s => s.connectedPort === 10541) as SocketMock
-	let socketMockQuery = SocketMock.instances.find(s => s.connectedPort === 10542) as SocketMock
+export function doBeforeAll() {
+	let socketMockLower = SocketMock.instances.find((s) => s.connectedPort === 10540) as SocketMock
+	let socketMockUpper = SocketMock.instances.find((s) => s.connectedPort === 10541) as SocketMock
+	let socketMockQuery = SocketMock.instances.find((s) => s.connectedPort === 10542) as SocketMock
 
 	expect(socketMockLower).toBeTruthy()
 	expect(socketMockUpper).toBeTruthy()
@@ -170,14 +179,14 @@ export function doBeforeAll () {
 		serverMockQuery,
 		serverSocketMockLower,
 		serverSocketMockUpper,
-		serverSocketMockQuery
+		serverSocketMockQuery,
 	}
 }
 
-export function fixSnapshot (data: any): any {
+export function fixSnapshot(data: any): any {
 	return fixSnapshotInner(data)[1]
 }
-function fixSnapshotInner (data: any): [boolean, any] {
+function fixSnapshotInner(data: any): [boolean, any] {
 	let changed = false
 
 	if (!data) {
@@ -192,13 +201,14 @@ function fixSnapshotInner (data: any): [boolean, any] {
 		}
 	} else if (typeof data === 'object') {
 		if (data instanceof MosTime) {
-			if (data.getTime() > 1609459200000) { // 2021-01-01 00:00:00+00:00
+			if (data.getTime() > 1609459200000) {
+				// 2021-01-01 00:00:00+00:00
 				// data.setTime(1609459200000)
 				return [true, new MosTime(1609459200000)]
 			}
 			// changed = true
 		} else {
-			for (const [ key, value] of Object.entries(data)) {
+			for (const [key, value] of Object.entries(data)) {
 				const f = fixSnapshotInner(value)
 				if (f[0]) {
 					changed = true

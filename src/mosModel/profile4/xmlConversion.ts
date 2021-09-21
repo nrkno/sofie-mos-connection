@@ -3,7 +3,7 @@ import { XMLROStory, XMLMosItem } from '../profile2/xmlConversion'
 import { MosString128 } from '../../dataTypes/mosString128'
 
 export namespace XMLROFullStory {
-	export function fromXML (xml: any): IMOSROFullStory {
+	export function fromXML(xml: any): IMOSROFullStory {
 		let story0 = XMLROStory.fromXML(xml)
 		let story: IMOSROFullStory = {
 			ID: story0.ID,
@@ -11,12 +11,12 @@ export namespace XMLROFullStory {
 			Number: story0.Number,
 			MosExternalMetaData: story0.MosExternalMetaData,
 			RunningOrderId: new MosString128(xml.roID),
-			Body: fromXMLStoryBody(xml.storyBody)
+			Body: fromXMLStoryBody(xml.storyBody),
 		}
 
 		return story
 	}
-	function fromXMLStoryBody (xml: any): IMOSROFullStoryBodyItem[] {
+	function fromXMLStoryBody(xml: any): IMOSROFullStoryBodyItem[] {
 		let body: IMOSROFullStoryBodyItem[] = []
 
 		/*
@@ -41,7 +41,7 @@ export namespace XMLROFullStory {
 			for (const item of xml.elements) {
 				let bodyItem: IMOSROFullStoryBodyItem = {
 					Type: item.$name || item.$type,
-					Content: item
+					Content: item,
 				}
 				if (item.$name === 'storyItem') {
 					bodyItem.Content = XMLMosItem.fromXML(item)
@@ -56,7 +56,7 @@ export namespace XMLROFullStory {
 			items.forEach((item) => {
 				let bodyItem: IMOSROFullStoryBodyItem = {
 					Type: 'storyItem',
-					Content: item
+					Content: item,
 				}
 				body.push(bodyItem)
 			})

@@ -10,7 +10,7 @@ import {
 	IMOSRunningOrder,
 	IMOSROAckStory,
 	IMOSROAckItem,
-	IMOSROAckObject
+	IMOSROAckObject,
 } from '../../api'
 import { addTextElement } from '../../utils/Utils'
 import { isEmpty, numberOrUndefined } from '../lib'
@@ -21,11 +21,11 @@ import { ROAck } from './ROAck'
 import { XMLMosObjects } from '../profile1/xmlConversion'
 
 export namespace XMLMosROAck {
-	export function fromXML (xml: any): ROAck {
+	export function fromXML(xml: any): ROAck {
 		let roAck: ROAck = new ROAck()
 
-		roAck.ID 		= new MosString128(xml.roID)
-		roAck.Status 	= new MosString128(xml.roStatus)
+		roAck.ID = new MosString128(xml.roID)
+		roAck.Status = new MosString128(xml.roStatus)
 
 		let xmlStoryIDs = xml.storyID
 		let xmlItemIDs = xml.itemID
@@ -37,9 +37,9 @@ export namespace XMLMosROAck {
 		if (!Array.isArray(xmlObjIDs)) xmlObjIDs = [xmlObjIDs]
 		if (!Array.isArray(xmlStatuses)) xmlStatuses = [xmlStatuses]
 
-		roAck.Stories 	= []
+		roAck.Stories = []
 
-		let iMax = Math.max(xmlStoryIDs.length,xmlItemIDs.length,xmlObjIDs.length,xmlStatuses.length)
+		let iMax = Math.max(xmlStoryIDs.length, xmlItemIDs.length, xmlObjIDs.length, xmlStatuses.length)
 
 		let story: IMOSROAckStory | null = null
 		let item: IMOSROAckItem | null = null
@@ -48,7 +48,7 @@ export namespace XMLMosROAck {
 			if (xmlStoryIDs[i]) {
 				story = {
 					ID: new MosString128(xmlStoryIDs[i]),
-					Items: []
+					Items: [],
 				}
 				roAck.Stories.push(story)
 			}
@@ -56,13 +56,13 @@ export namespace XMLMosROAck {
 				item = {
 					ID: new MosString128(xmlStoryIDs[i]),
 					Channel: new MosString128(''),
-					Objects: []
+					Objects: [],
 				}
 				if (story) story.Items.push(item)
 			}
 			if (xmlObjIDs[i] && xmlStatuses[i]) {
 				object = {
-					Status: xmlStatuses[i]
+					Status: xmlStatuses[i],
 				}
 				if (item) item.Objects.push(object)
 			}
@@ -72,30 +72,31 @@ export namespace XMLMosROAck {
 	}
 }
 export namespace XMLRunningOrderBase {
-	export function fromXML (xml: any): IMOSRunningOrderBase {
+	export function fromXML(xml: any): IMOSRunningOrderBase {
 		let ro: IMOSRunningOrderBase = {
 			ID: new MosString128(xml.roID),
-			Slug: new MosString128(xml.roSlug)
+			Slug: new MosString128(xml.roSlug),
 		}
 
-		if (xml.hasOwnProperty('roEdStart') && !isEmpty(xml.roEdStart)) 	ro.EditorialStart = new MosTime(xml.roEdStart)
-		if (xml.hasOwnProperty('roEdDur') 	&& !isEmpty(xml.roEdDur)) 		ro.EditorialDuration = new MosDuration(xml.roEdDur)
-		if (xml.hasOwnProperty('roChannel') && !isEmpty(xml.roChannel)) 	ro.DefaultChannel = new MosString128(xml.roChannel)
-		if (xml.hasOwnProperty('roTrigger') && !isEmpty(xml.roTrigger)) 	ro.Trigger = new MosString128(xml.roTrigger)
-		if (xml.hasOwnProperty('macroIn') 	&& !isEmpty(xml.macroIn)) 		ro.MacroIn = new MosString128(xml.macroIn)
-		if (xml.hasOwnProperty('macroOut') 	&& !isEmpty(xml.macroOut))		ro.MacroOut = new MosString128(xml.macroOut)
+		if (xml.hasOwnProperty('roEdStart') && !isEmpty(xml.roEdStart)) ro.EditorialStart = new MosTime(xml.roEdStart)
+		if (xml.hasOwnProperty('roEdDur') && !isEmpty(xml.roEdDur)) ro.EditorialDuration = new MosDuration(xml.roEdDur)
+		if (xml.hasOwnProperty('roChannel') && !isEmpty(xml.roChannel))
+			ro.DefaultChannel = new MosString128(xml.roChannel)
+		if (xml.hasOwnProperty('roTrigger') && !isEmpty(xml.roTrigger)) ro.Trigger = new MosString128(xml.roTrigger)
+		if (xml.hasOwnProperty('macroIn') && !isEmpty(xml.macroIn)) ro.MacroIn = new MosString128(xml.macroIn)
+		if (xml.hasOwnProperty('macroOut') && !isEmpty(xml.macroOut)) ro.MacroOut = new MosString128(xml.macroOut)
 		if (xml.hasOwnProperty('mosExternalMetadata') && !isEmpty(xml.mosExternalMetadata)) {
 			// TODO: Handle an array of mosExternalMetadata
 			let meta: IMOSExternalMetaData = {
 				MosSchema: xml.mosExternalMetadata.mosSchema,
-				MosPayload: xml.mosExternalMetadata.mosPayload
+				MosPayload: xml.mosExternalMetadata.mosPayload,
 			}
 			if (xml.mosExternalMetadata.hasOwnProperty('mosScope')) meta.MosScope = xml.mosExternalMetadata.mosScope
 			ro.MosExternalMetaData = [meta]
 		}
 		return ro
 	}
-	export function toXML (xmlRo: XMLBuilder.XMLElement, ro: IMOSRunningOrderBase): void {
+	export function toXML(xmlRo: XMLBuilder.XMLElement, ro: IMOSRunningOrderBase): void {
 		addTextElement(xmlRo, 'roID', ro.ID)
 		addTextElement(xmlRo, 'roSlug', ro.Slug)
 		if (ro.DefaultChannel) addTextElement(xmlRo, 'roChannel', ro.DefaultChannel)
@@ -108,17 +109,17 @@ export namespace XMLRunningOrderBase {
 	}
 }
 export namespace XMLRunningOrder {
-	export function fromXML (xml: any): IMOSRunningOrder {
+	export function fromXML(xml: any): IMOSRunningOrder {
 		let stories: Array<IMOSROStory> = XMLROStories.fromXML(xml.story)
 		let ro: IMOSRunningOrder = {
 			...XMLRunningOrderBase.fromXML(xml),
-			Stories: stories
+			Stories: stories,
 		}
 		return ro
 	}
 }
 export namespace XMLROStories {
-	export function fromXML (xml: Array<any>): IMOSROStory[] {
+	export function fromXML(xml: Array<any>): IMOSROStory[] {
 		if (!xml) return []
 		let xmlStories: Array<any> = xml
 		if (!Array.isArray(xmlStories)) xmlStories = [xmlStories]
@@ -129,8 +130,7 @@ export namespace XMLROStories {
 	}
 }
 export namespace XMLROStoryBase {
-	export function toXML (xmlStory: XMLBuilder.XMLElement, story: IMOSROStory | IMOSROFullStory) {
-
+	export function toXML(xmlStory: XMLBuilder.XMLElement, story: IMOSROStory | IMOSROFullStory) {
 		addTextElement(xmlStory, 'storyID', story.ID)
 		if (story.Slug) addTextElement(xmlStory, 'storySlug', story.Slug)
 		if (story.Number) addTextElement(xmlStory, 'storyNum', story.Number)
@@ -138,11 +138,11 @@ export namespace XMLROStoryBase {
 	}
 }
 export namespace XMLROStory {
-	export function fromXML (xml: any): IMOSROStory {
+	export function fromXML(xml: any): IMOSROStory {
 		let story: IMOSROStory = {
 			ID: new MosString128(xml.storyID),
 			Slug: new MosString128(xml.storySlug),
-			Items: []
+			Items: [],
 			// TODO: Add & test Number, ObjectID, MOSID, mosAbstract, Paths
 			// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut, MosExternalMetaData
 			// MosExternalMetaData: MOSExternalMetaData.fromXML(xml.mosExternalMetadata)
@@ -155,13 +155,15 @@ export namespace XMLROStory {
 			}
 		}
 
-		if (xml.hasOwnProperty('mosExternalMetadata')) story.MosExternalMetaData = XMLMosExternalMetaData.fromXML(xml.mosExternalMetadata)
+		if (xml.hasOwnProperty('mosExternalMetadata'))
+			story.MosExternalMetaData = XMLMosExternalMetaData.fromXML(xml.mosExternalMetadata)
 
-		if (xml.hasOwnProperty('storyNum') && !isEmpty(xml.storyNum)) story.Number = new MosString128(xml.storyNum || '')
+		if (xml.hasOwnProperty('storyNum') && !isEmpty(xml.storyNum))
+			story.Number = new MosString128(xml.storyNum || '')
 
 		return story
 	}
-	export function toXML (xmlRoot: XMLBuilder.XMLElement, story: IMOSROStory): void {
+	export function toXML(xmlRoot: XMLBuilder.XMLElement, story: IMOSROStory): void {
 		const xmlStory = addTextElement(xmlRoot, 'story')
 		XMLROStoryBase.toXML(xmlStory, story)
 		story.Items.forEach((item: IMOSItem) => {
@@ -170,7 +172,7 @@ export namespace XMLROStory {
 	}
 }
 export namespace XMLMosItems {
-	export function fromXML (xml: Array<any>): Array<IMOSItem> {
+	export function fromXML(xml: Array<any>): Array<IMOSItem> {
 		if (!xml) return []
 		let xmlItems: Array<any> = xml
 		if (!Array.isArray(xmlItems)) xmlItems = [xmlItems]
@@ -181,11 +183,11 @@ export namespace XMLMosItems {
 	}
 }
 export namespace XMLMosItem {
-	export function fromXML (xml: any): IMOSItem {
+	export function fromXML(xml: any): IMOSItem {
 		let item: IMOSItem = {
 			ID: new MosString128(xml.itemID),
 			ObjectID: new MosString128(xml.objID),
-			MOSID: xml.mosID
+			MOSID: xml.mosID,
 			// TODO: mosAbstract?: string,
 			// TODO: Channel?: MosString128,
 			// TODO: MacroIn?: MosString128,
@@ -198,7 +200,8 @@ export namespace XMLMosItem {
 		if (xml.hasOwnProperty('itemEdDur')) item.EditorialDuration = numberOrUndefined(xml.itemEdDur)
 		if (xml.hasOwnProperty('itemUserTimingDur')) item.UserTimingDuration = numberOrUndefined(xml.itemUserTimingDur)
 		if (xml.hasOwnProperty('itemTrigger')) item.Trigger = xml.itemTrigger
-		if (xml.hasOwnProperty('mosExternalMetadata')) item.MosExternalMetaData = XMLMosExternalMetaData.fromXML(xml.mosExternalMetadata)
+		if (xml.hasOwnProperty('mosExternalMetadata'))
+			item.MosExternalMetaData = XMLMosExternalMetaData.fromXML(xml.mosExternalMetadata)
 		if (xml.hasOwnProperty('mosAbstract')) item.mosAbstract = xml.mosAbstract + ''
 		if (xml.hasOwnProperty('objSlug')) item.ObjectSlug = new MosString128(xml.objSlug, false) // temporary fix for long slugs
 		if (xml.hasOwnProperty('itemChannel')) item.Channel = new MosString128(xml.itemChannel)
@@ -215,49 +218,46 @@ export namespace XMLMosItem {
 
 		return item
 	}
-	export function toXML (root: XMLBuilder.XMLElement, item: IMOSItem) {
-
+	export function toXML(root: XMLBuilder.XMLElement, item: IMOSItem) {
 		const xmlItem = addTextElement(root, 'item')
 		addTextElement(xmlItem, 'itemID', item.ID)
 		addTextElement(xmlItem, 'objID', item.ObjectID)
 		addTextElement(xmlItem, 'mosID', item.MOSID)
 
-		if (item.Slug) 				addTextElement(xmlItem, 'itemSlug', item.Slug)
-		if (item.ObjectSlug) 		addTextElement(xmlItem, 'objSlug', item.ObjectSlug)
-		if (item.Duration) 			addTextElement(xmlItem, 'objDur', item.Duration)
-		if (item.TimeBase) 			addTextElement(xmlItem, 'objTB', item.TimeBase)
-		if (item.mosAbstract) 		addTextElement(xmlItem, 'mosAbstract', item.mosAbstract)
-		if (item.Channel) 			addTextElement(xmlItem, 'itemChannel', item.Channel)
-		if (item.EditorialStart !== undefined)			addTextElement(xmlItem, 'itemEdStart', item.EditorialStart)
-		if (item.EditorialDuration !== undefined)		addTextElement(xmlItem, 'itemEdDur', item.EditorialDuration)
-		if (item.UserTimingDuration !== undefined)		addTextElement(xmlItem, 'itemUserTimingDur', item.UserTimingDuration)
-		if (item.Trigger) 			addTextElement(xmlItem, 'itemTrigger', item.Trigger)
-		if (item.MacroIn) 			addTextElement(xmlItem, 'macroIn', item.MacroIn)
-		if (item.MacroOut) 			addTextElement(xmlItem, 'macroOut', item.MacroOut)
+		if (item.Slug) addTextElement(xmlItem, 'itemSlug', item.Slug)
+		if (item.ObjectSlug) addTextElement(xmlItem, 'objSlug', item.ObjectSlug)
+		if (item.Duration) addTextElement(xmlItem, 'objDur', item.Duration)
+		if (item.TimeBase) addTextElement(xmlItem, 'objTB', item.TimeBase)
+		if (item.mosAbstract) addTextElement(xmlItem, 'mosAbstract', item.mosAbstract)
+		if (item.Channel) addTextElement(xmlItem, 'itemChannel', item.Channel)
+		if (item.EditorialStart !== undefined) addTextElement(xmlItem, 'itemEdStart', item.EditorialStart)
+		if (item.EditorialDuration !== undefined) addTextElement(xmlItem, 'itemEdDur', item.EditorialDuration)
+		if (item.UserTimingDuration !== undefined) addTextElement(xmlItem, 'itemUserTimingDur', item.UserTimingDuration)
+		if (item.Trigger) addTextElement(xmlItem, 'itemTrigger', item.Trigger)
+		if (item.MacroIn) addTextElement(xmlItem, 'macroIn', item.MacroIn)
+		if (item.MacroOut) addTextElement(xmlItem, 'macroOut', item.MacroOut)
 		XMLMosExternalMetaData.toXML(xmlItem, item.MosExternalMetaData)
 		XMLObjectPaths.toXML(xmlItem, item.Paths)
-
 	}
 }
 export namespace XMLMosExternalMetaData {
-	export function fromXML (xml: any): IMOSExternalMetaData[] {
+	export function fromXML(xml: any): IMOSExternalMetaData[] {
 		if (!xml) return []
 		let xmlMetadata: Array<any> = xml
 		if (!Array.isArray(xml)) xmlMetadata = [xmlMetadata]
 		return xmlMetadata.map((xmlmd) => {
 			let md: IMOSExternalMetaData = {
-				MosScope: (xmlmd.hasOwnProperty('mosScope') ? xmlmd.mosScope : null),
+				MosScope: xmlmd.hasOwnProperty('mosScope') ? xmlmd.mosScope : null,
 				MosSchema: xmlmd.mosSchema + '',
-				MosPayload: _fixPayload(xmlmd.mosPayload)
+				MosPayload: _fixPayload(xmlmd.mosPayload),
 			}
 			return md
 		})
 	}
-	function _handlePayloadProperties (prop: any): any {
+	function _handlePayloadProperties(prop: any): any {
 		// prop is string, can be a mis-typing of number - if it contains numbers and comma
 		// strings with numbers and , grouped will trigger
 		if (prop && typeof prop === 'string' && prop.match(/[0-9]+[,][0-9]+/)) {
-
 			// here is the fix for replacing and casting
 			let commaCast = prop.replace(/,/, '.')
 			let floatCast = parseFloat(commaCast)
@@ -271,7 +271,7 @@ export namespace XMLMosExternalMetaData {
 		// return the original content if we failed to identify and mutate the content
 		return prop
 	}
-	function _fixPayload (obj: any): any {
+	function _fixPayload(obj: any): any {
 		if (typeof obj === 'object') {
 			for (let key in obj) {
 				let o = obj[key]
@@ -292,15 +292,15 @@ export namespace XMLMosExternalMetaData {
 		}
 		return obj
 	}
-	export function toXML (xml: XMLBuilder.XMLElement, metadatas?: IMOSExternalMetaData[]) {
+	export function toXML(xml: XMLBuilder.XMLElement, metadatas?: IMOSExternalMetaData[]) {
 		if (metadatas) {
-			metadatas.forEach(metadata => {
+			metadatas.forEach((metadata) => {
 				const xmlMetadata = XMLBuilder.create({
 					mosExternalMetadata: {
 						mosSchema: metadata.MosSchema,
 						mosPayload: metadata.MosPayload,
-						mosScope: metadata.MosScope
-					}
+						mosScope: metadata.MosScope,
+					},
 				})
 				xml.importDocument(xmlMetadata)
 			})
@@ -308,7 +308,7 @@ export namespace XMLMosExternalMetaData {
 	}
 }
 export namespace XMLObjectPaths {
-	export function fromXML (xml: any): IMOSObjectPath[] {
+	export function fromXML(xml: any): IMOSObjectPath[] {
 		if (!xml) return []
 		const getType = (xml: any) => {
 			let type: IMOSObjectPathType | null = null
@@ -338,7 +338,7 @@ export namespace XMLObjectPaths {
 				return {
 					Type: type,
 					Description: description,
-					Target: target
+					Target: target,
 				}
 			}
 			return undefined
@@ -351,7 +351,7 @@ export namespace XMLObjectPaths {
 					paths.push(mosObj)
 				}
 			} else {
-				Object.keys(obj).forEach(key => {
+				Object.keys(obj).forEach((key) => {
 					const element = obj[key]
 					if (Array.isArray(element)) {
 						paths = paths.concat(xmlToArray(element))
@@ -369,21 +369,21 @@ export namespace XMLObjectPaths {
 		return xmlPaths
 	}
 
-	export function toXML (xmlItem: XMLBuilder.XMLElement, paths?: IMOSObjectPath[]) {
+	export function toXML(xmlItem: XMLBuilder.XMLElement, paths?: IMOSObjectPath[]) {
 		if (paths) {
 			const xmlObjPaths = addTextElement(xmlItem, 'objPaths')
 			paths.forEach((path: IMOSObjectPath) => {
 				if (path.Type === IMOSObjectPathType.PATH) {
 					addTextElement(xmlObjPaths, 'objPath', path.Target, {
-						techDescription: path.Description
+						techDescription: path.Description,
 					})
 				} else if (path.Type === IMOSObjectPathType.PROXY_PATH) {
 					addTextElement(xmlObjPaths, 'objProxyPath', path.Target, {
-						techDescription: path.Description
+						techDescription: path.Description,
 					})
 				} else if (path.Type === IMOSObjectPathType.METADATA_PATH) {
 					addTextElement(xmlObjPaths, 'objMetadataPath', path.Target, {
-						techDescription: path.Description
+						techDescription: path.Description,
 					})
 				}
 			})

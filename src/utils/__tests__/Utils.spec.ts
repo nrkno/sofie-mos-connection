@@ -1,6 +1,4 @@
-import {
-	xml2js
-} from '../Utils'
+import { xml2js } from '../Utils'
 
 test('xml2js with junk', () => {
 	let o: any = xml2js(`
@@ -23,15 +21,18 @@ test('xml2js with junk', () => {
 	expect(o.content).toEqual({
 		navn: 'Jon Gelius',
 		tittel: {},
-		funksjoner: [{
-			funksjon: 'Redaktør:',
-			navn: {}
-		},{
-			funksjon: 'Regi:',
-			navn: {}
-		}],
+		funksjoner: [
+			{
+				funksjon: 'Redaktør:',
+				navn: {},
+			},
+			{
+				funksjon: 'Regi:',
+				navn: {},
+			},
+		],
 		sami: false,
-		_valid: true
+		_valid: true,
 	})
 })
 test('xml2js with simple array', () => {
@@ -47,7 +48,7 @@ test('xml2js with simple array', () => {
 	expect(o.content).toEqual({
 		navn: 'Jon Gelius',
 		tittel: {},
-		tematekst: [{},{}]
+		tematekst: [{}, {}],
 	})
 })
 test('xml2js with array', () => {
@@ -77,14 +78,14 @@ test('xml2js with array', () => {
 		funksjoner: [
 			{
 				funksjon: 'Redaktør:',
-				navn: {}
+				navn: {},
 			},
 			{
 				funksjon: 'Regi:',
-				navn: 'Johan'
-			}
+				navn: 'Johan',
+			},
 		],
-		_valid: true
+		_valid: true,
 	})
 })
 
@@ -104,6 +105,6 @@ test('xml2js with clean', () => {
 		tittel: {},
 		tematekst: {},
 		infotekst: {},
-		_valid: true
+		_valid: true,
 	})
 })

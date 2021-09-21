@@ -6,12 +6,12 @@ import { addTextElement } from '../../utils/Utils'
 export class MosReqObjList extends MosMessage {
 	private options: IMOSRequestObjectList
 
-	constructor (options: IMOSRequestObjectList) {
+	constructor(options: IMOSRequestObjectList) {
 		super('query')
 		this.options = options
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const xmlMosReqObjList = XMLBuilder.create('mosReqObjList')
 		xmlMosReqObjList.att('username', this.options.username)
 
@@ -25,9 +25,8 @@ export class MosReqObjList extends MosMessage {
 		for (const searchGroup of this.options.searchGroups) {
 			const xmlSearchGroup = XMLBuilder.create('searchGroup')
 			for (const searchField of searchGroup.searchFields) {
-
-				const attributes: {[key: string]: string} = {}
-				Object.keys(searchField).forEach(key => {
+				const attributes: { [key: string]: string } = {}
+				Object.keys(searchField).forEach((key) => {
 					// @ts-ignore
 					attributes[key] = searchField[key] + ''
 				})

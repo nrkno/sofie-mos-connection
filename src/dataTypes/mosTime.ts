@@ -2,7 +2,6 @@ import * as moment from 'moment'
 import { pad } from './../utils/Utils'
 
 export class MosTime {
-
 	static _defaultTimezone: string = 'Z'
 	private _time: Date
 	private _timezone: string = ''
@@ -10,7 +9,7 @@ export class MosTime {
 	private _timezoneDeclaration: string = ''
 
 	/** */
-	constructor (timestamp?: Date | number | string) {
+	constructor(timestamp?: Date | number | string) {
 		let time: Date
 		if (timestamp !== undefined) {
 			// create date from time-string or timestamp number
@@ -32,15 +31,15 @@ export class MosTime {
 					this._timezoneZuluIndicator = customFormatParseResult.timezoneIndicator
 
 					const r = customFormatParseResult
-					let dateStr = `${r.yy}-${r.mm}-${r.dd}T${r.hh}:${r.ii}:${r.ss}${(r.ms ? '.' + r.ms : '')}${this._timezoneZuluIndicator}${this._timezoneDeclaration}`
+					let dateStr = `${r.yy}-${r.mm}-${r.dd}T${r.hh}:${r.ii}:${r.ss}${r.ms ? '.' + r.ms : ''}${
+						this._timezoneZuluIndicator
+					}${this._timezoneDeclaration}`
 					time = new Date(dateStr)
 				} else if (timezoneParseResult !== false) {
 					this._timezoneDeclaration = timezoneParseResult.timezoneDeclaration
 
 					time = new Date(timestamp)
-
 				} else {
-
 					// try to parse the time directly with Date, for Date-supported formats
 					time = new Date(timestamp)
 					// if (isNaN(time.getTime())) {
@@ -66,24 +65,22 @@ export class MosTime {
 	}
 
 	/** */
-	toString (): string {
-
+	toString(): string {
 		let t = moment.utc(this._time).utcOffset(this._timezone)
 
-		return t.format('YYYY-MM-DDTHH:mm:ss,SSS##!!##')
-		.replace('##!!##', this._timezone)
+		return t.format('YYYY-MM-DDTHH:mm:ss,SSS##!!##').replace('##!!##', this._timezone)
 	}
 
 	/** */
-	getTime (): number {
+	getTime(): number {
 		return this._time.getTime()
 	}
-	setTime (timestamp: number): number {
+	setTime(timestamp: number): number {
 		return this._time.setTime(timestamp)
 	}
 
 	/** */
-	private _parseTimeOffset (timestamp: string): false | {timeOffsetValue: number, timezoneDeclaration: string} {
+	private _parseTimeOffset(timestamp: string): false | { timeOffsetValue: number; timezoneDeclaration: string } {
 		let timeOffsetValue: number
 		let timezoneDeclaration: string = ''
 		const offsetregex = /([+-])([0-9]{1,2})(?:\:{0,1}([0-9]{2})){0,1}(?: {0,1}\(\S+\)){0,1}$/
@@ -105,17 +102,30 @@ export class MosTime {
 				minutes = parseInt(match[3], 10)
 				timezoneDeclaration += ':' + pad(minutes.toString(), 2)
 			}
-			timeOffsetValue = ((hours * 60) + minutes) * positiveNegativeValue
+			timeOffsetValue = (hours * 60 + minutes) * positiveNegativeValue
 			return {
 				timeOffsetValue,
-				timezoneDeclaration
+				timezoneDeclaration,
 			}
 		}
 		return false
 	}
 
 	/** */
-	private _parseMosCustomFormat (timestamp: string): false | {yy: string, mm: string, dd: string, hh: string, ii: string, ss: string, ms: string, timezoneIndicator: string} {
+	private _parseMosCustomFormat(
+		timestamp: string
+	):
+		| false
+		| {
+				yy: string
+				mm: string
+				dd: string
+				hh: string
+				ii: string
+				ss: string
+				ms: string
+				timezoneIndicator: string
+		  } {
 		const timestampRegex = /(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)([,\.](\d{3}))?(([+-Z])([:\d]+)?)?/i
 		let match = timestamp.match(timestampRegex)
 		if (match) {
@@ -146,7 +156,7 @@ export class MosTime {
 				ii,
 				ss,
 				ms,
-				timezoneIndicator
+				timezoneIndicator,
 			}
 		}
 

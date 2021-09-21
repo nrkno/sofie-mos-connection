@@ -5,16 +5,16 @@ import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
 
 /** */
-export function pad (n: string, width: number, z?: string): string {
+export function pad(n: string, width: number, z?: string): string {
 	z = z || '0'
 	n = n + ''
 	return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n
 }
 
-export function xml2js (messageString: string): object {
+export function xml2js(messageString: string): object {
 	let object = xmlParser(messageString, { compact: false, trim: true, nativeType: true })
 	// common tags we typically want to know the order of the contents of:
-	const orderedTags = new Set([ 'storyBody', 'mosAbstract', 'description', 'p', 'em', 'span', 'h1', 'h2', 'i', 'b' ])
+	const orderedTags = new Set(['storyBody', 'mosAbstract', 'description', 'p', 'em', 'span', 'h1', 'h2', 'i', 'b'])
 
 	/**
 	 * Doing a post-order tree traversal we try to make the objectified tree as compact as possible.
@@ -23,8 +23,7 @@ export function xml2js (messageString: string): object {
 	 * ps: post-order means we make a node's children as compact as possible first, and then try to make
 	 * that node compact.
 	 */
-	const concatChildrenAndTraverseObject = (element: {[key: string]: any }) => {
-
+	const concatChildrenAndTraverseObject = (element: { [key: string]: any }) => {
 		if (element.name) {
 			element.$name = element.name
 			delete element.name
@@ -63,10 +62,13 @@ export function xml2js (messageString: string): object {
 					concatChildrenAndTraverseObject(childEl)
 				}
 
-				if (!orderedTags.has(element.$name)) { // if the element name is contained in the set of orderedTag names we don't make it any more compact
-					let names: Array<string> = element.elements.map((obj: { $name?: string, $type?: string }) => obj.$name || obj.$type || 'unknownElement')
+				if (!orderedTags.has(element.$name)) {
+					// if the element name is contained in the set of orderedTag names we don't make it any more compact
+					let names: Array<string> = element.elements.map(
+						(obj: { $name?: string; $type?: string }) => obj.$name || obj.$type || 'unknownElement'
+					)
 					let namesSet = new Set(names)
-					if ((namesSet.size === 1 && names.length !== 1) && !namesSet.has('type') && !namesSet.has('name')) {
+					if (namesSet.size === 1 && names.length !== 1 && !namesSet.has('type') && !namesSet.has('name')) {
 						// make array compact:
 						const array: any = []
 						for (const childEl of element.elements) {
@@ -101,7 +103,12 @@ export function xml2js (messageString: string): object {
 					} else if (names.length === namesSet.size) {
 						// all elements are unique
 						for (const childEl of element.elements) {
-							if (childEl.$type && childEl.$type === 'text' && (Object.keys(childEl).length <= 3 || (!childEl.$name && Object.keys(childEl).length < 3))) {
+							if (
+								childEl.$type &&
+								childEl.$type === 'text' &&
+								(Object.keys(childEl).length <= 3 ||
+									(!childEl.$name && Object.keys(childEl).length < 3))
+							) {
 								if (!childEl.text) {
 									element.text = childEl.text
 								}
@@ -121,7 +128,7 @@ export function xml2js (messageString: string): object {
 						}
 						delete element.elements
 					} else if (names.length !== namesSet.size) {
-						const holder: {[key: string]: any} = {}
+						const holder: { [key: string]: any } = {}
 						for (let childEl of element.elements) {
 							const name = childEl.$name
 							if (childEl.$type === 'text' && Object.keys(childEl).length <= 3) {
@@ -138,7 +145,7 @@ export function xml2js (messageString: string): object {
 							if (holder[name]) {
 								holder[name].push(childEl)
 							} else {
-								holder[name] = [ childEl ]
+								holder[name] = [childEl]
 							}
 						}
 						for (const key in holder) {
@@ -154,32 +161,21 @@ export function xml2js (messageString: string): object {
 
 	return object
 }
-export function addTextElement (
+export function addTextElement(
 	root: XMLBuilder.XMLElement,
 	elementName: string,
 	text?: string | number | null | MosString128 | MosTime | MosDuration,
-	attributes?: { [key: string]: string}
+	attributes?: { [key: string]: string }
 ): XMLBuilder.XMLElement {
-	const txt = (
-		text === null ?
-			null :
-		text !== undefined ?
-			text.toString() :
-		undefined
-	)
-	const element = root.element(
-		elementName,
-		attributes || {},
-		txt
-	)
+	const txt = text === null ? null : text !== undefined ? text.toString() : undefined
+	const element = root.element(elementName, attributes || {}, txt)
 	return element
 }
 /**
  * Utility-function to convert a XMLBuilder.XMLElement into the generic object which can be sent
  * into the ***.fromXML(xml:any) methods in MosModel
  */
-export function xmlToObject (root: XMLBuilder.XMLElement): any {
-
+export function xmlToObject(root: XMLBuilder.XMLElement): any {
 	const obj: any = {}
 	let hasAttribs = false
 
@@ -189,7 +185,6 @@ export function xmlToObject (root: XMLBuilder.XMLElement): any {
 			if (!obj.attributes) obj.attributes = {}
 			obj.attributes[attr.name] = attr.value
 		}
-
 	}
 	// @ts-expect-error hack
 	if (root.children.length === 1 && root.children[0].name === '#text') {
@@ -204,7 +199,6 @@ export function xmlToObject (root: XMLBuilder.XMLElement): any {
 	}
 
 	for (const child of root.children) {
-
 		if ((child as any).name) {
 			const ch = child as XMLBuilder.XMLElement
 			if (obj[ch.name]) {

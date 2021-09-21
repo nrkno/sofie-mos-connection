@@ -1,4 +1,4 @@
-export function isEmpty (obj: any) {
+export function isEmpty(obj: any) {
 	if (typeof obj === 'object') {
 		for (let prop in obj) {
 			if (obj.hasOwnProperty(prop)) {
@@ -10,7 +10,7 @@ export function isEmpty (obj: any) {
 		return !obj
 	}
 }
-export function numberOrUndefined (value: any): number | undefined {
+export function numberOrUndefined(value: any): number | undefined {
 	if (typeof value === 'object' && isEmpty(value)) {
 		return undefined
 	}

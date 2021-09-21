@@ -1,17 +1,5 @@
-import { clearMocks,
-	delay,
-	doBeforeAll,
-	fakeIncomingMessage,
-	getMosConnection,
-	getMosDevice,
-	setupMocks
-} from './lib'
-import {
-	MosConnection,
-	MosDevice,
-	IMOSObject,
-	IMOSListMachInfo
-} from '..'
+import { clearMocks, delay, doBeforeAll, fakeIncomingMessage, getMosConnection, getMosDevice, setupMocks } from './lib'
+import { MosConnection, MosDevice, IMOSObject, IMOSListMachInfo } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
 
@@ -41,11 +29,13 @@ describe('Profile 0', () => {
 	let onRequestAllMOSObjects: jest.Mock<any, any>
 
 	beforeAll(async () => {
-
-		mosConnection = await getMosConnection({
-			'0': true,
-			'1': true // Must support at least one other profile
-		}, true)
+		mosConnection = await getMosConnection(
+			{
+				'0': true,
+				'1': true, // Must support at least one other profile
+			},
+			true
+		)
 		mosDevice = await getMosDevice(mosConnection)
 
 		// Profile 0:
@@ -60,10 +50,7 @@ describe('Profile 0', () => {
 			return Promise.resolve(xmlApiData.mosObj)
 		})
 		onRequestAllMOSObjects = jest.fn(() => {
-			return Promise.resolve([
-				xmlApiData.mosObj,
-				xmlApiData.mosObj2
-			])
+			return Promise.resolve([xmlApiData.mosObj, xmlApiData.mosObj2])
 		})
 		mosDevice.onRequestMOSObject((objId: string): Promise<IMOSObject | null> => {
 			return onRequestMOSObject(objId)
@@ -101,7 +88,6 @@ describe('Profile 0', () => {
 		expect(serverSocketMockLower).toBeTruthy()
 	})
 	test('heartbeat from other party', async () => {
-
 		expect(serverSocketMockLower).toBeTruthy()
 
 		serverSocketMockLower.setReplyToHeartBeat(false)
@@ -121,7 +107,6 @@ describe('Profile 0', () => {
 	})
 
 	test('unknown party connects', async () => {
-
 		// let unknownServerSocketMockLower = serverMockLower.mockNewConnection()
 
 		expect(serverSocketMockLower).toBeTruthy()
@@ -130,11 +115,7 @@ describe('Profile 0', () => {
 		serverSocketMockLower.mockAddReply(serverReply)
 
 		// Fake incoming message on socket:
-		let sendMessageId = await fakeIncomingMessage(
-			serverSocketMockLower,
-			xmlData.heartbeat,
-			'ourUnknownMosId'
-		)
+		let sendMessageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.heartbeat, 'ourUnknownMosId')
 		await delay(10) // to allow for async timers & events to triggered
 
 		expect(serverReply).toHaveBeenCalledTimes(1)
@@ -160,7 +141,6 @@ describe('Profile 0', () => {
 		expect(msg).toMatch(/<mosAck>/)
 		expect(msg).toMatch('<messageID>' + sendMessageId)
 		expect(msg).toMatch('<status>NACK')
-
 	})
 	// TODO: reqMachInfo
 	// TODO: listMachInfo

@@ -5,18 +5,17 @@ import {
 	IMOSROAck,
 	IMOSROAckStory /*,
 	IMOSROAckItem,
-	IMOSROAckObject*/
+	IMOSROAckObject*/,
 } from '../../api'
 import { addTextElement } from '../../utils/Utils'
 
 export class ROAck extends MosMessage implements IMOSROAck {
-
 	ID: MosString128
 	Status: MosString128
 	Stories: Array<IMOSROAckStory>
 
-  /** */
-	constructor (roAck?: IMOSROAck) {
+	/** */
+	constructor(roAck?: IMOSROAck) {
 		super('upper')
 		if (roAck) {
 			this.ID = roAck.ID
@@ -25,8 +24,8 @@ export class ROAck extends MosMessage implements IMOSROAck {
 		}
 	}
 
-  /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
+	/** */
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roAck')
 
 		addTextElement(root, 'roID', this.ID)

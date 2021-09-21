@@ -1,21 +1,18 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
-import {
-	IMOSRunningOrder
-} from '../../api'
+import { IMOSRunningOrder } from '../../api'
 import { addTextElement } from '../../utils/Utils'
 
 export class ROListAll extends MosMessage {
-
 	ROs: IMOSRunningOrder[]
 
-  /** */
-	constructor () {
+	/** */
+	constructor() {
 		super('upper')
 	}
 
-  /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
+	/** */
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		let root = XMLBuilder.create('roListAll')
 
 		this.ROs.forEach((RO: IMOSRunningOrder) => {

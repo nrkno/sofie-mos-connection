@@ -19,9 +19,9 @@ export class ServerMock extends EventEmitter implements Server {
 	listening: boolean
 	listenToPort: number
 
-	private _responses: Array<(data: any) => string | Buffer > = []
+	private _responses: Array<(data: any) => string | Buffer> = []
 
-	constructor () {
+	constructor() {
 		super()
 
 		// @ts-ignore this is comparable with ISocketMock
@@ -33,38 +33,44 @@ export class ServerMock extends EventEmitter implements Server {
 		this.getConnections = jest.fn(this.getConnections)
 		this.ref = jest.fn(this.ref)
 		this.unref = jest.fn(this.unref)
-
 	}
-	static mockClear () {
+	static mockClear() {
 		instances.splice(0, 9999)
 	}
-	static get instances () {
+	static get instances() {
 		return instances
 	}
 
-	listen (port: any) {
-
+	listen(port: any) {
 		this.listenToPort = port
 		setTimeoutOrg(() => {
 			this.listening = true
 			this.emit('listening', {})
-		},1)
+		}, 1)
 		return this
 	}
-	close (callback?: Function) {
+	close(callback?: Function) {
 		if (callback) callback()
 		setTimeoutOrg(() => {
 			this.emit('close')
-		},1)
+		}, 1)
 		return this
 	}
-	address () { return { port: 0, family: 'string', address: 'string' } }
-	getConnections (cb: (error: Error | null, count: number) => void) { cb(null, 0) }
-	ref () { return this }
-	unref () { return this }
+	address() {
+		return { port: 0, family: 'string', address: 'string' }
+	}
+	getConnections(cb: (error: Error | null, count: number) => void) {
+		cb(null, 0)
+	}
+	ref() {
+		return this
+	}
+	unref() {
+		return this
+	}
 
 	// Mock methods:
-	mockNewConnection () {
+	mockNewConnection() {
 		// "Someone has connected"
 		let socket = new SocketMock()
 		socket.on('data', (d) => {
@@ -76,7 +82,7 @@ export class ServerMock extends EventEmitter implements Server {
 		return socket
 	}
 
-	mockSentMessage (data: any, encoding: any) {
+	mockSentMessage(data: any, encoding: any) {
 		encoding = encoding
 		if (this._responses.length) {
 			// send reply:
@@ -85,7 +91,6 @@ export class ServerMock extends EventEmitter implements Server {
 			let msg
 
 			setTimeoutOrg(() => {
-
 				if (typeof cb === 'string') {
 					msg = cb
 				} else {
@@ -93,22 +98,22 @@ export class ServerMock extends EventEmitter implements Server {
 				}
 
 				this.mockReceiveMessage(msg)
-			},1)
+			}, 1)
 		}
 	}
-	mockReceiveMessage (msg: string | Buffer) {
+	mockReceiveMessage(msg: string | Buffer) {
 		this.emit('data', msg)
 	}
-	mockAddReply (cb: (data: any) => string | Buffer) {
+	mockAddReply(cb: (data: any) => string | Buffer) {
 		this._responses.push(cb)
 	}
-	mockClear () {
+	mockClear() {
 		this._responses.splice(0, 9999)
 	}
-	decode (data: Buffer): string {
+	decode(data: Buffer): string {
 		return iconv.decode(data, 'utf16-be')
 	}
-	encode (str: string) {
+	encode(str: string) {
 		return iconv.encode(str, 'utf16-be')
 	}
 }

@@ -2,15 +2,14 @@ import { ConnectionConfig } from '../connectionConfig'
 
 describe('ConnectionConfig', () => {
 	test('new ConnectionConfig', () => {
-
 		const config = new ConnectionConfig({
 			mosID: 'test',
 			acceptsConnections: true,
 			accepsConnectionsFrom: [],
 			profiles: {
 				'0': true,
-				'1': true
-			}
+				'1': true,
+			},
 			// debug: false,
 			// openRelay: true,
 			// offspecFailover: false
@@ -25,7 +24,6 @@ describe('ConnectionConfig', () => {
 	})
 
 	test('invalid ConnectionConfig', () => {
-
 		expect(() => {
 			// @ts-ignore
 			return new ConnectionConfig(undefined)
@@ -40,7 +38,7 @@ describe('ConnectionConfig', () => {
 			// @ts-ignore
 			return new ConnectionConfig({
 				mosID: 'test',
-				acceptsConnections: true
+				acceptsConnections: true,
 			})
 		}).toThrowError(/profiles.*missing/)
 
@@ -50,8 +48,8 @@ describe('ConnectionConfig', () => {
 				mosID: 'test',
 				profiles: {
 					'0': true,
-					'1': true
-				}
+					'1': true,
+				},
 			})
 		}).toThrowError(/acceptsConnections.*missing/)
 
@@ -61,20 +59,19 @@ describe('ConnectionConfig', () => {
 				acceptsConnections: true,
 				profiles: {
 					'0': true,
-					'1': true
-				}
+					'1': true,
+				},
 			})
 		}).toThrowError(/mosID.*missing/)
 
 		expect(() => {
-
 			return new ConnectionConfig({
 				mosID: 'test',
 				acceptsConnections: true,
 				// @ts-ignore
 				profiles: {
-					'1': true
-				}
+					'1': true,
+				},
 			})
 		}).toThrowError(/profile.*0.*mandatory/i)
 
@@ -83,8 +80,8 @@ describe('ConnectionConfig', () => {
 				mosID: 'test',
 				acceptsConnections: true,
 				profiles: {
-					'0': true
-				}
+					'0': true,
+				},
 			})
 		}).toThrowError(/must support at least one profile/i)
 	})

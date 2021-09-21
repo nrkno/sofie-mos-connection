@@ -2,16 +2,16 @@ export class MosString128 {
 	private _str: string
 
 	/** */
-	constructor (str: any, private strict: boolean = true) {
+	constructor(str: any, private strict: boolean = true) {
 		this.string = str
 	}
 	/** */
-	toString (): string {
+	toString(): string {
 		return this._str
 	}
 
 	/** */
-	set string (str: string | { text: string; type: string } | MosString128 | any) {
+	set string(str: string | { text: string; type: string } | MosString128 | any) {
 		if (typeof str === 'object' && str) {
 			if (str.text) {
 				this._str = str.text.toString()
@@ -30,7 +30,7 @@ export class MosString128 {
 	}
 
 	/** */
-	private _validate () {
+	private _validate() {
 		if (this.strict) {
 			if ((this._str || '').length > 128) throw new Error('MosString128 length is too long (' + this._str + ')!')
 		}

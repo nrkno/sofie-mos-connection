@@ -33,8 +33,8 @@ export class MosSocketClient extends EventEmitter {
 	private _commandTimeoutTimer: NodeJS.Timer
 	private _commandTimeout: number
 
-	private _queueCallback: {[messageId: string]: CallBackFunction} = {}
-	private _lingeringCallback: {[messageId: string]: CallBackFunction} = {} // for lingering messages
+	private _queueCallback: { [messageId: string]: CallBackFunction } = {}
+	private _lingeringCallback: { [messageId: string]: CallBackFunction } = {} // for lingering messages
 	private _queueMessages: Array<QueueMessage> = []
 
 	private _sentMessage: QueueMessage | null = null // sent message, waiting for reply
@@ -47,8 +47,8 @@ export class MosSocketClient extends EventEmitter {
 	private _disposed: boolean = false
 	private messageParser: MosMessageParser
 
-  /** */
-	constructor (host: string, port: number, description: string, timeout: number, debug: boolean) {
+	/** */
+	constructor(host: string, port: number, description: string, timeout: number, debug: boolean) {
 		super()
 		this._host = host
 		this._port = port
@@ -63,27 +63,28 @@ export class MosSocketClient extends EventEmitter {
 		})
 	}
 
-  /** */
-	set autoReconnect (autoReconnect: boolean) {
+	/** */
+	set autoReconnect(autoReconnect: boolean) {
 		this._autoReconnect = autoReconnect
 	}
 
-  /** */
-	set autoReconnectInterval (autoReconnectInterval: number) {
+	/** */
+	set autoReconnectInterval(autoReconnectInterval: number) {
 		this._reconnectDelay = autoReconnectInterval
 	}
 
-  /** */
-	set autoReconnectAttempts (autoReconnectAttempts: number) {
+	/** */
+	set autoReconnectAttempts(autoReconnectAttempts: number) {
 		this._reconnectAttempts = autoReconnectAttempts
 	}
 
-  /** */
-	connect (): void {
+	/** */
+	connect(): void {
 		// prevent manipulation of active socket
 		if (!this.connected) {
 			// throttling attempts
-			if (!this._lastConnectionAttempt || (Date.now() - this._lastConnectionAttempt) >= this._reconnectDelay) { // !_lastReconnectionAttempt (means first attempt) OR time > _reconnectionDelay since last attempt
+			if (!this._lastConnectionAttempt || Date.now() - this._lastConnectionAttempt >= this._reconnectDelay) {
+				// !_lastReconnectionAttempt (means first attempt) OR time > _reconnectionDelay since last attempt
 				// recreate client if new attempt:
 				if (this._client && this._client.connecting) {
 					this._client.destroy()
@@ -117,13 +118,12 @@ export class MosSocketClient extends EventEmitter {
 		}
 	}
 
-  /** */
-	disconnect (): void {
+	/** */
+	disconnect(): void {
 		this.dispose()
 	}
 
-	queueCommand (message: MosMessage, cb: CallBackFunction, time?: number): void {
-
+	queueCommand(message: MosMessage, cb: CallBackFunction, time?: number): void {
 		message.prepare()
 		// this.debugTrace('queueing', message.messageID, message.constructor.name )
 		this._queueCallback[message.messageID + ''] = cb
@@ -131,7 +131,7 @@ export class MosSocketClient extends EventEmitter {
 
 		this.processQueue()
 	}
-	processQueue () {
+	processQueue() {
 		if (this._disposed) return
 		// this.debugTrace('this.connected', this.connected)
 		if (!this._sentMessage && this.connected) {
@@ -165,15 +165,16 @@ export class MosSocketClient extends EventEmitter {
 			}
 		}
 	}
-	handOverQueue (): HandedOverQueue {
+	handOverQueue(): HandedOverQueue {
 		const queue = {
 			messages: this._queueMessages,
-			callbacks: this._queueCallback
+			callbacks: this._queueCallback,
 		}
 		if (this._sentMessage && this._sentMessage.msg instanceof HeartBeat) {
 			// Temporary hack, to allow heartbeats to be received after a handover:
 			this._lingeringMessage = this._sentMessage
-			this._lingeringCallback[this._sentMessage.msg.messageID + ''] = this._queueCallback[this._sentMessage.msg.messageID + '']
+			this._lingeringCallback[this._sentMessage.msg.messageID + ''] =
+				this._queueCallback[this._sentMessage.msg.messageID + '']
 		} else if (this._lingeringMessage) {
 			delete this._lingeringCallback[this._lingeringMessage.msg.messageID + '']
 			this._lingeringMessage = null
@@ -185,60 +186,63 @@ export class MosSocketClient extends EventEmitter {
 		return queue
 	}
 
-  /** */
-	get host (): string {
+	/** */
+	get host(): string {
 		if (this._client) {
 			return this._host
 		}
 		return this._host
 	}
 
-  /** */
-	get port (): number {
+	/** */
+	get port(): number {
 		if (this._client) {
 			return this._port
 		}
 		return this._port
 	}
 
-  /** */
-	dispose (): void {
+	/** */
+	dispose(): void {
 		this._disposed = true
 		// this._readyToSendMessage = false
 		this.connected = false
 		this._shouldBeConnected = false
 		this._clearConnectionAttemptTimer()
 		if (this._client) {
-			this._client.once('close', () => { this.emit(SocketConnectionEvent.DISPOSED) })
+			this._client.once('close', () => {
+				this.emit(SocketConnectionEvent.DISPOSED)
+			})
 			this._client.end()
 			this._client.destroy()
 			delete this._client
 		}
 	}
 
-  /**
-   * convenience wrapper to expose all logging calls to parent object
-   */
-	log (args: any): void {
+	/**
+	 * convenience wrapper to expose all logging calls to parent object
+	 */
+	log(args: any): void {
 		this.debugTrace(args)
 	}
-	public setDebug (debug: boolean) {
+	public setDebug(debug: boolean) {
 		this._debug = debug
 		this.messageParser.debug = this._debug
 	}
-  /** */
-	private set connected (connected: boolean) {
+	/** */
+	private set connected(connected: boolean) {
 		this._connected = connected === true
 		this.emit(SocketConnectionEvent.CONNECTED)
 	}
 
-  /** */
-	private get connected (): boolean {
+	/** */
+	private get connected(): boolean {
 		return this._connected
 	}
 
-	private _sendReply (messageId: number, err: any, res: any) {
-		let cb: CallBackFunction | undefined = this._queueCallback[messageId + ''] || this._lingeringCallback[messageId + '']
+	private _sendReply(messageId: number, err: any, res: any) {
+		let cb: CallBackFunction | undefined =
+			this._queueCallback[messageId + ''] || this._lingeringCallback[messageId + '']
 		if (cb) {
 			cb(err, res)
 		} else {
@@ -251,8 +255,8 @@ export class MosSocketClient extends EventEmitter {
 		delete this._lingeringCallback[messageId + '']
 	}
 
-  /** */
-	private executeCommand (message: QueueMessage, isRetry?: boolean): void {
+	/** */
+	private executeCommand(message: QueueMessage, isRetry?: boolean): void {
 		if (this._sentMessage && !isRetry) throw Error('executeCommand: there already is a sent Command!')
 		if (!this._client) throw Error('executeCommand: No client socket connection set up!')
 
@@ -285,14 +289,16 @@ export class MosSocketClient extends EventEmitter {
 		}, this._commandTimeout)
 		this._client.write(buf, 'ucs2')
 
-		this.emit('rawMessage','sent', messageString)
+		this.emit('rawMessage', 'sent', messageString)
 	}
 
-  /** */
-	private _autoReconnectionAttempt (): void {
+	/** */
+	private _autoReconnectionAttempt(): void {
 		if (this._autoReconnect) {
-			if (this._reconnectAttempts > -1) {								// no reconnection if no valid reconnectionAttemps is set
-				if (this._reconnectAttempts > 0 && (this._reconnectAttempt >= this._reconnectAttempts)) {	// if current attempt is not less than max attempts
+			if (this._reconnectAttempts > -1) {
+				// no reconnection if no valid reconnectionAttemps is set
+				if (this._reconnectAttempts > 0 && this._reconnectAttempt >= this._reconnectAttempts) {
+					// if current attempt is not less than max attempts
 					// reset reconnection behaviour
 					this._clearConnectionAttemptTimer()
 					return
@@ -307,7 +313,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 
 	/** */
-	private _clearConnectionAttemptTimer (): void {
+	private _clearConnectionAttemptTimer(): void {
 		this._reconnectAttempt = 0
 		if (this._connectionAttemptTimer) {
 			global.clearInterval(this._connectionAttemptTimer)
@@ -315,27 +321,27 @@ export class MosSocketClient extends EventEmitter {
 		}
 	}
 
-  /** */
+	/** */
 	// private _onUnhandledCommandTimeout () {
 	// 	global.clearTimeout(this._commandTimeoutTimer)
 	// 	this.emit(SocketConnectionEvent.TIMEOUT)
 	// }
 
-  /** */
-	private _onConnected () {
+	/** */
+	private _onConnected() {
 		this.emit(SocketConnectionEvent.ALIVE)
 		// global.clearInterval(this._connectionAttemptTimer)
 		this._clearConnectionAttemptTimer()
 		this.connected = true
 	}
 
-  /** */
-	private _onData (data: Buffer) {
+	/** */
+	private _onData(data: Buffer) {
 		this.emit(SocketConnectionEvent.ALIVE)
 		// data = Buffer.from(data, 'ucs2').toString()
 		const messageString: string = iconv.decode(data, 'utf16-be')
 
-		this.emit('rawMessage','recieved', messageString)
+		this.emit('rawMessage', 'recieved', messageString)
 
 		try {
 			this.messageParser.parseMessage(messageString)
@@ -344,13 +350,12 @@ export class MosSocketClient extends EventEmitter {
 		}
 	}
 
-	private _handleMessage (parsedData: any, messageString: string) {
-
+	private _handleMessage(parsedData: any, messageString: string) {
 		let messageId = parsedData.mos.messageID
 		if (messageId) {
 			let sentMessage = this._sentMessage || this._lingeringMessage
 			if (sentMessage) {
-				if (sentMessage.msg.messageID.toString() === (messageId + '')) {
+				if (sentMessage.msg.messageID.toString() === messageId + '') {
 					this._sendReply(sentMessage.msg.messageID, null, parsedData)
 				} else {
 					this.debugTrace('Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
@@ -360,9 +365,13 @@ export class MosSocketClient extends EventEmitter {
 
 					this._triggerQueueCleanup()
 				}
-
 			} else if (this._timedOutCommands[messageId]) {
-				this.debugTrace(`Got a reply (${messageId}), but command timed out ${(Date.now() - this._timedOutCommands[messageId])} ms ago`, messageString)
+				this.debugTrace(
+					`Got a reply (${messageId}), but command timed out ${
+						Date.now() - this._timedOutCommands[messageId]
+					} ms ago`,
+					messageString
+				)
 
 				delete this._timedOutCommands[messageId]
 			} else {
@@ -374,7 +383,11 @@ export class MosSocketClient extends EventEmitter {
 		} else {
 			// error message?
 			if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
-				if (this._sentMessage && parsedData.mos.mosAck.statusDescription === 'Buddy server cannot respond because main server is available') {
+				if (
+					this._sentMessage &&
+					parsedData.mos.mosAck.statusDescription ===
+						'Buddy server cannot respond because main server is available'
+				) {
 					this._sendReply(this._sentMessage.msg.messageID, 'Main server available', parsedData)
 				} else {
 					this.debugTrace('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
@@ -390,15 +403,15 @@ export class MosSocketClient extends EventEmitter {
 		this.processQueue()
 	}
 
-  /** */
-	private _onError (error: Error) {
+	/** */
+	private _onError(error: Error) {
 		// dispatch error!!!!!
 		this.emit('error', `Socket event error: ${error.message}`)
 		this.debugTrace(`Socket event error: ${error.message}`)
 	}
 
 	/** */
-	private _onClose (hadError: boolean) {
+	private _onClose(hadError: boolean) {
 		this.connected = false
 		// this._readyToSendMessage = false
 		if (hadError) {
@@ -416,7 +429,7 @@ export class MosSocketClient extends EventEmitter {
 			this.connect()
 		}
 	}
-	private _triggerQueueCleanup () {
+	private _triggerQueueCleanup() {
 		// in case we're in unsync with messages, prevent deadlock:
 		setTimeout(() => {
 			if (this._disposed) return
@@ -428,10 +441,9 @@ export class MosSocketClient extends EventEmitter {
 					this._queueMessages.splice(i, 1)
 				}
 			}
-
 		}, this._commandTimeout)
 	}
-	private debugTrace (...strs: any[]) {
+	private debugTrace(...strs: any[]) {
 		if (this._debug) console.log(...strs)
 	}
 }

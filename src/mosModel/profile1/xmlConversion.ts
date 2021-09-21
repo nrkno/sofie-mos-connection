@@ -6,18 +6,18 @@ import { XMLObjectPaths, XMLMosExternalMetaData } from '../profile2/xmlConversio
 import { addTextElement } from '../../utils/Utils'
 
 export namespace XMLMosAck {
-	export function fromXML (xml: any): IMOSAck {
+	export function fromXML(xml: any): IMOSAck {
 		let ack: IMOSAck = {
 			ID: new MosString128(xml.objID),
 			Revision: typeof xml.objRev === 'number' ? xml.objRev : 0,
 			Status: typeof xml.status === 'string' ? xml.status : 'ACK',
-			Description: new MosString128(typeof xml.statusDescription === 'string' ? xml.statusDescription : '')
+			Description: new MosString128(typeof xml.statusDescription === 'string' ? xml.statusDescription : ''),
 		}
 		return ack
 	}
 }
 export namespace XMLMosObjects {
-	export function fromXML (xml: any): Array<IMOSObject> {
+	export function fromXML(xml: any): Array<IMOSObject> {
 		if (!xml) return []
 		let xmlObjs: Array<any> = []
 		xmlObjs = xml
@@ -27,9 +27,9 @@ export namespace XMLMosObjects {
 			return XMLMosObject.fromXML(xmlObj)
 		})
 	}
-	export function toXML (xml: XMLBuilder.XMLElement, objs?: IMOSObject[]) {
+	export function toXML(xml: XMLBuilder.XMLElement, objs?: IMOSObject[]) {
 		if (objs) {
-			objs.forEach(MosObject => {
+			objs.forEach((MosObject) => {
 				let xmlMosObj = XMLBuilder.create('mosObj')
 				XMLMosObject.toXML(xmlMosObj, MosObject)
 				xml.importDocument(xmlMosObj)
@@ -38,7 +38,7 @@ export namespace XMLMosObjects {
 	}
 }
 export namespace XMLMosObject {
-	export function fromXML (xml: any): IMOSObject {
+	export function fromXML(xml: any): IMOSObject {
 		let mosObj: IMOSObject = {
 			ID: new MosString128(xml.objID),
 			Slug: new MosString128(xml.objSlug),
@@ -55,17 +55,19 @@ export namespace XMLMosObject {
 			Created: new MosTime(xml.created),
 			ChangedBy: new MosString128(xml.changedBy),
 			Changed: new MosTime(xml.changed),
-			Description: xml.description
+			Description: xml.description,
 		}
-		if (xml.hasOwnProperty('mosExternalMetadata')) mosObj.MosExternalMetaData = XMLMosExternalMetaData.fromXML(xml.mosExternalMetadata)
-		if (xml.hasOwnProperty('mosItemEditorProgID')) mosObj.MosItemEditorProgID = new MosString128(xml.mosItemEditorProgID)
+		if (xml.hasOwnProperty('mosExternalMetadata'))
+			mosObj.MosExternalMetaData = XMLMosExternalMetaData.fromXML(xml.mosExternalMetadata)
+		if (xml.hasOwnProperty('mosItemEditorProgID'))
+			mosObj.MosItemEditorProgID = new MosString128(xml.mosItemEditorProgID)
 		return mosObj
 	}
-	export function toXML (xml: XMLBuilder.XMLElement, obj: IMOSObject): void {
+	export function toXML(xml: XMLBuilder.XMLElement, obj: IMOSObject): void {
 		if (obj.ID) addTextElement(xml, 'objID', obj.ID)
 		addTextElement(xml, 'objSlug', obj.Slug)
-		if (obj.MosAbstract) 	addTextElement(xml, 'mosAbstract', obj.MosAbstract)
-		if (obj.Group) 			addTextElement(xml, 'objGroup', obj.Group)
+		if (obj.MosAbstract) addTextElement(xml, 'mosAbstract', obj.MosAbstract)
+		if (obj.Group) addTextElement(xml, 'objGroup', obj.Group)
 		addTextElement(xml, 'objType', obj.Type)
 		addTextElement(xml, 'objTB', obj.TimeBase)
 		addTextElement(xml, 'objRev', obj.Revision)
@@ -86,7 +88,7 @@ export namespace XMLMosObject {
 	}
 }
 export namespace XMLMosRequestObjectList {
-	export function fromXML (xml: any): IMOSRequestObjectList {
+	export function fromXML(xml: any): IMOSRequestObjectList {
 		const list: IMOSRequestObjectList = {
 			username: xml.username,
 			queryID: xml.queryID,
@@ -94,7 +96,7 @@ export namespace XMLMosRequestObjectList {
 			listReturnEnd: xml.listReturnEnd,
 			generalSearch: xml.generalSearch,
 			mosSchema: xml.mosSchema,
-			searchGroups: []
+			searchGroups: [],
 		}
 
 		if (typeof list.listReturnStart === 'object') list.listReturnStart = null

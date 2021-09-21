@@ -1,7 +1,6 @@
 import { MosString128 } from '../mosString128'
 
 test('MosString128', () => {
-
 	expect(new MosString128('test test').toString()).toEqual('test test')
 	expect(new MosString128('').toString()).toEqual('')
 	expect(new MosString128({}).toString()).toEqual('')

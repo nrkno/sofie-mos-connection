@@ -9,7 +9,7 @@ export enum IMOSListMachInfoDefaultActiveXMode {
 	MODALDIALOG = 'MODALDIALOG',
 	MODELESS = 'MODELESS',
 	CONTAINED = 'CONTAINED',
-	TOOLBAR = 'TOOLBAR'
+	TOOLBAR = 'TOOLBAR',
 }
 
 export interface IMOSListMachInfo {
@@ -35,16 +35,15 @@ export interface IMOSListMachInfo {
 	mosRev: MosString128
 
 	supportedProfiles: {
-		deviceType: 'NCS' | 'MOS',
-		profile0?: boolean,
-		profile1?: boolean,
-		profile2?: boolean,
-		profile3?: boolean,
-		profile4?: boolean,
-		profile5?: boolean,
-		profile6?: boolean,
+		deviceType: 'NCS' | 'MOS'
+		profile0?: boolean
+		profile1?: boolean
+		profile2?: boolean
+		profile3?: boolean
+		profile4?: boolean
+		profile5?: boolean
+		profile6?: boolean
 		profile7?: boolean
-
 	}
 	/** defaultActiveX contains tags that describe the correct settings for the ActiveX control (NOTE: no two <defaultActivX> elements can have the same <mode> value). */
 	defaultActiveX?: Array<IMOSDefaultActiveX>
@@ -64,18 +63,16 @@ export interface IMOSDefaultActiveX {
 }
 
 export class ListMachineInfo extends MosMessage {
-
 	info: IMOSListMachInfo
 
-  /** */
-	constructor (info: IMOSListMachInfo, port: 'upper' | 'lower') {
+	/** */
+	constructor(info: IMOSListMachInfo, port: 'upper' | 'lower') {
 		super(port)
 		this.info = info
 	}
 
-  /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
-
+	/** */
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		let xmlListMachInfo = XMLBuilder.create('listMachInfo')
 		addTextElement(xmlListMachInfo, 'manufacturer', this.info.manufacturer)
 		addTextElement(xmlListMachInfo, 'model', this.info.model)
@@ -94,7 +91,11 @@ export class ListMachineInfo extends MosMessage {
 		xmlSupportedProfiles.att('deviceType', this.info.supportedProfiles.deviceType)
 		// let p = addTextElement(root, 'supportedProfiles').att('deviceType', this.info.supportedProfiles.deviceType)
 		for (let i = 0; i < 8; i++) {
-			addTextElement(xmlSupportedProfiles, 'mosProfile', ((this as any).info.supportedProfiles['profile' + i] ? 'YES' : 'NO')).att('number', i)
+			addTextElement(
+				xmlSupportedProfiles,
+				'mosProfile',
+				(this as any).info.supportedProfiles['profile' + i] ? 'YES' : 'NO'
+			).att('number', i)
 		}
 		xmlListMachInfo.importDocument(xmlSupportedProfiles)
 		return xmlListMachInfo

@@ -6,53 +6,58 @@ import {
 	IMOSRunningOrder,
 	IMOSStoryAction,
 	IMOSROStory,
-	IMOSListMachInfo
+	IMOSListMachInfo,
 } from '../src'
 
 import { MosString128 } from '../src/dataTypes/mosString128'
 import { MosTime } from '../src/dataTypes/mosTime'
 import { MosDevice } from '../src/MosDevice'
-let mos = new MosConnection(new ConnectionConfig({
-	mosID: 'sofie.tv.automation',
-	acceptsConnections: true,
-	profiles: {
-		'0': true,
-		'1': true
-	},
-	openRelay: true
-	// debug: true
-}))
-mos.on('rawMessage',(source, type, message) => {
+let mos = new MosConnection(
+	new ConnectionConfig({
+		mosID: 'sofie.tv.automation',
+		acceptsConnections: true,
+		profiles: {
+			'0': true,
+			'1': true,
+		},
+		openRelay: true,
+		// debug: true
+	})
+)
+mos.on('rawMessage', (source, type, message) => {
 	// console.log('rawMessage', source, type, message)
 })
-mos.on('error',(e) => {
+mos.on('error', (e) => {
 	console.log('Emit error', e)
 })
 mos.onConnection((dev: MosDevice) => {
 	console.log('new mosDevice: ', dev.idPrimary, dev.idSecondary)
 	// console.log(dev)
 	if (dev.hasConnection) {
-		dev.getMachineInfo().then((lm) => {
-			// console.log('Machineinfo', lm)
-		})
-		.then(() => {
-			return dev.getAllRunningOrders()
-		})
-		.then((ros) => {
-			console.log('allRunningOrders', ros)
+		dev.getMachineInfo()
+			.then((lm) => {
+				// console.log('Machineinfo', lm)
+			})
+			.then(() => {
+				return dev.getAllRunningOrders()
+			})
+			.then((ros) => {
+				console.log('allRunningOrders', ros)
 
-			// trigger a re-send of those running orders:
-			// return dev.getRunningOrder(new MosString128('696297DF-1568-4B36-B43B3B79514B40D4'))
-			return Promise.all(ros.map((ro) => {
-				return dev.getRunningOrder(ro.ID)
-			}))
-		})
-		.then((roLists) => {
-			console.log('roLists', roLists)
-		})
-		.catch((e) => {
-			console.log('ERROR', e)
-		})
+				// trigger a re-send of those running orders:
+				// return dev.getRunningOrder(new MosString128('696297DF-1568-4B36-B43B3B79514B40D4'))
+				return Promise.all(
+					ros.map((ro) => {
+						return dev.getRunningOrder(ro.ID)
+					})
+				)
+			})
+			.then((roLists) => {
+				console.log('roLists', roLists)
+			})
+			.catch((e) => {
+				console.log('ERROR', e)
+			})
 	}
 
 	dev.onRequestMachineInfo(() => {
@@ -71,8 +76,8 @@ mos.onConnection((dev: MosDevice) => {
 
 				supportedProfiles: {
 					deviceType: 'MOS',
-					profile0: true
-				}
+					profile0: true,
+				},
 			}
 			// console.log('onRequestMachineInfo', m)
 			resolve(m)
@@ -84,7 +89,7 @@ mos.onConnection((dev: MosDevice) => {
 			resolve({
 				ID: Action.ID,
 				Status: new MosString128('OK'),
-				Stories: []
+				Stories: [],
 			})
 		})
 	})
@@ -95,7 +100,7 @@ mos.onConnection((dev: MosDevice) => {
 			resolve({
 				ID: ro.ID,
 				Status: new MosString128('OK'),
-				Stories: []
+				Stories: [],
 			})
 		})
 	})
@@ -106,7 +111,7 @@ mos.onConnection((dev: MosDevice) => {
 			resolve({
 				ID: RunningOrderID,
 				Status: new MosString128('OK'),
-				Stories: []
+				Stories: [],
 			})
 		})
 	})
@@ -120,7 +125,7 @@ mos.onConnection((dev: MosDevice) => {
 			resolve({
 				ID: Action.StoryID,
 				Status: new MosString128('OK'),
-				Stories: []
+				Stories: [],
 			})
 		})
 	})
@@ -130,12 +135,12 @@ mos.onConnection((dev: MosDevice) => {
 			console.log('onROMoveStories', {
 				ID: Action.StoryID,
 				Status: 'OK',
-				Stories: Stories
+				Stories: Stories,
 			})
 			resolve({
 				ID: Action.StoryID,
 				Status: new MosString128('OK'),
-				Stories: []
+				Stories: [],
 			})
 		})
 	})
@@ -145,31 +150,30 @@ mos.onConnection((dev: MosDevice) => {
 			console.log('onRODeleteStories', Action, {
 				ID: Action.RunningOrderID,
 				Status: 'OK',
-				Stories: Stories
+				Stories: Stories,
 			})
 			resolve({
 				ID: Action.RunningOrderID,
 				Status: new MosString128('OK'),
-				Stories: []
+				Stories: [],
 			})
 		})
 	})
-
 })
 
 mos.init()
-.then((listening) => {
-	let mosdev = mos.connect({
-		primary: {
-			id: '2012R2ENPS8VM',
-			host: '10.0.1.244',
-			timeout: 100000
-		}
+	.then((listening) => {
+		let mosdev = mos.connect({
+			primary: {
+				id: '2012R2ENPS8VM',
+				host: '10.0.1.244',
+				timeout: 100000,
+			},
+		})
 	})
-})
-.catch(e => {
-	console.log(e)
-})
+	.catch((e) => {
+		console.log(e)
+	})
 // let mosdev = mos.connect({
 // 	primary: {
 // 		id: 'test2.enps.mos',
