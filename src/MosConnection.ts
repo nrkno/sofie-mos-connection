@@ -32,7 +32,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 
 	// private _isListening: Promise<boolean[]>
 
-	private _onconnection: (mosDevice: MosDevice) => void
+	private _onConnection?: (mosDevice: MosDevice) => void
 
 	/** */
 	constructor(configOptions: IConnectionConfig) {
@@ -175,7 +175,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	}
 	/** Callback is called when a new connection is established */
 	onConnection(cb: (mosDevice: MosDevice) => void) {
-		this._onconnection = cb
+		this._onConnection = cb
 	}
 	/** True if mosConnection is listening for connections */
 	get isListening(): boolean {
@@ -337,7 +337,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		mosDevice.connect()
 
 		// emit to .onConnection:
-		if (this._onconnection) this._onconnection(mosDevice)
+		if (this._onConnection) this._onConnection(mosDevice)
 		return mosDevice
 	}
 
@@ -511,11 +511,12 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 							// reply with NACK:
 							// TODO: implement ACK
 							// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
-							let msg = new MOSAck()
-							msg.ID = new MosString128(0)
-							msg.Revision = 0
-							msg.Description = new MosString128(`MosDevice "${ncsID + '_' + mosID}" not found`)
-							msg.Status = IMOSAckStatus.NACK
+							let msg = new MOSAck({
+								ID: new MosString128(0),
+								Revision: 0,
+								Description: new MosString128(`MosDevice "${ncsID + '_' + mosID}" not found`),
+								Status: IMOSAckStatus.NACK,
+							})
 							sendReply(msg) // TODO: Need tests
 						}
 					})
@@ -523,11 +524,13 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				// No MOS-device found in the register
 
 				// We can't handle the message, reply with a NACK:
-				let msg = new MOSAck()
-				msg.ID = new MosString128(0)
-				msg.Revision = 0
-				msg.Description = new MosString128('MosDevice not found')
-				msg.Status = IMOSAckStatus.NACK
+				let msg = new MOSAck({
+					ID: new MosString128(0),
+					Revision: 0,
+					Description: new MosString128('MosDevice not found'),
+					Status: IMOSAckStatus.NACK,
+				})
+
 				sendReply(msg) // TODO: Need tests
 			}
 		}

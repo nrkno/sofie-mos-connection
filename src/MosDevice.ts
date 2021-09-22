@@ -92,8 +92,8 @@ export class MosDevice implements IMOSDevice {
 	time: MosTime
 	opTime: MosTime
 	mosRev: MosString128
-	defaultActiveX: Array<IMOSDefaultActiveX>
-	mosExternalMetaData: Array<IMOSExternalMetaData>
+	defaultActiveX?: Array<IMOSDefaultActiveX>
+	mosExternalMetaData?: Array<IMOSExternalMetaData>
 
 	private _idPrimary: string
 	private _idSecondary: string | null
@@ -338,8 +338,13 @@ export class MosDevice implements IMOSDevice {
 				}
 			})
 
-			const mosAck = new MOSAck()
-			return mosAck
+			// What this should contain isn't well defined in the protocol
+			return new MOSAck({
+				ID: new MosString128(0),
+				Revision: 0,
+				Description: new MosString128(''),
+				Status: IMOSAckStatus.ACK,
+			})
 
 			// Profile 2:
 		} else if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
@@ -362,10 +367,11 @@ export class MosDevice implements IMOSDevice {
 				return new ROList(ro)
 			} else {
 				// RO not found
-				const ack = new ROAck()
-				ack.ID = data.roReq.roID
-				ack.Status = new MosString128(IMOSAckStatus.NACK)
-				return ack
+				return new ROAck({
+					ID: data.roReq.roID,
+					Status: new MosString128(IMOSAckStatus.NACK),
+					Stories: [],
+				})
 			}
 		} else if (data.roMetadataReplace && typeof this._callbackOnMetadataReplace === 'function') {
 			const ro: IMOSRunningOrderBase = Parser.xml2ROBase(data.roMetadataReplace)
@@ -630,12 +636,13 @@ export class MosDevice implements IMOSDevice {
 			// TODO: Use reject if function dont exists? Put Nack in ondata
 		} else {
 			this.debugTrace(data)
-			const msg = new MOSAck()
-			msg.ID = new MosString128(0) // Depends on type of message, needs logic
-			msg.Revision = 0
-			msg.Description = new MosString128('Unsupported function')
-			msg.Status = IMOSAckStatus.NACK
-			return msg
+			return new MOSAck({
+				ID: new MosString128(0), // Depends on type of message, needs logic
+				Revision: 0,
+				Description: new MosString128('Unsupported function'),
+				Status: IMOSAckStatus.NACK,
+			})
+
 			// resolve('<mos><mosID>test2.enps.mos</mosID><ncsID>2012R2ENPS8VM</ncsID><messageID>99</messageID><roAck><roID>2012R2ENPS8VM;P_ENPSMOS\W\F_HOLD ROs;DEC46951-28F9-4A11-8B0655D96B347E52</roID><roStatus>Unknown object M000133</roStatus><storyID>5983A501:0049B924:8390EF2B</storyID><itemID>0</itemID><objID>M000224</objID><status>LOADED</status><storyID>3854737F:0003A34D:983A0B28</storyID><itemID>0</itemID><objID>M000133</objID><itemChannel>A</itemChannel><status>UNKNOWN</status></roAck></mos>')
 		}
 	}

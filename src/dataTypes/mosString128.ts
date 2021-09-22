@@ -1,5 +1,5 @@
 export class MosString128 {
-	private _str: string
+	private _str: string = 'undefined'
 
 	/** */
 	constructor(str: any, private strict: boolean = true) {

@@ -11,13 +11,13 @@ export class MOSAck extends MosMessage implements IMOSAck {
 	Description: MosString128
 
 	/** */
-	constructor(ack?: IMOSAck) {
+	constructor(ack: IMOSAck) {
 		super('lower')
-		if (ack) {
-			this.ID = ack.ID
-			this.Status = ack.Status
-			this.Description = ack.Description
-		}
+
+		this.ID = ack.ID
+		this.Status = ack.Status
+		this.Description = ack.Description
+		this.Revision = ack.Revision
 	}
 
 	/** */

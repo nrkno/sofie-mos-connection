@@ -26,11 +26,10 @@ export class MosSocketClient extends EventEmitter {
 	private _client: Socket | undefined
 	private _shouldBeConnected: boolean = false
 	private _connected: boolean = false
-	private _lastConnectionAttempt: number
+	private _lastConnectionAttempt: number = 0
 	private _reconnectAttempt: number = 0
 	private _connectionAttemptTimer: NodeJS.Timer | undefined
 
-	private _commandTimeoutTimer: NodeJS.Timer
 	private _commandTimeout: number
 
 	private _queueCallback: { [messageId: string]: CallBackFunction } = {}
@@ -42,7 +41,7 @@ export class MosSocketClient extends EventEmitter {
 	// private _readyToSendMessage: boolean = true
 	private _timedOutCommands: { [id: string]: number } = {}
 
-	private processQueueTimeout: NodeJS.Timer
+	private processQueueTimeout?: NodeJS.Timer
 	// private _startingUp: boolean = true
 	private _disposed: boolean = false
 	private messageParser: MosMessageParser
@@ -135,7 +134,10 @@ export class MosSocketClient extends EventEmitter {
 		if (this._disposed) return
 		// this.debugTrace('this.connected', this.connected)
 		if (!this._sentMessage && this.connected) {
-			if (this.processQueueTimeout) clearTimeout(this.processQueueTimeout)
+			if (this.processQueueTimeout) {
+				clearTimeout(this.processQueueTimeout)
+				delete this.processQueueTimeout
+			}
 			let message = this._queueMessages.shift()
 			if (message) {
 				// Send the message:
@@ -152,7 +154,7 @@ export class MosSocketClient extends EventEmitter {
 					this.processQueue()
 				} else {
 					// Try again later:
-					clearTimeout(this.processQueueTimeout)
+					if (this.processQueueTimeout) clearTimeout(this.processQueueTimeout)
 					this.processQueueTimeout = setTimeout(() => {
 						this.processQueue()
 					}, 200)
@@ -182,7 +184,10 @@ export class MosSocketClient extends EventEmitter {
 		this._queueMessages = []
 		this._queueCallback = {}
 		this._sentMessage = null
-		clearTimeout(this.processQueueTimeout)
+		if (this.processQueueTimeout) {
+			clearTimeout(this.processQueueTimeout)
+			delete this.processQueueTimeout
+		}
 		return queue
 	}
 
@@ -322,12 +327,6 @@ export class MosSocketClient extends EventEmitter {
 	}
 
 	/** */
-	// private _onUnhandledCommandTimeout () {
-	// 	global.clearTimeout(this._commandTimeoutTimer)
-	// 	this.emit(SocketConnectionEvent.TIMEOUT)
-	// }
-
-	/** */
 	private _onConnected() {
 		this.emit(SocketConnectionEvent.ALIVE)
 		// global.clearInterval(this._connectionAttemptTimer)
@@ -379,7 +378,6 @@ export class MosSocketClient extends EventEmitter {
 				this.debugTrace(`Got a reply (${messageId}), but we haven't sent any message: "${messageString}"`)
 				this.emit('warning', `Got a reply (${messageId}), but we haven't sent any message: "${messageString}"`)
 			}
-			clearTimeout(this._commandTimeoutTimer)
 		} else {
 			// error message?
 			if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {

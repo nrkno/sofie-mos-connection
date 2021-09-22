@@ -37,7 +37,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 
 	private _emittedConnected = false
 
-	private _heartBeatsTimer: NodeJS.Timer
+	private _heartBeatsTimer?: NodeJS.Timer
 	private _heartBeatsDelay: number
 
 	constructor(id: string, host: string, mosID: string, timeout: number | undefined, debug: boolean) {
@@ -226,7 +226,10 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 			for (let key in this._clients) {
 				this.removeClient(key)
 			}
-			global.clearTimeout(this._heartBeatsTimer)
+			if (this._heartBeatsTimer) {
+				global.clearTimeout(this._heartBeatsTimer)
+				delete this._heartBeatsTimer
+			}
 			this._connected = false
 			this.emit('connectionChanged')
 			resolveDispose()
@@ -234,7 +237,10 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	}
 
 	private _sendHeartBeats(): void {
-		if (this._heartBeatsTimer) clearTimeout(this._heartBeatsTimer)
+		if (this._heartBeatsTimer) {
+			clearTimeout(this._heartBeatsTimer)
+			delete this._heartBeatsTimer
+		}
 		if (this._disposed) return
 
 		let triggerNextHeartBeat = () => {

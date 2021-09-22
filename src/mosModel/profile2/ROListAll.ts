@@ -4,7 +4,7 @@ import { IMOSRunningOrder } from '../../api'
 import { addTextElement } from '../../utils/Utils'
 
 export class ROListAll extends MosMessage {
-	ROs: IMOSRunningOrder[]
+	public ROs: IMOSRunningOrder[] = []
 
 	/** */
 	constructor() {

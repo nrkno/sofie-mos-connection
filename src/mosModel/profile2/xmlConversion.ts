@@ -22,10 +22,11 @@ import { XMLMosObjects } from '../profile1/xmlConversion'
 
 export namespace XMLMosROAck {
 	export function fromXML(xml: any): ROAck {
-		let roAck: ROAck = new ROAck()
-
-		roAck.ID = new MosString128(xml.roID)
-		roAck.Status = new MosString128(xml.roStatus)
+		let roAck: ROAck = new ROAck({
+			ID: new MosString128(xml.roID),
+			Status: new MosString128(xml.roStatus),
+			Stories: [],
+		})
 
 		let xmlStoryIDs = xml.storyID
 		let xmlItemIDs = xml.itemID

@@ -4,23 +4,20 @@ import { addTextElement } from '../utils/Utils'
 export type PortType = 'upper' | 'lower' | 'query'
 export abstract class MosMessage {
 	private static MAX_MESSAGE_ID = Math.pow(2, 31) - 2
-	private static _messageID: number = 1
+	private static _staticMessageID: number = 1
 
-	mosID: string
-	ncsID: string
-	port: PortType
+	public mosID: string | undefined = undefined
+	public ncsID: string | undefined = undefined
 
-	constructor(port: PortType) {
-		this.port = port
-	}
+	constructor(public port: PortType) {}
 
-	private _messageID: number
+	private _messageID: number = 0
 
 	private static getNewMessageID(): number {
 		// increments and returns a signed 32-bit int counting from 1, resetting to 1 when wrapping
-		MosMessage._messageID++
-		if (MosMessage._messageID >= MosMessage.MAX_MESSAGE_ID) MosMessage._messageID = 1
-		return MosMessage._messageID
+		MosMessage._staticMessageID++
+		if (MosMessage._staticMessageID >= MosMessage.MAX_MESSAGE_ID) MosMessage._staticMessageID = 1
+		return MosMessage._staticMessageID
 	}
 
 	/** */
