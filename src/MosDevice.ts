@@ -636,15 +636,15 @@ export class MosDevice implements IMOSDevice {
 			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
 		} else {
+			this.debugTrace('Unsupported function')
 			this.debugTrace(data)
+			const keys = Object.keys(data).filter((key) => ['ncsID', 'mosID', 'messageID'].indexOf(key) === -1)
 			return new MOSAck({
 				ID: new MosString128(0), // Depends on type of message, needs logic
 				Revision: 0,
-				Description: new MosString128('Unsupported function'),
+				Description: new MosString128(`Unsupported function: "${keys.join(', ')}"`),
 				Status: IMOSAckStatus.NACK,
 			})
-
-			// resolve('<mos><mosID>test2.enps.mos</mosID><ncsID>2012R2ENPS8VM</ncsID><messageID>99</messageID><roAck><roID>2012R2ENPS8VM;P_ENPSMOS\W\F_HOLD ROs;DEC46951-28F9-4A11-8B0655D96B347E52</roID><roStatus>Unknown object M000133</roStatus><storyID>5983A501:0049B924:8390EF2B</storyID><itemID>0</itemID><objID>M000224</objID><status>LOADED</status><storyID>3854737F:0003A34D:983A0B28</storyID><itemID>0</itemID><objID>M000133</objID><itemChannel>A</itemChannel><status>UNKNOWN</status></roAck></mos>')
 		}
 	}
 
