@@ -78,7 +78,12 @@ export class MosMessageParser extends EventEmitter {
 			this.emit('message', parsedData, messageString)
 		}
 	}
-	private debugTrace(...strs: any[]) {
-		if (this.debug) console.log(...strs)
+	private debugTrace(str: string) {
+		if (this.debug) {
+			// Supress console spam:
+			if (!`${str}`.match(/<heartbeat>/)) {
+				console.log(str)
+			}
+		}
 	}
 }

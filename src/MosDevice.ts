@@ -285,9 +285,11 @@ export class MosDevice implements IMOSDevice {
 	async routeData(data: AnyXML, port: PortType): Promise<any> {
 		if (data && has(data, 'mos')) data = data['mos']
 
-		this.debugTrace('parsedData', data)
-		// this.debugTrace('parsedTest', keys)
-		this.debugTrace('keys', Object.keys(data))
+		// Suppress console spam:
+		if (!has(data, 'heartbeat')) {
+			this.debugTrace('parsedData', data)
+			// this.debugTrace('keys', Object.keys(data))
+		}
 
 		// Route and format data:
 		// Profile 0:
