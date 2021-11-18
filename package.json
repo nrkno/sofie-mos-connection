@@ -33,7 +33,8 @@
     "info": "npm-scripts-info",
     "build": "trash dist && yarn build:main",
     "build:main": "tsc -p tsconfig.build.json",
-    "lint": "eslint . --ext .ts --ext .js --ext .tsx --ext .jsx --ignore-pattern dist",
+    "eslint": "eslint --ext .ts --ext .js --ext .tsx --ext .jsx --ignore-pattern dist",
+    "lint": "yarn eslint .",
     "lint-fix": "yarn lint --fix",
     "unit": "jest --forceExit",
     "test": "yarn lint && yarn unit",
@@ -134,10 +135,10 @@
   },
   "lint-staged": {
     "*.{css,json,md,scss}": [
-      "prettier --write"
+      "prettier"
     ],
     "*.{ts,tsx,js,jsx}": [
-      "yarn lint-fix"
+      "yarn eslint"
     ]
   }
 }
