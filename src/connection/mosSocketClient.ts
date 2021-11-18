@@ -406,7 +406,7 @@ export class MosSocketClient extends EventEmitter {
 	/** */
 	private _onError(error: Error) {
 		// dispatch error!!!!!
-		this.emit('error', `Socket event error: ${error.message}`)
+		this.emit('error', `Socket ${this._description} ${this._port} event error: ${error.message}`)
 		this.debugTrace(`Socket event error: ${error.message}`)
 	}
 

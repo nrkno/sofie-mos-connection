@@ -670,9 +670,9 @@ export class MosDevice implements IMOSDevice {
 			time: listMachInfo.time,
 			opTime: listMachInfo.opTime,
 			mosRev: listMachInfo.mosRev,
-			supportedProfiles: this.supportedProfiles, // TODO: No data from ENPS, needs test!
-			defaultActiveX: this.defaultActiveX, // TODO: No data from ENPS, needs test!
-			mosExternalMetaData: this.mosExternalMetaData, // TODO: No data from ENPS, needs test!
+			supportedProfiles: this.supportedProfiles,
+			defaultActiveX: this.defaultActiveX,
+			mosExternalMetaData: this.mosExternalMetaData,
 		}
 		return list
 	}
