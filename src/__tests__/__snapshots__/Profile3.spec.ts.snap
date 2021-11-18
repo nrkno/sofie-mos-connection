@@ -46,6 +46,9 @@ Object {
       "Items": Array [],
     },
   ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
   "port": "upper",
 }
 `;
@@ -230,7 +233,7 @@ Object {
       "Paths": Array [
         Object {
           "Description": "MPEG2                            Video",
-          "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+          "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
           "Type": "PATH",
         },
         Object {
@@ -362,7 +365,7 @@ Object {
       "Paths": Array [
         Object {
           "Description": "MPEG2 Video",
-          "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+          "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
           "Type": "PATH",
         },
         Object {
@@ -494,7 +497,7 @@ Object {
       "Paths": Array [
         Object {
           "Description": "MPEG2 Video",
-          "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+          "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
           "Type": "PATH",
         },
         Object {
@@ -724,7 +727,7 @@ exports[`Profile 3 onMosObjCreate: <mos>
   <messageID>1633</messageID>
   <mosAck>
     <objID>runningOrderId</objID>
-    <objRev/>
+    <objRev>1</objRev>
     <status>ACK</status>
     <statusDescription/>
   </mosAck>
@@ -735,14 +738,14 @@ exports[`Profile 3 onMosObjCreate: <mos>
   <messageID>1633</messageID>
   <mosAck>
     <objID>runningOrderId</objID>
-    <objRev/>
+    <objRev>1</objRev>
     <status>ACK</status>
     <statusDescription/>
   </mosAck>
 </mos>"
 `;
 
-exports[`Profile 3 onMosReqObjectActionDelete  1`] = `
+exports[`Profile 3 onMosReqObjectActionDelete 1`] = `
 Array [
   Array [
     "1EFA3009233F8329C1",
@@ -750,13 +753,13 @@ Array [
 ]
 `;
 
-exports[`Profile 3 onMosReqObjectActionDelete : <mos>
+exports[`Profile 3 onMosReqObjectActionDelete: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1639</messageID>
   <mosAck>
     <objID>runningOrderId</objID>
-    <objRev/>
+    <objRev>1</objRev>
     <status>ACK</status>
     <statusDescription/>
   </mosAck>
@@ -767,7 +770,7 @@ exports[`Profile 3 onMosReqObjectActionDelete : <mos>
   <messageID>1639</messageID>
   <mosAck>
     <objID>runningOrderId</objID>
-    <objRev/>
+    <objRev>1</objRev>
     <status>ACK</status>
     <statusDescription/>
   </mosAck>
@@ -892,7 +895,7 @@ exports[`Profile 3 onMosReqObjectActionNew: <mos>
   <messageID>1637</messageID>
   <mosAck>
     <objID>runningOrderId</objID>
-    <objRev/>
+    <objRev>1</objRev>
     <status>ACK</status>
     <statusDescription/>
   </mosAck>
@@ -903,7 +906,7 @@ exports[`Profile 3 onMosReqObjectActionNew: <mos>
   <messageID>1637</messageID>
   <mosAck>
     <objID>runningOrderId</objID>
-    <objRev/>
+    <objRev>1</objRev>
     <status>ACK</status>
     <statusDescription/>
   </mosAck>
@@ -1029,7 +1032,7 @@ exports[`Profile 3 onMosReqObjectActionUpdate: <mos>
   <messageID>1638</messageID>
   <mosAck>
     <objID>runningOrderId</objID>
-    <objRev/>
+    <objRev>1</objRev>
     <status>ACK</status>
     <statusDescription/>
   </mosAck>
@@ -1040,7 +1043,7 @@ exports[`Profile 3 onMosReqObjectActionUpdate: <mos>
   <messageID>1638</messageID>
   <mosAck>
     <objID>runningOrderId</objID>
-    <objRev/>
+    <objRev>1</objRev>
     <status>ACK</status>
     <statusDescription/>
   </mosAck>

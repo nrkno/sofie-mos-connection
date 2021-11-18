@@ -55,7 +55,7 @@ Array [
               "Paths": Array [
                 Object {
                   "Description": "MPEG2 Video",
-                  "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+                  "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
                   "Type": "PATH",
                 },
                 Object {
@@ -417,7 +417,7 @@ Array [
         "Paths": Array [
           Object {
             "Description": "MPEG2 Video",
-            "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+            "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
             "Type": "PATH",
           },
           Object {
@@ -497,7 +497,7 @@ Array [
             "Paths": Array [
               Object {
                 "Description": "MPEG2 Video",
-                "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+                "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
                 "Type": "PATH",
               },
               Object {
@@ -735,7 +735,7 @@ Array [
         "Paths": Array [
           Object {
             "Description": "MPEG2 Video",
-            "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+            "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
             "Type": "PATH",
           },
           Object {
@@ -815,7 +815,7 @@ Array [
             "Paths": Array [
               Object {
                 "Description": "MPEG2 Video",
-                "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+                "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
                 "Type": "PATH",
               },
               Object {
@@ -1045,7 +1045,7 @@ Array [
               "Paths": Array [
                 Object {
                   "Description": "MPEG2 Video",
-                  "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+                  "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
                   "Type": "PATH",
                 },
                 Object {
@@ -1238,7 +1238,7 @@ Object {
                 "_attributes": Object {
                   "techDescription": "MPEG2 Video",
                 },
-                "_text": "\\\\servermediaclip392028cd2320s0d.mxf",
+                "_text": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
               },
               "objProxyPath": Object {
                 "_attributes": Object {
@@ -1353,7 +1353,7 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
           <mosScope>PLAYLIST</mosScope>
         </mosExternalMetadata>
         <objPaths>
-          <objPath techDescription="MPEG2 Video">\\servermediaclip392028cd2320s0d.mxf</objPath>
+          <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
           <objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
           <objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
         </objPaths>
@@ -1418,7 +1418,7 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
           <mosScope>PLAYLIST</mosScope>
         </mosExternalMetadata>
         <objPaths>
-          <objPath techDescription=\\"MPEG2 Video\\">\\\\servermediaclip392028cd2320s0d.mxf</objPath>
+          <objPath techDescription=\\"MPEG2 Video\\">\\\\server\\\\media\\\\clip392028cd2320s0d.mxf</objPath>
           <objProxyPath techDescription=\\"WM9 750Kbps\\">http://server/proxy/clipe.wmv</objProxyPath>
           <objMetadataPath techDescription=\\"MOS Object\\">http://server/proxy/clipe.xml</objMetadataPath>
         </objPaths>
@@ -1579,6 +1579,9 @@ Object {
       "Items": Array [],
     },
   ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
   "port": "upper",
 }
 `;
@@ -1638,7 +1641,7 @@ Object {
           "Paths": Array [
             Object {
               "Description": "MPEG2 Video",
-              "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+              "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
               "Type": "PATH",
             },
             Object {
@@ -1755,6 +1758,9 @@ Object {
       "Items": Array [],
     },
   ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
   "port": "upper",
 }
 `;
@@ -1799,6 +1805,9 @@ Object {
       "Items": Array [],
     },
   ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
   "port": "upper",
 }
 `;

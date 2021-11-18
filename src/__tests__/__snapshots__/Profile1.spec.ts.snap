@@ -93,7 +93,7 @@ Array [
     "Paths": Array [
       Object {
         "Description": "MPEG2 Video",
-        "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+        "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
         "Type": "PATH",
       },
       Object {
@@ -165,7 +165,7 @@ Array [
     "Paths": Array [
       Object {
         "Description": "MPEG2 Video",
-        "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+        "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
         "Type": "PATH",
       },
       Object {
@@ -316,7 +316,7 @@ Object {
   "Paths": Array [
     Object {
       "Description": "MPEG2 Video",
-      "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+      "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
       "Type": "PATH",
     },
     Object {
@@ -354,9 +354,15 @@ Object {
       "_text": 1634,
     },
     "mosAck": Object {
-      "objID": Object {},
-      "objRev": Object {},
-      "status": Object {},
+      "objID": Object {
+        "_text": 0,
+      },
+      "objRev": Object {
+        "_text": 0,
+      },
+      "status": Object {
+        "_text": "ACK",
+      },
       "statusDescription": Object {},
     },
     "mosID": Object {
@@ -429,7 +435,7 @@ Object {
             },
             "objPath": Object {
               "techDescription": "MPEG2 Video",
-              "text": "\\\\servermediaclip392028cd2320s0d.mxf",
+              "text": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
             },
             "objProxyPath": Object {
               "techDescription": "WM9 750Kbps",
