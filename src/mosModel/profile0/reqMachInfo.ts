@@ -9,7 +9,7 @@ export class ReqMachInfo extends MosMessage {
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let messageBlock = XMLBuilder.create('reqMachInfo')
+		const messageBlock = XMLBuilder.create('reqMachInfo')
 		return messageBlock
 	}
 }

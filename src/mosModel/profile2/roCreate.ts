@@ -11,13 +11,13 @@ export class ROCreate extends MosMessage {
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roCreate')
+		const root = XMLBuilder.create('roCreate')
 
 		this.fillXMLWithROData(root)
 
 		return root
 	}
-	protected fillXMLWithROData(root: XMLBuilder.XMLElement) {
+	protected fillXMLWithROData(root: XMLBuilder.XMLElement): void {
 		XMLRunningOrderBase.toXML(root, this.ro)
 
 		this.ro.Stories.forEach((story) => {

@@ -127,8 +127,8 @@ describe('XMLMosItem', () => {
 		<mosScope>OBJECT</mosScope>
 	</mosExternalMetadata>
 	<objPaths>
-		<objPath techDescription=\"asdfasdf\">asdfasdf</objPath>
-		<objMetadataPath techDescription=\"skdjhfb\">8372h4fv</objMetadataPath>
+		<objPath techDescription="asdfasdf">asdfasdf</objPath>
+		<objMetadataPath techDescription="skdjhfb">8372h4fv</objMetadataPath>
 	</objPaths>
 </item>
 </myItem>`

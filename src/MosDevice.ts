@@ -78,6 +78,7 @@ import {
 import { ROStory } from './mosModel/profile4/roStory'
 import { ROMetadataReplace } from './mosModel/profile2/roMetadataReplace'
 import { ROReadyToAir } from './mosModel/profile2/roReadyToAir'
+import { AnyXML, has } from './mosModel/lib'
 
 export class MosDevice implements IMOSDevice {
 	// private _host: string
@@ -97,7 +98,7 @@ export class MosDevice implements IMOSDevice {
 
 	private _idPrimary: string
 	private _idSecondary: string | null
-	private _debug: boolean = false
+	private _debug = false
 
 	private supportedProfiles: {
 		deviceType: 'NCS' | 'MOS'
@@ -115,7 +116,7 @@ export class MosDevice implements IMOSDevice {
 
 	/** If set, will do more checks that mos-protocol is properly implemented */
 	private _strict: boolean | undefined
-	private _disposed: boolean = false
+	private _disposed = false
 
 	private _primaryConnection: NCSServerConnection | null = null
 	private _secondaryConnection: NCSServerConnection | null = null
@@ -217,7 +218,7 @@ export class MosDevice implements IMOSDevice {
 				if (
 					offSpecFailover &&
 					this._currentConnection !== this._primaryConnection &&
-					this._primaryConnection!.connected
+					this._primaryConnection?.connected
 				) {
 					this.switchConnections() // and hope no current message goes lost
 				}
@@ -281,8 +282,8 @@ export class MosDevice implements IMOSDevice {
 		})
 	}
 
-	async routeData(data: any, port: PortType): Promise<any> {
-		if (data && data.hasOwnProperty('mos')) data = data['mos']
+	async routeData(data: AnyXML, port: PortType): Promise<any> {
+		if (data && has(data, 'mos')) data = data['mos']
 
 		this.debugTrace('parsedData', data)
 		// this.debugTrace('parsedTest', keys)
@@ -416,8 +417,8 @@ export class MosDevice implements IMOSDevice {
 				Status: data.roElementStat.status as IMOSObjectStatus,
 				Time: new MosTime(data.roElementStat.time),
 			}
-			if (data.roElementStat.hasOwnProperty('objID')) status.ObjectId = new MosString128(data.roElementStat.objID)
-			if (data.roElementStat.hasOwnProperty('itemChannel'))
+			if (has(data.roElementStat, 'objID')) status.ObjectId = new MosString128(data.roElementStat.objID)
+			if (has(data.roElementStat, 'itemChannel'))
 				status.Channel = new MosString128(data.roElementStat.itemChannel)
 
 			const resp = await this._callbackOnItemStatus(status)
@@ -674,12 +675,12 @@ export class MosDevice implements IMOSDevice {
 		return list
 	}
 
-	onRequestMachineInfo(cb: () => Promise<IMOSListMachInfo>) {
+	onRequestMachineInfo(cb: () => Promise<IMOSListMachInfo>): void {
 		this.checkProfile('onRequestMachineInfo', 'profile1')
 		this._callbackOnRequestMachineInfo = cb
 	}
 
-	onConnectionChange(cb: (connectionStatus: IMOSConnectionStatus) => void) {
+	onConnectionChange(cb: (connectionStatus: IMOSConnectionStatus) => void): void {
 		this.checkProfile('onConnectionChange', 'profile1')
 		this._callbackOnConnectionChange = cb
 	}
@@ -716,7 +717,7 @@ export class MosDevice implements IMOSDevice {
 		return ack
 	}
 
-	onRequestMOSObject(cb: (objId: string) => Promise<IMOSObject | null>) {
+	onRequestMOSObject(cb: (objId: string) => Promise<IMOSObject | null>): void {
 		this.checkProfile('onRequestMOSObject', 'profile1')
 		this._callbackOnRequestMOSOBject = cb
 	}
@@ -735,7 +736,7 @@ export class MosDevice implements IMOSDevice {
 		}
 	}
 
-	onRequestAllMOSObjects(cb: () => Promise<Array<IMOSObject>>) {
+	onRequestAllMOSObjects(cb: () => Promise<Array<IMOSObject>>): void {
 		this.checkProfile('onRequestAllMOSObjects', 'profile1')
 		this._callbackOnRequestAllMOSObjects = cb
 	}
@@ -781,7 +782,7 @@ export class MosDevice implements IMOSDevice {
 	// ============================================================================================================
 	// ==========================   Profile 2   ===================================================================
 	// ============================================================================================================
-	onCreateRunningOrder(cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) {
+	onCreateRunningOrder(cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>): void {
 		this.checkProfile('onCreateRunningOrder', 'profile2')
 		this._callbackOnCreateRunningOrder = cb
 	}
@@ -791,7 +792,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 
-	onReplaceRunningOrder(cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) {
+	onReplaceRunningOrder(cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>): void {
 		this.checkProfile('onReplaceRunningOrder', 'profile2')
 		this._callbackOnReplaceRunningOrder = cb
 	}
@@ -801,7 +802,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 
-	onDeleteRunningOrder(cb: (runningOrderId: MosString128) => Promise<IMOSROAck>) {
+	onDeleteRunningOrder(cb: (runningOrderId: MosString128) => Promise<IMOSROAck>): void {
 		this.checkProfile('onDeleteRunningOrder', 'profile2')
 		this._callbackOnDeleteRunningOrder = cb
 	}
@@ -811,7 +812,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 
-	onRequestRunningOrder(cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>) {
+	onRequestRunningOrder(cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>): void {
 		this.checkProfile('onRequestRunningOrder', 'profile2')
 		this._callbackOnRequestRunningOrder = cb
 	}
@@ -831,7 +832,7 @@ export class MosDevice implements IMOSDevice {
 		return this.sendRequestRunningOrder(runningOrderId)
 	}
 
-	onMetadataReplace(cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>) {
+	onMetadataReplace(cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>): void {
 		this.checkProfile('onMetadataReplace', 'profile2')
 		this._callbackOnMetadataReplace = cb
 	}
@@ -841,16 +842,16 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 
-	onRunningOrderStatus(cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>) {
+	onRunningOrderStatus(cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>): void {
 		this.checkProfile('onRunningOrderStatus', 'profile2')
 		this._callbackOnRunningOrderStatus = cb
 	}
 
-	onStoryStatus(cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) {
+	onStoryStatus(cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>): void {
 		this.checkProfile('onStoryStatus', 'profile2')
 		this._callbackOnStoryStatus = cb
 	}
-	onItemStatus(cb: (status: IMOSItemStatus) => Promise<IMOSROAck>) {
+	onItemStatus(cb: (status: IMOSItemStatus) => Promise<IMOSROAck>): void {
 		this.checkProfile('onItemStatus', 'profile2')
 		this._callbackOnItemStatus = cb
 	}
@@ -901,7 +902,7 @@ export class MosDevice implements IMOSDevice {
 		const reply = await this.executeCommand(message)
 		return Parser.xml2ROAck(reply.mos.roAck)
 	}
-	onReadyToAir(cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) {
+	onReadyToAir(cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>): void {
 		this.checkProfile('onReadyToAir', 'profile2')
 		this._callbackOnReadyToAir = cb
 	}
@@ -914,7 +915,7 @@ export class MosDevice implements IMOSDevice {
 		const reply = await this.executeCommand(message)
 		return Parser.xml2ROAck(reply.mos.roAck)
 	}
-	onROInsertStories(cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {
+	onROInsertStories(cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROInsertStories', 'profile2')
 		this._callbackOnROInsertStories = cb
 	}
@@ -923,7 +924,7 @@ export class MosDevice implements IMOSDevice {
 		const data = await this.executeCommand(message)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
-	onROInsertItems(cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {
+	onROInsertItems(cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROInsertItems', 'profile2')
 		this._callbackOnROInsertItems = cb
 	}
@@ -932,7 +933,7 @@ export class MosDevice implements IMOSDevice {
 		const data = await this.executeCommand(message)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
-	onROReplaceStories(cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) {
+	onROReplaceStories(cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROReplaceStories', 'profile2')
 		this._callbackOnROReplaceStories = cb
 	}
@@ -941,7 +942,7 @@ export class MosDevice implements IMOSDevice {
 		const data = await this.executeCommand(message)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
-	onROReplaceItems(cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) {
+	onROReplaceItems(cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROReplaceItems', 'profile2')
 		this._callbackOnROReplaceItems = cb
 	}
@@ -950,7 +951,7 @@ export class MosDevice implements IMOSDevice {
 		const data = await this.executeCommand(message)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
-	onROMoveStories(cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {
+	onROMoveStories(cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROMoveStories', 'profile2')
 		this._callbackOnROMoveStories = cb
 	}
@@ -959,7 +960,7 @@ export class MosDevice implements IMOSDevice {
 		const data = await this.executeCommand(message)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
-	onROMoveItems(cb: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {
+	onROMoveItems(cb: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROMoveItems', 'profile2')
 		this._callbackOnROMoveItems = cb
 	}
@@ -968,7 +969,7 @@ export class MosDevice implements IMOSDevice {
 		const data = await this.executeCommand(message)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
-	onRODeleteStories(cb: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>) {
+	onRODeleteStories(cb: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onRODeleteStories', 'profile2')
 		this._callbackOnRODeleteStories = cb
 	}
@@ -977,7 +978,7 @@ export class MosDevice implements IMOSDevice {
 		const data = await this.executeCommand(message)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
-	onRODeleteItems(cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>) {
+	onRODeleteItems(cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onRODeleteItems', 'profile2')
 		this._callbackOnRODeleteItems = cb
 	}
@@ -986,7 +987,9 @@ export class MosDevice implements IMOSDevice {
 		const data = await this.executeCommand(message)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
-	onROSwapStories(cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>) {
+	onROSwapStories(
+		cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>
+	): void {
 		this.checkProfile('onROSwapStories', 'profile2')
 		this._callbackOnROSwapStories = cb
 	}
@@ -995,7 +998,9 @@ export class MosDevice implements IMOSDevice {
 		const data = await this.executeCommand(message)
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
-	onROSwapItems(cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) {
+	onROSwapItems(
+		cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
+	): void {
 		this.checkProfile('onROSwapItems', 'profile2')
 		this._callbackOnROSwapItems = cb
 	}
@@ -1008,7 +1013,7 @@ export class MosDevice implements IMOSDevice {
 	// ============================================================================================================
 	// ==========================   Profile 3   ===================================================================
 	// ============================================================================================================
-	onObjectCreate(cb: (object: IMOSObject) => Promise<IMOSAck>) {
+	onObjectCreate(cb: (object: IMOSObject) => Promise<IMOSAck>): void {
 		this.checkProfile('', 'profile3')
 		this._callbackOnObjectCreate = cb
 	}
@@ -1019,7 +1024,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2Ack(data.mos.mosAck)
 	}
 
-	onItemReplace(cb: (roID: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>) {
+	onItemReplace(cb: (roID: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>): void {
 		this.checkProfile('onItemReplace', 'profile3')
 		this._callbackOnItemReplace = cb
 	}
@@ -1030,7 +1035,7 @@ export class MosDevice implements IMOSDevice {
 		return Parser.xml2ROAck(data.mos.roAck)
 	}
 
-	onRequestSearchableSchema(cb: (username: string) => Promise<IMOSListSearchableSchema>) {
+	onRequestSearchableSchema(cb: (username: string) => Promise<IMOSListSearchableSchema>): void {
 		this.checkProfile('onRequestSearchableSchema', 'profile3')
 		this._callbackOnRequestSearchableSchema = cb
 	}
@@ -1042,7 +1047,7 @@ export class MosDevice implements IMOSDevice {
 		})
 	}
 
-	onRequestObjectList(cb: (objList: IMOSRequestObjectList) => Promise<IMOSObjectList>) {
+	onRequestObjectList(cb: (objList: IMOSRequestObjectList) => Promise<IMOSObjectList>): void {
 		this.checkProfile('onRequestObjectList', 'profile3')
 		this._callbackOnRequestObjectList = cb
 	}
@@ -1132,7 +1137,7 @@ export class MosDevice implements IMOSDevice {
 	// ============================================================================================================
 	// ==========================   Profile 4   ===================================================================
 	// ============================================================================================================
-	onRequestAllRunningOrders(cb: () => Promise<IMOSRunningOrder[]>) {
+	onRequestAllRunningOrders(cb: () => Promise<IMOSRunningOrder[]>): void {
 		this.checkProfile('onRequestAllRunningOrders', 'profile4')
 		this._callbackOnRequestAllRunningOrders = cb
 	}
@@ -1142,7 +1147,7 @@ export class MosDevice implements IMOSDevice {
 			if (this._currentConnection) {
 				this.executeCommand(message)
 					.then((data) => {
-						if (data.mos.hasOwnProperty('roListAll')) {
+						if (has(data.mos, 'roListAll')) {
 							let xmlRos: Array<any> = (data.mos.roListAll || {}).ro
 							if (!Array.isArray(xmlRos)) xmlRos = [xmlRos]
 							const ros: Array<IMOSRunningOrderBase> = []
@@ -1161,7 +1166,7 @@ export class MosDevice implements IMOSDevice {
 			}
 		})
 	}
-	onRunningOrderStory(cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) {
+	onRunningOrderStory(cb: (story: IMOSROFullStory) => Promise<IMOSROAck>): void {
 		this.checkProfile('onRunningOrderStory', 'profile4')
 		this._callbackOnRunningOrderStory = cb
 	}
@@ -1192,7 +1197,7 @@ export class MosDevice implements IMOSDevice {
 
 	// =============================================================================================================
 	// ///////////////////////////////////// End of Profile methods \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-	setDebug(debug: boolean) {
+	setDebug(debug: boolean): void {
 		this._debug = debug
 	}
 	checkProfileValidness(): void {
@@ -1236,7 +1241,7 @@ export class MosDevice implements IMOSDevice {
 
 		let otherConnection =
 			this._currentConnection === this._primaryConnection ? this._secondaryConnection : this._primaryConnection
-		let currentConnection = this._currentConnection
+		const currentConnection = this._currentConnection
 
 		if (!otherConnection.connected)
 			throw new Error(
@@ -1257,7 +1262,7 @@ export class MosDevice implements IMOSDevice {
 		try {
 			return await this.executeCommand(message, true)
 		} catch (e) {
-			if (e.toString() === 'Main server available') {
+			if (`${e}` === 'Main server available') {
 				// @todo: we may deadlock if primary is down for us, but up for buddy
 				return this.switchConnectionsAndExecuteCommand(message)
 			}
@@ -1291,8 +1296,8 @@ export class MosDevice implements IMOSDevice {
 	private _checkProfileValidness(): void {
 		if (!this._strict) return
 		/** For MOS-devices: Require a callback to have been set */
-		const requireCallback = (profile: string, callbackName: string, method: Function) => {
-			// @ts-ignore no index signature
+		const requireCallback = (profile: string, callbackName: string, method: (...args: any[]) => any) => {
+			// @ts-expect-error no index signature
 			if (!this[callbackName]) {
 				throw new Error(
 					`Error: This MOS-device is configured to support Profile ${profile}, but callback ${method.name} has not been set!`
@@ -1300,7 +1305,7 @@ export class MosDevice implements IMOSDevice {
 			}
 		}
 		/** Check: Requires that a callback has been set */
-		const requireMOSCallback = (profile: string, callbackName: string, method: Function) => {
+		const requireMOSCallback = (profile: string, callbackName: string, method: (...args: any[]) => any) => {
 			if (this.supportedProfiles.deviceType !== 'MOS') return
 			requireCallback(profile, callbackName, method)
 		}
@@ -1310,7 +1315,7 @@ export class MosDevice implements IMOSDevice {
 		// }
 		/** Require another profile to have been set  */
 		const requireProfile = (profile: number, requiredProfile: number) => {
-			// @ts-ignore no index signature
+			// @ts-expect-error no index signature
 			if (!this.supportedProfiles['profile' + requiredProfile]) {
 				throw new Error(
 					`Error: This MOS-device is configured to support Profile ${profile}, therefore it must also support Profile ${requiredProfile}!`

@@ -13,7 +13,7 @@ export class MosObjCreate extends MosMessage {
 	}
 
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let xml = XMLBuilder.create('mosObjCreate')
+		const xml = XMLBuilder.create('mosObjCreate')
 
 		XMLMosObject.toXML(xml, this.object)
 

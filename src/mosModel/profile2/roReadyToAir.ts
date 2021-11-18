@@ -18,7 +18,7 @@ export class ROReadyToAir extends MosMessage {
 	}
 
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roReadyToAir')
+		const root = XMLBuilder.create('roReadyToAir')
 		addTextElement(root, 'roID', this.options.roId)
 		addTextElement(root, 'roAir', this.options.roAir)
 		return root

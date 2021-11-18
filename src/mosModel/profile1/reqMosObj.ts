@@ -13,7 +13,7 @@ export class ReqMosObj extends MosMessage {
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('mosReqObj')
+		const root = XMLBuilder.create('mosReqObj')
 		addTextElement(root, 'objID', this.objId)
 		return root
 	}

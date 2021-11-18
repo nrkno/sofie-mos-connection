@@ -7,12 +7,13 @@ import {
 	IMOSStoryAction,
 	IMOSROStory,
 	IMOSListMachInfo,
+	IMOSROAction,
 } from '../src'
 
 import { MosString128 } from '../src/dataTypes/mosString128'
 import { MosTime } from '../src/dataTypes/mosTime'
 import { MosDevice } from '../src/MosDevice'
-let mos = new MosConnection(
+const mos = new MosConnection(
 	new ConnectionConfig({
 		mosID: 'sofie.tv.automation',
 		acceptsConnections: true,
@@ -24,8 +25,8 @@ let mos = new MosConnection(
 		// debug: true
 	})
 )
-mos.on('rawMessage', (source, type, message) => {
-	// console.log('rawMessage', source, type, message)
+mos.on('rawMessage', (_source, _type, _message) => {
+	// console.log('rawMessage', _source, _type, _message)
 })
 mos.on('error', (e) => {
 	console.log('Emit error', e)
@@ -35,8 +36,8 @@ mos.onConnection((dev: MosDevice) => {
 	// console.log(dev)
 	if (dev.hasConnection) {
 		dev.getMachineInfo()
-			.then((lm) => {
-				// console.log('Machineinfo', lm)
+			.then((_lm) => {
+				// console.log('Machineinfo', _lm)
 			})
 			.then(() => {
 				return dev.getAllRunningOrders()
@@ -62,7 +63,7 @@ mos.onConnection((dev: MosDevice) => {
 
 	dev.onRequestMachineInfo(() => {
 		return new Promise((resolve) => {
-			let m: IMOSListMachInfo = {
+			const m: IMOSListMachInfo = {
 				manufacturer: new MosString128('mommy'),
 				model: new MosString128('model!'),
 				hwRev: new MosString128('0.1'),
@@ -95,7 +96,7 @@ mos.onConnection((dev: MosDevice) => {
 	})
 
 	dev.onCreateRunningOrder((ro: IMOSRunningOrder) => {
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			console.log('onCreateRunningOrder', ro)
 			resolve({
 				ID: ro.ID,
@@ -106,7 +107,7 @@ mos.onConnection((dev: MosDevice) => {
 	})
 
 	dev.onDeleteRunningOrder((RunningOrderID: MosString128) => {
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			console.log('onDeleteRunningOrder', RunningOrderID)
 			resolve({
 				ID: RunningOrderID,
@@ -117,7 +118,7 @@ mos.onConnection((dev: MosDevice) => {
 	})
 
 	dev.onROInsertStories((Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> => {
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			console.log('onROInsertStories')
 			Stories.forEach((story) => {
 				console.log(story)
@@ -131,7 +132,7 @@ mos.onConnection((dev: MosDevice) => {
 	})
 
 	dev.onROMoveStories((Action: IMOSStoryAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			console.log('onROMoveStories', {
 				ID: Action.StoryID,
 				Status: 'OK',
@@ -145,8 +146,8 @@ mos.onConnection((dev: MosDevice) => {
 		})
 	})
 
-	dev.onRODeleteStories((Action: IMOSStoryAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
-		return new Promise((resolve, reject) => {
+	dev.onRODeleteStories((Action: IMOSROAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
+		return new Promise((resolve) => {
 			console.log('onRODeleteStories', Action, {
 				ID: Action.RunningOrderID,
 				Status: 'OK',
@@ -162,8 +163,8 @@ mos.onConnection((dev: MosDevice) => {
 })
 
 mos.init()
-	.then((listening) => {
-		let mosdev = mos.connect({
+	.then((_listening) => {
+		return mos.connect({
 			primary: {
 				id: '2012R2ENPS8VM',
 				host: '10.0.1.244',

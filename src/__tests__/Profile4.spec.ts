@@ -7,6 +7,7 @@ import {
 	encode,
 	fakeIncomingMessage,
 	fixSnapshot,
+	getMessageId,
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
@@ -17,8 +18,10 @@ import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // @ts-ignore imports are unused
 import { Socket } from 'net'
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 beforeAll(() => {
 	setupMocks()
@@ -54,8 +57,8 @@ describe('Profile 4', () => {
 		)
 		mosDevice = await getMosDevice(mosConnection)
 
-		let roAckReply = () => {
-			let ack: IMOSROAck = {
+		const roAckReply = () => {
+			const ack: IMOSROAck = {
 				ID: new MosString128('runningOrderId'),
 				Status: new MosString128('OK'),
 				Stories: [],
@@ -68,7 +71,7 @@ describe('Profile 4', () => {
 		mosDevice.onRunningOrderStory((story: IMOSROFullStory): Promise<IMOSROAck> => {
 			return onROStory(story)
 		})
-		let b = doBeforeAll()
+		const b = doBeforeAll()
 		socketMockLower = b.socketMockLower
 		socketMockUpper = b.socketMockUpper
 		serverSocketMockLower = b.serverSocketMockLower
@@ -94,10 +97,10 @@ describe('Profile 4', () => {
 	test('onROStory', async () => {
 		// Fake incoming message on socket:
 
-		let messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySend)
+		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySend)
 		expect(onROStory).toHaveBeenCalledTimes(1)
 
-		let o = Object.assign({}, xmlApiData.roStorySend)
+		const o = Object.assign({}, xmlApiData.roStorySend)
 		// @ts-ignore optional property
 		delete o.Body
 		expect(onROStory.mock.calls[0][0]).toMatchObject(o)
@@ -121,16 +124,16 @@ describe('Profile 4', () => {
 	})
 	test('getAllRunningOrders', async () => {
 		// Prepare server response
-		let mockReply = jest.fn((data) => {
-			let str = decode(data)
-			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
 			return encode(getXMLReply(messageID, xmlData.roListAll))
 		})
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedListAll = await mosDevice.sendRequestAllRunningOrders()
+		const returnedListAll = await mosDevice.sendRequestAllRunningOrders()
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
-		let msg = decode(mockReply.mock.calls[0][0])
+		const msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<roReqAll/)
 		checkMessageSnapshot(msg)
 

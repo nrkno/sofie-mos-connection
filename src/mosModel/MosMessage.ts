@@ -4,14 +4,14 @@ import { addTextElement } from '../utils/Utils'
 export type PortType = 'upper' | 'lower' | 'query'
 export abstract class MosMessage {
 	private static MAX_MESSAGE_ID = Math.pow(2, 31) - 2
-	private static _staticMessageID: number = 1
+	private static _staticMessageID = 1
 
 	public mosID: string | undefined = undefined
 	public ncsID: string | undefined = undefined
 
 	constructor(public port: PortType) {}
 
-	private _messageID: number = 0
+	private _messageID = 0
 
 	private static getNewMessageID(): number {
 		// increments and returns a signed 32-bit int counting from 1, resetting to 1 when wrapping
@@ -21,7 +21,7 @@ export abstract class MosMessage {
 	}
 
 	/** */
-	prepare(messageID?: number) {
+	prepare(messageID?: number): void {
 		if (!this.mosID) throw new Error(`Can't prepare message: mosID missing`)
 		if (!this.ncsID) throw new Error(`Can't prepare message: ncsID missing`)
 		// if (!this.port) throw new Error(`Can't prepare message: port missing`)
@@ -35,7 +35,7 @@ export abstract class MosMessage {
 
 	/** */
 	toString(): string {
-		let xml = XMLBuilder.create('mos', undefined, undefined, {
+		const xml = XMLBuilder.create('mos', undefined, undefined, {
 			headless: true,
 		})
 		addTextElement(xml, 'ncsID', this.ncsID)

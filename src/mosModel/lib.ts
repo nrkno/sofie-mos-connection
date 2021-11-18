@@ -1,7 +1,7 @@
-export function isEmpty(obj: any) {
+export function isEmpty(obj: unknown): boolean {
 	if (typeof obj === 'object') {
-		for (let prop in obj) {
-			if (obj.hasOwnProperty(prop)) {
+		for (const prop in obj) {
+			if (has(obj, prop)) {
 				return false
 			}
 		}
@@ -10,9 +10,20 @@ export function isEmpty(obj: any) {
 		return !obj
 	}
 }
-export function numberOrUndefined(value: any): number | undefined {
+export function numberOrUndefined(value: unknown): number | undefined {
 	if (typeof value === 'object' && isEmpty(value)) {
 		return undefined
 	}
-	return parseFloat(value)
+	if (typeof value === 'number') return value
+	const num = parseFloat(`${value}`)
+	if (isNaN(num)) return undefined
+	return num
+}
+
+/** Just a generic type to use instead of "any", for xml objects */
+export type AnyXML = { [key: string]: any }
+
+/** Return true if the object has a property */
+export function has(obj: unknown, property: string): boolean {
+	return Object.hasOwnProperty.call(obj, property)
 }

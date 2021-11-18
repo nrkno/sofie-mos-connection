@@ -25,7 +25,7 @@ export class ROAck extends MosMessage implements IMOSROAck {
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roAck')
+		const root = XMLBuilder.create('roAck')
 
 		addTextElement(root, 'roID', this.ID)
 		addTextElement(root, 'roStatus', this.Status)

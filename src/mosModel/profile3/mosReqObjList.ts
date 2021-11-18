@@ -26,9 +26,8 @@ export class MosReqObjList extends MosMessage {
 			const xmlSearchGroup = XMLBuilder.create('searchGroup')
 			for (const searchField of searchGroup.searchFields) {
 				const attributes: { [key: string]: string } = {}
-				Object.keys(searchField).forEach((key) => {
-					// @ts-ignore
-					attributes[key] = searchField[key] + ''
+				Object.entries(searchField).forEach(([key, value]) => {
+					attributes[key] = value + ''
 				})
 				addTextElement(xmlSearchGroup, 'searchField', '', attributes)
 			}

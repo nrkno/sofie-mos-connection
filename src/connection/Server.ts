@@ -8,7 +8,7 @@ export class Server {
 	private _sockets: { [socketID: string]: SocketDescription } = {}
 
 	/** */
-	registerIncomingConnection(socketID: number, socket: Socket, portDescription: ConnectionType) {
+	registerIncomingConnection(socketID: number, socket: Socket, portDescription: ConnectionType): void {
 		this._sockets[socketID + ''] = {
 			socket: socket,
 			portDescription: portDescription,
@@ -16,13 +16,13 @@ export class Server {
 	}
 
 	/** */
-	removeSocket(socketID: number) {
+	removeSocket(socketID: number): void {
 		delete this._sockets[socketID + '']
 	}
 
 	private _getSockets(portDescription: string): Socket[] {
-		let sockets: Socket[] = []
-		for (let i in this._sockets) {
+		const sockets: Socket[] = []
+		for (const i in this._sockets) {
 			if (this._sockets[i].portDescription === portDescription) {
 				sockets.push(this._sockets[i].socket)
 			}

@@ -22,7 +22,7 @@ export class MosSocketServer extends EventEmitter {
 		this._socketServer.on('error', (error) => this._onServerError(error))
 	}
 	dispose(sockets: Socket[]): Promise<void[]> {
-		let closePromises: Promise<void>[] = []
+		const closePromises: Promise<void>[] = []
 
 		// close clients
 		sockets.forEach((socket) => {
@@ -88,13 +88,13 @@ export class MosSocketServer extends EventEmitter {
 			}
 		})
 	}
-	public setDebug(debug: boolean) {
+	public setDebug(debug: boolean): void {
 		this._debug = debug
 	}
-	get port() {
+	get port(): number {
 		return this._port
 	}
-	get portDescription() {
+	get portDescription(): IncomingConnectionType {
 		return this._portDescription
 	}
 
@@ -102,7 +102,7 @@ export class MosSocketServer extends EventEmitter {
 	private _onClientConnection(socket: Socket) {
 		this._connectedSockets.push(socket)
 		socket.on('close', () => {
-			let i = this._connectedSockets.indexOf(socket)
+			const i = this._connectedSockets.indexOf(socket)
 			if (i !== -1) {
 				this._connectedSockets.splice(i, 1)
 			}

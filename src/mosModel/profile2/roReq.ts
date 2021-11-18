@@ -13,7 +13,7 @@ export class ROReq extends MosMessage {
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roReq')
+		const root = XMLBuilder.create('roReq')
 		addTextElement(root, 'roID', this.roId)
 		return root
 	}

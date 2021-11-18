@@ -2,15 +2,15 @@ import { EventEmitter } from 'events'
 import { xml2js } from '../utils/Utils'
 
 export class MosMessageParser extends EventEmitter {
-	private dataChunks: string = ''
+	private dataChunks = ''
 
-	public debug: boolean = false
+	public debug = false
 
 	constructor(private description: string) {
 		super()
 	}
 
-	public parseMessage(messageString: string) {
+	public parseMessage(messageString: string): void {
 		this.debugTrace(`Socket got data (${this.description}): "${messageString}"`)
 
 		this.dataChunks += messageString

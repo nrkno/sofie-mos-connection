@@ -1,6 +1,6 @@
 import { MosConnection, ConnectionConfig } from '../src'
 
-let mos = new MosConnection(
+const mos = new MosConnection(
 	new ConnectionConfig({
 		mosID: 'sofie.tv.automation',
 		acceptsConnections: true,

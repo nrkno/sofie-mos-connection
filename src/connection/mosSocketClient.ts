@@ -7,7 +7,7 @@ import { HeartBeat } from '../mosModel'
 import * as iconv from 'iconv-lite'
 import { MosMessageParser } from './mosMessageParser'
 
-export type CallBackFunction = (err: any, data: object) => void
+export type CallBackFunction = (err: any, data: unknown) => void
 
 export interface QueueMessage {
 	time: number
@@ -17,17 +17,17 @@ export interface QueueMessage {
 export class MosSocketClient extends EventEmitter {
 	private _host: string
 	private _port: number
-	private _autoReconnect: boolean = true
-	private _reconnectDelay: number = 3000
-	private _reconnectAttempts: number = 0
+	private _autoReconnect = true
+	private _reconnectDelay = 3000
+	private _reconnectAttempts = 0
 	private _debug: boolean
 
 	private _description: string
 	private _client: Socket | undefined
-	private _shouldBeConnected: boolean = false
-	private _connected: boolean = false
-	private _lastConnectionAttempt: number = 0
-	private _reconnectAttempt: number = 0
+	private _shouldBeConnected = false
+	private _connected = false
+	private _lastConnectionAttempt = 0
+	private _reconnectAttempt = 0
 	private _connectionAttemptTimer: NodeJS.Timer | undefined
 
 	private _commandTimeout: number
@@ -43,7 +43,7 @@ export class MosSocketClient extends EventEmitter {
 
 	private processQueueTimeout?: NodeJS.Timer
 	// private _startingUp: boolean = true
-	private _disposed: boolean = false
+	private _disposed = false
 	private messageParser: MosMessageParser
 
 	/** */
@@ -130,7 +130,7 @@ export class MosSocketClient extends EventEmitter {
 
 		this.processQueue()
 	}
-	processQueue() {
+	processQueue(): void {
 		if (this._disposed) return
 		// this.debugTrace('this.connected', this.connected)
 		if (!this._sentMessage && this.connected) {
@@ -138,7 +138,7 @@ export class MosSocketClient extends EventEmitter {
 				clearTimeout(this.processQueueTimeout)
 				delete this.processQueueTimeout
 			}
-			let message = this._queueMessages.shift()
+			const message = this._queueMessages.shift()
 			if (message) {
 				// Send the message:
 				this.executeCommand(message)
@@ -146,18 +146,22 @@ export class MosSocketClient extends EventEmitter {
 				// The queue is empty, do nothing
 			}
 		} else {
-			if (!this._sentMessage && this._queueMessages.length > 0) {
+			if (!this._sentMessage) {
 				if (Date.now() - this._queueMessages[0].time > this._commandTimeout) {
-					const msg = this._queueMessages.shift()!
-					this._queueCallback[msg.msg.messageID]('Command timed out', {})
-					delete this._queueCallback[msg.msg.messageID]
-					this.processQueue()
-				} else {
-					// Try again later:
-					if (this.processQueueTimeout) clearTimeout(this.processQueueTimeout)
-					this.processQueueTimeout = setTimeout(() => {
+					const msg = this._queueMessages.shift()
+					if (msg) {
+						this._queueCallback[msg.msg.messageID]('Command timed out', {})
+						delete this._queueCallback[msg.msg.messageID]
 						this.processQueue()
-					}, 200)
+					}
+				} else {
+					if (this._queueMessages.length > 0) {
+						// Try again later:
+						if (this.processQueueTimeout) clearTimeout(this.processQueueTimeout)
+						this.processQueueTimeout = setTimeout(() => {
+							this.processQueue()
+						}, 200)
+					}
 				}
 			}
 		}
@@ -227,10 +231,10 @@ export class MosSocketClient extends EventEmitter {
 	/**
 	 * convenience wrapper to expose all logging calls to parent object
 	 */
-	log(args: any): void {
+	log(args: string | number | any): void {
 		this.debugTrace(args)
 	}
-	public setDebug(debug: boolean) {
+	public setDebug(debug: boolean): void {
 		this._debug = debug
 		this.messageParser.debug = this._debug
 	}
@@ -246,7 +250,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 
 	private _sendReply(messageId: number, err: any, res: any) {
-		let cb: CallBackFunction | undefined =
+		const cb: CallBackFunction | undefined =
 			this._queueCallback[messageId + ''] || this._lingeringCallback[messageId + '']
 		if (cb) {
 			cb(err, res)
@@ -268,12 +272,12 @@ export class MosSocketClient extends EventEmitter {
 		this._sentMessage = message
 		this._lingeringMessage = null
 
-		let sentMessageId = message.msg.messageID
+		const sentMessageId = message.msg.messageID
 
 		// this.debugTrace('executeCommand', message)
 		// message.prepare() // @todo, is prepared? is sent already? logic needed
-		let messageString: string = message.msg.toString()
-		let buf = iconv.encode(messageString, 'utf16-be')
+		const messageString: string = message.msg.toString()
+		const buf = iconv.encode(messageString, 'utf16-be')
 		// this.debugTrace('sending',this._client.name, str)
 
 		// Command timeout:
@@ -350,9 +354,9 @@ export class MosSocketClient extends EventEmitter {
 	}
 
 	private _handleMessage(parsedData: any, messageString: string) {
-		let messageId = parsedData.mos.messageID
+		const messageId = parsedData.mos.messageID
 		if (messageId) {
-			let sentMessage = this._sentMessage || this._lingeringMessage
+			const sentMessage = this._sentMessage || this._lingeringMessage
 			if (sentMessage) {
 				if (sentMessage.msg.messageID.toString() === messageId + '') {
 					this._sendReply(sentMessage.msg.messageID, null, parsedData)
@@ -433,7 +437,7 @@ export class MosSocketClient extends EventEmitter {
 			if (this._disposed) return
 			this.debugTrace('QueueCleanup')
 			for (let i = this._queueMessages.length - 1; i >= 0; i--) {
-				let message = this._queueMessages[i]
+				const message = this._queueMessages[i]
 				if (Date.now() - message.time > this._commandTimeout) {
 					this._sendReply(message.msg.messageID, Error('Command Timeout'), null)
 					this._queueMessages.splice(i, 1)

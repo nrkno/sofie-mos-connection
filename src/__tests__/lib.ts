@@ -1,7 +1,7 @@
 import { IMOSAck, MosConnection, MosDevice, IMOSROAck, IProfiles, MosTime } from '../'
 
 import { SocketMock } from '../__mocks__/socket'
-import { ServerMock } from '../__mocks__/server'
+import { IServerMock, ServerMock } from '../__mocks__/server'
 // @ts-ignore imports are unused
 import { Socket, Server } from 'net'
 
@@ -11,25 +11,36 @@ iconv.encodingExists('utf16-be')
 // breaks net.Server, disabled for now
 jest.mock('net')
 
-export function setupMocks() {
+export function setupMocks(): void {
 	// Mock tcp connection
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	// @ts-ignore Replace Socket with the mocked varaint:
 	Socket = SocketMock
 	// @ts-ignore Replace Server with the mocked varaint:
 	Server = ServerMock
+
+	/* eslint-enable @typescript-eslint/no-unused-vars */
 }
 
-export function clearMocks() {
+export function clearMocks(): void {
 	SocketMock.mockClear()
 }
 
-let setTimeoutOrg = setTimeout
-export function delay(ms: number) {
+export function getMessageId(str: string): string {
+	const m = str.match(/<messageID>([^<]+)<\/messageID>/)
+	const messageID = m ? m[1] : undefined
+	if (!messageID) throw new Error(`No messageID in "${str}"`)
+
+	return messageID
+}
+
+const setTimeoutOrg = setTimeout
+export function delay(ms: number): Promise<void> {
 	return new Promise((resolve) => {
 		setTimeoutOrg(resolve, ms)
 	})
 }
-export async function initMosConnection(mos: MosConnection) {
+export async function initMosConnection(mos: MosConnection): Promise<void> {
 	mos.on('error', (err) => {
 		if (!(err + '').match(/heartbeat/i)) {
 			console.error(err)
@@ -41,7 +52,7 @@ export async function initMosConnection(mos: MosConnection) {
 export async function getMosConnection(profiles: IProfiles, strict: boolean): Promise<MosConnection> {
 	ServerMock.mockClear()
 
-	let mos = new MosConnection({
+	const mos = new MosConnection({
 		mosID: 'our.mos.id',
 		acceptsConnections: true,
 		profiles: profiles,
@@ -57,7 +68,7 @@ export async function getMosConnection(profiles: IProfiles, strict: boolean): Pr
 export async function getMosDevice(mos: MosConnection): Promise<MosDevice> {
 	SocketMock.mockClear()
 
-	let device = await mos.connect({
+	const device = await mos.connect({
 		primary: {
 			id: 'their.mos.id',
 			host: '127.0.0.1',
@@ -77,7 +88,7 @@ export function fakeIncomingMessage(
 	theirMosId?: string
 ): Promise<number> {
 	fakeIncomingMessageMessageId++
-	let fullMessage = getXMLReply(fakeIncomingMessageMessageId, message, ourMosId, theirMosId)
+	const fullMessage = getXMLReply(fakeIncomingMessageMessageId, message, ourMosId, theirMosId)
 	socketMockLower.mockReceiveMessage(encode(fullMessage))
 
 	return Promise.resolve(fakeIncomingMessageMessageId)
@@ -106,28 +117,28 @@ export function getXMLReply(
 export function decode(data: Buffer): string {
 	return iconv.decode(data, 'utf16-be')
 }
-export function encode(str: string) {
+export function encode(str: string): Buffer {
 	return iconv.encode(str, 'utf16-be')
 }
-export async function checkReplyToServer(socket: SocketMock, messageId: number, replyString: string) {
+export async function checkReplyToServer(socket: SocketMock, messageId: number, replyString: string): Promise<void> {
 	// check reply to server:
 	await socket.mockWaitForSentMessages()
 
 	expect(socket.mockSentMessage).toHaveBeenCalledTimes(1)
 	// @ts-ignore mock
-	let reply = decode(socket.mockSentMessage.mock.calls[0][0])
+	const reply = decode(socket.mockSentMessage.mock.calls[0][0])
 	expect(reply).toContain('<messageID>' + messageId + '</messageID>')
 	expect(reply).toContain(replyString)
 	expect(reply).toMatchSnapshot(reply)
 }
-export function checkMessageSnapshot(msg: string) {
+export function checkMessageSnapshot(msg: string): void {
 	expect(
 		msg
 			.replace(/<messageID>\d+<\/messageID>/, '<messageID>xx</messageID>')
 			.replace(/<time>[^<>]+<\/time>/, '<time>xx</time>')
 	).toMatchSnapshot()
 }
-export function checkAckSnapshot(ack: IMOSAck | IMOSROAck) {
+export function checkAckSnapshot(ack: IMOSAck | IMOSROAck): void {
 	const ack2: any = {
 		...ack,
 	}
@@ -139,10 +150,20 @@ export function checkAckSnapshot(ack: IMOSAck | IMOSROAck) {
 	}
 	expect(ack2).toMatchSnapshot()
 }
-export function doBeforeAll() {
-	let socketMockLower = SocketMock.instances.find((s) => s.connectedPort === 10540) as SocketMock
-	let socketMockUpper = SocketMock.instances.find((s) => s.connectedPort === 10541) as SocketMock
-	let socketMockQuery = SocketMock.instances.find((s) => s.connectedPort === 10542) as SocketMock
+export function doBeforeAll(): {
+	socketMockLower: SocketMock
+	socketMockUpper: SocketMock
+	socketMockQuery: SocketMock
+	serverMockLower: IServerMock
+	serverMockUpper: IServerMock
+	serverMockQuery: IServerMock
+	serverSocketMockLower: SocketMock
+	serverSocketMockUpper: SocketMock
+	serverSocketMockQuery: SocketMock
+} {
+	const socketMockLower = SocketMock.instances.find((s) => s.connectedPort === 10540) as SocketMock
+	const socketMockUpper = SocketMock.instances.find((s) => s.connectedPort === 10541) as SocketMock
+	const socketMockQuery = SocketMock.instances.find((s) => s.connectedPort === 10542) as SocketMock
 
 	expect(socketMockLower).toBeTruthy()
 	expect(socketMockUpper).toBeTruthy()
@@ -150,17 +171,17 @@ export function doBeforeAll() {
 
 	expect(ServerMock.instances).toHaveLength(3)
 
-	let serverMockLower = ServerMock.instances[0]
-	let serverMockUpper = ServerMock.instances[2]
-	let serverMockQuery = ServerMock.instances[1]
+	const serverMockLower = ServerMock.instances[0]
+	const serverMockUpper = ServerMock.instances[2]
+	const serverMockQuery = ServerMock.instances[1]
 	expect(serverMockLower).toBeTruthy()
 	expect(serverMockUpper).toBeTruthy()
 	expect(serverMockQuery).toBeTruthy()
 
 	// Pretend a server connects to us:
-	let serverSocketMockLower = serverMockLower.mockNewConnection()
-	let serverSocketMockUpper = serverMockUpper.mockNewConnection()
-	let serverSocketMockQuery = serverMockQuery.mockNewConnection()
+	const serverSocketMockLower = serverMockLower.mockNewConnection()
+	const serverSocketMockUpper = serverMockUpper.mockNewConnection()
+	const serverSocketMockQuery = serverMockQuery.mockNewConnection()
 
 	socketMockLower.name = 'lower'
 	socketMockUpper.name = 'upper'
@@ -183,7 +204,7 @@ export function doBeforeAll() {
 	}
 }
 
-export function fixSnapshot(data: any): any {
+export function fixSnapshot(data: unknown): any {
 	return fixSnapshotInner(data)[1]
 }
 function fixSnapshotInner(data: any): [boolean, any] {

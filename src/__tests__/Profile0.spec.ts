@@ -3,8 +3,10 @@ import { MosConnection, MosDevice, IMOSObject, IMOSListMachInfo } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // @ts-ignore imports are unused
 import { Socket } from 'net'
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 beforeAll(() => {
 	setupMocks()
@@ -58,7 +60,7 @@ describe('Profile 0', () => {
 		mosDevice.onRequestAllMOSObjects((): Promise<Array<IMOSObject>> => {
 			return onRequestAllMOSObjects()
 		})
-		let b = doBeforeAll()
+		const b = doBeforeAll()
 		socketMockLower = b.socketMockLower
 		socketMockUpper = b.socketMockUpper
 		socketMockQuery = b.socketMockQuery
@@ -92,15 +94,15 @@ describe('Profile 0', () => {
 
 		serverSocketMockLower.setReplyToHeartBeat(false)
 
-		let serverReply: jest.Mock<any, any> = jest.fn(() => false)
+		const serverReply: jest.Mock<any, any> = jest.fn(() => false)
 		serverSocketMockLower.mockAddReply(serverReply)
 		// Fake incoming message on socket:
-		let sendMessageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.heartbeat)
+		const sendMessageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.heartbeat)
 		await delay(10) // to allow for async timers & events to triggered
 
 		expect(serverReply).toHaveBeenCalledTimes(1)
 
-		let msg = serverSocketMockLower.decode(serverReply.mock.calls[0][0])
+		const msg = serverSocketMockLower.decode(serverReply.mock.calls[0][0])
 
 		expect(msg).toMatch(/<heartbeat/)
 		expect(msg).toMatch('<messageID>' + sendMessageId)
@@ -111,7 +113,7 @@ describe('Profile 0', () => {
 
 		expect(serverSocketMockLower).toBeTruthy()
 		serverSocketMockLower.setReplyToHeartBeat(false)
-		let serverReply: jest.Mock<any, any> = jest.fn(() => false)
+		const serverReply: jest.Mock<any, any> = jest.fn(() => false)
 		serverSocketMockLower.mockAddReply(serverReply)
 
 		// Fake incoming message on socket:

@@ -4,57 +4,58 @@ import { Socket } from 'net'
 import { MosTime } from '../dataTypes/mosTime'
 
 import * as iconv from 'iconv-lite'
+import { getMessageId } from '../__tests__/lib'
 iconv.encodingExists('utf16-be')
 
 // Mock the Socket class in 'net':
-let setTimeoutOrg = setTimeout
+const setTimeoutOrg = setTimeout
 
-let instances: Array<ISocketMock> = []
+const instances: Array<ISocketMock> = []
 
 export class SocketMock extends EventEmitter implements Socket {
 	// Mock implementation:
-	bufferSize: number
-	remoteAddress: string
-	remoteFamily: string
-	remotePort: number
-	localAddress: string
-	localPort: number
-	bytesRead: number
-	bytesWritten: number
-	connecting: boolean
-	destroyed: boolean
-	writable: boolean
-	readable: boolean
-	readonly readableEncoding: BufferEncoding | null
-	readonly readableEnded: boolean
-	readonly readableFlowing: boolean | null
+	bufferSize = 0
+	remoteAddress = ''
+	remoteFamily = ''
+	remotePort = 0
+	localAddress = ''
+	localPort = 0
+	bytesRead = 0
+	bytesWritten = 0
+	connecting = false
+	destroyed = false
+	writable = false
+	readable = false
 
-	readonly writableEnded: boolean
-	readonly writableFinished: boolean
-	readonly writableHighWaterMark: number
-	readonly writableLength: number
-	readonly writableObjectMode: boolean
+	readonly readableEncoding: BufferEncoding | null = null
+	readonly readableEnded: boolean = false
+	readonly readableFlowing: boolean | null = null
 
-	readonly readableHighWaterMark: number
-	readonly readableLength: number
-	readonly readableObjectMode: boolean
+	readonly writableEnded: boolean = false
+	readonly writableFinished: boolean = false
+	readonly writableHighWaterMark: number = 0
+	readonly writableLength: number = 0
+	readonly writableObjectMode: boolean = false
 
-	public name: string
-	public connectedPort: number
-	public connectedHost: string;
+	readonly readableHighWaterMark: number = 0
+	readonly readableLength: number = 0
+	readonly readableObjectMode: boolean = false
 
-	// @ts-ignore
-	[Symbol.asyncIterator](): AsyncIterableIterator<any>
+	public name = ''
+	public connectedPort = 0
+	public connectedHost = ''
+
+	// [Symbol.asyncIterator](): AsyncIterableIterator<any>
 
 	private _responses: Array<
 		string | string[] | false | ((data: any) => string | string[] | Buffer | Buffer[] | false)
 	> = []
-	private _replyToHeartBeat: boolean = true
+	private _replyToHeartBeat = true
 
 	constructor() {
 		super()
 
-		// @ts-ignore this is comparable with ISocketMock
+		// @ts-expect-error this is comparable with ISocketMock
 		instances.push(this)
 
 		// Wrap member functions in mocks:
@@ -88,18 +89,19 @@ export class SocketMock extends EventEmitter implements Socket {
 		this.mockSentMessage0 = jest.fn(this.mockSentMessage0)
 		this.mockSentMessage = jest.fn(this.mockSentMessage)
 	}
-	static mockClear() {
+	static mockClear(): void {
 		instances.splice(0, 9999)
 	}
-	static get instances() {
+	static get instances(): ISocketMock[] {
 		return instances
 	}
 
-	write() {
-		this.mockSentMessage0.apply(this, arguments)
+	write(data: unknown, encoding: unknown): boolean {
+		this.mockSentMessage0(data, encoding as any)
 		return true
 	}
-	connect(port: any, host: any) {
+	// @ts-expect-error mock
+	connect(port: number, host: string): SocketMock {
 		this.connectedPort = port
 		this.connectedHost = host
 
@@ -111,108 +113,98 @@ export class SocketMock extends EventEmitter implements Socket {
 		this.emit('connect')
 		return this
 	}
-	setEncoding() {
+	setEncoding(): this {
 		return this
 	}
-	destroy() {
+	destroy(): void {
 		this.destroyed = true
 		this.emit('close')
 		/* nothing */
 	}
-	pause() {
+	pause(): this {
 		return this
 	}
-	resume() {
+	resume(): this {
 		return this
 	}
-	setTimeout(timeout: number, callback?: (...args: any[]) => void) {
+	setTimeout(timeout: number, callback?: (...args: any[]) => void): this {
 		if (callback) setTimeout(callback, timeout)
 		return this
 	}
-	setNoDelay(noDelay?: boolean) {
-		noDelay = noDelay
+	setNoDelay(_noDelay?: boolean): this {
 		return this
 	}
-	setKeepAlive(enable?: boolean, initialDelay?: number) {
-		enable = enable
-		initialDelay = initialDelay
+	setKeepAlive(_enable?: boolean, _initialDelay?: number): this {
 		return this
 	}
-	address() {
+	address(): { port: number; family: string; address: string } {
 		return { port: 100, family: 'localhost', address: '127.0.0.1' }
 	}
-	unref() {
+	unref(): void {
 		/* nothing */
 	}
-	ref() {
+	ref(): void {
 		/* nothing */
 	}
-	end() {
+	end(): void {
 		/* nothing */
 	}
-	_write(chunk: any, encoding: string, callback: Function) {
-		chunk = chunk
-		encoding = encoding
+	_write(_chunk: unknown, _encoding: string, callback: () => void): void {
 		callback() /* nothing */
 	}
-	setDefaultEncoding(encoding: string) {
-		encoding = encoding
+	setDefaultEncoding(_encoding: string): this {
 		return this
 	}
-	_read(size: number) {
-		size = size
+	_read(_size: number): void {
+		// nothing
 	}
-	read(size?: number) {
-		size = size
+	read(_size?: number): void {
+		// nothing
 	}
-	isPaused() {
+	isPaused(): boolean {
 		return false
 	}
-	pipe(destination: any, options?: { end?: boolean }) {
-		options = options
+	pipe<T extends NodeJS.WritableStream>(destination: T, _options?: { end?: boolean }): T {
 		return destination
 	}
-	unpipe(destination: any) {
-		destination = destination
+	unpipe(_destination: NodeJS.WritableStream): this {
 		return this
 	}
-	unshift(chunk: any) {
-		chunk = chunk
+	unshift(_chunk: unknown): void {
+		// nothing
 	}
-	wrap(oldStream: NodeJS.ReadableStream) {
-		oldStream = oldStream
+	wrap(_oldStream: NodeJS.ReadableStream): this {
 		return this
 	}
-	push(chunk: any, encoding?: string) {
-		chunk = chunk
-		encoding = encoding
+	push(_chunk: unknown, _encoding?: string): boolean {
 		return true
 	}
-	_destroy() {
+	_destroy(): void {
 		/* nothing */
 	}
-	_final() {
+	_final(): void {
 		/* nothing */
 	}
-	cork() {
+	cork(): void {
 		/* nothing */
 	}
-	uncork() {
+	uncork(): void {
 		/* nothing */
 	}
 
 	// ------------------------------------------------------------------------
 	// Mock methods:
-	mockSentMessage0(data: any, encoding: any) {
+	mockSentMessage0(data: unknown, encoding: string): void {
 		if (this._replyToHeartBeat) {
-			const str: string = typeof data === 'string' ? data : this.decode(data)
+			const str: string = typeof data === 'string' ? data : this.decode(data as any)
 
 			if (str.match(/<heartbeat>/)) {
 				try {
-					let mosID = str.match(/<mosID>([^<]+)<\/mosID>/)![1]
-					let ncsID = str.match(/<ncsID>([^<]+)<\/ncsID>/)![1]
-					let messageId = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
-					let repl = `<mos>
+					const mosID = (str.match(/<mosID>([^<]+)<\/mosID>/) || [])[1]
+					const ncsID = (str.match(/<ncsID>([^<]+)<\/ncsID>/) || [])[1]
+					const messageId = getMessageId(str)
+
+					const repl = `<mos>
 <mosID>${mosID}</mosID>
 <ncsID>${ncsID}</ncsID>
 <messageID>${messageId}</messageID>\
@@ -230,7 +222,7 @@ export class SocketMock extends EventEmitter implements Socket {
 		}
 		this.mockSentMessage(data, encoding)
 	}
-	mockSentMessage(data: any, _encoding: any) {
+	mockSentMessage(data: unknown, _encoding: string): void {
 		const cb = this._responses.shift()
 		if (cb) {
 			// send reply:
@@ -248,22 +240,22 @@ export class SocketMock extends EventEmitter implements Socket {
 			}, 1)
 		}
 	}
-	mockReceiveMessage(msg: string | Buffer) {
+	mockReceiveMessage(msg: string | Buffer): void {
 		this.emit('data', msg)
 	}
-	mockAddReply(cb: string | string[] | false | ((data: any) => string | string[] | Buffer | Buffer[] | false)) {
+	mockAddReply(cb: string | string[] | false | ((data: any) => string | string[] | Buffer | Buffer[] | false)): void {
 		this._responses.push(cb)
 	}
-	mockClear() {
+	mockClear(): void {
 		this._responses.splice(0, 9999)
-		// @ts-ignore
+		// @ts-expect-error mock hack
 		this.mockSentMessage0['mockClear']()
-		// @ts-ignore
+		// @ts-expect-error mock hack
 		this.mockSentMessage['mockClear']()
 	}
 	mockWaitForSentMessages(): Promise<void> {
 		return new Promise<void>((resolve) => {
-			let check = () => {
+			const check = () => {
 				if (this._responses.length === 0) {
 					resolve()
 				} else {
@@ -279,10 +271,10 @@ export class SocketMock extends EventEmitter implements Socket {
 	decode(data: Buffer): string {
 		return iconv.decode(data, 'utf16-be')
 	}
-	encode(str: string) {
+	encode(str: string): Buffer {
 		return iconv.encode(str, 'utf16-be')
 	}
-	setReplyToHeartBeat(replyToHeartBeat: boolean) {
+	setReplyToHeartBeat(replyToHeartBeat: boolean): void {
 		this._replyToHeartBeat = replyToHeartBeat
 	}
 }

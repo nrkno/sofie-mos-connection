@@ -15,7 +15,7 @@ export class ROInsertStories extends MosSendMessage {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roElementAction')
+		const root = XMLBuilder.create('roElementAction')
 		root.att('operation', 'INSERT')
 		addTextElement(root, 'roID', this.Action.RunningOrderID)
 		const xmlTarget = addTextElement(root, 'element_target')
@@ -32,7 +32,7 @@ export class ROInsertItems extends MosSendMessage {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roElementAction')
+		const root = XMLBuilder.create('roElementAction')
 		root.att('operation', 'INSERT')
 		addTextElement(root, 'roID', this.Action.RunningOrderID)
 		const xmlTarget = addTextElement(root, 'element_target')
@@ -50,7 +50,7 @@ export class ROReplaceStories extends MosSendMessage {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roElementAction')
+		const root = XMLBuilder.create('roElementAction')
 		root.att('operation', 'REPLACE')
 		addTextElement(root, 'roID', this.Action.RunningOrderID)
 		const xmlTarget = addTextElement(root, 'element_target')
@@ -67,7 +67,7 @@ export class ROReplaceItems extends MosSendMessage {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roElementAction')
+		const root = XMLBuilder.create('roElementAction')
 		root.att('operation', 'INSERT')
 		addTextElement(root, 'roID', this.Action.RunningOrderID)
 		const xmlTarget = addTextElement(root, 'element_target')
@@ -85,7 +85,7 @@ export class ROMoveStories extends MosSendMessage {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roElementAction')
+		const root = XMLBuilder.create('roElementAction')
 		root.att('operation', 'MOVE')
 		addTextElement(root, 'roID', this.Action.RunningOrderID)
 		const xmlTarget = addTextElement(root, 'element_target')
@@ -102,7 +102,7 @@ export class ROMoveItems extends MosSendMessage {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roElementAction')
+		const root = XMLBuilder.create('roElementAction')
 		root.att('operation', 'MOVE')
 		addTextElement(root, 'roID', this.Action.RunningOrderID)
 		const xmlTarget = addTextElement(root, 'element_target')
@@ -120,7 +120,7 @@ export class RODeleteStories extends MosSendMessage {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roElementAction')
+		const root = XMLBuilder.create('roElementAction')
 		root.att('operation', 'DELETE')
 		addTextElement(root, 'roID', this.Action.RunningOrderID)
 		const xmlSource = addTextElement(root, 'element_source')
@@ -135,7 +135,7 @@ export class RODeleteItems extends MosSendMessage {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roElementAction')
+		const root = XMLBuilder.create('roElementAction')
 		root.att('operation', 'DELETE')
 		addTextElement(root, 'roID', this.Action.RunningOrderID)
 		const xmlTarget = addTextElement(root, 'element_target')
@@ -152,7 +152,7 @@ export class ROSwapStories extends MosSendMessage {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roElementAction')
+		const root = XMLBuilder.create('roElementAction')
 		root.att('operation', 'SWAP')
 		addTextElement(root, 'roID', this.Action.RunningOrderID)
 		const xmlSource = addTextElement(root, 'element_source')
@@ -166,7 +166,7 @@ export class ROSwapItems extends MosSendMessage {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roElementAction')
+		const root = XMLBuilder.create('roElementAction')
 		root.att('operation', 'DELETE')
 		addTextElement(root, 'roID', this.Action.RunningOrderID)
 		const xmlTarget = addTextElement(root, 'element_target')

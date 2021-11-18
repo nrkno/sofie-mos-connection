@@ -11,8 +11,8 @@ export function pad(n: string, width: number, z?: string): string {
 	return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n
 }
 
-export function xml2js(messageString: string): object {
-	let object = xmlParser(messageString, { compact: false, trim: true, nativeType: true })
+export function xml2js(messageString: string): { [key: string]: any } {
+	const object = xmlParser(messageString, { compact: false, trim: true, nativeType: true })
 	// common tags we typically want to know the order of the contents of:
 	const orderedTags = new Set(['storyBody', 'mosAbstract', 'description', 'p', 'em', 'span', 'h1', 'h2', 'i', 'b'])
 
@@ -64,10 +64,10 @@ export function xml2js(messageString: string): object {
 
 				if (!orderedTags.has(element.$name)) {
 					// if the element name is contained in the set of orderedTag names we don't make it any more compact
-					let names: Array<string> = element.elements.map(
+					const names: Array<string> = element.elements.map(
 						(obj: { $name?: string; $type?: string }) => obj.$name || obj.$type || 'unknownElement'
 					)
-					let namesSet = new Set(names)
+					const namesSet = new Set(names)
 					if (namesSet.size === 1 && names.length !== 1 && !namesSet.has('type') && !namesSet.has('name')) {
 						// make array compact:
 						const array: any = []

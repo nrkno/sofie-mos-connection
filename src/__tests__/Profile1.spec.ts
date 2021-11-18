@@ -7,6 +7,7 @@ import {
 	encode,
 	fakeIncomingMessage,
 	fixSnapshot,
+	getMessageId,
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
@@ -18,8 +19,10 @@ import { xmlData, xmlApiData } from '../__mocks__/testData'
 import { xml2js } from 'xml-js'
 import * as Utils from '../utils/Utils'
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // @ts-ignore imports are unused
 import { Socket } from 'net'
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 beforeAll(() => {
 	setupMocks()
@@ -73,7 +76,7 @@ describe('Profile 1', () => {
 		mosDevice.onRequestAllMOSObjects((): Promise<Array<IMOSObject>> => {
 			return onRequestAllMOSObjects()
 		})
-		let b = doBeforeAll()
+		const b = doBeforeAll()
 		socketMockLower = b.socketMockLower
 		socketMockUpper = b.socketMockUpper
 		socketMockQuery = b.socketMockQuery
@@ -108,7 +111,8 @@ describe('Profile 1', () => {
 		// Fake incoming message on socket:
 		await fakeIncomingMessage(serverSocketMockLower, xmlData.reqObj)
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(1)
-		expect(onRequestMOSObject.mock.calls[0][0]).toEqual(xmlApiData.mosObj.ID!.toString())
+		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
+		expect(onRequestMOSObject.mock.calls[0][0]).toEqual(xmlApiData.mosObj.ID.toString())
 		expect(fixSnapshot(onRequestMOSObject.mock.calls)).toMatchSnapshot()
 		expect(onRequestAllMOSObjects).toHaveBeenCalledTimes(0)
 
@@ -116,18 +120,18 @@ describe('Profile 1', () => {
 		await serverSocketMockLower.mockWaitForSentMessages()
 		expect(serverSocketMockLower.mockSentMessage).toHaveBeenCalledTimes(1)
 		// @ts-ignore mock
-		let reply = decode(serverSocketMockLower.mockSentMessage['mock'].calls![0][0])
-		let parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
+		const reply = decode(serverSocketMockLower.mockSentMessage['mock'].calls[0][0])
+		const parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
 
-		expect(parsedReply.mos.mosObj.objID._text + '').toEqual(xmlApiData.mosObj.ID!.toString())
+		expect(parsedReply.mos.mosObj.objID._text + '').toEqual(xmlApiData.mosObj.ID.toString())
 		expect(parsedReply.mos.mosObj.objSlug._text + '').toEqual(xmlApiData.mosObj.Slug.toString())
 		expect(parsedReply).toMatchSnapshot()
 	})
 	test('onRequestAllMOSObjects', async () => {
-		let mockReply = jest.fn((data) => {
-			let str = decode(data)
-			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
-			let repl = getXMLReply(messageID, '<mosAck></mosAck>')
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
+			const repl = getXMLReply(messageID, '<mosAck></mosAck>')
 
 			return encode(repl)
 		})
@@ -143,8 +147,8 @@ describe('Profile 1', () => {
 		await serverSocketMockLower.mockWaitForSentMessages()
 		expect(serverSocketMockLower.mockSentMessage).toHaveBeenCalledTimes(1)
 		// @ts-ignore mock
-		let reply = decode(serverSocketMockLower.mockSentMessage.mock.calls[0][0])
-		let parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
+		const reply = decode(serverSocketMockLower.mockSentMessage.mock.calls[0][0])
+		const parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
 		expect(parsedReply.mos.mosAck).toBeTruthy()
 		expect(parsedReply).toMatchSnapshot()
 
@@ -158,26 +162,29 @@ describe('Profile 1', () => {
 		const sentData = Utils.xml2js(decode(mockReply.mock.calls[0][0])) as any
 
 		expect(sentData.mos.mosListAll.mosObj).toHaveLength(2)
-		expect(sentData.mos.mosListAll.mosObj[0].objID + '').toEqual(xmlApiData.mosObj.ID!.toString())
+		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
+		expect(sentData.mos.mosListAll.mosObj[0].objID + '').toEqual(xmlApiData.mosObj.ID.toString())
 		expect(sentData.mos.mosListAll.mosObj[0].objSlug + '').toEqual(xmlApiData.mosObj.Slug.toString())
-		expect(sentData.mos.mosListAll.mosObj[1].objID + '').toEqual(xmlApiData.mosObj2.ID!.toString())
+		if (!xmlApiData.mosObj2.ID) throw new Error('xmlApiData.mosObj2.ID not set')
+		expect(sentData.mos.mosListAll.mosObj[1].objID + '').toEqual(xmlApiData.mosObj2.ID.toString())
 		expect(sentData.mos.mosListAll.mosObj[1].objSlug + '').toEqual(xmlApiData.mosObj2.Slug.toString())
 		sentData.mos.messageID = 99999 // not important
 		expect(sentData).toMatchSnapshot()
 	})
 	test('getMOSObject', async () => {
 		// Prepare mock server response:
-		let mockReply = jest.fn((data) => {
-			let str = decode(data)
-			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
-			let repl = getXMLReply(messageID, xmlData.mosObj)
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
+			const repl = getXMLReply(messageID, xmlData.mosObj)
 
 			return encode(repl)
 		})
 		socketMockLower.mockAddReply(mockReply)
-		let returnedObj: IMOSObject = await mosDevice.sendRequestMOSObject(xmlApiData.mosObj.ID!)
+		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
+		const returnedObj: IMOSObject = await mosDevice.sendRequestMOSObject(xmlApiData.mosObj.ID)
 		expect(mockReply).toHaveBeenCalledTimes(1)
-		let msg = decode(mockReply.mock.calls[0][0])
+		const msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<mosReqObj>/)
 		checkMessageSnapshot(msg)
 
@@ -187,17 +194,17 @@ describe('Profile 1', () => {
 	test('getAllMOSObjects', async () => {
 		expect(socketMockLower).toBeTruthy()
 		// Prepare mock server response:
-		let mockReply = jest.fn((data) => {
-			let str = decode(data)
-			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
-			let repl = getXMLReply(messageID, xmlData.mosListAll)
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
+			const repl = getXMLReply(messageID, xmlData.mosListAll)
 			return encode(repl)
 		})
 		socketMockLower.mockAddReply(mockReply)
-		let returnedObjs: Array<IMOSObject> = await mosDevice.sendRequestAllMOSObjects()
+		const returnedObjs: Array<IMOSObject> = await mosDevice.sendRequestAllMOSObjects()
 
 		expect(mockReply).toHaveBeenCalledTimes(1)
-		let msg = decode(mockReply.mock.calls[0][0])
+		const msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<mosReqAll>/)
 		checkMessageSnapshot(msg)
 

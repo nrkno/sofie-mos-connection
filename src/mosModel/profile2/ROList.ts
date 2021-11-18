@@ -11,14 +11,14 @@ export class ROList extends MosMessage {
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roList')
+		const root = XMLBuilder.create('roList')
 
 		this.fillXMLWithROData(root)
 
 		return root
 	}
 
-	protected fillXMLWithROData(root: XMLBuilder.XMLElement) {
+	protected fillXMLWithROData(root: XMLBuilder.XMLElement): void {
 		XMLRunningOrderBase.toXML(root, this.ro)
 
 		this.ro.Stories.forEach((story) => {

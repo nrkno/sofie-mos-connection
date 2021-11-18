@@ -7,7 +7,7 @@ export class ROReplace extends ROCreate {
 		super(ro)
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roReplace')
+		const root = XMLBuilder.create('roReplace')
 		this.fillXMLWithROData(root)
 		return root
 	}

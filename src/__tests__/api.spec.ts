@@ -33,10 +33,8 @@ import {
 test('api & exports', () => {
 	// Note: This test doesn't test anything during runtime, but it touches types instead.
 
-	// @ts-ignore not used
 	function justTestTypings() {
-		let f: any
-		f = f
+		let f: any = null
 
 		// MosConnection
 		f = function (options: IConnectionConfig) {
@@ -292,6 +290,11 @@ test('api & exports', () => {
 			f = function (story: IMOSROFullStory): Promise<IMOSROAck> {
 				return mosDevice.sendRunningOrderStory(story)
 			}
+
+			// eslint-disable-next-line
+			f = f
 		}
 	}
+
+	expect(typeof justTestTypings).toBe('function')
 })

@@ -1,7 +1,7 @@
 import { xml2js } from '../Utils'
 
 test('xml2js with junk', () => {
-	let o: any = xml2js(`
+	const o: any = xml2js(`
 <content>
 	<navn>Jon Gelius</navn>
 	<tittel/>
@@ -36,7 +36,7 @@ test('xml2js with junk', () => {
 	})
 })
 test('xml2js with simple array', () => {
-	let o: any = xml2js(`
+	const o: any = xml2js(`
 <content>
 	<navn>Jon Gelius</navn>
 	<tittel/>
@@ -52,7 +52,7 @@ test('xml2js with simple array', () => {
 	})
 })
 test('xml2js with array', () => {
-	let o: any = xml2js(`
+	const o: any = xml2js(`
 <content>
 	<navn>Jon Gelius</navn>
 	<tittel/>
@@ -90,7 +90,7 @@ test('xml2js with array', () => {
 })
 
 test('xml2js with clean', () => {
-	let o: any = xml2js(`
+	const o: any = xml2js(`
 <content>
 	<navn>Jon Gelius</navn>
 	<tittel/>

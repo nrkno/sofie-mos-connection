@@ -14,10 +14,10 @@ export class MosListAll extends MosMessage {
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('mosListAll')
+		const root = XMLBuilder.create('mosListAll')
 
 		this.objs.forEach((obj: IMOSObject) => {
-			let xmlMosObj = XMLBuilder.create('mosObj')
+			const xmlMosObj = XMLBuilder.create('mosObj')
 			XMLMosObject.toXML(xmlMosObj, obj)
 			root.importDocument(xmlMosObj)
 		})

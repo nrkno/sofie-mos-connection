@@ -31,7 +31,7 @@ describe('MosTime', () => {
 		expect(new MosTime('2009-04-11T14:22:07+5:00').getTime()).toBe(new Date('2009-04-11T14:22:07+05:00').getTime())
 	})
 	test('format time strings correctly', () => {
-		let date = new Date(Date.UTC(2018, 1, 24, 23, 13, 52, 0)) // utc, zero-indexed month
+		const date = new Date(Date.UTC(2018, 1, 24, 23, 13, 52, 0)) // utc, zero-indexed month
 		expect(new MosTime(date).toString()).toBe('2018-02-24T23:13:52,000')
 		expect(new MosTime(1519514032000).toString()).toBe('2018-02-24T23:13:52,000') // date.getTime()
 		// expect(new MosTime('Sun Feb 25 2018 00:13:52 GMT+0100 (W. Europe Standard Time)').toString()).toBe('2018-02-25T00:13:52,000+01:00') // date.toString() locale time

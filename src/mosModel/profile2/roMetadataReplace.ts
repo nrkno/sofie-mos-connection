@@ -8,7 +8,7 @@ export class ROMetadataReplace extends MosMessage {
 		super('upper')
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roMetadataReplace')
+		const root = XMLBuilder.create('roMetadataReplace')
 
 		XMLRunningOrderBase.toXML(root, this.metadata)
 

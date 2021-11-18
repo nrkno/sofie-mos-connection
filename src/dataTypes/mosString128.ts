@@ -1,8 +1,8 @@
 export class MosString128 {
-	private _str: string = 'undefined'
+	private _str = 'undefined'
 
 	/** */
-	constructor(str: any, private strict: boolean = true) {
+	constructor(str: AnyString, private strict: boolean = true) {
 		this.string = str
 	}
 	/** */
@@ -11,7 +11,7 @@ export class MosString128 {
 	}
 
 	/** */
-	set string(str: string | { text: string; type: string } | MosString128 | any) {
+	set string(str: AnyString) {
 		if (typeof str === 'object' && str) {
 			if (str.text) {
 				this._str = str.text.toString()
@@ -36,3 +36,5 @@ export class MosString128 {
 		}
 	}
 }
+
+type AnyString = string | { text: string; type: string } | MosString128 | any

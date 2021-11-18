@@ -31,7 +31,7 @@ export class ROElementStat extends MosMessage {
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roElementStat')
+		const root = XMLBuilder.create('roElementStat')
 		root.attribute('element', this.options.type.toString())
 
 		addTextElement(root, 'roID', this.options.roId)

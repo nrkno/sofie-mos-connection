@@ -73,7 +73,7 @@ export class ListMachineInfo extends MosMessage {
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let xmlListMachInfo = XMLBuilder.create('listMachInfo')
+		const xmlListMachInfo = XMLBuilder.create('listMachInfo')
 		addTextElement(xmlListMachInfo, 'manufacturer', this.info.manufacturer)
 		addTextElement(xmlListMachInfo, 'model', this.info.model)
 		addTextElement(xmlListMachInfo, 'hwRev', this.info.hwRev)

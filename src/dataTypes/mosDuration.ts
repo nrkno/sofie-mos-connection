@@ -3,12 +3,12 @@ export class MosDuration {
 
 	/** */
 	constructor(str: string) {
-		let m = str.match(/([\d]+):([\d]+):([\d]+)/)
+		const m = str.match(/([\d]+):([\d]+):([\d]+)/)
 		if (!m) throw Error('MosDuration: Invalid format!')
 
-		let hh: number = parseInt(m[1], 10)
-		let mm: number = parseInt(m[2], 10)
-		let ss: number = parseInt(m[3], 10)
+		const hh: number = parseInt(m[1], 10)
+		const mm: number = parseInt(m[2], 10)
+		const ss: number = parseInt(m[3], 10)
 
 		if (isNaN(hh) || isNaN(mm) || isNaN(ss)) throw Error('MosDuration: Invalid format!')
 
@@ -18,13 +18,13 @@ export class MosDuration {
 	toString(): string {
 		let s = this._duration
 
-		let hh = Math.floor(s / 3600)
+		const hh = Math.floor(s / 3600)
 		s -= hh * 3600
 
-		let mm = Math.floor(s / 60)
+		const mm = Math.floor(s / 60)
 		s -= mm * 60
 
-		let ss = Math.floor(s)
+		const ss = Math.floor(s)
 
 		return hh + ':' + mm + ':' + ss
 	}

@@ -31,7 +31,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	private _timeout: number
 	private _mosID: string
 	private _debug: boolean
-	private _disposed: boolean = false
+	private _disposed = false
 
 	private _clients: { [clientID: string]: ClientDescription } = {}
 
@@ -51,8 +51,8 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		this._debug = debug ?? false
 	}
 	/** Create a MOS client, which talks to  */
-	createClient(clientID: string, port: number, clientDescription: ConnectionType, useHeartbeats: boolean) {
-		let client = new MosSocketClient(this._host, port, clientDescription, this._timeout, this._debug)
+	createClient(clientID: string, port: number, clientDescription: ConnectionType, useHeartbeats: boolean): void {
+		const client = new MosSocketClient(this._host, port, clientDescription, this._timeout, this._debug)
 		this.debugTrace('registerOutgoingConnection', clientID)
 
 		this._clients[clientID] = {
@@ -73,13 +73,13 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	}
 
 	/** */
-	removeClient(clientID: string) {
+	removeClient(clientID: string): void {
 		this._clients[clientID].client.dispose()
 		delete this._clients[clientID]
 	}
 
-	connect() {
-		for (let i in this._clients) {
+	connect(): void {
+		for (const i in this._clients) {
 			// Connect client
 			this.emit(
 				'info',
@@ -132,11 +132,11 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		})
 	}
 
-	public setDebug(debug: boolean) {
+	public setDebug(debug: boolean): void {
 		this._debug = debug
 
 		Object.keys(this._clients).forEach((clientID) => {
-			let cd = this._clients[clientID]
+			const cd = this._clients[clientID]
 			if (cd) {
 				cd.client.setDebug(debug)
 			}
@@ -146,7 +146,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		if (!this._connected) return false
 		let connected = true
 		Object.keys(this._clients).forEach((key) => {
-			let client = this._clients[key]
+			const client = this._clients[key]
 			if (client.useHeartbeats && !client.heartbeatConnected) {
 				connected = false
 			}
@@ -155,8 +155,8 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	}
 
 	private _getClients(clientDescription: string): MosSocketClient[] {
-		let clients: MosSocketClient[] = []
-		for (let i in this._clients) {
+		const clients: MosSocketClient[] = []
+		for (const i in this._clients) {
 			if (this._clients[i].clientDescription === clientDescription) {
 				clients.push(this._clients[i].client)
 			}
@@ -185,7 +185,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		return this._id
 	}
 
-	handOverQueue(otherConnection: NCSServerConnection) {
+	handOverQueue(otherConnection: NCSServerConnection): void {
 		const cmds: { [clientId: string]: HandedOverQueue } = {}
 		// this._clients.forEach((client, id) => {
 		// 	// cmds[id] = client.client.handOverQueue()
@@ -197,7 +197,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		}
 		otherConnection.receiveQueue(cmds)
 	}
-	receiveQueue(queue: { [clientId: string]: HandedOverQueue }) {
+	receiveQueue(queue: { [clientId: string]: HandedOverQueue }): void {
 		// @todo: keep order
 		// @todo: prevent callback-promise horror...
 		for (const clientId of Object.keys(queue)) {
@@ -223,7 +223,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	dispose(): Promise<void> {
 		this._disposed = true
 		return new Promise((resolveDispose) => {
-			for (let key in this._clients) {
+			for (const key in this._clients) {
 				this.removeClient(key)
 			}
 			if (this._heartBeatsTimer) {
@@ -243,7 +243,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		}
 		if (this._disposed) return
 
-		let triggerNextHeartBeat = () => {
+		const triggerNextHeartBeat = () => {
 			this._heartBeatsTimer = global.setTimeout(() => {
 				if (!this._disposed) {
 					this._sendHeartBeats()
@@ -253,10 +253,10 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 
 		Promise.all(
 			Object.keys(this._clients).map((key) => {
-				let client = this._clients[key]
+				const client = this._clients[key]
 
 				if (client.useHeartbeats) {
-					let heartbeat = new HeartBeat(this._clients[key].clientDescription)
+					const heartbeat = new HeartBeat(this._clients[key].clientDescription)
 					return this.executeCommand(heartbeat)
 						.then(() => {
 							client.heartbeatConnected = true
@@ -280,7 +280,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 				this.emit('error', e)
 			})
 			.then(() => {
-				let connected = this.connected
+				const connected = this.connected
 				if (connected !== this._emittedConnected) {
 					this._emittedConnected = connected
 					this.emit('connectionChanged')

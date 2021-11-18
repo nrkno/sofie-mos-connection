@@ -22,7 +22,7 @@ export class MOSAck extends MosMessage implements IMOSAck {
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('mosAck')
+		const root = XMLBuilder.create('mosAck')
 
 		addTextElement(root, 'objID', this.ID)
 		addTextElement(root, 'objRev', this.Revision)

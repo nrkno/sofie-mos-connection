@@ -14,7 +14,7 @@ export class MosObj extends MosMessage {
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
-		let xmlMosObj = XMLBuilder.create('mosObj')
+		const xmlMosObj = XMLBuilder.create('mosObj')
 		XMLMosObject.toXML(xmlMosObj, this.obj)
 
 		return xmlMosObj
