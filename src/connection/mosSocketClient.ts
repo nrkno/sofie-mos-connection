@@ -146,7 +146,7 @@ export class MosSocketClient extends EventEmitter {
 				// The queue is empty, do nothing
 			}
 		} else {
-			if (!this._sentMessage) {
+			if (!this._sentMessage && this._queueMessages.length > 0) {
 				if (Date.now() - this._queueMessages[0].time > this._commandTimeout) {
 					const msg = this._queueMessages.shift()
 					if (msg) {
@@ -155,13 +155,11 @@ export class MosSocketClient extends EventEmitter {
 						this.processQueue()
 					}
 				} else {
-					if (this._queueMessages.length > 0) {
-						// Try again later:
-						if (this.processQueueTimeout) clearTimeout(this.processQueueTimeout)
-						this.processQueueTimeout = setTimeout(() => {
-							this.processQueue()
-						}, 200)
-					}
+					// Try again later:
+					if (this.processQueueTimeout) clearTimeout(this.processQueueTimeout)
+					this.processQueueTimeout = setTimeout(() => {
+						this.processQueue()
+					}, 200)
 				}
 			}
 		}
