@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.5-0](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.3...1.0.5-0) (2021-11-18)
+
+
+### Bug Fixes
+
+* remove debugTrace of heartbeats, to reduce logging amount [release] ([c82e09b](https://github.com/nrkno/tv-automation-mos-connection/commit/c82e09b9756347ae9d1f8625e055ad575698264a))
+* remove debugTrace to remove duplicate logs (since rawMessage is also emitted there) ([b2f1a27](https://github.com/nrkno/tv-automation-mos-connection/commit/b2f1a27dd564358602d323148eb0cf032edd993d))
+
 ### [1.0.4](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.3...1.0.4) (2021-09-21)
 
 

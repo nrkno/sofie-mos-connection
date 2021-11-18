@@ -1,6 +1,6 @@
 {
   "name": "mos-connection",
-  "version": "1.0.4",
+  "version": "1.0.5-0",
   "description": "MOS compliant TCP/IP Socket connection.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
