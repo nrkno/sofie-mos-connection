@@ -3,7 +3,6 @@ import { EventEmitter } from 'events'
 import { IncomingConnectionType, SocketServerEvent } from './socketConnection'
 
 export class MosSocketServer extends EventEmitter {
-
 	private _port: number
 	private _portDescription: IncomingConnectionType
 	private _socketServer: Server
@@ -11,7 +10,7 @@ export class MosSocketServer extends EventEmitter {
 	private _connectedSockets: Array<Socket> = []
 
 	/** */
-	constructor (port: number, description: IncomingConnectionType, debug: boolean) {
+	constructor(port: number, description: IncomingConnectionType, debug: boolean) {
 		super()
 		this._port = port
 		this._portDescription = description
@@ -22,11 +21,11 @@ export class MosSocketServer extends EventEmitter {
 		this._socketServer.on('close', () => this._onServerClose())
 		this._socketServer.on('error', (error) => this._onServerError(error))
 	}
-	dispose (sockets: Socket[]): Promise<void[]> {
-		let closePromises: Promise<void>[] = []
+	dispose(sockets: Socket[]): Promise<void[]> {
+		const closePromises: Promise<void>[] = []
 
 		// close clients
-		sockets.forEach(socket => {
+		sockets.forEach((socket) => {
 			closePromises.push(
 				new Promise((resolve) => {
 					socket.on('close', resolve)
@@ -53,11 +52,10 @@ export class MosSocketServer extends EventEmitter {
 	}
 
 	/** */
-	listen (): Promise<void> {
+	listen(): Promise<void> {
 		this.debugTrace('listen', this._portDescription, this._port)
 		return new Promise((resolve, reject) => {
 			try {
-
 				this.debugTrace('inside promise', this._portDescription, this._port)
 				// already listening
 				if (this._socketServer.listening) {
@@ -90,43 +88,43 @@ export class MosSocketServer extends EventEmitter {
 			}
 		})
 	}
-	public setDebug (debug: boolean) {
+	public setDebug(debug: boolean): void {
 		this._debug = debug
 	}
-	get port () {
+	get port(): number {
 		return this._port
 	}
-	get portDescription () {
+	get portDescription(): IncomingConnectionType {
 		return this._portDescription
 	}
 
 	/** */
-	private _onClientConnection (socket: Socket) {
+	private _onClientConnection(socket: Socket) {
 		this._connectedSockets.push(socket)
 		socket.on('close', () => {
-			let i = this._connectedSockets.indexOf(socket)
+			const i = this._connectedSockets.indexOf(socket)
 			if (i !== -1) {
 				this._connectedSockets.splice(i, 1)
 			}
 		})
 		this.emit(SocketServerEvent.CLIENT_CONNECTED, {
 			socket: socket,
-			portDescription: this._portDescription
+			portDescription: this._portDescription,
 		})
 	}
 
 	/** */
-	private _onServerError (error: Error) {
+	private _onServerError(error: Error) {
 		// @todo: implement
 		this.debugTrace('Server error:', error)
 	}
 
 	/** */
-	private _onServerClose () {
+	private _onServerClose() {
 		// @todo: implement
 		this.debugTrace(`Server closed: on port ${this._port}`)
 	}
-	private debugTrace (...strs: any[]) {
+	private debugTrace(...strs: any[]) {
 		if (this._debug) console.log(...strs)
 	}
 }

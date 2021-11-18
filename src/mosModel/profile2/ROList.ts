@@ -4,25 +4,24 @@ import { IMOSRunningOrder } from '../../api'
 import { XMLROStory, XMLRunningOrderBase } from './xmlConversion'
 
 export class ROList extends MosMessage {
-
-  /** */
-	constructor (private ro: IMOSRunningOrder) {
+	/** */
+	constructor(private ro: IMOSRunningOrder) {
 		super('upper')
 	}
 
-  /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roList')
+	/** */
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
+		const root = XMLBuilder.create('roList')
 
 		this.fillXMLWithROData(root)
 
 		return root
 	}
 
-	protected fillXMLWithROData (root: XMLBuilder.XMLElement) {
+	protected fillXMLWithROData(root: XMLBuilder.XMLElement): void {
 		XMLRunningOrderBase.toXML(root, this.ro)
 
-		this.ro.Stories.forEach(story => {
+		this.ro.Stories.forEach((story) => {
 			XMLROStory.toXML(root, story)
 		})
 	}

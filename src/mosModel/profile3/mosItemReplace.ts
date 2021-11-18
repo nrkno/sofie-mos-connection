@@ -7,12 +7,12 @@ import { XMLMosItem } from '../profile2/xmlConversion'
 export class MosItemReplace extends MosMessage {
 	private options: MosItemReplaceOptions
 
-	constructor (options: MosItemReplaceOptions) {
+	constructor(options: MosItemReplaceOptions) {
 		super('upper')
 		this.options = options
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const item = this.options.item
 		const root = XMLBuilder.create('mosItemReplace')
 

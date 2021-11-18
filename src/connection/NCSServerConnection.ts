@@ -14,11 +14,12 @@ export interface ClientDescription {
 }
 
 export interface INCSServerConnection {
-	on (event: 'rawMessage', listener: (type: string, message: string) => void): this
+	on(event: 'rawMessage', listener: (type: string, message: string) => void): this
 }
 
 export interface HandedOverQueue {
-	messages: QueueMessage[], callbacks: { [messageId: string]: CallBackFunction }
+	messages: QueueMessage[]
+	callbacks: { [messageId: string]: CallBackFunction }
 }
 
 /** Handles connections to a NCS (server) */
@@ -30,16 +31,16 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	private _timeout: number
 	private _mosID: string
 	private _debug: boolean
-	private _disposed: boolean = false
+	private _disposed = false
 
-	private _clients: {[clientID: string]: ClientDescription} = {}
+	private _clients: { [clientID: string]: ClientDescription } = {}
 
 	private _emittedConnected = false
 
-	private _heartBeatsTimer: NodeJS.Timer
+	private _heartBeatsTimer?: NodeJS.Timer
 	private _heartBeatsDelay: number
 
-	constructor (id: string, host: string, mosID: string, timeout: number | undefined, debug: boolean) {
+	constructor(id: string, host: string, mosID: string, timeout: number | undefined, debug: boolean) {
 		super()
 		this._id = id
 		this._host = host
@@ -50,15 +51,15 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		this._debug = debug ?? false
 	}
 	/** Create a MOS client, which talks to  */
-	createClient (clientID: string, port: number, clientDescription: ConnectionType, useHeartbeats: boolean) {
-		let client = new MosSocketClient(this._host, port, clientDescription, this._timeout, this._debug)
+	createClient(clientID: string, port: number, clientDescription: ConnectionType, useHeartbeats: boolean): void {
+		const client = new MosSocketClient(this._host, port, clientDescription, this._timeout, this._debug)
 		this.debugTrace('registerOutgoingConnection', clientID)
 
 		this._clients[clientID] = {
 			useHeartbeats: useHeartbeats,
 			heartbeatConnected: false,
 			client: client,
-			clientDescription: clientDescription
+			clientDescription: clientDescription,
 		}
 		client.on('rawMessage', (type: string, message: string) => {
 			this.emit('rawMessage', type, message)
@@ -72,16 +73,21 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	}
 
 	/** */
-	removeClient (clientID: string) {
+	removeClient(clientID: string): void {
 		this._clients[clientID].client.dispose()
 		delete this._clients[clientID]
 	}
 
-	connect () {
-		for (let i in this._clients) {
+	connect(): void {
+		for (const i in this._clients) {
 			// Connect client
-			this.emit('info', `Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host} (${this._clients[i].client.port})`)
-			this.debugTrace(`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host} (${this._clients[i].client.port})`)
+			this.emit(
+				'info',
+				`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host} (${this._clients[i].client.port})`
+			)
+			this.debugTrace(
+				`Connect client ${i} on ${this._clients[i].clientDescription} on host ${this._host} (${this._clients[i].client.port})`
+			)
 			this._clients[i].client.connect()
 		}
 		this._connected = true
@@ -93,7 +99,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		// if (this._callbackOnConnectionChange) this._callbackOnConnectionChange()
 	}
 
-	executeCommand (message: MosMessage): Promise<any> {
+	executeCommand(message: MosMessage): Promise<any> {
 		// Fill with clients
 		let clients: Array<MosSocketClient>
 
@@ -126,22 +132,21 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		})
 	}
 
-	public setDebug (debug: boolean) {
+	public setDebug(debug: boolean): void {
 		this._debug = debug
 
 		Object.keys(this._clients).forEach((clientID) => {
-			let cd = this._clients[clientID]
+			const cd = this._clients[clientID]
 			if (cd) {
 				cd.client.setDebug(debug)
 			}
 		})
 	}
-	get connected (): boolean {
-
+	get connected(): boolean {
 		if (!this._connected) return false
 		let connected = true
-		Object.keys(this._clients).forEach(key => {
-			let client = this._clients[key]
+		Object.keys(this._clients).forEach((key) => {
+			const client = this._clients[key]
 			if (client.useHeartbeats && !client.heartbeatConnected) {
 				connected = false
 			}
@@ -149,9 +154,9 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		return connected
 	}
 
-	private _getClients (clientDescription: string): MosSocketClient[] {
-		let clients: MosSocketClient[] = []
-		for (let i in this._clients) {
+	private _getClients(clientDescription: string): MosSocketClient[] {
+		const clients: MosSocketClient[] = []
+		for (const i in this._clients) {
 			if (this._clients[i].clientDescription === clientDescription) {
 				clients.push(this._clients[i].client)
 			}
@@ -160,27 +165,27 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		return clients
 	}
 	/** */
-	get lowerPortClients (): MosSocketClient[] {
+	get lowerPortClients(): MosSocketClient[] {
 		return this._getClients('lower')
 	}
 
 	/** */
-	get upperPortClients (): MosSocketClient[] {
+	get upperPortClients(): MosSocketClient[] {
 		return this._getClients('upper')
 	}
 
 	/** */
-	get queryPortClients (): MosSocketClient[] {
+	get queryPortClients(): MosSocketClient[] {
 		return this._getClients('query')
 	}
-	get host (): string {
+	get host(): string {
 		return this._host
 	}
-	get id (): string {
+	get id(): string {
 		return this._id
 	}
 
-	handOverQueue (otherConnection: NCSServerConnection) {
+	handOverQueue(otherConnection: NCSServerConnection): void {
 		const cmds: { [clientId: string]: HandedOverQueue } = {}
 		// this._clients.forEach((client, id) => {
 		// 	// cmds[id] = client.client.handOverQueue()
@@ -192,44 +197,53 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		}
 		otherConnection.receiveQueue(cmds)
 	}
-	receiveQueue (queue: { [clientId: string]: HandedOverQueue }) {
+	receiveQueue(queue: { [clientId: string]: HandedOverQueue }): void {
 		// @todo: keep order
 		// @todo: prevent callback-promise horror...
 		for (const clientId of Object.keys(queue)) {
 			for (const msg of queue[clientId].messages) {
-				this.executeCommand(msg.msg).then((data) => {
-					const cb = queue[clientId].callbacks[msg.msg.messageID]
-					if (cb) {
-						cb(null, data)
+				this.executeCommand(msg.msg).then(
+					(data) => {
+						const cb = queue[clientId].callbacks[msg.msg.messageID]
+						if (cb) {
+							cb(null, data)
+						}
+					},
+					(err) => {
+						const cb = queue[clientId].callbacks[msg.msg.messageID]
+						if (cb) {
+							cb(null, err)
+						}
 					}
-				}, (err) => {
-					const cb = queue[clientId].callbacks[msg.msg.messageID]
-					if (cb) {
-						cb(null, err)
-					}
-				})
+				)
 			}
 		}
 	}
 
-	dispose (): Promise<void> {
+	dispose(): Promise<void> {
 		this._disposed = true
 		return new Promise((resolveDispose) => {
-			for (let key in this._clients) {
+			for (const key in this._clients) {
 				this.removeClient(key)
 			}
-			global.clearTimeout(this._heartBeatsTimer)
+			if (this._heartBeatsTimer) {
+				global.clearTimeout(this._heartBeatsTimer)
+				delete this._heartBeatsTimer
+			}
 			this._connected = false
 			this.emit('connectionChanged')
 			resolveDispose()
 		})
 	}
 
-	private _sendHeartBeats (): void {
-		if (this._heartBeatsTimer) clearTimeout(this._heartBeatsTimer)
+	private _sendHeartBeats(): void {
+		if (this._heartBeatsTimer) {
+			clearTimeout(this._heartBeatsTimer)
+			delete this._heartBeatsTimer
+		}
 		if (this._disposed) return
 
-		let triggerNextHeartBeat = () => {
+		const triggerNextHeartBeat = () => {
 			this._heartBeatsTimer = global.setTimeout(() => {
 				if (!this._disposed) {
 					this._sendHeartBeats()
@@ -239,43 +253,45 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 
 		Promise.all(
 			Object.keys(this._clients).map((key) => {
-				let client = this._clients[key]
+				const client = this._clients[key]
 
 				if (client.useHeartbeats) {
-					let heartbeat = new HeartBeat(this._clients[key].clientDescription)
+					const heartbeat = new HeartBeat(this._clients[key].clientDescription)
 					return this.executeCommand(heartbeat)
-					.then(() => {
-						client.heartbeatConnected = true
-					})
-					.catch((e) => {
-						// probably a timeout
-						client.heartbeatConnected = false
-						this.emit('error', `Heartbeat error on ${this._clients[key].clientDescription}: ${e.toString()}`)
-						this.debugTrace(`Heartbeat on ${this._clients[key].clientDescription}: ${e.toString()}`)
-					})
+						.then(() => {
+							client.heartbeatConnected = true
+						})
+						.catch((e) => {
+							// probably a timeout
+							client.heartbeatConnected = false
+							this.emit(
+								'error',
+								`Heartbeat error on ${this._clients[key].clientDescription}: ${e.toString()}`
+							)
+							this.debugTrace(`Heartbeat on ${this._clients[key].clientDescription}: ${e.toString()}`)
+						})
 				} else {
 					return Promise.resolve()
 				}
-
 			})
 		)
-		.catch((e) => {
-			triggerNextHeartBeat()
-			this.emit('error', e)
-		})
-		.then(() => {
-			let connected = this.connected
-			if (connected !== this._emittedConnected) {
-				this._emittedConnected = connected
-				this.emit('connectionChanged')
-			}
-			triggerNextHeartBeat()
-		})
-		.catch((e) => {
-			this.emit('error', e)
-		})
+			.catch((e) => {
+				triggerNextHeartBeat()
+				this.emit('error', e)
+			})
+			.then(() => {
+				const connected = this.connected
+				if (connected !== this._emittedConnected) {
+					this._emittedConnected = connected
+					this.emit('connectionChanged')
+				}
+				triggerNextHeartBeat()
+			})
+			.catch((e) => {
+				this.emit('error', e)
+			})
 	}
-	private debugTrace (...strs: any[]) {
+	private debugTrace(...strs: any[]) {
 		if (this._debug) console.log(...strs)
 	}
 }

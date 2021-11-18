@@ -7,12 +7,12 @@ import { XMLMosObjects } from '../profile1/xmlConversion'
 export class MosObjList extends MosMessage {
 	private options: IMOSObjectList
 
-	constructor (options: IMOSObjectList) {
+	constructor(options: IMOSObjectList) {
 		super('upper')
 		this.options = options
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const xmlMosObjList = XMLBuilder.create('mosObjList')
 		xmlMosObjList.att('username', this.options.username)
 
@@ -20,7 +20,8 @@ export class MosObjList extends MosMessage {
 		addTextElement(xmlMosObjList, 'listReturnStart', this.options.listReturnStart)
 		addTextElement(xmlMosObjList, 'listReturnEnd', this.options.listReturnEnd)
 		addTextElement(xmlMosObjList, 'listReturnTotal', this.options.listReturnTotal)
-		if (this.options.listReturnStatus) addTextElement(xmlMosObjList, 'listReturnStatus', this.options.listReturnStatus)
+		if (this.options.listReturnStatus)
+			addTextElement(xmlMosObjList, 'listReturnStatus', this.options.listReturnStatus)
 
 		if (this.options.list) {
 			const xmlList = XMLBuilder.create('list')

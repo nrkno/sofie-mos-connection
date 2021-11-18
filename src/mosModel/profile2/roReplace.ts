@@ -3,12 +3,11 @@ import { IMOSRunningOrder } from '../../api'
 import { ROCreate } from './roCreate'
 
 export class ROReplace extends ROCreate {
-
-	constructor (ro: IMOSRunningOrder) {
+	constructor(ro: IMOSRunningOrder) {
 		super(ro)
 	}
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roReplace')
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
+		const root = XMLBuilder.create('roReplace')
 		this.fillXMLWithROData(root)
 		return root
 	}

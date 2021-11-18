@@ -24,20 +24,19 @@ export interface IMosConnection {
 	connect: (connectionOptions: IMOSDeviceConnectionOptions) => Promise<MosDevice> // resolved when connection has been made (before .onConnection is fired)
 	onConnection: (cb: (mosDevice: MosDevice) => void) => void
 
-	on (event: 'error', listener: (error: Error) => void): this
-	on (event: 'info', listener: (message: string, data?: any) => void): this
-	on (event: 'rawMessage', listener: (source: string, type: string, message: string) => void): this
+	on(event: 'error', listener: (error: Error) => void): this
+	on(event: 'info', listener: (message: string, data?: any) => void): this
+	on(event: 'rawMessage', listener: (source: string, type: string, message: string) => void): this
 }
 
-export interface IMOSDevice extends
-	IMOSDeviceProfile0,
-	IMOSDeviceProfile1,
-	IMOSDeviceProfile2,
-	IMOSDeviceProfile3,
-	IMOSDeviceProfile4 {
-	idPrimary: string, // unique id for this device and session
-	idSecondary: string | null, // unique id for this device and session (buddy)
-
+export interface IMOSDevice
+	extends IMOSDeviceProfile0,
+		IMOSDeviceProfile1,
+		IMOSDeviceProfile2,
+		IMOSDeviceProfile3,
+		IMOSDeviceProfile4 {
+	idPrimary: string // unique id for this device and session
+	idSecondary: string | null // unique id for this device and session (buddy)
 }
 /**
  * Method definitions for Profile 1
@@ -78,7 +77,7 @@ export interface IMOSDeviceProfile1 {
 	 * The NCS uses this information to search for and reference the MOS Object.
 	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObj
 	 */
-	sendMOSObject (obj: IMOSObject): Promise<IMOSAck>
+	sendMOSObject(obj: IMOSObject): Promise<IMOSAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
@@ -116,7 +115,6 @@ export interface IMOSDeviceProfile1 {
  * see http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#Profile2
  */
 export interface IMOSDeviceProfile2 {
-
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Message received from the NCS to the MOS that defines a new Running Order.
@@ -349,7 +347,9 @@ export interface IMOSDeviceProfile2 {
 	 * Swap two Stories
 	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
-	onROSwapStories: (cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>) => void
+	onROSwapStories: (
+		cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>
+	) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Swap two Stories
@@ -362,7 +362,9 @@ export interface IMOSDeviceProfile2 {
 	 * Swap two Items
 	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
-	onROSwapItems: (cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>) => void
+	onROSwapItems: (
+		cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
+	) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Swap two Items
@@ -385,7 +387,6 @@ export interface IMOSDeviceProfile2 {
  * see http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#Profile3
  */
 export interface IMOSDeviceProfile3 {
-
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * mosObjCreate allows an NCS to request the Media Object Server to create a Media Object with specific metadata associated with it.
@@ -540,7 +541,7 @@ export interface IMOSDeviceProfile4 {
 	/** @deprecated onROStory is deprecated, use onRunningOrderStory instead */
 	onROStory: (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) => void // roStorySend
 	/** @deprecated sendROStory is deprecated, use sendRunningOrderStory instead */
-	sendROStory: (story: IMOSROFullStory) => Promise<IMOSROAck>// roStorySend
+	sendROStory: (story: IMOSROFullStory) => Promise<IMOSROAck> // roStorySend
 }
 export { IMOSListMachInfo }
 export interface IMOSROAction {
@@ -663,9 +664,9 @@ export interface IMOSROAckObject {
 
 // /** */
 export interface IMOSConnectionStatus {
- 	PrimaryConnected: boolean
+	PrimaryConnected: boolean
 	PrimaryStatus: string // if not connected this will contain human-readable error-message
- 	SecondaryConnected: boolean
+	SecondaryConnected: boolean
 	SecondaryStatus: string // if not connected this will contain human-readable error-message
 }
 /** Config object for creating a MOS-device */
@@ -695,10 +696,12 @@ export interface IConnectionConfig {
 		query: number
 	}
 	/** When enabled, automatically create new mos-devices on-the-fly when receiving messages to unregistered MOS-ID:s */
-	openRelay?: boolean | {
-		// options for on-the-fly-created connections
-		options: IMOSDeviceConnectionOptions['primary']
-	}
+	openRelay?:
+		| boolean
+		| {
+				// options for on-the-fly-created connections
+				options: IMOSDeviceConnectionOptions['primary']
+		  }
 }
 
 export interface IMOSDeviceConnectionOptions {
@@ -813,7 +816,7 @@ export enum IMOSObjectType {
 	STILL = 'STILL',
 	AUDIO = 'AUDIO',
 	VIDEO = 'VIDEO',
-	OTHER = 'OTHER' // unknown/not speficied
+	OTHER = 'OTHER', // unknown/not speficied
 }
 
 export enum IMOSObjectStatus {
@@ -827,17 +830,17 @@ export enum IMOSObjectStatus {
 	READY = 'READY',
 	NOT_READY = 'NOT READY',
 	PLAY = 'PLAY',
-	STOP = 'STOP'
+	STOP = 'STOP',
 }
 
 export enum IMOSAckStatus {
 	ACK = 'ACK',
-	NACK = 'NACK'
+	NACK = 'NACK',
 }
 
 export enum IMOSObjectAirStatus {
 	READY = 'READY',
-	NOT_READY = 'NOT READY'
+	NOT_READY = 'NOT READY',
 }
 
 export interface IMOSObjectPath {
@@ -849,7 +852,7 @@ export interface IMOSObjectPath {
 export enum IMOSObjectPathType {
 	PATH = 'PATH',
 	PROXY_PATH = 'PROXY PATH',
-	METADATA_PATH = 'METADATA PATH'
+	METADATA_PATH = 'METADATA PATH',
 }
 export { IMOSExternalMetaData }
 

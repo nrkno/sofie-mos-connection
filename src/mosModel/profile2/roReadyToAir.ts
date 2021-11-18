@@ -12,13 +12,13 @@ export interface ROReadyToAirOptions {
 export class ROReadyToAir extends MosMessage {
 	private options: ROReadyToAirOptions
 
-	constructor (options: ROReadyToAirOptions) {
+	constructor(options: ROReadyToAirOptions) {
 		super('upper')
 		this.options = options
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
-		let root = XMLBuilder.create('roReadyToAir')
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
+		const root = XMLBuilder.create('roReadyToAir')
 		addTextElement(root, 'roID', this.options.roId)
 		addTextElement(root, 'roAir', this.options.roAir)
 		return root

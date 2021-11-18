@@ -7,24 +7,24 @@ import * as iconv from 'iconv-lite'
 iconv.encodingExists('utf16-be')
 
 // Mock the Server class in 'net':
-let setTimeoutOrg = setTimeout
+const setTimeoutOrg = setTimeout
 
-let instances: Array<IServerMock> = []
+const instances: Array<IServerMock> = []
 
 export class ServerMock extends EventEmitter implements Server {
 	// Mock implementation:
 
-	maxConnections: number
-	connections: number
-	listening: boolean
-	listenToPort: number
+	maxConnections = 0
+	connections = 0
+	listening = false
+	listenToPort = 0
 
-	private _responses: Array<(data: any) => string | Buffer > = []
+	private _responses: Array<(data: any) => string | Buffer> = []
 
-	constructor () {
+	constructor() {
 		super()
 
-		// @ts-ignore this is comparable with ISocketMock
+		// @ts-expect-error this is comparable with ISocketMock
 		instances.push(this)
 
 		this.listen = jest.fn(this.listen)
@@ -33,40 +33,47 @@ export class ServerMock extends EventEmitter implements Server {
 		this.getConnections = jest.fn(this.getConnections)
 		this.ref = jest.fn(this.ref)
 		this.unref = jest.fn(this.unref)
-
 	}
-	static mockClear () {
+	static mockClear(): void {
 		instances.splice(0, 9999)
 	}
-	static get instances () {
+	static get instances(): IServerMock[] {
 		return instances
 	}
 
-	listen (port: any) {
-
+	// @ts-expect-error mock hack
+	listen(port: number): this {
 		this.listenToPort = port
 		setTimeoutOrg(() => {
 			this.listening = true
 			this.emit('listening', {})
-		},1)
+		}, 1)
 		return this
 	}
-	close (callback?: Function) {
+	close(callback?: () => void): this {
 		if (callback) callback()
 		setTimeoutOrg(() => {
 			this.emit('close')
-		},1)
+		}, 1)
 		return this
 	}
-	address () { return { port: 0, family: 'string', address: 'string' } }
-	getConnections (cb: (error: Error | null, count: number) => void) { cb(null, 0) }
-	ref () { return this }
-	unref () { return this }
+	address(): { port: number; family: string; address: string } {
+		return { port: 0, family: 'string', address: 'string' }
+	}
+	getConnections(cb: (error: Error | null, count: number) => void): void {
+		cb(null, 0)
+	}
+	ref(): this {
+		return this
+	}
+	unref(): this {
+		return this
+	}
 
 	// Mock methods:
-	mockNewConnection () {
+	mockNewConnection(): SocketMock {
 		// "Someone has connected"
-		let socket = new SocketMock()
+		const socket = new SocketMock()
 		socket.on('data', (d) => {
 			this.emit('data', d)
 		})
@@ -76,16 +83,13 @@ export class ServerMock extends EventEmitter implements Server {
 		return socket
 	}
 
-	mockSentMessage (data: any, encoding: any) {
-		encoding = encoding
-		if (this._responses.length) {
+	mockSentMessage(data: string, _encoding: unknown): void {
+		const cb = this._responses.shift()
+		if (cb) {
 			// send reply:
-
-			let cb: any = this._responses.shift()
 			let msg
 
 			setTimeoutOrg(() => {
-
 				if (typeof cb === 'string') {
 					msg = cb
 				} else {
@@ -93,22 +97,22 @@ export class ServerMock extends EventEmitter implements Server {
 				}
 
 				this.mockReceiveMessage(msg)
-			},1)
+			}, 1)
 		}
 	}
-	mockReceiveMessage (msg: string | Buffer) {
+	mockReceiveMessage(msg: string | Buffer): void {
 		this.emit('data', msg)
 	}
-	mockAddReply (cb: (data: any) => string | Buffer) {
+	mockAddReply(cb: (data: any) => string | Buffer): void {
 		this._responses.push(cb)
 	}
-	mockClear () {
+	mockClear(): void {
 		this._responses.splice(0, 9999)
 	}
-	decode (data: Buffer): string {
+	decode(data: Buffer): string {
 		return iconv.decode(data, 'utf16-be')
 	}
-	encode (str: string) {
+	encode(str: string): Buffer {
 		return iconv.encode(str, 'utf16-be')
 	}
 }

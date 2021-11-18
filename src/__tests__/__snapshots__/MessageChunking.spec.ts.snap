@@ -55,7 +55,7 @@ Object {
           "Paths": Array [
             Object {
               "Description": "MPEG2 Video",
-              "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+              "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
               "Type": "PATH",
             },
             Object {
@@ -188,7 +188,7 @@ Object {
           "Paths": Array [
             Object {
               "Description": "MPEG2 Video",
-              "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+              "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
               "Type": "PATH",
             },
             Object {
@@ -321,7 +321,7 @@ Object {
           "Paths": Array [
             Object {
               "Description": "MPEG2 Video",
-              "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+              "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
               "Type": "PATH",
             },
             Object {
@@ -454,7 +454,7 @@ Object {
           "Paths": Array [
             Object {
               "Description": "MPEG2 Video",
-              "Target": "\\\\servermediaclip392028cd2320s0d.mxf",
+              "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
               "Type": "PATH",
             },
             Object {

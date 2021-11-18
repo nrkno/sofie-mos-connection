@@ -6,25 +6,21 @@ import { XMLROStoryBase, XMLObjectPaths, XMLMosExternalMetaData } from '../profi
 import { XMLMosObjects } from '../profile1/xmlConversion'
 
 export class ROStory extends MosMessage {
-
-  /** */
-	constructor (
-		private fullStory: IMOSROFullStory
-	) {
+	/** */
+	constructor(private fullStory: IMOSROFullStory) {
 		super('upper')
 	}
 
-  /** */
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
-		let xmlStory = XMLBuilder.create('roStorySend')
+	/** */
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
+		const xmlStory = XMLBuilder.create('roStorySend')
 
 		XMLROStoryBase.toXML(xmlStory, this.fullStory)
 		addTextElement(xmlStory, 'roID', this.fullStory.RunningOrderId)
 
 		const xmlStoryBody = addTextElement(xmlStory, 'storyBody')
-		this.fullStory.Body.forEach(bodyItem => {
+		this.fullStory.Body.forEach((bodyItem) => {
 			if (bodyItem.Type === 'storyItem') {
-
 				const xmlItem = addTextElement(xmlStoryBody, 'storyItem')
 				const item: IMOSItem = bodyItem.Content as IMOSItem
 
@@ -39,19 +35,19 @@ export class ROStory extends MosMessage {
 				XMLObjectPaths.toXML(xmlItem, item.Paths)
 				XMLMosExternalMetaData.toXML(xmlItem, item.MosExternalMetaData)
 
-				if (item.Slug) 					addTextElement(xmlItem, 'itemSlug', item.Slug)
-				if (item.EditorialStart) 		addTextElement(xmlItem, 'itemEdStart', item.EditorialStart)
-				if (item.EditorialDuration) 	addTextElement(xmlItem, 'itemEdDur', item.EditorialDuration)
-				if (item.UserTimingDuration) 	addTextElement(xmlItem, 'itemUserTimingDur', item.UserTimingDuration)
-				if (item.Trigger) 				addTextElement(xmlItem, 'itemTrigger', item.Trigger)
-				if (item.mosAbstract) 			addTextElement(xmlItem, 'mosAbstract', item.mosAbstract)
-				if (item.ObjectSlug) 			addTextElement(xmlItem, 'objSlug', item.ObjectSlug)
-				if (item.Channel) 				addTextElement(xmlItem, 'itemChannel', item.Channel)
-				if (item.Duration) 				addTextElement(xmlItem, 'objDur', item.Duration)
-				if (item.TimeBase) 				addTextElement(xmlItem, 'objTB', item.TimeBase)
+				if (item.Slug) addTextElement(xmlItem, 'itemSlug', item.Slug)
+				if (item.EditorialStart) addTextElement(xmlItem, 'itemEdStart', item.EditorialStart)
+				if (item.EditorialDuration) addTextElement(xmlItem, 'itemEdDur', item.EditorialDuration)
+				if (item.UserTimingDuration) addTextElement(xmlItem, 'itemUserTimingDur', item.UserTimingDuration)
+				if (item.Trigger) addTextElement(xmlItem, 'itemTrigger', item.Trigger)
+				if (item.mosAbstract) addTextElement(xmlItem, 'mosAbstract', item.mosAbstract)
+				if (item.ObjectSlug) addTextElement(xmlItem, 'objSlug', item.ObjectSlug)
+				if (item.Channel) addTextElement(xmlItem, 'itemChannel', item.Channel)
+				if (item.Duration) addTextElement(xmlItem, 'objDur', item.Duration)
+				if (item.TimeBase) addTextElement(xmlItem, 'objTB', item.TimeBase)
 
-				if (item.MacroIn) 				addTextElement(xmlItem, 'macroIn', item.MacroIn)
-				if (item.MacroOut) 				addTextElement(xmlItem, 'macroOut', item.MacroOut)
+				if (item.MacroIn) addTextElement(xmlItem, 'macroIn', item.MacroIn)
+				if (item.MacroOut) addTextElement(xmlItem, 'macroOut', item.MacroOut)
 
 				// Note: the <mosObj> is sent in roStorySend
 				XMLMosObjects.toXML(xmlItem, item.MosObjects)

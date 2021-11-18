@@ -6,12 +6,12 @@ import { addTextElement } from '../../utils/Utils'
 export class MosListSearchableSchema extends MosMessage {
 	private options: IMOSListSearchableSchema
 
-	constructor (options: IMOSListSearchableSchema) {
+	constructor(options: IMOSListSearchableSchema) {
 		super('query')
 		this.options = options
 	}
 
-	get messageXMLBlocks (): XMLBuilder.XMLElement {
+	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const xml = XMLBuilder.create('mosListSearchableSchema')
 		xml.att('username', this.options.username)
 

@@ -1,16 +1,9 @@
 import * as XMLBuilder from 'xmlbuilder'
-import {
-	IMOSItem,
-	IMOSObjectPathType,
-	IMOSScope,
-	MosString128,
-	Utils
-} from '../../..'
+import { IMOSItem, IMOSObjectPathType, IMOSScope, MosString128, Utils } from '../../..'
 import { XMLMosItem } from '../'
 
 describe('XMLMosItem', () => {
 	test('Should handle conversion losslessly', () => {
-
 		const refItem: IMOSItem = {
 			ID: new MosString128('ID'),
 			Slug: new MosString128('Slug'),
@@ -22,13 +15,13 @@ describe('XMLMosItem', () => {
 				{
 					Type: IMOSObjectPathType.PATH,
 					Description: 'asdfasdf',
-					Target: 'asdfasdf'
+					Target: 'asdfasdf',
 				},
 				{
 					Type: IMOSObjectPathType.METADATA_PATH,
 					Description: 'skdjhfb',
-					Target: '8372h4fv'
-				}
+					Target: '8372h4fv',
+				},
 			],
 			Channel: new MosString128('Channel'),
 			EditorialStart: 1,
@@ -47,20 +40,20 @@ describe('XMLMosItem', () => {
 						a: '1',
 						b: '2',
 						c: {
-							d: 'three'
-						}
-					}
+							d: 'three',
+						},
+					},
 				},
 				{
 					MosScope: IMOSScope.OBJECT,
 					MosSchema: 'asdf1234',
 					MosPayload: {
 						hello: {
-							brave: 'new world'
-						}
-					}
-				}
-			]
+							brave: 'new world',
+						},
+					},
+				},
+			],
 			// todo: add this:
 			// MosObjects: [
 			// 	{
@@ -134,8 +127,8 @@ describe('XMLMosItem', () => {
 		<mosScope>OBJECT</mosScope>
 	</mosExternalMetadata>
 	<objPaths>
-		<objPath techDescription=\"asdfasdf\">asdfasdf</objPath>
-		<objMetadataPath techDescription=\"skdjhfb\">8372h4fv</objMetadataPath>
+		<objPath techDescription="asdfasdf">asdfasdf</objPath>
+		<objMetadataPath techDescription="skdjhfb">8372h4fv</objMetadataPath>
 	</objPaths>
 </item>
 </myItem>`
@@ -154,6 +147,6 @@ describe('XMLMosItem', () => {
 	})
 })
 
-function fixWhiteSpace (str: string): string {
+function fixWhiteSpace(str: string): string {
 	return str.replace(/[\r\n\t]/g, '')
 }

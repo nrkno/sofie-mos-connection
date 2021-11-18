@@ -1,11 +1,14 @@
-import { checkMessageSnapshot, clearMocks,
+import {
+	checkMessageSnapshot,
+	clearMocks,
 	decode,
 	doBeforeAll,
 	encode,
+	getMessageId,
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
-	setupMocks
+	setupMocks,
 } from './lib'
 import {
 	IMOSListMachInfo,
@@ -15,7 +18,8 @@ import {
 	IMOSRunningOrder,
 	MosConnection,
 	MosDevice,
-	MosString128} from '..'
+	MosString128,
+} from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
 
@@ -46,10 +50,13 @@ describe('message chunking', () => {
 		SocketMock.mockClear()
 		// ServerMock.mockClear()
 
-		mosConnection = await getMosConnection({
-			'0': true,
-			'1': true // Must support at least one other profile
-		}, false)
+		mosConnection = await getMosConnection(
+			{
+				'0': true,
+				'1': true, // Must support at least one other profile
+			},
+			false
+		)
 		mosDevice = await getMosDevice(mosConnection)
 
 		// Profile 0:
@@ -64,10 +71,7 @@ describe('message chunking', () => {
 			return Promise.resolve(xmlApiData.mosObj)
 		})
 		onRequestAllMOSObjects = jest.fn(() => {
-			return Promise.resolve([
-				xmlApiData.mosObj,
-				xmlApiData.mosObj2
-			])
+			return Promise.resolve([xmlApiData.mosObj, xmlApiData.mosObj2])
 		})
 		mosDevice.onRequestMOSObject((objId: string): Promise<IMOSObject | null> => {
 			return onRequestMOSObject(objId)
@@ -76,11 +80,11 @@ describe('message chunking', () => {
 			return onRequestAllMOSObjects()
 		})
 
-		let roAckReply = () => {
-			let ack: IMOSROAck = {
+		const roAckReply = () => {
+			const ack: IMOSROAck = {
 				ID: new MosString128('runningOrderId'),
 				Status: new MosString128('OK'),
-				Stories: []
+				Stories: [],
 			}
 			return Promise.resolve(ack)
 		}
@@ -90,14 +94,13 @@ describe('message chunking', () => {
 		mosDevice.onRunningOrderStory((story: IMOSROFullStory): Promise<IMOSROAck> => {
 			return onRunningOrderStory(story)
 		})
-		let b = doBeforeAll()
+		const b = doBeforeAll()
 		socketMockLower = b.socketMockLower
 		socketMockUpper = b.socketMockUpper
 
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
-
 	})
 	beforeEach(() => {
 		onRunningOrderStory.mockClear()
@@ -105,7 +108,6 @@ describe('message chunking', () => {
 		serverSocketMockLower.mockClear()
 		serverSocketMockUpper.mockClear()
 		serverSocketMockQuery.mockClear()
-
 	})
 	test('init', async () => {
 		expect(mosDevice).toBeTruthy()
@@ -113,34 +115,35 @@ describe('message chunking', () => {
 		expect(socketMockUpper).toBeTruthy()
 	})
 
-	function chunkSubstr (str: string, size: number) {
+	function chunkSubstr(str: string, size: number) {
 		const numChunks = Math.ceil(str.length / size)
 		const chunks = new Array(numChunks)
 
 		/* tslint:disable-next-line */
 		for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
-		  chunks[i] = str.substr(o, size)
+			chunks[i] = str.substr(o, size)
 		}
 
 		return chunks
-	  }
+	}
 
 	test('chunks', async () => {
 		// Prepare server response
-		let mockReply = jest.fn((data: Buffer) => {
-			let str = decode(data)
-			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
-			let repl = getXMLReply(messageID, xmlData.roList)
-			let chunks = chunkSubstr(repl, 500)
+		const mockReply = jest.fn((data: Buffer) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
+			const repl = getXMLReply(messageID, xmlData.roList)
+			const chunks = chunkSubstr(repl, 500)
 			expect(chunks).toHaveLength(4)
-			return chunks.map(c => encode(c))
+			return chunks.map((c) => encode(c))
 		})
 
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		if (!xmlApiData.roList.ID) throw new Error(`xmlApiData.roList.ID not set`)
+		const returnedObj = (await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID)) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
-		let msg = decode(mockReply.mock.calls[0][0])
+		const msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<roReq>/)
 		checkMessageSnapshot(msg)
 		expect(returnedObj).toMatchObject(xmlApiData.roList2)
@@ -149,26 +152,24 @@ describe('message chunking', () => {
 
 	test('chunk around space', async () => {
 		// Prepare server response
-		let mockReply = jest.fn((data) => {
-			let str = decode(data)
-			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
-			let repl = getXMLReply(messageID, xmlData.roList)
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
+			const repl = getXMLReply(messageID, xmlData.roList)
 
 			const splitPoint = repl.indexOf('Test MOS')
 			expect(splitPoint).not.toEqual(-1)
 
-			const chunks = [
-				repl.substr(0, splitPoint + 4),
-				repl.substr(splitPoint + 4)
-			]
-			return chunks.map(c => encode(c))
+			const chunks = [repl.substr(0, splitPoint + 4), repl.substr(splitPoint + 4)]
+			return chunks.map((c) => encode(c))
 		})
 
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		if (!xmlApiData.roList.ID) throw new Error(`xmlApiData.roList.ID not set`)
+		const returnedObj = (await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID)) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
-		let msg = decode(mockReply.mock.calls[0][0])
+		const msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<roReq>/)
 		checkMessageSnapshot(msg)
 		expect(returnedObj).toMatchObject(xmlApiData.roList2)
@@ -182,20 +183,21 @@ describe('message chunking', () => {
 
 	test('junk data before', async () => {
 		// Prepare server response
-		let mockReply = jest.fn((data) => {
-			let str = decode(data)
-			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
-			let repl = getXMLReply(messageID, xmlData.roList)
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
+			const repl = getXMLReply(messageID, xmlData.roList)
 
 			const padded = '         JUNK DATA   ' + repl
 			return encode(padded)
 		})
 
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		if (!xmlApiData.roList.ID) throw new Error(`xmlApiData.roList.ID not set`)
+		const returnedObj = (await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID)) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
-		let msg = decode(mockReply.mock.calls[0][0])
+		const msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<roReq>/)
 		checkMessageSnapshot(msg)
 		expect(returnedObj).toMatchObject(xmlApiData.roList2)
@@ -204,20 +206,21 @@ describe('message chunking', () => {
 
 	test('junk data packet before', async () => {
 		// Prepare server response
-		let mockReply = jest.fn((data) => {
-			let str = decode(data)
-			let messageID = str.match(/<messageID>([^<]+)<\/messageID>/)![1]
-			let repl = getXMLReply(messageID, xmlData.roList)
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
+			const repl = getXMLReply(messageID, xmlData.roList)
 
-			const chunks = [ '         JUNK DATA   ' , repl]
-			return chunks.map(c => encode(c))
+			const chunks = ['         JUNK DATA   ', repl]
+			return chunks.map((c) => encode(c))
 		})
 
 		socketMockUpper.mockAddReply(mockReply)
-		let returnedObj = await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID!) as IMOSRunningOrder
+		if (!xmlApiData.roList.ID) throw new Error(`xmlApiData.roList.ID not set`)
+		const returnedObj = (await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID)) as IMOSRunningOrder
 		await socketMockUpper.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
-		let msg = decode(mockReply.mock.calls[0][0])
+		const msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<roReq>/)
 		checkMessageSnapshot(msg)
 		expect(returnedObj).toMatchObject(xmlApiData.roList2)
