@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.5-1](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.5-0...1.0.5-1) (2021-11-18)
+
+
+### Bug Fixes
+
+* bug fix ([8f420d9](https://github.com/nrkno/tv-automation-mos-connection/commit/8f420d9fde1521c87ee35715139ad104df3b231e))
+* improve error message for if function isn't supported ([5218fcb](https://github.com/nrkno/tv-automation-mos-connection/commit/5218fcb140174c43026956f82b3f7d26b831e53c))
+* supress heartbeat debug messages. ([8144671](https://github.com/nrkno/tv-automation-mos-connection/commit/81446716f0d7d15f101242752e3b89ba03265270))
+
 ### [1.0.5-0](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.3...1.0.5-0) (2021-11-18)
 
 
