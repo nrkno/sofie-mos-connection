@@ -23,7 +23,7 @@ module.exports = {
 		},
 	},
 	coverageDirectory: './coverage/',
-	collectCoverage: true,
+	collectCoverage: false,
 	collectCoverageFrom: [
 		'src/**/*.{js,ts}',
 		'!**/@types/**',

@@ -1,143 +1,143 @@
 {
-  "name": "mos-connection",
-  "version": "1.0.3",
-  "description": "MOS compliant TCP/IP Socket connection.",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nrkno/tv-automation-mos-connection.git"
-  },
-  "bugs": {
-    "url": "https://github.com/nrkno/tv-automation-mos-connection/issues"
-  },
-  "homepage": "https://github.com/nrkno/tv-automation-mos-connection#readme",
-  "author": {
-    "name": "Jesper Stærkær",
-    "email": "jesper@superfly.tv",
-    "url": "http://superfly.tv"
-  },
-  "contributors": [
-    {
-      "name": "Johan Nyman",
-      "email": "johan@superfly.tv",
-      "url": "http://superfly.tv"
-    },
-    {
-      "name": "Stephan Nordnes Eriksen",
-      "email": "Stephanruler@gmail.com"
-    }
-  ],
-  "scripts": {
-    "info": "npm-scripts-info",
-    "build": "trash dist && yarn build:main",
-    "build:main": "tsc -p tsconfig.build.json",
-    "lint": "tsc --noEmit && eslint . --ext .ts --ext .js --ext .tsx --ext .jsx --ignore-pattern dist",
-    "lint-fix": "yarn lint --fix",
-    "unit": "jest --forceExit",
-    "test": "yarn lint && yarn unit",
-    "watch": "jest --watch",
-    "cov": "jest --coverage; open-cli coverage/lcov-report/index.html",
-    "cov-open": "open-cli coverage/lcov-report/index.html",
-    "send-coverage": "codecov",
-    "docs": "yarn docs:html && open-cli docs/index.html",
-    "docs:test": "yarn docs:html",
-    "docs:html": "typedoc src/index.ts --excludePrivate --theme minimal --out docs",
-    "docs:json": "typedoc --json docs/typedoc.json src/index.ts",
-    "docs:publish": "yarn docs:html && gh-pages -d docs",
-    "release": "standard-version",
-    "release:bump-release": "yarn release",
-    "release:bump-prerelease": "yarn release --prerelease",
-    "reset": "git clean -dfx && git reset --hard && yarn",
-    "validate:dependencies": "yarn audit --groups dependencies && yarn license-validate --allowPackages caniuse-lite@1.0.30001230",
-    "validate:dev-dependencies": "yarn audit --groups devDependencies",
-    "license-validate": "yarn sofie-licensecheck"
-  },
-  "scripts-info": {
-    "info": "Display information about the scripts",
-    "build": "(Trash and re)build the library",
-    "build:main": "Builds main build command without trash.",
-    "lint": "Lint all typescript source files",
-    "unit": "Build the library and run unit tests",
-    "test": "Lint, build, and test the library",
-    "test:integration": "Integration tests. Work in progress",
-    "watch": "Watch source files, rebuild library on changes, rerun relevant tests",
-    "cov": "Run tests, generate the HTML coverage report, and open it in a browser",
-    "cov-open": "Open current test coverage",
-    "send-coverage": "send coverage to codecov",
-    "docs": "Generate HTML API documentation and open it in a browser",
-    "docs:test": "Running the docs generation for testing.",
-    "docs:html": "Generate HTML documentation",
-    "docs:json": "Generate API documentation in typedoc JSON format",
-    "docs:publish": "Generate HTML API documentation and push it to GitHub Pages",
-    "release": "Clean, build, test, publish docs, and prepare release (a one-step publish process). Updates versions and creates git commits.",
-    "reset": "Delete all untracked files and reset the repo to the last commit",
-    "validate:dependencies": "Scan dependencies for vulnerabilities and check licenses",
-    "license-validate": "Validate licenses for dependencies."
-  },
-  "engines": {
-    "node": ">=12"
-  },
-  "files": [
-    "/dist",
-    "/CHANGELOG.md",
-    "/README.md",
-    "/LICENSE"
-  ],
-  "devDependencies": {
-    "@sofie-automation/code-standard-preset": "^0.4.2",
-    "@types/jest": "^27.0.2",
-    "@types/node": "^12.12.3",
-    "codecov": "^3.8.3",
-    "gh-pages": "^3.2.3",
-    "jest": "^27.2.1",
-    "mockdate": "^3.0.5",
-    "npm-scripts-info": "^0.3.9",
-    "open-cli": "^6.0.1",
-    "standard-version": "^9.3.1",
-    "trash-cli": "^4.0.0",
-    "ts-jest": "^27.0.5",
-    "typedoc": "^0.22.4",
-    "typescript": "~4.1.5"
-  },
-  "keywords": [
-    "mos",
-    "broadcast",
-    "socket",
-    "typescript",
-    "javascript",
-    "open",
-    "source",
-    "automation",
-    "ncs",
-    "nrcs",
-    "rundown",
-    "production"
-  ],
-  "dependencies": {
-    "iconv-lite": "^0.6.2",
-    "moment": "^2.29.1",
-    "tslib": "^2.2.0",
-    "xml-js": "^1.6.11",
-    "xmlbuilder": "^15.1.1"
-  },
-  "standard-version": {
-    "message": "chore(release): %s",
-    "tagPrefix": ""
-  },
-  "prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{css,json,md,scss}": [
-      "prettier --write"
-    ],
-    "*.{ts,tsx,js,jsx}": [
-      "yarn lint-fix"
-    ]
-  }
+	"name": "mos-connection",
+	"version": "1.0.3",
+	"description": "MOS compliant TCP/IP Socket connection.",
+	"main": "dist/index.js",
+	"typings": "dist/index.d.ts",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nrkno/tv-automation-mos-connection.git"
+	},
+	"bugs": {
+		"url": "https://github.com/nrkno/tv-automation-mos-connection/issues"
+	},
+	"homepage": "https://github.com/nrkno/tv-automation-mos-connection#readme",
+	"author": {
+		"name": "Jesper Stærkær",
+		"email": "jesper@superfly.tv",
+		"url": "http://superfly.tv"
+	},
+	"contributors": [
+		{
+			"name": "Johan Nyman",
+			"email": "johan@superfly.tv",
+			"url": "http://superfly.tv"
+		},
+		{
+			"name": "Stephan Nordnes Eriksen",
+			"email": "Stephanruler@gmail.com"
+		}
+	],
+	"scripts": {
+		"info": "npm-scripts-info",
+		"build": "trash dist && yarn build:main",
+		"build:main": "tsc -p tsconfig.build.json",
+		"lint": "tsc --noEmit && eslint . --ext .ts --ext .js --ext .tsx --ext .jsx --ignore-pattern dist",
+		"lint-fix": "yarn lint --fix",
+		"unit": "jest --forceExit",
+		"test": "yarn lint && yarn unit",
+		"watch": "jest --watch",
+		"cov": "jest --coverage=true && yarn cov-open",
+		"cov-open": "open-cli coverage/lcov-report/index.html",
+		"send-coverage": "codecov",
+		"docs": "yarn docs:html && open-cli docs/index.html",
+		"docs:test": "yarn docs:html",
+		"docs:html": "typedoc src/index.ts --excludePrivate --theme minimal --out docs",
+		"docs:json": "typedoc --json docs/typedoc.json src/index.ts",
+		"docs:publish": "yarn docs:html && gh-pages -d docs",
+		"release": "standard-version",
+		"release:bump-release": "yarn release",
+		"release:bump-prerelease": "yarn release --prerelease",
+		"reset": "git clean -dfx && git reset --hard && yarn",
+		"validate:dependencies": "yarn audit --groups dependencies && yarn license-validate --allowPackages caniuse-lite@1.0.30001230",
+		"validate:dev-dependencies": "yarn audit --groups devDependencies",
+		"license-validate": "yarn sofie-licensecheck"
+	},
+	"scripts-info": {
+		"info": "Display information about the scripts",
+		"build": "(Trash and re)build the library",
+		"build:main": "Builds main build command without trash.",
+		"lint": "Lint all typescript source files",
+		"unit": "Build the library and run unit tests",
+		"test": "Lint, build, and test the library",
+		"test:integration": "Integration tests. Work in progress",
+		"watch": "Watch source files, rebuild library on changes, rerun relevant tests",
+		"cov": "Run tests, generate the HTML coverage report, and open it in a browser",
+		"cov-open": "Open current test coverage",
+		"send-coverage": "send coverage to codecov",
+		"docs": "Generate HTML API documentation and open it in a browser",
+		"docs:test": "Running the docs generation for testing.",
+		"docs:html": "Generate HTML documentation",
+		"docs:json": "Generate API documentation in typedoc JSON format",
+		"docs:publish": "Generate HTML API documentation and push it to GitHub Pages",
+		"release": "Clean, build, test, publish docs, and prepare release (a one-step publish process). Updates versions and creates git commits.",
+		"reset": "Delete all untracked files and reset the repo to the last commit",
+		"validate:dependencies": "Scan dependencies for vulnerabilities and check licenses",
+		"license-validate": "Validate licenses for dependencies."
+	},
+	"engines": {
+		"node": ">=12"
+	},
+	"files": [
+		"/dist",
+		"/CHANGELOG.md",
+		"/README.md",
+		"/LICENSE"
+	],
+	"devDependencies": {
+		"@sofie-automation/code-standard-preset": "^0.4.2",
+		"@types/jest": "^27.0.2",
+		"@types/node": "^12.12.3",
+		"codecov": "^3.8.3",
+		"gh-pages": "^3.2.3",
+		"jest": "^27.2.1",
+		"mockdate": "^3.0.5",
+		"npm-scripts-info": "^0.3.9",
+		"open-cli": "^6.0.1",
+		"standard-version": "^9.3.1",
+		"trash-cli": "^4.0.0",
+		"ts-jest": "^27.0.5",
+		"typedoc": "^0.22.4",
+		"typescript": "~4.1.5"
+	},
+	"keywords": [
+		"mos",
+		"broadcast",
+		"socket",
+		"typescript",
+		"javascript",
+		"open",
+		"source",
+		"automation",
+		"ncs",
+		"nrcs",
+		"rundown",
+		"production"
+	],
+	"dependencies": {
+		"iconv-lite": "^0.6.2",
+		"moment": "^2.29.1",
+		"tslib": "^2.2.0",
+		"xml-js": "^1.6.11",
+		"xmlbuilder": "^15.1.1"
+	},
+	"standard-version": {
+		"message": "chore(release): %s",
+		"tagPrefix": ""
+	},
+	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"*.{css,json,md,scss}": [
+			"prettier --write"
+		],
+		"*.{ts,tsx,js,jsx}": [
+			"yarn lint-fix"
+		]
+	}
 }
