@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.7](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.5-1...1.0.7) (2022-05-13)
+
+
+### Bug Fixes
+
+* improve command timeouts ([5304209](https://github.com/nrkno/tv-automation-mos-connection/commit/53042095ca82f0a049b2f789b82e4f53082d9e28))
+* usc2 is not a valid encoding. ([e25d618](https://github.com/nrkno/tv-automation-mos-connection/commit/e25d6183560899e26e8c4ad2c80f924fcfdaca70))
+
 ### [1.0.6](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.5...1.0.6) (2022-03-29)
 
 
