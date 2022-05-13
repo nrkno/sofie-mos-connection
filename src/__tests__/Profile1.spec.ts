@@ -211,4 +211,30 @@ describe('Profile 1', () => {
 		expect(returnedObjs).toMatchObject(xmlApiData.mosListAll)
 		expect(returnedObjs).toMatchSnapshot()
 	})
+
+	test('command timeout', async () => {
+		expect(socketMockLower).toBeTruthy()
+		// Prepare mock server response:
+		const mockReply = jest.fn((data) => {
+			return new Promise<Buffer>((resolve) => {
+				setTimeout(() => {
+					const str = decode(data)
+					const messageID = getMessageId(str)
+					const repl = getXMLReply(messageID, xmlData.mosListAll)
+					resolve(encode(repl))
+				}, 500)
+			})
+		})
+		socketMockLower.mockAddReply(mockReply)
+
+		let error
+		try {
+			await mosDevice.sendRequestAllMOSObjects()
+		} catch (e) {
+			error = `${e}`
+		}
+
+		expect(error).toMatch(/Sent command timed out after \d+ ms/)
+		expect(mockReply).toHaveBeenCalledTimes(1)
+	}, 500)
 })

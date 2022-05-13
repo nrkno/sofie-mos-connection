@@ -47,9 +47,7 @@ export class SocketMock extends EventEmitter implements Socket {
 
 	// [Symbol.asyncIterator](): AsyncIterableIterator<any>
 
-	private _responses: Array<
-		string | string[] | false | ((data: any) => string | string[] | Buffer | Buffer[] | false)
-	> = []
+	private _responses: Array<ReplyTypes> = []
 	private _replyToHeartBeat = true
 
 	constructor() {
@@ -227,23 +225,26 @@ export class SocketMock extends EventEmitter implements Socket {
 		if (cb) {
 			// send reply:
 			setTimeoutOrg(() => {
-				const msg = typeof cb === 'function' ? cb(data) : cb
-				if (msg) {
-					if (Array.isArray(msg)) {
-						for (const m of msg) {
-							this.mockReceiveMessage(m)
+				Promise.resolve(typeof cb === 'function' ? cb(data) : cb)
+					.then((msg) => {
+						if (msg) {
+							if (Array.isArray(msg)) {
+								for (const m of msg) {
+									this.mockReceiveMessage(m)
+								}
+							} else {
+								this.mockReceiveMessage(msg)
+							}
 						}
-					} else {
-						this.mockReceiveMessage(msg)
-					}
-				}
+					})
+					.catch(console.error)
 			}, 1)
 		}
 	}
 	mockReceiveMessage(msg: string | Buffer): void {
 		this.emit('data', msg)
 	}
-	mockAddReply(cb: string | string[] | false | ((data: any) => string | string[] | Buffer | Buffer[] | false)): void {
+	mockAddReply(cb: ReplyTypes): void {
 		this._responses.push(cb)
 	}
 	mockClear(): void {
@@ -278,5 +279,13 @@ export class SocketMock extends EventEmitter implements Socket {
 		this._replyToHeartBeat = replyToHeartBeat
 	}
 }
+
+type SimpleTypes = string | string[] | false | Buffer | Buffer[]
+
+type ReplyTypes =
+	| SimpleTypes
+	| ((data: any) => SimpleTypes)
+	| Promise<SimpleTypes>
+	| ((data: any) => Promise<SimpleTypes>)
 
 export type ISocketMock = jest.Mocked<SocketMock>

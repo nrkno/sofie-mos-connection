@@ -2,7 +2,7 @@ import { EventEmitter } from 'events'
 import { Socket } from 'net'
 import { SocketConnectionEvent } from './socketConnection'
 import { MosMessage } from '../mosModel/MosMessage'
-import { HandedOverQueue } from './NCSServerConnection'
+import { DEFAULT_COMMAND_TIMEOUT, HandedOverQueue } from './NCSServerConnection'
 import { HeartBeat } from '../mosModel'
 import * as iconv from 'iconv-lite'
 import { MosMessageParser } from './mosMessageParser'
@@ -52,7 +52,7 @@ export class MosSocketClient extends EventEmitter {
 		this._host = host
 		this._port = port
 		this._description = description
-		this._commandTimeout = timeout || 5000
+		this._commandTimeout = timeout || DEFAULT_COMMAND_TIMEOUT
 		this._debug = debug ?? false
 
 		this.messageParser = new MosMessageParser(description)
@@ -147,10 +147,14 @@ export class MosSocketClient extends EventEmitter {
 			}
 		} else {
 			if (!this._sentMessage && this._queueMessages.length > 0) {
-				if (Date.now() - this._queueMessages[0].time > this._commandTimeout) {
+				const timeSinceQueued = Date.now() - this._queueMessages[0].time
+				if (timeSinceQueued > this._commandTimeout) {
 					const msg = this._queueMessages.shift()
 					if (msg) {
-						this._queueCallback[msg.msg.messageID]('Command timed out', {})
+						this._queueCallback[msg.msg.messageID](
+							`Command timed out in queue after ${timeSinceQueued} ms`,
+							{}
+						)
 						delete this._queueCallback[msg.msg.messageID]
 						this.processQueue()
 					}
@@ -278,13 +282,15 @@ export class MosSocketClient extends EventEmitter {
 		const buf = iconv.encode(messageString, 'utf16-be')
 		// this.debugTrace('sending',this._client.name, str)
 
+		const sendTime = Date.now()
 		// Command timeout:
 		global.setTimeout(() => {
 			if (this._disposed) return
 			if (this._sentMessage && this._sentMessage.msg.messageID === sentMessageId) {
 				this.debugTrace('timeout ' + sentMessageId + ' after ' + this._commandTimeout)
 				if (isRetry) {
-					this._sendReply(sentMessageId, Error('Command timed out'), null)
+					const timeSinceSend = Date.now() - sendTime
+					this._sendReply(sentMessageId, Error(`Sent command timed out after ${timeSinceSend} ms`), null)
 					this._timedOutCommands[sentMessageId] = Date.now()
 					this.processQueue()
 				} else {
