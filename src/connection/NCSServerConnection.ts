@@ -4,8 +4,8 @@ import { MosMessage, PortType } from '../mosModel/MosMessage'
 import { HeartBeat } from '../mosModel'
 import { EventEmitter } from 'events'
 
-// import {ProfilesSupport} from '../config/connectionConfig';
-// import {Socket} from 'net';
+export const DEFAULT_COMMAND_TIMEOUT = 5000
+
 export interface ClientDescription {
 	useHeartbeats: boolean
 	heartbeatConnected: boolean
@@ -44,7 +44,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		super()
 		this._id = id
 		this._host = host
-		this._timeout = timeout || 5000
+		this._timeout = timeout || DEFAULT_COMMAND_TIMEOUT
 		this._heartBeatsDelay = this._timeout / 2
 		this._mosID = mosID
 		this._connected = false

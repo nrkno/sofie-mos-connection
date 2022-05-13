@@ -329,7 +329,10 @@ describe('MosDevice: General', () => {
 		})
 
 		expect(errorReported).toHaveBeenCalledTimes(1)
-		expect(errorReported).nthCalledWith(1, 'primary: Heartbeat error on lower: Error: Command timed out')
+		expect(errorReported).nthCalledWith(
+			1,
+			expect.stringContaining('primary: Heartbeat error on lower: Error: Sent command timed out after')
+		)
 
 		// Test proper dispose:
 		await mosDevice.dispose()
