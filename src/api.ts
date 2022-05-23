@@ -719,6 +719,8 @@ export interface IMOSDeviceConnectionOptions {
 		}
 		/** (Optional) Timeout for commands (ms) */
 		timeout?: number
+		/** (Optional) Interval for sending of hearbeats (ms) */
+		heartbeatInterval?: number
 		/** (Optional) Some server doesn't expose the Query port, which can cause connection-errors.
 		 * Set this to true to not use that port (will cause some methods to stop working)
 		 */
@@ -738,6 +740,8 @@ export interface IMOSDeviceConnectionOptions {
 		}
 		/** (Optional) Timeout for commands (ms) */
 		timeout?: number
+		/** (Optional) Interval for sending of hearbeats (ms) */
+		heartbeatInterval?: number
 
 		/** (Optional) Some server doesn't expose the Query port, which can cause connection-errors.
 		 * Set this to true to not use that port (will cause some methods to stop working)

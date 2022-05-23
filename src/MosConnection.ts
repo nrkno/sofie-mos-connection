@@ -79,6 +79,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				connectionOptions.primary.host,
 				this._conf.mosID,
 				connectionOptions.primary.timeout,
+				connectionOptions.primary.heartbeatInterval,
 				this._debug
 			)
 			let secondary = null
@@ -124,6 +125,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 					connectionOptions.secondary.host,
 					this._conf.mosID,
 					connectionOptions.secondary.timeout,
+					connectionOptions.secondary.heartbeatInterval,
 					this._debug
 				)
 				this._ncsConnections[connectionOptions.secondary.host] = secondary
@@ -454,6 +456,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 						mosID,
 						remoteAddress,
 						this._conf.mosID,
+						undefined,
 						undefined,
 						this._debug
 					)
