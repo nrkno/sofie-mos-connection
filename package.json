@@ -7,12 +7,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nrkno/tv-automation-mos-connection.git"
+    "url": "git+https://github.com/nrkno/sofie-mos-connection.git"
   },
   "bugs": {
-    "url": "https://github.com/nrkno/tv-automation-mos-connection/issues"
+    "url": "https://github.com/nrkno/sofie-mos-connection/issues"
   },
-  "homepage": "https://github.com/nrkno/tv-automation-mos-connection#readme",
+  "homepage": "https://github.com/nrkno/sofie-mos-connection#readme",
   "author": {
     "name": "Jesper Stærkær",
     "email": "jesper@superfly.tv",

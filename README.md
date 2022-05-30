@@ -1,7 +1,7 @@
 # Sofie: The Modern TV News Studio Automation System (MOS Connection library)
 
-[![Tests](https://github.com/nrkno/tv-automation-mos-connection/actions/workflows/node.yaml/badge.svg)](https://github.com/nrkno/tv-automation-mos-connection/actions/workflows/node.yaml)
-[![codecov](https://codecov.io/gh/nrkno/tv-automation-mos-connection/branch/master/graph/badge.svg)](https://codecov.io/gh/nrkno/tv-automation-mos-connection)
+[![Tests](https://github.com/nrkno/sofie-mos-connection/actions/workflows/node.yaml/badge.svg)](https://github.com/nrkno/sofie-mos-connection/actions/workflows/node.yaml)
+[![codecov](https://codecov.io/gh/nrkno/sofie-mos-connection/branch/master/graph/badge.svg)](https://codecov.io/gh/nrkno/sofie-mos-connection)
 
 Library for connecting to a MOS device using the [MOS Protocol](http://mosprotocol.com/).
 
