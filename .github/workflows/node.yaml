@@ -55,14 +55,20 @@ jobs:
         env:
           CI: true
       - name: Run tests
+        if: matrix.node-version != '14.x'
         run: |
           yarn unit
         env:
           CI: true
-      - name: Send coverage
+      - name: Run tests and generate code coverage
         if: matrix.node-version == '14.x'
         run: |
-          yarn send-coverage
+          yarn unit --coverage=true
+        env:
+          CI: true
+      - name: Send coverage
+        if: matrix.node-version == '14.x'
+        run: yarn send-coverage
         env:
           CI: true
       - name: Check docs generation

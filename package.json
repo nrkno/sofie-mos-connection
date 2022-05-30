@@ -41,7 +41,7 @@
     "watch": "jest --watch",
     "cov": "jest --coverage=true && yarn cov-open",
     "cov-open": "open-cli coverage/lcov-report/index.html",
-    "send-coverage": "codecov",
+    "send-coverage": "codecov --disable=gcov",
     "docs": "yarn docs:html && open-cli docs/index.html",
     "docs:test": "yarn docs:html",
     "docs:html": "typedoc src/index.ts --excludePrivate --theme default --out docs",
