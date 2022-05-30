@@ -11,7 +11,7 @@ jobs:
   validate-dependencies:
     name: Validate production dependencies
     runs-on: ubuntu-latest
-    continue-on-error: true
+    continue-on-error: false
     timeout-minutes: 15
 
     steps:
@@ -29,6 +29,32 @@ jobs:
         run: |
           if ! git log --format=oneline -n 1 | grep -q "\[ignore-audit\]"; then
             yarn validate:dependencies
+          else
+            echo "Skipping audit"
+          fi
+        env:
+          CI: true
+  validate-all-dependencies:
+    name: Validate all dependencies
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Prepare Environment
+        run: |
+          yarn install
+        env:
+          CI: true
+      - name: Validate dependencies
+        run: |
+          if ! git log --format=oneline -n 1 | grep -q "\[ignore-audit\]"; then
+            yarn validate:dev-dependencies
           else
             echo "Skipping audit"
           fi
