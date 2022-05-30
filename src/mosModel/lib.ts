@@ -27,3 +27,13 @@ export type AnyXML = { [key: string]: any }
 export function has(obj: unknown, property: string): boolean {
 	return Object.hasOwnProperty.call(obj, property)
 }
+export function safeStringify(obj: unknown): string {
+	if (typeof obj === 'string') {
+		return obj
+	}
+	try {
+		return JSON.stringify(obj)
+	} catch (e) {
+		return `--Unable to stringify: ${e}--`
+	}
+}

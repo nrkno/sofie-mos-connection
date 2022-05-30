@@ -78,7 +78,7 @@ import {
 import { ROStory } from './mosModel/profile4/roStory'
 import { ROMetadataReplace } from './mosModel/profile2/roMetadataReplace'
 import { ROReadyToAir } from './mosModel/profile2/roReadyToAir'
-import { AnyXML, has } from './mosModel/lib'
+import { AnyXML, has, safeStringify } from './mosModel/lib'
 
 export class MosDevice implements IMOSDevice {
 	// private _host: string
@@ -732,7 +732,7 @@ export class MosDevice implements IMOSDevice {
 			const obj: IMOSObject = Parser.xml2MosObj(reply.mos.mosObj)
 			return obj
 		} else {
-			throw new Error('Unknown response')
+			throw new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
 		}
 	}
 
@@ -750,7 +750,7 @@ export class MosDevice implements IMOSDevice {
 			const objs: Array<IMOSObject> = Parser.xml2MosObjs(reply.mos.mosListAll.mosObj)
 			return objs
 		} else {
-			throw new Error('Unknown response')
+			throw new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
 		}
 	}
 
@@ -764,7 +764,7 @@ export class MosDevice implements IMOSDevice {
 			const ack: IMOSAck = Parser.xml2Ack(reply.mos.mosAck)
 			return ack
 		} else {
-			throw new Error('Unknown response')
+			throw new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
 		}
 	}
 
@@ -819,11 +819,11 @@ export class MosDevice implements IMOSDevice {
 
 	async sendRequestRunningOrder(runningOrderId: MosString128): Promise<IMOSRunningOrder | null> {
 		const message = new ROReq(runningOrderId)
-		const data = await this.executeCommand(message)
-		if (data.mos.roList) {
-			const ro: IMOSRunningOrder = Parser.xml2RO(data.mos.roList)
+		const reply = await this.executeCommand(message)
+		if (reply.mos.roList) {
+			const ro: IMOSRunningOrder = Parser.xml2RO(reply.mos.roList)
 			return ro
-		} else throw new Error('Unknown response')
+		} else throw new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
 	}
 	/**
 	 * @deprecated getRunningOrder is deprecated, use sendRequestRunningOrder instead
@@ -1149,9 +1149,7 @@ export class MosDevice implements IMOSDevice {
 					}
 				})
 				return ros
-			} else {
-				throw new Error('Unknown response')
-			}
+			} else throw new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
 		} else throw new Error(`Unable to send message due to no current connection`)
 	}
 	onRunningOrderStory(cb: (story: IMOSROFullStory) => Promise<IMOSROAck>): void {
