@@ -222,7 +222,7 @@ Array [
 exports[`Profile 2 onItemStatus: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1640</messageID>
+  <messageID>1641</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -231,7 +231,7 @@ exports[`Profile 2 onItemStatus: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1640</messageID>
+  <messageID>1641</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -281,7 +281,7 @@ Array [
 exports[`Profile 2 onMetadataReplace: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1637</messageID>
+  <messageID>1638</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -290,7 +290,7 @@ exports[`Profile 2 onMetadataReplace: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1637</messageID>
+  <messageID>1638</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -328,7 +328,7 @@ Array [
 exports[`Profile 2 onRODeleteItems: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1650</messageID>
+  <messageID>1651</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -337,7 +337,7 @@ exports[`Profile 2 onRODeleteItems: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1650</messageID>
+  <messageID>1651</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -367,7 +367,7 @@ Array [
 exports[`Profile 2 onRODeleteStories: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1649</messageID>
+  <messageID>1650</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -376,7 +376,7 @@ exports[`Profile 2 onRODeleteStories: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1649</messageID>
+  <messageID>1650</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -445,7 +445,7 @@ Array [
 exports[`Profile 2 onROInsertItems: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1643</messageID>
+  <messageID>1644</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -454,7 +454,7 @@ exports[`Profile 2 onROInsertItems: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1643</messageID>
+  <messageID>1644</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -544,7 +544,7 @@ Array [
 exports[`Profile 2 onROInsertStories: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1642</messageID>
+  <messageID>1643</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -553,7 +553,7 @@ exports[`Profile 2 onROInsertStories: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1642</messageID>
+  <messageID>1643</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -595,7 +595,7 @@ Array [
 exports[`Profile 2 onROMoveItems: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1648</messageID>
+  <messageID>1649</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -604,7 +604,7 @@ exports[`Profile 2 onROMoveItems: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1648</messageID>
+  <messageID>1649</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -642,7 +642,7 @@ Array [
 exports[`Profile 2 onROMoveStories: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1647</messageID>
+  <messageID>1648</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -651,7 +651,7 @@ exports[`Profile 2 onROMoveStories: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1647</messageID>
+  <messageID>1648</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -685,7 +685,7 @@ Array [
 exports[`Profile 2 onROMoveStory: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1646</messageID>
+  <messageID>1647</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -694,7 +694,7 @@ exports[`Profile 2 onROMoveStory: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1646</messageID>
+  <messageID>1647</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -763,7 +763,7 @@ Array [
 exports[`Profile 2 onROReplaceItems: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1645</messageID>
+  <messageID>1646</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -772,7 +772,7 @@ exports[`Profile 2 onROReplaceItems: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1645</messageID>
+  <messageID>1646</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -862,7 +862,7 @@ Array [
 exports[`Profile 2 onROReplaceStories: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1644</messageID>
+  <messageID>1645</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -871,7 +871,7 @@ exports[`Profile 2 onROReplaceStories: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1644</messageID>
+  <messageID>1645</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -907,7 +907,7 @@ Array [
 exports[`Profile 2 onROSwapItems: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1652</messageID>
+  <messageID>1653</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -916,7 +916,7 @@ exports[`Profile 2 onROSwapItems: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1652</messageID>
+  <messageID>1653</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -948,7 +948,7 @@ Array [
 exports[`Profile 2 onROSwapStories: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1651</messageID>
+  <messageID>1652</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -957,7 +957,7 @@ exports[`Profile 2 onROSwapStories: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1651</messageID>
+  <messageID>1652</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -982,7 +982,7 @@ Array [
 exports[`Profile 2 onReadyToAir: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1641</messageID>
+  <messageID>1642</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -991,7 +991,7 @@ exports[`Profile 2 onReadyToAir: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1641</messageID>
+  <messageID>1642</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -1320,6 +1320,26 @@ Object {
 }
 `;
 
+exports[`Profile 2 onRequestRunningOrder not found: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1637</messageID>
+  <roAck>
+    <roID>96857485</roID>
+    <roStatus>NACK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1637</messageID>
+  <roAck>
+    <roID>96857485</roID>
+    <roStatus>NACK</roStatus>
+  </roAck>
+</mos>"
+`;
+
 exports[`Profile 2 onRequestRunningOrder: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
@@ -1475,7 +1495,7 @@ Array [
 exports[`Profile 2 onRunningOrderStatus: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1638</messageID>
+  <messageID>1639</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -1484,7 +1504,7 @@ exports[`Profile 2 onRunningOrderStatus: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1638</messageID>
+  <messageID>1639</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -1519,7 +1539,7 @@ Array [
 exports[`Profile 2 onStoryStatus: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1639</messageID>
+  <messageID>1640</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -1528,7 +1548,7 @@ exports[`Profile 2 onStoryStatus: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1639</messageID>
+  <messageID>1640</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -1554,6 +1574,110 @@ exports[`Profile 2 sendItemStatus 1`] = `
 `;
 
 exports[`Profile 2 sendItemStatus 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendROInsertStories 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementAction operation=\\"INSERT\\">
+    <roID>96857485</roID>
+    <element_target>
+      <storyID>existing0</storyID>
+    </element_target>
+    <element_source>
+      <story>
+        <storyID>insert0</storyID>
+        <storySlug>slug0</storySlug>
+        <storyNum>number0</storyNum>
+      </story>
+      <story>
+        <storyID>insert1</storyID>
+        <storySlug>slug1</storySlug>
+        <storyNum>number1</storyNum>
+      </story>
+    </element_source>
+  </roElementAction>
+</mos>"
+`;
+
+exports[`Profile 2 sendROInsertStories 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendReadyToAir 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roReadyToAir>
+    <roID>96857485</roID>
+    <roAir>READY</roAir>
+  </roReadyToAir>
+</mos>"
+`;
+
+exports[`Profile 2 sendReadyToAir 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",

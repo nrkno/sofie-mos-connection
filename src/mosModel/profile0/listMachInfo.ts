@@ -22,7 +22,7 @@ export interface IMOSListMachInfo {
 	/** Software Revision: (MOS) Text description. 128 chars max., example: '2.1.0.37' */
 	swRev: MosString128
 	/** Date of Manufacture. */
-	DOM: MosTime
+	DOM: MosTime | undefined
 	/** Serial Number: text serial number. 128 chars max. ex: '927748927' */
 	SN: MosString128
 	/** Identification of a Machine: text. 128 chars max. */

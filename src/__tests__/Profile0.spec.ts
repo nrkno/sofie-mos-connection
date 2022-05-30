@@ -1,5 +1,18 @@
-import { clearMocks, delay, doBeforeAll, fakeIncomingMessage, getMosConnection, getMosDevice, setupMocks } from './lib'
-import { MosConnection, MosDevice, IMOSObject, IMOSListMachInfo } from '..'
+import {
+	checkMessageSnapshot,
+	clearMocks,
+	decode,
+	delay,
+	doBeforeAll,
+	encode,
+	fakeIncomingMessage,
+	getMessageId,
+	getMosConnection,
+	getMosDevice,
+	getXMLReply,
+	setupMocks,
+} from './lib'
+import { MosConnection, MosDevice, IMOSObject, IMOSListMachInfo, MosString128, MosTime } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
 
@@ -109,8 +122,6 @@ describe('Profile 0', () => {
 	})
 
 	test('unknown party connects', async () => {
-		// let unknownServerSocketMockLower = serverMockLower.mockNewConnection()
-
 		expect(serverSocketMockLower).toBeTruthy()
 		serverSocketMockLower.setReplyToHeartBeat(false)
 		const serverReply: jest.Mock<any, any> = jest.fn(() => false)
@@ -144,6 +155,49 @@ describe('Profile 0', () => {
 		expect(msg).toMatch('<messageID>' + sendMessageId)
 		expect(msg).toMatch('<status>NACK')
 	})
-	// TODO: reqMachInfo
 	// TODO: listMachInfo
+
+	test('requestMachineInfo', async () => {
+		// Prepare mock server response:
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
+			const repl = getXMLReply(messageID, xmlData.machineInfo)
+			return encode(repl)
+		})
+		socketMockLower.mockAddReply(mockReply)
+		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
+
+		const returnedMachineInfo: IMOSListMachInfo = await mosDevice.requestMachineInfo()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		const msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<reqMachInfo\/>/)
+		checkMessageSnapshot(msg)
+
+		expect(returnedMachineInfo).toMatchObject({
+			manufacturer: new MosString128('RadioVision, Ltd.'),
+			model: new MosString128('TCS6000'),
+			hwRev: new MosString128(''),
+			swRev: new MosString128('2.1.0.37'),
+			DOM: undefined,
+			SN: new MosString128('927748927'),
+			ID: new MosString128('airchache.newscenter.com'),
+			time: new MosTime('2009-04-11T17:20:42'),
+			opTime: new MosTime('2009-03-01T23:55:10'),
+			mosRev: new MosString128('2.8.2'),
+
+			supportedProfiles: {
+				deviceType: 'NCS',
+				profile0: true,
+				profile1: true,
+				profile2: true,
+				profile3: true,
+				profile4: true,
+				profile5: true,
+				profile6: true,
+				profile7: true,
+			},
+		} as IMOSListMachInfo)
+		expect(returnedMachineInfo).toMatchSnapshot()
+	})
 })

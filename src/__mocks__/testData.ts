@@ -34,6 +34,30 @@ test('At least one test', () => {
 
 const xmlData = {
 	heartbeat: `<heartbeat></heartbeat>`,
+	machineInfo: `<listMachInfo>
+	<manufacturer>RadioVision, Ltd.</manufacturer>
+	<model>TCS6000</model>
+	<hwRev>
+	</hwRev>
+	<swRev>2.1.0.37</swRev>
+	<DOM>
+	</DOM>
+	<SN>927748927</SN>
+	<ID>airchache.newscenter.com</ID>
+	<time>2009-04-11T17:20:42</time>
+	<opTime>2009-03-01T23:55:10</opTime>
+	<mosRev>2.8.2</mosRev>
+	<supportedProfiles deviceType="NCS">
+	<mosProfile number="0">YES</mosProfile>
+	<mosProfile number="1">YES</mosProfile>
+	<mosProfile number="2">YES</mosProfile>
+	<mosProfile number="3">YES</mosProfile>
+	<mosProfile number="4">YES</mosProfile>
+	<mosProfile number="5">YES</mosProfile>
+	<mosProfile number="6">YES</mosProfile>
+	<mosProfile number="7">YES</mosProfile>
+	</supportedProfiles>
+	</listMachInfo>`,
 	reqObj: `<mosReqObj>		<objID>M000123</objID>		 </mosReqObj>`,
 	mosReqAll: `<mosReqAll>		 <pause>0</pause>		  </mosReqAll>`,
 	mosObj: `<mosObj>	<objID>M000123</objID>	<objSlug>Hotel Fire</objSlug>	<mosAbstract>		<b>Hotel Fire</b>		<em>vo</em>		:30	</mosAbstract>	<objGroup>Show 7</objGroup>	<objType>VIDEO</objType>	<objTB>59.94</objTB>	<objRev>1</objRev>	<objDur>1800</objDur>	<status>NEW</status>	<objAir>READY</objAir><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath></objPaths>	<createdBy>Chris</createdBy>	<created>2009-10-31T23:39:12</created>	<changedBy>Chris</changedBy>	<changed>2009-10-31T23:39:12</changed>	<description>		<p>		  Exterior footage of		  <em>Baley Park Hotel</em>			on fire with natural sound. Trucks are visible for the first portion of the clip.		  <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>		</p>		<p>		  <tab/>		  Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.		</p>		<p>		  <em>Clip has been doubled for pad on voice over.</em>		</p>	</description>	<mosExternalMetadata>		<mosScope>STORY</mosScope>		<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>		<mosPayload>		  <Owner>SHOLMES</Owner>		  <ModTime>20010308142001</ModTime>		  <mediaTime>0</mediaTime>		  <TextTime>278</TextTime>		  <ModBy>LJOHNSTON</ModBy>		  <Approved>0</Approved>		  <Creator>SHOLMES</Creator>		</mosPayload>	</mosExternalMetadata></mosObj>`,

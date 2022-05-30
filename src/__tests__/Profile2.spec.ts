@@ -33,6 +33,7 @@ import {
 	IMOSStoryStatus,
 	MosString128,
 	IMOSListMachInfo,
+	IMOSObjectAirStatus,
 } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
@@ -82,6 +83,12 @@ describe('Profile 2', () => {
 	let onRODeleteItems: jest.Mock<any, any>
 	let onROSwapStories: jest.Mock<any, any>
 	let onROSwapItems: jest.Mock<any, any>
+
+	const mockReplyRoAck = jest.fn((data) => {
+		const str = decode(data)
+		const messageID = getMessageId(str)
+		return encode(getXMLReply(messageID, xmlData.roAck))
+	})
 
 	beforeAll(async () => {
 		SocketMock.mockClear()
@@ -244,6 +251,8 @@ describe('Profile 2', () => {
 		serverSocketMockLower.mockClear()
 		serverSocketMockUpper.mockClear()
 		serverSocketMockQuery.mockClear()
+
+		mockReplyRoAck.mockClear()
 	})
 	afterAll(async () => {
 		await mosConnection.dispose()
@@ -309,6 +318,27 @@ describe('Profile 2', () => {
 		)
 
 		expect(parsedReply).toMatchSnapshot()
+	})
+	test('onRequestRunningOrder not found', async () => {
+		// setup for "RO not found":
+		mosDevice.onRequestRunningOrder(async (_runningOrderId: MosString128): Promise<IMOSRunningOrder | null> => {
+			return null
+		})
+
+		// Fake incoming message on socket:
+		const messageId = await fakeIncomingMessage(serverSocketMockUpper, xmlData.roReq)
+
+		// Check reply to socket server:
+		await serverSocketMockUpper.mockWaitForSentMessages()
+		expect(serverSocketMockUpper.mockSentMessage).toHaveBeenCalledTimes(1)
+		await checkReplyToServer(serverSocketMockUpper, messageId, '<roStatus>NACK</roStatus>')
+		// @ts-ignore mock
+		const reply = decode(serverSocketMockUpper.mockSentMessage.mock.calls[0][0])
+		const parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
+
+		// roAck is sent with the status value of NACK if the roID is not valid, or if the Running Order is not available
+		expect(parsedReply.mos.roAck.roID._text + '').toEqual('96857485')
+		expect(parsedReply.mos.roAck.roStatus._text + '').toEqual('NACK')
 	})
 	test('sendRequestRunningOrder', async () => {
 		// Prepare server response
@@ -526,5 +556,78 @@ describe('Profile 2', () => {
 		expect(onROSwapItems.mock.calls[0][2]).toEqual(xmlApiData.roElementAction_swap_items_ItemId1)
 		expect(fixSnapshot(onROSwapItems.mock.calls)).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+	})
+	async function testSendFunctions(sendFcn: () => Promise<IMOSROAck>): Promise<any> {
+		socketMockUpper.mockAddReply(mockReplyRoAck)
+
+		const returnedAck: IMOSROAck = await sendFcn()
+		await socketMockUpper.mockWaitForSentMessages()
+		expect(mockReplyRoAck).toHaveBeenCalledTimes(1)
+		const msg = decode(mockReplyRoAck.mock.calls[0][0])
+		const parsed: any = xml2js(msg, { compact: true, nativeType: true, trim: true })
+
+		checkMessageSnapshot(msg)
+		expect(returnedAck).toBeTruthy()
+		expect(returnedAck.ID.toString()).toEqual('96857485')
+		checkAckSnapshot(returnedAck)
+
+		return parsed
+	}
+	test('sendReadyToAir', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendReadyToAir({
+				ID: new MosString128('96857485'),
+				Status: IMOSObjectAirStatus.READY,
+			})
+		})
+		expect(sentMessage.mos.roReadyToAir).toBeTruthy()
+		expect(sentMessage.mos.roReadyToAir.roID._text).toBe(96857485)
+		expect(sentMessage.mos.roReadyToAir.roAir._text).toBe('READY')
+	})
+	test('sendROInsertStories', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendROInsertStories(
+				{
+					RunningOrderID: new MosString128('96857485'),
+					StoryID: new MosString128('existing0'),
+				},
+				[
+					{
+						ID: new MosString128('insert0'),
+						Slug: new MosString128('slug0'),
+						Number: new MosString128('number0'),
+						// MosExternalMetaData?: Array<IMOSExternalMetaData>
+						Items: [], // Array<IMOSItem>
+					},
+					{
+						ID: new MosString128('insert1'),
+						Slug: new MosString128('slug1'),
+						Number: new MosString128('number1'),
+						Items: [],
+					},
+				]
+			)
+		})
+		expect(sentMessage.mos.roElementAction).toMatchObject({
+			_attributes: { operation: 'INSERT' },
+			roID: { _text: 96857485 },
+			element_target: {
+				storyID: { _text: 'existing0' },
+			},
+			element_source: {
+				story: [
+					{
+						storyID: { _text: 'insert0' },
+						storySlug: { _text: 'slug0' },
+						storyNum: { _text: 'number0' },
+					},
+					{
+						storyID: { _text: 'insert1' },
+						storySlug: { _text: 'slug1' },
+						storyNum: { _text: 'number1' },
+					},
+				],
+			},
+		})
 	})
 })

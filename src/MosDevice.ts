@@ -78,7 +78,7 @@ import {
 import { ROStory } from './mosModel/profile4/roStory'
 import { ROMetadataReplace } from './mosModel/profile2/roMetadataReplace'
 import { ROReadyToAir } from './mosModel/profile2/roReadyToAir'
-import { AnyXML, has, safeStringify } from './mosModel/lib'
+import { AnyXML, has, isEmpty, safeStringify } from './mosModel/lib'
 
 export class MosDevice implements IMOSDevice {
 	// private _host: string
@@ -274,6 +274,7 @@ export class MosDevice implements IMOSDevice {
 		if (this._secondaryConnection) this._secondaryConnection.connect()
 	}
 	async dispose(): Promise<void> {
+		this._currentConnection = null
 		const ps: Array<Promise<any>> = []
 		if (this._primaryConnection) ps.push(this._primaryConnection.dispose())
 		if (this._secondaryConnection) ps.push(this._secondaryConnection.dispose())
@@ -657,22 +658,32 @@ export class MosDevice implements IMOSDevice {
 		const data = await this.executeCommand(message)
 
 		const listMachInfo = data.mos.listMachInfo
-		const list: IMOSListMachInfo = {
-			manufacturer: listMachInfo.manufacturer,
-			model: listMachInfo.model,
-			hwRev: listMachInfo.hwRev,
-			swRev: listMachInfo.swRev,
-			DOM: listMachInfo.DOM,
-			SN: listMachInfo.SN,
-			ID: listMachInfo.ID,
-			time: listMachInfo.time,
-			opTime: listMachInfo.opTime,
-			mosRev: listMachInfo.mosRev,
-			supportedProfiles: this.supportedProfiles,
-			defaultActiveX: this.defaultActiveX,
-			mosExternalMetaData: this.mosExternalMetaData,
+		const machineInfo: IMOSListMachInfo = {
+			manufacturer: new MosString128(listMachInfo.manufacturer),
+			model: new MosString128(listMachInfo.model),
+			hwRev: new MosString128(listMachInfo.hwRev),
+			swRev: new MosString128(listMachInfo.swRev),
+			DOM: !isEmpty(listMachInfo.DOM) ? new MosTime(listMachInfo.DOM) : undefined,
+			SN: new MosString128(listMachInfo.SN),
+			ID: new MosString128(listMachInfo.ID),
+			time: new MosTime(listMachInfo.time),
+			opTime: new MosTime(listMachInfo.opTime),
+			mosRev: new MosString128(listMachInfo.mosRev),
+			supportedProfiles: {
+				deviceType: listMachInfo.supportedProfiles.deviceType,
+			},
+			defaultActiveX: listMachInfo.defaultActiveX,
+			mosExternalMetaData: listMachInfo.mosExternalMetaData,
 		}
-		return list
+
+		if (Array.isArray(listMachInfo.supportedProfiles.mosProfile)) {
+			for (const mosProfile of listMachInfo.supportedProfiles.mosProfile) {
+				// @ts-expect-error hack
+				machineInfo.supportedProfiles[`profile${mosProfile.attributes.number}`] = mosProfile.text === 'YES'
+			}
+		}
+
+		return machineInfo
 	}
 
 	onRequestMachineInfo(cb: () => Promise<IMOSListMachInfo>): void {
