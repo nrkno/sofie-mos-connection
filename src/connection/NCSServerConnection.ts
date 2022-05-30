@@ -38,14 +38,21 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	private _emittedConnected = false
 
 	private _heartBeatsTimer?: NodeJS.Timer
-	private _heartBeatsDelay: number
+	private _heartBeatsInterval: number
 
-	constructor(id: string, host: string, mosID: string, timeout: number | undefined, debug: boolean) {
+	constructor(
+		id: string,
+		host: string,
+		mosID: string,
+		timeout: number | undefined,
+		heartbeatsInterval: number | undefined,
+		debug: boolean
+	) {
 		super()
 		this._id = id
 		this._host = host
 		this._timeout = timeout || DEFAULT_COMMAND_TIMEOUT
-		this._heartBeatsDelay = this._timeout / 2
+		this._heartBeatsInterval = Math.max(heartbeatsInterval || 0, this._timeout)
 		this._mosID = mosID
 		this._connected = false
 		this._debug = debug ?? false
@@ -246,7 +253,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 				if (!this._disposed) {
 					this._sendHeartBeats()
 				}
-			}, this._heartBeatsDelay)
+			}, this._heartBeatsInterval)
 		}
 
 		Promise.all(
