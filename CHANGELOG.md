@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0-0](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.7...2.0.0-0) (2022-05-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* Drop support for Node 12
+
+### Features
+
+* Drop support for Node 12 ([abd326d](https://github.com/nrkno/tv-automation-mos-connection/commit/abd326d3d44a9b04320ea7d7800fe786bd96b855))
+
+
+### Bug Fixes
+
+* add heartbeatInterval property ([79b5523](https://github.com/nrkno/tv-automation-mos-connection/commit/79b55231693f2c4093c085e51bf940abe276f088))
+* more helpful messages for "Unknown response" errors ([4a91fa5](https://github.com/nrkno/tv-automation-mos-connection/commit/4a91fa53661060cc62c528294540752c5b4dde78))
+
 ### [1.0.7](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.5-1...1.0.7) (2022-05-13)
 
 
