@@ -55,28 +55,6 @@
     "validate:dev-dependencies": "yarn audit --groups devDependencies",
     "license-validate": "yarn sofie-licensecheck --allowPackages caniuse-lite@1.0.30001287"
   },
-  "scripts-info": {
-    "info": "Display information about the scripts",
-    "build": "(Trash and re)build the library",
-    "build:main": "Builds main build command without trash.",
-    "lint": "Lint all typescript source files",
-    "unit": "Build the library and run unit tests",
-    "test": "Lint, build, and test the library",
-    "test:integration": "Integration tests. Work in progress",
-    "watch": "Watch source files, rebuild library on changes, rerun relevant tests",
-    "cov": "Run tests, generate the HTML coverage report, and open it in a browser",
-    "cov-open": "Open current test coverage",
-    "send-coverage": "send coverage to codecov",
-    "docs": "Generate HTML API documentation and open it in a browser",
-    "docs:test": "Running the docs generation for testing.",
-    "docs:html": "Generate HTML documentation",
-    "docs:json": "Generate API documentation in typedoc JSON format",
-    "docs:publish": "Generate HTML API documentation and push it to GitHub Pages",
-    "release": "Clean, build, test, publish docs, and prepare release (a one-step publish process). Updates versions and creates git commits.",
-    "reset": "Delete all untracked files and reset the repo to the last commit",
-    "validate:dependencies": "Scan dependencies for vulnerabilities and check licenses",
-    "license-validate": "Validate licenses for dependencies."
-  },
   "engines": {
     "node": ">=14"
   },
@@ -94,7 +72,6 @@
     "gh-pages": "^3.2.3",
     "jest": "^27.2.1",
     "mockdate": "^3.0.5",
-    "npm-scripts-info": "^0.3.9",
     "open-cli": "^6.0.1",
     "standard-version": "^9.3.1",
     "trash-cli": "^4.0.0",
