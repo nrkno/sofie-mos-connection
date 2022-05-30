@@ -99,7 +99,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		// if (this._callbackOnConnectionChange) this._callbackOnConnectionChange()
 	}
 
-	executeCommand(message: MosMessage): Promise<any> {
+	async executeCommand(message: MosMessage): Promise<any> {
 		// Fill with clients
 		let clients: Array<MosSocketClient>
 
@@ -220,20 +220,18 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		}
 	}
 
-	dispose(): Promise<void> {
+	async dispose(): Promise<void> {
 		this._disposed = true
-		return new Promise((resolveDispose) => {
-			for (const key in this._clients) {
-				this.removeClient(key)
-			}
-			if (this._heartBeatsTimer) {
-				global.clearTimeout(this._heartBeatsTimer)
-				delete this._heartBeatsTimer
-			}
-			this._connected = false
-			this.emit('connectionChanged')
-			resolveDispose()
-		})
+
+		for (const key in this._clients) {
+			this.removeClient(key)
+		}
+		if (this._heartBeatsTimer) {
+			global.clearTimeout(this._heartBeatsTimer)
+			delete this._heartBeatsTimer
+		}
+		this._connected = false
+		this.emit('connectionChanged')
 	}
 
 	private _sendHeartBeats(): void {
@@ -252,26 +250,20 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		}
 
 		Promise.all(
-			Object.keys(this._clients).map((key) => {
+			Object.keys(this._clients).map(async (key) => {
 				const client = this._clients[key]
 
 				if (client.useHeartbeats) {
 					const heartbeat = new HeartBeat(this._clients[key].clientDescription)
-					return this.executeCommand(heartbeat)
-						.then(() => {
-							client.heartbeatConnected = true
-						})
-						.catch((e) => {
-							// probably a timeout
-							client.heartbeatConnected = false
-							this.emit(
-								'error',
-								`Heartbeat error on ${this._clients[key].clientDescription}: ${e.toString()}`
-							)
-							this.debugTrace(`Heartbeat on ${this._clients[key].clientDescription}: ${e.toString()}`)
-						})
-				} else {
-					return Promise.resolve()
+					try {
+						await this.executeCommand(heartbeat)
+						client.heartbeatConnected = true
+					} catch (e) {
+						// probably a timeout
+						client.heartbeatConnected = false
+						this.emit('error', `Heartbeat error on ${this._clients[key].clientDescription}: ${e}`)
+						this.debugTrace(`Heartbeat on ${this._clients[key].clientDescription}: ${e}`)
+					}
 				}
 			})
 		)

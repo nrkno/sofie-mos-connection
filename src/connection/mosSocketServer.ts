@@ -21,7 +21,7 @@ export class MosSocketServer extends EventEmitter {
 		this._socketServer.on('close', () => this._onServerClose())
 		this._socketServer.on('error', (error) => this._onServerError(error))
 	}
-	dispose(sockets: Socket[]): Promise<void[]> {
+	async dispose(sockets: Socket[]): Promise<void> {
 		const closePromises: Promise<void>[] = []
 
 		// close clients
@@ -48,13 +48,13 @@ export class MosSocketServer extends EventEmitter {
 		this._connectedSockets.forEach((socket: Socket) => {
 			socket.destroy()
 		})
-		return Promise.all(closePromises)
+		await Promise.all(closePromises)
 	}
 
 	/** */
-	listen(): Promise<void> {
+	async listen(): Promise<void> {
 		this.debugTrace('listen', this._portDescription, this._port)
-		return new Promise((resolve, reject) => {
+		return new Promise<void>((resolve, reject) => {
 			try {
 				this.debugTrace('inside promise', this._portDescription, this._port)
 				// already listening

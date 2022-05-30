@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { clearMocks, decode, delay, encode, getMessageId, getXMLReply, initMosConnection, setupMocks } from './lib'
 import { MosConnection, MosDevice, IMOSConnectionStatus, IMOSObject } from '../'
 import { ConnectionConfig } from '../config/connectionConfig'
@@ -165,6 +166,19 @@ describe('MosDevice: General', () => {
 		})
 		expect(mosDevice).toBeTruthy()
 		expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
+
+		await new Promise<void>((resolve) => {
+			const status = mosDevice.getConnectionStatus()
+			if (status.PrimaryConnected && status.SecondaryConnected) {
+				resolve()
+			} else {
+				mosDevice.onConnectionChange((status) => {
+					if (status.PrimaryConnected && status.SecondaryConnected) {
+						resolve()
+					}
+				})
+			}
+		})
 
 		expect(SocketMock.instances).toHaveLength(7)
 		expect(SocketMock.instances[1].connectedHost).toEqual('192.168.0.1')

@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { EventEmitter } from 'events'
-
 import { Socket } from 'net'
 import { MosTime } from '../dataTypes/mosTime'
 
@@ -254,7 +254,7 @@ export class SocketMock extends EventEmitter implements Socket {
 		// @ts-expect-error mock hack
 		this.mockSentMessage['mockClear']()
 	}
-	mockWaitForSentMessages(): Promise<void> {
+	async mockWaitForSentMessages(): Promise<void> {
 		return new Promise<void>((resolve) => {
 			const check = () => {
 				if (this._responses.length === 0) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { IMOSAck, MosConnection, MosDevice, IMOSROAck, IProfiles, MosTime } from '../'
 
 import { SocketMock } from '../__mocks__/socket'
@@ -35,7 +36,7 @@ export function getMessageId(str: string): string {
 }
 
 const setTimeoutOrg = setTimeout
-export function delay(ms: number): Promise<void> {
+export async function delay(ms: number): Promise<void> {
 	return new Promise((resolve) => {
 		setTimeoutOrg(resolve, ms)
 	})
@@ -81,7 +82,7 @@ export async function getMosDevice(mos: MosConnection): Promise<MosDevice> {
 	return Promise.resolve(device)
 }
 let fakeIncomingMessageMessageId = 1632
-export function fakeIncomingMessage(
+export async function fakeIncomingMessage(
 	socketMockLower: SocketMock,
 	message: string,
 	ourMosId?: string,
@@ -213,11 +214,11 @@ function fixSnapshotInner(data: any): [boolean, any] {
 	if (!data) {
 		return [false, data]
 	} else if (Array.isArray(data)) {
-		for (const key in data) {
-			const f = fixSnapshotInner(data[key])
+		for (let i = 0; i < data.length; i++) {
+			const f = fixSnapshotInner(data[i])
 			if (f[0]) {
 				changed = true
-				data[key] = f[1]
+				data[i] = f[1]
 			}
 		}
 	} else if (typeof data === 'object') {
