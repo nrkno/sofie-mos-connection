@@ -114,10 +114,11 @@ export class SocketMock extends EventEmitter implements Socket {
 	setEncoding(): this {
 		return this
 	}
-	destroy(): void {
+	destroy(_error?: Error): this {
 		this.destroyed = true
 		this.emit('close')
 		/* nothing */
+		return this
 	}
 	pause(): this {
 		return this
@@ -138,14 +139,14 @@ export class SocketMock extends EventEmitter implements Socket {
 	address(): { port: number; family: string; address: string } {
 		return { port: 100, family: 'localhost', address: '127.0.0.1' }
 	}
-	unref(): void {
-		/* nothing */
+	unref(): this {
+		return this
 	}
-	ref(): void {
-		/* nothing */
+	ref(): this {
+		return this
 	}
-	end(): void {
-		/* nothing */
+	end(): this {
+		return this
 	}
 	_write(_chunk: unknown, _encoding: string, callback: () => void): void {
 		callback() /* nothing */
