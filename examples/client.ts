@@ -39,37 +39,27 @@ mos.onConnection((mosDevice: MosDevice) => {
 	mosDevice.onConnectionChange((status) => {
 		console.log('connection status: ', status)
 		if (!hasSentInit) {
-			sendInit()
+			sendInit().catch(console.error)
 			hasSentInit = true
 		}
 	})
 
-	const sendInit = () => {
-		mosDevice
-			.requestMachineInfo()
-			.then((_lm) => {
-				// console.log('Machineinfo', _lm)
-			})
-			.then(() => {
-				return mosDevice.sendRequestAllRunningOrders()
-			})
-			.then((ros) => {
-				console.log('allRunningOrders', ros)
+	const sendInit = async () => {
+		const machineInfo = await mosDevice.requestMachineInfo()
+		console.log('Machineinfo', machineInfo)
 
-				// trigger a re-send of those running orders:
-				// return dev.getRunningOrder(new MosString128('696297DF-1568-4B36-B43B3B79514B40D4'))
-				return Promise.all(
-					ros.map((ro) => {
-						return mosDevice.getRunningOrder(ro.ID)
-					})
-				)
+		const ros = await mosDevice.sendRequestAllRunningOrders()
+		console.log('allRunningOrders', ros)
+
+		// trigger a re-send of those running orders:
+		// return dev.getRunningOrder(new MosString128('696297DF-1568-4B36-B43B3B79514B40D4'))
+
+		const roLists = await Promise.all(
+			ros.map(async (ro) => {
+				return mosDevice.sendRequestRunningOrder(ro.ID)
 			})
-			.then((roLists) => {
-				console.log('roLists', roLists)
-			})
-			.catch((e) => {
-				console.log('ERROR', e)
-			})
+		)
+		console.log('roLists', roLists)
 	}
 	mosDevice.onRequestMachineInfo(async () => {
 		return {
@@ -145,7 +135,7 @@ mos.onConnection((mosDevice: MosDevice) => {
 })
 
 mos.init()
-	.then((_listening) => {
+	.then(async (_listening) => {
 		return mos.connect({
 			primary: {
 				id: 'sofie.server.tv.automation',

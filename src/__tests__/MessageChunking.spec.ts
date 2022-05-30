@@ -60,38 +60,38 @@ describe('message chunking', () => {
 		mosDevice = await getMosDevice(mosConnection)
 
 		// Profile 0:
-		onRequestMachineInfo = jest.fn(() => {
-			return Promise.resolve(xmlApiData.machineInfo)
+		onRequestMachineInfo = jest.fn(async () => {
+			return xmlApiData.machineInfo
 		})
-		mosDevice.onRequestMachineInfo((): Promise<IMOSListMachInfo> => {
+		mosDevice.onRequestMachineInfo(async (): Promise<IMOSListMachInfo> => {
 			return onRequestMachineInfo()
 		})
 		// Profile 1:
-		onRequestMOSObject = jest.fn(() => {
-			return Promise.resolve(xmlApiData.mosObj)
+		onRequestMOSObject = jest.fn(async () => {
+			return xmlApiData.mosObj
 		})
-		onRequestAllMOSObjects = jest.fn(() => {
-			return Promise.resolve([xmlApiData.mosObj, xmlApiData.mosObj2])
+		onRequestAllMOSObjects = jest.fn(async () => {
+			return [xmlApiData.mosObj, xmlApiData.mosObj2]
 		})
-		mosDevice.onRequestMOSObject((objId: string): Promise<IMOSObject | null> => {
+		mosDevice.onRequestMOSObject(async (objId: string): Promise<IMOSObject | null> => {
 			return onRequestMOSObject(objId)
 		})
-		mosDevice.onRequestAllMOSObjects((): Promise<Array<IMOSObject>> => {
+		mosDevice.onRequestAllMOSObjects(async (): Promise<Array<IMOSObject>> => {
 			return onRequestAllMOSObjects()
 		})
 
-		const roAckReply = () => {
+		const roAckReply = async () => {
 			const ack: IMOSROAck = {
 				ID: new MosString128('runningOrderId'),
 				Status: new MosString128('OK'),
 				Stories: [],
 			}
-			return Promise.resolve(ack)
+			return ack
 		}
 		// Profile 3:
 		onRunningOrderStory = jest.fn(roAckReply)
 
-		mosDevice.onRunningOrderStory((story: IMOSROFullStory): Promise<IMOSROAck> => {
+		mosDevice.onRunningOrderStory(async (story: IMOSROFullStory): Promise<IMOSROAck> => {
 			return onRunningOrderStory(story)
 		})
 		const b = doBeforeAll()

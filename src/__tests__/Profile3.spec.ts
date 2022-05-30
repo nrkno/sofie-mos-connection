@@ -63,23 +63,23 @@ describe('Profile 3', () => {
 	let onRequestObjectActionUpdate: jest.Mock<any, any>
 	let onRequestObjectActionDelete: jest.Mock<any, any>
 
-	const roAckReply = () => {
+	const roAckReply = async () => {
 		const ack: IMOSROAck = {
 			ID: new MosString128('runningOrderId'),
 			Status: new MosString128('OK'),
 			Stories: [],
 		}
-		return Promise.resolve(ack)
+		return ack
 	}
 
-	const mosAckReply = () => {
+	const mosAckReply = async () => {
 		const ack: IMOSAck = {
 			ID: new MosString128('runningOrderId'),
 			Revision: 1,
 			Status: IMOSAckStatus.ACK,
 			Description: new MosString128(''),
 		}
-		return Promise.resolve(ack)
+		return ack
 	}
 
 	beforeAll(async () => {
@@ -101,14 +101,14 @@ describe('Profile 3', () => {
 
 		onMosObjCreate = jest.fn(mosAckReply)
 		onMosItemReplace = jest.fn(roAckReply)
-		onMosReqSearchableSchema = jest.fn((username: string) => {
+		onMosReqSearchableSchema = jest.fn(async (username: string) => {
 			const response: IMOSListSearchableSchema = {
 				username,
 				mosSchema: 'http://example.com/mosSearchableSchema',
 			}
-			return Promise.resolve(response)
+			return response
 		})
-		onMosReqObjectList = jest.fn((options: IMOSRequestObjectList) => {
+		onMosReqObjectList = jest.fn(async (options: IMOSRequestObjectList) => {
 			const response: IMOSObjectList = {
 				username: options.username,
 				queryID: 'A392938329kdakd2039300d0s9l3l9d0bzAQ',
@@ -116,7 +116,7 @@ describe('Profile 3', () => {
 				listReturnEnd: 0,
 				listReturnTotal: 0,
 			}
-			return Promise.resolve(response)
+			return response
 		})
 		onRequestObjectActionNew = jest.fn(mosAckReply)
 		onRequestObjectActionUpdate = jest.fn(mosAckReply)

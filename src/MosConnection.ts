@@ -46,132 +46,119 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	/**
 	 * Initiate the MosConnection, start accepting connections
 	 */
-	init(): Promise<boolean> {
+	async init(): Promise<boolean> {
 		this.emit('info', `Initializing MOS-Connection, id: ${this._conf.mosID}`)
 		this._initialized = true
 		if (this._conf.acceptsConnections) {
-			return new Promise((resolve, reject) => {
-				this._initiateIncomingConnections()
-					.then(() => {
-						this._isListening = true
-						resolve(true)
-					})
-					.catch((err) => {
-						// this.emit('error', err)
-						reject(err)
-					})
-			})
+			await this._initiateIncomingConnections()
+			this._isListening = true
+			return true
 		}
-		return Promise.resolve(false)
+		return false
 	}
 
 	/**
 	 * Establish a new connection to a MOS-device (NCS-server). When established, the new MOS-device will be emitted to this.onConnection()
 	 * @param connectionOptions Connection options
 	 */
-	connect(connectionOptions: IMOSDeviceConnectionOptions): Promise<MosDevice> {
+	async connect(connectionOptions: IMOSDeviceConnectionOptions): Promise<MosDevice> {
 		if (!this._initialized) throw Error('Not initialized, run .init() first!')
 
-		return new Promise((resolve) => {
-			// Connect to MOS-device:
-			const primary = new NCSServerConnection(
-				connectionOptions.primary.id,
-				connectionOptions.primary.host,
-				this._conf.mosID,
-				connectionOptions.primary.timeout,
-				this._debug
-			)
-			let secondary = null
-			this._ncsConnections[connectionOptions.primary.host] = primary
+		// Connect to MOS-device:
+		const primary = new NCSServerConnection(
+			connectionOptions.primary.id,
+			connectionOptions.primary.host,
+			this._conf.mosID,
+			connectionOptions.primary.timeout,
+			this._debug
+		)
+		let secondary = null
+		this._ncsConnections[connectionOptions.primary.host] = primary
 
-			primary.on('rawMessage', (type: string, message: string) => {
-				this.emit('rawMessage', 'primary', type, message)
-			})
-			primary.on('warning', (str: string) => {
-				this.emit('warning', 'primary: ' + str)
-			})
-			primary.on('error', (str: string) => {
-				this.emit('error', 'primary: ' + str)
-			})
-			primary.on('info', (str: string) => {
-				this.emit('info', 'primary: ' + str)
-			})
+		primary.on('rawMessage', (type: string, message: string) => {
+			this.emit('rawMessage', 'primary', type, message)
+		})
+		primary.on('warning', (str: string) => {
+			this.emit('warning', 'primary: ' + str)
+		})
+		primary.on('error', (str: string) => {
+			this.emit('error', 'primary: ' + str)
+		})
+		primary.on('info', (str: string) => {
+			this.emit('info', 'primary: ' + str)
+		})
 
+		primary.createClient(
+			MosConnection.nextSocketID,
+			connectionOptions.primary.ports?.lower ?? MosConnection.CONNECTION_PORT_LOWER,
+			'lower',
+			true
+		)
+		primary.createClient(
+			MosConnection.nextSocketID,
+			connectionOptions.primary.ports?.upper ?? MosConnection.CONNECTION_PORT_UPPER,
+			'upper',
+			true
+		)
+		if (!connectionOptions.primary.dontUseQueryPort) {
 			primary.createClient(
 				MosConnection.nextSocketID,
-				connectionOptions.primary.ports?.lower ?? MosConnection.CONNECTION_PORT_LOWER,
+				connectionOptions.primary.ports?.query ?? MosConnection.CONNECTION_PORT_QUERY,
+				'query',
+				false
+			)
+		}
+
+		if (connectionOptions.secondary) {
+			secondary = new NCSServerConnection(
+				connectionOptions.secondary.id,
+				connectionOptions.secondary.host,
+				this._conf.mosID,
+				connectionOptions.secondary.timeout,
+				this._debug
+			)
+			this._ncsConnections[connectionOptions.secondary.host] = secondary
+			secondary.on('rawMessage', (type: string, message: string) => {
+				this.emit('rawMessage', 'secondary', type, message)
+			})
+			secondary.on('warning', (str: string) => {
+				this.emit('warning', 'secondary: ' + str)
+			})
+			secondary.on('error', (str: string) => {
+				this.emit('error', 'secondary: ' + str)
+			})
+			secondary.on('info', (str: string) => {
+				this.emit('info', 'secondary: ' + str)
+			})
+			secondary.createClient(
+				MosConnection.nextSocketID,
+				connectionOptions.secondary.ports?.lower ?? MosConnection.CONNECTION_PORT_LOWER,
 				'lower',
 				true
 			)
-			primary.createClient(
+			secondary.createClient(
 				MosConnection.nextSocketID,
-				connectionOptions.primary.ports?.upper ?? MosConnection.CONNECTION_PORT_UPPER,
+				connectionOptions.secondary.ports?.upper ?? MosConnection.CONNECTION_PORT_UPPER,
 				'upper',
 				true
 			)
 			if (!connectionOptions.primary.dontUseQueryPort) {
-				primary.createClient(
+				secondary.createClient(
 					MosConnection.nextSocketID,
-					connectionOptions.primary.ports?.query ?? MosConnection.CONNECTION_PORT_QUERY,
+					connectionOptions.secondary.ports?.query ?? MosConnection.CONNECTION_PORT_QUERY,
 					'query',
 					false
 				)
 			}
+		}
 
-			if (connectionOptions.secondary) {
-				secondary = new NCSServerConnection(
-					connectionOptions.secondary.id,
-					connectionOptions.secondary.host,
-					this._conf.mosID,
-					connectionOptions.secondary.timeout,
-					this._debug
-				)
-				this._ncsConnections[connectionOptions.secondary.host] = secondary
-				secondary.on('rawMessage', (type: string, message: string) => {
-					this.emit('rawMessage', 'secondary', type, message)
-				})
-				secondary.on('warning', (str: string) => {
-					this.emit('warning', 'secondary: ' + str)
-				})
-				secondary.on('error', (str: string) => {
-					this.emit('error', 'secondary: ' + str)
-				})
-				secondary.on('info', (str: string) => {
-					this.emit('info', 'secondary: ' + str)
-				})
-				secondary.createClient(
-					MosConnection.nextSocketID,
-					connectionOptions.secondary.ports?.lower ?? MosConnection.CONNECTION_PORT_LOWER,
-					'lower',
-					true
-				)
-				secondary.createClient(
-					MosConnection.nextSocketID,
-					connectionOptions.secondary.ports?.upper ?? MosConnection.CONNECTION_PORT_UPPER,
-					'upper',
-					true
-				)
-				if (!connectionOptions.primary.dontUseQueryPort) {
-					secondary.createClient(
-						MosConnection.nextSocketID,
-						connectionOptions.secondary.ports?.query ?? MosConnection.CONNECTION_PORT_QUERY,
-						'query',
-						false
-					)
-				}
-			}
-
-			// Initialize mosDevice:
-			const mosDevice = this._registerMosDevice(
-				this._conf.mosID,
-				connectionOptions.primary.id,
-				connectionOptions.secondary ? connectionOptions.secondary.id : null,
-				primary,
-				secondary
-			)
-
-			resolve(mosDevice)
-		})
+		return this._registerMosDevice(
+			this._conf.mosID,
+			connectionOptions.primary.id,
+			connectionOptions.secondary ? connectionOptions.secondary.id : null,
+			primary,
+			secondary
+		)
 	}
 	/** Callback is called when a new connection is established */
 	onConnection(cb: (mosDevice: MosDevice) => void): void {
@@ -198,7 +185,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	}
 
 	/** Close all connections and clear all data */
-	dispose(): Promise<void> {
+	async dispose(): Promise<void> {
 		const sockets: Array<Socket> = []
 		for (const socketID in this._incomingSockets) {
 			const e = this._incomingSockets[socketID]
@@ -206,7 +193,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				sockets.push(e.socket)
 			}
 		}
-		const disposePromises0: Array<Promise<any>> = sockets.map((socket: Socket) => {
+		const disposePromises0: Array<Promise<any>> = sockets.map(async (socket: Socket) => {
 			return new Promise((resolve) => {
 				socket.on('close', resolve)
 				socket.end()
@@ -220,20 +207,13 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		]
 
 		const disposePromises2: Array<Promise<any>> = []
-		Object.keys(this._mosDevices).map((deviceId) => {
+		for (const deviceId of Object.keys(this._mosDevices)) {
 			const device = this._mosDevices[deviceId]
 			disposePromises2.push(this.disposeMosDevice(device))
-		})
-		return Promise.all(disposePromises0)
-			.then(() => {
-				return Promise.all(disposePromises1)
-			})
-			.then(() => {
-				return Promise.all(disposePromises2)
-			})
-			.then(() => {
-				return
-			})
+		}
+		await Promise.all(disposePromises0)
+		await Promise.all(disposePromises1)
+		await Promise.all(disposePromises2)
 	}
 	/** Return a specific MOS-device */
 	getDevice(id: string): MosDevice {
@@ -247,7 +227,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	}
 	disposeMosDevice(mosDevice: MosDevice): Promise<void>
 	disposeMosDevice(myMosID: string, theirMosId0: string, theirMosId1: string | null): Promise<void>
-	disposeMosDevice(
+	async disposeMosDevice(
 		myMosIDOrMosDevice: string | MosDevice,
 		theirMosId0?: string,
 		theirMosId1?: string | null
@@ -265,15 +245,13 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			id1 = theirMosId1 ? myMosID + '_' + theirMosId1 : null
 		}
 		if (this._mosDevices[id0]) {
-			return this._mosDevices[id0].dispose().then(() => {
-				delete this._mosDevices[id0]
-			})
+			await this._mosDevices[id0].dispose()
+			delete this._mosDevices[id0]
 		} else if (id1 && this._mosDevices[id1]) {
-			return this._mosDevices[id1].dispose().then(() => {
-				delete this._mosDevices[id1 || '']
-			})
+			await this._mosDevices[id1].dispose()
+			delete this._mosDevices[id1]
 		} else {
-			return Promise.reject('Device not found')
+			throw new Error(`Device not found ("${id0}", "${id1}")`)
 		}
 	}
 
@@ -286,7 +264,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 					profiles.push(nextSocketID)
 				}
 			}
-			return `MOS Compatible – Profiles ${profiles.join(',')}`
+			return `MOS Compatible - Profiles ${profiles.join(',')}`
 		}
 		return 'Warning: Not MOS compatible'
 	}
@@ -342,7 +320,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	}
 
 	/** Set up TCP-server */
-	private _initiateIncomingConnections(): Promise<void> {
+	private async _initiateIncomingConnections(): Promise<void> {
 		if (!this._conf.acceptsConnections) {
 			return Promise.reject('Not configured for accepting connections')
 		}
@@ -364,19 +342,16 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		this._upperSocketServer = initSocket(this._conf.ports?.upper ?? MosConnection.CONNECTION_PORT_UPPER, 'upper')
 		this._querySocketServer = initSocket(this._conf.ports?.query ?? MosConnection.CONNECTION_PORT_QUERY, 'query')
 
-		const handleListen = (socketServer: MosSocketServer) => {
-			return socketServer.listen().then(() => {
-				this.emit('info', 'Listening on port ' + socketServer.port + ' (' + socketServer.portDescription + ')')
-			})
+		const handleListen = async (socketServer: MosSocketServer) => {
+			await socketServer.listen()
+			this.emit('info', 'Listening on port ' + socketServer.port + ' (' + socketServer.portDescription + ')')
 		}
-		return Promise.all([
+		await Promise.all([
 			handleListen(this._lowerSocketServer),
 			handleListen(this._upperSocketServer),
 			handleListen(this._querySocketServer),
-		]).then(() => {
-			// All sockets are open and listening at this point
-			return
-		})
+		])
+		// All sockets are open and listening at this point
 	}
 
 	/** */

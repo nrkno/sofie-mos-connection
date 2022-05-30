@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/promise-function-async */
 // Note: All imports in this file should come from "../" ie index.ts'
 // To ensure that all types used are exported properly
 import {

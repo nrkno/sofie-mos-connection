@@ -57,18 +57,18 @@ describe('Profile 4', () => {
 		)
 		mosDevice = await getMosDevice(mosConnection)
 
-		const roAckReply = () => {
+		const roAckReply = async () => {
 			const ack: IMOSROAck = {
 				ID: new MosString128('runningOrderId'),
 				Status: new MosString128('OK'),
 				Stories: [],
 			}
-			return Promise.resolve(ack)
+			return ack
 		}
 		// Profile 2:
 		onROStory = jest.fn(roAckReply)
 
-		mosDevice.onRunningOrderStory((story: IMOSROFullStory): Promise<IMOSROAck> => {
+		mosDevice.onRunningOrderStory(async (story: IMOSROFullStory): Promise<IMOSROAck> => {
 			return onROStory(story)
 		})
 		const b = doBeforeAll()

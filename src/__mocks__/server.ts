@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { EventEmitter } from 'events'
-
 import { Server } from 'net'
 import { SocketMock } from './socket'
 

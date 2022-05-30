@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import {
 	checkAckSnapshot,
 	checkMessageSnapshot,
@@ -97,36 +98,36 @@ describe('Profile 2', () => {
 		mosDevice = await getMosDevice(mosConnection)
 
 		// Profile 0:
-		onRequestMachineInfo = jest.fn(() => {
-			return Promise.resolve(xmlApiData.machineInfo)
+		onRequestMachineInfo = jest.fn(async () => {
+			return xmlApiData.machineInfo
 		})
-		mosDevice.onRequestMachineInfo((): Promise<IMOSListMachInfo> => {
+		mosDevice.onRequestMachineInfo(async (): Promise<IMOSListMachInfo> => {
 			return onRequestMachineInfo()
 		})
 		// Profile 1:
 		onRequestMOSObject = jest.fn()
 		onRequestAllMOSObjects = jest.fn()
-		mosDevice.onRequestMOSObject((objId: string): Promise<IMOSObject | null> => {
+		mosDevice.onRequestMOSObject(async (objId: string): Promise<IMOSObject | null> => {
 			return onRequestMOSObject(objId)
 		})
-		mosDevice.onRequestAllMOSObjects((): Promise<Array<IMOSObject>> => {
+		mosDevice.onRequestAllMOSObjects(async (): Promise<Array<IMOSObject>> => {
 			return onRequestAllMOSObjects()
 		})
 
 		// Profile 2:
-		const roAckReply = () => {
+		const roAckReply = async () => {
 			const ack: IMOSROAck = {
 				ID: new MosString128('runningOrderId'),
 				Status: new MosString128('OK'),
 				Stories: [],
 			}
-			return Promise.resolve(ack)
+			return ack
 		}
 		onCreateRunningOrder = jest.fn(roAckReply)
 		onReplaceRunningOrder = jest.fn(roAckReply)
 		onDeleteRunningOrder = jest.fn(roAckReply)
-		onRequestRunningOrder = jest.fn(() => {
-			return Promise.resolve(xmlApiData.roCreate)
+		onRequestRunningOrder = jest.fn(async () => {
+			return xmlApiData.roCreate
 		})
 		onMetadataReplace = jest.fn(roAckReply)
 		onRunningOrderStatus = jest.fn(roAckReply)
@@ -144,64 +145,68 @@ describe('Profile 2', () => {
 		onROSwapStories = jest.fn(roAckReply)
 		onROSwapItems = jest.fn(roAckReply)
 
-		mosDevice.onCreateRunningOrder((ro: IMOSRunningOrder): Promise<IMOSROAck> => {
+		mosDevice.onCreateRunningOrder(async (ro: IMOSRunningOrder): Promise<IMOSROAck> => {
 			return onCreateRunningOrder(ro)
 		})
-		mosDevice.onReplaceRunningOrder((ro: IMOSRunningOrder): Promise<IMOSROAck> => {
+		mosDevice.onReplaceRunningOrder(async (ro: IMOSRunningOrder): Promise<IMOSROAck> => {
 			return onReplaceRunningOrder(ro)
 		})
-		mosDevice.onDeleteRunningOrder((runningOrderId: MosString128): Promise<IMOSROAck> => {
+		mosDevice.onDeleteRunningOrder(async (runningOrderId: MosString128): Promise<IMOSROAck> => {
 			return onDeleteRunningOrder(runningOrderId)
 		})
-		mosDevice.onRequestRunningOrder((runningOrderId: MosString128): Promise<IMOSRunningOrder | null> => {
+		mosDevice.onRequestRunningOrder(async (runningOrderId: MosString128): Promise<IMOSRunningOrder | null> => {
 			return onRequestRunningOrder(runningOrderId)
 		})
-		mosDevice.onMetadataReplace((metadata: IMOSRunningOrderBase): Promise<IMOSROAck> => {
+		mosDevice.onMetadataReplace(async (metadata: IMOSRunningOrderBase): Promise<IMOSROAck> => {
 			return onMetadataReplace(metadata)
 		})
-		mosDevice.onRunningOrderStatus((status: IMOSRunningOrderStatus): Promise<IMOSROAck> => {
+		mosDevice.onRunningOrderStatus(async (status: IMOSRunningOrderStatus): Promise<IMOSROAck> => {
 			return onRunningOrderStatus(status)
 		})
-		mosDevice.onStoryStatus((status: IMOSStoryStatus): Promise<IMOSROAck> => {
+		mosDevice.onStoryStatus(async (status: IMOSStoryStatus): Promise<IMOSROAck> => {
 			return onStoryStatus(status)
 		})
-		mosDevice.onItemStatus((status: IMOSItemStatus): Promise<IMOSROAck> => {
+		mosDevice.onItemStatus(async (status: IMOSItemStatus): Promise<IMOSROAck> => {
 			return onItemStatus(status)
 		})
-		mosDevice.onReadyToAir((Action: IMOSROReadyToAir): Promise<IMOSROAck> => {
+		mosDevice.onReadyToAir(async (Action: IMOSROReadyToAir): Promise<IMOSROAck> => {
 			return onReadyToAir(Action)
 		})
-		mosDevice.onROInsertStories((Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> => {
-			return onROInsertStories(Action, Stories)
-		})
-		mosDevice.onROInsertItems((Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> => {
+		mosDevice.onROInsertStories(
+			async (Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> => {
+				return onROInsertStories(Action, Stories)
+			}
+		)
+		mosDevice.onROInsertItems(async (Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> => {
 			return onROInsertItems(Action, Items)
 		})
-		mosDevice.onROReplaceStories((Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> => {
-			return onROReplaceStories(Action, Stories)
-		})
-		mosDevice.onROReplaceItems((Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> => {
+		mosDevice.onROReplaceStories(
+			async (Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> => {
+				return onROReplaceStories(Action, Stories)
+			}
+		)
+		mosDevice.onROReplaceItems(async (Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> => {
 			return onROReplaceItems(Action, Items)
 		})
-		mosDevice.onROMoveStories((Action: IMOSStoryAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
+		mosDevice.onROMoveStories(async (Action: IMOSStoryAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
 			return onROMoveStories(Action, Stories)
 		})
-		mosDevice.onROMoveItems((Action: IMOSItemAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
+		mosDevice.onROMoveItems(async (Action: IMOSItemAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
 			return onROMoveItems(Action, Items)
 		})
-		mosDevice.onRODeleteStories((Action: IMOSROAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
+		mosDevice.onRODeleteStories(async (Action: IMOSROAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
 			return onRODeleteStories(Action, Stories)
 		})
-		mosDevice.onRODeleteItems((Action: IMOSStoryAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
+		mosDevice.onRODeleteItems(async (Action: IMOSStoryAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
 			return onRODeleteItems(Action, Items)
 		})
 		mosDevice.onROSwapStories(
-			(Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128): Promise<IMOSROAck> => {
+			async (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128): Promise<IMOSROAck> => {
 				return onROSwapStories(Action, StoryID0, StoryID1)
 			}
 		)
 		mosDevice.onROSwapItems(
-			(Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> => {
+			async (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> => {
 				return onROSwapItems(Action, ItemID0, ItemID1)
 			}
 		)

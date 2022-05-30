@@ -41,23 +41,23 @@ describe('Profile 0', () => {
 		mosDevice = await getMosDevice(mosConnection)
 
 		// Profile 0:
-		onRequestMachineInfo = jest.fn(() => {
-			return Promise.resolve(xmlApiData.machineInfo)
+		onRequestMachineInfo = jest.fn(async () => {
+			return xmlApiData.machineInfo
 		})
-		mosDevice.onRequestMachineInfo((): Promise<IMOSListMachInfo> => {
+		mosDevice.onRequestMachineInfo(async (): Promise<IMOSListMachInfo> => {
 			return onRequestMachineInfo()
 		})
 		// Profile 1:
-		onRequestMOSObject = jest.fn(() => {
-			return Promise.resolve(xmlApiData.mosObj)
+		onRequestMOSObject = jest.fn(async () => {
+			return xmlApiData.mosObj
 		})
-		onRequestAllMOSObjects = jest.fn(() => {
-			return Promise.resolve([xmlApiData.mosObj, xmlApiData.mosObj2])
+		onRequestAllMOSObjects = jest.fn(async () => {
+			return [xmlApiData.mosObj, xmlApiData.mosObj2]
 		})
-		mosDevice.onRequestMOSObject((objId: string): Promise<IMOSObject | null> => {
+		mosDevice.onRequestMOSObject(async (objId: string): Promise<IMOSObject | null> => {
 			return onRequestMOSObject(objId)
 		})
-		mosDevice.onRequestAllMOSObjects((): Promise<Array<IMOSObject>> => {
+		mosDevice.onRequestAllMOSObjects(async (): Promise<Array<IMOSObject>> => {
 			return onRequestAllMOSObjects()
 		})
 		const b = doBeforeAll()

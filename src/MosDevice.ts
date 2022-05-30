@@ -273,13 +273,11 @@ export class MosDevice implements IMOSDevice {
 		if (this._primaryConnection) this._primaryConnection.connect()
 		if (this._secondaryConnection) this._secondaryConnection.connect()
 	}
-	dispose(): Promise<void> {
+	async dispose(): Promise<void> {
 		const ps: Array<Promise<any>> = []
 		if (this._primaryConnection) ps.push(this._primaryConnection.dispose())
 		if (this._secondaryConnection) ps.push(this._secondaryConnection.dispose())
-		return Promise.all(ps).then(() => {
-			return
-		})
+		await Promise.all(ps)
 	}
 
 	async routeData(data: AnyXML, port: PortType): Promise<any> {
@@ -699,7 +697,7 @@ export class MosDevice implements IMOSDevice {
 
 	// Deprecated methods:
 	/** @deprecated getMachineInfo is deprecated, use requestMachineInfo instead */
-	getMachineInfo(): Promise<IMOSListMachInfo> {
+	async getMachineInfo(): Promise<IMOSListMachInfo> {
 		return this.requestMachineInfo()
 	}
 	/** @deprecated onGetMachineInfo is deprecated, use onRequestMachineInfo instead */
@@ -773,11 +771,11 @@ export class MosDevice implements IMOSDevice {
 	/**
 	 * @deprecated getMOSObject is deprecated, use sendRequestMOSObject instead
 	 */
-	getMOSObject(objId: MosString128): Promise<IMOSObject> {
+	async getMOSObject(objId: MosString128): Promise<IMOSObject> {
 		return this.sendRequestMOSObject(objId)
 	}
 	/** @deprecated getAllMOSObjects is deprecated, use sendRequestAllMOSObjects instead */
-	getAllMOSObjects(): Promise<IMOSObject[]> {
+	async getAllMOSObjects(): Promise<IMOSObject[]> {
 		return this.sendRequestAllMOSObjects()
 	}
 
@@ -830,7 +828,7 @@ export class MosDevice implements IMOSDevice {
 	/**
 	 * @deprecated getRunningOrder is deprecated, use sendRequestRunningOrder instead
 	 */
-	getRunningOrder(runningOrderId: MosString128): Promise<IMOSRunningOrder | null> {
+	async getRunningOrder(runningOrderId: MosString128): Promise<IMOSRunningOrder | null> {
 		return this.sendRequestRunningOrder(runningOrderId)
 	}
 
@@ -859,15 +857,15 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	/** @deprecated setRunningOrderStatus is deprecated, use sendRunningOrderStatus instead */
-	setRunningOrderStatus(status: IMOSRunningOrderStatus): Promise<IMOSROAck> {
+	async setRunningOrderStatus(status: IMOSRunningOrderStatus): Promise<IMOSROAck> {
 		return this.sendRunningOrderStatus(status)
 	}
 	/** @deprecated setStoryStatus is deprecated, use sendStoryStatus instead */
-	setStoryStatus(status: IMOSStoryStatus): Promise<IMOSROAck> {
+	async setStoryStatus(status: IMOSStoryStatus): Promise<IMOSROAck> {
 		return this.sendStoryStatus(status)
 	}
 	/** @deprecated setItemStatus is deprecated, use sendItemStatus instead */
-	setItemStatus(status: IMOSItemStatus): Promise<IMOSROAck> {
+	async setItemStatus(status: IMOSItemStatus): Promise<IMOSROAck> {
 		return this.sendItemStatus(status)
 	}
 
@@ -1042,11 +1040,10 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRequestSearchableSchema = cb
 	}
 
-	sendRequestSearchableSchema(username: string): Promise<IMOSListSearchableSchema> {
+	async sendRequestSearchableSchema(username: string): Promise<IMOSListSearchableSchema> {
 		const message = new MosReqSearchableSchema({ username })
-		return this.executeCommand(message).then((response) => {
-			return response.mos.mosListSearchableSchema
-		})
+		const response = await this.executeCommand(message)
+		return response.mos.mosListSearchableSchema
 	}
 
 	onRequestObjectList(cb: (objList: IMOSRequestObjectList) => Promise<IMOSObjectList>): void {
@@ -1054,13 +1051,12 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnRequestObjectList = cb
 	}
 
-	sendRequestObjectList(reqObjList: IMOSRequestObjectList): Promise<IMOSObjectList> {
+	async sendRequestObjectList(reqObjList: IMOSRequestObjectList): Promise<IMOSObjectList> {
 		const message = new MosReqObjList(reqObjList)
-		return this.executeCommand(message).then((response) => {
-			const objList = response.mos.mosObjList
-			if (objList.list) objList.list = Parser.xml2MosObjs(objList.list.mosObj)
-			return objList
-		})
+		const response = await this.executeCommand(message)
+		const objList = response.mos.mosObjList
+		if (objList.list) objList.list = Parser.xml2MosObjs(objList.list.mosObj)
+		return objList
 	}
 
 	onRequestObjectActionNew(cb: (obj: IMOSObject) => Promise<IMOSAck>): void {
@@ -1069,10 +1065,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendRequestObjectActionNew(obj: IMOSObject): Promise<IMOSAck> {
 		const message = new MosReqObjActionNew({ object: obj })
-		return this.executeCommand(message).then((response) => {
-			const ack: IMOSAck = Parser.xml2Ack(response.mos.mosAck)
-			return ack
-		})
+		const response = await this.executeCommand(message)
+		return Parser.xml2Ack(response.mos.mosAck)
 	}
 
 	onRequestObjectActionUpdate(cb: (objId: MosString128, obj: IMOSObject) => Promise<IMOSAck>): void {
@@ -1081,10 +1075,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendRequestObjectActionUpdate(objId: MosString128, obj: IMOSObject): Promise<IMOSAck> {
 		const message = new MosReqObjActionUpdate({ object: obj, objectId: objId })
-		return this.executeCommand(message).then((response) => {
-			const ack: IMOSAck = Parser.xml2Ack(response.mos.mosAck)
-			return ack
-		})
+		const response = await this.executeCommand(message)
+		return Parser.xml2Ack(response.mos.mosAck)
 	}
 	onRequestObjectActionDelete(cb: (objId: MosString128) => Promise<IMOSAck>): void {
 		this.checkProfile('onRequestObjectActionDelete', 'profile3')
@@ -1092,10 +1084,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendRequestObjectActionDelete(objId: MosString128): Promise<IMOSAck> {
 		const message = new MosReqObjActionDelete({ objectId: objId })
-		return this.executeCommand(message).then((response) => {
-			const ack: IMOSAck = Parser.xml2Ack(response.mos.mosAck)
-			return ack
-		})
+		const response = await this.executeCommand(message)
+		return Parser.xml2Ack(response.mos.mosAck)
 	}
 
 	// Deprecated methods:
@@ -1104,7 +1094,7 @@ export class MosDevice implements IMOSDevice {
 		return this.onObjectCreate(cb)
 	}
 	/** @deprecated mosObjCreate is deprecated, use sendObjectCreate instead */
-	mosObjCreate(object: IMOSObject): Promise<IMOSAck> {
+	async mosObjCreate(object: IMOSObject): Promise<IMOSAck> {
 		return this.sendObjectCreate(object)
 	}
 	/** @deprecated onMosItemReplace is deprecated, use onItemReplace instead */
@@ -1112,7 +1102,7 @@ export class MosDevice implements IMOSDevice {
 		return this.onItemReplace(cb)
 	}
 	/** @deprecated mosItemReplace is deprecated, use sendItemReplace instead */
-	mosItemReplace(options: MosItemReplaceOptions): Promise<IMOSROAck> {
+	async mosItemReplace(options: MosItemReplaceOptions): Promise<IMOSROAck> {
 		return this.sendItemReplace(options)
 	}
 	/** @deprecated onMosReqSearchableSchema is deprecated, use onRequestSearchableSchema instead */
@@ -1120,7 +1110,7 @@ export class MosDevice implements IMOSDevice {
 		return this.onRequestSearchableSchema(cb)
 	}
 	/** @deprecated mosRequestSearchableSchema is deprecated, use sendRequestSearchableSchema instead */
-	mosRequestSearchableSchema(username: string): Promise<IMOSListSearchableSchema> {
+	async mosRequestSearchableSchema(username: string): Promise<IMOSListSearchableSchema> {
 		return this.sendRequestSearchableSchema(username)
 	}
 	/** @deprecated onMosReqObjectList is deprecated, use onRequestObjectList instead */
@@ -1128,7 +1118,7 @@ export class MosDevice implements IMOSDevice {
 		return this.onRequestObjectList(cb)
 	}
 	/** @deprecated mosRequestObjectList is deprecated, use sendRequestObjectList instead */
-	mosRequestObjectList(reqObjList: IMOSRequestObjectList): Promise<IMOSObjectList> {
+	async mosRequestObjectList(reqObjList: IMOSRequestObjectList): Promise<IMOSObjectList> {
 		return this.sendRequestObjectList(reqObjList)
 	}
 	/** @deprecated onMosReqObjectAction is deprecated, use onRequestObjectAction*** instead */
@@ -1143,30 +1133,26 @@ export class MosDevice implements IMOSDevice {
 		this.checkProfile('onRequestAllRunningOrders', 'profile4')
 		this._callbackOnRequestAllRunningOrders = cb
 	}
-	sendRequestAllRunningOrders(): Promise<Array<IMOSRunningOrderBase>> {
+	async sendRequestAllRunningOrders(): Promise<Array<IMOSRunningOrderBase>> {
 		const message = new ROReqAll()
-		return new Promise((resolve, reject) => {
-			if (this._currentConnection) {
-				this.executeCommand(message)
-					.then((data) => {
-						if (has(data.mos, 'roListAll')) {
-							let xmlRos: Array<any> = (data.mos.roListAll || {}).ro
-							if (!Array.isArray(xmlRos)) xmlRos = [xmlRos]
-							const ros: Array<IMOSRunningOrderBase> = []
-							xmlRos.forEach((xmlRo) => {
-								if (xmlRo) {
-									ros.push(Parser.xml2ROBase(xmlRo))
-								}
-							})
-							resolve(ros)
-						} else {
-							console.error(data.mos)
-							reject('Unknown reply')
-						}
-					})
-					.catch(reject)
+
+		if (this._currentConnection) {
+			const reply = await this.executeCommand(message)
+
+			if (has(reply.mos, 'roListAll')) {
+				let xmlRos: Array<any> = (reply.mos.roListAll || {}).ro
+				if (!Array.isArray(xmlRos)) xmlRos = [xmlRos]
+				const ros: Array<IMOSRunningOrderBase> = []
+				xmlRos.forEach((xmlRo) => {
+					if (xmlRo) {
+						ros.push(Parser.xml2ROBase(xmlRo))
+					}
+				})
+				return ros
+			} else {
+				throw new Error('Unknown response')
 			}
-		})
+		} else throw new Error(`Unable to send message due to no current connection`)
 	}
 	onRunningOrderStory(cb: (story: IMOSROFullStory) => Promise<IMOSROAck>): void {
 		this.checkProfile('onRunningOrderStory', 'profile4')
@@ -1185,7 +1171,7 @@ export class MosDevice implements IMOSDevice {
 		return this.onRequestAllRunningOrders(cb)
 	}
 	/** @deprecated getAllRunningOrders is deprecated, use sendRequestAllRunningOrders instead */
-	getAllRunningOrders(): Promise<Array<IMOSRunningOrderBase>> {
+	async getAllRunningOrders(): Promise<Array<IMOSRunningOrderBase>> {
 		return this.sendRequestAllRunningOrders()
 	}
 	/** @deprecated onROStory is deprecated, use onRunningOrderStory instead */
@@ -1193,7 +1179,7 @@ export class MosDevice implements IMOSDevice {
 		return this.onRunningOrderStory(cb)
 	}
 	/** @deprecated sendROStory is deprecated, use sendRunningOrderStory instead */
-	sendROStory(story: IMOSROFullStory): Promise<IMOSROAck> {
+	async sendROStory(story: IMOSROFullStory): Promise<IMOSROAck> {
 		return this.sendRunningOrderStory(story)
 	}
 
@@ -1324,6 +1310,7 @@ export class MosDevice implements IMOSDevice {
 				)
 			}
 		}
+		/* eslint-disable @typescript-eslint/unbound-method */
 		if (this.supportedProfiles.profile0) {
 			requireCallback('0', '_callbackOnRequestMachineInfo', this.onRequestMachineInfo)
 			// _callbackOnConnectionChange not required
