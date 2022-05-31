@@ -14,7 +14,18 @@ import {
 	getXMLReply,
 	setupMocks,
 } from './lib'
-import { MosConnection, MosDevice, IMOSObject, IMOSListMachInfo } from '..'
+import {
+	MosConnection,
+	MosDevice,
+	IMOSObject,
+	IMOSListMachInfo,
+	IMOSObjectType,
+	MosString128,
+	IMOSObjectStatus,
+	IMOSObjectAirStatus,
+	IMOSObjectPathType,
+	MosTime,
+} from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
 import { xml2js } from 'xml-js'
@@ -191,6 +202,47 @@ describe('Profile 1', () => {
 
 		expect(returnedObj).toMatchObject(xmlApiData.roList)
 		expect(returnedObj).toMatchSnapshot()
+	})
+	test('sendMOSObject', async () => {
+		// Prepare mock server response:
+		const mockReplyMosAck = jest.fn((data) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
+			return encode(getXMLReply(messageID, xmlData.mosAck))
+		})
+		socketMockLower.mockAddReply(mockReplyMosAck)
+		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
+		const reply = await mosDevice.sendMOSObject({
+			ID: new MosString128('M000123'),
+			Slug: new MosString128('theslug'),
+			MosAbstract: 'abstract!',
+			Group: 'grp',
+			Type: IMOSObjectType.VIDEO,
+			TimeBase: 50,
+			Revision: 5, // max 999
+			Duration: 1000,
+			Status: IMOSObjectStatus.NOT_READY,
+			AirStatus: IMOSObjectAirStatus.READY,
+			Paths: [
+				{
+					Type: IMOSObjectPathType.PATH,
+					Description: 'path',
+					Target: 'folder/target',
+				},
+			],
+			CreatedBy: new MosString128('me!'),
+			Created: new MosTime('2005-07-01T15:23:18Z'),
+		})
+		expect(mockReplyMosAck).toHaveBeenCalledTimes(1)
+		const msg = decode(mockReplyMosAck.mock.calls[0][0])
+		expect(msg).toMatch(/<mosObj>/)
+		checkMessageSnapshot(msg)
+
+		expect(reply).toMatchObject({
+			ID: new MosString128('M000123'),
+			Revision: 1,
+			Status: 'ACK',
+		})
 	})
 	test('getAllMOSObjects', async () => {
 		expect(socketMockLower).toBeTruthy()

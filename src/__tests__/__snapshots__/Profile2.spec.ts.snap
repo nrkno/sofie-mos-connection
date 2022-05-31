@@ -1556,6 +1556,164 @@ exports[`Profile 2 onStoryStatus: <mos>
 </mos>"
 `;
 
+exports[`Profile 2 sendCreateRunningOrder, sendReplaceRunningOrder 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roCreate>
+    <roID>96857485</roID>
+    <roSlug>the slug</roSlug>
+    <roChannel>14</roChannel>
+    <roEdStart>2005-07-01T13:15:00,000Z</roEdStart>
+    <roEdDur>1:23:45</roEdDur>
+    <roTrigger>A</roTrigger>
+    <story>
+      <storyID>story0</storyID>
+      <storySlug>slug0</storySlug>
+    </story>
+    <story>
+      <storyID>story1</storyID>
+      <storySlug>slug1</storySlug>
+    </story>
+  </roCreate>
+</mos>"
+`;
+
+exports[`Profile 2 sendCreateRunningOrder, sendReplaceRunningOrder 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendCreateRunningOrder, sendReplaceRunningOrder 3`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roReplace>
+    <roID>96857485</roID>
+    <roSlug>the slug</roSlug>
+    <roChannel>14</roChannel>
+    <roEdStart>2005-07-01T13:15:00,000Z</roEdStart>
+    <roEdDur>1:23:45</roEdDur>
+    <roTrigger>A</roTrigger>
+    <story>
+      <storyID>story0</storyID>
+      <storySlug>slug0</storySlug>
+    </story>
+    <story>
+      <storyID>story1</storyID>
+      <storySlug>slug1</storySlug>
+    </story>
+  </roReplace>
+</mos>"
+`;
+
+exports[`Profile 2 sendCreateRunningOrder, sendReplaceRunningOrder 4`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendDeleteRunningOrder 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roDelete>
+    <roID>96857485</roID>
+  </roDelete>
+</mos>"
+`;
+
+exports[`Profile 2 sendDeleteRunningOrder 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
 exports[`Profile 2 sendItemStatus 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>
@@ -1574,6 +1732,236 @@ exports[`Profile 2 sendItemStatus 1`] = `
 `;
 
 exports[`Profile 2 sendItemStatus 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendMetadataReplace 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roMetadataReplace>
+    <roID>96857485</roID>
+    <roSlug>the slug</roSlug>
+    <roChannel>14</roChannel>
+    <roEdStart>2005-07-01T13:15:00,000Z</roEdStart>
+    <roEdDur>1:23:45</roEdDur>
+    <roTrigger>A</roTrigger>
+    <mosExternalMetadata>
+      <mosSchema>http://localhost/mySchema0</mosSchema>
+      <mosPayload>
+        <prop0>a</prop0>
+        <prop1>b</prop1>
+      </mosPayload>
+      <mosScope>PLAYLIST</mosScope>
+    </mosExternalMetadata>
+    <mosExternalMetadata>
+      <mosSchema>http://localhost/mySchema1</mosSchema>
+      <mosPayload>
+        <prop2>x</prop2>
+        <prop3>y</prop3>
+      </mosPayload>
+      <mosScope>PLAYLIST</mosScope>
+    </mosExternalMetadata>
+  </roMetadataReplace>
+</mos>"
+`;
+
+exports[`Profile 2 sendMetadataReplace 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendRODeleteItems 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementAction operation=\\"DELETE\\">
+    <roID>96857485</roID>
+    <element_target>
+      <storyID>existing0</storyID>
+    </element_target>
+    <element_source>
+      <itemID>existing0_1</itemID>
+      <itemID>existing0_2</itemID>
+      <itemID>existing0_3</itemID>
+      <itemID>existing0_4</itemID>
+    </element_source>
+  </roElementAction>
+</mos>"
+`;
+
+exports[`Profile 2 sendRODeleteItems 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendRODeleteStories 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementAction operation=\\"DELETE\\">
+    <roID>96857485</roID>
+    <element_source>
+      <storyID>existing0</storyID>
+      <storyID>existing1</storyID>
+      <storyID>existing2</storyID>
+      <storyID>existing3</storyID>
+    </element_source>
+  </roElementAction>
+</mos>"
+`;
+
+exports[`Profile 2 sendRODeleteStories 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendROInsertItems 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementAction operation=\\"INSERT\\">
+    <roID>96857485</roID>
+    <element_target>
+      <storyID>existing0</storyID>
+      <itemID>existing0_0</itemID>
+    </element_target>
+    <element_source>
+      <item>
+        <itemID>insert0</itemID>
+        <objID>objid0</objID>
+        <mosID>mosid0</mosID>
+        <itemSlug>slug0</itemSlug>
+      </item>
+      <item>
+        <itemID>insert1</itemID>
+        <objID>objid1</objID>
+        <mosID>mosid1</mosID>
+        <itemSlug>slug1</itemSlug>
+      </item>
+    </element_source>
+  </roElementAction>
+</mos>"
+`;
+
+exports[`Profile 2 sendROInsertItems 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",
@@ -1633,6 +2021,333 @@ exports[`Profile 2 sendROInsertStories 1`] = `
 `;
 
 exports[`Profile 2 sendROInsertStories 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendROMoveItems 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementAction operation=\\"MOVE\\">
+    <roID>96857485</roID>
+    <element_target>
+      <storyID>existing0</storyID>
+      <itemID>existing0_0</itemID>
+    </element_target>
+    <element_source>
+      <itemID>existing0_1</itemID>
+      <itemID>existing0_2</itemID>
+      <itemID>existing0_3</itemID>
+      <itemID>existing0_4</itemID>
+    </element_source>
+  </roElementAction>
+</mos>"
+`;
+
+exports[`Profile 2 sendROMoveItems 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendROMoveStories 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementAction operation=\\"MOVE\\">
+    <roID>96857485</roID>
+    <element_target>
+      <storyID>existing0</storyID>
+    </element_target>
+    <element_source>
+      <storyID>existing1</storyID>
+      <storyID>existing2</storyID>
+      <storyID>existing3</storyID>
+      <storyID>existing4</storyID>
+    </element_source>
+  </roElementAction>
+</mos>"
+`;
+
+exports[`Profile 2 sendROMoveStories 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendROReplaceItems 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementAction operation=\\"REPLACE\\">
+    <roID>96857485</roID>
+    <element_target>
+      <storyID>existing0</storyID>
+      <itemID>existing0_0</itemID>
+    </element_target>
+    <element_source>
+      <item>
+        <itemID>insert0</itemID>
+        <objID>objid0</objID>
+        <mosID>mosid0</mosID>
+        <itemSlug>slug0</itemSlug>
+      </item>
+      <item>
+        <itemID>insert1</itemID>
+        <objID>objid1</objID>
+        <mosID>mosid1</mosID>
+        <itemSlug>slug1</itemSlug>
+      </item>
+    </element_source>
+  </roElementAction>
+</mos>"
+`;
+
+exports[`Profile 2 sendROReplaceItems 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendROReplaceStories 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementAction operation=\\"REPLACE\\">
+    <roID>96857485</roID>
+    <element_target>
+      <storyID>existing0</storyID>
+    </element_target>
+    <element_source>
+      <story>
+        <storyID>insert0</storyID>
+        <storySlug>slug0</storySlug>
+        <storyNum>number0</storyNum>
+      </story>
+      <story>
+        <storyID>insert1</storyID>
+        <storySlug>slug1</storySlug>
+        <storyNum>number1</storyNum>
+      </story>
+    </element_source>
+  </roElementAction>
+</mos>"
+`;
+
+exports[`Profile 2 sendROReplaceStories 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendROSwapItems 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementAction operation=\\"SWAP\\">
+    <roID>96857485</roID>
+    <element_target>
+      <storyID>existing0</storyID>
+    </element_target>
+    <element_source>
+      <itemID>existing0_1</itemID>
+      <itemID>existing0_2</itemID>
+    </element_source>
+  </roElementAction>
+</mos>"
+`;
+
+exports[`Profile 2 sendROSwapItems 2`] = `
+Object {
+  "ID": MosString128 {
+    "_str": "96857485",
+    "strict": true,
+  },
+  "Status": MosString128 {
+    "_str": "Unknown object M000133",
+    "strict": true,
+  },
+  "Stories": Array [
+    Object {
+      "ID": MosString128 {
+        "_str": "5983A501:0049B924:8390EF2B",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+    Object {
+      "ID": MosString128 {
+        "_str": "3854737F:0003A34D:983A0B28",
+        "strict": true,
+      },
+      "Items": Array [],
+    },
+  ],
+  "_messageID": 0,
+  "mosID": undefined,
+  "ncsID": undefined,
+  "port": "upper",
+}
+`;
+
+exports[`Profile 2 sendROSwapStories 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roElementAction operation=\\"SWAP\\">
+    <roID>96857485</roID>
+    <element_source>
+      <storyID>existing0</storyID>
+      <storyID>existing1</storyID>
+    </element_source>
+  </roElementAction>
+</mos>"
+`;
+
+exports[`Profile 2 sendROSwapStories 2`] = `
 Object {
   "ID": MosString128 {
     "_str": "96857485",

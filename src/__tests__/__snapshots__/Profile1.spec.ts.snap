@@ -561,3 +561,28 @@ Object {
   },
 }
 `;
+
+exports[`Profile 1 sendMOSObject 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <mosObj>
+    <objID>M000123</objID>
+    <objSlug>theslug</objSlug>
+    <mosAbstract>abstract!</mosAbstract>
+    <objGroup>grp</objGroup>
+    <objType>VIDEO</objType>
+    <objTB>50</objTB>
+    <objRev>5</objRev>
+    <objDur>1000</objDur>
+    <status>NOT READY</status>
+    <objAir>READY</objAir>
+    <objPaths>
+      <objPath techDescription=\\"path\\">folder/target</objPath>
+    </objPaths>
+    <createdBy>me!</createdBy>
+    <created>2005-07-01T15:23:18,000Z</created>
+  </mosObj>
+</mos>"
+`;

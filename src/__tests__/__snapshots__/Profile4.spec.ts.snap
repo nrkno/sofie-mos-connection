@@ -90,7 +90,7 @@ Array [
 ]
 `;
 
-exports[`Profile 4 onROStory 1`] = `
+exports[`Profile 4 onRunningOrderStory 1`] = `
 Array [
   Array [
     Object {
@@ -792,7 +792,7 @@ Array [
 ]
 `;
 
-exports[`Profile 4 onROStory: <mos>
+exports[`Profile 4 onRunningOrderStory: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1633</messageID>

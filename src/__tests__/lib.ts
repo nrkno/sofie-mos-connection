@@ -5,6 +5,7 @@ import { SocketMock } from '../__mocks__/socket'
 import { IServerMock, ServerMock } from '../__mocks__/server'
 // @ts-ignore imports are unused
 import { Socket, Server } from 'net'
+import { xml2js } from 'xml-js'
 
 import * as iconv from 'iconv-lite'
 iconv.encodingExists('utf16-be')
@@ -131,6 +132,16 @@ export async function checkReplyToServer(socket: SocketMock, messageId: number, 
 	expect(reply).toContain('<messageID>' + messageId + '</messageID>')
 	expect(reply).toContain(replyString)
 	expect(reply).toMatchSnapshot(reply)
+}
+export async function getReplyToServer(socket: SocketMock, messageId: number): Promise<any> {
+	// check reply to server:
+	await socket.mockWaitForSentMessages()
+
+	expect(socket.mockSentMessage).toHaveBeenCalledTimes(1)
+	// @ts-ignore mock
+	const reply = decode(socket.mockSentMessage.mock.calls[0][0])
+	expect(reply).toContain('<messageID>' + messageId + '</messageID>')
+	return xml2js(reply, { compact: true, nativeType: true, trim: true })
 }
 export function checkMessageSnapshot(msg: string): void {
 	expect(

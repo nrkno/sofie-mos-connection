@@ -10,10 +10,20 @@ import {
 	getMessageId,
 	getMosConnection,
 	getMosDevice,
+	getReplyToServer,
 	getXMLReply,
 	setupMocks,
 } from './lib'
-import { MosConnection, MosDevice, IMOSROAck, IMOSROFullStory, MosString128 } from '..'
+import {
+	MosConnection,
+	MosDevice,
+	IMOSROAck,
+	IMOSROFullStory,
+	MosString128,
+	IMOSRunningOrder,
+	MosTime,
+	MosDuration,
+} from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
@@ -65,7 +75,7 @@ describe('Profile 4', () => {
 			}
 			return ack
 		}
-		// Profile 2:
+		// Profile 4:
 		onROStory = jest.fn(roAckReply)
 
 		mosDevice.onRunningOrderStory(async (story: IMOSROFullStory): Promise<IMOSROAck> => {
@@ -94,7 +104,7 @@ describe('Profile 4', () => {
 		expect(socketMockUpper).toBeTruthy()
 		mosDevice.checkProfileValidness()
 	})
-	test('onROStory', async () => {
+	test('onRunningOrderStory', async () => {
 		// Fake incoming message on socket:
 
 		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySend)
@@ -122,6 +132,49 @@ describe('Profile 4', () => {
 		})
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
+	test('onRequestAllRunningOrders', async () => {
+		const onRoReqAll = jest.fn(async (): Promise<IMOSRunningOrder[]> => {
+			return [
+				{
+					ID: new MosString128('96857485'),
+					Slug: new MosString128('the slug'),
+					DefaultChannel: new MosString128('14'),
+					EditorialStart: new MosTime('2005-07-01T13:15:00Z'),
+					EditorialDuration: new MosDuration('1:23:45'),
+					Trigger: new MosString128('A'),
+					Stories: [],
+				},
+				{
+					ID: new MosString128('96857486'),
+					Slug: new MosString128('the slug2'),
+					DefaultChannel: new MosString128('19'),
+					Stories: [],
+				},
+			]
+		})
+		mosDevice.onRequestAllRunningOrders(onRoReqAll)
+
+		// Fake incoming message on socket:
+		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roReqAll)
+		expect(onRoReqAll).toHaveBeenCalledTimes(1)
+
+		const reply = await getReplyToServer(serverSocketMockLower, messageId)
+		expect(reply.mos.roListAll).toMatchObject({
+			ro: [
+				{
+					roID: { _text: 96857485 },
+					roSlug: { _text: 'the slug' },
+					roChannel: { _text: 14 },
+					roEdStart: { _text: '2005-07-01T13:15:00,000Z' },
+					roEdDur: { _text: '1:23:45' },
+					roTrigger: { _text: 'A' },
+				},
+				{
+					roID: { _text: 96857486 },
+				},
+			],
+		})
+	})
 	test('getAllRunningOrders', async () => {
 		// Prepare server response
 		const mockReply = jest.fn((data) => {
@@ -142,4 +195,6 @@ describe('Profile 4', () => {
 		expect(returnedListAll[1]).toMatchObject(xmlApiData.roListAll[1])
 		expect(returnedListAll).toMatchSnapshot()
 	})
+	// onRequestAllRunningOrders
+	// sendRunningOrderStory
 })

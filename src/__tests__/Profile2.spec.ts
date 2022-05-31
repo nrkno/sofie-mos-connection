@@ -34,6 +34,9 @@ import {
 	MosString128,
 	IMOSListMachInfo,
 	IMOSObjectAirStatus,
+	MosDuration,
+	MosTime,
+	IMOSScope,
 } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
@@ -271,7 +274,6 @@ describe('Profile 2', () => {
 		expect(fixSnapshot(onCreateRunningOrder.mock.calls)).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
-	// TODO: sendCreateRunningOrder
 	test('onReplaceRunningOrder', async () => {
 		// Fake incoming message on socket:
 		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roReplace)
@@ -280,7 +282,6 @@ describe('Profile 2', () => {
 		expect(fixSnapshot(onReplaceRunningOrder.mock.calls)).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
-	// TODO: sendReplaceRunningOrder
 	test('onDeleteRunningOrder', async () => {
 		// Fake incoming message on socket:
 		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roDelete)
@@ -289,7 +290,7 @@ describe('Profile 2', () => {
 		expect(fixSnapshot(onDeleteRunningOrder.mock.calls)).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
-	// TODO: sendDeleteRunningOrder
+
 	test('onRequestRunningOrder', async () => {
 		// Fake incoming message on socket:
 		const messageId = await fakeIncomingMessage(serverSocketMockUpper, xmlData.roReq)
@@ -367,7 +368,6 @@ describe('Profile 2', () => {
 		expect(fixSnapshot(onMetadataReplace.mock.calls)).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
-	// TODO: sendMetadataReplace
 	test('onRunningOrderStatus', async () => {
 		// Fake incoming message on socket:
 		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roElementStat_ro)
@@ -414,16 +414,11 @@ describe('Profile 2', () => {
 	})
 	test('sendStoryStatus', async () => {
 		// Prepare server response
-		const mockReply = jest.fn((data) => {
-			const str = decode(data)
-			const messageID = getMessageId(str)
-			return encode(getXMLReply(messageID, xmlData.roAck))
-		})
-		socketMockUpper.mockAddReply(mockReply)
+		socketMockUpper.mockAddReply(mockReplyRoAck)
 		const returnedAck: IMOSROAck = await mosDevice.sendStoryStatus(xmlApiData.roElementStat_story)
 		await socketMockUpper.mockWaitForSentMessages()
-		expect(mockReply).toHaveBeenCalledTimes(1)
-		const msg = decode(mockReply.mock.calls[0][0])
+		expect(mockReplyRoAck).toHaveBeenCalledTimes(1)
+		const msg = decode(mockReplyRoAck.mock.calls[0][0])
 		expect(msg).toMatch(/<roElementStat element="STORY">/)
 		checkMessageSnapshot(msg)
 		expect(returnedAck).toBeTruthy()
@@ -432,16 +427,11 @@ describe('Profile 2', () => {
 	})
 	test('sendItemStatus', async () => {
 		// Prepare server response
-		const mockReply = jest.fn((data) => {
-			const str = decode(data)
-			const messageID = getMessageId(str)
-			return encode(getXMLReply(messageID, xmlData.roAck))
-		})
-		socketMockUpper.mockAddReply(mockReply)
+		socketMockUpper.mockAddReply(mockReplyRoAck)
 		const returnedAck: IMOSROAck = await mosDevice.sendItemStatus(xmlApiData.roElementStat_item)
 		await socketMockUpper.mockWaitForSentMessages()
-		expect(mockReply).toHaveBeenCalledTimes(1)
-		const msg = decode(mockReply.mock.calls[0][0])
+		expect(mockReplyRoAck).toHaveBeenCalledTimes(1)
+		const msg = decode(mockReplyRoAck.mock.calls[0][0])
 		expect(msg).toMatch(/<roElementStat element="ITEM">/)
 		checkMessageSnapshot(msg)
 		expect(returnedAck).toBeTruthy()
@@ -558,6 +548,7 @@ describe('Profile 2', () => {
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
 	async function testSendFunctions(sendFcn: () => Promise<IMOSROAck>): Promise<any> {
+		mockReplyRoAck.mockClear()
 		socketMockUpper.mockAddReply(mockReplyRoAck)
 
 		const returnedAck: IMOSROAck = await sendFcn()
@@ -573,6 +564,123 @@ describe('Profile 2', () => {
 
 		return parsed
 	}
+
+	test('sendCreateRunningOrder, sendReplaceRunningOrder', async () => {
+		const ro: IMOSRunningOrder = {
+			ID: new MosString128('96857485'),
+			Slug: new MosString128('the slug'),
+			DefaultChannel: new MosString128('14'),
+			EditorialStart: new MosTime('2005-07-01T13:15:00Z'),
+			EditorialDuration: new MosDuration('1:23:45'),
+			Trigger: new MosString128('A'),
+			// MacroIn?: new MosString128(''),
+			// MacroOut?: new MosString128(''),
+			// MosExternalMetaData?: Array<IMOSExternalMetaData>
+			Stories: [
+				{
+					ID: new MosString128('story0'),
+					Slug: new MosString128('slug0'),
+					Items: [],
+				},
+				{
+					ID: new MosString128('story1'),
+					Slug: new MosString128('slug1'),
+					Items: [],
+				},
+			],
+		}
+		const roVerify = {
+			roID: { _text: 96857485 },
+			roSlug: { _text: 'the slug' },
+			roEdStart: { _text: '2005-07-01T13:15:00,000Z' },
+			roEdDur: { _text: '1:23:45' },
+			story: [
+				{
+					storyID: { _text: 'story0' },
+					storySlug: { _text: 'slug0' },
+				},
+				{
+					storyID: { _text: 'story1' },
+					storySlug: { _text: 'slug1' },
+				},
+			],
+		}
+		{
+			const sentMessage = await testSendFunctions(async () => {
+				return mosDevice.sendCreateRunningOrder(ro)
+			})
+			expect(sentMessage.mos.roCreate).toMatchObject(roVerify)
+		}
+		{
+			const sentMessage = await testSendFunctions(async () => {
+				return mosDevice.sendReplaceRunningOrder(ro)
+			})
+			expect(sentMessage.mos.roReplace).toMatchObject(roVerify)
+		}
+	})
+	test('sendDeleteRunningOrder', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendDeleteRunningOrder(new MosString128('96857485'))
+		})
+		expect(sentMessage.mos.roDelete).toMatchObject({
+			roID: { _text: 96857485 },
+		})
+	})
+	test('sendMetadataReplace', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendMetadataReplace({
+				ID: new MosString128('96857485'),
+				Slug: new MosString128('the slug'),
+				DefaultChannel: new MosString128('14'),
+				EditorialStart: new MosTime('2005-07-01T13:15:00Z'),
+				EditorialDuration: new MosDuration('1:23:45'),
+				Trigger: new MosString128('A'),
+				MosExternalMetaData: [
+					{
+						MosSchema: 'http://localhost/mySchema0',
+						MosScope: IMOSScope.PLAYLIST,
+						MosPayload: {
+							prop0: 'a',
+							prop1: 'b',
+						},
+					},
+					{
+						MosSchema: 'http://localhost/mySchema1',
+						MosScope: IMOSScope.PLAYLIST,
+						MosPayload: {
+							prop2: 'x',
+							prop3: 'y',
+						},
+					},
+				],
+			})
+		})
+		expect(sentMessage.mos.roMetadataReplace).toMatchObject({
+			roID: { _text: 96857485 },
+			roSlug: { _text: 'the slug' },
+			roEdStart: { _text: '2005-07-01T13:15:00,000Z' },
+			roEdDur: { _text: '1:23:45' },
+			mosExternalMetadata: [
+				{
+					mosScope: { _text: 'PLAYLIST' },
+					mosSchema: { _text: 'http://localhost/mySchema0' },
+					mosPayload: {
+						prop0: { _text: 'a' },
+						prop1: { _text: 'b' },
+					},
+				},
+				{
+					mosScope: { _text: 'PLAYLIST' },
+					mosSchema: { _text: 'http://localhost/mySchema1' },
+					mosPayload: {
+						prop2: { _text: 'x' },
+						prop3: { _text: 'y' },
+					},
+				},
+			],
+		})
+	})
+
 	test('sendReadyToAir', async () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendReadyToAir({
@@ -627,6 +735,312 @@ describe('Profile 2', () => {
 						storyNum: { _text: 'number1' },
 					},
 				],
+			},
+		})
+	})
+	test('sendROInsertItems', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendROInsertItems(
+				{
+					RunningOrderID: new MosString128('96857485'),
+					StoryID: new MosString128('existing0'),
+					ItemID: new MosString128('existing0_0'),
+				},
+				[
+					{
+						ID: new MosString128('insert0'),
+						Slug: new MosString128('slug0'),
+						ObjectID: new MosString128('objid0'),
+						MOSID: 'mosid0',
+					},
+					{
+						ID: new MosString128('insert1'),
+						Slug: new MosString128('slug1'),
+						ObjectID: new MosString128('objid1'),
+						MOSID: 'mosid1',
+					},
+				]
+			)
+		})
+		expect(sentMessage.mos.roElementAction).toMatchObject({
+			_attributes: { operation: 'INSERT' },
+			roID: { _text: 96857485 },
+			element_target: {
+				storyID: { _text: 'existing0' },
+				itemID: { _text: 'existing0_0' },
+			},
+			element_source: {
+				item: [
+					{
+						itemID: { _text: 'insert0' },
+						itemSlug: { _text: 'slug0' },
+						objID: { _text: 'objid0' },
+						mosID: { _text: 'mosid0' },
+					},
+					{
+						itemID: { _text: 'insert1' },
+						itemSlug: { _text: 'slug1' },
+						objID: { _text: 'objid1' },
+						mosID: { _text: 'mosid1' },
+					},
+				],
+			},
+		})
+	})
+	test('sendROReplaceStories', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendROReplaceStories(
+				{
+					RunningOrderID: new MosString128('96857485'),
+					StoryID: new MosString128('existing0'),
+				},
+				[
+					{
+						ID: new MosString128('insert0'),
+						Slug: new MosString128('slug0'),
+						Number: new MosString128('number0'),
+						// MosExternalMetaData?: Array<IMOSExternalMetaData>
+						Items: [], // Array<IMOSItem>
+					},
+					{
+						ID: new MosString128('insert1'),
+						Slug: new MosString128('slug1'),
+						Number: new MosString128('number1'),
+						Items: [],
+					},
+				]
+			)
+		})
+		expect(sentMessage.mos.roElementAction).toMatchObject({
+			_attributes: { operation: 'REPLACE' },
+			roID: { _text: 96857485 },
+			element_target: {
+				storyID: { _text: 'existing0' },
+			},
+			element_source: {
+				story: [
+					{
+						storyID: { _text: 'insert0' },
+						storySlug: { _text: 'slug0' },
+						storyNum: { _text: 'number0' },
+					},
+					{
+						storyID: { _text: 'insert1' },
+						storySlug: { _text: 'slug1' },
+						storyNum: { _text: 'number1' },
+					},
+				],
+			},
+		})
+	})
+	test('sendROReplaceItems', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendROReplaceItems(
+				{
+					RunningOrderID: new MosString128('96857485'),
+					StoryID: new MosString128('existing0'),
+					ItemID: new MosString128('existing0_0'),
+				},
+				[
+					{
+						ID: new MosString128('insert0'),
+						Slug: new MosString128('slug0'),
+						ObjectID: new MosString128('objid0'),
+						MOSID: 'mosid0',
+					},
+					{
+						ID: new MosString128('insert1'),
+						Slug: new MosString128('slug1'),
+						ObjectID: new MosString128('objid1'),
+						MOSID: 'mosid1',
+					},
+				]
+			)
+		})
+		expect(sentMessage.mos.roElementAction).toMatchObject({
+			_attributes: { operation: 'REPLACE' },
+			roID: { _text: 96857485 },
+			element_target: {
+				storyID: { _text: 'existing0' },
+				itemID: { _text: 'existing0_0' },
+			},
+			element_source: {
+				item: [
+					{
+						itemID: { _text: 'insert0' },
+						itemSlug: { _text: 'slug0' },
+						objID: { _text: 'objid0' },
+						mosID: { _text: 'mosid0' },
+					},
+					{
+						itemID: { _text: 'insert1' },
+						itemSlug: { _text: 'slug1' },
+						objID: { _text: 'objid1' },
+						mosID: { _text: 'mosid1' },
+					},
+				],
+			},
+		})
+	})
+	test('sendROMoveStories', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendROMoveStories(
+				{
+					RunningOrderID: new MosString128('96857485'),
+					StoryID: new MosString128('existing0'),
+				},
+				[
+					new MosString128('existing1'),
+					new MosString128('existing2'),
+					new MosString128('existing3'),
+					new MosString128('existing4'),
+				]
+			)
+		})
+		expect(sentMessage.mos.roElementAction).toMatchObject({
+			_attributes: { operation: 'MOVE' },
+			roID: { _text: 96857485 },
+			element_target: {
+				storyID: { _text: 'existing0' },
+			},
+			element_source: {
+				storyID: [
+					{ _text: 'existing1' },
+					{ _text: 'existing2' },
+					{ _text: 'existing3' },
+					{ _text: 'existing4' },
+				],
+			},
+		})
+	})
+	test('sendROMoveItems', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendROMoveItems(
+				{
+					RunningOrderID: new MosString128('96857485'),
+					StoryID: new MosString128('existing0'),
+					ItemID: new MosString128('existing0_0'),
+				},
+				[
+					new MosString128('existing0_1'),
+					new MosString128('existing0_2'),
+					new MosString128('existing0_3'),
+					new MosString128('existing0_4'),
+				]
+			)
+		})
+		expect(sentMessage.mos.roElementAction).toMatchObject({
+			_attributes: { operation: 'MOVE' },
+			roID: { _text: 96857485 },
+			element_target: {
+				storyID: { _text: 'existing0' },
+				itemID: { _text: 'existing0_0' },
+			},
+			element_source: {
+				itemID: [
+					{ _text: 'existing0_1' },
+					{ _text: 'existing0_2' },
+					{ _text: 'existing0_3' },
+					{ _text: 'existing0_4' },
+				],
+			},
+		})
+	})
+	test('sendRODeleteStories', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendRODeleteStories(
+				{
+					RunningOrderID: new MosString128('96857485'),
+				},
+				[
+					new MosString128('existing0'),
+					new MosString128('existing1'),
+					new MosString128('existing2'),
+					new MosString128('existing3'),
+				]
+			)
+		})
+		expect(sentMessage.mos.roElementAction).toMatchObject({
+			_attributes: { operation: 'DELETE' },
+			roID: { _text: 96857485 },
+			element_source: {
+				storyID: [
+					{ _text: 'existing0' },
+					{ _text: 'existing1' },
+					{ _text: 'existing2' },
+					{ _text: 'existing3' },
+				],
+			},
+		})
+	})
+	test('sendRODeleteItems', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendRODeleteItems(
+				{
+					RunningOrderID: new MosString128('96857485'),
+					StoryID: new MosString128('existing0'),
+				},
+				[
+					new MosString128('existing0_1'),
+					new MosString128('existing0_2'),
+					new MosString128('existing0_3'),
+					new MosString128('existing0_4'),
+				]
+			)
+		})
+		expect(sentMessage.mos.roElementAction).toMatchObject({
+			_attributes: { operation: 'DELETE' },
+			roID: { _text: 96857485 },
+			element_target: {
+				storyID: { _text: 'existing0' },
+			},
+			element_source: {
+				itemID: [
+					{ _text: 'existing0_1' },
+					{ _text: 'existing0_2' },
+					{ _text: 'existing0_3' },
+					{ _text: 'existing0_4' },
+				],
+			},
+		})
+	})
+	test('sendROSwapStories', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendROSwapStories(
+				{
+					RunningOrderID: new MosString128('96857485'),
+				},
+				new MosString128('existing0'),
+				new MosString128('existing1')
+			)
+		})
+		expect(sentMessage.mos.roElementAction).toMatchObject({
+			_attributes: { operation: 'SWAP' },
+			roID: { _text: 96857485 },
+			element_source: {
+				storyID: [{ _text: 'existing0' }, { _text: 'existing1' }],
+			},
+		})
+	})
+	test('sendROSwapItems', async () => {
+		const sentMessage = await testSendFunctions(async () => {
+			return mosDevice.sendROSwapItems(
+				{
+					RunningOrderID: new MosString128('96857485'),
+					StoryID: new MosString128('existing0'),
+				},
+				new MosString128('existing0_1'),
+				new MosString128('existing0_2')
+			)
+		})
+		expect(sentMessage.mos.roElementAction).toMatchObject({
+			_attributes: { operation: 'SWAP' },
+			roID: { _text: 96857485 },
+			element_target: {
+				storyID: { _text: 'existing0' },
+			},
+			element_source: {
+				itemID: [{ _text: 'existing0_1' }, { _text: 'existing0_2' }],
 			},
 		})
 	})
