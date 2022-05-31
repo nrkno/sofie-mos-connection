@@ -1,7 +1,7 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
 import { IMOSRunningOrder } from '../../api'
-import { addTextElement } from '../../utils/Utils'
+import { XMLRunningOrderBase } from './xmlConversion'
 
 export class ROListAll extends MosMessage {
 	public ROs: IMOSRunningOrder[] = []
@@ -18,8 +18,7 @@ export class ROListAll extends MosMessage {
 		this.ROs.forEach((RO: IMOSRunningOrder) => {
 			const xmlRO = XMLBuilder.create('ro')
 
-			addTextElement(root, 'roID', RO.ID)
-			addTextElement(root, 'roSlug', RO.Slug)
+			XMLRunningOrderBase.toXML(xmlRO, RO)
 
 			root.importDocument(xmlRO)
 		})
