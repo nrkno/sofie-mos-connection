@@ -750,6 +750,7 @@ export interface IMOSDeviceConnectionOptions {
 	}
 }
 
+/** http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObj */
 export interface IMOSObject {
 	ID?: MosString128
 	Slug: MosString128
