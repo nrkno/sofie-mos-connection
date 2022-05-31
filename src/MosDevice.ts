@@ -658,7 +658,7 @@ export class MosDevice implements IMOSDevice {
 		const data = await this.executeCommand(message)
 
 		const listMachInfo = data.mos.listMachInfo
-		const machineInfo: IMOSListMachInfo = {
+		const list: IMOSListMachInfo = {
 			manufacturer: new MosString128(listMachInfo.manufacturer),
 			model: new MosString128(listMachInfo.model),
 			hwRev: new MosString128(listMachInfo.hwRev),
@@ -679,11 +679,11 @@ export class MosDevice implements IMOSDevice {
 		if (Array.isArray(listMachInfo.supportedProfiles.mosProfile)) {
 			for (const mosProfile of listMachInfo.supportedProfiles.mosProfile) {
 				// @ts-expect-error hack
-				machineInfo.supportedProfiles[`profile${mosProfile.attributes.number}`] = mosProfile.text === 'YES'
+				list.supportedProfiles[`profile${mosProfile.attributes.number}`] = mosProfile.text === 'YES'
 			}
 		}
 
-		return machineInfo
+		return list
 	}
 
 	onRequestMachineInfo(cb: () => Promise<IMOSListMachInfo>): void {

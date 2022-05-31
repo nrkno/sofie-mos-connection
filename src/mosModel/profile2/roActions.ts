@@ -68,7 +68,7 @@ export class ROReplaceItems extends MosSendMessage {
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const root = XMLBuilder.create('roElementAction')
-		root.att('operation', 'INSERT')
+		root.att('operation', 'REPLACE')
 		addTextElement(root, 'roID', this.Action.RunningOrderID)
 		const xmlTarget = addTextElement(root, 'element_target')
 		addTextElement(xmlTarget, 'storyID', this.Action.StoryID)
@@ -167,7 +167,7 @@ export class ROSwapItems extends MosSendMessage {
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const root = XMLBuilder.create('roElementAction')
-		root.att('operation', 'DELETE')
+		root.att('operation', 'SWAP')
 		addTextElement(root, 'roID', this.Action.RunningOrderID)
 		const xmlTarget = addTextElement(root, 'element_target')
 		addTextElement(xmlTarget, 'storyID', this.Action.StoryID)
