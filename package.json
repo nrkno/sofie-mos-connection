@@ -51,7 +51,7 @@
     "reset": "git clean -dfx && git reset --hard && yarn",
     "validate:dependencies": "yarn audit --groups dependencies && yarn license-validate",
     "validate:dev-dependencies": "yarn audit --groups devDependencies",
-    "license-validate": "yarn sofie-licensecheck --allowPackages caniuse-lite@1.0.30001287"
+    "license-validate": "yarn sofie-licensecheck --allowPackages caniuse-lite@1.0.30001344"
   },
   "engines": {
     "node": ">=14"
@@ -72,7 +72,7 @@
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.1",
     "ts-jest": "^27.0.5",
-    "typedoc": "^0.22.15",
+    "typedoc": "0.22.15",
     "typescript": "~4.5"
   },
   "keywords": [
