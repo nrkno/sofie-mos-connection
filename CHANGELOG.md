@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [2.0.0-0](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.7...2.0.0-0) (2022-05-30)
+## [2.0.0-1](https://github.com/nrkno/sofie-mos-connection/compare/1.0.7...2.0.0-1) (2022-06-01)
 
 
 ### ⚠ BREAKING CHANGES
@@ -18,6 +18,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 * add heartbeatInterval property ([79b5523](https://github.com/nrkno/tv-automation-mos-connection/commit/79b55231693f2c4093c085e51bf940abe276f088))
 * more helpful messages for "Unknown response" errors ([4a91fa5](https://github.com/nrkno/tv-automation-mos-connection/commit/4a91fa53661060cc62c528294540752c5b4dde78))
+* bug in roElementAction command for REPLACE and SWAP items ([42034d9](https://github.com/nrkno/sofie-mos-connection/commit/42034d9b92dfac0801a8fe6f64b1ebc0c32cd483))
+* bug in roListAll message ([b4b79c8](https://github.com/nrkno/sofie-mos-connection/commit/b4b79c899a47ebfa231600c0dd16a0ebd7df79f2))
+* typedoc ([d71c354](https://github.com/nrkno/sofie-mos-connection/commit/d71c354f7eb2c4463dda5056e015174c93c5704f))
+* update unit tests & fix prsing-issue in requestMachineInfo response ([2b73347](https://github.com/nrkno/sofie-mos-connection/commit/2b733478cc03f9bfbcf65f9783cde6e4ffef3e6c))
+
 
 ### [1.0.7](https://github.com/nrkno/tv-automation-mos-connection/compare/1.0.5-1...1.0.7) (2022-05-13)
 
