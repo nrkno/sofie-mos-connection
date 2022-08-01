@@ -291,10 +291,9 @@ test('api & exports', () => {
 			f = function (story: IMOSROFullStory): Promise<IMOSROAck> {
 				return mosDevice.sendRunningOrderStory(story)
 			}
-
-			// eslint-disable-next-line
-			f = f
 		}
+
+		expect(f).toBeTruthy()
 	}
 
 	expect(typeof justTestTypings).toBe('function')
