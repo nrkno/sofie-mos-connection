@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IMOSAck, MosConnection, MosDevice, IMOSROAck, IProfiles, MosTime } from '../'
 
 import { SocketMock } from '../__mocks__/socket'
@@ -15,7 +16,6 @@ jest.mock('net')
 
 export function setupMocks(): void {
 	// Mock tcp connection
-	/* eslint-disable @typescript-eslint/no-unused-vars */
 	// @ts-ignore Replace Socket with the mocked varaint:
 	Socket = SocketMock
 	// @ts-ignore Replace Server with the mocked varaint:
