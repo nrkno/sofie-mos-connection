@@ -656,14 +656,25 @@ export class MosDevice implements IMOSDevice {
 		const message = new ReqMachInfo()
 
 		const data = await this.executeCommand(message)
-
 		const listMachInfo = data.mos.listMachInfo
+
+		let dom: MosTime | undefined
+		if (!isEmpty(listMachInfo.DOM)) {
+			try {
+				dom = new MosTime(listMachInfo.DOM)
+			} catch (e) {
+				// TODO: This is a hack, DOM probably should be a string not MosTime. But that means breaking api change
+				dom = undefined
+				this.debugTrace(`Failed to parse DOM as MosTime: ${e}`)
+			}
+		}
+
 		const list: IMOSListMachInfo = {
 			manufacturer: new MosString128(listMachInfo.manufacturer),
 			model: new MosString128(listMachInfo.model),
 			hwRev: new MosString128(listMachInfo.hwRev),
 			swRev: new MosString128(listMachInfo.swRev),
-			DOM: !isEmpty(listMachInfo.DOM) ? new MosTime(listMachInfo.DOM) : undefined,
+			DOM: dom,
 			SN: new MosString128(listMachInfo.SN),
 			ID: new MosString128(listMachInfo.ID),
 			time: new MosTime(listMachInfo.time),
