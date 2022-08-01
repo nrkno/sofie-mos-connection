@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/nrkno/sofie-mos-connection/compare/2.0.0...2.0.1) (2022-08-01)
+
+
+### Bug Fixes
+
+* gracefully handle failure to parse DOM in IMOSListMachInfo ([72aa53a](https://github.com/nrkno/sofie-mos-connection/commit/72aa53a35bc36f479c4db76fbdce26efeed30ca0))
+
 ## [2.0.0](https://github.com/nrkno/sofie-mos-connection/compare/1.0.7...2.0.0) (2022-06-08)
 
 ### ⚠ BREAKING CHANGES
