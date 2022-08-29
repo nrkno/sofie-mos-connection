@@ -11,6 +11,7 @@ export interface ClientDescription {
 	heartbeatConnected: boolean
 	client: MosSocketClient
 	clientDescription: PortType
+	lastAckTimestamp: number
 }
 
 export interface INCSServerConnection {
@@ -67,6 +68,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 			heartbeatConnected: false,
 			client: client,
 			clientDescription: clientDescription,
+			lastAckTimestamp: 0,
 		}
 		client.on('rawMessage', (type: string, message: string) => {
 			this.emit('rawMessage', type, message)
@@ -108,7 +110,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 
 	async executeCommand(message: MosMessage): Promise<any> {
 		// Fill with clients
-		let clients: Array<MosSocketClient>
+		let clients: ClientDescription[]
 
 		// Set mosID and ncsID
 		message.mosID = this._mosID
@@ -125,11 +127,13 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 			throw Error(`No "${message.port}" ports found`)
 		}
 		return new Promise((resolve, reject) => {
-			if (clients && clients.length) {
-				clients[0].queueCommand(message, (err, data) => {
+			const client = clients[0]
+			if (client) {
+				client.client.queueCommand(message, (err, data) => {
 					if (err) {
 						reject(err)
 					} else {
+						client.lastAckTimestamp = Date.now()
 						resolve(data)
 					}
 				})
@@ -161,28 +165,28 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		return connected
 	}
 
-	private _getClients(clientDescription: string): MosSocketClient[] {
-		const clients: MosSocketClient[] = []
+	private _getClients(clientDescription: string): ClientDescription[] {
+		const clients: ClientDescription[] = []
 		for (const i in this._clients) {
 			if (this._clients[i].clientDescription === clientDescription) {
-				clients.push(this._clients[i].client)
+				clients.push(this._clients[i])
 			}
 		}
 
 		return clients
 	}
 	/** */
-	get lowerPortClients(): MosSocketClient[] {
+	get lowerPortClients(): ClientDescription[] {
 		return this._getClients('lower')
 	}
 
 	/** */
-	get upperPortClients(): MosSocketClient[] {
+	get upperPortClients(): ClientDescription[] {
 		return this._getClients('upper')
 	}
 
 	/** */
-	get queryPortClients(): MosSocketClient[] {
+	get queryPortClients(): ClientDescription[] {
 		return this._getClients('query')
 	}
 	get host(): string {
@@ -260,7 +264,12 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 			Object.keys(this._clients).map(async (key) => {
 				const client = this._clients[key]
 
-				if (client.useHeartbeats) {
+				// Do we have to send a heartbeat?
+				const timeSinceLastAck = client.lastAckTimestamp ? Date.now() - client.lastAckTimestamp : Infinity
+				if (timeSinceLastAck < this._heartBeatsInterval) {
+					// No need to send a heartbeat, since we received an ACK recently
+					client.heartbeatConnected = true
+				} else if (client.useHeartbeats) {
 					const heartbeat = new HeartBeat(this._clients[key].clientDescription)
 					try {
 						await this.executeCommand(heartbeat)

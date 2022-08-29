@@ -121,6 +121,64 @@ describe('Profile 0', () => {
 		expect(msg).toMatch(/<heartbeat/)
 		expect(msg).toMatch('<messageID>' + sendMessageId)
 	})
+	test('send heartbeats', async () => {
+		socketMockLower.setAutoReplyToHeartBeat(false) // Handle heartbeat manually
+		socketMockUpper.setAutoReplyToHeartBeat(false) // Handle heartbeat manually
+
+		const heartbeatCount = {
+			upper: 0,
+			lower: 0,
+		}
+
+		const mockReply = (portType: 'upper' | 'lower') => {
+			return (data: any) => {
+				const str = decode(data)
+				const messageID = getMessageId(str)
+
+				if (str.match(/<heartbeat/)) {
+					const repl = getXMLReply(messageID, xmlData.heartbeat)
+					heartbeatCount[portType]++
+					return encode(repl)
+				} else if (str.match(/<reqMachInfo/)) {
+					const repl = getXMLReply(messageID, xmlData.machineInfo)
+					return encode(repl)
+				} else throw new Error('Mock: Unhandled message: ' + str)
+			}
+		}
+
+		for (let i = 0; i < 100; i++) {
+			socketMockUpper.mockAddReply(mockReply('upper'))
+			socketMockLower.mockAddReply(mockReply('lower'))
+		}
+		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
+
+		// During this time, there should have been sent a few heartbeats to the server:
+		await delay(DEFAULT_TIMEOUT * 4.5)
+		expect(heartbeatCount.upper).toBe(4)
+		expect(heartbeatCount.lower).toBe(4)
+		expect(mosDevice.getConnectionStatus()).toMatchObject({ PrimaryConnected: true })
+		heartbeatCount.upper = 0
+		heartbeatCount.lower = 0
+
+		// Ensure that the "smart heartbeats" work,
+		// ie if we have sent another command to the server and received ACKs,
+		// there is no need to send more heartbeats:
+		for (let i = 0; i < 5; i++) {
+			await mosDevice.requestMachineInfo()
+			await delay(DEFAULT_TIMEOUT * 0.75)
+		}
+		expect(heartbeatCount.upper).toBeGreaterThanOrEqual(2)
+		expect(heartbeatCount.lower).toBe(0) // No heartbeats should have been sent, since reqMachInfo was sent instead
+		expect(mosDevice.getConnectionStatus()).toMatchObject({ PrimaryConnected: true })
+		heartbeatCount.upper = 0
+		heartbeatCount.lower = 0
+
+		// Back to idle, the heartbeats should be sent as usual:
+		await delay(DEFAULT_TIMEOUT * 2)
+		expect(heartbeatCount.upper).toBeGreaterThanOrEqual(1)
+		expect(heartbeatCount.lower).toBeGreaterThanOrEqual(1)
+		expect(mosDevice.getConnectionStatus()).toMatchObject({ PrimaryConnected: true })
+	})
 
 	test('unknown party connects', async () => {
 		expect(serverSocketMockLower).toBeTruthy()
