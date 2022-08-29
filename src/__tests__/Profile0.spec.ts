@@ -2,6 +2,7 @@ import {
 	checkMessageSnapshot,
 	clearMocks,
 	decode,
+	DEFAULT_TIMEOUT,
 	delay,
 	doBeforeAll,
 	encode,
@@ -105,7 +106,7 @@ describe('Profile 0', () => {
 	test('heartbeat from other party', async () => {
 		expect(serverSocketMockLower).toBeTruthy()
 
-		serverSocketMockLower.setReplyToHeartBeat(false)
+		serverSocketMockLower.setAutoReplyToHeartBeat(false) // Handle heartbeat manually
 
 		const serverReply: jest.Mock<any, any> = jest.fn(() => false)
 		serverSocketMockLower.mockAddReply(serverReply)
@@ -123,7 +124,7 @@ describe('Profile 0', () => {
 
 	test('unknown party connects', async () => {
 		expect(serverSocketMockLower).toBeTruthy()
-		serverSocketMockLower.setReplyToHeartBeat(false)
+		serverSocketMockLower.setAutoReplyToHeartBeat(false)
 		const serverReply: jest.Mock<any, any> = jest.fn(() => false)
 		serverSocketMockLower.mockAddReply(serverReply)
 
