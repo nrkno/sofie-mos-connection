@@ -2,6 +2,7 @@ import {
 	checkMessageSnapshot,
 	clearMocks,
 	decode,
+	DEFAULT_TIMEOUT,
 	delay,
 	doBeforeAll,
 	encode,
@@ -105,7 +106,7 @@ describe('Profile 0', () => {
 	test('heartbeat from other party', async () => {
 		expect(serverSocketMockLower).toBeTruthy()
 
-		serverSocketMockLower.setReplyToHeartBeat(false)
+		serverSocketMockLower.setAutoReplyToHeartBeat(false) // Handle heartbeat manually
 
 		const serverReply: jest.Mock<any, any> = jest.fn(() => false)
 		serverSocketMockLower.mockAddReply(serverReply)
@@ -120,10 +121,43 @@ describe('Profile 0', () => {
 		expect(msg).toMatch(/<heartbeat/)
 		expect(msg).toMatch('<messageID>' + sendMessageId)
 	})
+	test('send heartbeats', async () => {
+		socketMockLower.setAutoReplyToHeartBeat(false) // Handle heartbeat manually
+		socketMockUpper.setAutoReplyToHeartBeat(false) // Handle heartbeat manually
+
+		const heartbeatCount = {
+			upper: 0,
+			lower: 0,
+		}
+
+		const mockReply = (portType: 'upper' | 'lower') => {
+			return (data: any) => {
+				const str = decode(data)
+				const messageID = getMessageId(str)
+
+				if (str.match(/<heartbeat/)) {
+					const repl = getXMLReply(messageID, xmlData.heartbeat)
+					heartbeatCount[portType]++
+					return encode(repl)
+				} else throw new Error('Mock: Unhandled message: ' + str)
+			}
+		}
+
+		for (let i = 0; i < 100; i++) {
+			socketMockUpper.mockAddReply(mockReply('upper'))
+			socketMockLower.mockAddReply(mockReply('lower'))
+		}
+
+		// During this time, there should have been sent a few heartbeats to the server:
+		await delay(DEFAULT_TIMEOUT * 4.5)
+		expect(heartbeatCount.upper).toBeGreaterThanOrEqual(4)
+		expect(heartbeatCount.lower).toBeGreaterThanOrEqual(4)
+		expect(mosDevice.getConnectionStatus()).toMatchObject({ PrimaryConnected: true })
+	})
 
 	test('unknown party connects', async () => {
 		expect(serverSocketMockLower).toBeTruthy()
-		serverSocketMockLower.setReplyToHeartBeat(false)
+		serverSocketMockLower.setAutoReplyToHeartBeat(false)
 		const serverReply: jest.Mock<any, any> = jest.fn(() => false)
 		serverSocketMockLower.mockAddReply(serverReply)
 

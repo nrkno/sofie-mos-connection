@@ -48,7 +48,7 @@ export class SocketMock extends EventEmitter implements Socket {
 	// [Symbol.asyncIterator](): AsyncIterableIterator<any>
 
 	private _responses: Array<ReplyTypes> = []
-	private _replyToHeartBeat = true
+	private _autoReplyToHeartBeat = true
 
 	constructor() {
 		super()
@@ -105,7 +105,7 @@ export class SocketMock extends EventEmitter implements Socket {
 
 		if (this.connectedPort === 10542) {
 			// don't reply on heartbeats on query port
-			this._replyToHeartBeat = false
+			this._autoReplyToHeartBeat = false
 		}
 
 		this.emit('connect')
@@ -194,7 +194,7 @@ export class SocketMock extends EventEmitter implements Socket {
 	// ------------------------------------------------------------------------
 	// Mock methods:
 	mockSentMessage0(data: unknown, encoding: string): void {
-		if (this._replyToHeartBeat) {
+		if (this._autoReplyToHeartBeat) {
 			const str: string = typeof data === 'string' ? data : this.decode(data as any)
 
 			if (str.match(/<heartbeat>/)) {
@@ -276,8 +276,8 @@ export class SocketMock extends EventEmitter implements Socket {
 	encode(str: string): Buffer {
 		return iconv.encode(str, 'utf16-be')
 	}
-	setReplyToHeartBeat(replyToHeartBeat: boolean): void {
-		this._replyToHeartBeat = replyToHeartBeat
+	setAutoReplyToHeartBeat(autoReplyToHeartBeat: boolean): void {
+		this._autoReplyToHeartBeat = autoReplyToHeartBeat
 	}
 }
 

@@ -67,6 +67,7 @@ export async function getMosConnection(profiles: IProfiles, strict: boolean): Pr
 
 	return Promise.resolve(mos)
 }
+export const DEFAULT_TIMEOUT = 200
 export async function getMosDevice(mos: MosConnection): Promise<MosDevice> {
 	SocketMock.mockClear()
 
@@ -74,7 +75,7 @@ export async function getMosDevice(mos: MosConnection): Promise<MosDevice> {
 		primary: {
 			id: 'their.mos.id',
 			host: '127.0.0.1',
-			timeout: 200,
+			timeout: DEFAULT_TIMEOUT,
 		},
 	})
 

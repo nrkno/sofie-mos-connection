@@ -345,8 +345,8 @@ describe('MosDevice: General', () => {
 		connectionStatusChanged.mockClear()
 
 		// test timeout:
-		connMocks[1].setReplyToHeartBeat(false)
-		connMocks[2].setReplyToHeartBeat(true)
+		connMocks[1].setAutoReplyToHeartBeat(false)
+		connMocks[2].setAutoReplyToHeartBeat(true)
 
 		await delay(800) // to allow for timeout:
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
