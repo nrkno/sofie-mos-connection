@@ -1,4 +1,4 @@
-name: Node CI
+name: Node CI - Lint and Test
 
 on:
   push:
@@ -10,72 +10,66 @@ on:
 
 jobs:
   lint:
-    name: Lint
+    name: Lint and Type check
     runs-on: ubuntu-latest
-    continue-on-error: true
-    timeout-minutes: 15
-
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 14.x
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: '16'
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Prepare Environment
-        run: |
-          yarn install
-          yarn build
+        run: yarn
         env:
           CI: true
-      - name: Run typecheck and linter
+      - name: Type check
+        run: yarn build
+        env:
+          CI: true
+      - name: Lint
         run: |
           yarn lint
         env:
           CI: true
 
   test:
-    name: Test
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-
+    name: Test on node ${{ matrix.node_version }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
-        node-version: [14.x, 16.x, 18.x]
-
+        node_version: ['14', '16', '18']
+        os: [ubuntu-latest] # [windows-latest, macOS-latest]
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node_version }}
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Prepare Environment
         run: |
-          yarn install
+          yarn
+          yarn build
         env:
           CI: true
-      - name: Run tests
-        if: matrix.node-version != '14.x'
+      - name: Run unit tests
         run: |
-          yarn unit
-        env:
-          CI: true
-      - name: Run tests and generate code coverage
-        if: matrix.node-version == '14.x'
-        run: |
-          yarn unit --coverage=true
-        env:
-          CI: true
-      - name: Send coverage
-        uses: codecov/codecov-action@v2
-        if: matrix.node-version == '14.x'
-        with:
-          fail_ci_if_error: true
-          # name: codecov-umbrella
-      - name: Check docs generation
-        if: matrix.node-version == '14.x'
-        run: |
-          yarn docs:test
+          yarn test:ci
         env:
           CI: true
 
@@ -91,13 +85,13 @@ jobs:
       - test
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: 16
       - name: Check release is desired
         id: do-publish
         run: |
@@ -136,8 +130,7 @@ jobs:
         if: ${{ steps.do-publish.outputs.tag }}
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
-          NEW_VERSION=$(node -p "require('./package.json').version")
-          yarn publish --access=public --new-version=$NEW_VERSION --network-timeout 100000 --tag ${{ steps.do-publish.outputs.tag }}
+          yarn lerna publish from-package --tag-version-prefix='' --dist-tag ${{ steps.do-publish.outputs.tag }} --yes --no-verify-access
         env:
           CI: true
       - name: Generate docs

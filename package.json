@@ -1,0 +1,63 @@
+{
+	"name": "mos-connection-monorepo",
+	"version": "0.0.0",
+	"repository": "https://github.com/nrkno/tv-automation-package-manager",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"lerna": "lerna",
+		"postinstall": "node scripts/update-packages.js",
+		"ci": "yarn install && yarn build && yarn lint && yarn test",
+		"release:set-version": "lerna version --exact --no-changelog --no-git-tag-version --no-push --yes",
+		"release:bump-release": "lerna version --exact --conventional-commits --conventional-graduate --tag-version-prefix='' --no-push --force-publish=*",
+		"release:bump-prerelease": "lerna version --exact --conventional-commits --conventional-prerelease --tag-version-prefix='' --no-push --force-publish=*",
+		"set-version": "lerna version --exact --no-changelog --no-git-tag-version --no-push --yes",
+		"setup": "lerna bootstrap",
+		"reset": "node scripts/reset.js",
+		"build": "lerna run build --stream",
+		"build:changed": "lerna run build --since head --exclude-dependents --stream",
+		"lint": "lerna exec --parallel --no-bail -- eslint . --ext .ts,.tsx",
+		"lintfix": "yarn lint --fix",
+		"lint:changed": "lerna exec --since origin/master --include-dependents -- eslint . --ext .js,.jsx,.ts,.tsx",
+		"test": "lerna run test --stream",
+		"test:changed": "lerna run --since origin/master --include-dependents test"
+	},
+	"devDependencies": {
+		"@sofie-automation/code-standard-preset": "^2.2.0",
+		"@types/jest": "^26.0.20",
+		"deep-extend": "^0.6.0",
+		"eslint": "7.19.0",
+		"eslint-plugin-jest": "^22.0.0",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-prettier": "^3.3.1",
+		"eslint-config-prettier": "^8.5.0",
+		"@typescript-eslint/eslint-plugin": "^5.45.0",
+		"find": "^0.3.0",
+		"fs-extra": "^9.1.0",
+		"glob": "^7.1.6",
+		"husky": "^4.3.8",
+		"jest": "^29.3.1",
+		"lerna": "^6.1.0",
+		"lodash": "^4.17.20",
+		"lint-staged": "^13.0.2",
+		"mkdirp": "^1.0.4",
+		"prettier": "^2.8.0",
+		"rimraf": "^3.0.2",
+		"ts-jest": "^29.0.3",
+		"typescript": "^4.5.0"
+	},
+	"engines": {
+		"node": ">=14.18.0"
+	},
+	"dependencies": {},
+	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
+	"husky": {
+		"hooks": {
+			"pre-commit": [
+				"node scripts/update-packages.js && lerna run --concurrency 1 --stream precommit --since HEAD --exclude-dependents"
+			]
+		}
+	}
+}
