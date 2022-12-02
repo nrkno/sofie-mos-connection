@@ -10,7 +10,7 @@ exports[`Profile 0 requestMachineInfo 1`] = `
 `;
 
 exports[`Profile 0 requestMachineInfo 2`] = `
-Object {
+{
   "DOM": undefined,
   "ID": MosString128 {
     "_str": "airchache.newscenter.com",
@@ -44,7 +44,7 @@ Object {
     "_timezoneDeclaration": "",
     "_timezoneZuluIndicator": "Z",
   },
-  "supportedProfiles": Object {
+  "supportedProfiles": {
     "deviceType": "NCS",
     "profile0": true,
     "profile1": true,

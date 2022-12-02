@@ -21,7 +21,7 @@ exports[`Profile 3 mosItemReplace 1`] = `
 `;
 
 exports[`Profile 3 mosItemReplace 2`] = `
-Object {
+{
   "ID": MosString128 {
     "_str": "96857485",
     "strict": true,
@@ -30,20 +30,20 @@ Object {
     "_str": "Unknown object M000133",
     "strict": true,
   },
-  "Stories": Array [
-    Object {
+  "Stories": [
+    {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
         "strict": true,
       },
-      "Items": Array [],
+      "Items": [],
     },
-    Object {
+    {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
         "strict": true,
       },
-      "Items": Array [],
+      "Items": [],
     },
   ],
   "_messageID": 0,
@@ -74,7 +74,7 @@ exports[`Profile 3 mosObjCreate 1`] = `
 `;
 
 exports[`Profile 3 mosObjCreate 2`] = `
-Object {
+{
   "Description": MosString128 {
     "_str": "",
     "strict": true,
@@ -93,12 +93,12 @@ exports[`Profile 3 mosReqSearchableSchema 1`] = `
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>xx</messageID>
-  <mosReqSearchableSchema username=\\"myUsername\\"/>
+  <mosReqSearchableSchema username="myUsername"/>
 </mos>"
 `;
 
 exports[`Profile 3 mosReqSearchableSchema 2`] = `
-Object {
+{
   "mosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
   "text": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
   "username": "myUsername",
@@ -110,7 +110,7 @@ exports[`Profile 3 mosRequestObjectList 1`] = `
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>xx</messageID>
-  <mosReqObjList username=\\"jbob\\">
+  <mosReqObjList username="jbob">
     <username>jbob</username>
     <queryID>A392938329kdakd2039300d0s9l3l9d0bzAQ</queryID>
     <listReturnStart>1</listReturnStart>
@@ -122,9 +122,9 @@ exports[`Profile 3 mosRequestObjectList 1`] = `
 `;
 
 exports[`Profile 3 mosRequestObjectList 2`] = `
-Object {
-  "list": Array [
-    Object {
+{
+  "list": [
+    {
       "AirStatus": "READY",
       "Changed": MosTime {
         "_time": 1998-10-31T23:39:12.000Z,
@@ -146,47 +146,47 @@ Object {
         "_str": "Chris",
         "strict": true,
       },
-      "Description": Object {
-        "elements": Array [
-          Object {
+      "Description": {
+        "elements": [
+          {
             "$name": "p",
             "$type": "element",
-            "elements": Array [
-              Object {
+            "elements": [
+              {
                 "$type": "text",
                 "text": "Exterior footage of",
               },
-              Object {
+              {
                 "$name": "em",
                 "$type": "text",
                 "text": "Baley Park Hotel",
               },
-              Object {
+              {
                 "$type": "text",
                 "text": "on fire with natural sound. Trucks are visible for the first portion of the clip.",
               },
-              Object {
+              {
                 "$name": "em",
                 "$type": "text",
                 "text": "CG locator at 0:04 and duration 0:05, Baley Park Hotel.",
               },
             ],
           },
-          Object {
+          {
             "$name": "p",
             "$type": "element",
-            "elements": Array [
-              Object {
+            "elements": [
+              {
                 "$name": "tab",
                 "$type": "element",
               },
-              Object {
+              {
                 "$type": "text",
                 "text": "Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.",
               },
             ],
           },
-          Object {
+          {
             "$name": "p",
             "$type": "text",
             "em": "Clip has been doubled for pad on voice over.",
@@ -200,23 +200,23 @@ Object {
         "_str": "M000121",
         "strict": true,
       },
-      "MosAbstract": Object {
-        "elements": Array [
-          Object {
+      "MosAbstract": {
+        "elements": [
+          {
             "$name": "b",
             "$type": "text",
             "text": "Hotel Fire",
           },
-          Object {
+          {
             "$name": "em",
             "$type": "text",
             "text": "vo",
           },
         ],
       },
-      "MosExternalMetaData": Array [
-        Object {
-          "MosPayload": Object {
+      "MosExternalMetaData": [
+        {
+          "MosPayload": {
             "Approved": 0,
             "Creator": "SHOLMES",
             "ModBy": "LJOHNSTON",
@@ -230,18 +230,18 @@ Object {
           "MosScope": "STORY",
         },
       ],
-      "Paths": Array [
-        Object {
+      "Paths": [
+        {
           "Description": "MPEG2                            Video",
-          "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+          "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
           "Type": "PATH",
         },
-        Object {
+        {
           "Description": "WM9 750Kbps",
           "Target": "http://server/proxy/clipe.wmv",
           "Type": "PROXY PATH",
         },
-        Object {
+        {
           "Description": "MOS Object",
           "Target": "http://server/proxy/clipe.xml",
           "Type": "METADATA PATH",
@@ -256,7 +256,7 @@ Object {
       "TimeBase": 59.94,
       "Type": "VIDEO",
     },
-    Object {
+    {
       "AirStatus": "READY",
       "Changed": MosTime {
         "_time": 1998-10-31T23:39:12.000Z,
@@ -278,47 +278,47 @@ Object {
         "_str": "Chris",
         "strict": true,
       },
-      "Description": Object {
-        "elements": Array [
-          Object {
+      "Description": {
+        "elements": [
+          {
             "$name": "p",
             "$type": "element",
-            "elements": Array [
-              Object {
+            "elements": [
+              {
                 "$type": "text",
                 "text": "Exterior footage of",
               },
-              Object {
+              {
                 "$name": "em",
                 "$type": "text",
                 "text": "Baley Park Hotel",
               },
-              Object {
+              {
                 "$type": "text",
                 "text": "on fire with natural sound. Trucks are visible for the first portion of the clip.",
               },
-              Object {
+              {
                 "$name": "em",
                 "$type": "text",
                 "text": "CG locator at 0:04 and duration 0:05, Baley Park Hotel.",
               },
             ],
           },
-          Object {
+          {
             "$name": "p",
             "$type": "element",
-            "elements": Array [
-              Object {
+            "elements": [
+              {
                 "$name": "tab",
                 "$type": "element",
               },
-              Object {
+              {
                 "$type": "text",
                 "text": "Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.",
               },
             ],
           },
-          Object {
+          {
             "$name": "p",
             "$type": "text",
             "em": "Clip has been doubled for pad on voice over.",
@@ -332,23 +332,23 @@ Object {
         "_str": "M000122",
         "strict": true,
       },
-      "MosAbstract": Object {
-        "elements": Array [
-          Object {
+      "MosAbstract": {
+        "elements": [
+          {
             "$name": "b",
             "$type": "text",
             "text": "Hotel Fire",
           },
-          Object {
+          {
             "$name": "em",
             "$type": "text",
             "text": "vo",
           },
         ],
       },
-      "MosExternalMetaData": Array [
-        Object {
-          "MosPayload": Object {
+      "MosExternalMetaData": [
+        {
+          "MosPayload": {
             "Approved": 0,
             "Creator": "SHOLMES",
             "ModBy": "LJOHNSTON",
@@ -362,18 +362,18 @@ Object {
           "MosScope": "STORY",
         },
       ],
-      "Paths": Array [
-        Object {
+      "Paths": [
+        {
           "Description": "MPEG2 Video",
-          "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+          "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
           "Type": "PATH",
         },
-        Object {
+        {
           "Description": "WM9 750Kbps",
           "Target": "http://server/proxy/clipe.wmv",
           "Type": "PROXY PATH",
         },
-        Object {
+        {
           "Description": "MOS Object",
           "Target": "http://server/proxy/clipe.xml",
           "Type": "METADATA PATH",
@@ -388,7 +388,7 @@ Object {
       "TimeBase": 59.94,
       "Type": "VIDEO",
     },
-    Object {
+    {
       "AirStatus": "READY",
       "Changed": MosTime {
         "_time": 1998-10-31T23:39:12.000Z,
@@ -410,47 +410,47 @@ Object {
         "_str": "Chris",
         "strict": true,
       },
-      "Description": Object {
-        "elements": Array [
-          Object {
+      "Description": {
+        "elements": [
+          {
             "$name": "p",
             "$type": "element",
-            "elements": Array [
-              Object {
+            "elements": [
+              {
                 "$type": "text",
                 "text": "Exterior footage of",
               },
-              Object {
+              {
                 "$name": "em",
                 "$type": "text",
                 "text": "Baley Park Hotel",
               },
-              Object {
+              {
                 "$type": "text",
                 "text": "on fire with natural sound. Trucks are visible for the first portion of the clip.",
               },
-              Object {
+              {
                 "$name": "em",
                 "$type": "text",
                 "text": "CG locator at 0:04 and duration 0:05, Baley Park Hotel.",
               },
             ],
           },
-          Object {
+          {
             "$name": "p",
             "$type": "element",
-            "elements": Array [
-              Object {
+            "elements": [
+              {
                 "$name": "tab",
                 "$type": "element",
               },
-              Object {
+              {
                 "$type": "text",
                 "text": "Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.",
               },
             ],
           },
-          Object {
+          {
             "$name": "p",
             "$type": "text",
             "em": "Clip has been doubled for pad on voice over.",
@@ -464,23 +464,23 @@ Object {
         "_str": "M000123",
         "strict": true,
       },
-      "MosAbstract": Object {
-        "elements": Array [
-          Object {
+      "MosAbstract": {
+        "elements": [
+          {
             "$name": "b",
             "$type": "text",
             "text": "Hotel Fire",
           },
-          Object {
+          {
             "$name": "em",
             "$type": "text",
             "text": "vo",
           },
         ],
       },
-      "MosExternalMetaData": Array [
-        Object {
-          "MosPayload": Object {
+      "MosExternalMetaData": [
+        {
+          "MosPayload": {
             "Approved": 0,
             "Creator": "SHOLMES",
             "ModBy": "LJOHNSTON",
@@ -494,18 +494,18 @@ Object {
           "MosScope": "STORY",
         },
       ],
-      "Paths": Array [
-        Object {
+      "Paths": [
+        {
           "Description": "MPEG2 Video",
-          "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+          "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
           "Type": "PATH",
         },
-        Object {
+        {
           "Description": "WM9 750Kbps",
           "Target": "http://server/proxy/clipe.wmv",
           "Type": "PROXY PATH",
         },
-        Object {
+        {
           "Description": "MOS Object",
           "Target": "http://server/proxy/clipe.xml",
           "Type": "METADATA PATH",
@@ -530,11 +530,11 @@ Object {
 `;
 
 exports[`Profile 3 onMosItemReplace 1`] = `
-Array [
-  Array [
+[
+  [
     undefined,
     undefined,
-    Object {
+    {
       "EditorialDuration": 815,
       "EditorialStart": 0,
       "ID": MosString128 {
@@ -550,9 +550,9 @@ Array [
         "_str": "r00",
         "strict": true,
       },
-      "MosExternalMetaData": Array [
-        Object {
-          "MosPayload": Object {
+      "MosExternalMetaData": [
+        {
+          "MosPayload": {
             "efxTime": 15,
             "fade": 17,
             "key": 110,
@@ -566,18 +566,18 @@ Array [
         "_str": "M000627",
         "strict": true,
       },
-      "Paths": Array [
-        Object {
+      "Paths": [
+        {
           "Description": "MPEG2 Video",
-          "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+          "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
           "Type": "PATH",
         },
-        Object {
+        {
           "Description": "WM9 750Kbps",
           "Target": "http://server/proxy/clipe.wmv",
           "Type": "PROXY PATH",
         },
-        Object {
+        {
           "Description": "MOS Object",
           "Target": "http://server/proxy/clipe.xml",
           "Type": "METADATA PATH",
@@ -610,9 +610,9 @@ exports[`Profile 3 onMosItemReplace: <mos>
 `;
 
 exports[`Profile 3 onMosObjCreate 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "AirStatus": undefined,
       "Changed": MosTime {
         "_time": 2021-01-01T00:00:00.000Z,
@@ -634,27 +634,27 @@ Array [
         "_str": "Chris",
         "strict": true,
       },
-      "Description": Object {
-        "elements": Array [
-          Object {
+      "Description": {
+        "elements": [
+          {
             "$name": "p",
             "$type": "element",
-            "elements": Array [
-              Object {
+            "elements": [
+              {
                 "$type": "text",
                 "text": "Exterior footage of",
               },
-              Object {
+              {
                 "$name": "em",
                 "$type": "text",
                 "text": "Baley Park Hotel",
               },
-              Object {
+              {
                 "$type": "text",
                 "text": "on fire with natural sound. Trucks are
 				 visible for the first portion of the clip.",
               },
-              Object {
+              {
                 "$name": "em",
                 "$type": "text",
                 "text": "CG locator at 0:04 and duration 0:05, Baley Park
@@ -662,21 +662,21 @@ Array [
               },
             ],
           },
-          Object {
+          {
             "$name": "p",
             "$type": "element",
-            "elements": Array [
-              Object {
+            "elements": [
+              {
                 "$name": "tab",
                 "$type": "element",
               },
-              Object {
+              {
                 "$type": "text",
                 "text": "Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.",
               },
             ],
           },
-          Object {
+          {
             "$name": "p",
             "$type": "text",
             "em": "Clip has been doubled for pad on voice over.",
@@ -691,9 +691,9 @@ Array [
         "strict": true,
       },
       "MosAbstract": undefined,
-      "MosExternalMetaData": Array [
-        Object {
-          "MosPayload": Object {
+      "MosExternalMetaData": [
+        {
+          "MosPayload": {
             "Approved": 0,
             "Creator": "SHOLMES",
             "ModBy": "LJOHNSTON",
@@ -707,7 +707,7 @@ Array [
           "MosScope": "STORY",
         },
       ],
-      "Paths": Array [],
+      "Paths": [],
       "Revision": undefined,
       "Slug": MosString128 {
         "_str": "Hotel Fire",
@@ -746,8 +746,8 @@ exports[`Profile 3 onMosObjCreate: <mos>
 `;
 
 exports[`Profile 3 onMosReqObjectActionDelete 1`] = `
-Array [
-  Array [
+[
+  [
     "1EFA3009233F8329C1",
   ],
 ]
@@ -778,9 +778,9 @@ exports[`Profile 3 onMosReqObjectActionDelete: <mos>
 `;
 
 exports[`Profile 3 onMosReqObjectActionNew 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "AirStatus": undefined,
       "Changed": MosTime {
         "_time": 2021-01-01T00:00:00.000Z,
@@ -802,27 +802,27 @@ Array [
         "_str": "Chris",
         "strict": true,
       },
-      "Description": Object {
-        "elements": Array [
-          Object {
+      "Description": {
+        "elements": [
+          {
             "$name": "p",
             "$type": "element",
-            "elements": Array [
-              Object {
+            "elements": [
+              {
                 "$type": "text",
                 "text": "Exterior footage of",
               },
-              Object {
+              {
                 "$name": "em",
                 "$type": "text",
                 "text": "Baley Park Hotel",
               },
-              Object {
+              {
                 "$type": "text",
                 "text": "on fire with natural sound. Trucks are
 				visible for the first portion of the clip.",
               },
-              Object {
+              {
                 "$name": "em",
                 "$type": "text",
                 "text": "CG locator at 0:04 and duration 0:05, Baley Park
@@ -830,21 +830,21 @@ Array [
               },
             ],
           },
-          Object {
+          {
             "$name": "p",
             "$type": "element",
-            "elements": Array [
-              Object {
+            "elements": [
+              {
                 "$name": "tab",
                 "$type": "element",
               },
-              Object {
+              {
                 "$type": "text",
                 "text": "Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.",
               },
             ],
           },
-          Object {
+          {
             "$name": "p",
             "$type": "text",
             "em": "Clip has been doubled for pad on voice over.",
@@ -859,9 +859,9 @@ Array [
         "strict": true,
       },
       "MosAbstract": undefined,
-      "MosExternalMetaData": Array [
-        Object {
-          "MosPayload": Object {
+      "MosExternalMetaData": [
+        {
+          "MosPayload": {
             "Approved": 0,
             "Creator": "SHOLMES",
             "ModBy": "LJOHNSTON",
@@ -875,7 +875,7 @@ Array [
           "MosScope": "STORY",
         },
       ],
-      "Paths": Array [],
+      "Paths": [],
       "Revision": undefined,
       "Slug": MosString128 {
         "_str": "Hotel Fire",
@@ -914,10 +914,10 @@ exports[`Profile 3 onMosReqObjectActionNew: <mos>
 `;
 
 exports[`Profile 3 onMosReqObjectActionUpdate 1`] = `
-Array [
-  Array [
+[
+  [
     "1EFA3009233F8329C1",
-    Object {
+    {
       "AirStatus": undefined,
       "Changed": MosTime {
         "_time": 2021-01-01T00:00:00.000Z,
@@ -939,27 +939,27 @@ Array [
         "_str": "Chris",
         "strict": true,
       },
-      "Description": Object {
-        "elements": Array [
-          Object {
+      "Description": {
+        "elements": [
+          {
             "$name": "p",
             "$type": "element",
-            "elements": Array [
-              Object {
+            "elements": [
+              {
                 "$type": "text",
                 "text": "Exterior footage of",
               },
-              Object {
+              {
                 "$name": "em",
                 "$type": "text",
                 "text": "Baley Park Hotel",
               },
-              Object {
+              {
                 "$type": "text",
                 "text": "on fire with natural sound. Trucks are
 			visible for the first portion of the clip.",
               },
-              Object {
+              {
                 "$name": "em",
                 "$type": "text",
                 "text": "CG locator at 0:04 and duration 0:05, Baley Park
@@ -967,21 +967,21 @@ Array [
               },
             ],
           },
-          Object {
+          {
             "$name": "p",
             "$type": "element",
-            "elements": Array [
-              Object {
+            "elements": [
+              {
                 "$name": "tab",
                 "$type": "element",
               },
-              Object {
+              {
                 "$type": "text",
                 "text": "Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.",
               },
             ],
           },
-          Object {
+          {
             "$name": "p",
             "$type": "text",
             "em": "Clip has been doubled for pad on voice over.",
@@ -996,9 +996,9 @@ Array [
         "strict": true,
       },
       "MosAbstract": undefined,
-      "MosExternalMetaData": Array [
-        Object {
-          "MosPayload": Object {
+      "MosExternalMetaData": [
+        {
+          "MosPayload": {
             "Approved": 0,
             "Creator": "SHOLMES",
             "ModBy": "LJOHNSTON",
@@ -1012,7 +1012,7 @@ Array [
           "MosScope": "STORY",
         },
       ],
-      "Paths": Array [],
+      "Paths": [],
       "Revision": undefined,
       "Slug": MosString128 {
         "_str": "Hotel Fire",
@@ -1051,50 +1051,50 @@ exports[`Profile 3 onMosReqObjectActionUpdate: <mos>
 `;
 
 exports[`Profile 3 onMosReqObjectList 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "generalSearch": "man bites dog",
       "listReturnEnd": null,
       "listReturnStart": 1,
       "mosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
       "queryID": "123439392039393ade0393zdkdls",
-      "searchGroups": Array [
-        Object {
-          "searchFields": Array [
-            Object {
+      "searchGroups": [
+        {
+          "searchFields": [
+            {
               "XPath": "/Presenter [. ='Bob']",
               "sortByOrder": 1,
             },
-            Object {
+            {
               "XPath": "/Slug [.='Dog Abuse']",
             },
-            Object {
+            {
               "XPath": "/Video/Length [.>60 AND <120]",
               "sortByOrder": 2,
               "sortType": "DESCENDING",
             },
-            Object {
+            {
               "XPath": "Producer [.!='Susan']",
               "sortByOrder": 3,
             },
           ],
         },
-        Object {
-          "searchFields": Array [
-            Object {
+        {
+          "searchFields": [
+            {
               "XPath": "/Presenter [. ='Jennifer']",
               "sortByOrder": 1,
             },
-            Object {
+            {
               "XPath": "/Slug [.='Big Mice in City']",
             },
-            Object {
+            {
               "XPath": "/Video/Length [.>60 AND <120]",
               "sortByOrder": 2,
               "sortType": "DESCENDING",
             },
-            Object {
+            {
               "XPath": "Producer [.!='Susan']",
               "sortByOrder": 3,
             },
@@ -1122,7 +1122,7 @@ exports[`Profile 3 onMosReqObjectList: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1636</messageID>
-  <mosObjList username=\\"jbob\\">
+  <mosObjList username="jbob">
     <queryID>A392938329kdakd2039300d0s9l3l9d0bzAQ</queryID>
     <listReturnStart>0</listReturnStart>
     <listReturnEnd>0</listReturnEnd>
@@ -1132,8 +1132,8 @@ exports[`Profile 3 onMosReqObjectList: <mos>
 `;
 
 exports[`Profile 3 onMosReqSearchableSchema 1`] = `
-Array [
-  Array [
+[
+  [
     "jbob",
   ],
 ]
@@ -1151,7 +1151,7 @@ exports[`Profile 3 onMosReqSearchableSchema: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>1635</messageID>
-  <mosListSearchableSchema username=\\"jbob\\">
+  <mosListSearchableSchema username="jbob">
     <mosSchema>http://example.com/mosSearchableSchema</mosSchema>
   </mosListSearchableSchema>
 </mos>"
@@ -1162,7 +1162,7 @@ exports[`Profile 3 sendMosReqObjectActionNew 1`] = `
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>xx</messageID>
-  <mosReqObjAction operation=\\"NEW\\">
+  <mosReqObjAction operation="NEW">
     <objSlug>abc123</objSlug>
     <objType>VIDEO</objType>
     <objTB>25</objTB>
@@ -1181,7 +1181,7 @@ exports[`Profile 3 sendMosReqObjectActionUpdateDelete 1`] = `
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>xx</messageID>
-  <mosReqObjAction operation=\\"DELETE\\" objID=\\"OBJID1234\\"/>
+  <mosReqObjAction operation="DELETE" objID="OBJID1234"/>
 </mos>"
 `;
 
@@ -1190,7 +1190,7 @@ exports[`Profile 3 sendMosReqObjectActionUpdateUpdate 1`] = `
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
   <messageID>xx</messageID>
-  <mosReqObjAction operation=\\"UPDATE\\" objID=\\"OBJID1234\\">
+  <mosReqObjAction operation="UPDATE" objID="OBJID1234">
     <objSlug>abc123</objSlug>
     <objType>VIDEO</objType>
     <objTB>25</objTB>
@@ -1218,7 +1218,7 @@ exports[`Profile 3 sendRunningOrderStory 1`] = `
         <objID>ObjectID</objID>
         <mosID>MOSID</mosID>
         <objPaths>
-          <objPath techDescription=\\"The one true path\\">/asdfasdf/asdf/asdf/qwerty</objPath>
+          <objPath techDescription="The one true path">/asdfasdf/asdf/asdf/qwerty</objPath>
         </objPaths>
         <mosExternalMetadata>
           <mosSchema>schema://mock</mosSchema>
@@ -1254,7 +1254,7 @@ exports[`Profile 3 sendRunningOrderStory 1`] = `
           <status>READY</status>
           <objAir>READY</objAir>
           <objPaths>
-            <objPath techDescription=\\"The one true path\\">/asdfasdf/asdf/asdf/qwerty/mosobject</objPath>
+            <objPath techDescription="The one true path">/asdfasdf/asdf/asdf/qwerty/mosobject</objPath>
           </objPaths>
           <createdBy>CreatedBy</createdBy>
           <created>1970-01-01T00:02:03,456</created>

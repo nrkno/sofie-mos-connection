@@ -12,7 +12,7 @@ exports[`message chunking chunk around space 1`] = `
 `;
 
 exports[`message chunking chunk around space 2`] = `
-Object {
+{
   "ID": MosString128 {
     "_str": "96857485",
     "strict": true,
@@ -21,23 +21,23 @@ Object {
     "_str": "5PM RUNDOWN",
     "strict": true,
   },
-  "Stories": Array [
-    Object {
+  "Stories": [
+    {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
         "strict": true,
       },
-      "Items": Array [
-        Object {
+      "Items": [
+        {
           "EditorialDuration": 645,
           "ID": MosString128 {
             "_str": "0",
             "strict": true,
           },
           "MOSID": "testmos.enps.com",
-          "MosExternalMetaData": Array [
-            Object {
-              "MosPayload": Object {
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
                 "Owner": "SHOLMES",
                 "destination": "b",
                 "source": "a",
@@ -52,18 +52,18 @@ Object {
             "_str": "M000224",
             "strict": true,
           },
-          "Paths": Array [
-            Object {
+          "Paths": [
+            {
               "Description": "MPEG2 Video",
-              "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+              "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
               "Type": "PATH",
             },
-            Object {
+            {
               "Description": "WM9 750Kbps",
               "Target": "http://server/proxy/clipe.wmv",
               "Type": "PROXY PATH",
             },
-            Object {
+            {
               "Description": "MOS Object",
               "Target": "http://server/proxy/clipe.xml",
               "Type": "METADATA PATH",
@@ -86,13 +86,13 @@ Object {
         "strict": true,
       },
     },
-    Object {
+    {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
         "strict": true,
       },
-      "Items": Array [
-        Object {
+      "Items": [
+        {
           "EditorialDuration": 310,
           "EditorialStart": 55,
           "ID": MosString128 {
@@ -100,9 +100,9 @@ Object {
             "strict": true,
           },
           "MOSID": "testmos.enps.com",
-          "MosExternalMetaData": Array [
-            Object {
-              "MosPayload": Object {
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
                 "Owner": "SHOLMES",
                 "destination": "b",
                 "source": "a",
@@ -145,7 +145,7 @@ exports[`message chunking chunks 1`] = `
 `;
 
 exports[`message chunking chunks 2`] = `
-Object {
+{
   "ID": MosString128 {
     "_str": "96857485",
     "strict": true,
@@ -154,23 +154,23 @@ Object {
     "_str": "5PM RUNDOWN",
     "strict": true,
   },
-  "Stories": Array [
-    Object {
+  "Stories": [
+    {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
         "strict": true,
       },
-      "Items": Array [
-        Object {
+      "Items": [
+        {
           "EditorialDuration": 645,
           "ID": MosString128 {
             "_str": "0",
             "strict": true,
           },
           "MOSID": "testmos.enps.com",
-          "MosExternalMetaData": Array [
-            Object {
-              "MosPayload": Object {
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
                 "Owner": "SHOLMES",
                 "destination": "b",
                 "source": "a",
@@ -185,18 +185,18 @@ Object {
             "_str": "M000224",
             "strict": true,
           },
-          "Paths": Array [
-            Object {
+          "Paths": [
+            {
               "Description": "MPEG2 Video",
-              "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+              "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
               "Type": "PATH",
             },
-            Object {
+            {
               "Description": "WM9 750Kbps",
               "Target": "http://server/proxy/clipe.wmv",
               "Type": "PROXY PATH",
             },
-            Object {
+            {
               "Description": "MOS Object",
               "Target": "http://server/proxy/clipe.xml",
               "Type": "METADATA PATH",
@@ -219,13 +219,13 @@ Object {
         "strict": true,
       },
     },
-    Object {
+    {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
         "strict": true,
       },
-      "Items": Array [
-        Object {
+      "Items": [
+        {
           "EditorialDuration": 310,
           "EditorialStart": 55,
           "ID": MosString128 {
@@ -233,9 +233,9 @@ Object {
             "strict": true,
           },
           "MOSID": "testmos.enps.com",
-          "MosExternalMetaData": Array [
-            Object {
-              "MosPayload": Object {
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
                 "Owner": "SHOLMES",
                 "destination": "b",
                 "source": "a",
@@ -278,7 +278,7 @@ exports[`message chunking junk data before 1`] = `
 `;
 
 exports[`message chunking junk data before 2`] = `
-Object {
+{
   "ID": MosString128 {
     "_str": "96857485",
     "strict": true,
@@ -287,23 +287,23 @@ Object {
     "_str": "5PM RUNDOWN",
     "strict": true,
   },
-  "Stories": Array [
-    Object {
+  "Stories": [
+    {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
         "strict": true,
       },
-      "Items": Array [
-        Object {
+      "Items": [
+        {
           "EditorialDuration": 645,
           "ID": MosString128 {
             "_str": "0",
             "strict": true,
           },
           "MOSID": "testmos.enps.com",
-          "MosExternalMetaData": Array [
-            Object {
-              "MosPayload": Object {
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
                 "Owner": "SHOLMES",
                 "destination": "b",
                 "source": "a",
@@ -318,18 +318,18 @@ Object {
             "_str": "M000224",
             "strict": true,
           },
-          "Paths": Array [
-            Object {
+          "Paths": [
+            {
               "Description": "MPEG2 Video",
-              "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+              "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
               "Type": "PATH",
             },
-            Object {
+            {
               "Description": "WM9 750Kbps",
               "Target": "http://server/proxy/clipe.wmv",
               "Type": "PROXY PATH",
             },
-            Object {
+            {
               "Description": "MOS Object",
               "Target": "http://server/proxy/clipe.xml",
               "Type": "METADATA PATH",
@@ -352,13 +352,13 @@ Object {
         "strict": true,
       },
     },
-    Object {
+    {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
         "strict": true,
       },
-      "Items": Array [
-        Object {
+      "Items": [
+        {
           "EditorialDuration": 310,
           "EditorialStart": 55,
           "ID": MosString128 {
@@ -366,9 +366,9 @@ Object {
             "strict": true,
           },
           "MOSID": "testmos.enps.com",
-          "MosExternalMetaData": Array [
-            Object {
-              "MosPayload": Object {
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
                 "Owner": "SHOLMES",
                 "destination": "b",
                 "source": "a",
@@ -411,7 +411,7 @@ exports[`message chunking junk data packet before 1`] = `
 `;
 
 exports[`message chunking junk data packet before 2`] = `
-Object {
+{
   "ID": MosString128 {
     "_str": "96857485",
     "strict": true,
@@ -420,23 +420,23 @@ Object {
     "_str": "5PM RUNDOWN",
     "strict": true,
   },
-  "Stories": Array [
-    Object {
+  "Stories": [
+    {
       "ID": MosString128 {
         "_str": "5983A501:0049B924:8390EF2B",
         "strict": true,
       },
-      "Items": Array [
-        Object {
+      "Items": [
+        {
           "EditorialDuration": 645,
           "ID": MosString128 {
             "_str": "0",
             "strict": true,
           },
           "MOSID": "testmos.enps.com",
-          "MosExternalMetaData": Array [
-            Object {
-              "MosPayload": Object {
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
                 "Owner": "SHOLMES",
                 "destination": "b",
                 "source": "a",
@@ -451,18 +451,18 @@ Object {
             "_str": "M000224",
             "strict": true,
           },
-          "Paths": Array [
-            Object {
+          "Paths": [
+            {
               "Description": "MPEG2 Video",
-              "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+              "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
               "Type": "PATH",
             },
-            Object {
+            {
               "Description": "WM9 750Kbps",
               "Target": "http://server/proxy/clipe.wmv",
               "Type": "PROXY PATH",
             },
-            Object {
+            {
               "Description": "MOS Object",
               "Target": "http://server/proxy/clipe.xml",
               "Type": "METADATA PATH",
@@ -485,13 +485,13 @@ Object {
         "strict": true,
       },
     },
-    Object {
+    {
       "ID": MosString128 {
         "_str": "3854737F:0003A34D:983A0B28",
         "strict": true,
       },
-      "Items": Array [
-        Object {
+      "Items": [
+        {
           "EditorialDuration": 310,
           "EditorialStart": 55,
           "ID": MosString128 {
@@ -499,9 +499,9 @@ Object {
             "strict": true,
           },
           "MOSID": "testmos.enps.com",
-          "MosExternalMetaData": Array [
-            Object {
-              "MosPayload": Object {
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
                 "Owner": "SHOLMES",
                 "destination": "b",
                 "source": "a",

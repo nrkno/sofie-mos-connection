@@ -12,8 +12,8 @@ exports[`Profile 1 getAllMOSObjects 1`] = `
 `;
 
 exports[`Profile 1 getAllMOSObjects 2`] = `
-Array [
-  Object {
+[
+  {
     "AirStatus": undefined,
     "Changed": MosTime {
       "_time": 2009-11-01T14:35:55.000Z,
@@ -35,47 +35,47 @@ Array [
       "_str": "Chris",
       "strict": true,
     },
-    "Description": Object {
-      "elements": Array [
-        Object {
+    "Description": {
+      "elements": [
+        {
           "$name": "p",
           "$type": "element",
-          "elements": Array [
-            Object {
+          "elements": [
+            {
               "$type": "text",
               "text": "Exterior footage of",
             },
-            Object {
+            {
               "$name": "em",
               "$type": "text",
               "text": "Baley Park Hotel",
             },
-            Object {
+            {
               "$type": "text",
               "text": "on fire with natural sound. Trucks are visible for the first portion of the clip.",
             },
-            Object {
+            {
               "$name": "em",
               "$type": "text",
               "text": "CG locator at 0:04 and duration 0:05, Baley Park Hotel.",
             },
           ],
         },
-        Object {
+        {
           "$name": "p",
           "$type": "element",
-          "elements": Array [
-            Object {
+          "elements": [
+            {
               "$name": "tab",
               "$type": "element",
             },
-            Object {
+            {
               "$type": "text",
               "text": "Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.",
             },
           ],
         },
-        Object {
+        {
           "$name": "p",
           "$type": "text",
           "em": "Clip has been doubled for pad on voice over.",
@@ -90,18 +90,18 @@ Array [
       "strict": true,
     },
     "MosAbstract": undefined,
-    "Paths": Array [
-      Object {
+    "Paths": [
+      {
         "Description": "MPEG2 Video",
-        "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+        "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
         "Type": "PATH",
       },
-      Object {
+      {
         "Description": "WM9 750Kbps",
         "Target": "http://server/proxy/clipe.wmv",
         "Type": "PROXY PATH",
       },
-      Object {
+      {
         "Description": "MOS Object",
         "Target": "http://server/proxy/clipe.xml",
         "Type": "METADATA PATH",
@@ -116,7 +116,7 @@ Array [
     "TimeBase": undefined,
     "Type": undefined,
   },
-  Object {
+  {
     "AirStatus": "READY",
     "Changed": MosTime {
       "_time": 2009-11-01T15:21:15.000Z,
@@ -146,9 +146,9 @@ Array [
       "strict": true,
     },
     "MosAbstract": undefined,
-    "MosExternalMetaData": Array [
-      Object {
-        "MosPayload": Object {
+    "MosExternalMetaData": [
+      {
+        "MosPayload": {
           "Approved": 0,
           "Creator": "SHOLMES",
           "ModBy": "LJOHNSTON",
@@ -162,18 +162,18 @@ Array [
         "MosScope": "STORY",
       },
     ],
-    "Paths": Array [
-      Object {
+    "Paths": [
+      {
         "Description": "MPEG2 Video",
-        "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+        "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
         "Type": "PATH",
       },
-      Object {
+      {
         "Description": "WM9 750Kbps",
         "Target": "http://server/proxy/clipe.wmv",
         "Type": "PROXY PATH",
       },
-      Object {
+      {
         "Description": "MOS Object",
         "Target": "http://server/proxy/clipe.xml",
         "Type": "METADATA PATH",
@@ -203,7 +203,7 @@ exports[`Profile 1 getMOSObject 1`] = `
 `;
 
 exports[`Profile 1 getMOSObject 2`] = `
-Object {
+{
   "AirStatus": "READY",
   "Changed": MosTime {
     "_time": 2009-10-31T23:39:12.000Z,
@@ -225,47 +225,47 @@ Object {
     "_str": "Chris",
     "strict": true,
   },
-  "Description": Object {
-    "elements": Array [
-      Object {
+  "Description": {
+    "elements": [
+      {
         "$name": "p",
         "$type": "element",
-        "elements": Array [
-          Object {
+        "elements": [
+          {
             "$type": "text",
             "text": "Exterior footage of",
           },
-          Object {
+          {
             "$name": "em",
             "$type": "text",
             "text": "Baley Park Hotel",
           },
-          Object {
+          {
             "$type": "text",
             "text": "on fire with natural sound. Trucks are visible for the first portion of the clip.",
           },
-          Object {
+          {
             "$name": "em",
             "$type": "text",
             "text": "CG locator at 0:04 and duration 0:05, Baley Park Hotel.",
           },
         ],
       },
-      Object {
+      {
         "$name": "p",
         "$type": "element",
-        "elements": Array [
-          Object {
+        "elements": [
+          {
             "$name": "tab",
             "$type": "element",
           },
-          Object {
+          {
             "$type": "text",
             "text": "Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.",
           },
         ],
       },
-      Object {
+      {
         "$name": "p",
         "$type": "text",
         "em": "Clip has been doubled for pad on voice over.",
@@ -279,27 +279,27 @@ Object {
     "_str": "M000123",
     "strict": true,
   },
-  "MosAbstract": Object {
-    "elements": Array [
-      Object {
+  "MosAbstract": {
+    "elements": [
+      {
         "$name": "b",
         "$type": "text",
         "text": "Hotel Fire",
       },
-      Object {
+      {
         "$name": "em",
         "$type": "text",
         "text": "vo",
       },
-      Object {
+      {
         "$type": "text",
         "text": ":30",
       },
     ],
   },
-  "MosExternalMetaData": Array [
-    Object {
-      "MosPayload": Object {
+  "MosExternalMetaData": [
+    {
+      "MosPayload": {
         "Approved": 0,
         "Creator": "SHOLMES",
         "ModBy": "LJOHNSTON",
@@ -313,18 +313,18 @@ Object {
       "MosScope": "STORY",
     },
   ],
-  "Paths": Array [
-    Object {
+  "Paths": [
+    {
       "Description": "MPEG2 Video",
-      "Target": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+      "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
       "Type": "PATH",
     },
-    Object {
+    {
       "Description": "WM9 750Kbps",
       "Target": "http://server/proxy/clipe.wmv",
       "Type": "PROXY PATH",
     },
-    Object {
+    {
       "Description": "MOS Object",
       "Target": "http://server/proxy/clipe.xml",
       "Type": "METADATA PATH",
@@ -342,33 +342,33 @@ Object {
 `;
 
 exports[`Profile 1 onRequestAllMOSObjects 1`] = `
-Array [
-  Array [],
+[
+  [],
 ]
 `;
 
 exports[`Profile 1 onRequestAllMOSObjects 2`] = `
-Object {
-  "mos": Object {
-    "messageID": Object {
+{
+  "mos": {
+    "messageID": {
       "_text": 1634,
     },
-    "mosAck": Object {
-      "objID": Object {
+    "mosAck": {
+      "objID": {
         "_text": 0,
       },
-      "objRev": Object {
+      "objRev": {
         "_text": 0,
       },
-      "status": Object {
+      "status": {
         "_text": "ACK",
       },
-      "statusDescription": Object {},
+      "statusDescription": {},
     },
-    "mosID": Object {
+    "mosID": {
       "_text": "our.mos.id",
     },
-    "ncsID": Object {
+    "ncsID": {
       "_text": "their.mos.id",
     },
   },
@@ -376,17 +376,17 @@ Object {
 `;
 
 exports[`Profile 1 onRequestAllMOSObjects 3`] = `
-Object {
-  "mos": Object {
+{
+  "mos": {
     "messageID": 99999,
     "mosID": "our.mos.id",
-    "mosListAll": Object {
-      "mosObj": Array [
-        Object {
+    "mosListAll": {
+      "mosObj": [
+        {
           "created": "2001-01-01T00:00:00,000",
           "createdBy": "Jonas",
-          "mosExternalMetadata": Object {
-            "mosPayload": Object {
+          "mosExternalMetadata": {
+            "mosPayload": {
               "Approved": 0,
               "Creator": "SHOLMES",
               "ModBy": "LJOHNSTON",
@@ -402,16 +402,16 @@ Object {
           "objAir": "READY",
           "objDur": 1500,
           "objID": "M000123",
-          "objPaths": Object {
-            "objMetadataPath": Object {
+          "objPaths": {
+            "objMetadataPath": {
               "techDescription": "MOS Object",
               "text": "http://server/proxy/clipe.xml",
             },
-            "objPath": Object {
+            "objPath": {
               "techDescription": "MPEG2 Video",
-              "text": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+              "text": "\\server\\media\\clip392028cd2320s0d.mxf",
             },
-            "objProxyPath": Object {
+            "objProxyPath": {
               "techDescription": "WM9 750Kbps",
               "text": "http://server/proxy/clipe.wmv",
             },
@@ -422,22 +422,22 @@ Object {
           "objType": "VIDEO",
           "status": "READY",
         },
-        Object {
+        {
           "created": "2001-01-01T00:00:00,000",
           "createdBy": "Jonas",
           "objAir": "READY",
           "objDur": 1000,
           "objID": "M0003523",
-          "objPaths": Object {
-            "objMetadataPath": Object {
+          "objPaths": {
+            "objMetadataPath": {
               "techDescription": "MOS Object",
               "text": "http://server/proxy/clipe.xml",
             },
-            "objPath": Object {
+            "objPath": {
               "techDescription": "MPEG2 Video",
-              "text": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+              "text": "\\server\\media\\clip392028cd2320s0d.mxf",
             },
-            "objProxyPath": Object {
+            "objProxyPath": {
               "techDescription": "WM9 750Kbps",
               "text": "http://server/proxy/clipe.wmv",
             },
@@ -456,106 +456,106 @@ Object {
 `;
 
 exports[`Profile 1 onRequestMOSObject 1`] = `
-Array [
-  Array [
+[
+  [
     "M000123",
   ],
 ]
 `;
 
 exports[`Profile 1 onRequestMOSObject 2`] = `
-Object {
-  "mos": Object {
-    "messageID": Object {
+{
+  "mos": {
+    "messageID": {
       "_text": 1633,
     },
-    "mosID": Object {
+    "mosID": {
       "_text": "our.mos.id",
     },
-    "mosObj": Object {
-      "created": Object {
+    "mosObj": {
+      "created": {
         "_text": "2001-01-01T00:00:00,000",
       },
-      "createdBy": Object {
+      "createdBy": {
         "_text": "Jonas",
       },
-      "mosExternalMetadata": Object {
-        "mosPayload": Object {
-          "Approved": Object {
+      "mosExternalMetadata": {
+        "mosPayload": {
+          "Approved": {
             "_text": 0,
           },
-          "Creator": Object {
+          "Creator": {
             "_text": "SHOLMES",
           },
-          "ModBy": Object {
+          "ModBy": {
             "_text": "LJOHNSTON",
           },
-          "ModTime": Object {
+          "ModTime": {
             "_text": 20010308142001,
           },
-          "Owner": Object {
+          "Owner": {
             "_text": "SHOLMES",
           },
-          "TextTime": Object {
+          "TextTime": {
             "_text": 278,
           },
-          "mediaTime": Object {
+          "mediaTime": {
             "_text": 0,
           },
         },
-        "mosSchema": Object {
+        "mosSchema": {
           "_text": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>",
         },
-        "mosScope": Object {
+        "mosScope": {
           "_text": "STORY",
         },
       },
-      "objAir": Object {
+      "objAir": {
         "_text": "READY",
       },
-      "objDur": Object {
+      "objDur": {
         "_text": 1500,
       },
-      "objID": Object {
+      "objID": {
         "_text": "M000123",
       },
-      "objPaths": Object {
-        "objMetadataPath": Object {
-          "_attributes": Object {
+      "objPaths": {
+        "objMetadataPath": {
+          "_attributes": {
             "techDescription": "MOS Object",
           },
           "_text": "http://server/proxy/clipe.xml",
         },
-        "objPath": Object {
-          "_attributes": Object {
+        "objPath": {
+          "_attributes": {
             "techDescription": "MPEG2 Video",
           },
-          "_text": "\\\\server\\\\media\\\\clip392028cd2320s0d.mxf",
+          "_text": "\\server\\media\\clip392028cd2320s0d.mxf",
         },
-        "objProxyPath": Object {
-          "_attributes": Object {
+        "objProxyPath": {
+          "_attributes": {
             "techDescription": "WM9 750Kbps",
           },
           "_text": "http://server/proxy/clipe.wmv",
         },
       },
-      "objRev": Object {
+      "objRev": {
         "_text": 1,
       },
-      "objSlug": Object {
+      "objSlug": {
         "_text": "My new object",
       },
-      "objTB": Object {
+      "objTB": {
         "_text": 50,
       },
-      "objType": Object {
+      "objType": {
         "_text": "VIDEO",
       },
-      "status": Object {
+      "status": {
         "_text": "READY",
       },
     },
-    "ncsID": Object {
+    "ncsID": {
       "_text": "their.mos.id",
     },
   },
@@ -579,7 +579,7 @@ exports[`Profile 1 sendMOSObject 1`] = `
     <status>NOT READY</status>
     <objAir>READY</objAir>
     <objPaths>
-      <objPath techDescription=\\"path\\">folder/target</objPath>
+      <objPath techDescription="path">folder/target</objPath>
     </objPaths>
     <createdBy>me!</createdBy>
     <created>2005-07-01T15:23:18,000Z</created>

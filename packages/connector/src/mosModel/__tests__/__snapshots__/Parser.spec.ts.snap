@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Parser xml2MetaData: handle time formats with various decimal separators 1`] = `
-Array [
-  Object {
-    "MosPayload": Object {
+[
+  {
+    "MosPayload": {
       "AUDIOGAIN": "",
       "Approved": 0,
       "Creator": "LINUXENPS",
@@ -52,28 +52,28 @@ Array [
 `;
 
 exports[`Parser xml2ObjPaths: only one objPath 1`] = `
-Array [
-  Object {
+[
+  {
     "Description": "",
-    "Target": "D:\\\\Videos\\\\1080p\\\\Wonderful Universe - Part 2 FULL HD.mp4",
+    "Target": "D:\\Videos\\1080p\\Wonderful Universe - Part 2 FULL HD.mp4",
     "Type": "PATH",
   },
 ]
 `;
 
 exports[`Parser xml2ObjPaths: several objPaths 1`] = `
-Array [
-  Object {
+[
+  {
     "Description": "VIDEO",
     "Target": "http://media.example.com.br:9000/mamfolders/Original/3afb7390-7f0c-4d52-ab74-159fad1df7ba.mp4",
     "Type": "PATH",
   },
-  Object {
+  {
     "Description": "JPG",
     "Target": "http://media.example.com.br:9000/mamfolders/Proxy/3afb7390-7f0c-4d52-ab74-159fad1df7ba_0.jpg",
     "Type": "PROXY PATH",
   },
-  Object {
+  {
     "Description": "VIDEO",
     "Target": "http://media.example.com.br:9000/mamfolders/Proxy/3afb7390-7f0c-4d52-ab74-159fad1df7ba_1.mp4",
     "Type": "PROXY PATH",

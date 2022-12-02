@@ -10,8 +10,8 @@ exports[`Profile 4 getAllRunningOrders 1`] = `
 `;
 
 exports[`Profile 4 getAllRunningOrders 2`] = `
-Array [
-  Object {
+[
+  {
     "EditorialDuration": MosDuration {
       "_duration": 1800,
     },
@@ -25,9 +25,9 @@ Array [
       "_str": "5PM",
       "strict": true,
     },
-    "MosExternalMetaData": Array [
-      Object {
-        "MosPayload": Object {
+    "MosExternalMetaData": [
+      {
+        "MosPayload": {
           "Approved": 0,
           "Creator": "SHOLMES",
           "ModBy": "LJOHNSTON",
@@ -49,7 +49,7 @@ Array [
       "strict": true,
     },
   },
-  Object {
+  {
     "EditorialDuration": MosDuration {
       "_duration": 1800,
     },
@@ -63,9 +63,9 @@ Array [
       "_str": "6PM",
       "strict": true,
     },
-    "MosExternalMetaData": Array [
-      Object {
-        "MosPayload": Object {
+    "MosExternalMetaData": [
+      {
+        "MosPayload": {
           "Approved": 1,
           "Creator": "SHOLMES",
           "ModBy": "BSMITH",
@@ -91,38 +91,38 @@ Array [
 `;
 
 exports[`Profile 4 onRunningOrderStory 1`] = `
-Array [
-  Array [
-    Object {
-      "Body": Array [
-        Object {
-          "Content": Object {
+[
+  [
+    {
+      "Body": [
+        {
+          "Content": {
             "$name": "p",
             "$type": "element",
           },
           "Type": "p",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "ID": MosString128 {
               "_str": "2",
               "strict": true,
             },
             "MOSID": "METADATA.NRK.MOS",
-            "MosExternalMetaData": Array [
-              Object {
-                "MosPayload": Object {
-                  "nrk": Object {
-                    "attributes": Object {
+            "MosExternalMetaData": [
+              {
+                "MosPayload": {
+                  "nrk": {
+                    "attributes": {
                       "changedBy": "N11580",
                       "changetime": "2014-10-06T13:24:32 +02:00",
                       "type": "video",
                     },
                     "description": "",
-                    "hbbtv": Object {
+                    "hbbtv": {
                       "link": "",
                     },
-                    "rights": Object {
+                    "rights": {
                       "notes": "",
                       "owner": "NRK",
                       "text": "Green",
@@ -150,29 +150,29 @@ Array [
           },
           "Type": "storyItem",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "$name": "p",
             "$type": "element",
           },
           "Type": "p",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "$name": "p",
             "$type": "element",
           },
           "Type": "p",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "$name": "p",
             "$type": "element",
           },
           "Type": "p",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "Channel": MosString128 {
               "_str": "CG1",
               "strict": true,
@@ -182,8 +182,8 @@ Array [
               "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
-            "MosObjects": Array [
-              Object {
+            "MosObjects": [
+              {
                 "AirStatus": undefined,
                 "Changed": MosTime {
                   "_time": 2021-01-01T00:00:00.000Z,
@@ -209,14 +209,14 @@ Array [
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
-                  "_str": "NYHETER\\\\00039287?version=1",
+                  "_str": "NYHETER\\00039287?version=1",
                   "strict": true,
                 },
                 "MosAbstract": undefined,
-                "MosExternalMetaData": Array [
-                  Object {
-                    "MosPayload": Object {
-                      "ObjectDetails": Object {
+                "MosExternalMetaData": [
+                  {
+                    "MosPayload": {
+                      "ObjectDetails": {
                         "ServerID": "chyron.techycami02.ndte.n    --------------------------------------------------------    rk.mos",
                         "ServerURL": "http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx",
                       },
@@ -224,7 +224,7 @@ Array [
                       "sAVeom": "00:00:05:00",
                       "sAVsom": "00:00:02:00",
                       "subtype": "lyric/data",
-                      "subtypeid": "I:\\\\CAMIO\\\\NYHETER\\\\Templates\\\\Super\\\\00000001.lyr",
+                      "subtypeid": "I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr",
                     },
                     "MosSchema": "http://ncsA4.com/mos/supported_schemas/NCSAXML2.08",
                     "MosScope": "PLAYLIST",
@@ -234,8 +234,8 @@ Array [
                   "_str": "Chymox.AssetBrowser.1",
                   "strict": true,
                 },
-                "Paths": Array [
-                  Object {
+                "Paths": [
+                  {
                     "Description": "JPEG Thumbnail",
                     "Target": "http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg",
                     "Type": "PROXY PATH",
@@ -255,8 +255,8 @@ Array [
               "_str": "undefined",
               "strict": true,
             },
-            "Paths": Array [
-              Object {
+            "Paths": [
+              {
                 "Description": "JPEG Thumbnail",
                 "Target": "http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg",
                 "Type": "PROXY PATH",
@@ -270,15 +270,15 @@ Array [
           },
           "Type": "storyItem",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "$name": "p",
             "$type": "element",
           },
           "Type": "p",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "Channel": MosString128 {
               "_str": "CG1",
               "strict": true,
@@ -288,8 +288,8 @@ Array [
               "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
-            "MosObjects": Array [
-              Object {
+            "MosObjects": [
+              {
                 "AirStatus": undefined,
                 "Changed": MosTime {
                   "_time": 2021-01-01T00:00:00.000Z,
@@ -315,14 +315,14 @@ Array [
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
-                  "_str": "NYHETER\\\\00039288?version=1",
+                  "_str": "NYHETER\\00039288?version=1",
                   "strict": true,
                 },
                 "MosAbstract": undefined,
-                "MosExternalMetaData": Array [
-                  Object {
-                    "MosPayload": Object {
-                      "ObjectDetails": Object {
+                "MosExternalMetaData": [
+                  {
+                    "MosPayload": {
+                      "ObjectDetails": {
                         "ServerID": "chyron.techycami02.ndte.nrk.mos",
                         "ServerURL": "http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx",
                       },
@@ -330,7 +330,7 @@ Array [
                       "sAVeom": "00:00:05:00",
                       "sAVsom": "00:00:02:00",
                       "subtype": "lyric/data",
-                      "subtypeid": "I:\\\\CAMIO\\\\NYHETER\\\\Templates\\\\Super\\\\00000001.lyr",
+                      "subtypeid": "I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr",
                     },
                     "MosSchema": "http://ncsA4.com/mos/supported_schemas/NCSAXML2.08",
                     "MosScope": "PLAYLIST",
@@ -340,8 +340,8 @@ Array [
                   "_str": "Chymox.AssetBrowser.1",
                   "strict": true,
                 },
-                "Paths": Array [
-                  Object {
+                "Paths": [
+                  {
                     "Description": "JPEG Thumbnail",
                     "Target": "http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039288_v1_big.jpg",
                     "Type": "PROXY PATH",
@@ -361,8 +361,8 @@ Array [
               "_str": "undefined",
               "strict": true,
             },
-            "Paths": Array [
-              Object {
+            "Paths": [
+              {
                 "Description": "JPEG Thumbnail",
                 "Target": "http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039288_v1_big.jpg",
                 "Type": "PROXY PATH",
@@ -376,15 +376,15 @@ Array [
           },
           "Type": "storyItem",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "$name": "p",
             "$type": "element",
           },
           "Type": "p",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "Channel": MosString128 {
               "_str": "CG1",
               "strict": true,
@@ -394,8 +394,8 @@ Array [
               "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
-            "MosObjects": Array [
-              Object {
+            "MosObjects": [
+              {
                 "AirStatus": undefined,
                 "Changed": MosTime {
                   "_time": 2021-01-01T00:00:00.000Z,
@@ -421,14 +421,14 @@ Array [
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
-                  "_str": "NYHETER\\\\00039289?version=1",
+                  "_str": "NYHETER\\00039289?version=1",
                   "strict": true,
                 },
                 "MosAbstract": undefined,
-                "MosExternalMetaData": Array [
-                  Object {
-                    "MosPayload": Object {
-                      "ObjectDetails": Object {
+                "MosExternalMetaData": [
+                  {
+                    "MosPayload": {
+                      "ObjectDetails": {
                         "ServerID": "chyron.techycami02.ndte.nrk.mos",
                         "ServerURL": "http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx",
                       },
@@ -436,7 +436,7 @@ Array [
                       "sAVeom": "00:00:05:00",
                       "sAVsom": "00:00:02:00",
                       "subtype": "lyric/data",
-                      "subtypeid": "I:\\\\CAMIO\\\\NYHETER\\\\Templates\\\\Super\\\\00000001.lyr",
+                      "subtypeid": "I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr",
                     },
                     "MosSchema": "http://ncsA4.com/mos/supported_schemas/NCSAXML2.08",
                     "MosScope": "PLAYLIST",
@@ -446,8 +446,8 @@ Array [
                   "_str": "Chymox.AssetBrowser.1",
                   "strict": true,
                 },
-                "Paths": Array [
-                  Object {
+                "Paths": [
+                  {
                     "Description": "JPEG Thumbnail",
                     "Target": "http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039289_v1_big.jpg",
                     "Type": "PROXY PATH",
@@ -467,8 +467,8 @@ Array [
               "_str": "undefined",
               "strict": true,
             },
-            "Paths": Array [
-              Object {
+            "Paths": [
+              {
                 "Description": "JPEG Thumbnail",
                 "Target": "http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039289_v1_big.jpg",
                 "Type": "PROXY PATH",
@@ -482,15 +482,15 @@ Array [
           },
           "Type": "storyItem",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "$name": "p",
             "$type": "element",
           },
           "Type": "p",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "Channel": MosString128 {
               "_str": "CG1",
               "strict": true,
@@ -500,8 +500,8 @@ Array [
               "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
-            "MosObjects": Array [
-              Object {
+            "MosObjects": [
+              {
                 "AirStatus": undefined,
                 "Changed": MosTime {
                   "_time": 2021-01-01T00:00:00.000Z,
@@ -527,14 +527,14 @@ Array [
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
-                  "_str": "NYHETER\\\\00039290?version=1",
+                  "_str": "NYHETER\\00039290?version=1",
                   "strict": true,
                 },
                 "MosAbstract": undefined,
-                "MosExternalMetaData": Array [
-                  Object {
-                    "MosPayload": Object {
-                      "ObjectDetails": Object {
+                "MosExternalMetaData": [
+                  {
+                    "MosPayload": {
+                      "ObjectDetails": {
                         "ServerID": "chyron.techycami02.ndte.nrk.mos",
                         "ServerURL": "http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx",
                       },
@@ -542,7 +542,7 @@ Array [
                       "sAVeom": "00:00:05:00",
                       "sAVsom": "00:00:02:00",
                       "subtype": "lyric/data",
-                      "subtypeid": "I:\\\\CAMIO\\\\NYHETER\\\\Templates\\\\Super\\\\00000001.lyr",
+                      "subtypeid": "I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr",
                     },
                     "MosSchema": "http://ncsA4.com/mos/supported_schemas/NCSAXML2.08",
                     "MosScope": "PLAYLIST",
@@ -552,8 +552,8 @@ Array [
                   "_str": "Chymox.AssetBrowser.1",
                   "strict": true,
                 },
-                "Paths": Array [
-                  Object {
+                "Paths": [
+                  {
                     "Description": "JPEG Thumbnail",
                     "Target": "http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039290_v1_big.jpg",
                     "Type": "PROXY PATH",
@@ -573,8 +573,8 @@ Array [
               "_str": "undefined",
               "strict": true,
             },
-            "Paths": Array [
-              Object {
+            "Paths": [
+              {
                 "Description": "JPEG Thumbnail",
                 "Target": "http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039290_v1_big.jpg",
                 "Type": "PROXY PATH",
@@ -588,15 +588,15 @@ Array [
           },
           "Type": "storyItem",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "$name": "p",
             "$type": "element",
           },
           "Type": "p",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "Channel": MosString128 {
               "_str": "CG1",
               "strict": true,
@@ -606,8 +606,8 @@ Array [
               "strict": true,
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
-            "MosObjects": Array [
-              Object {
+            "MosObjects": [
+              {
                 "AirStatus": undefined,
                 "Changed": MosTime {
                   "_time": 2021-01-01T00:00:00.000Z,
@@ -633,14 +633,14 @@ Array [
                 "Duration": 0,
                 "Group": undefined,
                 "ID": MosString128 {
-                  "_str": "NYHETER\\\\00039291?version=1",
+                  "_str": "NYHETER\\00039291?version=1",
                   "strict": true,
                 },
                 "MosAbstract": undefined,
-                "MosExternalMetaData": Array [
-                  Object {
-                    "MosPayload": Object {
-                      "ObjectDetails": Object {
+                "MosExternalMetaData": [
+                  {
+                    "MosPayload": {
+                      "ObjectDetails": {
                         "ServerID": "chyron.techycami02.ndte.nrk.mos",
                         "ServerURL": "http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx",
                       },
@@ -648,7 +648,7 @@ Array [
                       "sAVeom": "00:00:05:00",
                       "sAVsom": "00:00:02:00",
                       "subtype": "lyric/data",
-                      "subtypeid": "I:\\\\CAMIO\\\\NYHETER\\\\Templates\\\\Super\\\\00000024.lyr",
+                      "subtypeid": "I:\\CAMIO\\NYHETER\\Templates\\Super\\00000024.lyr",
                     },
                     "MosSchema": "http://ncsA4.com/mos/supported_schemas/NCSAXML2.08",
                     "MosScope": "PLAYLIST",
@@ -658,8 +658,8 @@ Array [
                   "_str": "Chymox.AssetBrowser.1",
                   "strict": true,
                 },
-                "Paths": Array [
-                  Object {
+                "Paths": [
+                  {
                     "Description": "JPEG Thumbnail",
                     "Target": "http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039291_v1_big.jpg",
                     "Type": "PROXY PATH",
@@ -679,8 +679,8 @@ Array [
               "_str": "undefined",
               "strict": true,
             },
-            "Paths": Array [
-              Object {
+            "Paths": [
+              {
                 "Description": "JPEG Thumbnail",
                 "Target": "http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039291_v1_big.jpg",
                 "Type": "PROXY PATH",
@@ -694,22 +694,22 @@ Array [
           },
           "Type": "storyItem",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "$name": "p",
             "$type": "element",
           },
           "Type": "p",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "$name": "p",
             "$type": "element",
           },
           "Type": "p",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "ID": MosString128 {
               "_str": "8",
               "strict": true,
@@ -731,8 +731,8 @@ Array [
           },
           "Type": "storyItem",
         },
-        Object {
-          "Content": Object {
+        {
+          "Content": {
             "$name": "p",
             "$type": "element",
           },
@@ -740,12 +740,12 @@ Array [
         },
       ],
       "ID": MosString128 {
-        "_str": "2012R2ENPS8VM;P_ENPSNEWS\\\\W\\\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB",
+        "_str": "2012R2ENPS8VM;P_ENPSNEWS\\W\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB",
         "strict": true,
       },
-      "MosExternalMetaData": Array [
-        Object {
-          "MosPayload": Object {
+      "MosExternalMetaData": [
+        {
+          "MosPayload": {
             "Approved": 0,
             "Creator": "LINUXENPS",
             "ENPSItemType": 3,
@@ -780,7 +780,7 @@ Array [
       ],
       "Number": undefined,
       "RunningOrderId": MosString128 {
-        "_str": "2012R2ENPS8VM;P_ENPSNEWS\\\\W;696297DF-1568-4B36-B43B3B79514B40D4",
+        "_str": "2012R2ENPS8VM;P_ENPSNEWS\\W;696297DF-1568-4B36-B43B3B79514B40D4",
         "strict": true,
       },
       "Slug": MosString128 {
