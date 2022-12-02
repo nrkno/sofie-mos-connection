@@ -216,16 +216,25 @@ export class MosSocketClient extends EventEmitter {
 	/** */
 	dispose(): void {
 		this._disposed = true
+
+		this.messageParser.removeAllListeners()
+
 		// this._readyToSendMessage = false
 		this.connected = false
 		this._shouldBeConnected = false
 		this._clearConnectionAttemptTimer()
+		if (this.processQueueTimeout) {
+			clearTimeout(this.processQueueTimeout)
+			delete this.processQueueTimeout
+		}
 		if (this._client) {
-			this._client.once('close', () => {
+			const client = this._client
+			client.once('close', () => {
 				this.emit(SocketConnectionEvent.DISPOSED)
+				client.removeAllListeners()
 			})
-			this._client.end()
-			this._client.destroy()
+			client.end()
+			client.destroy()
 			delete this._client
 		}
 	}
