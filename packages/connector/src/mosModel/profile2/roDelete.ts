@@ -1,10 +1,10 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
 import { addTextElement } from '../../utils/Utils'
-import { MosString128 } from '../../dataTypes/mosString128'
+import { IMOSString128 } from '@mos-connection/model'
 
 export class RODelete extends MosMessage {
-	constructor(private roId: MosString128) {
+	constructor(private roId: IMOSString128) {
 		super('upper')
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {

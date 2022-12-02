@@ -20,11 +20,12 @@ import {
 	IMOSROFullStoryBodyItem,
 	IMOSSearchField,
 	IMOSListMachInfo,
-} from '../api'
+	IMOSScope,
+	IMOSExternalMetaData,
+} from '@mos-connection/model'
 import { MosString128 } from '../dataTypes/mosString128'
 import { MosTime } from '../dataTypes/mosTime'
 import { MosDuration } from '../dataTypes/mosDuration'
-import { IMOSScope, IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
 
 const literal = <T>(o: T) => o
 

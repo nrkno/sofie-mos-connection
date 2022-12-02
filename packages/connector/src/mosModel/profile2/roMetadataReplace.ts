@@ -1,5 +1,5 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { IMOSRunningOrderBase } from '../../api'
+import { IMOSRunningOrderBase } from '@mos-connection/model'
 import { MosMessage } from '../MosMessage'
 import { XMLRunningOrderBase } from './xmlConversion'
 

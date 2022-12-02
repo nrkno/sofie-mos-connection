@@ -1,4 +1,6 @@
-export class MosString128 {
+import { IMOSString128 } from '@mos-connection/model'
+
+export class MosString128 implements IMOSString128 {
 	private _str = 'undefined'
 
 	/** */
@@ -16,6 +18,7 @@ export class MosString128 {
 			if (str.text) {
 				this._str = str.text.toString()
 			} else if (str._str) {
+				// is a MosString128
 				this._str = str._str.toString()
 			} else if (Object.keys(str).length === 0) {
 				// is empty?

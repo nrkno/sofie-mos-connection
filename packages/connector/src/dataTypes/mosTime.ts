@@ -1,7 +1,8 @@
 import * as moment from 'moment'
+import { IMOSTime } from '@mos-connection/model'
 import { pad } from './../utils/Utils'
 
-export class MosTime {
+export class MosTime implements IMOSTime {
 	static _defaultTimezone = 'Z'
 	private _time: Date
 	private _timezone = ''

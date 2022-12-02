@@ -1,4 +1,4 @@
-import { MosItemReplaceOptions } from '../../api'
+import { MosItemReplaceOptions } from '@mos-connection/model'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
 import { addTextElement } from '../../utils/Utils'

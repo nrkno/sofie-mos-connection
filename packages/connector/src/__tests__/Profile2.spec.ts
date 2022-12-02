@@ -37,6 +37,7 @@ import {
 	MosDuration,
 	MosTime,
 	IMOSScope,
+	IMOSString128,
 } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
@@ -161,10 +162,10 @@ describe('Profile 2', () => {
 		mosDevice.onReplaceRunningOrder(async (ro: IMOSRunningOrder): Promise<IMOSROAck> => {
 			return onReplaceRunningOrder(ro)
 		})
-		mosDevice.onDeleteRunningOrder(async (runningOrderId: MosString128): Promise<IMOSROAck> => {
+		mosDevice.onDeleteRunningOrder(async (runningOrderId: IMOSString128): Promise<IMOSROAck> => {
 			return onDeleteRunningOrder(runningOrderId)
 		})
-		mosDevice.onRequestRunningOrder(async (runningOrderId: MosString128): Promise<IMOSRunningOrder | null> => {
+		mosDevice.onRequestRunningOrder(async (runningOrderId: IMOSString128): Promise<IMOSRunningOrder | null> => {
 			return onRequestRunningOrder(runningOrderId)
 		})
 		mosDevice.onMetadataReplace(async (metadata: IMOSRunningOrderBase): Promise<IMOSROAck> => {
@@ -198,25 +199,27 @@ describe('Profile 2', () => {
 		mosDevice.onROReplaceItems(async (Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> => {
 			return onROReplaceItems(Action, Items)
 		})
-		mosDevice.onROMoveStories(async (Action: IMOSStoryAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
-			return onROMoveStories(Action, Stories)
-		})
-		mosDevice.onROMoveItems(async (Action: IMOSItemAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
+		mosDevice.onROMoveStories(
+			async (Action: IMOSStoryAction, Stories: Array<IMOSString128>): Promise<IMOSROAck> => {
+				return onROMoveStories(Action, Stories)
+			}
+		)
+		mosDevice.onROMoveItems(async (Action: IMOSItemAction, Items: Array<IMOSString128>): Promise<IMOSROAck> => {
 			return onROMoveItems(Action, Items)
 		})
-		mosDevice.onRODeleteStories(async (Action: IMOSROAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
+		mosDevice.onRODeleteStories(async (Action: IMOSROAction, Stories: Array<IMOSString128>): Promise<IMOSROAck> => {
 			return onRODeleteStories(Action, Stories)
 		})
-		mosDevice.onRODeleteItems(async (Action: IMOSStoryAction, Items: Array<MosString128>): Promise<IMOSROAck> => {
+		mosDevice.onRODeleteItems(async (Action: IMOSStoryAction, Items: Array<IMOSString128>): Promise<IMOSROAck> => {
 			return onRODeleteItems(Action, Items)
 		})
 		mosDevice.onROSwapStories(
-			async (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128): Promise<IMOSROAck> => {
+			async (Action: IMOSROAction, StoryID0: IMOSString128, StoryID1: IMOSString128): Promise<IMOSROAck> => {
 				return onROSwapStories(Action, StoryID0, StoryID1)
 			}
 		)
 		mosDevice.onROSwapItems(
-			async (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> => {
+			async (Action: IMOSStoryAction, ItemID0: IMOSString128, ItemID1: IMOSString128): Promise<IMOSROAck> => {
 				return onROSwapItems(Action, ItemID0, ItemID1)
 			}
 		)
@@ -322,7 +325,7 @@ describe('Profile 2', () => {
 	})
 	test('onRequestRunningOrder not found', async () => {
 		// setup for "RO not found":
-		mosDevice.onRequestRunningOrder(async (_runningOrderId: MosString128): Promise<IMOSRunningOrder | null> => {
+		mosDevice.onRequestRunningOrder(async (_runningOrderId: IMOSString128): Promise<IMOSRunningOrder | null> => {
 			return null
 		})
 

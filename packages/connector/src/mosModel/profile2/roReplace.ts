@@ -1,5 +1,5 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { IMOSRunningOrder } from '../../api'
+import { IMOSRunningOrder } from '@mos-connection/model'
 import { ROCreate } from './roCreate'
 
 export class ROReplace extends ROCreate {

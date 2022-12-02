@@ -1,6 +1,6 @@
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
-import { IMOSListSearchableSchema } from '../../api'
+import { IMOSListSearchableSchema } from '@mos-connection/model'
 import { addTextElement } from '../../utils/Utils'
 
 export class MosListSearchableSchema extends MosMessage {

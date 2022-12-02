@@ -1,4 +1,4 @@
-import { IMOSROFullStoryBodyItem, IMOSROFullStory } from '../../api'
+import { IMOSROFullStoryBodyItem, IMOSROFullStory } from '@mos-connection/model'
 import { XMLROStory, XMLMosItem } from '../profile2/xmlConversion'
 import { MosString128 } from '../../dataTypes/mosString128'
 import { AnyXML } from '../lib'

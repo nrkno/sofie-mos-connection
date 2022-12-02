@@ -1,6 +1,6 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
-import { IMOSROFullStory, IMOSItem } from '../../api'
+import { IMOSROFullStory, IMOSItem } from '@mos-connection/model'
 import { addTextElement } from '../../utils/Utils'
 import { XMLROStoryBase, XMLObjectPaths, XMLMosExternalMetaData } from '../profile2/xmlConversion'
 import { XMLMosObjects } from '../profile1/xmlConversion'

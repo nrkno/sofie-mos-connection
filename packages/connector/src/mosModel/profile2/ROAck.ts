@@ -1,17 +1,17 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { MosString128 } from '../../dataTypes/mosString128'
 import { MosMessage } from '../MosMessage'
 import {
 	IMOSROAck,
-	IMOSROAckStory /*,
+	IMOSROAckStory,
+	IMOSString128 /*,
 	IMOSROAckItem,
 	IMOSROAckObject*/,
-} from '../../api'
+} from '@mos-connection/model'
 import { addTextElement } from '../../utils/Utils'
 
 export class ROAck extends MosMessage implements IMOSROAck {
-	ID: MosString128
-	Status: MosString128
+	ID: IMOSString128
+	Status: IMOSString128
 	Stories: Array<IMOSROAckStory>
 
 	/** */

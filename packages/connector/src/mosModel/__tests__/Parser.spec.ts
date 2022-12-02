@@ -1,5 +1,5 @@
 import { Parser } from '../Parser'
-import { IMOSObjectPathType } from '../../api'
+import { IMOSObjectPathType } from '@mos-connection/model'
 import { xml2js } from '../../utils/Utils'
 
 describe('Parser', () => {

@@ -1,12 +1,12 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
-import { MosString128 } from '../../dataTypes/mosString128'
 import { addTextElement } from '../../utils/Utils'
+import { IMOSString128 } from '@mos-connection/model'
 
 export class ReqMosObj extends MosMessage {
-	private objId: MosString128
+	private objId: IMOSString128
 	/** */
-	constructor(objId: MosString128) {
+	constructor(objId: IMOSString128) {
 		super('lower')
 		this.objId = objId
 	}

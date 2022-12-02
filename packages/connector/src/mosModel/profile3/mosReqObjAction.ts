@@ -1,9 +1,7 @@
-import { IMOSObject } from '../../api'
+import { IMOSObject, IMOSString128 } from '@mos-connection/model'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
 import { XMLMosObject } from '../profile1/xmlConversion'
-import { MosString128 } from '../../dataTypes/mosString128'
-
 export interface MosReqObjActionOptionsNew {
 	object: IMOSObject
 }
@@ -22,7 +20,7 @@ export class MosReqObjActionNew extends MosMessage {
 }
 export interface MosReqObjActionOptionsUpdate {
 	object: IMOSObject
-	objectId: MosString128
+	objectId: IMOSString128
 }
 export class MosReqObjActionUpdate extends MosMessage {
 	private options: MosReqObjActionOptionsUpdate
@@ -39,7 +37,7 @@ export class MosReqObjActionUpdate extends MosMessage {
 	}
 }
 export interface MosReqObjActionOptionsDelete {
-	objectId: MosString128
+	objectId: IMOSString128
 }
 export class MosReqObjActionDelete extends MosMessage {
 	private options: MosReqObjActionOptionsDelete

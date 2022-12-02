@@ -1,8 +1,6 @@
 import { xml2js as xmlParser } from 'xml-js'
 import * as XMLBuilder from 'xmlbuilder'
-import { MosString128 } from '../dataTypes/mosString128'
-import { MosTime } from '../dataTypes/mosTime'
-import { MosDuration } from '../dataTypes/mosDuration'
+import { IMOSDuration, IMOSString128, IMOSTime } from '@mos-connection/model'
 
 /** */
 export function pad(n: string, width: number, z?: string): string {
@@ -164,7 +162,7 @@ export function xml2js(messageString: string): { [key: string]: any } {
 export function addTextElement(
 	root: XMLBuilder.XMLElement,
 	elementName: string,
-	text?: string | number | null | MosString128 | MosTime | MosDuration,
+	text?: string | number | null | IMOSString128 | IMOSTime | IMOSDuration,
 	attributes?: { [key: string]: string }
 ): XMLBuilder.XMLElement {
 	const txt = text === null ? null : text !== undefined ? text.toString() : undefined

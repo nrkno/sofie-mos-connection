@@ -1,8 +1,14 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
 import { addTextElement } from '../../utils/Utils'
-import { MosString128 } from '../../dataTypes/mosString128'
-import { IMOSStoryAction, IMOSROStory, IMOSItemAction, IMOSItem, IMOSROAction } from '../../api'
+import {
+	IMOSStoryAction,
+	IMOSROStory,
+	IMOSItemAction,
+	IMOSItem,
+	IMOSROAction,
+	IMOSString128,
+} from '@mos-connection/model'
 import { XMLROStory, XMLMosItem } from './xmlConversion'
 
 export abstract class MosSendMessage extends MosMessage {
@@ -81,7 +87,7 @@ export class ROReplaceItems extends MosSendMessage {
 	}
 }
 export class ROMoveStories extends MosSendMessage {
-	constructor(private Action: IMOSStoryAction, private Stories: Array<MosString128>) {
+	constructor(private Action: IMOSStoryAction, private Stories: Array<IMOSString128>) {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
@@ -98,7 +104,7 @@ export class ROMoveStories extends MosSendMessage {
 	}
 }
 export class ROMoveItems extends MosSendMessage {
-	constructor(private Action: IMOSItemAction, private Items: Array<MosString128>) {
+	constructor(private Action: IMOSItemAction, private Items: Array<IMOSString128>) {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
@@ -116,7 +122,7 @@ export class ROMoveItems extends MosSendMessage {
 	}
 }
 export class RODeleteStories extends MosSendMessage {
-	constructor(private Action: IMOSROAction, private Stories: Array<MosString128>) {
+	constructor(private Action: IMOSROAction, private Stories: Array<IMOSString128>) {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
@@ -131,7 +137,7 @@ export class RODeleteStories extends MosSendMessage {
 	}
 }
 export class RODeleteItems extends MosSendMessage {
-	constructor(private Action: IMOSStoryAction, private Items: Array<MosString128>) {
+	constructor(private Action: IMOSStoryAction, private Items: Array<IMOSString128>) {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
@@ -148,7 +154,7 @@ export class RODeleteItems extends MosSendMessage {
 	}
 }
 export class ROSwapStories extends MosSendMessage {
-	constructor(private Action: IMOSROAction, private StoryID0: MosString128, private StoryID1: MosString128) {
+	constructor(private Action: IMOSROAction, private StoryID0: IMOSString128, private StoryID1: IMOSString128) {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
@@ -162,7 +168,7 @@ export class ROSwapStories extends MosSendMessage {
 	}
 }
 export class ROSwapItems extends MosSendMessage {
-	constructor(private Action: IMOSStoryAction, private ItemID0: MosString128, private ItemID1: MosString128) {
+	constructor(private Action: IMOSStoryAction, private ItemID0: IMOSString128, private ItemID1: IMOSString128) {
 		super()
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {

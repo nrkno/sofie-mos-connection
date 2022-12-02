@@ -1,17 +1,7 @@
+import { IProfiles } from '@mos-connection/model'
 import { IConnectionConfig, IMOSDeviceConnectionOptions } from '../api'
 
 /** */
-export interface IProfiles {
-	[key: string]: boolean | undefined
-	'0': boolean
-	'1'?: boolean
-	'2'?: boolean
-	'3'?: boolean
-	'4'?: boolean
-	'5'?: boolean
-	'6'?: boolean
-	'7'?: boolean
-}
 
 export class ConnectionConfig implements IConnectionConfig {
 	mosID: string

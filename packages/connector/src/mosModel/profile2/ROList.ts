@@ -1,6 +1,6 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
-import { IMOSRunningOrder } from '../../api'
+import { IMOSRunningOrder } from '@mos-connection/model'
 import { XMLROStory, XMLRunningOrderBase } from './xmlConversion'
 
 export class ROList extends MosMessage {

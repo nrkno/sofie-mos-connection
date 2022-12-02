@@ -1,5 +1,5 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { IMOSRequestObjectList, IMOSObject, IMOSAck, IMOSAckStatus } from '../../api'
+import { IMOSRequestObjectList, IMOSObject, IMOSAck, IMOSAckStatus } from '@mos-connection/model'
 import { MosString128 } from '../../dataTypes/mosString128'
 import { MosTime } from '../../dataTypes/mosTime'
 import { XMLObjectPaths, XMLMosExternalMetaData } from '../profile2/xmlConversion'

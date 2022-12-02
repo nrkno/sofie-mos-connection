@@ -10,6 +10,7 @@ import {
 	MosString128,
 	MosTime,
 	MosDevice,
+	IMOSString128,
 } from '@mos-connection/connector'
 
 const mos = new MosConnection(
@@ -98,7 +99,7 @@ mos.onConnection((mosDevice: MosDevice) => {
 		}
 	})
 
-	mosDevice.onDeleteRunningOrder(async (RunningOrderID: MosString128) => {
+	mosDevice.onDeleteRunningOrder(async (RunningOrderID: IMOSString128) => {
 		console.log('delete running order', RunningOrderID)
 		return {
 			ID: RunningOrderID,
@@ -115,7 +116,7 @@ mos.onConnection((mosDevice: MosDevice) => {
 		}
 	})
 
-	mosDevice.onROMoveStories(async (Action: IMOSStoryAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
+	mosDevice.onROMoveStories(async (Action: IMOSStoryAction, Stories: Array<IMOSString128>): Promise<IMOSROAck> => {
 		console.log('move stories', Action, Stories)
 		return {
 			ID: Action.StoryID,
@@ -124,7 +125,7 @@ mos.onConnection((mosDevice: MosDevice) => {
 		}
 	})
 
-	mosDevice.onRODeleteStories(async (Action: IMOSROAction, Stories: Array<MosString128>): Promise<IMOSROAck> => {
+	mosDevice.onRODeleteStories(async (Action: IMOSROAction, Stories: Array<IMOSString128>): Promise<IMOSROAck> => {
 		console.log('delete stories', Action, Stories)
 		return {
 			ID: Action.RunningOrderID,

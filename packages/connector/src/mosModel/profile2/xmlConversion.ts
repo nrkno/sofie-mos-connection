@@ -11,7 +11,7 @@ import {
 	IMOSROAckStory,
 	IMOSROAckItem,
 	IMOSROAckObject,
-} from '../../api'
+} from '@mos-connection/model'
 import { addTextElement } from '../../utils/Utils'
 import { AnyXML, has, isEmpty, numberOrUndefined } from '../lib'
 import { MosTime } from '../../dataTypes/mosTime'

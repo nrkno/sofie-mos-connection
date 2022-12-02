@@ -1,6 +1,6 @@
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
-import { IMOSObject } from '../../api'
+import { IMOSObject } from '@mos-connection/model'
 import { XMLMosObject } from '../profile1/xmlConversion'
 
 export class MosListAll extends MosMessage {

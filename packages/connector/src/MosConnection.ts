@@ -1,7 +1,7 @@
 import { Socket } from 'net'
-import { ConnectionConfig, IProfiles } from './config/connectionConfig'
+import { ConnectionConfig } from './config/connectionConfig'
 import { MosSocketServer } from './connection/mosSocketServer'
-import { IMosConnection, IMOSDeviceConnectionOptions, IMOSAckStatus, IConnectionConfig } from './api'
+import { IMOSAckStatus, IProfiles } from '@mos-connection/model'
 import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription, IncomingConnectionType } from './connection/socketConnection'
 import { NCSServerConnection } from './connection/NCSServerConnection'
@@ -11,6 +11,7 @@ import { MosString128 } from './dataTypes/mosString128'
 import { EventEmitter } from 'events'
 import * as iconv from 'iconv-lite'
 import { MosMessageParser } from './connection/mosMessageParser'
+import { IConnectionConfig, IMosConnection, IMOSDeviceConnectionOptions } from './api'
 
 export class MosConnection extends EventEmitter implements IMosConnection {
 	static CONNECTION_PORT_LOWER = 10540

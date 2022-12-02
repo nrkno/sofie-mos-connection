@@ -1,16 +1,12 @@
 /* eslint-disable @typescript-eslint/promise-function-async */
 // Note: All imports in this file should come from "../" ie index.ts'
 // To ensure that all types used are exported properly
+import { MosConnection, MosDevice, IConnectionConfig, IMOSConnectionStatus, IMOSDeviceConnectionOptions } from '../'
 import {
 	IMOSListMachInfo,
 	IMOSAck,
 	MosItemReplaceOptions,
-	MosConnection,
-	IConnectionConfig,
-	IMOSDeviceConnectionOptions,
-	MosDevice,
 	IProfiles,
-	IMOSConnectionStatus,
 	IMOSObject,
 	IMOSItem,
 	IMOSItemAction,
@@ -28,8 +24,8 @@ import {
 	IMOSListSearchableSchema,
 	IMOSStoryAction,
 	IMOSStoryStatus,
-	MosString128,
-} from '../'
+	IMOSString128,
+} from '@mos-connection/model'
 
 test('api & exports', () => {
 	// Note: This test doesn't test anything during runtime, but it touches types instead.
@@ -115,7 +111,7 @@ test('api & exports', () => {
 			f = function (cb: (objId: string) => Promise<IMOSObject | null>): void {
 				return mosDevice.onRequestMOSObject(cb)
 			}
-			f = function (objId: MosString128): Promise<IMOSObject> {
+			f = function (objId: IMOSString128): Promise<IMOSObject> {
 				return mosDevice.sendRequestMOSObject(objId)
 			}
 			f = function (cb: () => Promise<Array<IMOSObject>>): void {
@@ -138,19 +134,19 @@ test('api & exports', () => {
 			f = function (ro: IMOSRunningOrder): Promise<IMOSROAck> {
 				return mosDevice.sendReplaceRunningOrder(ro)
 			}
-			f = function (cb: (runningOrderId: MosString128) => Promise<IMOSROAck>): void {
+			f = function (cb: (runningOrderId: IMOSString128) => Promise<IMOSROAck>): void {
 				return mosDevice.onDeleteRunningOrder(cb)
 			}
-			f = function (runningOrderId: MosString128): Promise<IMOSROAck> {
+			f = function (runningOrderId: IMOSString128): Promise<IMOSROAck> {
 				return mosDevice.sendDeleteRunningOrder(runningOrderId)
 			}
-			f = function (cb: (runningOrderId: MosString128) => Promise<IMOSRunningOrder | null>): void {
+			f = function (cb: (runningOrderId: IMOSString128) => Promise<IMOSRunningOrder | null>): void {
 				return mosDevice.onRequestRunningOrder(cb)
 			}
-			f = function (runningOrderId: MosString128): Promise<IMOSRunningOrder | null> {
+			f = function (runningOrderId: IMOSString128): Promise<IMOSRunningOrder | null> {
 				return mosDevice.sendRequestRunningOrder(runningOrderId)
 			}
-			// f = function (runningOrderId: MosString128): Promise<IMOSRunningOrder | null> { return mosDevice.getRunningOrder(runningOrderId) }
+			// f = function (runningOrderId: IMOSString128): Promise<IMOSRunningOrder | null> { return mosDevice.getRunningOrder(runningOrderId) }
 			f = function (cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>): void {
 				return mosDevice.onMetadataReplace(cb)
 			}
@@ -202,44 +198,44 @@ test('api & exports', () => {
 			f = function (Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> {
 				return mosDevice.sendROReplaceItems(Action, Items)
 			}
-			f = function (cb: (Action: IMOSStoryAction, Stories: Array<MosString128>) => Promise<IMOSROAck>): void {
+			f = function (cb: (Action: IMOSStoryAction, Stories: Array<IMOSString128>) => Promise<IMOSROAck>): void {
 				return mosDevice.onROMoveStories(cb)
 			}
-			f = function (Action: IMOSStoryAction, Stories: Array<MosString128>): Promise<IMOSROAck> {
+			f = function (Action: IMOSStoryAction, Stories: Array<IMOSString128>): Promise<IMOSROAck> {
 				return mosDevice.sendROMoveStories(Action, Stories)
 			}
-			f = function (cb: (Action: IMOSItemAction, Items: Array<MosString128>) => Promise<IMOSROAck>): void {
+			f = function (cb: (Action: IMOSItemAction, Items: Array<IMOSString128>) => Promise<IMOSROAck>): void {
 				return mosDevice.onROMoveItems(cb)
 			}
-			f = function (Action: IMOSItemAction, Items: Array<MosString128>): Promise<IMOSROAck> {
+			f = function (Action: IMOSItemAction, Items: Array<IMOSString128>): Promise<IMOSROAck> {
 				return mosDevice.sendROMoveItems(Action, Items)
 			}
-			f = function (cb: (Action: IMOSROAction, Stories: Array<MosString128>) => Promise<IMOSROAck>): void {
+			f = function (cb: (Action: IMOSROAction, Stories: Array<IMOSString128>) => Promise<IMOSROAck>): void {
 				return mosDevice.onRODeleteStories(cb)
 			}
-			f = function (Action: IMOSROAction, Stories: Array<MosString128>): Promise<IMOSROAck> {
+			f = function (Action: IMOSROAction, Stories: Array<IMOSString128>): Promise<IMOSROAck> {
 				return mosDevice.sendRODeleteStories(Action, Stories)
 			}
-			f = function (cb: (Action: IMOSStoryAction, Items: Array<MosString128>) => Promise<IMOSROAck>): void {
+			f = function (cb: (Action: IMOSStoryAction, Items: Array<IMOSString128>) => Promise<IMOSROAck>): void {
 				return mosDevice.onRODeleteItems(cb)
 			}
-			f = function (Action: IMOSStoryAction, Items: Array<MosString128>): Promise<IMOSROAck> {
+			f = function (Action: IMOSStoryAction, Items: Array<IMOSString128>): Promise<IMOSROAck> {
 				return mosDevice.sendRODeleteItems(Action, Items)
 			}
 			f = function (
-				cb: (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128) => Promise<IMOSROAck>
+				cb: (Action: IMOSROAction, StoryID0: IMOSString128, StoryID1: IMOSString128) => Promise<IMOSROAck>
 			): void {
 				return mosDevice.onROSwapStories(cb)
 			}
-			f = function (Action: IMOSROAction, StoryID0: MosString128, StoryID1: MosString128): Promise<IMOSROAck> {
+			f = function (Action: IMOSROAction, StoryID0: IMOSString128, StoryID1: IMOSString128): Promise<IMOSROAck> {
 				return mosDevice.sendROSwapStories(Action, StoryID0, StoryID1)
 			}
 			f = function (
-				cb: (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128) => Promise<IMOSROAck>
+				cb: (Action: IMOSStoryAction, ItemID0: IMOSString128, ItemID1: IMOSString128) => Promise<IMOSROAck>
 			): void {
 				return mosDevice.onROSwapItems(cb)
 			}
-			f = function (Action: IMOSStoryAction, ItemID0: MosString128, ItemID1: MosString128): Promise<IMOSROAck> {
+			f = function (Action: IMOSStoryAction, ItemID0: IMOSString128, ItemID1: IMOSString128): Promise<IMOSROAck> {
 				return mosDevice.sendROSwapItems(Action, ItemID0, ItemID1)
 			}
 
@@ -250,7 +246,9 @@ test('api & exports', () => {
 			f = function (object: IMOSObject): Promise<IMOSAck> {
 				return mosDevice.sendObjectCreate(object)
 			}
-			f = function (cb: (roID: MosString128, storyID: MosString128, item: IMOSItem) => Promise<IMOSROAck>): void {
+			f = function (
+				cb: (roID: IMOSString128, storyID: IMOSString128, item: IMOSItem) => Promise<IMOSROAck>
+			): void {
 				return mosDevice.onItemReplace(cb)
 			}
 			f = function (options: MosItemReplaceOptions): Promise<IMOSROAck> {
@@ -271,10 +269,10 @@ test('api & exports', () => {
 			f = function (cb: (obj: IMOSObject) => Promise<IMOSAck>): void {
 				return mosDevice.onRequestObjectActionNew(cb)
 			}
-			f = function (cb: (objId: MosString128, obj: IMOSObject) => Promise<IMOSAck>): void {
+			f = function (cb: (objId: IMOSString128, obj: IMOSObject) => Promise<IMOSAck>): void {
 				return mosDevice.onRequestObjectActionUpdate(cb)
 			}
-			f = function (cb: (objId: MosString128) => Promise<IMOSAck>): void {
+			f = function (cb: (objId: IMOSString128) => Promise<IMOSAck>): void {
 				return mosDevice.onRequestObjectActionDelete(cb)
 			}
 

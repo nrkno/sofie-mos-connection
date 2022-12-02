@@ -1,7 +1,7 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
 import { MosString128 } from '../../dataTypes/mosString128'
-import { IMOSObjectStatus } from '../../api'
+import { IMOSObjectStatus } from '@mos-connection/model'
 import { MosTime } from '../../dataTypes/mosTime'
 import { addTextElement } from '../../utils/Utils'
 

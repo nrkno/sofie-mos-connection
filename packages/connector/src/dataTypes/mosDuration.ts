@@ -1,4 +1,5 @@
-export class MosDuration {
+import { IMOSDuration } from '@mos-connection/model'
+export class MosDuration implements IMOSDuration {
 	private _duration: number // seconds
 
 	/** */

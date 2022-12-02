@@ -1,4 +1,4 @@
-import { IMOSObject } from '../../api'
+import { IMOSObject } from '@mos-connection/model'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
 import { XMLMosObject } from '../profile1/xmlConversion'

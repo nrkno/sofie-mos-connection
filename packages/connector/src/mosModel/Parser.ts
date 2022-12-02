@@ -9,8 +9,8 @@ import {
 	IMOSROFullStory,
 	IMOSRequestObjectList,
 	IMOSAck,
-} from '../api'
-import { IMOSExternalMetaData } from '../dataTypes/mosExternalMetaData'
+	IMOSExternalMetaData,
+} from '@mos-connection/model'
 import { MosString128 } from '../dataTypes/mosString128'
 import {
 	XMLRunningOrderBase,

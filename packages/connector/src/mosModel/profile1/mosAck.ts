@@ -1,14 +1,13 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { MosString128 } from '../../dataTypes/mosString128'
 import { MosMessage } from '../MosMessage'
-import { IMOSAck, IMOSAckStatus } from '../../api'
+import { IMOSAck, IMOSAckStatus, IMOSString128 } from '@mos-connection/model'
 import { addTextElement } from '../../utils/Utils'
 
 export class MOSAck extends MosMessage implements IMOSAck {
-	ID: MosString128
+	ID: IMOSString128
 	Revision: number // max 999
 	Status: IMOSAckStatus
-	Description: MosString128
+	Description: IMOSString128
 
 	/** */
 	constructor(ack: IMOSAck) {

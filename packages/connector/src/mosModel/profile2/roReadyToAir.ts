@@ -1,12 +1,12 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
-import { MosString128 } from '../../dataTypes/mosString128'
 import { addTextElement } from '../../utils/Utils'
+import { IMOSString128 } from '@mos-connection/model'
 
 // http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReadyToAir
 
 export interface ROReadyToAirOptions {
-	roId: MosString128
+	roId: IMOSString128
 	roAir: 'READY' | 'NOT READY'
 }
 export class ROReadyToAir extends MosMessage {

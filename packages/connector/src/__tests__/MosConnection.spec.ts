@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { clearMocks, decode, delay, encode, getMessageId, getXMLReply, initMosConnection, setupMocks } from './lib'
-import { MosConnection, MosDevice, IMOSConnectionStatus, IMOSObject } from '../'
+import { MosConnection, MosDevice, IMOSObject, IMOSConnectionStatus } from '../'
 import { ConnectionConfig } from '../config/connectionConfig'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
