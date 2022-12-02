@@ -12,7 +12,7 @@ jobs:
     name: Validate production dependencies
     runs-on: ubuntu-latest
     continue-on-error: false
-    timeout-minutes: 15
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v2
@@ -38,7 +38,7 @@ jobs:
     name: Validate all dependencies
     runs-on: ubuntu-latest
     continue-on-error: true
-    timeout-minutes: 15
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v2
