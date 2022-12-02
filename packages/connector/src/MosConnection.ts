@@ -541,6 +541,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		return this._nextSocketID++ + ''
 	}
 	private debugTrace(...strs: any[]) {
+		// eslint-disable-next-line no-console
 		if (this._debug) console.log(...strs)
 	}
 }

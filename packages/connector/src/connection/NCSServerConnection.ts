@@ -291,6 +291,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 			})
 	}
 	private debugTrace(...strs: any[]) {
+		// eslint-disable-next-line no-console
 		if (this._debug) console.log(...strs)
 	}
 }

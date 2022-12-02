@@ -450,6 +450,7 @@ export class MosSocketClient extends EventEmitter {
 		}, this._commandTimeout)
 	}
 	private debugTrace(...strs: any[]) {
+		// eslint-disable-next-line no-console
 		if (this._debug) console.log(...strs)
 	}
 }

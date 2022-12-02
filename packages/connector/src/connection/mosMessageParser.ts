@@ -43,9 +43,7 @@ export class MosMessageParser extends EventEmitter {
 		} else {
 			if (startIndex > 0) {
 				const junkStr = this.dataChunks.substr(0, startIndex)
-				if (this.debug) {
-					console.log(`${this.description} Discarding message fragment: "${junkStr}"`)
-				}
+				this.debugTrace(`${this.description} Discarding message fragment: "${junkStr}"`)
 
 				// trim off anything before <mos>, as we'll never be able to parse that anyway.
 				this.dataChunks = this.dataChunks.substr(startIndex)
@@ -82,6 +80,7 @@ export class MosMessageParser extends EventEmitter {
 		if (this.debug) {
 			// Supress console spam:
 			if (!`${str}`.match(/<heartbeat>/)) {
+				// eslint-disable-next-line no-console
 				console.log(str)
 			}
 		}

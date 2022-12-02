@@ -213,6 +213,7 @@ export class SocketMock extends EventEmitter implements Socket {
 </mos>\r\n`
 					this.mockReceiveMessage(this.encode(repl))
 				} catch (e) {
+					// eslint-disable-next-line no-console
 					console.error('mockReply', str)
 					throw e
 				}
@@ -238,6 +239,7 @@ export class SocketMock extends EventEmitter implements Socket {
 							}
 						}
 					})
+					// eslint-disable-next-line no-console
 					.catch(console.error)
 			}, 1)
 		}

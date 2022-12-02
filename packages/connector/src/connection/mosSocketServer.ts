@@ -125,6 +125,7 @@ export class MosSocketServer extends EventEmitter {
 		this.debugTrace(`Server closed: on port ${this._port}`)
 	}
 	private debugTrace(...strs: any[]) {
+		// eslint-disable-next-line no-console
 		if (this._debug) console.log(...strs)
 	}
 }

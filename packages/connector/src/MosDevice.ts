@@ -235,6 +235,7 @@ export class MosDevice implements IMOSDevice {
 				try {
 					this._checkProfileValidness()
 				} catch (e) {
+					// eslint-disable-next-line no-console
 					console.error(e)
 				}
 			}, 1000)
@@ -1402,6 +1403,7 @@ export class MosDevice implements IMOSDevice {
 		}
 	}
 	private debugTrace(...strs: any[]) {
+		// eslint-disable-next-line no-console
 		if (this._debug) console.log(...strs)
 	}
 }
