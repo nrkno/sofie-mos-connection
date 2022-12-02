@@ -69,7 +69,7 @@ jobs:
           CI: true
       - name: Run unit tests
         run: |
-          yarn test
+          yarn test --forceExit
         env:
           CI: true
 
