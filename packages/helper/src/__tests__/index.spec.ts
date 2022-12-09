@@ -32,9 +32,13 @@ describe('Index', () => {
 		expect(MOS.IMOSScope.PLAYLIST).toBeTruthy()
 	})
 	test('ensure that helpers are exposed', () => {
-		expect(MOS.Utils).toBeTruthy() // For backwards compatibility
-		expect(typeof MOS.Utils.xml2js).toBe('function') // For backwards compatibility
-		expect(MOS.MosModel.XMLMosItem.fromXML).toBeTruthy() // For backwards compatibility
-		expect(MOS.MosModel.XMLMosItem.toXML).toBeTruthy() // For backwards compatibility
+		expect(typeof MOS.xml2js).toBe('function')
+		expect(MOS.MosModel.XMLMosItem.fromXML).toBeTruthy()
+		expect(MOS.MosModel.XMLMosItem.toXML).toBeTruthy()
+	})
+	test('ensure that dataTypes are exposed', () => {
+		expect(MOS.MosString128).toBeTruthy()
+		expect(MOS.MosDuration).toBeTruthy()
+		expect(MOS.MosTime).toBeTruthy()
 	})
 })
