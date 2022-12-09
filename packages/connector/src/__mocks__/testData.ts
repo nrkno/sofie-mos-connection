@@ -23,9 +23,7 @@ import {
 	IMOSScope,
 	IMOSExternalMetaData,
 } from '@mos-connection/model'
-import { MosString128 } from '../dataTypes/mosString128'
-import { MosTime } from '../dataTypes/mosTime'
-import { MosDuration } from '../dataTypes/mosDuration'
+import { MosString128, MosTime, MosDuration } from '@mos-connection/helper'
 
 const literal = <T>(o: T) => o
 

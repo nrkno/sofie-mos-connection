@@ -5,9 +5,8 @@ import { IMOSAckStatus, IProfiles } from '@mos-connection/model'
 import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription, IncomingConnectionType } from './connection/socketConnection'
 import { NCSServerConnection } from './connection/NCSServerConnection'
-import { MosMessage } from './mosModel/MosMessage'
-import { MOSAck } from './mosModel'
-import { MosString128 } from './dataTypes/mosString128'
+import { MosModel } from '@mos-connection/helper'
+import { MosString128 } from '@mos-connection/helper'
 import { EventEmitter } from 'events'
 import * as iconv from 'iconv-lite'
 import { MosMessageParser } from './connection/mosMessageParser'
@@ -411,7 +410,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 
 			let mosDevice = this._mosDevices[ncsID + '_' + mosID] || this._mosDevices[mosID + '_' + ncsID]
 
-			const sendReply = (message: MosMessage) => {
+			const sendReply = (message: MosModel.MosMessage) => {
 				message.ncsID = ncsID
 				message.mosID = mosID
 				message.prepare(mosMessageId)
@@ -476,12 +475,12 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			if (mosDevice) {
 				mosDevice
 					.routeData(parsed, client.portDescription)
-					.then((message: MosMessage) => {
+					.then((message: MosModel.MosMessage) => {
 						sendReply(message)
 					})
-					.catch((err: Error | MosMessage) => {
+					.catch((err: Error | MosModel.MosMessage) => {
 						// Something went wrong
-						if (err instanceof MosMessage) {
+						if (err instanceof MosModel.MosMessage) {
 							sendReply(err)
 						} else {
 							// Unknown / internal error
@@ -490,7 +489,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 							// reply with NACK:
 							// TODO: implement ACK
 							// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
-							const msg = new MOSAck({
+							const msg = new MosModel.MOSAck({
 								ID: new MosString128(0),
 								Revision: 0,
 								Description: new MosString128(`MosDevice "${ncsID + '_' + mosID}" not found`),
@@ -503,7 +502,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				// No MOS-device found in the register
 
 				// We can't handle the message, reply with a NACK:
-				const msg = new MOSAck({
+				const msg = new MosModel.MOSAck({
 					ID: new MosString128(0),
 					Revision: 0,
 					Description: new MosString128('MosDevice not found'),

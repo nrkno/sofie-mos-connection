@@ -1,7 +1,7 @@
 {
-  "name": "@mos-connection/connector",
+  "name": "@mos-connection/helper",
   "version": "2.0.1",
-  "description": "MOS compliant TCP/IP Socket connection.",
+  "description": "Helper functions for the MOS-connection library",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
@@ -45,7 +45,6 @@
     "lint-staged": "^13.0.4"
   },
   "dependencies": {
-    "@mos-connection/helper": "*",
     "@mos-connection/model": "*",
     "iconv-lite": "^0.6.2",
     "moment": "^2.29.4",

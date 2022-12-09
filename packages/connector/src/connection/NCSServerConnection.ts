@@ -1,7 +1,6 @@
 import { ConnectionType } from './socketConnection'
 import { MosSocketClient, CallBackFunction, QueueMessage } from '../connection/mosSocketClient'
-import { MosMessage, PortType } from '../mosModel/MosMessage'
-import { HeartBeat } from '../mosModel'
+import { MosModel } from '@mos-connection/helper'
 import { EventEmitter } from 'events'
 
 export const DEFAULT_COMMAND_TIMEOUT = 5000
@@ -10,7 +9,7 @@ export interface ClientDescription {
 	useHeartbeats: boolean
 	heartbeatConnected: boolean
 	client: MosSocketClient
-	clientDescription: PortType
+	clientDescription: MosModel.PortType
 }
 
 export interface INCSServerConnection {
@@ -106,7 +105,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		// if (this._callbackOnConnectionChange) this._callbackOnConnectionChange()
 	}
 
-	async executeCommand(message: MosMessage): Promise<any> {
+	async executeCommand(message: MosModel.MosMessage): Promise<any> {
 		// Fill with clients
 		let clients: Array<MosSocketClient>
 
@@ -260,7 +259,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 				const client = this._clients[key]
 
 				if (client.useHeartbeats) {
-					const heartbeat = new HeartBeat(this._clients[key].clientDescription)
+					const heartbeat = new MosModel.HeartBeat(this._clients[key].clientDescription)
 					try {
 						await this.executeCommand(heartbeat)
 						client.heartbeatConnected = true

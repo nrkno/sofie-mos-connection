@@ -1,9 +1,8 @@
 import { EventEmitter } from 'events'
 import { Socket } from 'net'
 import { SocketConnectionEvent } from './socketConnection'
-import { MosMessage } from '../mosModel/MosMessage'
+import { MosModel } from '@mos-connection/helper'
 import { DEFAULT_COMMAND_TIMEOUT, HandedOverQueue } from './NCSServerConnection'
-import { HeartBeat } from '../mosModel'
 import * as iconv from 'iconv-lite'
 import { MosMessageParser } from './mosMessageParser'
 
@@ -11,7 +10,7 @@ export type CallBackFunction = (err: any, data: unknown) => void
 
 export interface QueueMessage {
 	time: number
-	msg: MosMessage
+	msg: MosModel.MosMessage
 }
 
 export class MosSocketClient extends EventEmitter {
@@ -122,7 +121,7 @@ export class MosSocketClient extends EventEmitter {
 		this.dispose()
 	}
 
-	queueCommand(message: MosMessage, cb: CallBackFunction, time?: number): void {
+	queueCommand(message: MosModel.MosMessage, cb: CallBackFunction, time?: number): void {
 		message.prepare()
 		// this.debugTrace('queueing', message.messageID, message.constructor.name )
 		this._queueCallback[message.messageID + ''] = cb
@@ -178,7 +177,7 @@ export class MosSocketClient extends EventEmitter {
 			messages: this._queueMessages,
 			callbacks: this._queueCallback,
 		}
-		if (this._sentMessage && this._sentMessage.msg instanceof HeartBeat) {
+		if (this._sentMessage && this._sentMessage.msg instanceof MosModel.HeartBeat) {
 			// Temporary hack, to allow heartbeats to be received after a handover:
 			this._lingeringMessage = this._sentMessage
 			this._lingeringCallback[this._sentMessage.msg.messageID + ''] =

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { EventEmitter } from 'events'
 import { Socket } from 'net'
-import { MosTime } from '../dataTypes/mosTime'
+import { MosTime } from '@mos-connection/helper'
 
 import * as iconv from 'iconv-lite'
 import { getMessageId } from '../__tests__/lib'

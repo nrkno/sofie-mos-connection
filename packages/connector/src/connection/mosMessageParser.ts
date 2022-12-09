@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import { xml2js } from '../utils/Utils'
+import { xml2js } from '@mos-connection/helper'
 
 export class MosMessageParser extends EventEmitter {
 	private dataChunks = ''

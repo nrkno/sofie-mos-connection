@@ -29,7 +29,7 @@ import {
 import { SocketMock } from '../__mocks__/socket'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
 import { xml2js } from 'xml-js'
-import * as Utils from '../utils/Utils'
+import * as Helper from '@mos-connection/helper'
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // @ts-ignore imports are unused
@@ -171,7 +171,7 @@ describe('Profile 1', () => {
 
 		expect(mockReply).toHaveBeenCalledTimes(1)
 
-		const sentData = Utils.xml2js(decode(mockReply.mock.calls[0][0])) as any
+		const sentData = Helper.xml2js(decode(mockReply.mock.calls[0][0])) as any
 
 		expect(sentData.mos.mosListAll.mosObj).toHaveLength(2)
 		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
