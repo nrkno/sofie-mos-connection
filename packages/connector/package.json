@@ -1,84 +1,83 @@
 {
-  "name": "@mos-connection/connector",
-  "version": "2.0.1",
-  "description": "MOS compliant TCP/IP Socket connection.",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nrkno/sofie-mos-connection.git"
-  },
-  "bugs": {
-    "url": "https://github.com/nrkno/sofie-mos-connection/issues"
-  },
-  "homepage": "https://github.com/nrkno/sofie-mos-connection#readme",
-  "author": {
-    "name": "Jesper Stærkær",
-    "email": "jesper@superfly.tv",
-    "url": "http://superfly.tv"
-  },
-  "contributors": [
-    {
-      "name": "Johan Nyman",
-      "email": "johan@superfly.tv",
-      "url": "http://superfly.tv"
-    },
-    {
-      "name": "Stephan Nordnes Eriksen",
-      "email": "Stephanruler@gmail.com"
-    }
-  ],
-  "scripts": {
-    "build": "rimraf dist && yarn build:main",
-    "build:main": "tsc -p tsconfig.json",
-    "test": "jest",
-    "precommit": "lint-staged"
-  },
-  "files": [
-    "/dist",
-    "/CHANGELOG.md",
-    "/README.md",
-    "/LICENSE"
-  ],
-  "devDependencies": {
-    "lint-staged": "^13.0.4"
-  },
-  "dependencies": {
-    "@mos-connection/helper": "*",
-    "@mos-connection/model": "*",
-    "iconv-lite": "^0.6.2",
-    "moment": "^2.29.4",
-    "tslib": "^2.2.0",
-    "xml-js": "^1.6.11",
-    "xmlbuilder": "^15.1.1"
-  },
-  "keywords": [
-    "mos",
-    "broadcast",
-    "socket",
-    "typescript",
-    "javascript",
-    "open",
-    "source",
-    "automation",
-    "ncs",
-    "nrcs",
-    "rundown",
-    "tv-production",
-    "sofie"
-  ],
-  "prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
-  "engines": {
-    "node": ">=14.18.0"
-  },
-  "peerDependencies": {},
-  "lint-staged": {
-    "*.{js,css,json,md,scss}": [
-      "prettier"
-    ],
-    "*.{ts,tsx}": [
-      "eslint"
-    ]
-  }
+	"name": "@mos-connection/connector",
+	"version": "2.1.0-alpha.0",
+	"description": "MOS compliant TCP/IP Socket connection.",
+	"main": "dist/index.js",
+	"typings": "dist/index.d.ts",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nrkno/sofie-mos-connection.git"
+	},
+	"bugs": {
+		"url": "https://github.com/nrkno/sofie-mos-connection/issues"
+	},
+	"homepage": "https://github.com/nrkno/sofie-mos-connection#readme",
+	"author": {
+		"name": "Jesper Stærkær",
+		"email": "jesper@superfly.tv",
+		"url": "http://superfly.tv"
+	},
+	"contributors": [
+		{
+			"name": "Johan Nyman",
+			"email": "johan@superfly.tv",
+			"url": "http://superfly.tv"
+		},
+		{
+			"name": "Stephan Nordnes Eriksen",
+			"email": "Stephanruler@gmail.com"
+		}
+	],
+	"scripts": {
+		"build": "rimraf dist && yarn build:main",
+		"build:main": "tsc -p tsconfig.json",
+		"test": "jest",
+		"precommit": "lint-staged"
+	},
+	"files": [
+		"/dist",
+		"/CHANGELOG.md",
+		"/README.md",
+		"/LICENSE"
+	],
+	"devDependencies": {
+		"lint-staged": "^13.0.4"
+	},
+	"dependencies": {
+		"@mos-connection/helper": "2.1.0-alpha.0",
+		"@mos-connection/model": "2.1.0-alpha.0",
+		"iconv-lite": "^0.6.2",
+		"moment": "^2.29.4",
+		"tslib": "^2.2.0",
+		"xml-js": "^1.6.11",
+		"xmlbuilder": "^15.1.1"
+	},
+	"keywords": [
+		"mos",
+		"broadcast",
+		"socket",
+		"typescript",
+		"javascript",
+		"open",
+		"source",
+		"automation",
+		"ncs",
+		"nrcs",
+		"rundown",
+		"tv-production",
+		"sofie"
+	],
+	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
+	"engines": {
+		"node": ">=14.18.0"
+	},
+	"lint-staged": {
+		"*.{js,css,json,md,scss}": [
+			"prettier"
+		],
+		"*.{ts,tsx}": [
+			"eslint"
+		]
+	}
 }
