@@ -119,10 +119,15 @@ jobs:
             fi
 
           fi
-      - name: Prepare build
+      - name: Prepare Environment
         if: ${{ steps.do-publish.outputs.tag }}
         run: |
           yarn install
+        env:
+          CI: true
+      - name: Build
+        if: ${{ steps.do-publish.outputs.tag }}
+        run: |
           yarn build
         env:
           CI: true
