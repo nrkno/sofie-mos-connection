@@ -18,7 +18,7 @@ export class MosMessageParser extends EventEmitter {
 		// parse as many messages as possible from the data
 		while (this.dataChunks.length > 0) {
 			// whitespace before a mos message is junk
-			this.dataChunks = this.dataChunks.trimLeft()
+			this.dataChunks = this.dataChunks.trimStart()
 
 			const lengthBefore = this.dataChunks.length
 			this._tryParseData()
@@ -42,19 +42,19 @@ export class MosMessageParser extends EventEmitter {
 			this.dataChunks = ''
 		} else {
 			if (startIndex > 0) {
-				const junkStr = this.dataChunks.substr(0, startIndex)
+				const junkStr = this.dataChunks.slice(0, startIndex)
 				this.debugTrace(`${this.description} Discarding message fragment: "${junkStr}"`)
 
 				// trim off anything before <mos>, as we'll never be able to parse that anyway.
-				this.dataChunks = this.dataChunks.substr(startIndex)
+				this.dataChunks = this.dataChunks.slice(startIndex)
 			}
 
 			const endIndex = this.dataChunks.indexOf(endMatch)
 			if (endIndex >= 0) {
 				// We have an end too, so pull out the message
 				const endIndex2 = endIndex + endMatch.length
-				messageString = this.dataChunks.substr(0, endIndex2)
-				this.dataChunks = this.dataChunks.substr(endIndex2)
+				messageString = this.dataChunks.slice(0, endIndex2)
+				this.dataChunks = this.dataChunks.slice(endIndex2)
 
 				// parse our xml
 			}

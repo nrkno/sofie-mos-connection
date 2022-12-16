@@ -118,7 +118,7 @@ export function is(mosTime: IMOSTime | any): mosTime is IMOSTime {
 function parseTimeOffset(timestamp: string): false | { timeOffsetValue: number; timezoneDeclaration: string } {
 	let timeOffsetValue: number
 	let timezoneDeclaration = ''
-	const offsetregex = /([+-])([0-9]{1,2})(?::{0,1}([0-9]{2})){0,1}(?: {0,1}\(\S+\)){0,1}$/
+	const offsetregex = /([+-])(\d{1,2})(?::{0,1}(\d{2})){0,1}(?: {0,1}\(\S+\)){0,1}$/
 	const match = timestamp.match(offsetregex)
 	if (match) {
 		let positiveNegativeValue = 0

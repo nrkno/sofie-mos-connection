@@ -121,7 +121,7 @@ describe('message chunking', () => {
 
 		/* tslint:disable-next-line */
 		for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
-			chunks[i] = str.substr(o, size)
+			chunks[i] = str.slice(o, o + size)
 		}
 
 		return chunks
@@ -160,7 +160,7 @@ describe('message chunking', () => {
 			const splitPoint = repl.indexOf('Test MOS')
 			expect(splitPoint).not.toEqual(-1)
 
-			const chunks = [repl.substr(0, splitPoint + 4), repl.substr(splitPoint + 4)]
+			const chunks = [repl.slice(0, splitPoint + 4), repl.slice(splitPoint + 4)]
 			return chunks.map((c) => encode(c))
 		})
 

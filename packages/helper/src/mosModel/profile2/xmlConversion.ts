@@ -289,7 +289,7 @@ export namespace XMLMosExternalMetaData {
 function _handlePayloadProperties(prop: any): any {
 	// prop is string, can be a mis-typing of number - if it contains numbers and comma
 	// strings with numbers and , grouped will trigger
-	if (prop && typeof prop === 'string' && prop.match(/[0-9]+[,][0-9]+/)) {
+	if (prop && typeof prop === 'string' && prop.match(/\d+,\d+/)) {
 		// here is the fix for replacing and casting
 		const commaCast = prop.replace(/,/, '.')
 		const floatCast = parseFloat(commaCast)
