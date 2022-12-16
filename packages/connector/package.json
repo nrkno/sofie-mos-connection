@@ -1,6 +1,6 @@
 {
 	"name": "@mos-connection/connector",
-	"version": "2.1.0-alpha.0",
+	"version": "3.0.0-alpha.0",
 	"description": "MOS compliant TCP/IP Socket connection.",
 	"main": "dist/index.js",
 	"typings": "dist/index.d.ts",
@@ -45,8 +45,8 @@
 		"lint-staged": "^13.0.4"
 	},
 	"dependencies": {
-		"@mos-connection/helper": "2.1.0-alpha.0",
-		"@mos-connection/model": "2.1.0-alpha.0",
+		"@mos-connection/helper": "3.0.0-alpha.0",
+		"@mos-connection/model": "3.0.0-alpha.0",
 		"iconv-lite": "^0.6.2",
 		"moment": "^2.29.4",
 		"tslib": "^2.2.0",

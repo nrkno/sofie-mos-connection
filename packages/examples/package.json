@@ -1,7 +1,7 @@
 {
 	"name": "@mos-connection/examples",
 	"private": true,
-	"version": "2.1.0-alpha.0",
+	"version": "3.0.0-alpha.0",
 	"description": "Examples for how to use MOS-connection",
 	"main": "dist/index.js",
 	"typings": "dist/index.d.ts",
@@ -24,7 +24,7 @@
 		"lint-staged": "^13.0.4"
 	},
 	"dependencies": {
-		"@mos-connection/connector": "2.1.0-alpha.0"
+		"@mos-connection/connector": "3.0.0-alpha.0"
 	},
 	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
 	"lint-staged": {
