@@ -47,7 +47,6 @@
 	"dependencies": {
 		"@mos-connection/model": "3.0.0-alpha.0",
 		"iconv-lite": "^0.6.2",
-		"moment": "^2.29.4",
 		"tslib": "^2.2.0",
 		"xml-js": "^1.6.11",
 		"xmlbuilder": "^15.1.1"
