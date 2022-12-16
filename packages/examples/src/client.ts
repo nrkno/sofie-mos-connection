@@ -7,8 +7,6 @@ import {
 	IMOSROStory,
 	IMOSRunningOrder,
 	IMOSStoryAction,
-	MosString128,
-	MosTime,
 	MosDevice,
 	IMOSString128,
 } from '@mos-connection/connector'
@@ -35,6 +33,8 @@ mos.onConnection((mosDevice: MosDevice) => {
 	console.log('new mosDevice: ', mosDevice.idPrimary, mosDevice.idSecondary)
 	// console.log(dev)
 
+	const mosTypes = mosDevice.mosTypes // Could also be retrieved with getMosTypes(strict)
+
 	let hasSentInit = false
 
 	mosDevice.onConnectionChange((status) => {
@@ -53,7 +53,7 @@ mos.onConnection((mosDevice: MosDevice) => {
 		console.log('allRunningOrders', ros)
 
 		// trigger a re-send of those running orders:
-		// return dev.getRunningOrder(new MosString128('696297DF-1568-4B36-B43B3B79514B40D4'))
+		// return dev.getRunningOrder(mosTypes.mosString128.create('696297DF-1568-4B36-B43B3B79514B40D4'))
 
 		const roLists = await Promise.all(
 			ros.map(async (ro) => {
@@ -64,16 +64,16 @@ mos.onConnection((mosDevice: MosDevice) => {
 	}
 	mosDevice.onRequestMachineInfo(async () => {
 		return {
-			manufacturer: new MosString128('mommy'),
-			model: new MosString128('model!'),
-			hwRev: new MosString128('0.1'),
-			swRev: new MosString128('1.0'),
-			DOM: new MosTime('1989-07-01'),
-			SN: new MosString128('1234'),
-			ID: new MosString128('MY ID'),
-			time: new MosTime(Date.now()),
-			// opTime?: new MosTime(),
-			mosRev: new MosString128('A'),
+			manufacturer: mosTypes.mosString128.create('mommy'),
+			model: mosTypes.mosString128.create('model!'),
+			hwRev: mosTypes.mosString128.create('0.1'),
+			swRev: mosTypes.mosString128.create('1.0'),
+			DOM: mosTypes.mosTime.create('1989-07-01'),
+			SN: mosTypes.mosString128.create('1234'),
+			ID: mosTypes.mosString128.create('MY ID'),
+			time: mosTypes.mosTime.create(Date.now()),
+			// opTime?: mosTypes.mosTime.create(),
+			mosRev: mosTypes.mosString128.create('A'),
 
 			supportedProfiles: {
 				deviceType: 'MOS',
@@ -85,7 +85,7 @@ mos.onConnection((mosDevice: MosDevice) => {
 		console.log('ready to air', Action)
 		return {
 			ID: Action.ID,
-			Status: new MosString128('OK'),
+			Status: mosTypes.mosString128.create('OK'),
 			Stories: [],
 		}
 	})
@@ -94,7 +94,7 @@ mos.onConnection((mosDevice: MosDevice) => {
 		console.log('create running order', ro)
 		return {
 			ID: ro.ID,
-			Status: new MosString128('OK'),
+			Status: mosTypes.mosString128.create('OK'),
 			Stories: [],
 		}
 	})
@@ -103,7 +103,7 @@ mos.onConnection((mosDevice: MosDevice) => {
 		console.log('delete running order', RunningOrderID)
 		return {
 			ID: RunningOrderID,
-			Status: new MosString128('OK'),
+			Status: mosTypes.mosString128.create('OK'),
 			Stories: [],
 		}
 	})
@@ -111,7 +111,7 @@ mos.onConnection((mosDevice: MosDevice) => {
 		console.log('insert stories', Action, Stories)
 		return {
 			ID: Action.StoryID,
-			Status: new MosString128('OK'),
+			Status: mosTypes.mosString128.create('OK'),
 			Stories: [],
 		}
 	})
@@ -120,7 +120,7 @@ mos.onConnection((mosDevice: MosDevice) => {
 		console.log('move stories', Action, Stories)
 		return {
 			ID: Action.StoryID,
-			Status: new MosString128('OK'),
+			Status: mosTypes.mosString128.create('OK'),
 			Stories: [],
 		}
 	})
@@ -129,7 +129,7 @@ mos.onConnection((mosDevice: MosDevice) => {
 		console.log('delete stories', Action, Stories)
 		return {
 			ID: Action.RunningOrderID,
-			Status: new MosString128('OK'),
+			Status: mosTypes.mosString128.create('OK'),
 			Stories: [],
 		}
 	})

@@ -5,8 +5,8 @@ import { XMLROStory, XMLRunningOrderBase } from './xmlConversion'
 
 export class ROList extends MosMessage {
 	/** */
-	constructor(private ro: IMOSRunningOrder) {
-		super('upper')
+	constructor(private ro: IMOSRunningOrder, strict: boolean) {
+		super('upper', strict)
 	}
 
 	/** */
@@ -19,10 +19,10 @@ export class ROList extends MosMessage {
 	}
 
 	protected fillXMLWithROData(root: XMLBuilder.XMLElement): void {
-		XMLRunningOrderBase.toXML(root, this.ro)
+		XMLRunningOrderBase.toXML(root, this.ro, this.strict)
 
 		this.ro.Stories.forEach((story) => {
-			XMLROStory.toXML(root, story)
+			XMLROStory.toXML(root, story, this.strict)
 		})
 	}
 }

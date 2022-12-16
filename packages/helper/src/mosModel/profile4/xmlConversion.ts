@@ -1,27 +1,27 @@
-import { IMOSROFullStoryBodyItem, IMOSROFullStory } from '@mos-connection/model'
+import { IMOSROFullStoryBodyItem, IMOSROFullStory, getMosTypes } from '@mos-connection/model'
 import { XMLROStory, XMLMosItem } from '../profile2/xmlConversion'
 import { AnyXML } from '../lib'
-import { MosString128 } from '../../dataTypes/mosString128'
 
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace XMLROFullStory {
-	export function fromXML(xml: AnyXML): IMOSROFullStory {
+	export function fromXML(xml: AnyXML, strict: boolean): IMOSROFullStory {
 		if (typeof xml !== 'object') throw new Error('XML is not an object')
+		const mosTypes = getMosTypes(strict)
 
-		const story0 = XMLROStory.fromXML(xml)
+		const story0 = XMLROStory.fromXML(xml, strict)
 		const story: IMOSROFullStory = {
 			ID: story0.ID,
 			Slug: story0.Slug,
 			Number: story0.Number,
 			MosExternalMetaData: story0.MosExternalMetaData,
-			RunningOrderId: new MosString128(xml.roID),
-			Body: fromXMLStoryBody(xml.storyBody),
+			RunningOrderId: mosTypes.mosString128.create(xml.roID),
+			Body: fromXMLStoryBody(xml.storyBody, strict),
 		}
 
 		return story
 	}
 }
-function fromXMLStoryBody(xml: any): IMOSROFullStoryBodyItem[] {
+function fromXMLStoryBody(xml: any, strict: boolean): IMOSROFullStoryBodyItem[] {
 	const body: IMOSROFullStoryBodyItem[] = []
 
 	/*
@@ -49,7 +49,7 @@ function fromXMLStoryBody(xml: any): IMOSROFullStoryBodyItem[] {
 				Content: item,
 			}
 			if (item.$name === 'storyItem') {
-				bodyItem.Content = XMLMosItem.fromXML(item)
+				bodyItem.Content = XMLMosItem.fromXML(item, strict)
 			}
 			body.push(bodyItem)
 		}

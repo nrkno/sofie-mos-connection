@@ -1,5 +1,6 @@
+import { getMosTypes, MosTypes } from '@mos-connection/model'
 import * as XMLBuilder from 'xmlbuilder'
-import { addTextElement } from '../utils/Utils'
+import { addTextElementInternal } from '../utils/Utils'
 
 export type PortType = 'upper' | 'lower' | 'query'
 export abstract class MosMessage {
@@ -9,7 +10,11 @@ export abstract class MosMessage {
 	public mosID: string | undefined = undefined
 	public ncsID: string | undefined = undefined
 
-	constructor(public port: PortType) {}
+	protected readonly mosTypes: MosTypes
+
+	constructor(public port: PortType, protected readonly strict: boolean) {
+		this.mosTypes = getMosTypes(strict)
+	}
 
 	private _messageID = 0
 
@@ -38,9 +43,9 @@ export abstract class MosMessage {
 		const xml = XMLBuilder.create('mos', undefined, undefined, {
 			headless: true,
 		})
-		addTextElement(xml, 'ncsID', this.ncsID)
-		addTextElement(xml, 'mosID', this.mosID)
-		addTextElement(xml, 'messageID', this.messageID)
+		addTextElementInternal(xml, 'ncsID', this.ncsID, undefined, this.strict)
+		addTextElementInternal(xml, 'mosID', this.mosID, undefined, this.strict)
+		addTextElementInternal(xml, 'messageID', this.messageID, undefined, this.strict)
 		xml.importDocument(this.messageXMLBlocks)
 
 		return xml.end({ pretty: true })

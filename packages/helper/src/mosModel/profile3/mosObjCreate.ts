@@ -7,15 +7,15 @@ import { XMLMosObject } from '../profile1/xmlConversion'
 export class MosObjCreate extends MosMessage {
 	private object: IMOSObject
 
-	constructor(object: IMOSObject) {
-		super('lower')
+	constructor(object: IMOSObject, strict: boolean) {
+		super('lower', strict)
 		this.object = object
 	}
 
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const xml = XMLBuilder.create('mosObjCreate')
 
-		XMLMosObject.toXML(xml, this.object)
+		XMLMosObject.toXML(xml, this.object, this.strict)
 
 		return xml
 	}

@@ -15,25 +15,21 @@ exports[`Profile 1 getAllMOSObjects 2`] = `
 [
   {
     "AirStatus": undefined,
-    "Changed": MosTime {
-      "_time": 2009-11-01T14:35:55.000Z,
+    "Changed": {
+      "_mosTime": 1257086155000,
       "_timezone": "Z",
-      "_timezoneDeclaration": "",
-      "_timezoneZuluIndicator": "Z",
+      "_timezoneOffset": 0,
     },
-    "ChangedBy": MosString128 {
-      "_str": "Chris",
-      "strict": true,
+    "ChangedBy": {
+      "_mosString128": "Chris",
     },
-    "Created": MosTime {
-      "_time": 2009-10-31T23:39:12.000Z,
+    "Created": {
+      "_mosTime": 1257032352000,
       "_timezone": "Z",
-      "_timezoneDeclaration": "",
-      "_timezoneZuluIndicator": "Z",
+      "_timezoneOffset": 0,
     },
-    "CreatedBy": MosString128 {
-      "_str": "Chris",
-      "strict": true,
+    "CreatedBy": {
+      "_mosString128": "Chris",
     },
     "Description": {
       "elements": [
@@ -85,9 +81,8 @@ exports[`Profile 1 getAllMOSObjects 2`] = `
     },
     "Duration": undefined,
     "Group": undefined,
-    "ID": MosString128 {
-      "_str": "M000123",
-      "strict": true,
+    "ID": {
+      "_mosString128": "M000123",
     },
     "MosAbstract": undefined,
     "Paths": [
@@ -108,9 +103,8 @@ exports[`Profile 1 getAllMOSObjects 2`] = `
       },
     ],
     "Revision": undefined,
-    "Slug": MosString128 {
-      "_str": "HOTEL FIRE",
-      "strict": true,
+    "Slug": {
+      "_mosString128": "HOTEL FIRE",
     },
     "Status": undefined,
     "TimeBase": undefined,
@@ -118,32 +112,27 @@ exports[`Profile 1 getAllMOSObjects 2`] = `
   },
   {
     "AirStatus": "READY",
-    "Changed": MosTime {
-      "_time": 2009-11-01T15:21:15.000Z,
+    "Changed": {
+      "_mosTime": 1257088875000,
       "_timezone": "Z",
-      "_timezoneDeclaration": "",
-      "_timezoneZuluIndicator": "Z",
+      "_timezoneOffset": 0,
     },
-    "ChangedBy": MosString128 {
-      "_str": "Chris",
-      "strict": true,
+    "ChangedBy": {
+      "_mosString128": "Chris",
     },
-    "Created": MosTime {
-      "_time": 2009-11-01T15:19:01.000Z,
+    "Created": {
+      "_mosTime": 1257088741000,
       "_timezone": "Z",
-      "_timezoneDeclaration": "",
-      "_timezoneZuluIndicator": "Z",
+      "_timezoneOffset": 0,
     },
-    "CreatedBy": MosString128 {
-      "_str": "Phil",
-      "strict": true,
+    "CreatedBy": {
+      "_mosString128": "Phil",
     },
     "Description": "VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.",
     "Duration": 800,
     "Group": undefined,
-    "ID": MosString128 {
-      "_str": "M000224",
-      "strict": true,
+    "ID": {
+      "_mosString128": "M000224",
     },
     "MosAbstract": undefined,
     "MosExternalMetaData": [
@@ -180,9 +169,8 @@ exports[`Profile 1 getAllMOSObjects 2`] = `
       },
     ],
     "Revision": 4,
-    "Slug": MosString128 {
-      "_str": "COLSTAT MURDER:VO",
-      "strict": true,
+    "Slug": {
+      "_mosString128": "COLSTAT MURDER:VO",
     },
     "Status": "UPDATED",
     "TimeBase": 59.94,
@@ -205,25 +193,21 @@ exports[`Profile 1 getMOSObject 1`] = `
 exports[`Profile 1 getMOSObject 2`] = `
 {
   "AirStatus": "READY",
-  "Changed": MosTime {
-    "_time": 2009-10-31T23:39:12.000Z,
+  "Changed": {
+    "_mosTime": 1257032352000,
     "_timezone": "Z",
-    "_timezoneDeclaration": "",
-    "_timezoneZuluIndicator": "Z",
+    "_timezoneOffset": 0,
   },
-  "ChangedBy": MosString128 {
-    "_str": "Chris",
-    "strict": true,
+  "ChangedBy": {
+    "_mosString128": "Chris",
   },
-  "Created": MosTime {
-    "_time": 2009-10-31T23:39:12.000Z,
+  "Created": {
+    "_mosTime": 1257032352000,
     "_timezone": "Z",
-    "_timezoneDeclaration": "",
-    "_timezoneZuluIndicator": "Z",
+    "_timezoneOffset": 0,
   },
-  "CreatedBy": MosString128 {
-    "_str": "Chris",
-    "strict": true,
+  "CreatedBy": {
+    "_mosString128": "Chris",
   },
   "Description": {
     "elements": [
@@ -275,9 +259,8 @@ exports[`Profile 1 getMOSObject 2`] = `
   },
   "Duration": 1800,
   "Group": "Show 7",
-  "ID": MosString128 {
-    "_str": "M000123",
-    "strict": true,
+  "ID": {
+    "_mosString128": "M000123",
   },
   "MosAbstract": {
     "elements": [
@@ -331,9 +314,8 @@ exports[`Profile 1 getMOSObject 2`] = `
     },
   ],
   "Revision": 1,
-  "Slug": MosString128 {
-    "_str": "Hotel Fire",
-    "strict": true,
+  "Slug": {
+    "_mosString128": "Hotel Fire",
   },
   "Status": "NEW",
   "TimeBase": 59.94,

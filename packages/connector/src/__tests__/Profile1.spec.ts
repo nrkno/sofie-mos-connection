@@ -12,6 +12,7 @@ import {
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
+	mosTypes,
 	setupMocks,
 } from './lib'
 import {
@@ -20,11 +21,9 @@ import {
 	IMOSObject,
 	IMOSListMachInfo,
 	IMOSObjectType,
-	MosString128,
 	IMOSObjectStatus,
 	IMOSObjectAirStatus,
 	IMOSObjectPathType,
-	MosTime,
 } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
@@ -124,7 +123,7 @@ describe('Profile 1', () => {
 		await fakeIncomingMessage(serverSocketMockLower, xmlData.reqObj)
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(1)
 		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
-		expect(onRequestMOSObject.mock.calls[0][0]).toEqual(xmlApiData.mosObj.ID.toString())
+		expect(onRequestMOSObject.mock.calls[0][0]).toEqual(mosTypes.mosString128.stringify(xmlApiData.mosObj.ID))
 		expect(fixSnapshot(onRequestMOSObject.mock.calls)).toMatchSnapshot()
 		expect(onRequestAllMOSObjects).toHaveBeenCalledTimes(0)
 
@@ -135,8 +134,10 @@ describe('Profile 1', () => {
 		const reply = decode(serverSocketMockLower.mockSentMessage['mock'].calls[0][0])
 		const parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
 
-		expect(parsedReply.mos.mosObj.objID._text + '').toEqual(xmlApiData.mosObj.ID.toString())
-		expect(parsedReply.mos.mosObj.objSlug._text + '').toEqual(xmlApiData.mosObj.Slug.toString())
+		expect(parsedReply.mos.mosObj.objID._text + '').toEqual(mosTypes.mosString128.stringify(xmlApiData.mosObj.ID))
+		expect(parsedReply.mos.mosObj.objSlug._text + '').toEqual(
+			mosTypes.mosString128.stringify(xmlApiData.mosObj.Slug)
+		)
 		expect(parsedReply).toMatchSnapshot()
 	})
 	test('onRequestAllMOSObjects', async () => {
@@ -175,11 +176,19 @@ describe('Profile 1', () => {
 
 		expect(sentData.mos.mosListAll.mosObj).toHaveLength(2)
 		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
-		expect(sentData.mos.mosListAll.mosObj[0].objID + '').toEqual(xmlApiData.mosObj.ID.toString())
-		expect(sentData.mos.mosListAll.mosObj[0].objSlug + '').toEqual(xmlApiData.mosObj.Slug.toString())
+		expect(sentData.mos.mosListAll.mosObj[0].objID + '').toEqual(
+			mosTypes.mosString128.stringify(xmlApiData.mosObj.ID)
+		)
+		expect(sentData.mos.mosListAll.mosObj[0].objSlug + '').toEqual(
+			mosTypes.mosString128.stringify(xmlApiData.mosObj.Slug)
+		)
 		if (!xmlApiData.mosObj2.ID) throw new Error('xmlApiData.mosObj2.ID not set')
-		expect(sentData.mos.mosListAll.mosObj[1].objID + '').toEqual(xmlApiData.mosObj2.ID.toString())
-		expect(sentData.mos.mosListAll.mosObj[1].objSlug + '').toEqual(xmlApiData.mosObj2.Slug.toString())
+		expect(sentData.mos.mosListAll.mosObj[1].objID + '').toEqual(
+			mosTypes.mosString128.stringify(xmlApiData.mosObj2.ID)
+		)
+		expect(sentData.mos.mosListAll.mosObj[1].objSlug + '').toEqual(
+			mosTypes.mosString128.stringify(xmlApiData.mosObj2.Slug)
+		)
 		sentData.mos.messageID = 99999 // not important
 		expect(sentData).toMatchSnapshot()
 	})
@@ -213,8 +222,8 @@ describe('Profile 1', () => {
 		socketMockLower.mockAddReply(mockReplyMosAck)
 		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
 		const reply = await mosDevice.sendMOSObject({
-			ID: new MosString128('M000123'),
-			Slug: new MosString128('theslug'),
+			ID: mosTypes.mosString128.create('M000123'),
+			Slug: mosTypes.mosString128.create('theslug'),
 			MosAbstract: 'abstract!',
 			Group: 'grp',
 			Type: IMOSObjectType.VIDEO,
@@ -230,8 +239,8 @@ describe('Profile 1', () => {
 					Target: 'folder/target',
 				},
 			],
-			CreatedBy: new MosString128('me!'),
-			Created: new MosTime('2005-07-01T15:23:18Z'),
+			CreatedBy: mosTypes.mosString128.create('me!'),
+			Created: mosTypes.mosTime.create('2005-07-01T15:23:18Z'),
 		})
 		expect(mockReplyMosAck).toHaveBeenCalledTimes(1)
 		const msg = decode(mockReplyMosAck.mock.calls[0][0])
@@ -239,7 +248,7 @@ describe('Profile 1', () => {
 		checkMessageSnapshot(msg)
 
 		expect(reply).toMatchObject({
-			ID: new MosString128('M000123'),
+			ID: mosTypes.mosString128.create('M000123'),
 			Revision: 1,
 			Status: 'ACK',
 		})

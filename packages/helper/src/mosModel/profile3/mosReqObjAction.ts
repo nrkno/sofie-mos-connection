@@ -7,14 +7,14 @@ export interface MosReqObjActionOptionsNew {
 }
 export class MosReqObjActionNew extends MosMessage {
 	private options: MosReqObjActionOptionsNew
-	constructor(options: MosReqObjActionOptionsNew) {
-		super('lower')
+	constructor(options: MosReqObjActionOptionsNew, strict: boolean) {
+		super('lower', strict)
 		this.options = options
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const xml = XMLBuilder.create('mosReqObjAction')
 		xml.att('operation', 'NEW')
-		XMLMosObject.toXML(xml, this.options.object)
+		XMLMosObject.toXML(xml, this.options.object, this.strict)
 		return xml
 	}
 }
@@ -24,15 +24,15 @@ export interface MosReqObjActionOptionsUpdate {
 }
 export class MosReqObjActionUpdate extends MosMessage {
 	private options: MosReqObjActionOptionsUpdate
-	constructor(options: MosReqObjActionOptionsUpdate) {
-		super('lower')
+	constructor(options: MosReqObjActionOptionsUpdate, strict: boolean) {
+		super('lower', strict)
 		this.options = options
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const xml = XMLBuilder.create('mosReqObjAction')
 		xml.att('operation', 'UPDATE')
-		xml.att('objID', this.options.objectId)
-		XMLMosObject.toXML(xml, this.options.object)
+		xml.att('objID', this.mosTypes.mosString128.stringify(this.options.objectId))
+		XMLMosObject.toXML(xml, this.options.object, this.strict)
 		return xml
 	}
 }
@@ -41,14 +41,14 @@ export interface MosReqObjActionOptionsDelete {
 }
 export class MosReqObjActionDelete extends MosMessage {
 	private options: MosReqObjActionOptionsDelete
-	constructor(options: MosReqObjActionOptionsDelete) {
-		super('lower')
+	constructor(options: MosReqObjActionOptionsDelete, strict: boolean) {
+		super('lower', strict)
 		this.options = options
 	}
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const xml = XMLBuilder.create('mosReqObjAction')
 		xml.att('operation', 'DELETE')
-		xml.att('objID', this.options.objectId)
+		xml.att('objID', this.mosTypes.mosString128.stringify(this.options.objectId))
 		return xml
 	}
 }

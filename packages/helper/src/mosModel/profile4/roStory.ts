@@ -3,56 +3,66 @@ import { MosMessage } from '../MosMessage'
 import { IMOSROFullStory, IMOSItem } from '@mos-connection/model'
 import { XMLROStoryBase, XMLObjectPaths, XMLMosExternalMetaData } from '../profile2/xmlConversion'
 import { XMLMosObjects } from '../profile1/xmlConversion'
-import { addTextElement } from '../../utils/Utils'
+import { addTextElementInternal } from '../../utils/Utils'
 
 export class ROStory extends MosMessage {
 	/** */
-	constructor(private fullStory: IMOSROFullStory) {
-		super('upper')
+	constructor(private fullStory: IMOSROFullStory, strict: boolean) {
+		super('upper', strict)
 	}
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const xmlStory = XMLBuilder.create('roStorySend')
 
-		XMLROStoryBase.toXML(xmlStory, this.fullStory)
-		addTextElement(xmlStory, 'roID', this.fullStory.RunningOrderId)
+		XMLROStoryBase.toXML(xmlStory, this.fullStory, this.strict)
+		addTextElementInternal(xmlStory, 'roID', this.fullStory.RunningOrderId, undefined, this.strict)
 
-		const xmlStoryBody = addTextElement(xmlStory, 'storyBody')
+		const xmlStoryBody = addTextElementInternal(xmlStory, 'storyBody', undefined, undefined, this.strict)
 		this.fullStory.Body.forEach((bodyItem) => {
 			if (bodyItem.Type === 'storyItem') {
-				const xmlItem = addTextElement(xmlStoryBody, 'storyItem')
+				const xmlItem = addTextElementInternal(xmlStoryBody, 'storyItem', undefined, undefined, this.strict)
 				const item: IMOSItem = bodyItem.Content as IMOSItem
 
-				addTextElement(xmlItem, 'itemID', item.ID)
-				addTextElement(xmlItem, 'objID', item.ObjectID)
-				addTextElement(xmlItem, 'mosID', item.MOSID)
+				addTextElementInternal(xmlItem, 'itemID', item.ID, undefined, this.strict)
+				addTextElementInternal(xmlItem, 'objID', item.ObjectID, undefined, this.strict)
+				addTextElementInternal(xmlItem, 'mosID', item.MOSID, undefined, this.strict)
 				// TODO: mosAbstract?: string?
 				// TODO: Channel?: MosString128?
 				// TODO: MacroIn?: MosString128?
 				// TODO: MacroOut?: MosString128?
 
-				XMLObjectPaths.toXML(xmlItem, item.Paths)
+				XMLObjectPaths.toXML(xmlItem, item.Paths, this.strict)
 				XMLMosExternalMetaData.toXML(xmlItem, item.MosExternalMetaData)
 
-				if (item.Slug) addTextElement(xmlItem, 'itemSlug', item.Slug)
-				if (item.EditorialStart) addTextElement(xmlItem, 'itemEdStart', item.EditorialStart)
-				if (item.EditorialDuration) addTextElement(xmlItem, 'itemEdDur', item.EditorialDuration)
-				if (item.UserTimingDuration) addTextElement(xmlItem, 'itemUserTimingDur', item.UserTimingDuration)
-				if (item.Trigger) addTextElement(xmlItem, 'itemTrigger', item.Trigger)
-				if (item.mosAbstract) addTextElement(xmlItem, 'mosAbstract', item.mosAbstract)
-				if (item.ObjectSlug) addTextElement(xmlItem, 'objSlug', item.ObjectSlug)
-				if (item.Channel) addTextElement(xmlItem, 'itemChannel', item.Channel)
-				if (item.Duration) addTextElement(xmlItem, 'objDur', item.Duration)
-				if (item.TimeBase) addTextElement(xmlItem, 'objTB', item.TimeBase)
+				if (item.Slug) addTextElementInternal(xmlItem, 'itemSlug', item.Slug, undefined, this.strict)
+				if (item.EditorialStart)
+					addTextElementInternal(xmlItem, 'itemEdStart', item.EditorialStart, undefined, this.strict)
+				if (item.EditorialDuration)
+					addTextElementInternal(xmlItem, 'itemEdDur', item.EditorialDuration, undefined, this.strict)
+				if (item.UserTimingDuration)
+					addTextElementInternal(
+						xmlItem,
+						'itemUserTimingDur',
+						item.UserTimingDuration,
+						undefined,
+						this.strict
+					)
+				if (item.Trigger) addTextElementInternal(xmlItem, 'itemTrigger', item.Trigger, undefined, this.strict)
+				if (item.mosAbstract)
+					addTextElementInternal(xmlItem, 'mosAbstract', item.mosAbstract, undefined, this.strict)
+				if (item.ObjectSlug) addTextElementInternal(xmlItem, 'objSlug', item.ObjectSlug, undefined, this.strict)
+				if (item.Channel) addTextElementInternal(xmlItem, 'itemChannel', item.Channel, undefined, this.strict)
+				if (item.Duration) addTextElementInternal(xmlItem, 'objDur', item.Duration, undefined, this.strict)
+				if (item.TimeBase) addTextElementInternal(xmlItem, 'objTB', item.TimeBase, undefined, this.strict)
 
-				if (item.MacroIn) addTextElement(xmlItem, 'macroIn', item.MacroIn)
-				if (item.MacroOut) addTextElement(xmlItem, 'macroOut', item.MacroOut)
+				if (item.MacroIn) addTextElementInternal(xmlItem, 'macroIn', item.MacroIn, undefined, this.strict)
+				if (item.MacroOut) addTextElementInternal(xmlItem, 'macroOut', item.MacroOut, undefined, this.strict)
 
 				// Note: the <mosObj> is sent in roStorySend
-				XMLMosObjects.toXML(xmlItem, item.MosObjects)
+				XMLMosObjects.toXML(xmlItem, item.MosObjects, this.strict)
 			} else {
-				addTextElement(xmlStoryBody, bodyItem.Type, bodyItem.Content)
+				addTextElementInternal(xmlStoryBody, bodyItem.Type, bodyItem.Content, undefined, this.strict)
 			}
 		})
 

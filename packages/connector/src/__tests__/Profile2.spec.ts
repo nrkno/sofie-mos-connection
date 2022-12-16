@@ -13,6 +13,7 @@ import {
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
+	mosTypes,
 	setupMocks,
 } from './lib'
 import {
@@ -31,11 +32,8 @@ import {
 	IMOSRunningOrderStatus,
 	IMOSStoryAction,
 	IMOSStoryStatus,
-	MosString128,
 	IMOSListMachInfo,
 	IMOSObjectAirStatus,
-	MosDuration,
-	MosTime,
 	IMOSScope,
 	IMOSString128,
 } from '..'
@@ -128,8 +126,8 @@ describe('Profile 2', () => {
 		// Profile 2:
 		const roAckReply = async () => {
 			const ack: IMOSROAck = {
-				ID: new MosString128('runningOrderId'),
-				Status: new MosString128('OK'),
+				ID: mosTypes.mosString128.create('runningOrderId'),
+				Status: mosTypes.mosString128.create('OK'),
 				Stories: [],
 			}
 			return ack
@@ -309,16 +307,20 @@ describe('Profile 2', () => {
 		const reply = decode(serverSocketMockUpper.mockSentMessage.mock.calls[0][0])
 		const parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
 
-		expect(parsedReply.mos.roList.roID._text + '').toEqual(xmlApiData.roCreate.ID.toString())
-		expect(parsedReply.mos.roList.roSlug._text + '').toEqual(xmlApiData.roCreate.Slug.toString())
+		expect(parsedReply.mos.roList.roID._text + '').toEqual(mosTypes.mosString128.stringify(xmlApiData.roCreate.ID))
+		expect(parsedReply.mos.roList.roSlug._text + '').toEqual(
+			mosTypes.mosString128.stringify(xmlApiData.roCreate.Slug)
+		)
 		expect(parsedReply.mos.roList.story).toHaveLength(xmlApiData.roCreate.Stories.length)
-		expect(parsedReply.mos.roList.story[0].storyID._text + '').toEqual(xmlApiData.roCreate.Stories[0].ID.toString())
+		expect(parsedReply.mos.roList.story[0].storyID._text + '').toEqual(
+			mosTypes.mosString128.stringify(xmlApiData.roCreate.Stories[0].ID)
+		)
 		expect(parsedReply.mos.roList.story[0].item).toBeTruthy()
 		expect(parsedReply.mos.roList.story[0].item.itemID._text + '').toEqual(
-			xmlApiData.roCreate.Stories[0].Items[0].ID.toString()
+			mosTypes.mosString128.stringify(xmlApiData.roCreate.Stories[0].Items[0].ID)
 		)
 		expect(parsedReply.mos.roList.story[0].item.objID._text + '').toEqual(
-			xmlApiData.roCreate.Stories[0].Items[0].ObjectID.toString()
+			mosTypes.mosString128.stringify(xmlApiData.roCreate.Stories[0].Items[0].ObjectID)
 		)
 
 		expect(parsedReply).toMatchSnapshot()
@@ -412,7 +414,7 @@ describe('Profile 2', () => {
 		expect(msg).toMatch(/<roElementStat element="RO">/)
 		checkMessageSnapshot(msg)
 		expect(returnedAck).toBeTruthy()
-		expect(returnedAck.ID.toString()).toEqual('96857485')
+		expect(mosTypes.mosString128.stringify(returnedAck.ID)).toEqual('96857485')
 		checkAckSnapshot(returnedAck)
 	})
 	test('sendStoryStatus', async () => {
@@ -425,7 +427,7 @@ describe('Profile 2', () => {
 		expect(msg).toMatch(/<roElementStat element="STORY">/)
 		checkMessageSnapshot(msg)
 		expect(returnedAck).toBeTruthy()
-		expect(returnedAck.ID.toString()).toEqual('96857485')
+		expect(mosTypes.mosString128.stringify(returnedAck.ID)).toEqual('96857485')
 		checkAckSnapshot(returnedAck)
 	})
 	test('sendItemStatus', async () => {
@@ -438,7 +440,7 @@ describe('Profile 2', () => {
 		expect(msg).toMatch(/<roElementStat element="ITEM">/)
 		checkMessageSnapshot(msg)
 		expect(returnedAck).toBeTruthy()
-		expect(returnedAck.ID.toString()).toEqual('96857485')
+		expect(mosTypes.mosString128.stringify(returnedAck.ID)).toEqual('96857485')
 		checkAckSnapshot(returnedAck)
 	})
 	test('onReadyToAir', async () => {
@@ -562,7 +564,7 @@ describe('Profile 2', () => {
 
 		checkMessageSnapshot(msg)
 		expect(returnedAck).toBeTruthy()
-		expect(returnedAck.ID.toString()).toEqual('96857485')
+		expect(mosTypes.mosString128.stringify(returnedAck.ID)).toEqual('96857485')
 		checkAckSnapshot(returnedAck)
 
 		return parsed
@@ -570,24 +572,24 @@ describe('Profile 2', () => {
 
 	test('sendCreateRunningOrder, sendReplaceRunningOrder', async () => {
 		const ro: IMOSRunningOrder = {
-			ID: new MosString128('96857485'),
-			Slug: new MosString128('the slug'),
-			DefaultChannel: new MosString128('14'),
-			EditorialStart: new MosTime('2005-07-01T13:15:00Z'),
-			EditorialDuration: new MosDuration('1:23:45'),
-			Trigger: new MosString128('A'),
-			// MacroIn?: new MosString128(''),
-			// MacroOut?: new MosString128(''),
+			ID: mosTypes.mosString128.create('96857485'),
+			Slug: mosTypes.mosString128.create('the slug'),
+			DefaultChannel: mosTypes.mosString128.create('14'),
+			EditorialStart: mosTypes.mosTime.create('2005-07-01T13:15:00Z'),
+			EditorialDuration: mosTypes.mosDuration.create('1:23:45'),
+			Trigger: mosTypes.mosString128.create('A'),
+			// MacroIn?: mosTypes.mosString128.create(''),
+			// MacroOut?: mosTypes.mosString128.create(''),
 			// MosExternalMetaData?: Array<IMOSExternalMetaData>
 			Stories: [
 				{
-					ID: new MosString128('story0'),
-					Slug: new MosString128('slug0'),
+					ID: mosTypes.mosString128.create('story0'),
+					Slug: mosTypes.mosString128.create('slug0'),
 					Items: [],
 				},
 				{
-					ID: new MosString128('story1'),
-					Slug: new MosString128('slug1'),
+					ID: mosTypes.mosString128.create('story1'),
+					Slug: mosTypes.mosString128.create('slug1'),
 					Items: [],
 				},
 			],
@@ -623,7 +625,7 @@ describe('Profile 2', () => {
 	})
 	test('sendDeleteRunningOrder', async () => {
 		const sentMessage = await testSendFunctions(async () => {
-			return mosDevice.sendDeleteRunningOrder(new MosString128('96857485'))
+			return mosDevice.sendDeleteRunningOrder(mosTypes.mosString128.create('96857485'))
 		})
 		expect(sentMessage.mos.roDelete).toMatchObject({
 			roID: { _text: 96857485 },
@@ -632,12 +634,12 @@ describe('Profile 2', () => {
 	test('sendMetadataReplace', async () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendMetadataReplace({
-				ID: new MosString128('96857485'),
-				Slug: new MosString128('the slug'),
-				DefaultChannel: new MosString128('14'),
-				EditorialStart: new MosTime('2005-07-01T13:15:00Z'),
-				EditorialDuration: new MosDuration('1:23:45'),
-				Trigger: new MosString128('A'),
+				ID: mosTypes.mosString128.create('96857485'),
+				Slug: mosTypes.mosString128.create('the slug'),
+				DefaultChannel: mosTypes.mosString128.create('14'),
+				EditorialStart: mosTypes.mosTime.create('2005-07-01T13:15:00Z'),
+				EditorialDuration: mosTypes.mosDuration.create('1:23:45'),
+				Trigger: mosTypes.mosString128.create('A'),
 				MosExternalMetaData: [
 					{
 						MosSchema: 'http://localhost/mySchema0',
@@ -687,7 +689,7 @@ describe('Profile 2', () => {
 	test('sendReadyToAir', async () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendReadyToAir({
-				ID: new MosString128('96857485'),
+				ID: mosTypes.mosString128.create('96857485'),
 				Status: IMOSObjectAirStatus.READY,
 			})
 		})
@@ -699,21 +701,21 @@ describe('Profile 2', () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendROInsertStories(
 				{
-					RunningOrderID: new MosString128('96857485'),
-					StoryID: new MosString128('existing0'),
+					RunningOrderID: mosTypes.mosString128.create('96857485'),
+					StoryID: mosTypes.mosString128.create('existing0'),
 				},
 				[
 					{
-						ID: new MosString128('insert0'),
-						Slug: new MosString128('slug0'),
-						Number: new MosString128('number0'),
+						ID: mosTypes.mosString128.create('insert0'),
+						Slug: mosTypes.mosString128.create('slug0'),
+						Number: mosTypes.mosString128.create('number0'),
 						// MosExternalMetaData?: Array<IMOSExternalMetaData>
 						Items: [], // Array<IMOSItem>
 					},
 					{
-						ID: new MosString128('insert1'),
-						Slug: new MosString128('slug1'),
-						Number: new MosString128('number1'),
+						ID: mosTypes.mosString128.create('insert1'),
+						Slug: mosTypes.mosString128.create('slug1'),
+						Number: mosTypes.mosString128.create('number1'),
 						Items: [],
 					},
 				]
@@ -745,21 +747,21 @@ describe('Profile 2', () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendROInsertItems(
 				{
-					RunningOrderID: new MosString128('96857485'),
-					StoryID: new MosString128('existing0'),
-					ItemID: new MosString128('existing0_0'),
+					RunningOrderID: mosTypes.mosString128.create('96857485'),
+					StoryID: mosTypes.mosString128.create('existing0'),
+					ItemID: mosTypes.mosString128.create('existing0_0'),
 				},
 				[
 					{
-						ID: new MosString128('insert0'),
-						Slug: new MosString128('slug0'),
-						ObjectID: new MosString128('objid0'),
+						ID: mosTypes.mosString128.create('insert0'),
+						Slug: mosTypes.mosString128.create('slug0'),
+						ObjectID: mosTypes.mosString128.create('objid0'),
 						MOSID: 'mosid0',
 					},
 					{
-						ID: new MosString128('insert1'),
-						Slug: new MosString128('slug1'),
-						ObjectID: new MosString128('objid1'),
+						ID: mosTypes.mosString128.create('insert1'),
+						Slug: mosTypes.mosString128.create('slug1'),
+						ObjectID: mosTypes.mosString128.create('objid1'),
 						MOSID: 'mosid1',
 					},
 				]
@@ -794,21 +796,21 @@ describe('Profile 2', () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendROReplaceStories(
 				{
-					RunningOrderID: new MosString128('96857485'),
-					StoryID: new MosString128('existing0'),
+					RunningOrderID: mosTypes.mosString128.create('96857485'),
+					StoryID: mosTypes.mosString128.create('existing0'),
 				},
 				[
 					{
-						ID: new MosString128('insert0'),
-						Slug: new MosString128('slug0'),
-						Number: new MosString128('number0'),
+						ID: mosTypes.mosString128.create('insert0'),
+						Slug: mosTypes.mosString128.create('slug0'),
+						Number: mosTypes.mosString128.create('number0'),
 						// MosExternalMetaData?: Array<IMOSExternalMetaData>
 						Items: [], // Array<IMOSItem>
 					},
 					{
-						ID: new MosString128('insert1'),
-						Slug: new MosString128('slug1'),
-						Number: new MosString128('number1'),
+						ID: mosTypes.mosString128.create('insert1'),
+						Slug: mosTypes.mosString128.create('slug1'),
+						Number: mosTypes.mosString128.create('number1'),
 						Items: [],
 					},
 				]
@@ -840,21 +842,21 @@ describe('Profile 2', () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendROReplaceItems(
 				{
-					RunningOrderID: new MosString128('96857485'),
-					StoryID: new MosString128('existing0'),
-					ItemID: new MosString128('existing0_0'),
+					RunningOrderID: mosTypes.mosString128.create('96857485'),
+					StoryID: mosTypes.mosString128.create('existing0'),
+					ItemID: mosTypes.mosString128.create('existing0_0'),
 				},
 				[
 					{
-						ID: new MosString128('insert0'),
-						Slug: new MosString128('slug0'),
-						ObjectID: new MosString128('objid0'),
+						ID: mosTypes.mosString128.create('insert0'),
+						Slug: mosTypes.mosString128.create('slug0'),
+						ObjectID: mosTypes.mosString128.create('objid0'),
 						MOSID: 'mosid0',
 					},
 					{
-						ID: new MosString128('insert1'),
-						Slug: new MosString128('slug1'),
-						ObjectID: new MosString128('objid1'),
+						ID: mosTypes.mosString128.create('insert1'),
+						Slug: mosTypes.mosString128.create('slug1'),
+						ObjectID: mosTypes.mosString128.create('objid1'),
 						MOSID: 'mosid1',
 					},
 				]
@@ -889,14 +891,14 @@ describe('Profile 2', () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendROMoveStories(
 				{
-					RunningOrderID: new MosString128('96857485'),
-					StoryID: new MosString128('existing0'),
+					RunningOrderID: mosTypes.mosString128.create('96857485'),
+					StoryID: mosTypes.mosString128.create('existing0'),
 				},
 				[
-					new MosString128('existing1'),
-					new MosString128('existing2'),
-					new MosString128('existing3'),
-					new MosString128('existing4'),
+					mosTypes.mosString128.create('existing1'),
+					mosTypes.mosString128.create('existing2'),
+					mosTypes.mosString128.create('existing3'),
+					mosTypes.mosString128.create('existing4'),
 				]
 			)
 		})
@@ -920,15 +922,15 @@ describe('Profile 2', () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendROMoveItems(
 				{
-					RunningOrderID: new MosString128('96857485'),
-					StoryID: new MosString128('existing0'),
-					ItemID: new MosString128('existing0_0'),
+					RunningOrderID: mosTypes.mosString128.create('96857485'),
+					StoryID: mosTypes.mosString128.create('existing0'),
+					ItemID: mosTypes.mosString128.create('existing0_0'),
 				},
 				[
-					new MosString128('existing0_1'),
-					new MosString128('existing0_2'),
-					new MosString128('existing0_3'),
-					new MosString128('existing0_4'),
+					mosTypes.mosString128.create('existing0_1'),
+					mosTypes.mosString128.create('existing0_2'),
+					mosTypes.mosString128.create('existing0_3'),
+					mosTypes.mosString128.create('existing0_4'),
 				]
 			)
 		})
@@ -953,13 +955,13 @@ describe('Profile 2', () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendRODeleteStories(
 				{
-					RunningOrderID: new MosString128('96857485'),
+					RunningOrderID: mosTypes.mosString128.create('96857485'),
 				},
 				[
-					new MosString128('existing0'),
-					new MosString128('existing1'),
-					new MosString128('existing2'),
-					new MosString128('existing3'),
+					mosTypes.mosString128.create('existing0'),
+					mosTypes.mosString128.create('existing1'),
+					mosTypes.mosString128.create('existing2'),
+					mosTypes.mosString128.create('existing3'),
 				]
 			)
 		})
@@ -980,14 +982,14 @@ describe('Profile 2', () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendRODeleteItems(
 				{
-					RunningOrderID: new MosString128('96857485'),
-					StoryID: new MosString128('existing0'),
+					RunningOrderID: mosTypes.mosString128.create('96857485'),
+					StoryID: mosTypes.mosString128.create('existing0'),
 				},
 				[
-					new MosString128('existing0_1'),
-					new MosString128('existing0_2'),
-					new MosString128('existing0_3'),
-					new MosString128('existing0_4'),
+					mosTypes.mosString128.create('existing0_1'),
+					mosTypes.mosString128.create('existing0_2'),
+					mosTypes.mosString128.create('existing0_3'),
+					mosTypes.mosString128.create('existing0_4'),
 				]
 			)
 		})
@@ -1011,10 +1013,10 @@ describe('Profile 2', () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendROSwapStories(
 				{
-					RunningOrderID: new MosString128('96857485'),
+					RunningOrderID: mosTypes.mosString128.create('96857485'),
 				},
-				new MosString128('existing0'),
-				new MosString128('existing1')
+				mosTypes.mosString128.create('existing0'),
+				mosTypes.mosString128.create('existing1')
 			)
 		})
 		expect(sentMessage.mos.roElementAction).toMatchObject({
@@ -1029,11 +1031,11 @@ describe('Profile 2', () => {
 		const sentMessage = await testSendFunctions(async () => {
 			return mosDevice.sendROSwapItems(
 				{
-					RunningOrderID: new MosString128('96857485'),
-					StoryID: new MosString128('existing0'),
+					RunningOrderID: mosTypes.mosString128.create('96857485'),
+					StoryID: mosTypes.mosString128.create('existing0'),
 				},
-				new MosString128('existing0_1'),
-				new MosString128('existing0_2')
+				mosTypes.mosString128.create('existing0_1'),
+				mosTypes.mosString128.create('existing0_2')
 			)
 		})
 		expect(sentMessage.mos.roElementAction).toMatchObject({

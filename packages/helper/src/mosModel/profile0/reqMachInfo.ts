@@ -3,8 +3,8 @@ import { MosMessage } from '../MosMessage'
 
 export class ReqMachInfo extends MosMessage {
 	/** */
-	constructor() {
-		super('lower')
+	constructor(strict: boolean) {
+		super('lower', strict)
 	}
 
 	/** */

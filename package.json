@@ -16,6 +16,7 @@
 		"set-version": "lerna version --exact --no-changelog --no-git-tag-version --no-push --yes",
 		"setup": "lerna bootstrap",
 		"reset": "node scripts/reset.js",
+		"link:all": "lerna exec -- yarn link",
 		"build": "lerna run build --stream",
 		"build:changed": "lerna run build --since head --exclude-dependents --stream",
 		"lint": "lerna exec --parallel --no-bail -- eslint . --ext .ts,.tsx",

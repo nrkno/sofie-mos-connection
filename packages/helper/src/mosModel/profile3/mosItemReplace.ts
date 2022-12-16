@@ -2,13 +2,13 @@ import { MosItemReplaceOptions } from '@mos-connection/model'
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
 import { XMLMosItem } from '../profile2/xmlConversion'
-import { addTextElement } from '../../utils/Utils'
+import { addTextElementInternal } from '../../utils/Utils'
 
 export class MosItemReplace extends MosMessage {
 	private options: MosItemReplaceOptions
 
-	constructor(options: MosItemReplaceOptions) {
-		super('upper')
+	constructor(options: MosItemReplaceOptions, strict: boolean) {
+		super('upper', strict)
 		this.options = options
 	}
 
@@ -16,10 +16,10 @@ export class MosItemReplace extends MosMessage {
 		const item = this.options.item
 		const root = XMLBuilder.create('mosItemReplace')
 
-		addTextElement(root, 'roID', this.options.roID)
-		addTextElement(root, 'storyID', this.options.storyID)
+		addTextElementInternal(root, 'roID', this.options.roID, undefined, this.strict)
+		addTextElementInternal(root, 'storyID', this.options.storyID, undefined, this.strict)
 
-		XMLMosItem.toXML(root, item)
+		XMLMosItem.toXML(root, item, this.strict)
 
 		return root
 	}

@@ -1,48 +1,50 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { IMOSRequestObjectList, IMOSObject, IMOSAck, IMOSAckStatus } from '@mos-connection/model'
+import { IMOSRequestObjectList, IMOSObject, IMOSAck, IMOSAckStatus, getMosTypes } from '@mos-connection/model'
 import { XMLObjectPaths, XMLMosExternalMetaData } from '../profile2/xmlConversion'
 import { AnyXML, has } from '../lib'
-import { MosString128 } from '../../dataTypes/mosString128'
-import { MosTime } from '../../dataTypes/mosTime'
-import { addTextElement } from '../../utils/Utils'
+import { addTextElementInternal } from '../../utils/Utils'
 
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace XMLMosAck {
-	export function fromXML(xml: AnyXML): IMOSAck {
+	export function fromXML(xml: AnyXML, strict: boolean): IMOSAck {
+		const mosTypes = getMosTypes(strict)
 		const ack: IMOSAck = {
-			ID: new MosString128(xml.objID),
+			ID: mosTypes.mosString128.create(xml.objID),
 			Revision: typeof xml.objRev === 'number' ? xml.objRev : 0,
 			Status: typeof xml.status === 'string' ? (xml.status as IMOSAckStatus) : IMOSAckStatus.ACK,
-			Description: new MosString128(typeof xml.statusDescription === 'string' ? xml.statusDescription : ''),
+			Description: mosTypes.mosString128.create(
+				typeof xml.statusDescription === 'string' ? xml.statusDescription : ''
+			),
 		}
 		return ack
 	}
 }
 export namespace XMLMosObjects {
-	export function fromXML(xml: AnyXML): Array<IMOSObject> {
+	export function fromXML(xml: AnyXML, strict: boolean): Array<IMOSObject> {
 		if (!xml) return []
 		let xmlObjs: Array<any> = xml as any
 		if (!Array.isArray(xmlObjs)) xmlObjs = [xmlObjs]
 
 		return xmlObjs.map((xmlObj) => {
-			return XMLMosObject.fromXML(xmlObj)
+			return XMLMosObject.fromXML(xmlObj, strict)
 		})
 	}
-	export function toXML(xml: XMLBuilder.XMLElement, objs?: IMOSObject[]): void {
+	export function toXML(xml: XMLBuilder.XMLElement, objs: IMOSObject[] | undefined, strict: boolean): void {
 		if (objs) {
 			objs.forEach((MosObject) => {
 				const xmlMosObj = XMLBuilder.create('mosObj')
-				XMLMosObject.toXML(xmlMosObj, MosObject)
+				XMLMosObject.toXML(xmlMosObj, MosObject, strict)
 				xml.importDocument(xmlMosObj)
 			})
 		}
 	}
 }
 export namespace XMLMosObject {
-	export function fromXML(xml: AnyXML): IMOSObject {
+	export function fromXML(xml: AnyXML, strict: boolean): IMOSObject {
+		const mosTypes = getMosTypes(strict)
 		const mosObj: IMOSObject = {
-			ID: new MosString128(xml.objID),
-			Slug: new MosString128(xml.objSlug),
+			ID: mosTypes.mosString128.create(xml.objID),
+			Slug: mosTypes.mosString128.create(xml.objSlug),
 			MosAbstract: xml.mosAbstract,
 			Group: xml.objGroup,
 			Type: xml.objType,
@@ -52,38 +54,39 @@ export namespace XMLMosObject {
 			Status: xml.status,
 			AirStatus: xml.objAir,
 			Paths: XMLObjectPaths.fromXML(xml.objPaths),
-			CreatedBy: new MosString128(xml.createdBy),
-			Created: new MosTime(xml.created),
-			ChangedBy: new MosString128(xml.changedBy),
-			Changed: new MosTime(xml.changed),
+			CreatedBy: mosTypes.mosString128.create(xml.createdBy),
+			Created: mosTypes.mosTime.create(xml.created),
+			ChangedBy: mosTypes.mosString128.create(xml.changedBy),
+			Changed: mosTypes.mosTime.create(xml.changed),
 			Description: xml.description,
 		}
 		if (has(xml, 'mosExternalMetadata'))
 			mosObj.MosExternalMetaData = XMLMosExternalMetaData.fromXML(xml.mosExternalMetadata)
-		if (has(xml, 'mosItemEditorProgID')) mosObj.MosItemEditorProgID = new MosString128(xml.mosItemEditorProgID)
+		if (has(xml, 'mosItemEditorProgID'))
+			mosObj.MosItemEditorProgID = mosTypes.mosString128.create(xml.mosItemEditorProgID)
 		return mosObj
 	}
-	export function toXML(xml: XMLBuilder.XMLElement, obj: IMOSObject): void {
-		if (obj.ID) addTextElement(xml, 'objID', obj.ID)
-		addTextElement(xml, 'objSlug', obj.Slug)
-		if (obj.MosAbstract) addTextElement(xml, 'mosAbstract', obj.MosAbstract)
-		if (obj.Group) addTextElement(xml, 'objGroup', obj.Group)
-		addTextElement(xml, 'objType', obj.Type)
-		addTextElement(xml, 'objTB', obj.TimeBase)
-		addTextElement(xml, 'objRev', obj.Revision)
-		addTextElement(xml, 'objDur', obj.Duration)
-		addTextElement(xml, 'status', obj.Status)
-		addTextElement(xml, 'objAir', obj.AirStatus)
+	export function toXML(xml: XMLBuilder.XMLElement, obj: IMOSObject, strict: boolean): void {
+		if (obj.ID) addTextElementInternal(xml, 'objID', obj.ID, undefined, strict)
+		addTextElementInternal(xml, 'objSlug', obj.Slug, undefined, strict)
+		if (obj.MosAbstract) addTextElementInternal(xml, 'mosAbstract', obj.MosAbstract, undefined, strict)
+		if (obj.Group) addTextElementInternal(xml, 'objGroup', obj.Group, undefined, strict)
+		addTextElementInternal(xml, 'objType', obj.Type, undefined, strict)
+		addTextElementInternal(xml, 'objTB', obj.TimeBase, undefined, strict)
+		addTextElementInternal(xml, 'objRev', obj.Revision, undefined, strict)
+		addTextElementInternal(xml, 'objDur', obj.Duration, undefined, strict)
+		addTextElementInternal(xml, 'status', obj.Status, undefined, strict)
+		addTextElementInternal(xml, 'objAir', obj.AirStatus, undefined, strict)
 
 		if (obj.Paths) {
-			XMLObjectPaths.toXML(xml, obj.Paths)
+			XMLObjectPaths.toXML(xml, obj.Paths, strict)
 		}
 
-		addTextElement(xml, 'createdBy', obj.CreatedBy)
-		addTextElement(xml, 'created', obj.Created)
-		if (obj.ChangedBy) addTextElement(xml, 'changedBy', obj.ChangedBy)
-		if (obj.Changed) addTextElement(xml, 'changed', obj.Changed)
-		if (obj.Description) addTextElement(xml, 'description', obj.Description)
+		addTextElementInternal(xml, 'createdBy', obj.CreatedBy, undefined, strict)
+		addTextElementInternal(xml, 'created', obj.Created, undefined, strict)
+		if (obj.ChangedBy) addTextElementInternal(xml, 'changedBy', obj.ChangedBy, undefined, strict)
+		if (obj.Changed) addTextElementInternal(xml, 'changed', obj.Changed, undefined, strict)
+		if (obj.Description) addTextElementInternal(xml, 'description', obj.Description, undefined, strict)
 		XMLMosExternalMetaData.toXML(xml, obj.MosExternalMetaData)
 	}
 }

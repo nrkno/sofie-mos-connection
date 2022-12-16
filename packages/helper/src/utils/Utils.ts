@@ -1,6 +1,6 @@
 import { xml2js as xmlParser } from 'xml-js'
 import * as XMLBuilder from 'xmlbuilder'
-import { IMOSDuration, IMOSString128, IMOSTime } from '@mos-connection/model'
+import { getMosTypes, IMOSDuration, IMOSString128, IMOSTime } from '@mos-connection/model'
 
 /** */
 export function pad(n: string, width: number, z?: string): string {
@@ -163,9 +163,30 @@ export function addTextElement(
 	root: XMLBuilder.XMLElement,
 	elementName: string,
 	text?: string | number | null | IMOSString128 | IMOSTime | IMOSDuration,
-	attributes?: { [key: string]: string }
+	attributes?: { [key: string]: string },
+	strict = true
 ): XMLBuilder.XMLElement {
-	const txt = text === null ? null : text !== undefined ? text.toString() : undefined
+	return addTextElementInternal(root, elementName, text, attributes, strict)
+}
+export function addTextElementInternal(
+	root: XMLBuilder.XMLElement,
+	elementName: string,
+	text: string | number | null | IMOSString128 | IMOSTime | IMOSDuration | undefined,
+	attributes: { [key: string]: string } | undefined,
+	strict: boolean
+): XMLBuilder.XMLElement {
+	const mosTypes = getMosTypes(strict)
+	let txt
+	if (text === null) {
+		txt = null
+	} else if (text !== undefined) {
+		if (mosTypes.mosString128.is(text)) txt = mosTypes.mosString128.stringify(text)
+		else if (mosTypes.mosTime.is(text)) txt = mosTypes.mosTime.stringify(text)
+		else if (mosTypes.mosDuration.is(text)) txt = mosTypes.mosDuration.stringify(text)
+		else txt = text.toString()
+	} else {
+		txt = undefined
+	}
 	const element = root.element(elementName, attributes || {}, txt)
 	return element
 }

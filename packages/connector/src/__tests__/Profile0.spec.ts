@@ -11,9 +11,10 @@ import {
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
+	mosTypes,
 	setupMocks,
 } from './lib'
-import { MosConnection, MosDevice, IMOSObject, IMOSListMachInfo, MosString128, MosTime } from '..'
+import { MosConnection, MosDevice, IMOSObject, IMOSListMachInfo } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
 
@@ -209,16 +210,16 @@ describe('Profile 0', () => {
 		checkMessageSnapshot(msg)
 
 		expect(returnedMachineInfo).toMatchObject({
-			manufacturer: new MosString128('RadioVision, Ltd.'),
-			model: new MosString128('TCS6000'),
-			hwRev: new MosString128(''),
-			swRev: new MosString128('2.1.0.37'),
+			manufacturer: mosTypes.mosString128.create('RadioVision, Ltd.'),
+			model: mosTypes.mosString128.create('TCS6000'),
+			hwRev: mosTypes.mosString128.create(''),
+			swRev: mosTypes.mosString128.create('2.1.0.37'),
 			DOM: undefined,
-			SN: new MosString128('927748927'),
-			ID: new MosString128('airchache.newscenter.com'),
-			time: new MosTime('2009-04-11T17:20:42'),
-			opTime: new MosTime('2009-03-01T23:55:10'),
-			mosRev: new MosString128('2.8.2'),
+			SN: mosTypes.mosString128.create('927748927'),
+			ID: mosTypes.mosString128.create('airchache.newscenter.com'),
+			time: mosTypes.mosTime.create('2009-04-11T17:20:42'),
+			opTime: mosTypes.mosTime.create('2009-03-01T23:55:10'),
+			mosRev: mosTypes.mosString128.create('2.8.2'),
 
 			supportedProfiles: {
 				deviceType: 'NCS',

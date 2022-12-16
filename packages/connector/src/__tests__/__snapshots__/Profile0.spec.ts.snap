@@ -12,37 +12,30 @@ exports[`Profile 0 requestMachineInfo 1`] = `
 exports[`Profile 0 requestMachineInfo 2`] = `
 {
   "DOM": undefined,
-  "ID": MosString128 {
-    "_str": "airchache.newscenter.com",
-    "strict": true,
+  "ID": {
+    "_mosString128": "airchache.newscenter.com",
   },
-  "SN": MosString128 {
-    "_str": "927748927",
-    "strict": true,
+  "SN": {
+    "_mosString128": "927748927",
   },
   "defaultActiveX": undefined,
-  "hwRev": MosString128 {
-    "_str": "",
-    "strict": true,
+  "hwRev": {
+    "_mosString128": "",
   },
-  "manufacturer": MosString128 {
-    "_str": "RadioVision, Ltd.",
-    "strict": true,
+  "manufacturer": {
+    "_mosString128": "RadioVision, Ltd.",
   },
-  "model": MosString128 {
-    "_str": "TCS6000",
-    "strict": true,
+  "model": {
+    "_mosString128": "TCS6000",
   },
   "mosExternalMetaData": undefined,
-  "mosRev": MosString128 {
-    "_str": "2.8.2",
-    "strict": true,
+  "mosRev": {
+    "_mosString128": "2.8.2",
   },
-  "opTime": MosTime {
-    "_time": 2009-03-01T23:55:10.000Z,
+  "opTime": {
+    "_mosTime": 1235951710000,
     "_timezone": "Z",
-    "_timezoneDeclaration": "",
-    "_timezoneZuluIndicator": "Z",
+    "_timezoneOffset": 0,
   },
   "supportedProfiles": {
     "deviceType": "NCS",
@@ -55,15 +48,13 @@ exports[`Profile 0 requestMachineInfo 2`] = `
     "profile6": true,
     "profile7": true,
   },
-  "swRev": MosString128 {
-    "_str": "2.1.0.37",
-    "strict": true,
+  "swRev": {
+    "_mosString128": "2.1.0.37",
   },
-  "time": MosTime {
-    "_time": 2009-04-11T17:20:42.000Z,
+  "time": {
+    "_mosTime": 1239470442000,
     "_timezone": "Z",
-    "_timezoneDeclaration": "",
-    "_timezoneZuluIndicator": "Z",
+    "_timezoneOffset": 0,
   },
 }
 `;

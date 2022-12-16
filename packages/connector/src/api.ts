@@ -1,7 +1,6 @@
 import {
 	IProfiles,
 	IMOSListMachInfo,
-	IMOSString128,
 	IMOSObject,
 	MosItemReplaceOptions,
 	IMOSListSearchableSchema,
@@ -21,6 +20,7 @@ import {
 	IMOSRunningOrderStatus,
 	IMOSStoryAction,
 	IMOSStoryStatus,
+	IMOSString128,
 } from '@mos-connection/model'
 import { MosDevice } from './MosDevice'
 

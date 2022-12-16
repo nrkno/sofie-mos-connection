@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { EventEmitter } from 'events'
 import { Socket } from 'net'
-import { MosTime } from '@mos-connection/helper'
 
 import * as iconv from 'iconv-lite'
 import { getMessageId } from '../__tests__/lib'
+import { getMosTypes } from '@mos-connection/model'
 iconv.encodingExists('utf16-be')
+
+const mosTypes = getMosTypes(true)
 
 // Mock the Socket class in 'net':
 const setTimeoutOrg = setTimeout
@@ -208,7 +210,7 @@ export class SocketMock extends EventEmitter implements Socket {
 <ncsID>${ncsID}</ncsID>
 <messageID>${messageId}</messageID>\
   <heartbeat>
-    <time>${new MosTime().toString()}</time>
+    <time>${mosTypes.mosTime.stringify(mosTypes.mosTime.create(undefined))}</time>
   </heartbeat>
 </mos>\r\n`
 					this.mockReceiveMessage(this.encode(repl))

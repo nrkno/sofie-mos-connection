@@ -12,6 +12,7 @@ import {
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
+	mosTypes,
 	setupMocks,
 } from './lib'
 import {
@@ -23,7 +24,6 @@ import {
 	IMOSRequestObjectList,
 	IMOSROAck,
 	IMOSListSearchableSchema,
-	MosString128,
 	IMOSAckStatus,
 	IMOSObjectType,
 	IMOSObjectStatus,
@@ -65,8 +65,8 @@ describe('Profile 3', () => {
 
 	const roAckReply = async () => {
 		const ack: IMOSROAck = {
-			ID: new MosString128('runningOrderId'),
-			Status: new MosString128('OK'),
+			ID: mosTypes.mosString128.create('runningOrderId'),
+			Status: mosTypes.mosString128.create('OK'),
 			Stories: [],
 		}
 		return ack
@@ -74,10 +74,10 @@ describe('Profile 3', () => {
 
 	const mosAckReply = async () => {
 		const ack: IMOSAck = {
-			ID: new MosString128('runningOrderId'),
+			ID: mosTypes.mosString128.create('runningOrderId'),
 			Revision: 1,
 			Status: IMOSAckStatus.ACK,
-			Description: new MosString128(''),
+			Description: mosTypes.mosString128.create(''),
 		}
 		return ack
 	}
@@ -190,8 +190,8 @@ describe('Profile 3', () => {
 		})
 		socketMockLower.mockAddReply(mockReply)
 		const returnedAck = await mosDevice.sendObjectCreate({
-			ID: new MosString128('abc'),
-			Slug: new MosString128('my cool Object'),
+			ID: mosTypes.mosString128.create('abc'),
+			Slug: mosTypes.mosString128.create('my cool Object'),
 			Type: IMOSObjectType.VIDEO,
 			TimeBase: 25,
 			Duration: 250,
@@ -220,15 +220,15 @@ describe('Profile 3', () => {
 		})
 		socketMockUpper.mockAddReply(mockReply)
 		const returnedAck: IMOSROAck = await mosDevice.sendItemReplace({
-			roID: new MosString128('roX'),
-			storyID: new MosString128('storyY'),
+			roID: mosTypes.mosString128.create('roX'),
+			storyID: mosTypes.mosString128.create('storyY'),
 			item: {
-				ID: new MosString128('abc'),
-				Slug: new MosString128('my cool Object'),
+				ID: mosTypes.mosString128.create('abc'),
+				Slug: mosTypes.mosString128.create('my cool Object'),
 				// Type: IMOSObjectType.VIDEO,
 				TimeBase: 25,
 				Duration: 250,
-				ObjectID: new MosString128('Object0'),
+				ObjectID: mosTypes.mosString128.create('Object0'),
 				MOSID: 'our.mos.id',
 			},
 		})
@@ -286,10 +286,10 @@ describe('Profile 3', () => {
 		socketMockQuery.mockAddReply(mockReply)
 		const returnedObjList: IMOSObjectList = await mosDevice.sendRequestObjectList({
 			username: 'jbob',
-			queryID: new MosString128('A392938329kdakd2039300d0s9l3l9d0bzAQ'),
+			queryID: mosTypes.mosString128.create('A392938329kdakd2039300d0s9l3l9d0bzAQ'),
 			listReturnStart: 1,
 			listReturnEnd: 20,
-			generalSearch: new MosString128('boats'),
+			generalSearch: mosTypes.mosString128.create('boats'),
 			mosSchema: '',
 			searchGroups: [],
 		})
@@ -303,8 +303,8 @@ describe('Profile 3', () => {
 		expect(returnedObjList.username).toEqual('jbob')
 		expect(returnedObjList.list).toHaveLength(3)
 		expect(returnedObjList.list?.[0]).toMatchObject({
-			ID: new MosString128('M000121'),
-			Slug: new MosString128('Hotel Fire'),
+			ID: mosTypes.mosString128.create('M000121'),
+			Slug: mosTypes.mosString128.create('Hotel Fire'),
 			Group: 'Show 7',
 			Type: IMOSObjectType.VIDEO,
 			TimeBase: 59.94,
@@ -346,7 +346,7 @@ describe('Profile 3', () => {
 		})
 		socketMockLower.mockAddReply(mockReply)
 		await mosDevice.sendRequestObjectActionNew({
-			Slug: new MosString128('abc123'),
+			Slug: mosTypes.mosString128.create('abc123'),
 			Type: IMOSObjectType.VIDEO,
 			TimeBase: 25,
 			Duration: 500,
@@ -365,8 +365,8 @@ describe('Profile 3', () => {
 			return encode(getXMLReply(messageID, xmlData.mosAck))
 		})
 		socketMockLower.mockAddReply(mockReply)
-		await mosDevice.sendRequestObjectActionUpdate(new MosString128('OBJID1234'), {
-			Slug: new MosString128('abc123'),
+		await mosDevice.sendRequestObjectActionUpdate(mosTypes.mosString128.create('OBJID1234'), {
+			Slug: mosTypes.mosString128.create('abc123'),
 			Type: IMOSObjectType.VIDEO,
 			TimeBase: 25,
 			Duration: 500,
@@ -385,7 +385,7 @@ describe('Profile 3', () => {
 			return encode(getXMLReply(messageID, xmlData.mosAck))
 		})
 		socketMockLower.mockAddReply(mockReply)
-		await mosDevice.sendRequestObjectActionDelete(new MosString128('OBJID1234'))
+		await mosDevice.sendRequestObjectActionDelete(mosTypes.mosString128.create('OBJID1234'))
 		await socketMockQuery.mockWaitForSentMessages()
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		const msg = decode(mockReply.mock.calls[0][0])

@@ -7,8 +7,8 @@ export class ROListAll extends MosMessage {
 	public ROs: IMOSRunningOrder[] = []
 
 	/** */
-	constructor() {
-		super('upper')
+	constructor(strict: boolean) {
+		super('upper', strict)
 	}
 
 	/** */
@@ -18,7 +18,7 @@ export class ROListAll extends MosMessage {
 		this.ROs.forEach((RO: IMOSRunningOrder) => {
 			const xmlRO = XMLBuilder.create('ro')
 
-			XMLRunningOrderBase.toXML(xmlRO, RO)
+			XMLRunningOrderBase.toXML(xmlRO, RO, this.strict)
 
 			root.importDocument(xmlRO)
 		})

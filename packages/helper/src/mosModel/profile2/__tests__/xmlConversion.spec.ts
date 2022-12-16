@@ -1,16 +1,17 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { MosString128 } from '../../..'
 import { xmlToObject } from '../../../utils/Utils'
 import { XMLMosItem } from '../'
-import { IMOSItem, IMOSObjectPathType, IMOSScope } from '@mos-connection/model'
+import { getMosTypes, IMOSItem, IMOSObjectPathType, IMOSScope } from '@mos-connection/model'
 
 describe('XMLMosItem', () => {
 	test('Should handle conversion losslessly', () => {
+		const mosTypes = getMosTypes(true)
+
 		const refItem: IMOSItem = {
-			ID: new MosString128('ID'),
-			Slug: new MosString128('Slug'),
-			ObjectSlug: new MosString128('ObjectSlug', false),
-			ObjectID: new MosString128('ObjectID'),
+			ID: mosTypes.mosString128.create('ID'),
+			Slug: mosTypes.mosString128.create('Slug'),
+			ObjectSlug: mosTypes.mosString128.create('ObjectSlug'), // TODO: not strict?
+			ObjectID: mosTypes.mosString128.create('ObjectID'),
 			MOSID: 'MOSID',
 			mosAbstract: 'mosAbstract',
 			Paths: [
@@ -25,15 +26,15 @@ describe('XMLMosItem', () => {
 					Target: '8372h4fv',
 				},
 			],
-			Channel: new MosString128('Channel'),
+			Channel: mosTypes.mosString128.create('Channel'),
 			EditorialStart: 1,
 			EditorialDuration: 2,
 			Duration: 3,
 			TimeBase: 4,
 			UserTimingDuration: 5,
 			Trigger: 'Trigger',
-			MacroIn: new MosString128('MacroIn'),
-			MacroOut: new MosString128('MacroOut'),
+			MacroIn: mosTypes.mosString128.create('MacroIn'),
+			MacroOut: mosTypes.mosString128.create('MacroOut'),
 			MosExternalMetaData: [
 				{
 					MosScope: IMOSScope.PLAYLIST,
@@ -59,8 +60,8 @@ describe('XMLMosItem', () => {
 			// todo: add this:
 			// MosObjects: [
 			// 	{
-			// 		ID: new MosString128('Object_ID'),
-			// 		Slug: new MosString128('Object_Slug'),
+			// 		ID: mosTypes.mosString128.create('Object_ID'),
+			// 		Slug: mosTypes.mosString128.create('Object_Slug'),
 			// 		MosAbstract: 'Object_MosAbstract',
 			// 		Group: 'Object_Group',
 			// 		Type: IMOSObjectType.OTHER,
@@ -81,10 +82,10 @@ describe('XMLMosItem', () => {
 			// 				Target: '8372h4fv',
 			// 			}
 			// 		],
-			// 		CreatedBy: new MosString128('CreatedBy'),
-			// 		Created: new MosTime(1234567),
-			// 		ChangedBy: new MosString128('ChangedBy'),
-			// 		Changed: new MosTime(1234567),
+			// 		CreatedBy: mosTypes.mosString128.create('CreatedBy'),
+			// 		Created: mosTypes.mosTime.create(1234567),
+			// 		ChangedBy: mosTypes.mosString128.create('ChangedBy'),
+			// 		Changed: mosTypes.mosTime.create(1234567),
 			// 		// Description: any // xml json
 			// 		// MosExternalMetaData: Array<IMOSExternalMetaData>
 			// 		// MosItemEditorProgID: MosString128
@@ -136,7 +137,7 @@ describe('XMLMosItem', () => {
 </myItem>`
 
 		const xmlItem = XMLBuilder.create('myItem')
-		XMLMosItem.toXML(xmlItem, refItem)
+		XMLMosItem.toXML(xmlItem, refItem, true)
 
 		expect(fixWhiteSpace(xmlItem.toString())).toEqual(fixWhiteSpace(refXml))
 
@@ -144,7 +145,7 @@ describe('XMLMosItem', () => {
 
 		const itemObj = xmlToObject(xmlItem)
 
-		const item2 = XMLMosItem.fromXML(itemObj.item)
+		const item2 = XMLMosItem.fromXML(itemObj.item, true)
 		expect(item2).toEqual(refItem)
 	})
 })

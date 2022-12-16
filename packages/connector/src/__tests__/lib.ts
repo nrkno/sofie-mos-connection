@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IMOSAck, MosConnection, MosDevice, IMOSROAck, IProfiles, MosTime } from '../'
+import { IMOSAck, MosConnection, MosDevice, IMOSROAck, IProfiles, getMosTypes } from '../'
 
 import { SocketMock } from '../__mocks__/socket'
 import { IServerMock, ServerMock } from '../__mocks__/server'
@@ -48,6 +48,7 @@ export async function initMosConnection(mos: MosConnection): Promise<void> {
 			console.error(err)
 		}
 	})
+	mos.on('warning', console.error)
 	await mos.init()
 }
 
@@ -220,6 +221,7 @@ export function doBeforeAll(): {
 export function fixSnapshot(data: unknown): any {
 	return fixSnapshotInner(data)[1]
 }
+export const mosTypes = getMosTypes(true)
 function fixSnapshotInner(data: any): [boolean, any] {
 	let changed = false
 
@@ -234,11 +236,11 @@ function fixSnapshotInner(data: any): [boolean, any] {
 			}
 		}
 	} else if (typeof data === 'object') {
-		if (data instanceof MosTime) {
-			if (data.getTime() > 1609459200000) {
+		if (mosTypes.mosTime.is(data)) {
+			if (mosTypes.mosTime.valueOf(data) > 1609459200000) {
 				// 2021-01-01 00:00:00+00:00
 				// data.setTime(1609459200000)
-				return [true, new MosTime(1609459200000)]
+				return [true, mosTypes.mosTime.create(1609459200000)]
 			}
 			// changed = true
 		} else {

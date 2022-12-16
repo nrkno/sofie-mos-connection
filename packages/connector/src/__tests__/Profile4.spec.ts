@@ -12,18 +12,10 @@ import {
 	getMosDevice,
 	getReplyToServer,
 	getXMLReply,
+	mosTypes,
 	setupMocks,
 } from './lib'
-import {
-	MosConnection,
-	MosDevice,
-	IMOSROAck,
-	IMOSROFullStory,
-	MosString128,
-	IMOSRunningOrder,
-	MosTime,
-	MosDuration,
-} from '..'
+import { MosConnection, MosDevice, IMOSROAck, IMOSROFullStory, IMOSRunningOrder } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
@@ -69,8 +61,8 @@ describe('Profile 4', () => {
 
 		const roAckReply = async () => {
 			const ack: IMOSROAck = {
-				ID: new MosString128('runningOrderId'),
-				Status: new MosString128('OK'),
+				ID: mosTypes.mosString128.create('runningOrderId'),
+				Status: mosTypes.mosString128.create('OK'),
 				Stories: [],
 			}
 			return ack
@@ -136,18 +128,18 @@ describe('Profile 4', () => {
 		const onRoReqAll = jest.fn(async (): Promise<IMOSRunningOrder[]> => {
 			return [
 				{
-					ID: new MosString128('96857485'),
-					Slug: new MosString128('the slug'),
-					DefaultChannel: new MosString128('14'),
-					EditorialStart: new MosTime('2005-07-01T13:15:00Z'),
-					EditorialDuration: new MosDuration('1:23:45'),
-					Trigger: new MosString128('A'),
+					ID: mosTypes.mosString128.create('96857485'),
+					Slug: mosTypes.mosString128.create('the slug'),
+					DefaultChannel: mosTypes.mosString128.create('14'),
+					EditorialStart: mosTypes.mosTime.create('2005-07-01T13:15:00Z'),
+					EditorialDuration: mosTypes.mosDuration.create('1:23:45'),
+					Trigger: mosTypes.mosString128.create('A'),
 					Stories: [],
 				},
 				{
-					ID: new MosString128('96857486'),
-					Slug: new MosString128('the slug2'),
-					DefaultChannel: new MosString128('19'),
+					ID: mosTypes.mosString128.create('96857486'),
+					Slug: mosTypes.mosString128.create('the slug2'),
+					DefaultChannel: mosTypes.mosString128.create('19'),
 					Stories: [],
 				},
 			]

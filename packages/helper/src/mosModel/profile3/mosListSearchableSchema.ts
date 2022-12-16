@@ -1,13 +1,13 @@
 import { MosMessage } from '../MosMessage'
 import * as XMLBuilder from 'xmlbuilder'
 import { IMOSListSearchableSchema } from '@mos-connection/model'
-import { addTextElement } from '../../utils/Utils'
+import { addTextElementInternal } from '../../utils/Utils'
 
 export class MosListSearchableSchema extends MosMessage {
 	private options: IMOSListSearchableSchema
 
-	constructor(options: IMOSListSearchableSchema) {
-		super('query')
+	constructor(options: IMOSListSearchableSchema, strict: boolean) {
+		super('query', strict)
 		this.options = options
 	}
 
@@ -15,7 +15,7 @@ export class MosListSearchableSchema extends MosMessage {
 		const xml = XMLBuilder.create('mosListSearchableSchema')
 		xml.att('username', this.options.username)
 
-		addTextElement(xml, 'mosSchema', this.options.mosSchema)
+		addTextElementInternal(xml, 'mosSchema', this.options.mosSchema, undefined, this.strict)
 
 		return xml
 	}

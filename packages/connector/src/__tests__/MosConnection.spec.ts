@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { clearMocks, decode, delay, encode, getMessageId, getXMLReply, initMosConnection, setupMocks } from './lib'
-import { MosConnection, MosDevice, IMOSObject, IMOSConnectionStatus } from '../'
-import { ConnectionConfig } from '../config/connectionConfig'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
+import { MosConnection, MosDevice, IMOSObject, IMOSConnectionStatus, ConnectionConfig } from '../'
 
 // @ts-ignore imports are unused
 import { Socket } from 'net'
@@ -50,12 +49,14 @@ describe('MosDevice: General', () => {
 		expect(onData).toHaveBeenCalledTimes(1)
 
 		// Send some data:
-		conn.write('<mos>\
+		conn.write(
+			'<mos>\
 			<mosID>me</mosID>\
 			<ncsID>you</ncsID>\
 			<messageID>42</messageID>\
 			<hello></hello>\
-		</mos>\r\n')
+		</mos>\r\n'
+		)
 
 		expect(connMock.mockSentMessage).toHaveBeenCalledTimes(1)
 	})

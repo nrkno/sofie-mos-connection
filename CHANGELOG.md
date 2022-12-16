@@ -5,6 +5,55 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.1.0-alpha.0](https://github.com/nrkno/tv-automation-package-manager/compare/2.0.1...2.1.0-alpha.0) (2022-12-09)
 
+### BREAKING CHANGES
+
+- mos-connection is now distributed as 3 separate npm-packages.
+  - **@mos-connection/model** contains types, enums and a few data-handling functions. This is useful for consuming apps that handles the MOS-data indirectly.
+  - **@mos-connection/helper** contains all of the /model but also includes functions fox xml-conversion. This is useful for consuming apps that creates/parses MOS-data, such as web-client-plugin handlers.
+  - **@mos-connection/connector** contains all of the above, as well as the MOS connector. This is equivalent to the previous `mos-connection` library.
+
+Notable code changes:
+
+```typescript
+this_is_the_new_code // old code
+```
+
+```typescript
+import * from '@mos-connection/connector' // previously: import * from 'mos-connection'
+```
+
+```typescript
+import { getDataHandlers } from '@mos-connection/model'
+const mosTypes = getMosTypes(true)
+
+// Removed classes MosString128, MosTime & MosDuration
+// These are replaces with the MosTypes methods described below as well as the types:
+type IMOSString128 // previously: MosString128
+type IMOSTime // previously: MosTime
+type IMOSDuration // previously: MosDuration
+
+// Create mos-types:
+const mosString128 = mosTypes.mosString128.create('abc') // previously: new MosString128('abc')
+const mosDuration = mosTypes.mosDuration.create(someDuration) // previously: new MosTime(someDuration)
+const mosTime = mosTypes.mosTime.create(someTime) // previously: const new MosTime(someTime)
+
+// Parse mos-types data:
+mosTypes.mosString128.stringify(mosString128) // previously: mosString128.toString() or hackish: mosString128['_str']
+mosTypes.mosTime.valueOf(mosTime)  // previously: mosTime.getTime()
+
+// Check if a data-point is of a certain MosType:
+mosTypes.mosTime.is(data) // previously: data instanceof MosTime
+
+addTextElement(xml, elementName, content, attributes, strict) // added the "strict" parameter
+```
+
+```typescript
+import { addTextElement } from '@mos-connection/model'
+
+// XML generation:
+addTextElement(xml, elementName, content, attributes, strict) // added the "strict" parameter
+```
+
 ### Bug Fixes
 
 - better cleanup on dispose ([a241d78](https://github.com/nrkno/tv-automation-package-manager/commit/a241d78e0dd0b4f8a24fb17964ea45b791afca6f))

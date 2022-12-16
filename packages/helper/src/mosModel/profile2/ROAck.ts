@@ -1,7 +1,7 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
 import { IMOSROAck, IMOSROAckStory, IMOSString128 } from '@mos-connection/model'
-import { addTextElement } from '../../utils/Utils'
+import { addTextElementInternal } from '../../utils/Utils'
 
 export class ROAck extends MosMessage implements IMOSROAck {
 	ID: IMOSString128
@@ -9,8 +9,8 @@ export class ROAck extends MosMessage implements IMOSROAck {
 	Stories: Array<IMOSROAckStory>
 
 	/** */
-	constructor(roAck: IMOSROAck) {
-		super('upper')
+	constructor(roAck: IMOSROAck, strict: boolean) {
+		super('upper', strict)
 
 		this.ID = roAck.ID
 		this.Status = roAck.Status
@@ -21,8 +21,8 @@ export class ROAck extends MosMessage implements IMOSROAck {
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const root = XMLBuilder.create('roAck')
 
-		addTextElement(root, 'roID', this.ID)
-		addTextElement(root, 'roStatus', this.Status)
+		addTextElementInternal(root, 'roID', this.ID, undefined, this.strict)
+		addTextElementInternal(root, 'roStatus', this.Status, undefined, this.strict)
 
 		// TODO: Loop over Stories, Items and Object
 

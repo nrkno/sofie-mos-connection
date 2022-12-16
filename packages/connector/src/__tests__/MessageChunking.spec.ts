@@ -8,6 +8,7 @@ import {
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
+	mosTypes,
 	setupMocks,
 } from './lib'
 import {
@@ -18,7 +19,6 @@ import {
 	IMOSRunningOrder,
 	MosConnection,
 	MosDevice,
-	MosString128,
 } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
@@ -82,8 +82,8 @@ describe('message chunking', () => {
 
 		const roAckReply = async () => {
 			const ack: IMOSROAck = {
-				ID: new MosString128('runningOrderId'),
-				Status: new MosString128('OK'),
+				ID: mosTypes.mosString128.create('runningOrderId'),
+				Status: mosTypes.mosString128.create('OK'),
 				Stories: [],
 			}
 			return ack
@@ -176,9 +176,9 @@ describe('message chunking', () => {
 		expect(returnedObj).toMatchSnapshot()
 
 		// This is what we split in half
-		const storySlug = returnedObj.Stories[1].Slug as MosString128
+		const storySlug = mosTypes.mosString128.create(returnedObj.Stories[1].Slug)
 		expect(storySlug).toBeTruthy()
-		expect(storySlug.toString()).toEqual('Test MOS')
+		expect(mosTypes.mosString128.stringify(storySlug)).toEqual('Test MOS')
 	})
 
 	test('junk data before', async () => {

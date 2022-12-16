@@ -1,2 +1,2 @@
-export * from './dataTypes'
+export * from './mosTypes'
 export * from './model'

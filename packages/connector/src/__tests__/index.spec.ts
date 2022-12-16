@@ -2,29 +2,27 @@ import * as MOS from '../index'
 
 describe('Index', () => {
 	test('ensure that types and enums are exposed', () => {
-		let a: any
-		// Type checks:
-		a = (_: MOS.IMOSItem) => null
-		a = (_: MOS.IMOSRunningOrder) => null
-		a = (_: MOS.IMOSRunningOrderBase) => null
-		a = (_: MOS.IMOSRunningOrderStatus) => null
-		a = (_: MOS.IMOSStoryStatus) => null
-		a = (_: MOS.IMOSItemStatus) => null
-		a = (_: MOS.IMOSStoryAction) => null
-		a = (_: MOS.IMOSROStory) => null
-		a = (_: MOS.IMOSItemAction) => null
-		a = (_: MOS.IMOSItem) => null
-		a = (_: MOS.IMOSROAction) => null
-		a = (_: MOS.IMOSROReadyToAir) => null
-		a = (_: MOS.IMOSROFullStory) => null
+		const a = [
+			// Check that types are exported:
+			(_: MOS.IMOSItem) => null,
+			(_: MOS.IMOSRunningOrder) => null,
+			(_: MOS.IMOSRunningOrderBase) => null,
+			(_: MOS.IMOSRunningOrderStatus) => null,
+			(_: MOS.IMOSStoryStatus) => null,
+			(_: MOS.IMOSItemStatus) => null,
+			(_: MOS.IMOSStoryAction) => null,
+			(_: MOS.IMOSROStory) => null,
+			(_: MOS.IMOSItemAction) => null,
+			(_: MOS.IMOSItem) => null,
+			(_: MOS.IMOSROAction) => null,
+			(_: MOS.IMOSROReadyToAir) => null,
+			(_: MOS.IMOSROFullStory) => null,
+			// @ts-expect-error types test
+			(_: MOS.ThisDoesNotExist) => null,
+		]
+		expect(a.length).toBeGreaterThan(0)
 
-		// @ts-expect-error types test
-		a = (_: MOS.ThisDoesNotExist) => null
-		if (a) a()
-
-		expect(MOS.MosTime).toBeTruthy()
-		expect(MOS.MosDuration).toBeTruthy()
-		expect(MOS.MosString128).toBeTruthy()
+		expect(typeof MOS.getMosTypes).toBe('function')
 
 		expect(MOS.IMOSObjectStatus).toBeTruthy()
 
@@ -36,5 +34,71 @@ describe('Index', () => {
 		expect(typeof MOS.Utils.xml2js).toBe('function') // For backwards compatibility
 		expect(MOS.MosModel.XMLMosItem.fromXML).toBeTruthy() // For backwards compatibility
 		expect(MOS.MosModel.XMLMosItem.toXML).toBeTruthy() // For backwards compatibility
+	})
+	test('ensure that types are backwards compatible', () => {
+		const a = (mosDevice: MOS.MosDevice, getMosRoAck: () => MOS.IMOSROAck) => {
+			mosDevice.onCreateRunningOrder(async (_ro: MOS.IMOSRunningOrder) => {
+				return getMosRoAck()
+			})
+			mosDevice.onReplaceRunningOrder(async (_ro: MOS.IMOSRunningOrder) => {
+				return getMosRoAck()
+			})
+			mosDevice.onDeleteRunningOrder(async (_runningOrderId: MOS.IMOSString128) => {
+				return getMosRoAck()
+			})
+			mosDevice.onMetadataReplace(async (_ro: MOS.IMOSRunningOrderBase) => {
+				return getMosRoAck()
+			})
+			mosDevice.onRunningOrderStatus(async (_status: MOS.IMOSRunningOrderStatus) => {
+				return getMosRoAck()
+			})
+			mosDevice.onStoryStatus(async (_status: MOS.IMOSStoryStatus) => {
+				return getMosRoAck()
+			})
+			mosDevice.onItemStatus(async (_status: MOS.IMOSItemStatus) => {
+				return getMosRoAck()
+			})
+			mosDevice.onROInsertStories(async (_Action: MOS.IMOSStoryAction, _Stories: Array<MOS.IMOSROStory>) => {
+				return getMosRoAck()
+			})
+			mosDevice.onROInsertItems(async (_Action: MOS.IMOSItemAction, _Items: Array<MOS.IMOSItem>) => {
+				return getMosRoAck()
+			})
+			mosDevice.onROReplaceStories(async (_Action: MOS.IMOSStoryAction, _Stories: Array<MOS.IMOSROStory>) => {
+				return getMosRoAck()
+			})
+			mosDevice.onROReplaceItems(async (_Action: MOS.IMOSItemAction, _Items: Array<MOS.IMOSItem>) => {
+				return getMosRoAck()
+			})
+			mosDevice.onROMoveStories(async (_Action: MOS.IMOSStoryAction, _Stories: Array<MOS.IMOSString128>) => {
+				return getMosRoAck()
+			})
+			mosDevice.onROMoveItems(async (_Action: MOS.IMOSItemAction, _Items: Array<MOS.IMOSString128>) => {
+				return getMosRoAck()
+			})
+			mosDevice.onRODeleteStories(async (_Action: MOS.IMOSROAction, _Stories: Array<MOS.IMOSString128>) => {
+				return getMosRoAck()
+			})
+			mosDevice.onRODeleteItems(async (_Action: MOS.IMOSStoryAction, _Items: Array<MOS.IMOSString128>) => {
+				return getMosRoAck()
+			})
+			mosDevice.onROSwapStories(
+				async (_Action: MOS.IMOSROAction, _StoryID0: MOS.IMOSString128, _StoryID1: MOS.IMOSString128) => {
+					return getMosRoAck()
+				}
+			)
+			mosDevice.onROSwapItems(
+				async (_Action: MOS.IMOSStoryAction, _ItemID0: MOS.IMOSString128, _ItemID1: MOS.IMOSString128) => {
+					return getMosRoAck()
+				}
+			)
+			mosDevice.onReadyToAir(async (_Action: MOS.IMOSROReadyToAir) => {
+				return getMosRoAck()
+			})
+			mosDevice.onRunningOrderStory(async (_story: MOS.IMOSROFullStory) => {
+				return getMosRoAck()
+			})
+		}
+		expect(a).toBeTruthy()
 	})
 })

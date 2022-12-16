@@ -12,18 +12,16 @@ exports[`Profile 4 getAllRunningOrders 1`] = `
 exports[`Profile 4 getAllRunningOrders 2`] = `
 [
   {
-    "EditorialDuration": MosDuration {
-      "_duration": 1800,
+    "EditorialDuration": {
+      "_mosDuration": 1800,
     },
-    "EditorialStart": MosTime {
-      "_time": 2009-07-11T17:00:00.000Z,
+    "EditorialStart": {
+      "_mosTime": 1247331600000,
       "_timezone": "Z",
-      "_timezoneDeclaration": "",
-      "_timezoneZuluIndicator": "Z",
+      "_timezoneOffset": 0,
     },
-    "ID": MosString128 {
-      "_str": "5PM",
-      "strict": true,
+    "ID": {
+      "_mosString128": "5PM",
     },
     "MosExternalMetaData": [
       {
@@ -40,28 +38,24 @@ exports[`Profile 4 getAllRunningOrders 2`] = `
         "MosScope": "PLAYLIST",
       },
     ],
-    "Slug": MosString128 {
-      "_str": "5PM Rundown",
-      "strict": true,
+    "Slug": {
+      "_mosString128": "5PM Rundown",
     },
-    "Trigger": MosString128 {
-      "_str": "MANUAL",
-      "strict": true,
+    "Trigger": {
+      "_mosString128": "MANUAL",
     },
   },
   {
-    "EditorialDuration": MosDuration {
-      "_duration": 1800,
+    "EditorialDuration": {
+      "_mosDuration": 1800,
     },
-    "EditorialStart": MosTime {
-      "_time": 2009-07-09T18:00:00.000Z,
+    "EditorialStart": {
+      "_mosTime": 1247162400000,
       "_timezone": "Z",
-      "_timezoneDeclaration": "",
-      "_timezoneZuluIndicator": "Z",
+      "_timezoneOffset": 0,
     },
-    "ID": MosString128 {
-      "_str": "6PM",
-      "strict": true,
+    "ID": {
+      "_mosString128": "6PM",
     },
     "MosExternalMetaData": [
       {
@@ -78,13 +72,11 @@ exports[`Profile 4 getAllRunningOrders 2`] = `
         "MosScope": "PLAYLIST",
       },
     ],
-    "Slug": MosString128 {
-      "_str": "6PM Rundown",
-      "strict": true,
+    "Slug": {
+      "_mosString128": "6PM Rundown",
     },
-    "Trigger": MosString128 {
-      "_str": "MANUAL",
-      "strict": true,
+    "Trigger": {
+      "_mosString128": "MANUAL",
     },
   },
 ]
@@ -104,9 +96,8 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
         },
         {
           "Content": {
-            "ID": MosString128 {
-              "_str": "2",
-              "strict": true,
+            "ID": {
+              "_mosString128": "2",
             },
             "MOSID": "METADATA.NRK.MOS",
             "MosExternalMetaData": [
@@ -134,17 +125,14 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                 "MosScope": "PLAYLIST",
               },
             ],
-            "ObjectID": MosString128 {
-              "_str": "N11580_1412594672",
-              "strict": true,
+            "ObjectID": {
+              "_mosString128": "N11580_1412594672",
             },
-            "ObjectSlug": MosString128 {
-              "_str": "M:",
-              "strict": false,
+            "ObjectSlug": {
+              "_mosString128": "M:",
             },
-            "Slug": MosString128 {
-              "_str": "SAK BUSKERUD;SAK-14",
-              "strict": true,
+            "Slug": {
+              "_mosString128": "SAK BUSKERUD;SAK-14",
             },
             "mosAbstract": "METADATA",
           },
@@ -173,44 +161,37 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
         },
         {
           "Content": {
-            "Channel": MosString128 {
-              "_str": "CG1",
-              "strict": true,
+            "Channel": {
+              "_mosString128": "CG1",
             },
-            "ID": MosString128 {
-              "_str": "3",
-              "strict": true,
+            "ID": {
+              "_mosString128": "3",
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": [
               {
                 "AirStatus": undefined,
-                "Changed": MosTime {
-                  "_time": 2021-01-01T00:00:00.000Z,
+                "Changed": {
+                  "_mosTime": 1609459200000,
                   "_timezone": "",
-                  "_timezoneDeclaration": "",
-                  "_timezoneZuluIndicator": "",
+                  "_timezoneOffset": 0,
                 },
-                "ChangedBy": MosString128 {
-                  "_str": "undefined",
-                  "strict": true,
+                "ChangedBy": {
+                  "_mosString128": "undefined",
                 },
-                "Created": MosTime {
-                  "_time": 2021-01-01T00:00:00.000Z,
+                "Created": {
+                  "_mosTime": 1609459200000,
                   "_timezone": "",
-                  "_timezoneDeclaration": "",
-                  "_timezoneZuluIndicator": "",
+                  "_timezoneOffset": 0,
                 },
-                "CreatedBy": MosString128 {
-                  "_str": "undefined",
-                  "strict": true,
+                "CreatedBy": {
+                  "_mosString128": "undefined",
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
-                "ID": MosString128 {
-                  "_str": "NYHETER\\00039287?version=1",
-                  "strict": true,
+                "ID": {
+                  "_mosString128": "NYHETER\\00039287?version=1",
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": [
@@ -230,9 +211,8 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                     "MosScope": "PLAYLIST",
                   },
                 ],
-                "MosItemEditorProgID": MosString128 {
-                  "_str": "Chymox.AssetBrowser.1",
-                  "strict": true,
+                "MosItemEditorProgID": {
+                  "_mosString128": "Chymox.AssetBrowser.1",
                 },
                 "Paths": [
                   {
@@ -242,18 +222,16 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                   },
                 ],
                 "Revision": undefined,
-                "Slug": MosString128 {
-                  "_str": "01 ett navn 1:  2:",
-                  "strict": true,
+                "Slug": {
+                  "_mosString128": "01 ett navn 1:  2:",
                 },
                 "Status": undefined,
                 "TimeBase": 0,
                 "Type": undefined,
               },
             ],
-            "ObjectID": MosString128 {
-              "_str": "undefined",
-              "strict": true,
+            "ObjectID": {
+              "_mosString128": "undefined",
             },
             "Paths": [
               {
@@ -262,9 +240,8 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                 "Type": "PROXY PATH",
               },
             ],
-            "Slug": MosString128 {
-              "_str": "01 ett navn 1:  2:",
-              "strict": true,
+            "Slug": {
+              "_mosString128": "01 ett navn 1:  2:",
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -279,44 +256,37 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
         },
         {
           "Content": {
-            "Channel": MosString128 {
-              "_str": "CG1",
-              "strict": true,
+            "Channel": {
+              "_mosString128": "CG1",
             },
-            "ID": MosString128 {
-              "_str": "4",
-              "strict": true,
+            "ID": {
+              "_mosString128": "4",
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": [
               {
                 "AirStatus": undefined,
-                "Changed": MosTime {
-                  "_time": 2021-01-01T00:00:00.000Z,
+                "Changed": {
+                  "_mosTime": 1609459200000,
                   "_timezone": "",
-                  "_timezoneDeclaration": "",
-                  "_timezoneZuluIndicator": "",
+                  "_timezoneOffset": 0,
                 },
-                "ChangedBy": MosString128 {
-                  "_str": "undefined",
-                  "strict": true,
+                "ChangedBy": {
+                  "_mosString128": "undefined",
                 },
-                "Created": MosTime {
-                  "_time": 2021-01-01T00:00:00.000Z,
+                "Created": {
+                  "_mosTime": 1609459200000,
                   "_timezone": "",
-                  "_timezoneDeclaration": "",
-                  "_timezoneZuluIndicator": "",
+                  "_timezoneOffset": 0,
                 },
-                "CreatedBy": MosString128 {
-                  "_str": "undefined",
-                  "strict": true,
+                "CreatedBy": {
+                  "_mosString128": "undefined",
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
-                "ID": MosString128 {
-                  "_str": "NYHETER\\00039288?version=1",
-                  "strict": true,
+                "ID": {
+                  "_mosString128": "NYHETER\\00039288?version=1",
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": [
@@ -336,9 +306,8 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                     "MosScope": "PLAYLIST",
                   },
                 ],
-                "MosItemEditorProgID": MosString128 {
-                  "_str": "Chymox.AssetBrowser.1",
-                  "strict": true,
+                "MosItemEditorProgID": {
+                  "_mosString128": "Chymox.AssetBrowser.1",
                 },
                 "Paths": [
                   {
@@ -348,18 +317,16 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                   },
                 ],
                 "Revision": undefined,
-                "Slug": MosString128 {
-                  "_str": "01 ett navn 1:  2:",
-                  "strict": true,
+                "Slug": {
+                  "_mosString128": "01 ett navn 1:  2:",
                 },
                 "Status": undefined,
                 "TimeBase": 0,
                 "Type": undefined,
               },
             ],
-            "ObjectID": MosString128 {
-              "_str": "undefined",
-              "strict": true,
+            "ObjectID": {
+              "_mosString128": "undefined",
             },
             "Paths": [
               {
@@ -368,9 +335,8 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                 "Type": "PROXY PATH",
               },
             ],
-            "Slug": MosString128 {
-              "_str": "01 ett navn 1:  2:",
-              "strict": true,
+            "Slug": {
+              "_mosString128": "01 ett navn 1:  2:",
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -385,44 +351,37 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
         },
         {
           "Content": {
-            "Channel": MosString128 {
-              "_str": "CG1",
-              "strict": true,
+            "Channel": {
+              "_mosString128": "CG1",
             },
-            "ID": MosString128 {
-              "_str": "5",
-              "strict": true,
+            "ID": {
+              "_mosString128": "5",
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": [
               {
                 "AirStatus": undefined,
-                "Changed": MosTime {
-                  "_time": 2021-01-01T00:00:00.000Z,
+                "Changed": {
+                  "_mosTime": 1609459200000,
                   "_timezone": "",
-                  "_timezoneDeclaration": "",
-                  "_timezoneZuluIndicator": "",
+                  "_timezoneOffset": 0,
                 },
-                "ChangedBy": MosString128 {
-                  "_str": "undefined",
-                  "strict": true,
+                "ChangedBy": {
+                  "_mosString128": "undefined",
                 },
-                "Created": MosTime {
-                  "_time": 2021-01-01T00:00:00.000Z,
+                "Created": {
+                  "_mosTime": 1609459200000,
                   "_timezone": "",
-                  "_timezoneDeclaration": "",
-                  "_timezoneZuluIndicator": "",
+                  "_timezoneOffset": 0,
                 },
-                "CreatedBy": MosString128 {
-                  "_str": "undefined",
-                  "strict": true,
+                "CreatedBy": {
+                  "_mosString128": "undefined",
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
-                "ID": MosString128 {
-                  "_str": "NYHETER\\00039289?version=1",
-                  "strict": true,
+                "ID": {
+                  "_mosString128": "NYHETER\\00039289?version=1",
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": [
@@ -442,9 +401,8 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                     "MosScope": "PLAYLIST",
                   },
                 ],
-                "MosItemEditorProgID": MosString128 {
-                  "_str": "Chymox.AssetBrowser.1",
-                  "strict": true,
+                "MosItemEditorProgID": {
+                  "_mosString128": "Chymox.AssetBrowser.1",
                 },
                 "Paths": [
                   {
@@ -454,18 +412,16 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                   },
                 ],
                 "Revision": undefined,
-                "Slug": MosString128 {
-                  "_str": "01 ett navn 1:  2:",
-                  "strict": true,
+                "Slug": {
+                  "_mosString128": "01 ett navn 1:  2:",
                 },
                 "Status": undefined,
                 "TimeBase": 0,
                 "Type": undefined,
               },
             ],
-            "ObjectID": MosString128 {
-              "_str": "undefined",
-              "strict": true,
+            "ObjectID": {
+              "_mosString128": "undefined",
             },
             "Paths": [
               {
@@ -474,9 +430,8 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                 "Type": "PROXY PATH",
               },
             ],
-            "Slug": MosString128 {
-              "_str": "01 ett navn 1:  2:",
-              "strict": true,
+            "Slug": {
+              "_mosString128": "01 ett navn 1:  2:",
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -491,44 +446,37 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
         },
         {
           "Content": {
-            "Channel": MosString128 {
-              "_str": "CG1",
-              "strict": true,
+            "Channel": {
+              "_mosString128": "CG1",
             },
-            "ID": MosString128 {
-              "_str": "6",
-              "strict": true,
+            "ID": {
+              "_mosString128": "6",
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": [
               {
                 "AirStatus": undefined,
-                "Changed": MosTime {
-                  "_time": 2021-01-01T00:00:00.000Z,
+                "Changed": {
+                  "_mosTime": 1609459200000,
                   "_timezone": "",
-                  "_timezoneDeclaration": "",
-                  "_timezoneZuluIndicator": "",
+                  "_timezoneOffset": 0,
                 },
-                "ChangedBy": MosString128 {
-                  "_str": "undefined",
-                  "strict": true,
+                "ChangedBy": {
+                  "_mosString128": "undefined",
                 },
-                "Created": MosTime {
-                  "_time": 2021-01-01T00:00:00.000Z,
+                "Created": {
+                  "_mosTime": 1609459200000,
                   "_timezone": "",
-                  "_timezoneDeclaration": "",
-                  "_timezoneZuluIndicator": "",
+                  "_timezoneOffset": 0,
                 },
-                "CreatedBy": MosString128 {
-                  "_str": "undefined",
-                  "strict": true,
+                "CreatedBy": {
+                  "_mosString128": "undefined",
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
-                "ID": MosString128 {
-                  "_str": "NYHETER\\00039290?version=1",
-                  "strict": true,
+                "ID": {
+                  "_mosString128": "NYHETER\\00039290?version=1",
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": [
@@ -548,9 +496,8 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                     "MosScope": "PLAYLIST",
                   },
                 ],
-                "MosItemEditorProgID": MosString128 {
-                  "_str": "Chymox.AssetBrowser.1",
-                  "strict": true,
+                "MosItemEditorProgID": {
+                  "_mosString128": "Chymox.AssetBrowser.1",
                 },
                 "Paths": [
                   {
@@ -560,18 +507,16 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                   },
                 ],
                 "Revision": undefined,
-                "Slug": MosString128 {
-                  "_str": "01 ett navn 1:  2:",
-                  "strict": true,
+                "Slug": {
+                  "_mosString128": "01 ett navn 1:  2:",
                 },
                 "Status": undefined,
                 "TimeBase": 0,
                 "Type": undefined,
               },
             ],
-            "ObjectID": MosString128 {
-              "_str": "undefined",
-              "strict": true,
+            "ObjectID": {
+              "_mosString128": "undefined",
             },
             "Paths": [
               {
@@ -580,9 +525,8 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                 "Type": "PROXY PATH",
               },
             ],
-            "Slug": MosString128 {
-              "_str": "01 ett navn 1:  2:",
-              "strict": true,
+            "Slug": {
+              "_mosString128": "01 ett navn 1:  2:",
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -597,44 +541,37 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
         },
         {
           "Content": {
-            "Channel": MosString128 {
-              "_str": "CG1",
-              "strict": true,
+            "Channel": {
+              "_mosString128": "CG1",
             },
-            "ID": MosString128 {
-              "_str": "7",
-              "strict": true,
+            "ID": {
+              "_mosString128": "7",
             },
             "MOSID": "chyron.techycami02.ndte.nrk.mos",
             "MosObjects": [
               {
                 "AirStatus": undefined,
-                "Changed": MosTime {
-                  "_time": 2021-01-01T00:00:00.000Z,
+                "Changed": {
+                  "_mosTime": 1609459200000,
                   "_timezone": "",
-                  "_timezoneDeclaration": "",
-                  "_timezoneZuluIndicator": "",
+                  "_timezoneOffset": 0,
                 },
-                "ChangedBy": MosString128 {
-                  "_str": "undefined",
-                  "strict": true,
+                "ChangedBy": {
+                  "_mosString128": "undefined",
                 },
-                "Created": MosTime {
-                  "_time": 2021-01-01T00:00:00.000Z,
+                "Created": {
+                  "_mosTime": 1609459200000,
                   "_timezone": "",
-                  "_timezoneDeclaration": "",
-                  "_timezoneZuluIndicator": "",
+                  "_timezoneOffset": 0,
                 },
-                "CreatedBy": MosString128 {
-                  "_str": "undefined",
-                  "strict": true,
+                "CreatedBy": {
+                  "_mosString128": "undefined",
                 },
                 "Description": undefined,
                 "Duration": 0,
                 "Group": undefined,
-                "ID": MosString128 {
-                  "_str": "NYHETER\\00039291?version=1",
-                  "strict": true,
+                "ID": {
+                  "_mosString128": "NYHETER\\00039291?version=1",
                 },
                 "MosAbstract": undefined,
                 "MosExternalMetaData": [
@@ -654,9 +591,8 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                     "MosScope": "PLAYLIST",
                   },
                 ],
-                "MosItemEditorProgID": MosString128 {
-                  "_str": "Chymox.AssetBrowser.1",
-                  "strict": true,
+                "MosItemEditorProgID": {
+                  "_mosString128": "Chymox.AssetBrowser.1",
                 },
                 "Paths": [
                   {
@@ -666,18 +602,16 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                   },
                 ],
                 "Revision": undefined,
-                "Slug": MosString128 {
-                  "_str": "24 foto/red 1:Foto og redigering:  2:",
-                  "strict": true,
+                "Slug": {
+                  "_mosString128": "24 foto/red 1:Foto og redigering:  2:",
                 },
                 "Status": undefined,
                 "TimeBase": 0,
                 "Type": undefined,
               },
             ],
-            "ObjectID": MosString128 {
-              "_str": "undefined",
-              "strict": true,
+            "ObjectID": {
+              "_mosString128": "undefined",
             },
             "Paths": [
               {
@@ -686,9 +620,8 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
                 "Type": "PROXY PATH",
               },
             ],
-            "Slug": MosString128 {
-              "_str": "24 foto/red 1:Foto og redigering:  2:",
-              "strict": true,
+            "Slug": {
+              "_mosString128": "24 foto/red 1:Foto og redigering:  2:",
             },
             "mosAbstract": "_00:00:02:00 | @M=Auto Timed | 24 foto/red | 1:Foto og redigering: | 2: | 3: | 4: | 00:00:05:00",
           },
@@ -710,22 +643,18 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
         },
         {
           "Content": {
-            "ID": MosString128 {
-              "_str": "8",
-              "strict": true,
+            "ID": {
+              "_mosString128": "8",
             },
             "MOSID": "mosart.morten.mos",
-            "ObjectID": MosString128 {
-              "_str": "STORYSTATUS",
-              "strict": true,
+            "ObjectID": {
+              "_mosString128": "STORYSTATUS",
             },
-            "ObjectSlug": MosString128 {
-              "_str": "Story status",
-              "strict": false,
+            "ObjectSlug": {
+              "_mosString128": "Story status",
             },
-            "Slug": MosString128 {
-              "_str": "SAK BUSKERUD;SAK-20",
-              "strict": true,
+            "Slug": {
+              "_mosString128": "SAK BUSKERUD;SAK-20",
             },
             "mosAbstract": "TIDSMARKØR IKKE RØR",
           },
@@ -739,9 +668,8 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
           "Type": "p",
         },
       ],
-      "ID": MosString128 {
-        "_str": "2012R2ENPS8VM;P_ENPSNEWS\\W\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB",
-        "strict": true,
+      "ID": {
+        "_mosString128": "2012R2ENPS8VM;P_ENPSNEWS\\W\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB",
       },
       "MosExternalMetaData": [
         {
@@ -779,13 +707,11 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
         },
       ],
       "Number": undefined,
-      "RunningOrderId": MosString128 {
-        "_str": "2012R2ENPS8VM;P_ENPSNEWS\\W;696297DF-1568-4B36-B43B3B79514B40D4",
-        "strict": true,
+      "RunningOrderId": {
+        "_mosString128": "2012R2ENPS8VM;P_ENPSNEWS\\W;696297DF-1568-4B36-B43B3B79514B40D4",
       },
-      "Slug": MosString128 {
-        "_str": "KRITIKK ETTER BRANN KONGSBERG;SAK",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "KRITIKK ETTER BRANN KONGSBERG;SAK",
       },
     },
   ],

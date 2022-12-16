@@ -22,34 +22,55 @@ exports[`Profile 3 mosItemReplace 1`] = `
 
 exports[`Profile 3 mosItemReplace 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": false,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": false,
 }
 `;
 
@@ -75,13 +96,11 @@ exports[`Profile 3 mosObjCreate 1`] = `
 
 exports[`Profile 3 mosObjCreate 2`] = `
 {
-  "Description": MosString128 {
-    "_str": "",
-    "strict": true,
+  "Description": {
+    "_mosString128": "",
   },
-  "ID": MosString128 {
-    "_str": "M000123",
-    "strict": true,
+  "ID": {
+    "_mosString128": "M000123",
   },
   "Revision": 1,
   "Status": "ACK",
@@ -126,25 +145,21 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
   "list": [
     {
       "AirStatus": "READY",
-      "Changed": MosTime {
-        "_time": 1998-10-31T23:39:12.000Z,
+      "Changed": {
+        "_mosTime": 909877152000,
         "_timezone": "Z",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "Z",
+        "_timezoneOffset": 0,
       },
-      "ChangedBy": MosString128 {
-        "_str": "Chris",
-        "strict": true,
+      "ChangedBy": {
+        "_mosString128": "Chris",
       },
-      "Created": MosTime {
-        "_time": 1998-10-31T23:39:12.000Z,
+      "Created": {
+        "_mosTime": 909877152000,
         "_timezone": "Z",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "Z",
+        "_timezoneOffset": 0,
       },
-      "CreatedBy": MosString128 {
-        "_str": "Chris",
-        "strict": true,
+      "CreatedBy": {
+        "_mosString128": "Chris",
       },
       "Description": {
         "elements": [
@@ -196,9 +211,8 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
       },
       "Duration": 1800,
       "Group": "Show 7",
-      "ID": MosString128 {
-        "_str": "M000121",
-        "strict": true,
+      "ID": {
+        "_mosString128": "M000121",
       },
       "MosAbstract": {
         "elements": [
@@ -248,9 +262,8 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
         },
       ],
       "Revision": 1,
-      "Slug": MosString128 {
-        "_str": "Hotel Fire",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Hotel Fire",
       },
       "Status": "NEW",
       "TimeBase": 59.94,
@@ -258,25 +271,21 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
     },
     {
       "AirStatus": "READY",
-      "Changed": MosTime {
-        "_time": 1998-10-31T23:39:12.000Z,
+      "Changed": {
+        "_mosTime": 909877152000,
         "_timezone": "Z",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "Z",
+        "_timezoneOffset": 0,
       },
-      "ChangedBy": MosString128 {
-        "_str": "Chris",
-        "strict": true,
+      "ChangedBy": {
+        "_mosString128": "Chris",
       },
-      "Created": MosTime {
-        "_time": 1998-10-31T23:39:12.000Z,
+      "Created": {
+        "_mosTime": 909877152000,
         "_timezone": "Z",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "Z",
+        "_timezoneOffset": 0,
       },
-      "CreatedBy": MosString128 {
-        "_str": "Chris",
-        "strict": true,
+      "CreatedBy": {
+        "_mosString128": "Chris",
       },
       "Description": {
         "elements": [
@@ -328,9 +337,8 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
       },
       "Duration": 1800,
       "Group": "Show 7",
-      "ID": MosString128 {
-        "_str": "M000122",
-        "strict": true,
+      "ID": {
+        "_mosString128": "M000122",
       },
       "MosAbstract": {
         "elements": [
@@ -380,9 +388,8 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
         },
       ],
       "Revision": 1,
-      "Slug": MosString128 {
-        "_str": "Another Hotel Fire",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Another Hotel Fire",
       },
       "Status": "NEW",
       "TimeBase": 59.94,
@@ -390,25 +397,21 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
     },
     {
       "AirStatus": "READY",
-      "Changed": MosTime {
-        "_time": 1998-10-31T23:39:12.000Z,
+      "Changed": {
+        "_mosTime": 909877152000,
         "_timezone": "Z",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "Z",
+        "_timezoneOffset": 0,
       },
-      "ChangedBy": MosString128 {
-        "_str": "Chris",
-        "strict": true,
+      "ChangedBy": {
+        "_mosString128": "Chris",
       },
-      "Created": MosTime {
-        "_time": 1998-10-31T23:39:12.000Z,
+      "Created": {
+        "_mosTime": 909877152000,
         "_timezone": "Z",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "Z",
+        "_timezoneOffset": 0,
       },
-      "CreatedBy": MosString128 {
-        "_str": "Chris",
-        "strict": true,
+      "CreatedBy": {
+        "_mosString128": "Chris",
       },
       "Description": {
         "elements": [
@@ -460,9 +463,8 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
       },
       "Duration": 1800,
       "Group": "Show 7",
-      "ID": MosString128 {
-        "_str": "M000123",
-        "strict": true,
+      "ID": {
+        "_mosString128": "M000123",
       },
       "MosAbstract": {
         "elements": [
@@ -512,9 +514,8 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
         },
       ],
       "Revision": 1,
-      "Slug": MosString128 {
-        "_str": "Yet Another Hotel Fire",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Yet Another Hotel Fire",
       },
       "Status": "NEW",
       "TimeBase": 59.94,
@@ -537,18 +538,15 @@ exports[`Profile 3 onMosItemReplace 1`] = `
     {
       "EditorialDuration": 815,
       "EditorialStart": 0,
-      "ID": MosString128 {
-        "_str": "30848",
-        "strict": true,
+      "ID": {
+        "_mosString128": "30848",
       },
       "MOSID": "testmos.enps.com",
-      "MacroIn": MosString128 {
-        "_str": "c01/l04/dve07",
-        "strict": true,
+      "MacroIn": {
+        "_mosString128": "c01/l04/dve07",
       },
-      "MacroOut": MosString128 {
-        "_str": "r00",
-        "strict": true,
+      "MacroOut": {
+        "_mosString128": "r00",
       },
       "MosExternalMetaData": [
         {
@@ -562,9 +560,8 @@ exports[`Profile 3 onMosItemReplace 1`] = `
           "MosScope": "PLAYLIST",
         },
       ],
-      "ObjectID": MosString128 {
-        "_str": "M000627",
-        "strict": true,
+      "ObjectID": {
+        "_mosString128": "M000627",
       },
       "Paths": [
         {
@@ -614,25 +611,21 @@ exports[`Profile 3 onMosObjCreate 1`] = `
   [
     {
       "AirStatus": undefined,
-      "Changed": MosTime {
-        "_time": 2021-01-01T00:00:00.000Z,
+      "Changed": {
+        "_mosTime": 1609459200000,
         "_timezone": "",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "",
+        "_timezoneOffset": 0,
       },
-      "ChangedBy": MosString128 {
-        "_str": "undefined",
-        "strict": true,
+      "ChangedBy": {
+        "_mosString128": "undefined",
       },
-      "Created": MosTime {
-        "_time": 2021-01-01T00:00:00.000Z,
+      "Created": {
+        "_mosTime": 1609459200000,
         "_timezone": "",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "",
+        "_timezoneOffset": 0,
       },
-      "CreatedBy": MosString128 {
-        "_str": "Chris",
-        "strict": true,
+      "CreatedBy": {
+        "_mosString128": "Chris",
       },
       "Description": {
         "elements": [
@@ -686,9 +679,8 @@ exports[`Profile 3 onMosObjCreate 1`] = `
       },
       "Duration": 1800,
       "Group": "Show 7",
-      "ID": MosString128 {
-        "_str": "undefined",
-        "strict": true,
+      "ID": {
+        "_mosString128": "undefined",
       },
       "MosAbstract": undefined,
       "MosExternalMetaData": [
@@ -709,9 +701,8 @@ exports[`Profile 3 onMosObjCreate 1`] = `
       ],
       "Paths": [],
       "Revision": undefined,
-      "Slug": MosString128 {
-        "_str": "Hotel Fire",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Hotel Fire",
       },
       "Status": undefined,
       "TimeBase": 59.94,
@@ -782,25 +773,21 @@ exports[`Profile 3 onMosReqObjectActionNew 1`] = `
   [
     {
       "AirStatus": undefined,
-      "Changed": MosTime {
-        "_time": 2021-01-01T00:00:00.000Z,
+      "Changed": {
+        "_mosTime": 1609459200000,
         "_timezone": "",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "",
+        "_timezoneOffset": 0,
       },
-      "ChangedBy": MosString128 {
-        "_str": "undefined",
-        "strict": true,
+      "ChangedBy": {
+        "_mosString128": "undefined",
       },
-      "Created": MosTime {
-        "_time": 2021-01-01T00:00:00.000Z,
+      "Created": {
+        "_mosTime": 1609459200000,
         "_timezone": "",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "",
+        "_timezoneOffset": 0,
       },
-      "CreatedBy": MosString128 {
-        "_str": "Chris",
-        "strict": true,
+      "CreatedBy": {
+        "_mosString128": "Chris",
       },
       "Description": {
         "elements": [
@@ -854,9 +841,8 @@ exports[`Profile 3 onMosReqObjectActionNew 1`] = `
       },
       "Duration": 1800,
       "Group": "Show 7",
-      "ID": MosString128 {
-        "_str": "undefined",
-        "strict": true,
+      "ID": {
+        "_mosString128": "undefined",
       },
       "MosAbstract": undefined,
       "MosExternalMetaData": [
@@ -877,9 +863,8 @@ exports[`Profile 3 onMosReqObjectActionNew 1`] = `
       ],
       "Paths": [],
       "Revision": undefined,
-      "Slug": MosString128 {
-        "_str": "Hotel Fire",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Hotel Fire",
       },
       "Status": undefined,
       "TimeBase": 59.94,
@@ -919,25 +904,21 @@ exports[`Profile 3 onMosReqObjectActionUpdate 1`] = `
     "1EFA3009233F8329C1",
     {
       "AirStatus": undefined,
-      "Changed": MosTime {
-        "_time": 2021-01-01T00:00:00.000Z,
+      "Changed": {
+        "_mosTime": 1609459200000,
         "_timezone": "",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "",
+        "_timezoneOffset": 0,
       },
-      "ChangedBy": MosString128 {
-        "_str": "undefined",
-        "strict": true,
+      "ChangedBy": {
+        "_mosString128": "undefined",
       },
-      "Created": MosTime {
-        "_time": 2021-01-01T00:00:00.000Z,
+      "Created": {
+        "_mosTime": 1609459200000,
         "_timezone": "",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "",
+        "_timezoneOffset": 0,
       },
-      "CreatedBy": MosString128 {
-        "_str": "Chris",
-        "strict": true,
+      "CreatedBy": {
+        "_mosString128": "Chris",
       },
       "Description": {
         "elements": [
@@ -991,9 +972,8 @@ exports[`Profile 3 onMosReqObjectActionUpdate 1`] = `
       },
       "Duration": 1800,
       "Group": "Show 7",
-      "ID": MosString128 {
-        "_str": "1EFA3009233F8329C1",
-        "strict": true,
+      "ID": {
+        "_mosString128": "1EFA3009233F8329C1",
       },
       "MosAbstract": undefined,
       "MosExternalMetaData": [
@@ -1014,9 +994,8 @@ exports[`Profile 3 onMosReqObjectActionUpdate 1`] = `
       ],
       "Paths": [],
       "Revision": undefined,
-      "Slug": MosString128 {
-        "_str": "Hotel Fire",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Hotel Fire",
       },
       "Status": undefined,
       "TimeBase": 59.94,

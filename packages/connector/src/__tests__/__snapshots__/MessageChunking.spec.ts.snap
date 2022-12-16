@@ -13,26 +13,22 @@ exports[`message chunking chunk around space 1`] = `
 
 exports[`message chunking chunk around space 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Slug": MosString128 {
-    "_str": "5PM RUNDOWN",
-    "strict": true,
+  "Slug": {
+    "_mosString128": "5PM RUNDOWN",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [
         {
           "EditorialDuration": 645,
-          "ID": MosString128 {
-            "_str": "0",
-            "strict": true,
+          "ID": {
+            "_mosString128": "0",
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": [
@@ -48,9 +44,8 @@ exports[`message chunking chunk around space 2`] = `
               "MosScope": "PLAYLIST",
             },
           ],
-          "ObjectID": MosString128 {
-            "_str": "M000224",
-            "strict": true,
+          "ObjectID": {
+            "_mosString128": "M000224",
           },
           "Paths": [
             {
@@ -69,35 +64,30 @@ exports[`message chunking chunk around space 2`] = `
               "Type": "METADATA PATH",
             },
           ],
-          "Slug": MosString128 {
-            "_str": "COLSTAT MURDER:VO",
-            "strict": true,
+          "Slug": {
+            "_mosString128": "COLSTAT MURDER:VO",
           },
           "Trigger": "CHAINED",
           "UserTimingDuration": 310,
         },
       ],
-      "Number": MosString128 {
-        "_str": "B10",
-        "strict": true,
+      "Number": {
+        "_mosString128": "B10",
       },
-      "Slug": MosString128 {
-        "_str": "Colstat Murder",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Colstat Murder",
       },
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [
         {
           "EditorialDuration": 310,
           "EditorialStart": 55,
-          "ID": MosString128 {
-            "_str": "0",
-            "strict": true,
+          "ID": {
+            "_mosString128": "0",
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": [
@@ -113,20 +103,17 @@ exports[`message chunking chunk around space 2`] = `
               "MosScope": "PLAYLIST",
             },
           ],
-          "ObjectID": MosString128 {
-            "_str": "M000133",
-            "strict": true,
+          "ObjectID": {
+            "_mosString128": "M000133",
           },
           "UserTimingDuration": 310,
         },
       ],
-      "Number": MosString128 {
-        "_str": "B11",
-        "strict": true,
+      "Number": {
+        "_mosString128": "B11",
       },
-      "Slug": MosString128 {
-        "_str": "Test MOS",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Test MOS",
       },
     },
   ],
@@ -146,26 +133,22 @@ exports[`message chunking chunks 1`] = `
 
 exports[`message chunking chunks 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Slug": MosString128 {
-    "_str": "5PM RUNDOWN",
-    "strict": true,
+  "Slug": {
+    "_mosString128": "5PM RUNDOWN",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [
         {
           "EditorialDuration": 645,
-          "ID": MosString128 {
-            "_str": "0",
-            "strict": true,
+          "ID": {
+            "_mosString128": "0",
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": [
@@ -181,9 +164,8 @@ exports[`message chunking chunks 2`] = `
               "MosScope": "PLAYLIST",
             },
           ],
-          "ObjectID": MosString128 {
-            "_str": "M000224",
-            "strict": true,
+          "ObjectID": {
+            "_mosString128": "M000224",
           },
           "Paths": [
             {
@@ -202,35 +184,30 @@ exports[`message chunking chunks 2`] = `
               "Type": "METADATA PATH",
             },
           ],
-          "Slug": MosString128 {
-            "_str": "COLSTAT MURDER:VO",
-            "strict": true,
+          "Slug": {
+            "_mosString128": "COLSTAT MURDER:VO",
           },
           "Trigger": "CHAINED",
           "UserTimingDuration": 310,
         },
       ],
-      "Number": MosString128 {
-        "_str": "B10",
-        "strict": true,
+      "Number": {
+        "_mosString128": "B10",
       },
-      "Slug": MosString128 {
-        "_str": "Colstat Murder",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Colstat Murder",
       },
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [
         {
           "EditorialDuration": 310,
           "EditorialStart": 55,
-          "ID": MosString128 {
-            "_str": "0",
-            "strict": true,
+          "ID": {
+            "_mosString128": "0",
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": [
@@ -246,20 +223,17 @@ exports[`message chunking chunks 2`] = `
               "MosScope": "PLAYLIST",
             },
           ],
-          "ObjectID": MosString128 {
-            "_str": "M000133",
-            "strict": true,
+          "ObjectID": {
+            "_mosString128": "M000133",
           },
           "UserTimingDuration": 310,
         },
       ],
-      "Number": MosString128 {
-        "_str": "B11",
-        "strict": true,
+      "Number": {
+        "_mosString128": "B11",
       },
-      "Slug": MosString128 {
-        "_str": "Test MOS",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Test MOS",
       },
     },
   ],
@@ -279,26 +253,22 @@ exports[`message chunking junk data before 1`] = `
 
 exports[`message chunking junk data before 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Slug": MosString128 {
-    "_str": "5PM RUNDOWN",
-    "strict": true,
+  "Slug": {
+    "_mosString128": "5PM RUNDOWN",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [
         {
           "EditorialDuration": 645,
-          "ID": MosString128 {
-            "_str": "0",
-            "strict": true,
+          "ID": {
+            "_mosString128": "0",
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": [
@@ -314,9 +284,8 @@ exports[`message chunking junk data before 2`] = `
               "MosScope": "PLAYLIST",
             },
           ],
-          "ObjectID": MosString128 {
-            "_str": "M000224",
-            "strict": true,
+          "ObjectID": {
+            "_mosString128": "M000224",
           },
           "Paths": [
             {
@@ -335,35 +304,30 @@ exports[`message chunking junk data before 2`] = `
               "Type": "METADATA PATH",
             },
           ],
-          "Slug": MosString128 {
-            "_str": "COLSTAT MURDER:VO",
-            "strict": true,
+          "Slug": {
+            "_mosString128": "COLSTAT MURDER:VO",
           },
           "Trigger": "CHAINED",
           "UserTimingDuration": 310,
         },
       ],
-      "Number": MosString128 {
-        "_str": "B10",
-        "strict": true,
+      "Number": {
+        "_mosString128": "B10",
       },
-      "Slug": MosString128 {
-        "_str": "Colstat Murder",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Colstat Murder",
       },
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [
         {
           "EditorialDuration": 310,
           "EditorialStart": 55,
-          "ID": MosString128 {
-            "_str": "0",
-            "strict": true,
+          "ID": {
+            "_mosString128": "0",
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": [
@@ -379,20 +343,17 @@ exports[`message chunking junk data before 2`] = `
               "MosScope": "PLAYLIST",
             },
           ],
-          "ObjectID": MosString128 {
-            "_str": "M000133",
-            "strict": true,
+          "ObjectID": {
+            "_mosString128": "M000133",
           },
           "UserTimingDuration": 310,
         },
       ],
-      "Number": MosString128 {
-        "_str": "B11",
-        "strict": true,
+      "Number": {
+        "_mosString128": "B11",
       },
-      "Slug": MosString128 {
-        "_str": "Test MOS",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Test MOS",
       },
     },
   ],
@@ -412,26 +373,22 @@ exports[`message chunking junk data packet before 1`] = `
 
 exports[`message chunking junk data packet before 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Slug": MosString128 {
-    "_str": "5PM RUNDOWN",
-    "strict": true,
+  "Slug": {
+    "_mosString128": "5PM RUNDOWN",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [
         {
           "EditorialDuration": 645,
-          "ID": MosString128 {
-            "_str": "0",
-            "strict": true,
+          "ID": {
+            "_mosString128": "0",
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": [
@@ -447,9 +404,8 @@ exports[`message chunking junk data packet before 2`] = `
               "MosScope": "PLAYLIST",
             },
           ],
-          "ObjectID": MosString128 {
-            "_str": "M000224",
-            "strict": true,
+          "ObjectID": {
+            "_mosString128": "M000224",
           },
           "Paths": [
             {
@@ -468,35 +424,30 @@ exports[`message chunking junk data packet before 2`] = `
               "Type": "METADATA PATH",
             },
           ],
-          "Slug": MosString128 {
-            "_str": "COLSTAT MURDER:VO",
-            "strict": true,
+          "Slug": {
+            "_mosString128": "COLSTAT MURDER:VO",
           },
           "Trigger": "CHAINED",
           "UserTimingDuration": 310,
         },
       ],
-      "Number": MosString128 {
-        "_str": "B10",
-        "strict": true,
+      "Number": {
+        "_mosString128": "B10",
       },
-      "Slug": MosString128 {
-        "_str": "Colstat Murder",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Colstat Murder",
       },
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [
         {
           "EditorialDuration": 310,
           "EditorialStart": 55,
-          "ID": MosString128 {
-            "_str": "0",
-            "strict": true,
+          "ID": {
+            "_mosString128": "0",
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": [
@@ -512,20 +463,17 @@ exports[`message chunking junk data packet before 2`] = `
               "MosScope": "PLAYLIST",
             },
           ],
-          "ObjectID": MosString128 {
-            "_str": "M000133",
-            "strict": true,
+          "ObjectID": {
+            "_mosString128": "M000133",
           },
           "UserTimingDuration": 310,
         },
       ],
-      "Number": MosString128 {
-        "_str": "B11",
-        "strict": true,
+      "Number": {
+        "_mosString128": "B11",
       },
-      "Slug": MosString128 {
-        "_str": "Test MOS",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Test MOS",
       },
     },
   ],

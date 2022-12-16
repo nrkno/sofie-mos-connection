@@ -259,7 +259,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 				const client = this._clients[key]
 
 				if (client.useHeartbeats) {
-					const heartbeat = new MosModel.HeartBeat(this._clients[key].clientDescription)
+					const heartbeat = new MosModel.HeartBeat(this._clients[key].clientDescription, undefined, true)
 					try {
 						await this.executeCommand(heartbeat)
 						client.heartbeatConnected = true

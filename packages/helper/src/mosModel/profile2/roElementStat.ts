@@ -1,9 +1,7 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
-import { IMOSObjectStatus } from '@mos-connection/model'
-import { MosString128 } from '../../dataTypes/mosString128'
-import { MosTime } from '../../dataTypes/mosTime'
-import { addTextElement } from '../../utils/Utils'
+import { getMosTypes, IMOSObjectStatus, IMOSString128, IMOSTime } from '@mos-connection/model'
+import { addTextElementInternal } from '../../utils/Utils'
 
 export enum ROElementStatType {
 	RO = 'RO',
@@ -12,21 +10,21 @@ export enum ROElementStatType {
 }
 export interface ROElementStatOptions {
 	type: ROElementStatType
-	roId: MosString128
-	storyId?: MosString128
-	itemId?: MosString128
-	objId?: MosString128
-	itemChannel?: MosString128
+	roId: IMOSString128
+	storyId?: IMOSString128
+	itemId?: IMOSString128
+	objId?: IMOSString128
+	itemChannel?: IMOSString128
 	status: IMOSObjectStatus
 }
 export class ROElementStat extends MosMessage {
 	private options: ROElementStatOptions
-	private time: MosTime
+	private time: IMOSTime
 	/** */
-	constructor(options: ROElementStatOptions) {
-		super('upper')
+	constructor(options: ROElementStatOptions, strict: boolean) {
+		super('upper', strict)
 		this.options = options
-		this.time = new MosTime()
+		this.time = getMosTypes(strict).mosTime.create(undefined)
 	}
 
 	/** */
@@ -34,13 +32,14 @@ export class ROElementStat extends MosMessage {
 		const root = XMLBuilder.create('roElementStat')
 		root.attribute('element', this.options.type.toString())
 
-		addTextElement(root, 'roID', this.options.roId)
-		if (this.options.storyId) addTextElement(root, 'storyID', this.options.storyId)
-		if (this.options.itemId) addTextElement(root, 'itemID', this.options.itemId)
-		if (this.options.objId) addTextElement(root, 'objID', this.options.objId)
-		if (this.options.itemChannel) addTextElement(root, 'itemChannel', this.options.itemChannel)
-		addTextElement(root, 'status', this.options.status)
-		addTextElement(root, 'time', this.time)
+		addTextElementInternal(root, 'roID', this.options.roId, undefined, this.strict)
+		if (this.options.storyId) addTextElementInternal(root, 'storyID', this.options.storyId, undefined, this.strict)
+		if (this.options.itemId) addTextElementInternal(root, 'itemID', this.options.itemId, undefined, this.strict)
+		if (this.options.objId) addTextElementInternal(root, 'objID', this.options.objId, undefined, this.strict)
+		if (this.options.itemChannel)
+			addTextElementInternal(root, 'itemChannel', this.options.itemChannel, undefined, this.strict)
+		addTextElementInternal(root, 'status', this.options.status, undefined, this.strict)
+		addTextElementInternal(root, 'time', this.time, undefined, this.strict)
 		return root
 	}
 }

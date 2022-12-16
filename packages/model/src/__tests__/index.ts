@@ -22,16 +22,19 @@ describe('Index', () => {
 		a = (_: MOS.ThisDoesNotExist) => null
 		if (a) a()
 
-		expect(typeof MOS.getMosTypes).toBe('function')
+		expect(MOS.getMosTypes).toBeTruthy()
 
 		expect(MOS.IMOSObjectStatus).toBeTruthy()
 
 		expect(MOS.IMOSScope).toBeTruthy()
 		expect(MOS.IMOSScope.PLAYLIST).toBeTruthy()
 	})
-	test('ensure that helpers are exposed', () => {
-		expect(typeof MOS.xml2js).toBe('function')
-		expect(MOS.MosModel.XMLMosItem.fromXML).toBeTruthy()
-		expect(MOS.MosModel.XMLMosItem.toXML).toBeTruthy()
+
+	test('ensure that dataTypes are exposed', () => {
+		const mosTypes = MOS.getMosTypes(false)
+
+		expect(mosTypes.mosString128).toBeTruthy()
+		expect(mosTypes.mosDuration).toBeTruthy()
+		expect(mosTypes.mosTime).toBeTruthy()
 	})
 })

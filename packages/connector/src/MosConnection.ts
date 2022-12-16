@@ -1,12 +1,11 @@
 import { Socket } from 'net'
 import { ConnectionConfig } from './config/connectionConfig'
 import { MosSocketServer } from './connection/mosSocketServer'
-import { IMOSAckStatus, IProfiles } from '@mos-connection/model'
+import { getMosTypes, IMOSAckStatus, IProfiles, MosTypes } from '@mos-connection/model'
 import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription, IncomingConnectionType } from './connection/socketConnection'
 import { NCSServerConnection } from './connection/NCSServerConnection'
 import { MosModel } from '@mos-connection/helper'
-import { MosString128 } from '@mos-connection/helper'
 import { EventEmitter } from 'events'
 import * as iconv from 'iconv-lite'
 import { MosMessageParser } from './connection/mosMessageParser'
@@ -17,6 +16,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	static CONNECTION_PORT_UPPER = 10541
 	static CONNECTION_PORT_QUERY = 10542
 	static _nextSocketID = 0
+
+	public readonly mosTypes: MosTypes
 
 	private _conf: ConnectionConfig
 	private _debug = false
@@ -41,6 +42,19 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 
 		if (this._conf.debug) {
 			this._debug = this._conf.debug
+		}
+		this.mosTypes = getMosTypes(configOptions.strict ?? false)
+
+		if (this._conf.strict) {
+			const orgStack = new Error()
+			setTimeout(() => {
+				try {
+					this._checkProfileValidness(orgStack)
+				} catch (e) {
+					// eslint-disable-next-line no-console
+					console.error(e)
+				}
+			}, 100)
 		}
 	}
 	/**
@@ -302,7 +316,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			primary,
 			secondary,
 			this._conf.offspecFailover,
-			this._conf.strict
+			this.mosTypes.strict
 		)
 		mosDevice.setDebug(this._debug)
 		// Add mosDevice to register:
@@ -372,6 +386,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		)
 		// messageParser.debug = this._debug
 		messageParser.on('message', (message: any, messageString: string) => {
+			// Handle incoming data
 			handleMessage(message, messageString).catch((err) => this.emit('error', err))
 		})
 
@@ -485,16 +500,21 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 						} else {
 							// Unknown / internal error
 							// Log error:
-							console.error(err)
+							this.emit('warning', 'Error when handling incoming data: ' + err)
 							// reply with NACK:
 							// TODO: implement ACK
 							// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
-							const msg = new MosModel.MOSAck({
-								ID: new MosString128(0),
-								Revision: 0,
-								Description: new MosString128(`MosDevice "${ncsID + '_' + mosID}" not found`),
-								Status: IMOSAckStatus.NACK,
-							})
+							const msg = new MosModel.MOSAck(
+								{
+									ID: this.mosTypes.mosString128.create(0),
+									Revision: 0,
+									Description: this.mosTypes.mosString128.create(
+										`MosDevice "${ncsID + '_' + mosID}" not found`
+									),
+									Status: IMOSAckStatus.NACK,
+								},
+								this.mosTypes.strict
+							)
 							sendReply(msg) // TODO: Need tests
 						}
 					})
@@ -502,12 +522,15 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				// No MOS-device found in the register
 
 				// We can't handle the message, reply with a NACK:
-				const msg = new MosModel.MOSAck({
-					ID: new MosString128(0),
-					Revision: 0,
-					Description: new MosString128('MosDevice not found'),
-					Status: IMOSAckStatus.NACK,
-				})
+				const msg = new MosModel.MOSAck(
+					{
+						ID: this.mosTypes.mosString128.create(0),
+						Revision: 0,
+						Description: this.mosTypes.mosString128.create('MosDevice not found'),
+						Status: IMOSAckStatus.NACK,
+					},
+					this.mosTypes.strict
+				)
 
 				sendReply(msg) // TODO: Need tests
 			}
@@ -543,5 +566,25 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	private debugTrace(...strs: any[]) {
 		// eslint-disable-next-line no-console
 		if (this._debug) console.log(...strs)
+	}
+
+	/** throws if something's wrong
+	 */
+	private _checkProfileValidness(orgStack: Error): void {
+		if (!this._conf.strict) return
+
+		const fixError = (message: string) => {
+			// Change the stack of the error, so that it points to the original call to the MosDevice:
+			const err = new Error(message)
+			err.stack = message + orgStack.stack
+			return err
+		}
+
+		if (this.listenerCount('error') === 0) {
+			throw fixError(`Error: no listener for the "error" event has been set up for MosConnection!`)
+		}
+		if (this.listenerCount('warning') === 0) {
+			throw fixError(`Error: no listener for the "warning" event has been set up for MosConnection!`)
+		}
 	}
 }

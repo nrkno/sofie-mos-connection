@@ -3,8 +3,8 @@ import { MosMessage } from '../MosMessage'
 
 export class ROReqAll extends MosMessage {
 	/** */
-	constructor() {
-		super('upper')
+	constructor(strict: boolean) {
+		super('upper', strict)
 	}
 
 	/** */

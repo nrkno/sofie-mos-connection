@@ -1,7 +1,7 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
 import { IMOSAck, IMOSAckStatus, IMOSString128 } from '@mos-connection/model'
-import { addTextElement } from '../../utils/Utils'
+import { addTextElementInternal } from '../../utils/Utils'
 
 export class MOSAck extends MosMessage implements IMOSAck {
 	ID: IMOSString128
@@ -10,8 +10,8 @@ export class MOSAck extends MosMessage implements IMOSAck {
 	Description: IMOSString128
 
 	/** */
-	constructor(ack: IMOSAck) {
-		super('lower')
+	constructor(ack: IMOSAck, strict: boolean) {
+		super('lower', strict)
 
 		this.ID = ack.ID
 		this.Status = ack.Status
@@ -23,10 +23,10 @@ export class MOSAck extends MosMessage implements IMOSAck {
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const root = XMLBuilder.create('mosAck')
 
-		addTextElement(root, 'objID', this.ID)
-		addTextElement(root, 'objRev', this.Revision)
-		addTextElement(root, 'status', (IMOSAckStatus as any)[this.Status])
-		addTextElement(root, 'statusDescription', this.Description)
+		addTextElementInternal(root, 'objID', this.ID, undefined, this.strict)
+		addTextElementInternal(root, 'objRev', this.Revision, undefined, this.strict)
+		addTextElementInternal(root, 'status', (IMOSAckStatus as any)[this.Status], undefined, this.strict)
+		addTextElementInternal(root, 'statusDescription', this.Description, undefined, this.strict)
 
 		return root
 	}

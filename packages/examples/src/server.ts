@@ -1,4 +1,4 @@
-import { MosConnection, ConnectionConfig, MosString128, MosTime } from '@mos-connection/connector'
+import { MosConnection, ConnectionConfig } from '@mos-connection/connector'
 
 const mos = new MosConnection(
 	new ConnectionConfig({
@@ -24,18 +24,20 @@ mos.on('error', (err) => {
 mos.onConnection((mosDevice) => {
 	console.log('A new Mosdevice connected')
 
+	const mosTypes = mosDevice.mosTypes // Could also be retrieved with getMosTypes(strict)
+
 	mosDevice.onRequestMachineInfo(async () => {
 		return {
-			manufacturer: new MosString128('mommy'),
-			model: new MosString128('model!'),
-			hwRev: new MosString128('0.1'),
-			swRev: new MosString128('1.0'),
-			DOM: new MosTime('1989-07-01'),
-			SN: new MosString128('1234'),
-			ID: new MosString128('MY ID'),
-			time: new MosTime(Date.now()),
-			// opTime?: new MosTime(),
-			mosRev: new MosString128('A'),
+			manufacturer: mosTypes.mosString128.create('mommy'),
+			model: mosTypes.mosString128.create('model!'),
+			hwRev: mosTypes.mosString128.create('0.1'),
+			swRev: mosTypes.mosString128.create('1.0'),
+			DOM: mosTypes.mosTime.create('1989-07-01'),
+			SN: mosTypes.mosString128.create('1234'),
+			ID: mosTypes.mosString128.create('MY ID'),
+			time: mosTypes.mosTime.create(Date.now()),
+			// opTime?: mosTypes.mosTime.create(),
+			mosRev: mosTypes.mosString128.create('A'),
 
 			supportedProfiles: {
 				deviceType: 'MOS',

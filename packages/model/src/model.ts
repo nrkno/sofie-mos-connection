@@ -1,4 +1,4 @@
-import { IMOSTime, IMOSString128, IMOSDuration, IMOSExternalMetaData } from './dataTypes'
+import { IMOSTime, IMOSString128, IMOSDuration, IMOSExternalMetaData } from './mosTypes'
 
 export interface IMOSROAction {
 	RunningOrderID: IMOSString128

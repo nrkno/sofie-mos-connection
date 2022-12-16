@@ -7,15 +7,15 @@ export class MosObj extends MosMessage {
 	obj: IMOSObject
 
 	/** */
-	constructor(obj: IMOSObject) {
-		super('lower')
+	constructor(obj: IMOSObject, strict: boolean) {
+		super('lower', strict)
 		this.obj = obj
 	}
 
 	/** */
 	get messageXMLBlocks(): XMLBuilder.XMLElement {
 		const xmlMosObj = XMLBuilder.create('mosObj')
-		XMLMosObject.toXML(xmlMosObj, this.obj)
+		XMLMosObject.toXML(xmlMosObj, this.obj, this.strict)
 
 		return xmlMosObj
 	}

@@ -7,8 +7,8 @@ export class MosListAll extends MosMessage {
 	objs: Array<IMOSObject>
 
 	/** */
-	constructor(objs: Array<IMOSObject>) {
-		super('lower')
+	constructor(objs: Array<IMOSObject>, strict: boolean) {
+		super('lower', strict)
 		this.objs = objs
 	}
 
@@ -18,7 +18,7 @@ export class MosListAll extends MosMessage {
 
 		this.objs.forEach((obj: IMOSObject) => {
 			const xmlMosObj = XMLBuilder.create('mosObj')
-			XMLMosObject.toXML(xmlMosObj, obj)
+			XMLMosObject.toXML(xmlMosObj, obj, this.strict)
 			root.importDocument(xmlMosObj)
 		})
 

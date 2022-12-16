@@ -22,8 +22,10 @@ import {
 	IMOSListMachInfo,
 	IMOSScope,
 	IMOSExternalMetaData,
+	getMosTypes,
 } from '@mos-connection/model'
-import { MosString128, MosTime, MosDuration } from '@mos-connection/helper'
+
+const mosTypes = getMosTypes(true)
 
 const literal = <T>(o: T) => o
 
@@ -451,16 +453,16 @@ const xmlData = {
 
 const xmlApiData = {
 	machineInfo: literal<IMOSListMachInfo>({
-		manufacturer: new MosString128('manufacturer'),
-		model: new MosString128('model'),
-		hwRev: new MosString128('hwRev'),
-		swRev: new MosString128('swRev'),
-		DOM: new MosTime(1234),
-		SN: new MosString128('SN'),
-		ID: new MosString128('ID'),
-		time: new MosTime(1234),
-		opTime: new MosTime(1234),
-		mosRev: new MosString128('mosRev'),
+		manufacturer: mosTypes.mosString128.create('manufacturer'),
+		model: mosTypes.mosString128.create('model'),
+		hwRev: mosTypes.mosString128.create('hwRev'),
+		swRev: mosTypes.mosString128.create('swRev'),
+		DOM: mosTypes.mosTime.create(1234),
+		SN: mosTypes.mosString128.create('SN'),
+		ID: mosTypes.mosString128.create('ID'),
+		time: mosTypes.mosTime.create(1234),
+		opTime: mosTypes.mosTime.create(1234),
+		mosRev: mosTypes.mosString128.create('mosRev'),
 
 		supportedProfiles: {
 			deviceType: 'MOS',
@@ -469,8 +471,8 @@ const xmlApiData = {
 		},
 	}),
 	mosObj: literal<IMOSObject>({
-		ID: new MosString128('M000123'),
-		Slug: new MosString128('My new object'),
+		ID: mosTypes.mosString128.create('M000123'),
+		Slug: mosTypes.mosString128.create('My new object'),
 		// MosAbstract: ''
 		// Group?: '
 		Type: IMOSObjectType.VIDEO,
@@ -496,8 +498,8 @@ const xmlApiData = {
 				Target: 'http://server/proxy/clipe.xml',
 			}),
 		],
-		CreatedBy: new MosString128('Jonas'),
-		Created: new MosTime('2001-01-01'),
+		CreatedBy: mosTypes.mosString128.create('Jonas'),
+		Created: mosTypes.mosTime.create('2001-01-01'),
 		// ChangedBy?: new MosString128 // if not present, defaults to CreatedBy(),
 		// Changed?: MosTime // if not present, defaults to Created
 		// Description?: string
@@ -519,8 +521,8 @@ const xmlApiData = {
 		],
 	}),
 	mosObj2: literal<IMOSObject>({
-		ID: new MosString128('M0003523'),
-		Slug: new MosString128('My new object 2'),
+		ID: mosTypes.mosString128.create('M0003523'),
+		Slug: mosTypes.mosString128.create('My new object 2'),
 		// MosAbstract: ''
 		// Group?: '
 		Type: IMOSObjectType.VIDEO,
@@ -546,8 +548,8 @@ const xmlApiData = {
 				Target: 'http://server/proxy/clipe.xml',
 			}),
 		],
-		CreatedBy: new MosString128('Jonas'),
-		Created: new MosTime('2001-01-01'),
+		CreatedBy: mosTypes.mosString128.create('Jonas'),
+		Created: mosTypes.mosTime.create('2001-01-01'),
 		// ChangedBy?: new MosString128 // if not present, defaults to CreatedBy(),
 		// Changed?: MosTime // if not present, defaults to Created
 		// Description?: string
@@ -556,8 +558,8 @@ const xmlApiData = {
 
 	mosListAll: [
 		{
-			ID: new MosString128('M000123'),
-			Slug: new MosString128('HOTEL FIRE'),
+			ID: mosTypes.mosString128.create('M000123'),
+			Slug: mosTypes.mosString128.create('HOTEL FIRE'),
 			// MosAbstract: ''
 			// Group?: '
 			Type: undefined,
@@ -583,15 +585,15 @@ const xmlApiData = {
 					Target: 'http://server/proxy/clipe.xml',
 				}),
 			],
-			CreatedBy: new MosString128('Chris'),
-			Created: new MosTime('2009-10-31T23:39:12'),
-			ChangedBy: new MosString128('Chris'),
-			Changed: new MosTime('2009-11-01T14:35:55'),
+			CreatedBy: mosTypes.mosString128.create('Chris'),
+			Created: mosTypes.mosTime.create('2009-10-31T23:39:12'),
+			ChangedBy: mosTypes.mosString128.create('Chris'),
+			Changed: mosTypes.mosTime.create('2009-11-01T14:35:55'),
 			Description: {},
 		},
 		literal<IMOSObject>({
-			ID: new MosString128('M000224'),
-			Slug: new MosString128('COLSTAT MURDER:VO'),
+			ID: mosTypes.mosString128.create('M000224'),
+			Slug: mosTypes.mosString128.create('COLSTAT MURDER:VO'),
 			// MosAbstract: ''
 			// Group?: '
 			Type: IMOSObjectType.VIDEO,
@@ -617,10 +619,10 @@ const xmlApiData = {
 					Target: 'http://server/proxy/clipe.xml',
 				}),
 			],
-			CreatedBy: new MosString128('Phil'),
-			Created: new MosTime('2009-11-01T15:19:01'),
-			ChangedBy: new MosString128('Chris'),
-			Changed: new MosTime('2009-11-01T15:21:15'),
+			CreatedBy: mosTypes.mosString128.create('Phil'),
+			Created: mosTypes.mosTime.create('2009-11-01T15:19:01'),
+			ChangedBy: mosTypes.mosString128.create('Chris'),
+			Changed: mosTypes.mosTime.create('2009-11-01T15:21:15'),
 			Description: 'VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.',
 			MosExternalMetaData: [
 				literal<IMOSExternalMetaData>({
@@ -641,26 +643,26 @@ const xmlApiData = {
 	],
 
 	roCreate: literal<IMOSRunningOrder>({
-		ID: new MosString128('96857485'),
-		Slug: new MosString128('5PM RUNDOWN'),
+		ID: mosTypes.mosString128.create('96857485'),
+		Slug: mosTypes.mosString128.create('5PM RUNDOWN'),
 		// DefaultChannel?: MosString128,
-		EditorialStart: new MosTime('2009-04-17T17:02:00'),
-		EditorialDuration: new MosDuration('00:58:25'), // @todo: change this into a real Duration
+		EditorialStart: mosTypes.mosTime.create('2009-04-17T17:02:00'),
+		EditorialDuration: mosTypes.mosDuration.create('00:58:25'), // @todo: change this into a real Duration
 		// Trigger?: any // TODO: Johan frågar vad denna gör,
 		// MacroIn?: MosString128,
 		// MacroOut?: MosString128,
 		// MosExternalMetaData?: Array<IMOSExternalMetaData>,
 		Stories: [
 			literal<IMOSROStory>({
-				ID: new MosString128('5983A501:0049B924:8390EF2B'),
-				Slug: new MosString128('COLSTAT MURDER'),
-				Number: new MosString128('A5'),
+				ID: mosTypes.mosString128.create('5983A501:0049B924:8390EF2B'),
+				Slug: mosTypes.mosString128.create('COLSTAT MURDER'),
+				Number: mosTypes.mosString128.create('A5'),
 				// MosExternalMetaData: Array<IMOSExternalMetaData>
 				Items: [
 					literal<IMOSItem>({
-						ID: new MosString128('0'),
-						Slug: new MosString128('COLSTAT MURDER:VO'),
-						ObjectID: new MosString128('M000224'),
+						ID: mosTypes.mosString128.create('0'),
+						Slug: mosTypes.mosString128.create('COLSTAT MURDER:VO'),
+						ObjectID: mosTypes.mosString128.create('M000224'),
 						MOSID: 'testmos.enps.com',
 						// mosAbstract?: '',
 						Paths: [
@@ -680,13 +682,13 @@ const xmlApiData = {
 								Target: 'http://server/proxy/clipe.xml',
 							}),
 						],
-						// Channel?: new MosString128(),
+						// Channel?: mosTypes.mosString128.create(),
 						// EditorialStart?: MosTime
 						EditorialDuration: 645,
 						UserTimingDuration: 310,
 						Trigger: 'CHAINED', // TODO: Johan frågar
-						// MacroIn?: new MosString128(),
-						// MacroOut?: new MosString128(),
+						// MacroIn?: mosTypes.mosString128.create(),
+						// MacroOut?: mosTypes.mosString128.create(),
 						// MosExternalMetaData?: Array<IMOSExternalMetaData>
 						MosExternalMetaData: [
 							literal<IMOSExternalMetaData>({
@@ -705,24 +707,24 @@ const xmlApiData = {
 				],
 			}),
 			literal<IMOSROStory>({
-				ID: new MosString128('3854737F:0003A34D:983A0B28'),
-				Slug: new MosString128('AIRLINE INSPECTIONS'),
-				Number: new MosString128('A6'),
+				ID: mosTypes.mosString128.create('3854737F:0003A34D:983A0B28'),
+				Slug: mosTypes.mosString128.create('AIRLINE INSPECTIONS'),
+				Number: mosTypes.mosString128.create('A6'),
 				// MosExternalMetaData: Array<IMOSExternalMetaData>
 				Items: [
 					literal<IMOSItem>({
-						ID: new MosString128('0'),
-						// Slug: new MosString128(''),
-						ObjectID: new MosString128('M000133'),
+						ID: mosTypes.mosString128.create('0'),
+						// Slug: mosTypes.mosString128.create(''),
+						ObjectID: mosTypes.mosString128.create('M000133'),
 						MOSID: 'testmos.enps.com',
 						// mosAbstract?: '',
-						// Channel?: new MosString128(),
+						// Channel?: mosTypes.mosString128.create(),
 						EditorialStart: 55,
 						EditorialDuration: 310,
 						UserTimingDuration: 200,
 						// Trigger: 'CHAINED' // TODO: Johan frågar
-						// MacroIn?: new MosString128(),
-						// MacroOut?: new MosString128(),
+						// MacroIn?: mosTypes.mosString128.create(),
+						// MacroOut?: mosTypes.mosString128.create(),
 						MosExternalMetaData: [
 							literal<IMOSExternalMetaData>({
 								MosScope: IMOSScope.PLAYLIST,
@@ -742,10 +744,10 @@ const xmlApiData = {
 		],
 	}),
 	roReplace: literal<IMOSRunningOrder>({
-		ID: new MosString128('96857485'),
-		Slug: new MosString128('5PM RUNDOWN'),
+		ID: mosTypes.mosString128.create('96857485'),
+		Slug: mosTypes.mosString128.create('5PM RUNDOWN'),
 		// DefaultChannel?: MosString128,
-		// EditorialStart: new MosTime('2009-04-17T17:02:00'),
+		// EditorialStart: mosTypes.mosTime.create('2009-04-17T17:02:00'),
 		// EditorialDuration: '00:58:25', // @todo: change this into a real Duration
 		// Trigger?: any // TODO: Johan frågar vad denna gör,
 		// MacroIn?: MosString128,
@@ -753,15 +755,15 @@ const xmlApiData = {
 		// MosExternalMetaData?: Array<IMOSExternalMetaData>,
 		Stories: [
 			literal<IMOSROStory>({
-				ID: new MosString128('5983A501:0049B924:8390EF2B'),
-				Slug: new MosString128('COLSTAT MURDER'),
-				Number: new MosString128('A1'),
+				ID: mosTypes.mosString128.create('5983A501:0049B924:8390EF2B'),
+				Slug: mosTypes.mosString128.create('COLSTAT MURDER'),
+				Number: mosTypes.mosString128.create('A1'),
 				// MosExternalMetaData: Array<IMOSExternalMetaData>
 				Items: [
 					literal<IMOSItem>({
-						ID: new MosString128('0'),
-						Slug: new MosString128('COLSTAT MURDER:VO'),
-						ObjectID: new MosString128('M000224'),
+						ID: mosTypes.mosString128.create('0'),
+						Slug: mosTypes.mosString128.create('COLSTAT MURDER:VO'),
+						ObjectID: mosTypes.mosString128.create('M000224'),
 						MOSID: 'testmos.enps.com',
 						// mosAbstract?: '',
 						Paths: [
@@ -781,36 +783,36 @@ const xmlApiData = {
 								Target: 'http://server/proxy/clipe.xml',
 							}),
 						],
-						// Channel?: new MosString128(),
+						// Channel?: mosTypes.mosString128.create(),
 						// EditorialStart?: MosTime
 						EditorialDuration: 645,
 						UserTimingDuration: 310,
 						Trigger: 'CHAINED', // TODO: Johan frågar
-						// MacroIn?: new MosString128(),
-						// MacroOut?: new MosString128(),
+						// MacroIn?: mosTypes.mosString128.create(),
+						// MacroOut?: mosTypes.mosString128.create(),
 						// MosExternalMetaData?: Array<IMOSExternalMetaData>
 					}),
 				],
 			}),
 			literal<IMOSROStory>({
-				ID: new MosString128('3852737F:0013A64D:923A0B28'),
-				Slug: new MosString128('AIRLINE SAFETY'),
-				Number: new MosString128('A2'),
+				ID: mosTypes.mosString128.create('3852737F:0013A64D:923A0B28'),
+				Slug: mosTypes.mosString128.create('AIRLINE SAFETY'),
+				Number: mosTypes.mosString128.create('A2'),
 				// MosExternalMetaData: Array<IMOSExternalMetaData>
 				Items: [
 					literal<IMOSItem>({
-						ID: new MosString128('0'),
-						// Slug: new MosString128(''),
-						ObjectID: new MosString128('M000295'),
+						ID: mosTypes.mosString128.create('0'),
+						// Slug: mosTypes.mosString128.create(''),
+						ObjectID: mosTypes.mosString128.create('M000295'),
 						MOSID: 'testmos.enps.com',
 						// mosAbstract?: '',
-						// Channel?: new MosString128(),
+						// Channel?: mosTypes.mosString128.create(),
 						EditorialStart: 500,
 						EditorialDuration: 600,
 						UserTimingDuration: 310,
 						// Trigger: 'CHAINED' // TODO: Johan frågar
-						// MacroIn?: new MosString128(),
-						// MacroOut?: new MosString128(),
+						// MacroIn?: mosTypes.mosString128.create(),
+						// MacroOut?: mosTypes.mosString128.create(),
 						// MosExternalMetaData?: Array<IMOSExternalMetaData>
 					}),
 				],
@@ -819,8 +821,8 @@ const xmlApiData = {
 	}),
 	roDelete: 49478285,
 	roList: literal<IMOSObject>({
-		ID: new MosString128('M000123'),
-		Slug: new MosString128('Hotel Fire'),
+		ID: mosTypes.mosString128.create('M000123'),
+		Slug: mosTypes.mosString128.create('Hotel Fire'),
 		// MosAbstract: string,
 		Group: 'Show 7',
 		Type: IMOSObjectType.VIDEO,
@@ -846,28 +848,28 @@ const xmlApiData = {
 				Target: 'http://server/proxy/clipe.xml',
 			},
 		],
-		CreatedBy: new MosString128('Chris'),
-		Created: new MosTime('2009-10-31T23:39:12'),
-		ChangedBy: new MosString128('Chris'),
-		Changed: new MosTime('2009-10-31T23:39:12'),
+		CreatedBy: mosTypes.mosString128.create('Chris'),
+		Created: mosTypes.mosTime.create('2009-10-31T23:39:12'),
+		ChangedBy: mosTypes.mosString128.create('Chris'),
+		Changed: mosTypes.mosTime.create('2009-10-31T23:39:12'),
 		// Description: string
 		// mosExternalMetaData?: Array<IMOSExternalMetaData>
 	}),
 	roList2: literal<IMOSRunningOrder>({
-		ID: new MosString128('96857485'),
-		Slug: new MosString128('5PM RUNDOWN'),
+		ID: mosTypes.mosString128.create('96857485'),
+		Slug: mosTypes.mosString128.create('5PM RUNDOWN'),
 		// MosAbstract: string,
 		Stories: [
 			literal<IMOSROStory>({
-				ID: new MosString128('5983A501:0049B924:8390EF2B'),
-				Slug: new MosString128('Colstat Murder'),
-				Number: new MosString128('B10'),
+				ID: mosTypes.mosString128.create('5983A501:0049B924:8390EF2B'),
+				Slug: mosTypes.mosString128.create('Colstat Murder'),
+				Number: mosTypes.mosString128.create('B10'),
 				// MosExternalMetaData: Array<IMOSExternalMetaData>
 				Items: [
 					literal<IMOSItem>({
-						ID: new MosString128('0'),
-						Slug: new MosString128('COLSTAT MURDER:VO'),
-						ObjectID: new MosString128('M000224'),
+						ID: mosTypes.mosString128.create('0'),
+						Slug: mosTypes.mosString128.create('COLSTAT MURDER:VO'),
+						ObjectID: mosTypes.mosString128.create('M000224'),
 						MOSID: 'testmos.enps.com',
 						// mosAbstract?: '',
 						Paths: [
@@ -887,13 +889,13 @@ const xmlApiData = {
 								Target: 'http://server/proxy/clipe.xml',
 							}),
 						],
-						// Channel?: new MosString128(),
+						// Channel?: mosTypes.mosString128.create(),
 						// EditorialStart?: MosTime
 						EditorialDuration: 645,
 						UserTimingDuration: 310,
 						Trigger: 'CHAINED', // TODO: Johan frågar
-						// MacroIn?: new MosString128(),
-						// MacroOut?: new MosString128(),
+						// MacroIn?: mosTypes.mosString128.create(),
+						// MacroOut?: mosTypes.mosString128.create(),
 						MosExternalMetaData: [
 							literal<IMOSExternalMetaData>({
 								MosScope: IMOSScope.PLAYLIST,
@@ -911,24 +913,24 @@ const xmlApiData = {
 				],
 			}),
 			literal<IMOSROStory>({
-				ID: new MosString128('3854737F:0003A34D:983A0B28'),
-				Slug: new MosString128('Test MOS'),
-				Number: new MosString128('B11'),
+				ID: mosTypes.mosString128.create('3854737F:0003A34D:983A0B28'),
+				Slug: mosTypes.mosString128.create('Test MOS'),
+				Number: mosTypes.mosString128.create('B11'),
 				// MosExternalMetaData: Array<IMOSExternalMetaData>
 				Items: [
 					literal<IMOSItem>({
-						ID: new MosString128('0'),
-						// Slug: new MosString128(''),
-						ObjectID: new MosString128('M000133'),
+						ID: mosTypes.mosString128.create('0'),
+						// Slug: mosTypes.mosString128.create(''),
+						ObjectID: mosTypes.mosString128.create('M000133'),
 						MOSID: 'testmos.enps.com',
 						// mosAbstract?: '',
-						// Channel?: new MosString128(),
+						// Channel?: mosTypes.mosString128.create(),
 						EditorialStart: 55,
 						EditorialDuration: 310,
 						UserTimingDuration: 310,
 						// Trigger: 'CHAINED' // TODO: Johan frågar
-						// MacroIn?: new MosString128(),
-						// MacroOut?: new MosString128(),
+						// MacroIn?: mosTypes.mosString128.create(),
+						// MacroOut?: mosTypes.mosString128.create(),
 						MosExternalMetaData: [
 							literal<IMOSExternalMetaData>({
 								MosScope: IMOSScope.PLAYLIST,
@@ -948,14 +950,14 @@ const xmlApiData = {
 		],
 	}),
 	roMetadataReplace: literal<IMOSRunningOrderBase>({
-		ID: new MosString128('96857485'),
-		Slug: new MosString128('5PM RUNDOWN'),
-		// DefaultChannel?: new MosString128(''),
-		EditorialStart: new MosTime('2009-04-17T17:02:00'),
-		EditorialDuration: new MosDuration('00:58:25'),
+		ID: mosTypes.mosString128.create('96857485'),
+		Slug: mosTypes.mosString128.create('5PM RUNDOWN'),
+		// DefaultChannel?: mosTypes.mosString128.create(''),
+		EditorialStart: mosTypes.mosTime.create('2009-04-17T17:02:00'),
+		EditorialDuration: mosTypes.mosDuration.create('00:58:25'),
 		// Trigger?: any // TODO: Johan frågar vad denna gör
-		// MacroIn?: new MosString128(''),
-		// MacroOut?: new MosString128(''),
+		// MacroIn?: mosTypes.mosString128.create(''),
+		// MacroOut?: mosTypes.mosString128.create(''),
 		MosExternalMetaData: [
 			{
 				MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
@@ -971,44 +973,44 @@ const xmlApiData = {
 		],
 	}),
 	roElementStat_ro: literal<IMOSRunningOrderStatus>({
-		ID: new MosString128('5PM'),
+		ID: mosTypes.mosString128.create('5PM'),
 		Status: IMOSObjectStatus.MANUAL_CTRL,
-		Time: new MosTime('2009-04-11T14:13:53'),
+		Time: mosTypes.mosTime.create('2009-04-11T14:13:53'),
 	}),
 	roElementStat_story: literal<IMOSStoryStatus>({
-		RunningOrderId: new MosString128('5PM'),
-		ID: new MosString128('HOTEL FIRE'),
+		RunningOrderId: mosTypes.mosString128.create('5PM'),
+		ID: mosTypes.mosString128.create('HOTEL FIRE'),
 		Status: IMOSObjectStatus.PLAY,
-		Time: new MosTime('1999-04-11T14:13:53'),
+		Time: mosTypes.mosTime.create('1999-04-11T14:13:53'),
 	}),
 	roElementStat_item: literal<IMOSItemStatus>({
-		RunningOrderId: new MosString128('5PM'),
-		StoryId: new MosString128('HOTEL FIRE'),
-		ID: new MosString128('0'),
-		ObjectId: new MosString128('A0295'),
-		Channel: new MosString128('B'),
+		RunningOrderId: mosTypes.mosString128.create('5PM'),
+		StoryId: mosTypes.mosString128.create('HOTEL FIRE'),
+		ID: mosTypes.mosString128.create('0'),
+		ObjectId: mosTypes.mosString128.create('A0295'),
+		Channel: mosTypes.mosString128.create('B'),
 		Status: IMOSObjectStatus.PLAY,
-		Time: new MosTime('2009-04-11T14:13:53'),
+		Time: mosTypes.mosTime.create('2009-04-11T14:13:53'),
 	}),
 	roReadyToAir: literal<IMOSROReadyToAir>({
-		ID: new MosString128('5PM'),
+		ID: mosTypes.mosString128.create('5PM'),
 		Status: IMOSObjectAirStatus.READY,
 	}),
 	roElementAction_insert_story_Action: literal<IMOSStoryAction>({
-		RunningOrderID: new MosString128('5PM'),
-		StoryID: new MosString128('2'),
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2'),
 	}),
 	roElementAction_insert_story_Stories: [
 		literal<IMOSROStory>({
-			ID: new MosString128('17'),
-			Slug: new MosString128('Barcelona Football'),
-			Number: new MosString128('A2'),
+			ID: mosTypes.mosString128.create('17'),
+			Slug: mosTypes.mosString128.create('Barcelona Football'),
+			Number: mosTypes.mosString128.create('A2'),
 			// MosExternalMetaData?: Array<IMOSExternalMetaData>,
 			Items: [
 				literal<IMOSItem>({
-					ID: new MosString128('27'),
-					// Slug?: new MosString128(''),
-					ObjectID: new MosString128('M73627'),
+					ID: mosTypes.mosString128.create('27'),
+					// Slug?: mosTypes.mosString128.create(''),
+					ObjectID: mosTypes.mosString128.create('M73627'),
 					MOSID: 'testmos',
 					// mosAbstract?: '',
 					Paths: [
@@ -1033,8 +1035,8 @@ const xmlApiData = {
 					UserTimingDuration: 415,
 				}),
 				literal<IMOSItem>({
-					ID: new MosString128('28'),
-					ObjectID: new MosString128('M73628'),
+					ID: mosTypes.mosString128.create('28'),
+					ObjectID: mosTypes.mosString128.create('M73628'),
 					MOSID: 'testmos',
 					// mosAbstract?: '',
 					EditorialStart: 0,
@@ -1044,15 +1046,15 @@ const xmlApiData = {
 		}),
 	],
 	roElementAction_insert_item_Action: literal<IMOSItemAction>({
-		RunningOrderID: new MosString128('5PM'),
-		StoryID: new MosString128('2'),
-		ItemID: new MosString128('23'),
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2'),
+		ItemID: mosTypes.mosString128.create('23'),
 	}),
 	roElementAction_insert_item_Items: [
 		literal<IMOSItem>({
-			ID: new MosString128('27'),
-			Slug: new MosString128('NHL PKG'),
-			ObjectID: new MosString128('M19873'),
+			ID: mosTypes.mosString128.create('27'),
+			Slug: mosTypes.mosString128.create('NHL PKG'),
+			ObjectID: mosTypes.mosString128.create('M19873'),
 			MOSID: 'testmos',
 			Paths: [
 				{
@@ -1077,20 +1079,20 @@ const xmlApiData = {
 		}),
 	],
 	roElementAction_replace_story_Action: literal<IMOSStoryAction>({
-		RunningOrderID: new MosString128('5PM'),
-		StoryID: new MosString128('2'),
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2'),
 	}),
 	roElementAction_replace_story_Stories: [
 		literal<IMOSROStory>({
-			ID: new MosString128('17'),
-			Slug: new MosString128('Porto Football'),
-			Number: new MosString128('A2'),
+			ID: mosTypes.mosString128.create('17'),
+			Slug: mosTypes.mosString128.create('Porto Football'),
+			Number: mosTypes.mosString128.create('A2'),
 			// MosExternalMetaData?: Array<IMOSExternalMetaData>,
 			Items: [
 				literal<IMOSItem>({
-					ID: new MosString128('27'),
-					// Slug?: new MosString128(''),
-					ObjectID: new MosString128('M73627'),
+					ID: mosTypes.mosString128.create('27'),
+					// Slug?: mosTypes.mosString128.create(''),
+					ObjectID: mosTypes.mosString128.create('M73627'),
 					MOSID: 'testmos',
 					// mosAbstract?: '',
 					Paths: [
@@ -1115,8 +1117,8 @@ const xmlApiData = {
 					UserTimingDuration: 415,
 				}),
 				literal<IMOSItem>({
-					ID: new MosString128('28'),
-					ObjectID: new MosString128('M73628'),
+					ID: mosTypes.mosString128.create('28'),
+					ObjectID: mosTypes.mosString128.create('M73628'),
 					MOSID: 'testmos',
 					// mosAbstract?: '',
 					EditorialStart: 0,
@@ -1126,15 +1128,15 @@ const xmlApiData = {
 		}),
 	],
 	roElementAction_replace_item_Action: literal<IMOSItemAction>({
-		RunningOrderID: new MosString128('5PM'),
-		StoryID: new MosString128('2'),
-		ItemID: new MosString128('23'),
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2'),
+		ItemID: mosTypes.mosString128.create('23'),
 	}),
 	roElementAction_replace_item_Items: [
 		literal<IMOSItem>({
-			ID: new MosString128('27'),
-			Slug: new MosString128('NHL PKG'),
-			ObjectID: new MosString128('M19873'),
+			ID: mosTypes.mosString128.create('27'),
+			Slug: mosTypes.mosString128.create('NHL PKG'),
+			ObjectID: mosTypes.mosString128.create('M19873'),
 			MOSID: 'testmos',
 			Paths: [
 				{
@@ -1159,51 +1161,51 @@ const xmlApiData = {
 		}),
 	],
 	roElementAction_move_story_Action: literal<IMOSStoryAction>({
-		RunningOrderID: new MosString128('5PM'),
-		StoryID: new MosString128('2'),
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2'),
 	}),
-	roElementAction_move_story_Stories: [new MosString128('7')],
+	roElementAction_move_story_Stories: [mosTypes.mosString128.create('7')],
 	roElementAction_move_stories_Action: literal<IMOSStoryAction>({
-		RunningOrderID: new MosString128('5PM'),
-		StoryID: new MosString128('2'),
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2'),
 	}),
-	roElementAction_move_stories_Stories: [new MosString128('7'), new MosString128('12')],
+	roElementAction_move_stories_Stories: [mosTypes.mosString128.create('7'), mosTypes.mosString128.create('12')],
 	roElementAction_move_items_Action: literal<IMOSItemAction>({
-		RunningOrderID: new MosString128('5PM'),
-		StoryID: new MosString128('2'),
-		ItemID: new MosString128('12'),
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2'),
+		ItemID: mosTypes.mosString128.create('12'),
 	}),
-	roElementAction_move_items_Items: [new MosString128('23'), new MosString128('24')],
+	roElementAction_move_items_Items: [mosTypes.mosString128.create('23'), mosTypes.mosString128.create('24')],
 	roElementAction_delete_story_Action: literal<IMOSROAction>({
-		RunningOrderID: new MosString128('5PM'),
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
 	}),
-	roElementAction_delete_story_Stories: [new MosString128('3')],
+	roElementAction_delete_story_Stories: [mosTypes.mosString128.create('3')],
 	roElementAction_delete_items_Action: literal<IMOSStoryAction>({
-		RunningOrderID: new MosString128('5PM'),
-		StoryID: new MosString128('2'),
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2'),
 	}),
-	roElementAction_delete_items_Items: [new MosString128('23'), new MosString128('24')],
+	roElementAction_delete_items_Items: [mosTypes.mosString128.create('23'), mosTypes.mosString128.create('24')],
 	roElementAction_swap_stories_Action: literal<IMOSROAction>({
-		RunningOrderID: new MosString128('5PM'),
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
 	}),
-	roElementAction_swap_stories_StoryId0: new MosString128('3'),
-	roElementAction_swap_stories_StoryId1: new MosString128('5'),
+	roElementAction_swap_stories_StoryId0: mosTypes.mosString128.create('3'),
+	roElementAction_swap_stories_StoryId1: mosTypes.mosString128.create('5'),
 	roElementAction_swap_items_Action: literal<IMOSStoryAction>({
-		RunningOrderID: new MosString128('5PM'),
-		StoryID: new MosString128('2'),
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2'),
 	}),
-	roElementAction_swap_items_ItemId0: new MosString128('23'),
-	roElementAction_swap_items_ItemId1: new MosString128('24'),
+	roElementAction_swap_items_ItemId0: mosTypes.mosString128.create('23'),
+	roElementAction_swap_items_ItemId1: mosTypes.mosString128.create('24'),
 
 	roStorySend: literal<IMOSROFullStory>({
-		ID: new MosString128(
+		ID: mosTypes.mosString128.create(
 			'2012R2ENPS8VM;P_ENPSNEWS\\W\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB'
 		),
-		RunningOrderId: new MosString128('2012R2ENPS8VM;P_ENPSNEWS\\W;696297DF-1568-4B36-B43B3B79514B40D4'),
-		Slug: new MosString128('KRITIKK ETTER BRANN KONGSBERG;SAK'),
+		RunningOrderId: mosTypes.mosString128.create('2012R2ENPS8VM;P_ENPSNEWS\\W;696297DF-1568-4B36-B43B3B79514B40D4'),
+		Slug: mosTypes.mosString128.create('KRITIKK ETTER BRANN KONGSBERG;SAK'),
 		// DefaultChannel?: MosString128,
-		// EditorialStart: new MosTime('2009-04-17T17:02:00'),
-		// EditorialDuration: new MosDuration('00:58:25'), // @todo: change this into a real Duration
+		// EditorialStart: mosTypes.mosTime.create('2009-04-17T17:02:00'),
+		// EditorialDuration: mosTypes.mosDuration.create('00:58:25'), // @todo: change this into a real Duration
 		// Trigger?: any // TODO: Johan frågar vad denna gör,
 		// MacroIn?: MosString128,
 		// MacroOut?: MosString128,
@@ -1217,20 +1219,20 @@ const xmlApiData = {
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'storyItem',
 				Content: literal<IMOSItem>({
-					ID: new MosString128('2'),
-					Slug: new MosString128('SAK BUSKERUD;SAK-14'),
-					ObjectID: new MosString128('N11580_1412594672'),
+					ID: mosTypes.mosString128.create('2'),
+					Slug: mosTypes.mosString128.create('SAK BUSKERUD;SAK-14'),
+					ObjectID: mosTypes.mosString128.create('N11580_1412594672'),
 					MOSID: 'METADATA.NRK.MOS',
 					mosAbstract: 'METADATA',
-					ObjectSlug: new MosString128('M:', false),
+					ObjectSlug: mosTypes.mosString128.create('M:'),
 					// Paths?: Array<IMOSObjectPath>,
-					// Channel?: new MosString128(''),
+					// Channel?: mosTypes.mosString128.create(''),
 					// EditorialStart?: number,
 					// EditorialDuration?: number,
 					// UserTimingDuration?: number,
 					// Trigger?: any
-					// MacroIn?: new MosString128(''),
-					// MacroOut?: new MosString128(''),
+					// MacroIn?: mosTypes.mosString128.create(''),
+					// MacroOut?: mosTypes.mosString128.create(''),
 					MosExternalMetaData: [
 						literal<IMOSExternalMetaData>({
 							MosScope: IMOSScope.PLAYLIST,
@@ -1275,12 +1277,12 @@ const xmlApiData = {
 			literal<IMOSROFullStoryBodyItem>({
 				Type: 'storyItem',
 				Content: {
-					ID: new MosString128('3'),
-					// Slug: new MosString128(''),
-					// ObjectID: new MosString128(''),
+					ID: mosTypes.mosString128.create('3'),
+					// Slug: mosTypes.mosString128.create(''),
+					// ObjectID: mosTypes.mosString128.create(''),
 					MOSID: 'chyron.techycami02.ndte.nrk.mos',
 					mosAbstract: '_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00',
-					Slug: new MosString128('01 ett navn 1:\xa0\xa02:'), // &nbsp = 160
+					Slug: mosTypes.mosString128.create('01 ett navn 1:\xa0\xa02:'), // &nbsp = 160
 					Paths: [
 						literal<IMOSObjectPath>({
 							Type: IMOSObjectPathType.PROXY_PATH,
@@ -1288,13 +1290,13 @@ const xmlApiData = {
 							Target: 'http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg',
 						}),
 					],
-					Channel: new MosString128('CG1'),
+					Channel: mosTypes.mosString128.create('CG1'),
 					// EditorialStart?: number,
 					// EditorialDuration?: number,
 					// UserTimingDuration?: number,
 					// Trigger?: any
-					// MacroIn?: new MosString128(''),
-					// MacroOut?: new MosString128(''),
+					// MacroIn?: mosTypes.mosString128.create(''),
+					// MacroOut?: mosTypes.mosString128.create(''),
 					// MosExternalMetaData: [literal<IMOSExternalMetaData>({
 					// 	MosScope: IMOSScope.PLAYLIST,
 					// 	MosSchema: '',
@@ -1320,8 +1322,8 @@ const xmlApiData = {
 					// })],
 					MosObjects: [
 						{
-							ID: new MosString128('NYHETER\\00039287?version=1'),
-							Slug: new MosString128('01 ett navn 1:\xa0\xa02:'), // &nbsp = 160
+							ID: mosTypes.mosString128.create('NYHETER\\00039287?version=1'),
+							Slug: mosTypes.mosString128.create('01 ett navn 1:\xa0\xa02:'), // &nbsp = 160
 							// MosAbstract?: '',
 							// Group?: '',
 							Type: undefined,
@@ -1337,9 +1339,9 @@ const xmlApiData = {
 									Target: 'http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg',
 								}),
 							],
-							// CreatedBy: new MosString128(''),
+							// CreatedBy: mosTypes.mosString128.create(''),
 							// Created: MosTime
-							// ChangedBy?: new MosString128(''), // if not present, defaults to CreatedBy
+							// ChangedBy?: mosTypes.mosString128.create(''), // if not present, defaults to CreatedBy
 							// Changed?: MosTime // if not present, defaults to Created
 							// Description?: any // xml json
 							MosExternalMetaData: [
@@ -1360,7 +1362,7 @@ const xmlApiData = {
 									},
 								}),
 							],
-							MosItemEditorProgID: new MosString128('Chymox.AssetBrowser.1'),
+							MosItemEditorProgID: mosTypes.mosString128.create('Chymox.AssetBrowser.1'),
 						},
 					],
 				},
@@ -1399,14 +1401,14 @@ const xmlApiData = {
 	}),
 	roListAll: [
 		literal<IMOSRunningOrderBase>({
-			ID: new MosString128('5PM'),
-			Slug: new MosString128('5PM Rundown'),
-			// DefaultChannel: new MosString128(''),
-			EditorialStart: new MosTime('2009-07-11T17:00:00'),
-			EditorialDuration: new MosDuration('00:30:00'),
-			Trigger: new MosString128('MANUAL'),
-			// MacroIn: new MosString128(''),
-			// MacroOut: new MosString128(''),
+			ID: mosTypes.mosString128.create('5PM'),
+			Slug: mosTypes.mosString128.create('5PM Rundown'),
+			// DefaultChannel: mosTypes.mosString128.create(''),
+			EditorialStart: mosTypes.mosTime.create('2009-07-11T17:00:00'),
+			EditorialDuration: mosTypes.mosDuration.create('00:30:00'),
+			Trigger: mosTypes.mosString128.create('MANUAL'),
+			// MacroIn: mosTypes.mosString128.create(''),
+			// MacroOut: mosTypes.mosString128.create(''),
 			MosExternalMetaData: [
 				literal<IMOSExternalMetaData>({
 					MosScope: IMOSScope.PLAYLIST,
@@ -1423,14 +1425,14 @@ const xmlApiData = {
 			],
 		}),
 		literal<IMOSRunningOrderBase>({
-			ID: new MosString128('6PM'),
-			Slug: new MosString128('6PM Rundown'),
-			// DefaultChannel: new MosString128(''),
-			EditorialStart: new MosTime('2009-07-09T18:00:00'),
-			EditorialDuration: new MosDuration('00:30:00'),
-			Trigger: new MosString128('MANUAL'),
-			// MacroIn: new MosString128(''),
-			// MacroOut: new MosString128(''),
+			ID: mosTypes.mosString128.create('6PM'),
+			Slug: mosTypes.mosString128.create('6PM Rundown'),
+			// DefaultChannel: mosTypes.mosString128.create(''),
+			EditorialStart: mosTypes.mosTime.create('2009-07-09T18:00:00'),
+			EditorialDuration: mosTypes.mosDuration.create('00:30:00'),
+			Trigger: mosTypes.mosString128.create('MANUAL'),
+			// MacroIn: mosTypes.mosString128.create(''),
+			// MacroOut: mosTypes.mosString128.create(''),
 			MosExternalMetaData: [
 				literal<IMOSExternalMetaData>({
 					MosScope: IMOSScope.PLAYLIST,
@@ -1448,12 +1450,12 @@ const xmlApiData = {
 		}),
 	],
 	mosObjCreate: literal<IMOSObject>({
-		Slug: new MosString128('Hotel Fire'),
+		Slug: mosTypes.mosString128.create('Hotel Fire'),
 		Group: 'Show 7',
 		Type: IMOSObjectType.VIDEO,
 		TimeBase: 59.94,
 		Duration: 1800,
-		CreatedBy: new MosString128('Chris'),
+		CreatedBy: mosTypes.mosString128.create('Chris'),
 		// Description: {}, // @todo
 		MosExternalMetaData: [
 			literal<IMOSExternalMetaData>({
@@ -1472,14 +1474,14 @@ const xmlApiData = {
 		],
 	}),
 	mosItemReplace: literal<IMOSItem>({
-		ID: new MosString128('30848'),
-		ObjectID: new MosString128('M000627'),
+		ID: mosTypes.mosString128.create('30848'),
+		ObjectID: mosTypes.mosString128.create('M000627'),
 		MOSID: 'testmos.enps.com',
 		EditorialStart: 0,
 		EditorialDuration: 815,
 		UserTimingDuration: 310,
-		MacroIn: new MosString128('c01/l04/dve07'),
-		MacroOut: new MosString128('r00'),
+		MacroIn: mosTypes.mosString128.create('c01/l04/dve07'),
+		MacroOut: mosTypes.mosString128.create('r00'),
 		MosExternalMetaData: [
 			literal<IMOSExternalMetaData>({
 				MosScope: IMOSScope.PLAYLIST,
@@ -1562,34 +1564,34 @@ const xmlApiData = {
 		],
 	},
 	mosObjReqObjActionNew: literal<IMOSObject>({
-		Slug: new MosString128('Hotel Fire'),
+		Slug: mosTypes.mosString128.create('Hotel Fire'),
 		Group: 'Show 7',
 		Type: IMOSObjectType.VIDEO,
 		TimeBase: 59.94,
 		Duration: 1800,
-		CreatedBy: new MosString128('Chris'),
+		CreatedBy: mosTypes.mosString128.create('Chris'),
 	}),
 	mosObjReqObjActionUpdateObjId: '1EFA3009233F8329C1',
 	mosObjReqObjActionUpdate: literal<IMOSObject>({
-		Slug: new MosString128('Hotel Fire'),
+		Slug: mosTypes.mosString128.create('Hotel Fire'),
 		Group: 'Show 7',
 		Type: IMOSObjectType.VIDEO,
 		TimeBase: 59.94,
 		Duration: 1800,
-		CreatedBy: new MosString128('Chris'),
+		CreatedBy: mosTypes.mosString128.create('Chris'),
 	}),
 	mosObjReqObjActionDeleteObjId: '1EFA3009233F8329C1',
 	sendRunningOrderStory: literal<IMOSROFullStory>({
-		ID: new MosString128('5983A501:0049B924:8390EF1F'),
-		RunningOrderId: new MosString128('96857485'),
+		ID: mosTypes.mosString128.create('5983A501:0049B924:8390EF1F'),
+		RunningOrderId: mosTypes.mosString128.create('96857485'),
 		Body: [
 			{
 				Type: 'storyItem',
 				Content: literal<IMOSItem>({
-					ID: new MosString128('ID'),
-					Slug: new MosString128('Slug'),
-					ObjectSlug: new MosString128('ObjectSlug'),
-					ObjectID: new MosString128('ObjectID'),
+					ID: mosTypes.mosString128.create('ID'),
+					Slug: mosTypes.mosString128.create('Slug'),
+					ObjectSlug: mosTypes.mosString128.create('ObjectSlug'),
+					ObjectID: mosTypes.mosString128.create('ObjectID'),
 					MOSID: 'MOSID',
 					mosAbstract: 'mosAbstract',
 					Paths: [
@@ -1599,15 +1601,15 @@ const xmlApiData = {
 							Target: '/asdfasdf/asdf/asdf/qwerty',
 						},
 					],
-					Channel: new MosString128('Channel'),
+					Channel: mosTypes.mosString128.create('Channel'),
 					EditorialStart: 1,
 					EditorialDuration: 2,
 					Duration: 3,
 					TimeBase: 4,
 					UserTimingDuration: 5,
 					Trigger: 'Trigger',
-					MacroIn: new MosString128('MacroIn'),
-					MacroOut: new MosString128('MacroOut'),
+					MacroIn: mosTypes.mosString128.create('MacroIn'),
+					MacroOut: mosTypes.mosString128.create('MacroOut'),
 					MosExternalMetaData: [
 						{
 							MosScope: IMOSScope.PLAYLIST,
@@ -1622,8 +1624,8 @@ const xmlApiData = {
 					],
 					MosObjects: [
 						{
-							ID: new MosString128('ID'),
-							Slug: new MosString128('Slug'),
+							ID: mosTypes.mosString128.create('ID'),
+							Slug: mosTypes.mosString128.create('Slug'),
 							MosAbstract: 'MosAbstract',
 							Group: 'Group',
 							Type: IMOSObjectType.OTHER,
@@ -1639,10 +1641,10 @@ const xmlApiData = {
 									Target: '/asdfasdf/asdf/asdf/qwerty/mosobject',
 								},
 							],
-							CreatedBy: new MosString128('CreatedBy'),
-							Created: new MosTime(123456),
-							ChangedBy: new MosString128('ChangedBy'),
-							Changed: new MosTime(123457),
+							CreatedBy: mosTypes.mosString128.create('CreatedBy'),
+							Created: mosTypes.mosTime.create(123456),
+							ChangedBy: mosTypes.mosString128.create('ChangedBy'),
+							Changed: mosTypes.mosTime.create(123457),
 							Description: 'this is a description',
 							MosExternalMetaData: [
 								{
@@ -1656,7 +1658,7 @@ const xmlApiData = {
 									},
 								},
 							],
-							MosItemEditorProgID: new MosString128('MosItemEditorProgID'),
+							MosItemEditorProgID: mosTypes.mosString128.create('MosItemEditorProgID'),
 						},
 					],
 				}),

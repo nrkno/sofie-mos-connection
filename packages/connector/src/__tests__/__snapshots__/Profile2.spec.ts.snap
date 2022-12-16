@@ -4,35 +4,30 @@ exports[`Profile 2 onCreateRunningOrder 1`] = `
 [
   [
     {
-      "EditorialDuration": MosDuration {
-        "_duration": 3505,
+      "EditorialDuration": {
+        "_mosDuration": 3505,
       },
-      "EditorialStart": MosTime {
-        "_time": 2009-04-17T17:02:00.000Z,
+      "EditorialStart": {
+        "_mosTime": 1239987720000,
         "_timezone": "Z",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "Z",
+        "_timezoneOffset": 0,
       },
-      "ID": MosString128 {
-        "_str": "96857485",
-        "strict": true,
+      "ID": {
+        "_mosString128": "96857485",
       },
-      "Slug": MosString128 {
-        "_str": "5PM RUNDOWN",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "5PM RUNDOWN",
       },
       "Stories": [
         {
-          "ID": MosString128 {
-            "_str": "5983A501:0049B924:8390EF2B",
-            "strict": true,
+          "ID": {
+            "_mosString128": "5983A501:0049B924:8390EF2B",
           },
           "Items": [
             {
               "EditorialDuration": 645,
-              "ID": MosString128 {
-                "_str": "0",
-                "strict": true,
+              "ID": {
+                "_mosString128": "0",
               },
               "MOSID": "testmos.enps.com",
               "MosExternalMetaData": [
@@ -48,9 +43,8 @@ exports[`Profile 2 onCreateRunningOrder 1`] = `
                   "MosScope": "PLAYLIST",
                 },
               ],
-              "ObjectID": MosString128 {
-                "_str": "M000224",
-                "strict": true,
+              "ObjectID": {
+                "_mosString128": "M000224",
               },
               "Paths": [
                 {
@@ -69,35 +63,30 @@ exports[`Profile 2 onCreateRunningOrder 1`] = `
                   "Type": "METADATA PATH",
                 },
               ],
-              "Slug": MosString128 {
-                "_str": "COLSTAT MURDER:VO",
-                "strict": true,
+              "Slug": {
+                "_mosString128": "COLSTAT MURDER:VO",
               },
               "Trigger": "CHAINED",
               "UserTimingDuration": 310,
             },
           ],
-          "Number": MosString128 {
-            "_str": "A5",
-            "strict": true,
+          "Number": {
+            "_mosString128": "A5",
           },
-          "Slug": MosString128 {
-            "_str": "COLSTAT MURDER",
-            "strict": true,
+          "Slug": {
+            "_mosString128": "COLSTAT MURDER",
           },
         },
         {
-          "ID": MosString128 {
-            "_str": "3854737F:0003A34D:983A0B28",
-            "strict": true,
+          "ID": {
+            "_mosString128": "3854737F:0003A34D:983A0B28",
           },
           "Items": [
             {
               "EditorialDuration": 310,
               "EditorialStart": 55,
-              "ID": MosString128 {
-                "_str": "0",
-                "strict": true,
+              "ID": {
+                "_mosString128": "0",
               },
               "MOSID": "testmos.enps.com",
               "MosExternalMetaData": [
@@ -113,20 +102,17 @@ exports[`Profile 2 onCreateRunningOrder 1`] = `
                   "MosScope": "PLAYLIST",
                 },
               ],
-              "ObjectID": MosString128 {
-                "_str": "M000133",
-                "strict": true,
+              "ObjectID": {
+                "_mosString128": "M000133",
               },
               "UserTimingDuration": 200,
             },
           ],
-          "Number": MosString128 {
-            "_str": "A6",
-            "strict": true,
+          "Number": {
+            "_mosString128": "A6",
           },
-          "Slug": MosString128 {
-            "_str": "AIRLINE INSPECTIONS",
-            "strict": true,
+          "Slug": {
+            "_mosString128": "AIRLINE INSPECTIONS",
           },
         },
       ],
@@ -187,32 +173,26 @@ exports[`Profile 2 onItemStatus 1`] = `
 [
   [
     {
-      "Channel": MosString128 {
-        "_str": "B",
-        "strict": true,
+      "Channel": {
+        "_mosString128": "B",
       },
-      "ID": MosString128 {
-        "_str": "0",
-        "strict": true,
+      "ID": {
+        "_mosString128": "0",
       },
-      "ObjectId": MosString128 {
-        "_str": "A0295",
-        "strict": true,
+      "ObjectId": {
+        "_mosString128": "A0295",
       },
-      "RunningOrderId": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderId": {
+        "_mosString128": "5PM",
       },
       "Status": "PLAY",
-      "StoryId": MosString128 {
-        "_str": "HOTEL FIRE",
-        "strict": true,
+      "StoryId": {
+        "_mosString128": "HOTEL FIRE",
       },
-      "Time": MosTime {
-        "_time": 2009-04-11T14:13:53.000Z,
+      "Time": {
+        "_mosTime": 1239459233000,
         "_timezone": "Z",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "Z",
+        "_timezoneOffset": 0,
       },
     },
   ],
@@ -243,18 +223,16 @@ exports[`Profile 2 onMetadataReplace 1`] = `
 [
   [
     {
-      "EditorialDuration": MosDuration {
-        "_duration": 3505,
+      "EditorialDuration": {
+        "_mosDuration": 3505,
       },
-      "EditorialStart": MosTime {
-        "_time": 2009-04-17T17:02:00.000Z,
+      "EditorialStart": {
+        "_mosTime": 1239987720000,
         "_timezone": "Z",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "Z",
+        "_timezoneOffset": 0,
       },
-      "ID": MosString128 {
-        "_str": "96857485",
-        "strict": true,
+      "ID": {
+        "_mosString128": "96857485",
       },
       "MosExternalMetaData": [
         {
@@ -269,9 +247,8 @@ exports[`Profile 2 onMetadataReplace 1`] = `
           "MosScope": "PLAYLIST",
         },
       ],
-      "Slug": MosString128 {
-        "_str": "5PM RUNDOWN",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "5PM RUNDOWN",
       },
     },
   ],
@@ -302,23 +279,19 @@ exports[`Profile 2 onRODeleteItems 1`] = `
 [
   [
     {
-      "RunningOrderID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderID": {
+        "_mosString128": "5PM",
       },
-      "StoryID": MosString128 {
-        "_str": "2",
-        "strict": true,
+      "StoryID": {
+        "_mosString128": "2",
       },
     },
     [
-      MosString128 {
-        "_str": "23",
-        "strict": true,
+      {
+        "_mosString128": "23",
       },
-      MosString128 {
-        "_str": "24",
-        "strict": true,
+      {
+        "_mosString128": "24",
       },
     ],
   ],
@@ -349,15 +322,13 @@ exports[`Profile 2 onRODeleteStories 1`] = `
 [
   [
     {
-      "RunningOrderID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderID": {
+        "_mosString128": "5PM",
       },
     },
     [
-      MosString128 {
-        "_str": "3",
-        "strict": true,
+      {
+        "_mosString128": "3",
       },
     ],
   ],
@@ -388,31 +359,26 @@ exports[`Profile 2 onROInsertItems 1`] = `
 [
   [
     {
-      "ItemID": MosString128 {
-        "_str": "23",
-        "strict": true,
+      "ItemID": {
+        "_mosString128": "23",
       },
-      "RunningOrderID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderID": {
+        "_mosString128": "5PM",
       },
-      "StoryID": MosString128 {
-        "_str": "2",
-        "strict": true,
+      "StoryID": {
+        "_mosString128": "2",
       },
     },
     [
       {
         "EditorialDuration": 700,
         "EditorialStart": 0,
-        "ID": MosString128 {
-          "_str": "27",
-          "strict": true,
+        "ID": {
+          "_mosString128": "27",
         },
         "MOSID": "testmos",
-        "ObjectID": MosString128 {
-          "_str": "M19873",
-          "strict": true,
+        "ObjectID": {
+          "_mosString128": "M19873",
         },
         "Paths": [
           {
@@ -431,9 +397,8 @@ exports[`Profile 2 onROInsertItems 1`] = `
             "Type": "METADATA PATH",
           },
         ],
-        "Slug": MosString128 {
-          "_str": "NHL PKG",
-          "strict": true,
+        "Slug": {
+          "_mosString128": "NHL PKG",
         },
         "UserTimingDuration": 690,
       },
@@ -466,33 +431,28 @@ exports[`Profile 2 onROInsertStories 1`] = `
 [
   [
     {
-      "RunningOrderID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderID": {
+        "_mosString128": "5PM",
       },
-      "StoryID": MosString128 {
-        "_str": "2",
-        "strict": true,
+      "StoryID": {
+        "_mosString128": "2",
       },
     },
     [
       {
-        "ID": MosString128 {
-          "_str": "17",
-          "strict": true,
+        "ID": {
+          "_mosString128": "17",
         },
         "Items": [
           {
             "EditorialDuration": 715,
             "EditorialStart": 0,
-            "ID": MosString128 {
-              "_str": "27",
-              "strict": true,
+            "ID": {
+              "_mosString128": "27",
             },
             "MOSID": "testmos",
-            "ObjectID": MosString128 {
-              "_str": "M73627",
-              "strict": true,
+            "ObjectID": {
+              "_mosString128": "M73627",
             },
             "Paths": [
               {
@@ -516,24 +476,20 @@ exports[`Profile 2 onROInsertStories 1`] = `
           {
             "EditorialDuration": 315,
             "EditorialStart": 0,
-            "ID": MosString128 {
-              "_str": "28",
-              "strict": true,
+            "ID": {
+              "_mosString128": "28",
             },
             "MOSID": "testmos",
-            "ObjectID": MosString128 {
-              "_str": "M73628",
-              "strict": true,
+            "ObjectID": {
+              "_mosString128": "M73628",
             },
           },
         ],
-        "Number": MosString128 {
-          "_str": "A2",
-          "strict": true,
+        "Number": {
+          "_mosString128": "A2",
         },
-        "Slug": MosString128 {
-          "_str": "Barcelona Football",
-          "strict": true,
+        "Slug": {
+          "_mosString128": "Barcelona Football",
         },
       },
     ],
@@ -565,27 +521,22 @@ exports[`Profile 2 onROMoveItems 1`] = `
 [
   [
     {
-      "ItemID": MosString128 {
-        "_str": "12",
-        "strict": true,
+      "ItemID": {
+        "_mosString128": "12",
       },
-      "RunningOrderID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderID": {
+        "_mosString128": "5PM",
       },
-      "StoryID": MosString128 {
-        "_str": "2",
-        "strict": true,
+      "StoryID": {
+        "_mosString128": "2",
       },
     },
     [
-      MosString128 {
-        "_str": "23",
-        "strict": true,
+      {
+        "_mosString128": "23",
       },
-      MosString128 {
-        "_str": "24",
-        "strict": true,
+      {
+        "_mosString128": "24",
       },
     ],
   ],
@@ -616,23 +567,19 @@ exports[`Profile 2 onROMoveStories 1`] = `
 [
   [
     {
-      "RunningOrderID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderID": {
+        "_mosString128": "5PM",
       },
-      "StoryID": MosString128 {
-        "_str": "2",
-        "strict": true,
+      "StoryID": {
+        "_mosString128": "2",
       },
     },
     [
-      MosString128 {
-        "_str": "7",
-        "strict": true,
+      {
+        "_mosString128": "7",
       },
-      MosString128 {
-        "_str": "12",
-        "strict": true,
+      {
+        "_mosString128": "12",
       },
     ],
   ],
@@ -663,19 +610,16 @@ exports[`Profile 2 onROMoveStory 1`] = `
 [
   [
     {
-      "RunningOrderID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderID": {
+        "_mosString128": "5PM",
       },
-      "StoryID": MosString128 {
-        "_str": "2",
-        "strict": true,
+      "StoryID": {
+        "_mosString128": "2",
       },
     },
     [
-      MosString128 {
-        "_str": "7",
-        "strict": true,
+      {
+        "_mosString128": "7",
       },
     ],
   ],
@@ -706,31 +650,26 @@ exports[`Profile 2 onROReplaceItems 1`] = `
 [
   [
     {
-      "ItemID": MosString128 {
-        "_str": "23",
-        "strict": true,
+      "ItemID": {
+        "_mosString128": "23",
       },
-      "RunningOrderID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderID": {
+        "_mosString128": "5PM",
       },
-      "StoryID": MosString128 {
-        "_str": "2",
-        "strict": true,
+      "StoryID": {
+        "_mosString128": "2",
       },
     },
     [
       {
         "EditorialDuration": 700,
         "EditorialStart": 0,
-        "ID": MosString128 {
-          "_str": "27",
-          "strict": true,
+        "ID": {
+          "_mosString128": "27",
         },
         "MOSID": "testmos",
-        "ObjectID": MosString128 {
-          "_str": "M19873",
-          "strict": true,
+        "ObjectID": {
+          "_mosString128": "M19873",
         },
         "Paths": [
           {
@@ -749,9 +688,8 @@ exports[`Profile 2 onROReplaceItems 1`] = `
             "Type": "METADATA PATH",
           },
         ],
-        "Slug": MosString128 {
-          "_str": "NHL PKG",
-          "strict": true,
+        "Slug": {
+          "_mosString128": "NHL PKG",
         },
         "UserTimingDuration": 690,
       },
@@ -784,33 +722,28 @@ exports[`Profile 2 onROReplaceStories 1`] = `
 [
   [
     {
-      "RunningOrderID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderID": {
+        "_mosString128": "5PM",
       },
-      "StoryID": MosString128 {
-        "_str": "2",
-        "strict": true,
+      "StoryID": {
+        "_mosString128": "2",
       },
     },
     [
       {
-        "ID": MosString128 {
-          "_str": "17",
-          "strict": true,
+        "ID": {
+          "_mosString128": "17",
         },
         "Items": [
           {
             "EditorialDuration": 715,
             "EditorialStart": 0,
-            "ID": MosString128 {
-              "_str": "27",
-              "strict": true,
+            "ID": {
+              "_mosString128": "27",
             },
             "MOSID": "testmos",
-            "ObjectID": MosString128 {
-              "_str": "M73627",
-              "strict": true,
+            "ObjectID": {
+              "_mosString128": "M73627",
             },
             "Paths": [
               {
@@ -834,24 +767,20 @@ exports[`Profile 2 onROReplaceStories 1`] = `
           {
             "EditorialDuration": 315,
             "EditorialStart": 0,
-            "ID": MosString128 {
-              "_str": "28",
-              "strict": true,
+            "ID": {
+              "_mosString128": "28",
             },
             "MOSID": "testmos",
-            "ObjectID": MosString128 {
-              "_str": "M73628",
-              "strict": true,
+            "ObjectID": {
+              "_mosString128": "M73628",
             },
           },
         ],
-        "Number": MosString128 {
-          "_str": "A2",
-          "strict": true,
+        "Number": {
+          "_mosString128": "A2",
         },
-        "Slug": MosString128 {
-          "_str": "Porto Football",
-          "strict": true,
+        "Slug": {
+          "_mosString128": "Porto Football",
         },
       },
     ],
@@ -883,22 +812,18 @@ exports[`Profile 2 onROSwapItems 1`] = `
 [
   [
     {
-      "RunningOrderID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderID": {
+        "_mosString128": "5PM",
       },
-      "StoryID": MosString128 {
-        "_str": "2",
-        "strict": true,
+      "StoryID": {
+        "_mosString128": "2",
       },
     },
-    MosString128 {
-      "_str": "23",
-      "strict": true,
+    {
+      "_mosString128": "23",
     },
-    MosString128 {
-      "_str": "24",
-      "strict": true,
+    {
+      "_mosString128": "24",
     },
   ],
 ]
@@ -928,18 +853,15 @@ exports[`Profile 2 onROSwapStories 1`] = `
 [
   [
     {
-      "RunningOrderID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderID": {
+        "_mosString128": "5PM",
       },
     },
-    MosString128 {
-      "_str": "3",
-      "strict": true,
+    {
+      "_mosString128": "3",
     },
-    MosString128 {
-      "_str": "5",
-      "strict": true,
+    {
+      "_mosString128": "5",
     },
   ],
 ]
@@ -969,9 +891,8 @@ exports[`Profile 2 onReadyToAir 1`] = `
 [
   [
     {
-      "ID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5PM",
       },
       "Status": "READY",
     },
@@ -1003,26 +924,22 @@ exports[`Profile 2 onReplaceRunningOrder 1`] = `
 [
   [
     {
-      "ID": MosString128 {
-        "_str": "96857485",
-        "strict": true,
+      "ID": {
+        "_mosString128": "96857485",
       },
-      "Slug": MosString128 {
-        "_str": "5PM RUNDOWN",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "5PM RUNDOWN",
       },
       "Stories": [
         {
-          "ID": MosString128 {
-            "_str": "5983A501:0049B924:8390EF2B",
-            "strict": true,
+          "ID": {
+            "_mosString128": "5983A501:0049B924:8390EF2B",
           },
           "Items": [
             {
               "EditorialDuration": 645,
-              "ID": MosString128 {
-                "_str": "0",
-                "strict": true,
+              "ID": {
+                "_mosString128": "0",
               },
               "MOSID": "testmos.enps.com",
               "MosExternalMetaData": [
@@ -1038,9 +955,8 @@ exports[`Profile 2 onReplaceRunningOrder 1`] = `
                   "MosScope": "PLAYLIST",
                 },
               ],
-              "ObjectID": MosString128 {
-                "_str": "M000224",
-                "strict": true,
+              "ObjectID": {
+                "_mosString128": "M000224",
               },
               "Paths": [
                 {
@@ -1059,35 +975,30 @@ exports[`Profile 2 onReplaceRunningOrder 1`] = `
                   "Type": "METADATA PATH",
                 },
               ],
-              "Slug": MosString128 {
-                "_str": "COLSTAT MURDER:VO",
-                "strict": true,
+              "Slug": {
+                "_mosString128": "COLSTAT MURDER:VO",
               },
               "Trigger": "CHAINED",
               "UserTimingDuration": 310,
             },
           ],
-          "Number": MosString128 {
-            "_str": "A1",
-            "strict": true,
+          "Number": {
+            "_mosString128": "A1",
           },
-          "Slug": MosString128 {
-            "_str": "COLSTAT MURDER",
-            "strict": true,
+          "Slug": {
+            "_mosString128": "COLSTAT MURDER",
           },
         },
         {
-          "ID": MosString128 {
-            "_str": "3852737F:0013A64D:923A0B28",
-            "strict": true,
+          "ID": {
+            "_mosString128": "3852737F:0013A64D:923A0B28",
           },
           "Items": [
             {
               "EditorialDuration": 600,
               "EditorialStart": 500,
-              "ID": MosString128 {
-                "_str": "0",
-                "strict": true,
+              "ID": {
+                "_mosString128": "0",
               },
               "MOSID": "testmos.enps.com",
               "MosExternalMetaData": [
@@ -1103,20 +1014,17 @@ exports[`Profile 2 onReplaceRunningOrder 1`] = `
                   "MosScope": "PLAYLIST",
                 },
               ],
-              "ObjectID": MosString128 {
-                "_str": "M000295",
-                "strict": true,
+              "ObjectID": {
+                "_mosString128": "M000295",
               },
               "UserTimingDuration": 310,
             },
           ],
-          "Number": MosString128 {
-            "_str": "A2",
-            "strict": true,
+          "Number": {
+            "_mosString128": "A2",
           },
-          "Slug": MosString128 {
-            "_str": "AIRLINE SAFETY",
-            "strict": true,
+          "Slug": {
+            "_mosString128": "AIRLINE SAFETY",
           },
         },
       ],
@@ -1476,16 +1384,14 @@ exports[`Profile 2 onRunningOrderStatus 1`] = `
 [
   [
     {
-      "ID": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5PM",
       },
       "Status": "MANUAL CTRL",
-      "Time": MosTime {
-        "_time": 2009-04-11T14:13:53.000Z,
+      "Time": {
+        "_mosTime": 1239459233000,
         "_timezone": "Z",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "Z",
+        "_timezoneOffset": 0,
       },
     },
   ],
@@ -1516,20 +1422,17 @@ exports[`Profile 2 onStoryStatus 1`] = `
 [
   [
     {
-      "ID": MosString128 {
-        "_str": "HOTEL FIRE",
-        "strict": true,
+      "ID": {
+        "_mosString128": "HOTEL FIRE",
       },
-      "RunningOrderId": MosString128 {
-        "_str": "5PM",
-        "strict": true,
+      "RunningOrderId": {
+        "_mosString128": "5PM",
       },
       "Status": "PLAY",
-      "Time": MosTime {
-        "_time": 1999-04-11T14:13:53.000Z,
+      "Time": {
+        "_mosTime": 923840033000,
         "_timezone": "Z",
-        "_timezoneDeclaration": "",
-        "_timezoneZuluIndicator": "Z",
+        "_timezoneOffset": 0,
       },
     },
   ],
@@ -1582,34 +1485,55 @@ exports[`Profile 2 sendCreateRunningOrder, sendReplaceRunningOrder 1`] = `
 
 exports[`Profile 2 sendCreateRunningOrder, sendReplaceRunningOrder 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -1639,34 +1563,55 @@ exports[`Profile 2 sendCreateRunningOrder, sendReplaceRunningOrder 3`] = `
 
 exports[`Profile 2 sendCreateRunningOrder, sendReplaceRunningOrder 4`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -1683,34 +1628,55 @@ exports[`Profile 2 sendDeleteRunningOrder 1`] = `
 
 exports[`Profile 2 sendDeleteRunningOrder 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -1733,34 +1699,55 @@ exports[`Profile 2 sendItemStatus 1`] = `
 
 exports[`Profile 2 sendItemStatus 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -1798,34 +1785,55 @@ exports[`Profile 2 sendMetadataReplace 1`] = `
 
 exports[`Profile 2 sendMetadataReplace 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -1851,34 +1859,55 @@ exports[`Profile 2 sendRODeleteItems 1`] = `
 
 exports[`Profile 2 sendRODeleteItems 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -1901,34 +1930,55 @@ exports[`Profile 2 sendRODeleteStories 1`] = `
 
 exports[`Profile 2 sendRODeleteStories 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -1963,34 +2013,55 @@ exports[`Profile 2 sendROInsertItems 1`] = `
 
 exports[`Profile 2 sendROInsertItems 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -2022,34 +2093,55 @@ exports[`Profile 2 sendROInsertStories 1`] = `
 
 exports[`Profile 2 sendROInsertStories 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -2076,34 +2168,55 @@ exports[`Profile 2 sendROMoveItems 1`] = `
 
 exports[`Profile 2 sendROMoveItems 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -2129,34 +2242,55 @@ exports[`Profile 2 sendROMoveStories 1`] = `
 
 exports[`Profile 2 sendROMoveStories 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -2191,34 +2325,55 @@ exports[`Profile 2 sendROReplaceItems 1`] = `
 
 exports[`Profile 2 sendROReplaceItems 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -2250,34 +2405,55 @@ exports[`Profile 2 sendROReplaceStories 1`] = `
 
 exports[`Profile 2 sendROReplaceStories 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -2301,34 +2477,55 @@ exports[`Profile 2 sendROSwapItems 1`] = `
 
 exports[`Profile 2 sendROSwapItems 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -2349,34 +2546,55 @@ exports[`Profile 2 sendROSwapStories 1`] = `
 
 exports[`Profile 2 sendROSwapStories 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -2394,34 +2612,55 @@ exports[`Profile 2 sendReadyToAir 1`] = `
 
 exports[`Profile 2 sendReadyToAir 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -2438,26 +2677,22 @@ exports[`Profile 2 sendRequestRunningOrder 1`] = `
 
 exports[`Profile 2 sendRequestRunningOrder 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Slug": MosString128 {
-    "_str": "5PM RUNDOWN",
-    "strict": true,
+  "Slug": {
+    "_mosString128": "5PM RUNDOWN",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [
         {
           "EditorialDuration": 645,
-          "ID": MosString128 {
-            "_str": "0",
-            "strict": true,
+          "ID": {
+            "_mosString128": "0",
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": [
@@ -2473,9 +2708,8 @@ exports[`Profile 2 sendRequestRunningOrder 2`] = `
               "MosScope": "PLAYLIST",
             },
           ],
-          "ObjectID": MosString128 {
-            "_str": "M000224",
-            "strict": true,
+          "ObjectID": {
+            "_mosString128": "M000224",
           },
           "Paths": [
             {
@@ -2494,35 +2728,30 @@ exports[`Profile 2 sendRequestRunningOrder 2`] = `
               "Type": "METADATA PATH",
             },
           ],
-          "Slug": MosString128 {
-            "_str": "COLSTAT MURDER:VO",
-            "strict": true,
+          "Slug": {
+            "_mosString128": "COLSTAT MURDER:VO",
           },
           "Trigger": "CHAINED",
           "UserTimingDuration": 310,
         },
       ],
-      "Number": MosString128 {
-        "_str": "B10",
-        "strict": true,
+      "Number": {
+        "_mosString128": "B10",
       },
-      "Slug": MosString128 {
-        "_str": "Colstat Murder",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Colstat Murder",
       },
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [
         {
           "EditorialDuration": 310,
           "EditorialStart": 55,
-          "ID": MosString128 {
-            "_str": "0",
-            "strict": true,
+          "ID": {
+            "_mosString128": "0",
           },
           "MOSID": "testmos.enps.com",
           "MosExternalMetaData": [
@@ -2538,20 +2767,17 @@ exports[`Profile 2 sendRequestRunningOrder 2`] = `
               "MosScope": "PLAYLIST",
             },
           ],
-          "ObjectID": MosString128 {
-            "_str": "M000133",
-            "strict": true,
+          "ObjectID": {
+            "_mosString128": "M000133",
           },
           "UserTimingDuration": 310,
         },
       ],
-      "Number": MosString128 {
-        "_str": "B11",
-        "strict": true,
+      "Number": {
+        "_mosString128": "B11",
       },
-      "Slug": MosString128 {
-        "_str": "Test MOS",
-        "strict": true,
+      "Slug": {
+        "_mosString128": "Test MOS",
       },
     },
   ],
@@ -2573,34 +2799,55 @@ exports[`Profile 2 sendRunningOrderStatus 1`] = `
 
 exports[`Profile 2 sendRunningOrderStatus 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
 
@@ -2620,33 +2867,54 @@ exports[`Profile 2 sendStoryStatus 1`] = `
 
 exports[`Profile 2 sendStoryStatus 2`] = `
 {
-  "ID": MosString128 {
-    "_str": "96857485",
-    "strict": true,
+  "ID": {
+    "_mosString128": "96857485",
   },
-  "Status": MosString128 {
-    "_str": "Unknown object M000133",
-    "strict": true,
+  "Status": {
+    "_mosString128": "Unknown object M000133",
   },
   "Stories": [
     {
-      "ID": MosString128 {
-        "_str": "5983A501:0049B924:8390EF2B",
-        "strict": true,
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
       },
       "Items": [],
     },
     {
-      "ID": MosString128 {
-        "_str": "3854737F:0003A34D:983A0B28",
-        "strict": true,
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
       },
       "Items": [],
     },
   ],
   "_messageID": 0,
   "mosID": undefined,
+  "mosTypes": {
+    "mosDuration": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosString128": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "mosTime": {
+      "create": [Function],
+      "is": [Function],
+      "stringify": [Function],
+      "validate": [Function],
+      "valueOf": [Function],
+    },
+    "strict": true,
+  },
   "ncsID": undefined,
   "port": "upper",
+  "strict": true,
 }
 `;
