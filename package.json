@@ -10,7 +10,7 @@
 		"lerna": "lerna",
 		"postinstall": "node scripts/update-packages.js",
 		"ci": "yarn install && yarn build && yarn lint && yarn test",
-		"release:set-version": "lerna version --exact --no-changelog --no-git-tag-version --no-push --yes",
+		"release:set-version": "lerna version --exact --no-changelog --no-push --yes",
 		"release:bump-release": "lerna version --exact --conventional-commits --conventional-graduate --tag-version-prefix='' --no-push --force-publish=*",
 		"release:bump-prerelease": "lerna version --exact --conventional-commits --conventional-prerelease --tag-version-prefix='' --no-push --force-publish=*",
 		"set-version": "lerna version --exact --no-changelog --no-git-tag-version --no-push --yes",
