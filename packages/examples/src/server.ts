@@ -32,7 +32,7 @@ mos.onConnection((mosDevice) => {
 			model: mosTypes.mosString128.create('model!'),
 			hwRev: mosTypes.mosString128.create('0.1'),
 			swRev: mosTypes.mosString128.create('1.0'),
-			DOM: mosTypes.mosTime.create('1989-07-01'),
+			DOM: mosTypes.mosString128.create('1989-07-01'),
 			SN: mosTypes.mosString128.create('1234'),
 			ID: mosTypes.mosString128.create('MY ID'),
 			time: mosTypes.mosTime.create(Date.now()),

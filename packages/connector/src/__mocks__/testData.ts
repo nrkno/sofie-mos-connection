@@ -457,7 +457,7 @@ const xmlApiData = {
 		model: mosTypes.mosString128.create('model'),
 		hwRev: mosTypes.mosString128.create('hwRev'),
 		swRev: mosTypes.mosString128.create('swRev'),
-		DOM: mosTypes.mosTime.create(1234),
+		DOM: mosTypes.mosString128.create('DOM'),
 		SN: mosTypes.mosString128.create('SN'),
 		ID: mosTypes.mosString128.create('ID'),
 		time: mosTypes.mosTime.create(1234),

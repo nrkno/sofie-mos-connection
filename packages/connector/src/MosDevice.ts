@@ -33,7 +33,7 @@ import {
 } from '@mos-connection/model'
 import { MosModel } from '@mos-connection/helper'
 import { IConnectionConfig, IMOSConnectionStatus, IMOSDevice } from './api'
-import { has, isEmpty, safeStringify } from './lib'
+import { has, safeStringify } from './lib'
 
 export class MosDevice implements IMOSDevice {
 	// private _host: string
@@ -663,23 +663,12 @@ export class MosDevice implements IMOSDevice {
 		const data = await this.executeCommand(message)
 		const listMachInfo = data.mos.listMachInfo
 
-		let dom: IMOSTime | undefined
-		if (!isEmpty(listMachInfo.DOM)) {
-			try {
-				dom = this.mosTypes.mosTime.create(listMachInfo.DOM)
-			} catch (e) {
-				// TODO: This is a hack, DOM probably should be a string not IMOSTime. But that means breaking api change
-				dom = undefined
-				this.debugTrace(`Failed to parse DOM as IMOSTimeAny: ${e}`)
-			}
-		}
-
 		const list: IMOSListMachInfo = {
 			manufacturer: this.mosTypes.mosString128.create(listMachInfo.manufacturer),
 			model: this.mosTypes.mosString128.create(listMachInfo.model),
 			hwRev: this.mosTypes.mosString128.create(listMachInfo.hwRev),
 			swRev: this.mosTypes.mosString128.create(listMachInfo.swRev),
-			DOM: dom,
+			DOM: this.mosTypes.mosString128.create(listMachInfo.DOM),
 			SN: this.mosTypes.mosString128.create(listMachInfo.SN),
 			ID: this.mosTypes.mosString128.create(listMachInfo.ID),
 			time: this.mosTypes.mosTime.create(listMachInfo.time),

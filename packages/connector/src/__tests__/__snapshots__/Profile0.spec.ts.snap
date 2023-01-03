@@ -11,7 +11,9 @@ exports[`Profile 0 requestMachineInfo 1`] = `
 
 exports[`Profile 0 requestMachineInfo 2`] = `
 {
-  "DOM": undefined,
+  "DOM": {
+    "_mosString128": "",
+  },
   "ID": {
     "_mosString128": "airchache.newscenter.com",
   },

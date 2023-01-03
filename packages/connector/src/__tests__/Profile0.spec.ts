@@ -214,7 +214,7 @@ describe('Profile 0', () => {
 			model: mosTypes.mosString128.create('TCS6000'),
 			hwRev: mosTypes.mosString128.create(''),
 			swRev: mosTypes.mosString128.create('2.1.0.37'),
-			DOM: undefined,
+			DOM: mosTypes.mosString128.create(''),
 			SN: mosTypes.mosString128.create('927748927'),
 			ID: mosTypes.mosString128.create('airchache.newscenter.com'),
 			time: mosTypes.mosTime.create('2009-04-11T17:20:42'),
