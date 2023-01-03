@@ -41,9 +41,6 @@
 		"/README.md",
 		"/LICENSE"
 	],
-	"devDependencies": {
-		"lint-staged": "^13.0.4"
-	},
 	"dependencies": {
 		"@mos-connection/model": "3.0.0-alpha.0",
 		"iconv-lite": "^0.6.2",
