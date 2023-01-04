@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [2.1.0-alpha.0](https://github.com/nrkno/tv-automation-package-manager/compare/2.0.1...2.1.0-alpha.0) (2022-12-09)
+# [v3.0.0-alpha.0](https://github.com/nrkno/tv-automation-mos-connection/compare/2.0.1...v3.0.0-alpha.0) (2022-12-09)
 
 ### BREAKING CHANGES
 
@@ -56,12 +56,12 @@ addTextElement(xml, elementName, content, attributes, strict) // added the "stri
 
 ### Bug Fixes
 
-- better cleanup on dispose ([a241d78](https://github.com/nrkno/tv-automation-package-manager/commit/a241d78e0dd0b4f8a24fb17964ea45b791afca6f))
+- better cleanup on dispose ([a241d78](https://github.com/nrkno/tv-automation-mos-connection/commit/a241d78e0dd0b4f8a24fb17964ea45b791afca6f))
 
 ### Features
 
-- move helper functions into a separate package: $mos-connection/helper ([ecb51ec](https://github.com/nrkno/tv-automation-package-manager/commit/ecb51ec3ca26c15a61fd629e59265345c247f82e))
-- move types and enums to @mos-connection/model ([2266488](https://github.com/nrkno/tv-automation-package-manager/commit/2266488f4062da6a1f2949a3374c58c26a20d79e))
+- move helper functions into a separate package: $mos-connection/helper ([ecb51ec](https://github.com/nrkno/tv-automation-mos-connection/commit/ecb51ec3ca26c15a61fd629e59265345c247f82e))
+- move types and enums to @mos-connection/model ([2266488](https://github.com/nrkno/tv-automation-mos-connection/commit/2266488f4062da6a1f2949a3374c58c26a20d79e))
 
 # Changelog
 
