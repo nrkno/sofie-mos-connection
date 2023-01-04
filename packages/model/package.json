@@ -27,5 +27,11 @@
 		"*.{ts,tsx,js,jsx}": [
 			"eslint"
 		]
-	}
+	},
+	"files": [
+		"/dist",
+		"/CHANGELOG.md",
+		"/README.md",
+		"/LICENSE"
+	]
 }
