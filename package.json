@@ -1,7 +1,7 @@
 {
 	"name": "mos-connection-monorepo",
 	"version": "0.0.0",
-	"repository": "https://github.com/nrkno/tv-automation-package-manager",
+	"repository": "https://github.com/nrkno/tv-automation-mos-connection",
 	"private": true,
 	"workspaces": [
 		"packages/*"

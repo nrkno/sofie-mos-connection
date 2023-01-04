@@ -13,22 +13,6 @@
 		"url": "https://github.com/nrkno/sofie-mos-connection/issues"
 	},
 	"homepage": "https://github.com/nrkno/sofie-mos-connection#readme",
-	"author": {
-		"name": "Jesper Stærkær",
-		"email": "jesper@superfly.tv",
-		"url": "http://superfly.tv"
-	},
-	"contributors": [
-		{
-			"name": "Johan Nyman",
-			"email": "johan@superfly.tv",
-			"url": "http://superfly.tv"
-		},
-		{
-			"name": "Stephan Nordnes Eriksen",
-			"email": "Stephanruler@gmail.com"
-		}
-	],
 	"scripts": {
 		"build": "rimraf dist && yarn build:main",
 		"build:main": "tsc -p tsconfig.json",
