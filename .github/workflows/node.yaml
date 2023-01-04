@@ -72,6 +72,8 @@ jobs:
           yarn test -- -- --forceExit
         env:
           CI: true
+      - name: Send coverage
+        uses: codecov/codecov-action@v3
 
   release:
     name: Release
