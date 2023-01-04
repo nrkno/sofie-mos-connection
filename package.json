@@ -20,7 +20,7 @@
 		"link:all": "lerna exec -- yarn link",
 		"build": "lerna run build --stream",
 		"build:changed": "lerna run build --since head --exclude-dependents --stream",
-		"lint": "lerna exec --parallel --no-bail -- eslint . --ext .ts,.tsx",
+		"lint": "lerna exec --parallel -- eslint . --ext .ts,.tsx",
 		"lintfix": "yarn lint --fix",
 		"lint:changed": "lerna exec --since origin/master --include-dependents -- eslint . --ext .js,.jsx,.ts,.tsx",
 		"test": "lerna run test --stream",
