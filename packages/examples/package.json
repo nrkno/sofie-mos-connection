@@ -25,10 +25,10 @@
 	},
 	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
 	"lint-staged": {
-		"*.{js,css,json,md,scss}": [
+		"*.{css,json,md,scss}": [
 			"prettier"
 		],
-		"*.{ts,tsx}": [
+		"*.{ts,tsx,js,jsx}": [
 			"eslint"
 		]
 	}
