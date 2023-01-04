@@ -69,9 +69,11 @@ jobs:
           CI: true
       - name: Run unit tests
         run: |
-          yarn test -- -- --forceExit
+          yarn test -- -- --forceExit --coverage
         env:
           CI: true
+      - name: Send coverage
+        uses: codecov/codecov-action@v3
 
   release:
     name: Release
