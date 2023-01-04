@@ -13,9 +13,6 @@
 		"paths": {
 			"*": [
 				"./node_modules/*"
-			],
-			"atem-connection": [
-				"./src/index.ts"
 			]
 		},
 		"types": [
