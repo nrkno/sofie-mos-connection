@@ -39,7 +39,7 @@ const rootPackage = require('../package.json')
                         const newPackageJson = deepExtend({}, packageJson, extendPackage)
 
                         if (!_.isEqual(newPackageJson, packageJson)) {
-                            await fsWriteFile(packageJsonPath, JSON.stringify(newPackageJson, undefined, '\t'))
+                            await fsWriteFile(packageJsonPath, JSON.stringify(newPackageJson, undefined, '\t') + '\n')
                             count++
                         }
                     }
