@@ -1,5 +1,8 @@
 {
 	"extends": "@sofie-automation/code-standard-preset/ts/tsconfig.lib",
+	"include": [
+		"**/src/**/*.ts"
+	],
 	"exclude": [
 		"**/node_modules/**",
 		"**/*spec.ts",
