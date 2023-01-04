@@ -6,6 +6,14 @@ export { IMOSString128 } from './mosTypes/mosString128'
 export { IMOSDuration } from './mosTypes/mosDuration'
 export { IMOSTime } from './mosTypes/mosTime'
 
+/**
+ * Returns utility-functions for handling of MosTypes.
+ * @example
+ * const mosTypes = getMosTypes(true)
+ * const myString128 = mosTypes.mosString128.create('Hello world')
+ * const myString = mosTypes.mosString128.stringify(myString128)
+ * @param strict If true, creating out-of-spec values will throw an error (Example: Creating longer-than-128-characters long MosString128).
+ */
 export function getMosTypes(strict: boolean): MosTypes {
 	return {
 		strict,

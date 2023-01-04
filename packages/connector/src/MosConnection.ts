@@ -43,6 +43,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		if (this._conf.debug) {
 			this._debug = this._conf.debug
 		}
+		// Setup utility functions for handling MosTypes:
 		this.mosTypes = getMosTypes(configOptions.strict ?? false)
 
 		if (this._conf.strict) {
