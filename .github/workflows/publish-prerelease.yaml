@@ -61,10 +61,10 @@ jobs:
             echo "No Token"
           elif [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
             echo "Publish nightly"
-            echo ::set-output name=publish::"nightly"
+            echo "publish=nightly" >> $GITHUB_OUTPUT
           else
             echo "Publish experimental"
-            echo ::set-output name=publish::"experimental"
+            echo "publish=experimental" >> $GITHUB_OUTPUT
           fi
       - name: Prepare Environment
         if: ${{ steps.do-publish.outputs.publish }}
