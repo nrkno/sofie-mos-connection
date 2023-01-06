@@ -8,6 +8,15 @@ describe('MosDuration', () => {
 		expect(mosTypes.mosDuration.stringify(mosDuration)).toBe('1:23:45')
 		expect(mosTypes.mosDuration.valueOf(mosDuration)).toBe(5025)
 		expect(() => mosTypes.mosDuration.validate(mosDuration)).not.toThrowError()
+
+		expect(() => mosTypes.mosDuration.create('asdf')).toThrowError(/Invalid input/)
+		expect(() => mosTypes.mosDuration.create('1:23:xx')).toThrowError(/Invalid input/)
+		expect(() => mosTypes.mosDuration.create('0:00:00')).not.toThrowError()
+		// @ts-expect-error bad input:
+		expect(() => mosTypes.mosDuration.create([])).toThrowError(/Invalid input/)
+
+		// @ts-expect-error wrong input, but still:
+		expect(mosTypes.mosDuration.valueOf(5025)).toBe(5025)
 	})
 	test('is', () => {
 		const mosTypes = getMosTypes(true)

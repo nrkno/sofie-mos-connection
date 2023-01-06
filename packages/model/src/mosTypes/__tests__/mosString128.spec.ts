@@ -8,6 +8,11 @@ describe('MosString128', () => {
 		expect(mosTypes.mosString128.stringify(mosString)).toBe('test test')
 		expect(mosTypes.mosString128.valueOf(mosString)).toBe('test test')
 		expect(() => mosTypes.mosString128.validate(mosString)).not.toThrowError()
+
+		// @ts-expect-error wrong input, but still:
+		expect(mosTypes.mosString128.valueOf('test test')).toBe('test test')
+		// @ts-expect-error wrong input, but still:
+		expect(mosTypes.mosString128.stringify('test test')).toBe('test test')
 	})
 	test('is', () => {
 		const mosTypes = getMosTypes(true)
@@ -49,6 +54,8 @@ describe('MosString128', () => {
 		expect(toStr(12)).toEqual('12')
 		expect(toStr(true)).toEqual('true')
 		expect(toStr(null)).toEqual('null')
+		expect(toStr({ text: 'hello' })).toEqual('hello')
+		expect(toStr({ a: 'b' })).toEqual('{"a":"b"}')
 
 		expect(toStr(mosTypes.mosString128.create('test test'))).toEqual('test test')
 
@@ -57,5 +64,8 @@ describe('MosString128', () => {
 				JSON.parse(JSON.stringify({ a: mosTypes.mosString128.create('test test') })).a
 			)
 		).toEqual('test test')
+
+		// special case: "undefined" is parsed as an empty string
+		expect(toStr('undefined')).toEqual('')
 	})
 })

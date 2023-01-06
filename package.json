@@ -24,7 +24,8 @@
 		"lintfix": "yarn lint --fix",
 		"lint:changed": "lerna exec --since origin/master --include-dependents -- eslint . --ext .js,.jsx,.ts,.tsx",
 		"test": "lerna run test --stream",
-		"test:changed": "lerna run --since origin/master --include-dependents test"
+		"test:changed": "lerna run --since origin/master --include-dependents test",
+		"test:coverage": "lerna run test --stream -- -- --coverage"
 	},
 	"devDependencies": {
 		"@sofie-automation/code-standard-preset": "^2.2.0",

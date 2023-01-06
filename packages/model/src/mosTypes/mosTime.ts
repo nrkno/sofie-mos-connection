@@ -54,8 +54,10 @@ export function create(timestamp: AnyValue, strict: boolean): IMOSTime {
 		} else if (typeof timestamp === 'object') {
 			if (timestamp instanceof Date) {
 				time = timestamp
-			} else {
+			} else if (timestamp?._mosTime !== undefined) {
 				time = new Date(timestamp._mosTime)
+			} else {
+				throw new Error(`MosTime: Invalid input: "${timestamp}"`)
 			}
 		} else {
 			throw new Error(`MosTime: Invalid input: "${timestamp}"`)
@@ -179,8 +181,8 @@ function parseMosCustomFormat(timestamp: string):
 			const tzSign = m[1]
 			let tzHours = m[2]
 			let tzMinutes = m[3]
-			if (tzHours.length === 1) tzHours = '0' + tzHours
-			if (tzMinutes.length === 1) tzMinutes = '0' + tzMinutes
+			tzHours = pad(tzHours, 2)
+			tzMinutes = pad(tzMinutes, 2)
 			timezoneIndicator = tzSign + tzHours + ':' + tzMinutes
 			timezoneOffset = parseInt(tzSign + tzHours) * 60 + parseInt(tzMinutes)
 		}

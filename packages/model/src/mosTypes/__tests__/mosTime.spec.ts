@@ -10,6 +10,8 @@ describe('MosTime', () => {
 		expect(mosTypes.mosTime.stringify(mosTime)).toBe('2009-04-11T14:22:07,000')
 		expect(mosTypes.mosTime.valueOf(mosTime)).toBe(date.getTime())
 		expect(() => mosTypes.mosTime.validate(mosTime)).not.toThrowError()
+		// @ts-expect-error wrong input, but still:
+		expect(mosTypes.mosTime.valueOf(123456)).toBe(123456)
 	})
 	test('is', () => {
 		const mosTypes = getMosTypes(true)
@@ -19,10 +21,10 @@ describe('MosTime', () => {
 		expect(mosTypes.mosDuration.is(mosString)).toBe(false)
 		expect(mosTypes.mosTime.is(mosString)).toBe(false)
 
-		expect(mosTypes.mosString128.is({})).toBe(false)
-		expect(mosTypes.mosString128.is(null)).toBe(false)
-		expect(mosTypes.mosString128.is('abc')).toBe(false)
-		expect(mosTypes.mosString128.is(123)).toBe(false)
+		expect(mosTypes.mosTime.is({})).toBe(false)
+		expect(mosTypes.mosTime.is(null)).toBe(false)
+		expect(mosTypes.mosTime.is('abc')).toBe(false)
+		expect(mosTypes.mosTime.is(123)).toBe(false)
 	})
 	test('parse time correctly', () => {
 		const mosTypes = getMosTypes(true)
@@ -32,8 +34,13 @@ describe('MosTime', () => {
 
 		// test invalid date formats
 		// @ts-ignore
-		let date = new Date(undefined)
+		let date = new Date(undefined) // Invalid date
 		expect(() => mosTypes.mosTime.create(date)).toThrow(/Invalid timestamp/)
+		expect(() => mosTypes.mosTime.create('abcd')).toThrowError(/Invalid timestamp/)
+		// @ts-expect-error bad input
+		expect(() => mosTypes.mosTime.create({})).toThrowError(/Invalid input/)
+		// @ts-expect-error bad input
+		expect(() => mosTypes.mosTime.create(null)).toThrowError(/Invalid input/)
 
 		// test input format date, number and various strings
 		date = new Date(2018, 1, 24, 23, 13, 52, 0) // local, zero-indexed month
@@ -41,7 +48,10 @@ describe('MosTime', () => {
 		expect(toTime(date.getTime())).toBe(date.getTime())
 		expect(toTime(date.toString())).toBe(date.getTime()) // locale time
 		expect(toTime(date.toUTCString())).toBe(date.getTime()) // utc
-		expect(toTime(date.toISOString())).toBe(date.getTime()) // utc
+		expect(toTime(123456789)).toBe(123456789)
+		expect(Math.abs(toTime(undefined) - new Date().getTime())).toBeLessThan(10)
+
+		expect(mosTypes.mosTime.valueOf(mosTypes.mosTime.create(mosTypes.mosTime.create(date)))).toBe(date.getTime())
 
 		// mos-centric strings
 		expect(toTime('2009-04-11T14:22:07Z')).toBe(new Date('2009-04-11T14:22:07Z').getTime())
@@ -53,6 +63,8 @@ describe('MosTime', () => {
 		expect(toTime('2009-04-11T14:22:07Z')).toBe(new Date('2009-04-11T14:22:07Z').getTime())
 		expect(toTime('2009-04-11T14:22:07Z')).toBe(new Date('2009-04-11T14:22:07Z').getTime())
 		expect(toTime('2009-04-11T14:22:07+5:00')).toBe(new Date('2009-04-11T14:22:07+05:00').getTime())
+		expect(toTime('2009-04-11T14:22:07+5:30')).toBe(new Date('2009-04-11T14:22:07+05:30').getTime())
+		expect(toTime('2009-04-11T14:22:07+5:5')).toBe(new Date('2009-04-11T14:22:07+05:05').getTime())
 	})
 	test('format time strings correctly', () => {
 		const mosTypes = getMosTypes(true)
