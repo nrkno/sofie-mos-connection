@@ -141,12 +141,3 @@ jobs:
           yarn lerna publish from-package --tag-version-prefix='' --dist-tag ${{ steps.do-publish.outputs.tag }} --yes --no-verify-access
         env:
           CI: true
-      - name: Generate docs
-        if: ${{ steps.do-publish.outputs.tag }} == 'latest'
-        run: |
-          yarn docs:html
-      - name: Publish docs
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
