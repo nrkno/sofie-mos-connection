@@ -37,6 +37,7 @@ export function valueOf(mosDuration: IMOSDuration): number {
 	return mosDuration._mosDuration
 }
 export function stringify(mosDuration: IMOSDuration): string {
+	if (typeof mosDuration === 'string') return mosDuration // helpful hack
 	let s = mosDuration._mosDuration
 
 	const hh = Math.floor(s / 3600)

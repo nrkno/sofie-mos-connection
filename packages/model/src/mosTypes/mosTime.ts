@@ -89,6 +89,8 @@ export function valueOf(mosTime: IMOSTime): number {
 	return mosTime._mosTime
 }
 export function stringify(mosTime: IMOSTime): string {
+	if (typeof mosTime === 'string') return mosTime // helpful hack
+
 	const localOffset = new Date(mosTime._mosTime).getTimezoneOffset()
 	// Cheat a little bit to get the time-zone right:
 	// First add the local offset to get the Date to display the time in UTC,

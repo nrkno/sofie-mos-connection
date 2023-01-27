@@ -28,6 +28,28 @@ export interface MosTypes {
 	mosDuration: MosType<MosDuration.IMOSDuration, number, MosDuration.AnyValue>
 	mosTime: MosType<MosTime.IMOSTime, number, MosTime.AnyValue>
 }
+/**
+ * If value is a MosType, stringify it.
+ * Throw error otherwise
+ */
+export function stringifyMosType(
+	value: MosString128.IMOSString128 | MosDuration.IMOSDuration | MosTime.IMOSTime | any,
+	mosTypes: MosTypes
+):
+	| {
+			isMosType: true
+			stringValue: string
+	  }
+	| {
+			isMosType: false
+	  } {
+	if (mosTypes.mosTime.is(value)) return { isMosType: true, stringValue: mosTypes.mosTime.stringify(value) }
+	if (mosTypes.mosDuration.is(value)) return { isMosType: true, stringValue: mosTypes.mosDuration.stringify(value) }
+	if (mosTypes.mosString128.is(value)) return { isMosType: true, stringValue: mosTypes.mosString128.stringify(value) }
+
+	return { isMosType: false }
+}
+
 interface MosType<Serialized, Value, CreateValue> {
 	/** Creates a MosType using provided data. The MosType is then used in data sent into MOS-connection  */
 	create: (anyValue: CreateValue) => Serialized

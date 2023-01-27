@@ -1,6 +1,6 @@
 import { xml2js as xmlParser } from 'xml-js'
 import * as XMLBuilder from 'xmlbuilder'
-import { getMosTypes, IMOSDuration, IMOSString128, IMOSTime } from '@mos-connection/model'
+import { getMosTypes, IMOSDuration, IMOSString128, IMOSTime, stringifyMosType } from '@mos-connection/model'
 
 /** */
 export function pad(n: string, width: number, z?: string): string {
@@ -180,9 +180,8 @@ export function addTextElementInternal(
 	if (text === null) {
 		txt = null
 	} else if (text !== undefined) {
-		if (mosTypes.mosString128.is(text)) txt = mosTypes.mosString128.stringify(text)
-		else if (mosTypes.mosTime.is(text)) txt = mosTypes.mosTime.stringify(text)
-		else if (mosTypes.mosDuration.is(text)) txt = mosTypes.mosDuration.stringify(text)
+		const stringified = stringifyMosType(text, mosTypes)
+		if (stringified.isMosType) txt = stringified.stringValue
 		else txt = text.toString()
 	} else {
 		txt = undefined
