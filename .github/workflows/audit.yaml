@@ -25,15 +25,6 @@ jobs:
           yarn install
         env:
           CI: true
-      - name: Validate dependencies
-        run: |
-          if ! git log --format=oneline -n 1 | grep -q "\[ignore-audit\]"; then
-            yarn validate:dependencies
-          else
-            echo "Skipping audit"
-          fi
-        env:
-          CI: true
   validate-all-dependencies:
     name: Validate all dependencies
     runs-on: ubuntu-latest
