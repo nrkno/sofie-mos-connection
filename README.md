@@ -55,3 +55,13 @@ mos.onConnection((device: MosDevice) => { // called whenever there is a new conn
 | Profile 7 | Not implemented (yet) |
 
 Pull Requests for the remaining profiles would be happily accepted!
+
+## Packages
+
+MOS-connection consists of 3 packages:
+
+- **@mos-connection/connector** is a Node.js library is used to connect to MOS devices or act as a MOS Server/NCS.
+  The `helper` and `model` functionality is included in this library as well.
+- **@mos-connection/helper** is a library that provides various functions useful for those that prepare/handle data that will be sent to (or has been received by) the MOS-connection.
+  The `model` functionality is included in this library as well.
+- **@mos-connection/model** is a library that contains types and enums, useful for applications that handles MOS-data.
