@@ -14,7 +14,7 @@
 		"release:set-version": "lerna version --exact --no-changelog --no-push --yes",
 		"release:bump-release": "lerna version --exact --conventional-commits --conventional-graduate --tag-version-prefix='v' --no-push --force-publish=*",
 		"release:bump-prerelease": "lerna version --exact --conventional-commits --conventional-prerelease --tag-version-prefix='v' --no-push --force-publish=*",
-		"set-version": "lerna version --exact --no-changelog --no-git-tag-version --no-push --yes",
+		"set-version": "lerna version --exact --no-changelog --no-push --yes --force-publish=*",
 		"setup": "lerna bootstrap",
 		"reset": "node scripts/reset.js",
 		"link:all": "lerna exec -- yarn link",
