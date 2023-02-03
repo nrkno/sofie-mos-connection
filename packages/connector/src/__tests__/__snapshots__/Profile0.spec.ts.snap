@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Profile 0 requestMachineInfo 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <reqMachInfo/>
+</mos>"
+`;
+
+exports[`Profile 0 requestMachineInfo 2`] = `
+{
+  "DOM": {
+    "_mosString128": "",
+  },
+  "ID": {
+    "_mosString128": "airchache.newscenter.com",
+  },
+  "SN": {
+    "_mosString128": "927748927",
+  },
+  "defaultActiveX": undefined,
+  "hwRev": {
+    "_mosString128": "",
+  },
+  "manufacturer": {
+    "_mosString128": "RadioVision, Ltd.",
+  },
+  "model": {
+    "_mosString128": "TCS6000",
+  },
+  "mosExternalMetaData": undefined,
+  "mosRev": {
+    "_mosString128": "2.8.2",
+  },
+  "opTime": {
+    "_mosTime": 1235951710000,
+    "_timezone": "Z",
+    "_timezoneOffset": 0,
+  },
+  "supportedProfiles": {
+    "deviceType": "NCS",
+    "profile0": true,
+    "profile1": true,
+    "profile2": true,
+    "profile3": true,
+    "profile4": true,
+    "profile5": true,
+    "profile6": true,
+    "profile7": true,
+  },
+  "swRev": {
+    "_mosString128": "2.1.0.37",
+  },
+  "time": {
+    "_mosTime": 1239470442000,
+    "_timezone": "Z",
+    "_timezoneOffset": 0,
+  },
+}
+`;

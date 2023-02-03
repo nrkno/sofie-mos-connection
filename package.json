@@ -1,104 +1,47 @@
 {
-  "name": "mos-connection",
-  "version": "2.0.1",
-  "description": "MOS compliant TCP/IP Socket connection.",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nrkno/sofie-mos-connection.git"
-  },
-  "bugs": {
-    "url": "https://github.com/nrkno/sofie-mos-connection/issues"
-  },
-  "homepage": "https://github.com/nrkno/sofie-mos-connection#readme",
-  "author": {
-    "name": "Jesper Stærkær",
-    "email": "jesper@superfly.tv",
-    "url": "http://superfly.tv"
-  },
-  "contributors": [
-    {
-      "name": "Johan Nyman",
-      "email": "johan@superfly.tv",
-      "url": "http://superfly.tv"
-    },
-    {
-      "name": "Stephan Nordnes Eriksen",
-      "email": "Stephanruler@gmail.com"
-    }
-  ],
-  "scripts": {
-    "info": "npm-scripts-info",
-    "build": "rimraf dist && yarn build:main",
-    "build:main": "tsc -p tsconfig.build.json",
-    "eslint": "eslint --ext .ts --ext .js --ext .tsx --ext .jsx --ignore-pattern dist",
-    "lint": "yarn eslint .",
-    "lint-fix": "yarn lint --fix",
-    "unit": "jest --forceExit",
-    "test": "yarn lint && yarn unit",
-    "watch": "jest --watch",
-    "cov": "jest --coverage=true && yarn cov-open",
-    "cov-open": "open-cli coverage/lcov-report/index.html",
-    "docs": "yarn docs:html && open-cli docs/index.html",
-    "docs:test": "yarn docs:html",
-    "docs:html": "typedoc src/index.ts --excludePrivate --theme default --out docs",
-    "docs:json": "typedoc --json docs/typedoc.json src/index.ts",
-    "release": "standard-version",
-    "release:bump-release": "yarn release",
-    "release:bump-prerelease": "yarn release --prerelease",
-    "reset": "git clean -dfx && git reset --hard && yarn",
-    "validate:dependencies": "yarn audit --groups dependencies && yarn license-validate",
-    "validate:dev-dependencies": "yarn audit --groups devDependencies",
-    "license-validate": "yarn sofie-licensecheck --allowPackages caniuse-lite@1.0.30001373"
-  },
-  "engines": {
-    "node": ">=14"
-  },
-  "files": [
-    "/dist",
-    "/CHANGELOG.md",
-    "/README.md",
-    "/LICENSE"
-  ],
-  "devDependencies": {
-    "@sofie-automation/code-standard-preset": "^2.0.2",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^14.18.23",
-    "jest": "^27.2.1",
-    "mockdate": "^3.0.5",
-    "open-cli": "^7.0.1",
-    "rimraf": "^3.0.2",
-    "standard-version": "^9.3.1",
-    "ts-jest": "^27.0.5",
-    "typedoc": "^0.22.18",
-    "typescript": "~4.5"
-  },
-  "keywords": [
-    "mos",
-    "broadcast",
-    "socket",
-    "typescript",
-    "javascript",
-    "open",
-    "source",
-    "automation",
-    "ncs",
-    "nrcs",
-    "rundown",
-    "production"
-  ],
-  "dependencies": {
-    "iconv-lite": "^0.6.2",
-    "moment": "^2.29.4",
-    "tslib": "^2.2.0",
-    "xml-js": "^1.6.11",
-    "xmlbuilder": "^15.1.1"
-  },
-  "standard-version": {
-    "message": "chore(release): %s",
-    "tagPrefix": ""
-  },
-  "prettier": "@sofie-automation/code-standard-preset/.prettierrc.json"
+	"name": "mos-connection-monorepo",
+	"version": "0.0.0",
+	"repository": "https://github.com/nrkno/tv-automation-mos-connection",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"prepare": "husky install",
+		"lerna": "lerna",
+		"postinstall": "node scripts/update-packages.js",
+		"ci": "yarn install && yarn build && yarn lint && yarn test",
+		"release:set-version": "lerna version --exact --no-changelog --no-push --yes",
+		"release:bump-release": "lerna version --exact --conventional-commits --conventional-graduate --tag-version-prefix='v' --no-push --force-publish=*",
+		"release:bump-prerelease": "lerna version --exact --conventional-commits --conventional-prerelease --tag-version-prefix='v' --no-push --force-publish=*",
+		"set-version": "lerna version --exact --no-changelog --no-git-tag-version --no-push --yes",
+		"setup": "lerna bootstrap",
+		"reset": "node scripts/reset.js",
+		"link:all": "lerna exec -- yarn link",
+		"build": "lerna run build --stream",
+		"build:changed": "lerna run build --since head --exclude-dependents --stream",
+		"lint": "lerna exec --parallel -- eslint . --ext .ts,.tsx",
+		"lintfix": "yarn lint --fix",
+		"lint:changed": "lerna exec --since origin/master --include-dependents -- eslint . --ext .js,.jsx,.ts,.tsx",
+		"test": "lerna run test --stream",
+		"test:changed": "lerna run --since origin/master --include-dependents test",
+		"test:coverage": "lerna run test --stream -- -- --coverage"
+	},
+	"devDependencies": {
+		"@sofie-automation/code-standard-preset": "^2.2.0",
+		"@types/jest": "^29.2.5",
+		"deep-extend": "^0.6.0",
+		"glob": "^7.1.6",
+		"jest": "^29.3.1",
+		"lerna": "^6.3.0",
+		"lodash": "^4.17.20",
+		"rimraf": "^3.0.2",
+		"ts-jest": "^29.0.3",
+		"typescript": "~4.9"
+	},
+	"engines": {
+		"node": ">=14.18.0"
+	},
+	"dependencies": {},
+	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json"
 }

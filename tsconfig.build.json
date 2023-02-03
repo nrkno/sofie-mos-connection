@@ -1,14 +1,14 @@
 {
 	"extends": "@sofie-automation/code-standard-preset/ts/tsconfig.lib",
 	"include": [
-		"src/**/*.ts"
+		"**/src/**/*.ts"
 	],
 	"exclude": [
-		"node_modules/**",
-		"src/**/*spec.ts",
-		"src/**/__tests__/*",
-		"src/**/__mocks__/*",
-		"scratch/**"
+		"**/node_modules/**",
+		"**/*spec.ts",
+		"**/__tests__",
+		"**/__mocks__",
+		"**/scratch/**"
 	],
 	"compilerOptions": {
 		"outDir": "./dist",
@@ -16,9 +16,6 @@
 		"paths": {
 			"*": [
 				"./node_modules/*"
-			],
-			"atem-connection": [
-				"./src/index.ts"
 			]
 		},
 		"types": [

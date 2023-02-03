@@ -1,4 +1,6 @@
-# Sofie: The Modern TV News Studio Automation System (MOS Connection library)
+# MOS-Connection
+
+_A part of **[Sofie: The Modern TV News Studio Automation System](https://github.com/nrkno/Sofie-TV-automation/)**_
 
 [![Tests](https://github.com/nrkno/sofie-mos-connection/actions/workflows/node.yaml/badge.svg)](https://github.com/nrkno/sofie-mos-connection/actions/workflows/node.yaml)
 [![codecov](https://codecov.io/gh/nrkno/sofie-mos-connection/branch/master/graph/badge.svg?token=LQL02uXajF)](https://codecov.io/gh/nrkno/sofie-mos-connection)
@@ -10,7 +12,7 @@ This is a part of the [**Sofie** TV News Studio Automation System](https://githu
 ## Getting started
 
 ```typescript
-import { MosConnection } from 'mos-connection'
+import { MosConnection } from '@mos-connection/connector'
 
 let mos = new MosConnection(new ConnectionConfig({
 	mosID: 'my.mos.application',

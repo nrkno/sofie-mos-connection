@@ -1,0 +1,481 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`message chunking chunk around space 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roReq>
+    <roID>M000123</roID>
+  </roReq>
+</mos>"
+`;
+
+exports[`message chunking chunk around space 2`] = `
+{
+  "ID": {
+    "_mosString128": "96857485",
+  },
+  "Slug": {
+    "_mosString128": "5PM RUNDOWN",
+  },
+  "Stories": [
+    {
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
+      },
+      "Items": [
+        {
+          "EditorialDuration": 645,
+          "ID": {
+            "_mosString128": "0",
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": {
+            "_mosString128": "M000224",
+          },
+          "Paths": [
+            {
+              "Description": "MPEG2 Video",
+              "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
+              "Type": "PATH",
+            },
+            {
+              "Description": "WM9 750Kbps",
+              "Target": "http://server/proxy/clipe.wmv",
+              "Type": "PROXY PATH",
+            },
+            {
+              "Description": "MOS Object",
+              "Target": "http://server/proxy/clipe.xml",
+              "Type": "METADATA PATH",
+            },
+          ],
+          "Slug": {
+            "_mosString128": "COLSTAT MURDER:VO",
+          },
+          "Trigger": "CHAINED",
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": {
+        "_mosString128": "B10",
+      },
+      "Slug": {
+        "_mosString128": "Colstat Murder",
+      },
+    },
+    {
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
+      },
+      "Items": [
+        {
+          "EditorialDuration": 310,
+          "EditorialStart": 55,
+          "ID": {
+            "_mosString128": "0",
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": {
+            "_mosString128": "M000133",
+          },
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": {
+        "_mosString128": "B11",
+      },
+      "Slug": {
+        "_mosString128": "Test MOS",
+      },
+    },
+  ],
+}
+`;
+
+exports[`message chunking chunks 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roReq>
+    <roID>M000123</roID>
+  </roReq>
+</mos>"
+`;
+
+exports[`message chunking chunks 2`] = `
+{
+  "ID": {
+    "_mosString128": "96857485",
+  },
+  "Slug": {
+    "_mosString128": "5PM RUNDOWN",
+  },
+  "Stories": [
+    {
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
+      },
+      "Items": [
+        {
+          "EditorialDuration": 645,
+          "ID": {
+            "_mosString128": "0",
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": {
+            "_mosString128": "M000224",
+          },
+          "Paths": [
+            {
+              "Description": "MPEG2 Video",
+              "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
+              "Type": "PATH",
+            },
+            {
+              "Description": "WM9 750Kbps",
+              "Target": "http://server/proxy/clipe.wmv",
+              "Type": "PROXY PATH",
+            },
+            {
+              "Description": "MOS Object",
+              "Target": "http://server/proxy/clipe.xml",
+              "Type": "METADATA PATH",
+            },
+          ],
+          "Slug": {
+            "_mosString128": "COLSTAT MURDER:VO",
+          },
+          "Trigger": "CHAINED",
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": {
+        "_mosString128": "B10",
+      },
+      "Slug": {
+        "_mosString128": "Colstat Murder",
+      },
+    },
+    {
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
+      },
+      "Items": [
+        {
+          "EditorialDuration": 310,
+          "EditorialStart": 55,
+          "ID": {
+            "_mosString128": "0",
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": {
+            "_mosString128": "M000133",
+          },
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": {
+        "_mosString128": "B11",
+      },
+      "Slug": {
+        "_mosString128": "Test MOS",
+      },
+    },
+  ],
+}
+`;
+
+exports[`message chunking junk data before 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roReq>
+    <roID>M000123</roID>
+  </roReq>
+</mos>"
+`;
+
+exports[`message chunking junk data before 2`] = `
+{
+  "ID": {
+    "_mosString128": "96857485",
+  },
+  "Slug": {
+    "_mosString128": "5PM RUNDOWN",
+  },
+  "Stories": [
+    {
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
+      },
+      "Items": [
+        {
+          "EditorialDuration": 645,
+          "ID": {
+            "_mosString128": "0",
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": {
+            "_mosString128": "M000224",
+          },
+          "Paths": [
+            {
+              "Description": "MPEG2 Video",
+              "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
+              "Type": "PATH",
+            },
+            {
+              "Description": "WM9 750Kbps",
+              "Target": "http://server/proxy/clipe.wmv",
+              "Type": "PROXY PATH",
+            },
+            {
+              "Description": "MOS Object",
+              "Target": "http://server/proxy/clipe.xml",
+              "Type": "METADATA PATH",
+            },
+          ],
+          "Slug": {
+            "_mosString128": "COLSTAT MURDER:VO",
+          },
+          "Trigger": "CHAINED",
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": {
+        "_mosString128": "B10",
+      },
+      "Slug": {
+        "_mosString128": "Colstat Murder",
+      },
+    },
+    {
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
+      },
+      "Items": [
+        {
+          "EditorialDuration": 310,
+          "EditorialStart": 55,
+          "ID": {
+            "_mosString128": "0",
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": {
+            "_mosString128": "M000133",
+          },
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": {
+        "_mosString128": "B11",
+      },
+      "Slug": {
+        "_mosString128": "Test MOS",
+      },
+    },
+  ],
+}
+`;
+
+exports[`message chunking junk data packet before 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <roReq>
+    <roID>M000123</roID>
+  </roReq>
+</mos>"
+`;
+
+exports[`message chunking junk data packet before 2`] = `
+{
+  "ID": {
+    "_mosString128": "96857485",
+  },
+  "Slug": {
+    "_mosString128": "5PM RUNDOWN",
+  },
+  "Stories": [
+    {
+      "ID": {
+        "_mosString128": "5983A501:0049B924:8390EF2B",
+      },
+      "Items": [
+        {
+          "EditorialDuration": 645,
+          "ID": {
+            "_mosString128": "0",
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": {
+            "_mosString128": "M000224",
+          },
+          "Paths": [
+            {
+              "Description": "MPEG2 Video",
+              "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
+              "Type": "PATH",
+            },
+            {
+              "Description": "WM9 750Kbps",
+              "Target": "http://server/proxy/clipe.wmv",
+              "Type": "PROXY PATH",
+            },
+            {
+              "Description": "MOS Object",
+              "Target": "http://server/proxy/clipe.xml",
+              "Type": "METADATA PATH",
+            },
+          ],
+          "Slug": {
+            "_mosString128": "COLSTAT MURDER:VO",
+          },
+          "Trigger": "CHAINED",
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": {
+        "_mosString128": "B10",
+      },
+      "Slug": {
+        "_mosString128": "Colstat Murder",
+      },
+    },
+    {
+      "ID": {
+        "_mosString128": "3854737F:0003A34D:983A0B28",
+      },
+      "Items": [
+        {
+          "EditorialDuration": 310,
+          "EditorialStart": 55,
+          "ID": {
+            "_mosString128": "0",
+          },
+          "MOSID": "testmos.enps.com",
+          "MosExternalMetaData": [
+            {
+              "MosPayload": {
+                "Owner": "SHOLMES",
+                "destination": "b",
+                "source": "a",
+                "transitionMode": 2,
+                "transitionPoint": 463,
+              },
+              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosScope": "PLAYLIST",
+            },
+          ],
+          "ObjectID": {
+            "_mosString128": "M000133",
+          },
+          "UserTimingDuration": 310,
+        },
+      ],
+      "Number": {
+        "_mosString128": "B11",
+      },
+      "Slug": {
+        "_mosString128": "Test MOS",
+      },
+    },
+  ],
+}
+`;

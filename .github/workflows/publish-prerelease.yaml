@@ -6,36 +6,42 @@ on:
 
 jobs:
   test:
-    name: Test
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-
+    name: Test on node ${{ matrix.node_version }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
-        node-version: [14.x, 16.x, 18.x]
-
+        node_version: ['14', '16', '18']
+        os: [ubuntu-latest] # [windows-latest, macOS-latest]
+    timeout-minutes: 3
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node_version }}
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Prepare Environment
         run: |
-          yarn install
+          yarn
+          yarn build
         env:
           CI: true
-      - name: Run tests
+      - name: Run unit tests
         run: |
-          yarn unit
+          yarn test -- -- --forceExit
         env:
           CI: true
 
   prerelease:
     name: Publish to NPM
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
 
     needs:
       - test
@@ -44,10 +50,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Use Node.js 14.x
+      - name: Use Node.js 16
         uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: 16
       - name: Check release is desired
         id: do-publish
         run: |
@@ -55,10 +61,10 @@ jobs:
             echo "No Token"
           elif [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
             echo "Publish nightly"
-            echo ::set-output name=publish::"nightly"
+            echo "publish=nightly" >> $GITHUB_OUTPUT
           else
             echo "Publish experimental"
-            echo ::set-output name=publish::"experimental"
+            echo "publish=experimental" >> $GITHUB_OUTPUT
           fi
       - name: Prepare Environment
         if: ${{ steps.do-publish.outputs.publish }}
@@ -66,27 +72,29 @@ jobs:
           yarn install
         env:
           CI: true
-      - name: Get the Prerelease tag
-        id: prerelease-tag
-        uses: yuya-takeyama/docker-tag-from-github-ref-action@bac6fc27957efa67f37debc26327a955dc41b0f4
-        with:
-          remove-version-tag-prefix: false
-      - name: Bump version and build
+      - name: Build
         if: ${{ steps.do-publish.outputs.publish }}
         run: |
+          yarn build
+        env:
+          CI: true
+      - name: Bump version
+        if: ${{ steps.do-publish.outputs.publish }}
+        run: |
+          git config --global user.email "info@superfly.tv"
+          git config --global user.name "superflytvab"
+
           COMMIT_TIMESTAMP=$(git log -1 --pretty=format:%ct HEAD)
           COMMIT_DATE=$(date -d @$COMMIT_TIMESTAMP +%Y%m%d-%H%M%S)
           GIT_HASH=$(git rev-parse --short HEAD)
-          PRERELEASE_TAG=nightly-$(echo "${{ steps.prerelease-tag.outputs.tag }}" | sed -r 's/[^a-z0-9]+/-/gi')
-          yarn release --prerelease $PRERELEASE_TAG-$COMMIT_DATE-$GIT_HASH --skip.changelog --skip.tag --skip.commit
-          yarn build
+          PRERELEASE_TAG=nightly-$(echo "${{ github.ref_name }}" | sed -r 's/[^a-z0-9]+/-/gi')
+          yarn release:bump-prerelease --no-changelog --no-commit-hooks --preid "$PRERELEASE_TAG-$COMMIT_DATE-$GIT_HASH" prerelease --yes
         env:
           CI: true
       - name: Publish to NPM
         if: ${{ steps.do-publish.outputs.publish }}
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
-          NEW_VERSION=$(node -p "require('./package.json').version")
-          yarn publish --access=public --new-version=$NEW_VERSION --network-timeout 100000 --tag "${{ steps.do-publish.outputs.publish }}"
+          yarn lerna publish from-package --tag-version-prefix='' --dist-tag ${{ steps.do-publish.outputs.publish }} --yes --no-verify-access
         env:
           CI: true

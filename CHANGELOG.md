@@ -1,13 +1,107 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [3.0.0-alpha.3](https://github.com/nrkno/tv-automation-mos-connection/compare/v3.0.0-alpha.2...v3.0.0-alpha.3) (2023-01-27)
+
+**Note:** Version bump only for package mos-connection-monorepo
+
+
+
+
+
+# [3.0.0-alpha.2](https://github.com/nrkno/tv-automation-mos-connection/compare/v3.0.0-alpha.0...v3.0.0-alpha.2) (2023-01-27)
+
+
+### Bug Fixes
+
+* add stringifyMosObject, an utility-function used to convert objects containing IMOSString128 etc to strings ([f3806ab](https://github.com/nrkno/tv-automation-mos-connection/commit/f3806ab4e72a02b450e91ab19fbbfca34c605caa))
+
+
+
+
+
+# [3.0.0-alpha.1](https://github.com/nrkno/tv-automation-mos-connection/compare/v3.0.0-alpha.0...3.0.0-alpha.1) (2023-01-27)
+
+
+### Bug Fixes
+
+* add stringifyMosObject, an utility-function used to convert objects containing IMOSString128 etc to strings ([f3806ab](https://github.com/nrkno/tv-automation-mos-connection/commit/f3806ab4e72a02b450e91ab19fbbfca34c605caa))
+
+
+
+
+
+# [v3.0.0-alpha.0](https://github.com/nrkno/tv-automation-mos-connection/compare/2.0.1...v3.0.0-alpha.0) (2022-12-09)
+
+### BREAKING CHANGES
+
+- mos-connection is now distributed as 3 separate npm-packages.
+  - **@mos-connection/model** contains types, enums and a few data-handling functions. This is useful for consuming apps that handles the MOS-data indirectly.
+  - **@mos-connection/helper** contains all of the /model but also includes functions fox xml-conversion. This is useful for consuming apps that creates/parses MOS-data, such as web-client-plugin handlers.
+  - **@mos-connection/connector** contains all of the above, as well as the MOS connector. This is equivalent to the previous `mos-connection` library.
+
+Notable code changes:
+
+```typescript
+this_is_the_new_code // old code
+```
+
+```typescript
+import * from '@mos-connection/connector' // previously: import * from 'mos-connection'
+```
+
+```typescript
+import { getDataHandlers } from '@mos-connection/model'
+const mosTypes = getMosTypes(true)
+
+// Removed classes MosString128, MosTime & MosDuration
+// These are replaces with the MosTypes methods described below as well as the types:
+type IMOSString128 // previously: MosString128
+type IMOSTime // previously: MosTime
+type IMOSDuration // previously: MosDuration
+
+// Create mos-types:
+const mosString128 = mosTypes.mosString128.create('abc') // previously: new MosString128('abc')
+const mosDuration = mosTypes.mosDuration.create(someDuration) // previously: new MosTime(someDuration)
+const mosTime = mosTypes.mosTime.create(someTime) // previously: const new MosTime(someTime)
+
+// Parse mos-types data:
+mosTypes.mosString128.stringify(mosString128) // previously: mosString128.toString() or hackish: mosString128['_str']
+mosTypes.mosTime.valueOf(mosTime)  // previously: mosTime.getTime()
+
+// Check if a data-point is of a certain MosType:
+mosTypes.mosTime.is(data) // previously: data instanceof MosTime
+
+addTextElement(xml, elementName, content, attributes, strict) // added the "strict" parameter
+```
+
+```typescript
+import { addTextElement } from '@mos-connection/model'
+
+// XML generation:
+addTextElement(xml, elementName, content, attributes, strict) // added the "strict" parameter
+```
+
+### Bug Fixes
+
+- better cleanup on dispose ([a241d78](https://github.com/nrkno/tv-automation-mos-connection/commit/a241d78e0dd0b4f8a24fb17964ea45b791afca6f))
+
+### Features
+
+- move helper functions into a separate package: $mos-connection/helper ([ecb51ec](https://github.com/nrkno/tv-automation-mos-connection/commit/ecb51ec3ca26c15a61fd629e59265345c247f82e))
+- move types and enums to @mos-connection/model ([2266488](https://github.com/nrkno/tv-automation-mos-connection/commit/2266488f4062da6a1f2949a3374c58c26a20d79e))
+
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 ### [2.0.1](https://github.com/nrkno/sofie-mos-connection/compare/2.0.0...2.0.1) (2022-08-01)
 
-
 ### Bug Fixes
 
-* gracefully handle failure to parse DOM in IMOSListMachInfo ([72aa53a](https://github.com/nrkno/sofie-mos-connection/commit/72aa53a35bc36f479c4db76fbdce26efeed30ca0))
+- gracefully handle failure to parse DOM in IMOSListMachInfo ([72aa53a](https://github.com/nrkno/sofie-mos-connection/commit/72aa53a35bc36f479c4db76fbdce26efeed30ca0))
 
 ## [2.0.0](https://github.com/nrkno/sofie-mos-connection/compare/1.0.7...2.0.0) (2022-06-08)
 

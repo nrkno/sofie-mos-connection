@@ -1,0 +1,62 @@
+{
+	"name": "@mos-connection/helper",
+	"version": "3.0.0-alpha.3",
+	"description": "Helper functions for the MOS-connection library",
+	"main": "dist/index.js",
+	"typings": "dist/index.d.ts",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nrkno/sofie-mos-connection.git"
+	},
+	"bugs": {
+		"url": "https://github.com/nrkno/sofie-mos-connection/issues"
+	},
+	"homepage": "https://github.com/nrkno/sofie-mos-connection#readme",
+	"scripts": {
+		"build": "rimraf dist && yarn build:main",
+		"build:main": "tsc -p tsconfig.build.json",
+		"test": "jest",
+		"precommit": "lint-staged"
+	},
+	"files": [
+		"/dist",
+		"/CHANGELOG.md",
+		"/README.md",
+		"/LICENSE"
+	],
+	"dependencies": {
+		"@mos-connection/model": "3.0.0-alpha.3",
+		"iconv-lite": "^0.6.2",
+		"tslib": "^2.2.0",
+		"xml-js": "^1.6.11",
+		"xmlbuilder": "^15.1.1"
+	},
+	"keywords": [
+		"mos",
+		"broadcast",
+		"socket",
+		"typescript",
+		"javascript",
+		"open",
+		"source",
+		"automation",
+		"ncs",
+		"nrcs",
+		"rundown",
+		"tv-production",
+		"sofie"
+	],
+	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
+	"engines": {
+		"node": ">=14.18.0"
+	},
+	"lint-staged": {
+		"*.{css,json,md,scss}": [
+			"prettier"
+		],
+		"*.{ts,tsx,js,jsx}": [
+			"eslint"
+		]
+	}
+}
