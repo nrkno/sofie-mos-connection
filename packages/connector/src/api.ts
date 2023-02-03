@@ -27,7 +27,7 @@ import { MosDevice } from './MosDevice'
 /*
 	This file defines the API for the MOS-connection.
 	Most of these interfaces are derived from the MOS protocol.
-	http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm
+	https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm
 */
 export interface IMosConnection {
 	readonly isListening: boolean
@@ -58,19 +58,19 @@ export interface IMOSDevice
 }
 /**
  * Method definitions for Profile 1
- * see http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#Profile1
+ * see https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#Profile1
  */
 export interface IMOSDeviceProfile0 {
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * The reqMachInfo message is a method for an NCS or MOS to determine more information about its counterpart.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#reqMachInfo
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#reqMachInfo
 	 */
 	requestMachineInfo: () => Promise<IMOSListMachInfo>
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * The reqMachInfo message is a method for an NCS or MOS to determine more information about its counterpart.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#reqMachInfo
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#reqMachInfo
 	 */
 	onRequestMachineInfo: (cb: () => Promise<IMOSListMachInfo>) => void
 
@@ -87,38 +87,38 @@ export interface IMOSDeviceProfile0 {
 }
 /**
  * Method definitions for Profile 1
- * see http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#Profile1
+ * see https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#Profile1
  */
 export interface IMOSDeviceProfile1 {
 	/**
 	 * Contains information that describes a unique MOS Object to the NCS.
 	 * The NCS uses this information to search for and reference the MOS Object.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObj
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObj
 	 */
 	sendMOSObject(obj: IMOSObject): Promise<IMOSAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Message used by the NCS to request the description of an object.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqObj
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqObj
 	 */
 	onRequestMOSObject: (cb: (objId: string) => Promise<IMOSObject | null>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Message used by the NCS to request the description of an object.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqObj
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqObj
 	 */
 	sendRequestMOSObject: (objId: IMOSString128) => Promise<IMOSObject>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Method for the NCS to request the MOS to send it a mosObj message for every Object in the MOS.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqAll
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqAll
 	 */
 	onRequestAllMOSObjects: (cb: () => Promise<Array<IMOSObject>>) => void
 	/**
 	 * Method for the NCS to request the MOS to send it a mosObj message for every Object in the MOS.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqAll
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqAll
 	 */
 	sendRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
 
@@ -130,45 +130,45 @@ export interface IMOSDeviceProfile1 {
 }
 /**
  * Method definitions for Profile 2
- * see http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#Profile2
+ * see https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#Profile2
  */
 export interface IMOSDeviceProfile2 {
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Message received from the NCS to the MOS that defines a new Running Order.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roCreate
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roCreate
 	 */
 	onCreateRunningOrder: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Message from the NCS to the MOS that defines a new Running Order.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roCreate
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roCreate
 	 */
 	sendCreateRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Message received from the NCS to the MOS that defines a new Running Order, replacing an existing one.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReplace
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReplace
 	 */
 	onReplaceRunningOrder: (cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Message received from the NCS to the MOS that defines a new Running Order, replacing an existing one.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReplace
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReplace
 	 */
 	sendReplaceRunningOrder: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Deletes a Running order in the MOS.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roDelete
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roDelete
 	 */
 	onDeleteRunningOrder: (cb: (runningOrderId: IMOSString128) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Deletes a Running order in the MOS.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roDelete
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roDelete
 	 */
 	sendDeleteRunningOrder: (runningOrderId: IMOSString128) => Promise<IMOSROAck>
 
@@ -177,8 +177,8 @@ export interface IMOSDeviceProfile2 {
 	 * Request for a complete build of a Running Order Playlist. NOTE:  This message can be used by either NCS or MOS.
 	 * A MOS can use this to "resync" its Playlist with the NCS Running Order or to obtain a full description of the Playlist at any time.
 	 * An NCS can use this as a diagnostic tool to check the order of the Playlist constructed in the MOS versus the sequence of Items in the Running Order.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReq
-	 * Response: http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roList
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReq
+	 * Response: https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roList
 	 */
 	onRequestRunningOrder: (cb: (runningOrderId: IMOSString128) => Promise<IMOSRunningOrder | null>) => void
 	/**
@@ -186,184 +186,184 @@ export interface IMOSDeviceProfile2 {
 	 * Request for a complete build of a Running Order Playlist. NOTE:  This message can be used by either NCS or MOS.
 	 * A MOS can use this to "resync" its Playlist with the NCS Running Order or to obtain a full description of the Playlist at any time.
 	 * An NCS can use this as a diagnostic tool to check the order of the Playlist constructed in the MOS versus the sequence of Items in the Running Order.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReq
-	 * Response: http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roList
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReq
+	 * Response: https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roList
 	 */
 	sendRequestRunningOrder: (runningOrderId: IMOSString128) => Promise<IMOSRunningOrder | null>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * The roMetadataReplace message allows metadata associated with a running order to be replaced without deleting the running order and sending the entire running order again.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roMetadataReplace
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roMetadataReplace
 	 */
 	onMetadataReplace: (cb: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * The roMetadataReplace message allows metadata associated with a running order to be replaced without deleting the running order and sending the entire running order again.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roMetadataReplace
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roMetadataReplace
 	 */
 	sendMetadataReplace: (metadata: IMOSRunningOrderBase) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * A method for the MOS to update the NCS on the status of a RO. This allows the NCS to reflect the status of any element in the MOS Running Order in the NCS Running Order display.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.7.2_roElementStat_-
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.7.2_roElementStat_-
 	 */
 	onRunningOrderStatus: (cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>) => void // get roElementStat
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * A method for the MOS to update the NCS on the status of a RO. This allows the NCS to reflect the status of any element in the MOS Running Order in the NCS Running Order display.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.7.2_roElementStat_-
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.7.2_roElementStat_-
 	 */
 	sendRunningOrderStatus: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck> // send roElementStat
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * A method for the MOS to update the NCS on the status of a STORY. This allows the NCS to reflect the status of any element in the MOS Running Order in the NCS Running Order display.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.7.2_roElementStat_-
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.7.2_roElementStat_-
 	 */
 	onStoryStatus: (cb: (status: IMOSStoryStatus) => Promise<IMOSROAck>) => void // get roElementStat
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * A method for the MOS to update the NCS on the status of a STORY. This allows the NCS to reflect the status of any element in the MOS Running Order in the NCS Running Order display.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.7.2_roElementStat_-
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.7.2_roElementStat_-
 	 */
 	sendStoryStatus: (status: IMOSStoryStatus) => Promise<IMOSROAck> // send roElementStat
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * A method for the MOS to update the NCS on the status of an ITEM. This allows the NCS to reflect the status of any element in the MOS Running Order in the NCS Running Order display.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.7.2_roElementStat_-
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.7.2_roElementStat_-
 	 */
 	onItemStatus: (cb: (status: IMOSItemStatus) => Promise<IMOSROAck>) => void // get roElementStat
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * A method for the MOS to update the NCS on the status of an ITEM. This allows the NCS to reflect the status of any element in the MOS Running Order in the NCS Running Order display.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.7.2_roElementStat_-
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.7.2_roElementStat_-
 	 */
 	sendItemStatus: (status: IMOSItemStatus) => Promise<IMOSROAck> // send roElementStat
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * The roReadyToAir message allows the NCS to signal the MOS that a Running Order has been editorially approved ready for air.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReadyToAir
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReadyToAir
 	 */
 	onReadyToAir: (cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * The roReadyToAir message allows the NCS to signal the MOS that a Running Order has been editorially approved ready for air.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReadyToAir
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReadyToAir
 	 */
 	sendReadyToAir: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Insert one or more story into a Running Order
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	onROInsertStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Insert one or more story into a Running Order
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	sendROInsertStories: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Insert one or more Items into a Story
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	onROInsertItems: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Insert one or more Items into a Story
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	sendROInsertItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Replace (update) a Story with a new story.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	onROReplaceStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Replace (update) a Story with a new story.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	sendROReplaceStories: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Replace (update) an Item with a new Item.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	onROReplaceItems: (cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Replace (update) an Item with a new Item.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	sendROReplaceItems: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Move one or more Stories within a Running Order
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	onROMoveStories: (cb: (Action: IMOSStoryAction, Stories: Array<IMOSString128>) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Move one or more Stories within a Running Order
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	sendROMoveStories: (Action: IMOSStoryAction, Stories: Array<IMOSString128>) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Move one or more Items within a Story
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	onROMoveItems: (cb: (Action: IMOSItemAction, Items: Array<IMOSString128>) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Move one or more Items within a Story
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	sendROMoveItems: (Action: IMOSItemAction, Items: Array<IMOSString128>) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Delete one or more Stories within a Running Order
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	onRODeleteStories: (cb: (Action: IMOSROAction, Stories: Array<IMOSString128>) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Delete one or more Stories within a Running Order
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	sendRODeleteStories: (Action: IMOSROAction, Stories: Array<IMOSString128>) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Delete one or more Items within a Story
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	onRODeleteItems: (cb: (Action: IMOSStoryAction, Items: Array<IMOSString128>) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Delete one or more Items within a Story
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	sendRODeleteItems: (Action: IMOSStoryAction, Items: Array<IMOSString128>) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Swap two Stories
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	onROSwapStories: (
 		cb: (Action: IMOSROAction, StoryID0: IMOSString128, StoryID1: IMOSString128) => Promise<IMOSROAck>
@@ -371,14 +371,14 @@ export interface IMOSDeviceProfile2 {
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Swap two Stories
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	sendROSwapStories: (Action: IMOSROAction, StoryID0: IMOSString128, StoryID1: IMOSString128) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Swap two Items
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	onROSwapItems: (
 		cb: (Action: IMOSStoryAction, ItemID0: IMOSString128, ItemID1: IMOSString128) => Promise<IMOSROAck>
@@ -386,7 +386,7 @@ export interface IMOSDeviceProfile2 {
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * Swap two Items
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roElementAction
 	 */
 	sendROSwapItems: (Action: IMOSStoryAction, ItemID0: IMOSString128, ItemID1: IMOSString128) => Promise<IMOSROAck>
 
@@ -402,19 +402,19 @@ export interface IMOSDeviceProfile2 {
 }
 /**
  * Method definitions for Profile 3
- * see http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#Profile3
+ * see https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#Profile3
  */
 export interface IMOSDeviceProfile3 {
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * mosObjCreate allows an NCS to request the Media Object Server to create a Media Object with specific metadata associated with it.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObjCreate
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObjCreate
 	 */
 	onObjectCreate: (cb: (object: IMOSObject) => Promise<IMOSAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * mosObjCreate allows an NCS to request the Media Object Server to create a Media Object with specific metadata associated with it.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObjCreate
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObjCreate
 	 */
 	sendObjectCreate: (object: IMOSObject) => Promise<IMOSAck>
 
@@ -423,7 +423,7 @@ export interface IMOSDeviceProfile3 {
 	 * This message allows a Media Object Server to replace an Item Reference in a Story with new metadata values and/or additional tags.
 	 * The Story must be in a MOS Active PlayList.
 	 * This message is initiated by the Media Object Server, rather than the NCS.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosItemReplace
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosItemReplace
 	 */
 	onItemReplace: (cb: (roID: IMOSString128, storyID: IMOSString128, item: IMOSItem) => Promise<IMOSROAck>) => void
 	/**
@@ -431,72 +431,72 @@ export interface IMOSDeviceProfile3 {
 	 * This message allows a Media Object Server to replace an Item Reference in a Story with new metadata values and/or additional tags.
 	 * The Story must be in a MOS Active PlayList.
 	 * This message is initiated by the Media Object Server, rather than the NCS.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosItemReplace
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosItemReplace
 	 */
 	sendItemReplace: (options: MosItemReplaceOptions) => Promise<IMOSROAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * mosReqSearchable Schema is a mechanism used by the NCS to request the MOS to send a pointer to a schema in which searchable fields are defined by the MOS device.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqSearchableSchema
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqSearchableSchema
 	 */
 	onRequestSearchableSchema: (cb: (username: string) => Promise<IMOSListSearchableSchema>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * mosReqSearchable Schema is a mechanism used by the NCS to request the MOS to send a pointer to a schema in which searchable fields are defined by the MOS device.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqSearchableSchema
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqSearchableSchema
 	 */
 	sendRequestSearchableSchema: (username: string) => Promise<IMOSListSearchableSchema>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * mosReqObjList is a mechanism used by a NCS to retrieve only selected object descriptions from a MOS.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqObjList
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqObjList
 	 */
 	onRequestObjectList: (cb: (objList: IMOSRequestObjectList) => Promise<IMOSObjectList>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * mosReqObjList is a mechanism used by a NCS to retrieve only selected object descriptions from a MOS.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqObjList
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqObjList
 	 */
 	sendRequestObjectList: (reqObjList: IMOSRequestObjectList) => Promise<IMOSObjectList>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * mosReqObjAction allows an NCS to request the Media Object Server to create, modify or delete a media object.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.3.3_mosReqObjAction_%E2%80%93_NCS_request
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.3.3_mosReqObjAction_%E2%80%93_NCS_request
 	 */
 	onRequestObjectActionNew: (cb: (obj: IMOSObject) => Promise<IMOSAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * mosReqObjAction allows an NCS to request the Media Object Server to create, modify or delete a media object.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.3.3_mosReqObjAction_%E2%80%93_NCS_request
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.3.3_mosReqObjAction_%E2%80%93_NCS_request
 	 */
 	sendRequestObjectActionNew: (obj: IMOSObject) => Promise<IMOSAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * mosReqObjAction allows an NCS to request the Media Object Server to create, modify or delete a media object.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.3.3_mosReqObjAction_%E2%80%93_NCS_request
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.3.3_mosReqObjAction_%E2%80%93_NCS_request
 	 */
 	onRequestObjectActionUpdate: (cb: (objId: IMOSString128, obj: IMOSObject) => Promise<IMOSAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * mosReqObjAction allows an NCS to request the Media Object Server to create, modify or delete a media object.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.3.3_mosReqObjAction_%E2%80%93_NCS_request
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.3.3_mosReqObjAction_%E2%80%93_NCS_request
 	 */
 	sendRequestObjectActionUpdate: (objId: IMOSString128, obj: IMOSObject) => Promise<IMOSAck>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * mosReqObjAction allows an NCS to request the Media Object Server to create, modify or delete a media object.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.3.3_mosReqObjAction_%E2%80%93_NCS_request
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.3.3_mosReqObjAction_%E2%80%93_NCS_request
 	 */
 	onRequestObjectActionDelete: (cb: (objId: IMOSString128) => Promise<IMOSAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * mosReqObjAction allows an NCS to request the Media Object Server to create, modify or delete a media object.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.3.3_mosReqObjAction_%E2%80%93_NCS_request
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#_3.3.3_mosReqObjAction_%E2%80%93_NCS_request
 	 */
 	sendRequestObjectActionDelete: (objId: IMOSString128) => Promise<IMOSAck>
 
@@ -522,32 +522,32 @@ export interface IMOSDeviceProfile3 {
 }
 /**
  * Method definitions for Profile 4
- * see http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#Profile4
+ * see https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#Profile4
  */
 export interface IMOSDeviceProfile4 {
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * roReqAll is a request for a description of all Running Orders known by a NCS from a MOS.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReqAll
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReqAll
 	 */
 	onRequestAllRunningOrders: (cb: () => Promise<IMOSRunningOrder[]>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * roReqAll is a request for a description of all Running Orders known by a NCS from a MOS.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReqAll
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roReqAll
 	 */
 	sendRequestAllRunningOrders: () => Promise<Array<IMOSRunningOrderBase>>
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * This message enables sending the body of story from the NCS to a Media Object Server.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roStorySend
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roStorySend
 	 */
 	onRunningOrderStory: (cb: (story: IMOSROFullStory) => Promise<IMOSROAck>) => void
 	/**
 	 * Send message (as NCS) to a MOS device:
 	 * This message enables sending the body of story from the NCS to a Media Object Server.
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roStorySend
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#roStorySend
 	 */
 	sendRunningOrderStory: (story: IMOSROFullStory) => Promise<IMOSROAck>
 

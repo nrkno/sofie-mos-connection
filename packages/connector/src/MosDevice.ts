@@ -271,7 +271,7 @@ export class MosDevice implements IMOSDevice {
 				// spec: Pause, when greater than zero, indicates the number of seconds to pause
 				// between individual mosObj messages.
 				// Pause of zero indicates that all objects will be sent using the mosListAll message..
-				// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqAll
+				// https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqAll
 				if (pause > 0) {
 					if (mosObjects.length) {
 						// const firstObject = mosObjects.shift() as IMOSObject
@@ -771,7 +771,7 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	/**
-	 * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosListAll
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosListAll
 	 */
 	private async _sendAllMOSObjects(objs: IMOSObject[]): Promise<IMOSAck> {
 		const message = new MosModel.MosListAll(objs, this.strict)

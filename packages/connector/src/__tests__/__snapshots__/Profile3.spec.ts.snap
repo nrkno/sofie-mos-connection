@@ -118,8 +118,8 @@ exports[`Profile 3 mosReqSearchableSchema 1`] = `
 
 exports[`Profile 3 mosReqSearchableSchema 2`] = `
 {
-  "mosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
-  "text": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+  "mosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+  "text": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
   "username": "myUsername",
 }
 `;
@@ -240,7 +240,7 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
             "mediaTime": 0,
             "text": 0,
           },
-          "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+          "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
           "MosScope": "STORY",
         },
       ],
@@ -252,12 +252,12 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
         },
         {
           "Description": "WM9 750Kbps",
-          "Target": "http://server/proxy/clipe.wmv",
+          "Target": "https://server/proxy/clipe.wmv",
           "Type": "PROXY PATH",
         },
         {
           "Description": "MOS Object",
-          "Target": "http://server/proxy/clipe.xml",
+          "Target": "https://server/proxy/clipe.xml",
           "Type": "METADATA PATH",
         },
       ],
@@ -366,7 +366,7 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
             "mediaTime": 0,
             "text": 0,
           },
-          "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+          "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
           "MosScope": "STORY",
         },
       ],
@@ -378,12 +378,12 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
         },
         {
           "Description": "WM9 750Kbps",
-          "Target": "http://server/proxy/clipe.wmv",
+          "Target": "https://server/proxy/clipe.wmv",
           "Type": "PROXY PATH",
         },
         {
           "Description": "MOS Object",
-          "Target": "http://server/proxy/clipe.xml",
+          "Target": "https://server/proxy/clipe.xml",
           "Type": "METADATA PATH",
         },
       ],
@@ -492,7 +492,7 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
             "mediaTime": 0,
             "text": 0,
           },
-          "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+          "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
           "MosScope": "STORY",
         },
       ],
@@ -504,12 +504,12 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
         },
         {
           "Description": "WM9 750Kbps",
-          "Target": "http://server/proxy/clipe.wmv",
+          "Target": "https://server/proxy/clipe.wmv",
           "Type": "PROXY PATH",
         },
         {
           "Description": "MOS Object",
-          "Target": "http://server/proxy/clipe.xml",
+          "Target": "https://server/proxy/clipe.xml",
           "Type": "METADATA PATH",
         },
       ],
@@ -556,7 +556,7 @@ exports[`Profile 3 onMosItemReplace 1`] = `
             "key": 110,
             "trigger": 837,
           },
-          "MosSchema": "HTTP://VENDOR/MOS/supportedSchemas/vvend280",
+          "MosSchema": "https://VENDOR/MOS/supportedSchemas/vvend280",
           "MosScope": "PLAYLIST",
         },
       ],
@@ -571,12 +571,12 @@ exports[`Profile 3 onMosItemReplace 1`] = `
         },
         {
           "Description": "WM9 750Kbps",
-          "Target": "http://server/proxy/clipe.wmv",
+          "Target": "https://server/proxy/clipe.wmv",
           "Type": "PROXY PATH",
         },
         {
           "Description": "MOS Object",
-          "Target": "http://server/proxy/clipe.xml",
+          "Target": "https://server/proxy/clipe.xml",
           "Type": "METADATA PATH",
         },
       ],
@@ -695,7 +695,7 @@ exports[`Profile 3 onMosObjCreate 1`] = `
             "mediaTime": 0,
             "text": 0,
           },
-          "MosSchema": "http://NCSA4.com/mos/supported_schemas/NCSAXML2.08",
+          "MosSchema": "https://ncsA4.com/mos/supported_schemas/NCSAXML2.08",
           "MosScope": "STORY",
         },
       ],
@@ -857,7 +857,7 @@ exports[`Profile 3 onMosReqObjectActionNew 1`] = `
             "mediaTime": 0,
             "text": 0,
           },
-          "MosSchema": "http://NCSA4.com/mos/supported_schemas/NCSAXML2.08",
+          "MosSchema": "https://ncsA4.com/mos/supported_schemas/NCSAXML2.08",
           "MosScope": "STORY",
         },
       ],
@@ -988,7 +988,7 @@ exports[`Profile 3 onMosReqObjectActionUpdate 1`] = `
             "mediaTime": 0,
             "text": 0,
           },
-          "MosSchema": "http://NCSA4.com/mos/supported_schemas/NCSAXML2.08",
+          "MosSchema": "https://ncsA4.com/mos/supported_schemas/NCSAXML2.08",
           "MosScope": "STORY",
         },
       ],
@@ -1036,7 +1036,7 @@ exports[`Profile 3 onMosReqObjectList 1`] = `
       "generalSearch": "man bites dog",
       "listReturnEnd": null,
       "listReturnStart": 1,
-      "mosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+      "mosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
       "queryID": "123439392039393ade0393zdkdls",
       "searchGroups": [
         {
@@ -1123,7 +1123,7 @@ exports[`Profile 3 onMosReqSearchableSchema: <mos>
   <mosID>our.mos.id</mosID>
   <messageID>1635</messageID>
   <mosListSearchableSchema username="jbob">
-    <mosSchema>http://example.com/mosSearchableSchema</mosSchema>
+    <mosSchema>https://example.com/mosSearchableSchema</mosSchema>
   </mosListSearchableSchema>
 </mos> 1`] = `
 "<mos>
@@ -1131,7 +1131,7 @@ exports[`Profile 3 onMosReqSearchableSchema: <mos>
   <mosID>our.mos.id</mosID>
   <messageID>1635</messageID>
   <mosListSearchableSchema username="jbob">
-    <mosSchema>http://example.com/mosSearchableSchema</mosSchema>
+    <mosSchema>https://example.com/mosSearchableSchema</mosSchema>
   </mosListSearchableSchema>
 </mos>"
 `;

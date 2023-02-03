@@ -61,32 +61,32 @@ const xmlData = {
 	</listMachInfo>`,
 	reqObj: `<mosReqObj>		<objID>M000123</objID>		 </mosReqObj>`,
 	mosReqAll: `<mosReqAll>		 <pause>0</pause>		  </mosReqAll>`,
-	mosObj: `<mosObj>	<objID>M000123</objID>	<objSlug>Hotel Fire</objSlug>	<mosAbstract>		<b>Hotel Fire</b>		<em>vo</em>		:30	</mosAbstract>	<objGroup>Show 7</objGroup>	<objType>VIDEO</objType>	<objTB>59.94</objTB>	<objRev>1</objRev>	<objDur>1800</objDur>	<status>NEW</status>	<objAir>READY</objAir><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath></objPaths>	<createdBy>Chris</createdBy>	<created>2009-10-31T23:39:12</created>	<changedBy>Chris</changedBy>	<changed>2009-10-31T23:39:12</changed>	<description>		<p>		  Exterior footage of		  <em>Baley Park Hotel</em>			on fire with natural sound. Trucks are visible for the first portion of the clip.		  <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>		</p>		<p>		  <tab/>		  Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.		</p>		<p>		  <em>Clip has been doubled for pad on voice over.</em>		</p>	</description>	<mosExternalMetadata>		<mosScope>STORY</mosScope>		<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>		<mosPayload>		  <Owner>SHOLMES</Owner>		  <ModTime>20010308142001</ModTime>		  <mediaTime>0</mediaTime>		  <TextTime>278</TextTime>		  <ModBy>LJOHNSTON</ModBy>		  <Approved>0</Approved>		  <Creator>SHOLMES</Creator>		</mosPayload>	</mosExternalMetadata></mosObj>`,
-	mosListAll: `<mosListAll><mosObj><objID>M000123</objID><objSlug>HOTEL FIRE</objSlug><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath></objPaths>      <createdBy>Chris</createdBy>      <created>2009-10-31T23:39:12</created>      <changedBy>Chris</changedBy>      <changed>2009-11-01T14:35:55</changed>      <description>         <p>                                  Exterior footage of            <em>Baley Park Hotel</em>             on fire with natural sound. Trucks are visible for the first portion of the clip.                    <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>         </p>         <p>            <tab/>            Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.         </p>         <p>            <em>Clip has been doubled for pad on voice over.</em>         </p>      </description>    </mosObj>    <mosObj>      <objID>M000224</objID>      <objSlug>COLSTAT MURDER:VO</objSlug>      <objType>VIDEO</objType>      <objTB>59.94</objTB>      <objRev>4</objRev>      <objDur>800</objDur>      <status>UPDATED</status>      <objAir>READY</objAir><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath></objPaths>      <createdBy>Phil</createdBy>      <created>2009-11-01T15:19:01</created>      <changedBy>Chris</changedBy>      <changed>2009-11-01T15:21:15</changed>      <description>VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.</description>      <mosExternalMetadata>         <mosScope>STORY</mosScope>           <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>         <mosPayload>            <Owner>SHOLMES</Owner>            <ModTime>20010308142001</ModTime>            <mediaTime>0</mediaTime>            <TextTime>278</TextTime>            <ModBy>LJOHNSTON</ModBy>            <Approved>0</Approved>            <Creator>SHOLMES</Creator>         </mosPayload>      </mosExternalMetadata>    </mosObj>   </mosListAll>`,
+	mosObj: `<mosObj>	<objID>M000123</objID>	<objSlug>Hotel Fire</objSlug>	<mosAbstract>		<b>Hotel Fire</b>		<em>vo</em>		:30	</mosAbstract>	<objGroup>Show 7</objGroup>	<objType>VIDEO</objType>	<objTB>59.94</objTB>	<objRev>1</objRev>	<objDur>1800</objDur>	<status>NEW</status>	<objAir>READY</objAir><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>	<createdBy>Chris</createdBy>	<created>2009-10-31T23:39:12</created>	<changedBy>Chris</changedBy>	<changed>2009-10-31T23:39:12</changed>	<description>		<p>		  Exterior footage of		  <em>Baley Park Hotel</em>			on fire with natural sound. Trucks are visible for the first portion of the clip.		  <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>		</p>		<p>		  <tab/>		  Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.		</p>		<p>		  <em>Clip has been doubled for pad on voice over.</em>		</p>	</description>	<mosExternalMetadata>		<mosScope>STORY</mosScope>		<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>		<mosPayload>		  <Owner>SHOLMES</Owner>		  <ModTime>20010308142001</ModTime>		  <mediaTime>0</mediaTime>		  <TextTime>278</TextTime>		  <ModBy>LJOHNSTON</ModBy>		  <Approved>0</Approved>		  <Creator>SHOLMES</Creator>		</mosPayload>	</mosExternalMetadata></mosObj>`,
+	mosListAll: `<mosListAll><mosObj><objID>M000123</objID><objSlug>HOTEL FIRE</objSlug><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>      <createdBy>Chris</createdBy>      <created>2009-10-31T23:39:12</created>      <changedBy>Chris</changedBy>      <changed>2009-11-01T14:35:55</changed>      <description>         <p>                                  Exterior footage of            <em>Baley Park Hotel</em>             on fire with natural sound. Trucks are visible for the first portion of the clip.                    <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>         </p>         <p>            <tab/>            Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.         </p>         <p>            <em>Clip has been doubled for pad on voice over.</em>         </p>      </description>    </mosObj>    <mosObj>      <objID>M000224</objID>      <objSlug>COLSTAT MURDER:VO</objSlug>      <objType>VIDEO</objType>      <objTB>59.94</objTB>      <objRev>4</objRev>      <objDur>800</objDur>      <status>UPDATED</status>      <objAir>READY</objAir><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>      <createdBy>Phil</createdBy>      <created>2009-11-01T15:19:01</created>      <changedBy>Chris</changedBy>      <changed>2009-11-01T15:21:15</changed>      <description>VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.</description>      <mosExternalMetadata>         <mosScope>STORY</mosScope>           <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>         <mosPayload>            <Owner>SHOLMES</Owner>            <ModTime>20010308142001</ModTime>            <mediaTime>0</mediaTime>            <TextTime>278</TextTime>            <ModBy>LJOHNSTON</ModBy>            <Approved>0</Approved>            <Creator>SHOLMES</Creator>         </mosPayload>      </mosExternalMetadata>    </mosObj>   </mosListAll>`,
 
-	roCreate: `<roCreate><roID>96857485</roID>	  <roSlug>5PM RUNDOWN</roSlug>	  <roEdStart>2009-04-17T17:02:00</roEdStart>	  <roEdDur>00:58:25</roEdDur>	  <story>		 <storyID>5983A501:0049B924:8390EF2B</storyID>		 <storySlug>COLSTAT MURDER</storySlug>		 <storyNum>A5</storyNum>		 <item>			<itemID>0</itemID>			<itemSlug>COLSTAT MURDER:VO</itemSlug>			<objID>M000224</objID>			<mosID>testmos.enps.com</mosID>		<objPaths>	 <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>	 <objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>		</objPaths>			<itemEdDur>645</itemEdDur>			<itemUserTimingDur>310</itemUserTimingDur>			<itemTrigger>CHAINED</itemTrigger>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	  <story>		 <storyID>3854737F:0003A34D:983A0B28</storyID>		 <storySlug>AIRLINE INSPECTIONS</storySlug>		 <storyNum>A6</storyNum>		 <item>			<itemID>0</itemID>			<objID>M000133</objID>			<mosID>testmos.enps.com</mosID>			<itemEdStart>55</itemEdStart>			<itemEdDur>310</itemEdDur>			 <itemUserTimingDur>200</itemUserTimingDur>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	</roCreate>`,
+	roCreate: `<roCreate><roID>96857485</roID>	  <roSlug>5PM RUNDOWN</roSlug>	  <roEdStart>2009-04-17T17:02:00</roEdStart>	  <roEdDur>00:58:25</roEdDur>	  <story>		 <storyID>5983A501:0049B924:8390EF2B</storyID>		 <storySlug>COLSTAT MURDER</storySlug>		 <storyNum>A5</storyNum>		 <item>			<itemID>0</itemID>			<itemSlug>COLSTAT MURDER:VO</itemSlug>			<objID>M000224</objID>			<mosID>testmos.enps.com</mosID>		<objPaths>	 <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>	 <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>		</objPaths>			<itemEdDur>645</itemEdDur>			<itemUserTimingDur>310</itemUserTimingDur>			<itemTrigger>CHAINED</itemTrigger>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	  <story>		 <storyID>3854737F:0003A34D:983A0B28</storyID>		 <storySlug>AIRLINE INSPECTIONS</storySlug>		 <storyNum>A6</storyNum>		 <item>			<itemID>0</itemID>			<objID>M000133</objID>			<mosID>testmos.enps.com</mosID>			<itemEdStart>55</itemEdStart>			<itemEdDur>310</itemEdDur>			 <itemUserTimingDur>200</itemUserTimingDur>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	</roCreate>`,
 
-	roReplace: `<roReplace>	  <roID>96857485</roID>	  <roSlug>5PM RUNDOWN</roSlug>	  <story>		 <storyID>5983A501:0049B924:8390EF2B</storyID>		 <storySlug>COLSTAT MURDER</storySlug>		 <storyNum>A1</storyNum>		 <item>			<itemID>0</itemID>			<itemSlug>COLSTAT MURDER:VO</itemSlug>			<objID>M000224</objID>			<mosID>testmos.enps.com</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath></objPaths>			<itemEdDur>645</itemEdDur>			<itemUserTimingDur>310</itemUserTimingDur>			<itemTrigger>CHAINED</itemTrigger>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	  <story>		 <storyID>3852737F:0013A64D:923A0B28</storyID>		 <storySlug>AIRLINE SAFETY</storySlug>		 <storyNum>A2</storyNum>		 <item>			<itemID>0</itemID>			<objID>M000295</objID>			<mosID>testmos.enps.com</mosID>			<itemEdStart>500</itemEdStart>			<itemEdDur>600</itemEdDur>			<itemUserTimingDur>310</itemUserTimingDur>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	</roReplace>`,
+	roReplace: `<roReplace>	  <roID>96857485</roID>	  <roSlug>5PM RUNDOWN</roSlug>	  <story>		 <storyID>5983A501:0049B924:8390EF2B</storyID>		 <storySlug>COLSTAT MURDER</storySlug>		 <storyNum>A1</storyNum>		 <item>			<itemID>0</itemID>			<itemSlug>COLSTAT MURDER:VO</itemSlug>			<objID>M000224</objID>			<mosID>testmos.enps.com</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>			<itemEdDur>645</itemEdDur>			<itemUserTimingDur>310</itemUserTimingDur>			<itemTrigger>CHAINED</itemTrigger>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	  <story>		 <storyID>3852737F:0013A64D:923A0B28</storyID>		 <storySlug>AIRLINE SAFETY</storySlug>		 <storyNum>A2</storyNum>		 <item>			<itemID>0</itemID>			<objID>M000295</objID>			<mosID>testmos.enps.com</mosID>			<itemEdStart>500</itemEdStart>			<itemEdDur>600</itemEdDur>			<itemUserTimingDur>310</itemUserTimingDur>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	</roReplace>`,
 
 	roDelete: `<roDelete><roID>49478285</roID></roDelete>`,
 
 	roReq: `<roReq><roID>96857485</roID>	</roReq>`,
-	roList: `<roList><roID>96857485</roID>	  <roSlug>5PM RUNDOWN</roSlug>	  <story>		 <storyID>5983A501:0049B924:8390EF2B</storyID>		 <storySlug>Colstat Murder</storySlug>		 <storyNum>B10</storyNum>		 <item>			<itemID>0</itemID>			<itemSlug>COLSTAT MURDER:VO</itemSlug>			<objID>M000224</objID>			<mosID>testmos.enps.com</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath></objPaths>			<itemEdDur>645</itemEdDur>			 <itemUserTimingDur>310</itemUserTimingDur>			<itemTrigger>CHAINED</itemTrigger>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	  <story>		 <storyID>3854737F:0003A34D:983A0B28</storyID>		 <storySlug>Test MOS</storySlug>		 <storyNum>B11</storyNum>		 <item>			<itemID>0</itemID>			<objID>M000133</objID>			<mosID>testmos.enps.com</mosID>			<itemEdStart>55</itemEdStart>			<itemEdDur>310</itemEdDur>			 <itemUserTimingDur>310</itemUserTimingDur>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	</roList>`,
+	roList: `<roList><roID>96857485</roID>	  <roSlug>5PM RUNDOWN</roSlug>	  <story>		 <storyID>5983A501:0049B924:8390EF2B</storyID>		 <storySlug>Colstat Murder</storySlug>		 <storyNum>B10</storyNum>		 <item>			<itemID>0</itemID>			<itemSlug>COLSTAT MURDER:VO</itemSlug>			<objID>M000224</objID>			<mosID>testmos.enps.com</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>			<itemEdDur>645</itemEdDur>			 <itemUserTimingDur>310</itemUserTimingDur>			<itemTrigger>CHAINED</itemTrigger>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	  <story>		 <storyID>3854737F:0003A34D:983A0B28</storyID>		 <storySlug>Test MOS</storySlug>		 <storyNum>B11</storyNum>		 <item>			<itemID>0</itemID>			<objID>M000133</objID>			<mosID>testmos.enps.com</mosID>			<itemEdStart>55</itemEdStart>			<itemEdDur>310</itemEdDur>			 <itemUserTimingDur>310</itemUserTimingDur>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	</roList>`,
 
-	roMetadataReplace: `<roMetadataReplace><roID>96857485</roID>	  <roSlug>5PM RUNDOWN</roSlug>	  <roEdStart>2009-04-17T17:02:00</roEdStart>	  <roEdDur>00:58:25</roEdDur>	  <mosExternalMetadata>		 <mosScope>PLAYLIST</mosScope><mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>		 <mosPayload>			<Owner>SHOLMES</Owner>			<transitionMode>2</transitionMode>			<transitionPoint>463</transitionPoint>			<source>a</source>			<destination>b</destination>		 </mosPayload>	  </mosExternalMetadata>	</roMetadataReplace>`,
+	roMetadataReplace: `<roMetadataReplace><roID>96857485</roID>	  <roSlug>5PM RUNDOWN</roSlug>	  <roEdStart>2009-04-17T17:02:00</roEdStart>	  <roEdDur>00:58:25</roEdDur>	  <mosExternalMetadata>		 <mosScope>PLAYLIST</mosScope><mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>		 <mosPayload>			<Owner>SHOLMES</Owner>			<transitionMode>2</transitionMode>			<transitionPoint>463</transitionPoint>			<source>a</source>			<destination>b</destination>		 </mosPayload>	  </mosExternalMetadata>	</roMetadataReplace>`,
 
 	roElementStat_ro: `<roElementStat element = "RO"><roID>5PM</roID><status>MANUAL CTRL</status><time>2009-04-11T14:13:53</time></roElementStat> `,
 	roElementStat_story: `<roElementStat element = "STORY"><roID>5PM</roID><storyID>HOTEL FIRE </storyID><status>PLAY</status><time>1999-04-11T14:13:53</time></roElementStat>  `,
 
 	roElementStat_item: `<roElementStat element = "ITEM"><roID>5PM</roID><storyID>HOTEL FIRE </storyID><itemID>0</itemID><objID>A0295</objID><itemChannel>B</itemChannel><status>PLAY</status><time>2009-04-11T14:13:53</time></roElementStat> `,
 
-	roElementAction_insert_story: `<roElementAction operation="INSERT"><roID>5PM</roID><element_target>	  <storyID>2</storyID></element_target><element_source>  <story>	  <storyID>17</storyID>	  <storySlug>Barcelona Football</storySlug>	  <storyNum>A2</storyNum>		<item>			 <itemID>27</itemID>			 <objID>M73627</objID>			 <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>					 <objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath></objPaths>			 <itemEdStart>0</itemEdStart>			 <itemEdDur>715</itemEdDur>			 <itemUserTimingDur>415</itemUserTimingDur>		</item>		<item>			 <itemID>28</itemID>			 <objID>M73628</objID>			 <mosID>testmos</mosID>			 <itemEdStart>0</itemEdStart>			 <itemEdDur>315</itemEdDur>		</item>  </story></element_source></roElementAction>`,
+	roElementAction_insert_story: `<roElementAction operation="INSERT"><roID>5PM</roID><element_target>	  <storyID>2</storyID></element_target><element_source>  <story>	  <storyID>17</storyID>	  <storySlug>Barcelona Football</storySlug>	  <storyNum>A2</storyNum>		<item>			 <itemID>27</itemID>			 <objID>M73627</objID>			 <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>					 <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>			 <itemEdStart>0</itemEdStart>			 <itemEdDur>715</itemEdDur>			 <itemUserTimingDur>415</itemUserTimingDur>		</item>		<item>			 <itemID>28</itemID>			 <objID>M73628</objID>			 <mosID>testmos</mosID>			 <itemEdStart>0</itemEdStart>			 <itemEdDur>315</itemEdDur>		</item>  </story></element_source></roElementAction>`,
 
-	roElementAction_insert_item: `<roElementAction operation="INSERT"><roID>5PM</roID><element_target>	  <storyID>2</storyID>	  <itemID>23</itemID></element_target><element_source>  <item>	  <itemID>27</itemID>	  <itemSlug>NHL PKG</itemSlug>	  <objID>M19873</objID>	  <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath></objPaths>	  <itemEdStart>0</itemEdStart>	  <itemEdDur>700</itemEdDur>	  <itemUserTimingDur>690</itemUserTimingDur>  </item></element_source></roElementAction>`,
+	roElementAction_insert_item: `<roElementAction operation="INSERT"><roID>5PM</roID><element_target>	  <storyID>2</storyID>	  <itemID>23</itemID></element_target><element_source>  <item>	  <itemID>27</itemID>	  <itemSlug>NHL PKG</itemSlug>	  <objID>M19873</objID>	  <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>	  <itemEdStart>0</itemEdStart>	  <itemEdDur>700</itemEdDur>	  <itemUserTimingDur>690</itemUserTimingDur>  </item></element_source></roElementAction>`,
 
-	roElementAction_replace_story: `<roElementAction operation="REPLACE"><roID>5PM</roID><element_target>	  <storyID>2</storyID></element_target><element_source>  <story>	  <storyID>17</storyID>	  <storySlug>Porto Football</storySlug>	  <storyNum>A2</storyNum>		<item>			 <itemID>27</itemID>			 <objID>M73627</objID>			 <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath></objPaths>			 <itemEdStart>0</itemEdStart>			 <itemEdDur>715</itemEdDur>			 <itemUserTimingDur>415</itemUserTimingDur>		</item>		<item>			 <itemID>28</itemID>			 <objID>M73628</objID>			 <mosID>testmos</mosID>			 <itemEdStart>0</itemEdStart>			 <itemEdDur>315</itemEdDur>		</item>  </story></element_source></roElementAction>`,
+	roElementAction_replace_story: `<roElementAction operation="REPLACE"><roID>5PM</roID><element_target>	  <storyID>2</storyID></element_target><element_source>  <story>	  <storyID>17</storyID>	  <storySlug>Porto Football</storySlug>	  <storyNum>A2</storyNum>		<item>			 <itemID>27</itemID>			 <objID>M73627</objID>			 <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>			 <itemEdStart>0</itemEdStart>			 <itemEdDur>715</itemEdDur>			 <itemUserTimingDur>415</itemUserTimingDur>		</item>		<item>			 <itemID>28</itemID>			 <objID>M73628</objID>			 <mosID>testmos</mosID>			 <itemEdStart>0</itemEdStart>			 <itemEdDur>315</itemEdDur>		</item>  </story></element_source></roElementAction>`,
 
-	roElementAction_replace_item: `<roElementAction operation="REPLACE"><roID>5PM</roID><element_target>	  <storyID>2</storyID>	  <itemID>23</itemID></element_target><element_source>  <item>	  <itemID>27</itemID>	  <itemSlug>NHL PKG</itemSlug>	  <objID>M19873</objID>	  <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath></objPaths>	  <itemEdStart>0</itemEdStart>	  <itemEdDur>700</itemEdDur>	  <itemUserTimingDur>690</itemUserTimingDur>  </item></element_source></roElementAction>`,
+	roElementAction_replace_item: `<roElementAction operation="REPLACE"><roID>5PM</roID><element_target>	  <storyID>2</storyID>	  <itemID>23</itemID></element_target><element_source>  <item>	  <itemID>27</itemID>	  <itemSlug>NHL PKG</itemSlug>	  <objID>M19873</objID>	  <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>	  <itemEdStart>0</itemEdStart>	  <itemEdDur>700</itemEdDur>	  <itemUserTimingDur>690</itemUserTimingDur>  </item></element_source></roElementAction>`,
 
 	roElementAction_move_story: `<roElementAction operation="MOVE"><roID>5PM</roID><element_target>	  <storyID>2</storyID></element_target><element_source>	  <storyID>7</storyID></element_source></roElementAction>`,
 
@@ -105,7 +105,7 @@ const xmlData = {
 	roReadyToAir: `<roReadyToAir><roID>5PM</roID>	  <roAir>READY</roAir>	</roReadyToAir>`,
 	roAck: `<roAck><roID>96857485</roID>      <roStatus>Unknown object M000133</roStatus>      <storyID>5983A501:0049B924:8390EF2B</storyID>      <itemID>0</itemID>      <objID>M000224</objID>      <status>LOADED</status>      <storyID>3854737F:0003A34D:983A0B28</storyID>      <itemID>0</itemID>      <objID>M000133</objID>      <itemChannel>A</itemChannel>      <status>UNKNOWN</status>   </roAck>`,
 	roReqAll: `<roReqAll/>`,
-	roStorySend: `<roStorySend>   <roID>2012R2ENPS8VM;P_ENPSNEWS\\W;696297DF-1568-4B36-B43B3B79514B40D4</roID>   <storyID>2012R2ENPS8VM;P_ENPSNEWS\\W\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB</storyID>   <storySlug>KRITIKK ETTER BRANN KONGSBERG;SAK</storySlug>   <storyNum></storyNum>   <storyBody><p> </p><storyItem><itemID>2</itemID><objID>N11580_1412594672</objID><mosID>METADATA.NRK.MOS</mosID><mosAbstract>METADATA</mosAbstract><objSlug>M: </objSlug><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://mosA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema><mosPayload><nrk type="video" changedBy="N11580" changetime="2014-10-06T13:24:32 +02:00"><title></title><description></description><hbbtv link=""></hbbtv><rights notes="" owner="NRK">Green</rights></nrk></mosPayload></mosExternalMetadata><itemSlug>SAK BUSKERUD;SAK-14</itemSlug></storyItem><p> </p>   <p> </p>   <p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039287?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.n    --------------------------------------------------------    rk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>3</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039288_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039288?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039288_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>4</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039289_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039289?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039289_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>5</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039290_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039290?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039290_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>6</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 24 foto/red | 1:Foto og redigering: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039291_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>24 foto/red 1:Foto og redigering:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039291?version=1</objID><objSlug>24 foto/red 1:Foto og redigering:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039291_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000024.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>7</itemID></storyItem><p> </p>   <p> </p><storyItem><mosID>mosart.morten.mos</mosID><mosAbstract>TIDSMARKØR IKKE RØR</mosAbstract><objID>STORYSTATUS</objID><objSlug>Story status</objSlug><itemID>8</itemID><itemSlug>SAK BUSKERUD;SAK-20</itemSlug></storyItem><p> </p></storyBody>   <mosExternalMetadata>   <mosScope>PLAYLIST</mosScope>   <mosSchema>http://2012R2ENPS8VM:10505/schema/enps.dtd</mosSchema>   <mosPayload>   <Approved>0</Approved>   <Creator>LINUXENPS</Creator>   <MediaTime>0</MediaTime>   <ModBy>LINUXENPS</ModBy>   <ModTime>20180227T004205Z</ModTime>   <MOSItemDurations>
+	roStorySend: `<roStorySend>   <roID>2012R2ENPS8VM;P_ENPSNEWS\\W;696297DF-1568-4B36-B43B3B79514B40D4</roID>   <storyID>2012R2ENPS8VM;P_ENPSNEWS\\W\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB</storyID>   <storySlug>KRITIKK ETTER BRANN KONGSBERG;SAK</storySlug>   <storyNum></storyNum>   <storyBody><p> </p><storyItem><itemID>2</itemID><objID>N11580_1412594672</objID><mosID>METADATA.NRK.MOS</mosID><mosAbstract>METADATA</mosAbstract><objSlug>M: </objSlug><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema><mosPayload><nrk type="video" changedBy="N11580" changetime="2014-10-06T13:24:32 +02:00"><title></title><description></description><hbbtv link=""></hbbtv><rights notes="" owner="NRK">Green</rights></nrk></mosPayload></mosExternalMetadata><itemSlug>SAK BUSKERUD;SAK-14</itemSlug></storyItem><p> </p>   <p> </p>   <p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039287?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.n    --------------------------------------------------------    rk.mos</ServerID><ServerURL>https://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>3</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039288_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039288?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039288_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>https://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>4</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039289_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039289?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039289_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>https://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>5</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039290_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039290?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039290_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>https://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>6</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 24 foto/red | 1:Foto og redigering: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039291_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>24 foto/red 1:Foto og redigering:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039291?version=1</objID><objSlug>24 foto/red 1:Foto og redigering:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039291_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000024.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>https://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>7</itemID></storyItem><p> </p>   <p> </p><storyItem><mosID>mosart.morten.mos</mosID><mosAbstract>TIDSMARKØR IKKE RØR</mosAbstract><objID>STORYSTATUS</objID><objSlug>Story status</objSlug><itemID>8</itemID><itemSlug>SAK BUSKERUD;SAK-20</itemSlug></storyItem><p> </p></storyBody>   <mosExternalMetadata>   <mosScope>PLAYLIST</mosScope>   <mosSchema>https://2012R2ENPS8VM:10505/schema/enps.dtd</mosSchema>   <mosPayload>   <Approved>0</Approved>   <Creator>LINUXENPS</Creator>   <MediaTime>0</MediaTime>   <ModBy>LINUXENPS</ModBy>   <ModTime>20180227T004205Z</ModTime>   <MOSItemDurations>
    0 0 0 0 0
    </MOSItemDurations>   <MOSItemEdDurations>
    </MOSItemEdDurations>   <MOSObjSlugs>M:   01 ett navn 1:  2:
@@ -118,7 +118,7 @@ const xmlData = {
    01 ett navn 1:  2:
    01 ett navn 1:  2:
    24 foto/red 1:Foto og redigering:  2:   SAK BUSKERUD;SAK-20</MOSSlugs>   <Owner>LINUXENPS</Owner>   <pubApproved>0</pubApproved>   <SourceMediaTime>0</SourceMediaTime>   <SourceTextTime>0</SourceTextTime>   <StoryProducer>DKTE</StoryProducer>   <TextTime>0</TextTime>   <mosartType>FULL</mosartType>   <ENPSItemType>3</ENPSItemType>   </mosPayload>   </mosExternalMetadata>   </roStorySend>`,
-	roListAll: `<roListAll>      <ro>   	 <roID>5PM</roID>   	 <roSlug>5PM Rundown</roSlug>   	 <roChannel></roChannel>   	 <roEdStart>2009-07-11T17:00:00</roEdStart>   	 <roEdDur>00:30:00</roEdDur>   	 <roTrigger>MANUAL</roTrigger>   	 <mosExternalMetadata>   	   <mosScope>PLAYLIST</mosScope>   	   <mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>   	   <mosPayload>   		  <Owner>SHOLMES</Owner>   		  <mediaTime>0</mediaTime>   		  <TextTime>278</TextTime>   		  <ModBy>LJOHNSTON</ModBy>   		  <Approved>0</Approved>   		  <Creator>SHOLMES</Creator>   	   </mosPayload>   	</mosExternalMetadata>      </ro>      <ro>   	 <roID>6PM</roID>   	 <roSlug>6PM Rundown</roSlug>   	 <roChannel></roChannel>   	 <roEdStart>2009-07-09T18:00:00</roEdStart>   	 <roEdDur>00:30:00</roEdDur>   	 <roTrigger>MANUAL</roTrigger>   	 <mosExternalMetadata>   	   <mosScope>PLAYLIST</mosScope>   	   <mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>   	   <mosPayload>   		  <Owner>SHOLMES</Owner>   		  <mediaTime>0</mediaTime>   		  <TextTime>350</TextTime>   		  <ModBy>BSMITH</ModBy>   		  <Approved>1</Approved>   		  <Creator>SHOLMES</Creator>   	   </mosPayload>   	</mosExternalMetadata>   	</ro>		</roListAll>`,
+	roListAll: `<roListAll>      <ro>   	 <roID>5PM</roID>   	 <roSlug>5PM Rundown</roSlug>   	 <roChannel></roChannel>   	 <roEdStart>2009-07-11T17:00:00</roEdStart>   	 <roEdDur>00:30:00</roEdDur>   	 <roTrigger>MANUAL</roTrigger>   	 <mosExternalMetadata>   	   <mosScope>PLAYLIST</mosScope>   	   <mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>   	   <mosPayload>   		  <Owner>SHOLMES</Owner>   		  <mediaTime>0</mediaTime>   		  <TextTime>278</TextTime>   		  <ModBy>LJOHNSTON</ModBy>   		  <Approved>0</Approved>   		  <Creator>SHOLMES</Creator>   	   </mosPayload>   	</mosExternalMetadata>      </ro>      <ro>   	 <roID>6PM</roID>   	 <roSlug>6PM Rundown</roSlug>   	 <roChannel></roChannel>   	 <roEdStart>2009-07-09T18:00:00</roEdStart>   	 <roEdDur>00:30:00</roEdDur>   	 <roTrigger>MANUAL</roTrigger>   	 <mosExternalMetadata>   	   <mosScope>PLAYLIST</mosScope>   	   <mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>   	   <mosPayload>   		  <Owner>SHOLMES</Owner>   		  <mediaTime>0</mediaTime>   		  <TextTime>350</TextTime>   		  <ModBy>BSMITH</ModBy>   		  <Approved>1</Approved>   		  <Creator>SHOLMES</Creator>   	   </mosPayload>   	</mosExternalMetadata>   	</ro>		</roListAll>`,
 	mosObjCreate: `
 		<mosObjCreate>
 			<objSlug>Hotel Fire</objSlug>
@@ -146,7 +146,7 @@ const xmlData = {
 			 </description>
 			 <mosExternalMetadata>
 					<mosScope>STORY</mosScope>
-					<mosSchema>http://NCSA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>
+					<mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>
 					<mosPayload>
 						 <Owner>SHOLMES</Owner>
 						 <ModTime>20010308142001</ModTime>
@@ -167,8 +167,8 @@ const xmlData = {
 			<mosID>testmos.enps.com</mosID>
 			<objPaths>
 				<objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
-				<objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
-				<objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
+				<objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
+				<objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
 			</objPaths>
 			<itemEdStart>0</itemEdStart>
 			<itemEdDur>815</itemEdDur>
@@ -177,7 +177,7 @@ const xmlData = {
 			<macroOut>r00</macroOut>
 			<mosExternalMetadata>
 				<mosScope>PLAYLIST</mosScope>
-				<mosSchema>HTTP://VENDOR/MOS/supportedSchemas/vvend280</mosSchema>
+				<mosSchema>https://VENDOR/MOS/supportedSchemas/vvend280</mosSchema>
 				<mosPayload>
 					<trigger>837</trigger>
 					<key>110</key>
@@ -193,7 +193,7 @@ const xmlData = {
 		<listReturnStart>1</listReturnStart>
 		<listReturnEnd/>
 		<generalSearch>man bites dog</generalSearch>
-		<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+		<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
 		<searchGroup>
 			<searchField XPath="/Presenter [. ='Bob']" sortByOrder="1"/>
 			<searchField XPath="/Slug [.='Dog Abuse']"/>
@@ -233,7 +233,7 @@ const xmlData = {
 		</description>
 		<mosExternalMetadata>
 			<mosScope>STORY</mosScope>
-			<mosSchema>http://NCSA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>
+			<mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>
 			<mosPayload>
 			<Owner>SHOLMES</Owner>
 			<ModTime>20010308142001</ModTime>
@@ -271,7 +271,7 @@ const xmlData = {
 		  </description>
 		  <mosExternalMetadata>
 			 <mosScope>STORY</mosScope>
-			 <mosSchema>http://NCSA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>
+			 <mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>
 			 <mosPayload>
 				<Owner>SHOLMES</Owner>
 				<ModTime>20010308142001</ModTime>
@@ -286,7 +286,7 @@ const xmlData = {
 	mosReqObjActionDelete: `<mosReqObjAction operation="DELETE" objID="1EFA3009233F8329C1">
 	</mosReqObjAction>`,
 	mosListSearchableSchema: `<mosListSearchableSchema username="myUsername">
-		<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+		<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
 	</mosListSearchableSchema>`,
 	mosObjList: `<mosObjList username="jbob">
     <queryID>A392938329kdakd2039300d0s9l3l9d0bzAQ</queryID>
@@ -310,8 +310,8 @@ const xmlData = {
             <objAir>READY</objAir>
             <objPaths>
                 <objPath techDescription="MPEG2                            Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
-                <objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
-                <objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
+                <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
+                <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
             </objPaths>
             <createdBy>Chris</createdBy>
             <created>1998-10-31T23:39:12</created>
@@ -331,7 +331,7 @@ const xmlData = {
             </description>
             <mosExternalMetadata>
                 <mosScope>STORY</mosScope>
-                <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+                <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
                 <mosPayload>
                     <Owner>SHOLMES</Owner>
                     <ModTime>20010308142001</ModTime>
@@ -359,8 +359,8 @@ const xmlData = {
             <objAir>READY</objAir>
             <objPaths>
                 <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
-                <objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
-                <objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
+                <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
+                <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
             </objPaths>
             <createdBy>Chris</createdBy>
             <created>1998-10-31T23:39:12</created>
@@ -380,7 +380,7 @@ const xmlData = {
             </description>
             <mosExternalMetadata>
                 <mosScope>STORY</mosScope>
-                <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+                <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
                 <mosPayload>
                     <Owner>SHOLMES</Owner>
                     <ModTime>20010308142001</ModTime>
@@ -408,8 +408,8 @@ const xmlData = {
             <objAir>READY</objAir>
             <objPaths>
                 <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
-                <objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
-                <objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
+                <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
+                <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
             </objPaths>
             <createdBy>Chris</createdBy>
             <created>1998-10-31T23:39:12</created>
@@ -429,7 +429,7 @@ const xmlData = {
             </description>
             <mosExternalMetadata>
                 <mosScope>STORY</mosScope>
-                <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+                <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
                 <mosPayload>
                     <Owner>SHOLMES</Owner>
                     <ModTime>20010308142001</ModTime>
@@ -490,12 +490,12 @@ const xmlApiData = {
 			literal<IMOSObjectPath>({
 				Type: IMOSObjectPathType.PROXY_PATH,
 				Description: 'WM9 750Kbps',
-				Target: 'http://server/proxy/clipe.wmv',
+				Target: 'https://server/proxy/clipe.wmv',
 			}),
 			literal<IMOSObjectPath>({
 				Type: IMOSObjectPathType.METADATA_PATH,
 				Description: 'MOS Object',
-				Target: 'http://server/proxy/clipe.xml',
+				Target: 'https://server/proxy/clipe.xml',
 			}),
 		],
 		CreatedBy: mosTypes.mosString128.create('Jonas'),
@@ -507,7 +507,7 @@ const xmlApiData = {
 		MosExternalMetaData: [
 			literal<IMOSExternalMetaData>({
 				MosScope: IMOSScope.STORY,
-				MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>',
+				MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>',
 				MosPayload: {
 					Owner: 'SHOLMES',
 					ModTime: 20010308142001,
@@ -540,12 +540,12 @@ const xmlApiData = {
 			literal<IMOSObjectPath>({
 				Type: IMOSObjectPathType.PROXY_PATH,
 				Description: 'WM9 750Kbps',
-				Target: 'http://server/proxy/clipe.wmv',
+				Target: 'https://server/proxy/clipe.wmv',
 			}),
 			literal<IMOSObjectPath>({
 				Type: IMOSObjectPathType.METADATA_PATH,
 				Description: 'MOS Object',
-				Target: 'http://server/proxy/clipe.xml',
+				Target: 'https://server/proxy/clipe.xml',
 			}),
 		],
 		CreatedBy: mosTypes.mosString128.create('Jonas'),
@@ -577,12 +577,12 @@ const xmlApiData = {
 				literal<IMOSObjectPath>({
 					Type: IMOSObjectPathType.PROXY_PATH,
 					Description: 'WM9 750Kbps',
-					Target: 'http://server/proxy/clipe.wmv',
+					Target: 'https://server/proxy/clipe.wmv',
 				}),
 				literal<IMOSObjectPath>({
 					Type: IMOSObjectPathType.METADATA_PATH,
 					Description: 'MOS Object',
-					Target: 'http://server/proxy/clipe.xml',
+					Target: 'https://server/proxy/clipe.xml',
 				}),
 			],
 			CreatedBy: mosTypes.mosString128.create('Chris'),
@@ -611,12 +611,12 @@ const xmlApiData = {
 				literal<IMOSObjectPath>({
 					Type: IMOSObjectPathType.PROXY_PATH,
 					Description: 'WM9 750Kbps',
-					Target: 'http://server/proxy/clipe.wmv',
+					Target: 'https://server/proxy/clipe.wmv',
 				}),
 				literal<IMOSObjectPath>({
 					Type: IMOSObjectPathType.METADATA_PATH,
 					Description: 'MOS Object',
-					Target: 'http://server/proxy/clipe.xml',
+					Target: 'https://server/proxy/clipe.xml',
 				}),
 			],
 			CreatedBy: mosTypes.mosString128.create('Phil'),
@@ -627,7 +627,7 @@ const xmlApiData = {
 			MosExternalMetaData: [
 				literal<IMOSExternalMetaData>({
 					MosScope: IMOSScope.STORY,
-					MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+					MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 					MosPayload: {
 						Owner: 'SHOLMES',
 						ModTime: 20010308142001,
@@ -674,12 +674,12 @@ const xmlApiData = {
 							literal<IMOSObjectPath>({
 								Type: IMOSObjectPathType.PROXY_PATH,
 								Description: 'WM9 750Kbps',
-								Target: 'http://server/proxy/clipe.wmv',
+								Target: 'https://server/proxy/clipe.wmv',
 							}),
 							literal<IMOSObjectPath>({
 								Type: IMOSObjectPathType.METADATA_PATH,
 								Description: 'MOS Object',
-								Target: 'http://server/proxy/clipe.xml',
+								Target: 'https://server/proxy/clipe.xml',
 							}),
 						],
 						// Channel?: mosTypes.mosString128.create(),
@@ -693,7 +693,7 @@ const xmlApiData = {
 						MosExternalMetaData: [
 							literal<IMOSExternalMetaData>({
 								MosScope: IMOSScope.PLAYLIST,
-								MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+								MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 								MosPayload: {
 									Owner: 'SHOLMES',
 									transitionMode: 2,
@@ -728,7 +728,7 @@ const xmlApiData = {
 						MosExternalMetaData: [
 							literal<IMOSExternalMetaData>({
 								MosScope: IMOSScope.PLAYLIST,
-								MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+								MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 								MosPayload: {
 									Owner: 'SHOLMES',
 									transitionMode: 2,
@@ -775,12 +775,12 @@ const xmlApiData = {
 							literal<IMOSObjectPath>({
 								Type: IMOSObjectPathType.PROXY_PATH,
 								Description: 'WM9 750Kbps',
-								Target: 'http://server/proxy/clipe.wmv',
+								Target: 'https://server/proxy/clipe.wmv',
 							}),
 							literal<IMOSObjectPath>({
 								Type: IMOSObjectPathType.METADATA_PATH,
 								Description: 'MOS Object',
-								Target: 'http://server/proxy/clipe.xml',
+								Target: 'https://server/proxy/clipe.xml',
 							}),
 						],
 						// Channel?: mosTypes.mosString128.create(),
@@ -840,12 +840,12 @@ const xmlApiData = {
 			{
 				Type: IMOSObjectPathType.PROXY_PATH,
 				Description: 'WM9 750Kbps',
-				Target: 'http://server/proxy/clipe.wmv',
+				Target: 'https://server/proxy/clipe.wmv',
 			},
 			{
 				Type: IMOSObjectPathType.METADATA_PATH,
 				Description: 'MOS Object',
-				Target: 'http://server/proxy/clipe.xml',
+				Target: 'https://server/proxy/clipe.xml',
 			},
 		],
 		CreatedBy: mosTypes.mosString128.create('Chris'),
@@ -881,12 +881,12 @@ const xmlApiData = {
 							literal<IMOSObjectPath>({
 								Type: IMOSObjectPathType.PROXY_PATH,
 								Description: 'WM9 750Kbps',
-								Target: 'http://server/proxy/clipe.wmv',
+								Target: 'https://server/proxy/clipe.wmv',
 							}),
 							literal<IMOSObjectPath>({
 								Type: IMOSObjectPathType.METADATA_PATH,
 								Description: 'MOS Object',
-								Target: 'http://server/proxy/clipe.xml',
+								Target: 'https://server/proxy/clipe.xml',
 							}),
 						],
 						// Channel?: mosTypes.mosString128.create(),
@@ -899,7 +899,7 @@ const xmlApiData = {
 						MosExternalMetaData: [
 							literal<IMOSExternalMetaData>({
 								MosScope: IMOSScope.PLAYLIST,
-								MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+								MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 								MosPayload: {
 									Owner: 'SHOLMES',
 									transitionMode: 2,
@@ -934,7 +934,7 @@ const xmlApiData = {
 						MosExternalMetaData: [
 							literal<IMOSExternalMetaData>({
 								MosScope: IMOSScope.PLAYLIST,
-								MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+								MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 								MosPayload: {
 									Owner: 'SHOLMES',
 									transitionMode: 2,
@@ -960,7 +960,7 @@ const xmlApiData = {
 		// MacroOut?: mosTypes.mosString128.create(''),
 		MosExternalMetaData: [
 			{
-				MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+				MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 				MosScope: IMOSScope.PLAYLIST,
 				MosPayload: {
 					Owner: 'SHOLMES',
@@ -1022,12 +1022,12 @@ const xmlApiData = {
 						{
 							Type: IMOSObjectPathType.PROXY_PATH,
 							Description: 'WM9 750Kbps',
-							Target: 'http://server/proxy/clipe.wmv',
+							Target: 'https://server/proxy/clipe.wmv',
 						},
 						{
 							Type: IMOSObjectPathType.METADATA_PATH,
 							Description: 'MOS Object',
-							Target: 'http://server/proxy/clipe.xml',
+							Target: 'https://server/proxy/clipe.xml',
 						},
 					],
 					EditorialStart: 0,
@@ -1065,12 +1065,12 @@ const xmlApiData = {
 				{
 					Type: IMOSObjectPathType.PROXY_PATH,
 					Description: 'WM9 750Kbps',
-					Target: 'http://server/proxy/clipe.wmv',
+					Target: 'https://server/proxy/clipe.wmv',
 				},
 				{
 					Type: IMOSObjectPathType.METADATA_PATH,
 					Description: 'MOS Object',
-					Target: 'http://server/proxy/clipe.xml',
+					Target: 'https://server/proxy/clipe.xml',
 				},
 			],
 			EditorialStart: 0,
@@ -1104,12 +1104,12 @@ const xmlApiData = {
 						{
 							Type: IMOSObjectPathType.PROXY_PATH,
 							Description: 'WM9 750Kbps',
-							Target: 'http://server/proxy/clipe.wmv',
+							Target: 'https://server/proxy/clipe.wmv',
 						},
 						{
 							Type: IMOSObjectPathType.METADATA_PATH,
 							Description: 'MOS Object',
-							Target: 'http://server/proxy/clipe.xml',
+							Target: 'https://server/proxy/clipe.xml',
 						},
 					],
 					EditorialStart: 0,
@@ -1147,12 +1147,12 @@ const xmlApiData = {
 				{
 					Type: IMOSObjectPathType.PROXY_PATH,
 					Description: 'WM9 750Kbps',
-					Target: 'http://server/proxy/clipe.wmv',
+					Target: 'https://server/proxy/clipe.wmv',
 				},
 				{
 					Type: IMOSObjectPathType.METADATA_PATH,
 					Description: 'MOS Object',
-					Target: 'http://server/proxy/clipe.xml',
+					Target: 'https://server/proxy/clipe.xml',
 				},
 			],
 			EditorialStart: 0,
@@ -1236,7 +1236,7 @@ const xmlApiData = {
 					MosExternalMetaData: [
 						literal<IMOSExternalMetaData>({
 							MosScope: IMOSScope.PLAYLIST,
-							MosSchema: 'http://mosA4.com/mos/supported_schemas/MOSAXML2.08',
+							MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 							MosPayload: {
 								nrk: {
 									attributes: {
@@ -1287,7 +1287,7 @@ const xmlApiData = {
 						literal<IMOSObjectPath>({
 							Type: IMOSObjectPathType.PROXY_PATH,
 							Description: 'JPEG Thumbnail',
-							Target: 'http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg',
+							Target: 'https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg',
 						}),
 					],
 					Channel: mosTypes.mosString128.create('CG1'),
@@ -1336,7 +1336,7 @@ const xmlApiData = {
 								literal<IMOSObjectPath>({
 									Type: IMOSObjectPathType.PROXY_PATH,
 									Description: 'JPEG Thumbnail',
-									Target: 'http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg',
+									Target: 'https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg',
 								}),
 							],
 							// CreatedBy: mosTypes.mosString128.create(''),
@@ -1347,7 +1347,7 @@ const xmlApiData = {
 							MosExternalMetaData: [
 								literal<IMOSExternalMetaData>({
 									MosScope: IMOSScope.PLAYLIST,
-									MosSchema: 'http://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
+									MosSchema: 'https://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
 									MosPayload: {
 										sAVsom: '00:00:02:00',
 										sAVeom: '00:00:05:00',
@@ -1357,7 +1357,7 @@ const xmlApiData = {
 										ObjectDetails: {
 											ServerID:
 												'chyron.techycami02.ndte.n    --------------------------------------------------------    rk.mos',
-											ServerURL: 'http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx',
+											ServerURL: 'https://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx',
 										},
 									},
 								}),
@@ -1389,11 +1389,11 @@ const xmlApiData = {
 			}),
 
 			// <p> </p>
-			// <storyItem><itemID>2</itemID><objID>N11580_1412594672</objID><mosID>METADATA.NRK.MOS</mosID><mosAbstract>METADATA</mosAbstract><objSlug>M: </objSlug><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://mosA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema><mosPayload><nrk type="video" changedBy="N11580" changetime="2014-10-06T13:24:32 +02:00"><title></title><description></description><hbbtv link=""></hbbtv><rights notes="" owner="NRK">Green</rights></nrk></mosPayload></mosExternalMetadata><itemSlug>SAK BUSKERUD;SAK-14</itemSlug></storyItem>
+			// <storyItem><itemID>2</itemID><objID>N11580_1412594672</objID><mosID>METADATA.NRK.MOS</mosID><mosAbstract>METADATA</mosAbstract><objSlug>M: </objSlug><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema><mosPayload><nrk type="video" changedBy="N11580" changetime="2014-10-06T13:24:32 +02:00"><title></title><description></description><hbbtv link=""></hbbtv><rights notes="" owner="NRK">Green</rights></nrk></mosPayload></mosExternalMetadata><itemSlug>SAK BUSKERUD;SAK-14</itemSlug></storyItem>
 			// <p> </p>			// <p> </p>			// <p> </p>
-			// <storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039287?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.n \r\n--------------------------------------------------------\r\n\nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>3</itemID></storyItem>
+			// <storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039287?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039287_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.n \r\n--------------------------------------------------------\r\n\nrk.mos</ServerID><ServerURL>https://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>3</itemID></storyItem>
 			// <p> </p>
-			// <storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039288_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039288?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039288_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>4</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039289_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039289?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039289_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>5</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039290_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039290?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039290_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>6</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 24 foto/red | 1:Foto og redigering: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039291_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>24 foto/red 1:Foto og redigering:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039291?version=1</objID><objSlug>24 foto/red 1:Foto og redigering:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">http://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039291_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>http://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000024.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>http://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>7</itemID></storyItem>
+			// <storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039288_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039288?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039288_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>https://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>4</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039289_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039289?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039289_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>https://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>5</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039290_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>01 ett navn 1:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039290?version=1</objID><objSlug>01 ett navn 1:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039290_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000001.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>https://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>6</itemID></storyItem><p> </p><storyItem><mosID>chyron.techycami02.ndte.nrk.mos</mosID><mosAbstract>_00:00:02:00 | @M=Auto Timed | 24 foto/red | 1:Foto og redigering: | 2: | 3: | 4: | 00:00:05:00</mosAbstract><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039291_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><itemChannel>CG1</itemChannel><itemSlug>24 foto/red 1:Foto og redigering:&#160;&#160;2:</itemSlug><mosObj><objID>NYHETER\\00039291?version=1</objID><objSlug>24 foto/red 1:Foto og redigering:&#160;&#160;2:</objSlug><mosItemEditorProgID>Chymox.AssetBrowser.1</mosItemEditorProgID><objDur>0</objDur><objTB>0</objTB><objPaths><objProxyPath techDescription="JPEG Thumbnail">https://160.68.33.159/thumbs/NYHETER/39000/Objects_NYHETER_00039291_v1_big.jpg</objProxyPath><objMetadataPath></objMetadataPath></objPaths><mosExternalMetadata><mosScope>PLAYLIST</mosScope><mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema><mosPayload><sAVsom>00:00:02:00</sAVsom><sAVeom>00:00:05:00</sAVeom><createdBy>N12050</createdBy><subtype>lyric/data</subtype><subtypeid>I:\\CAMIO\\NYHETER\\Templates\\Super\\00000024.lyr</subtypeid><ObjectDetails><ServerID>chyron.techycami02.ndte.nrk.mos</ServerID><ServerURL>https://160.68.33.159/CAMIO/Redirection/MOSRedirection.asmx</ServerURL></ObjectDetails></mosPayload></mosExternalMetadata></mosObj><itemID>7</itemID></storyItem>
 			// <p> </p>			// <p> </p>
 			// <storyItem><mosID>mosart.morten.mos</mosID><mosAbstract>TIDSMARKØR IKKE RØR</mosAbstract><objID>STORYSTATUS</objID><objSlug>Story status</objSlug><itemID>8</itemID><itemSlug>SAK BUSKERUD;SAK-20</itemSlug></storyItem>
 			// <p> </p>
@@ -1412,7 +1412,7 @@ const xmlApiData = {
 			MosExternalMetaData: [
 				literal<IMOSExternalMetaData>({
 					MosScope: IMOSScope.PLAYLIST,
-					MosSchema: 'http://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
+					MosSchema: 'https://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
 					MosPayload: {
 						Owner: 'SHOLMES',
 						mediaTime: 0,
@@ -1436,7 +1436,7 @@ const xmlApiData = {
 			MosExternalMetaData: [
 				literal<IMOSExternalMetaData>({
 					MosScope: IMOSScope.PLAYLIST,
-					MosSchema: 'http://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
+					MosSchema: 'https://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
 					MosPayload: {
 						Owner: 'SHOLMES',
 						mediaTime: 0,
@@ -1460,7 +1460,7 @@ const xmlApiData = {
 		MosExternalMetaData: [
 			literal<IMOSExternalMetaData>({
 				MosScope: IMOSScope.STORY,
-				MosSchema: 'http://NCSA4.com/mos/supported_schemas/NCSAXML2.08',
+				MosSchema: 'https://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
 				MosPayload: {
 					Owner: 'SHOLMES',
 					// modTime: 20010308142001,
@@ -1485,7 +1485,7 @@ const xmlApiData = {
 		MosExternalMetaData: [
 			literal<IMOSExternalMetaData>({
 				MosScope: IMOSScope.PLAYLIST,
-				MosSchema: 'HTTP://VENDOR/MOS/supportedSchemas/vvend280',
+				MosSchema: 'https://VENDOR/MOS/supportedSchemas/vvend280',
 				MosPayload: {
 					trigger: 837,
 					key: 110,
@@ -1503,12 +1503,12 @@ const xmlApiData = {
 			literal<IMOSObjectPath>({
 				Type: IMOSObjectPathType.PROXY_PATH,
 				Description: 'WM9 750Kbps',
-				Target: 'http://server/proxy/clipe.wmv',
+				Target: 'https://server/proxy/clipe.wmv',
 			}),
 			literal<IMOSObjectPath>({
 				Type: IMOSObjectPathType.METADATA_PATH,
 				Description: 'MOS Object',
-				Target: 'http://server/proxy/clipe.xml',
+				Target: 'https://server/proxy/clipe.xml',
 			}),
 		],
 	}),
@@ -1519,7 +1519,7 @@ const xmlApiData = {
 		listReturnStart: 1,
 		listReturnEnd: null,
 		generalSearch: 'man bites dog',
-		mosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+		mosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 		searchGroups: [
 			{
 				searchFields: [

@@ -504,7 +504,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 							this.emit('warning', 'Error when handling incoming data: ' + err)
 							// reply with NACK:
 							// TODO: implement ACK
-							// http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
+							// https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
 							const msg = new MosModel.MOSAck(
 								{
 									ID: this.mosTypes.mosString128.create(0),

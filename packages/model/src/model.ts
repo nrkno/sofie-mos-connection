@@ -125,7 +125,7 @@ export interface IProfiles {
 	'7'?: boolean
 }
 
-/** http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObj */
+/** https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObj */
 export interface IMOSObject {
 	ID?: IMOSString128
 	Slug: IMOSString128
@@ -149,7 +149,7 @@ export interface IMOSObject {
 
 /**
  * Returns selected object descriptions from a MOS.
- * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObjList
+ * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObjList
  */
 export interface IMOSObjectList {
 	username: string
@@ -163,7 +163,7 @@ export interface IMOSObjectList {
 
 /**
  * mosReqObjList is a mechanism used by a NCS to retrieve only selected object descriptions from a MOS.
- * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqObjList
+ * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqObjList
  */
 export interface IMOSRequestObjectList {
 	username: string
@@ -185,7 +185,7 @@ export interface IMOSSearchField {
 
 /**
  * mosListSearchableSchema is a mechanism used by the MOS to send a pointer to a schema in which searchable fields are defined for the NCS device.
- * http://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosListSearchableSchema
+ * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosListSearchableSchema
  */
 export interface IMOSListSearchableSchema {
 	username: string

@@ -39,7 +39,7 @@ exports[`Profile 2 onCreateRunningOrder 1`] = `
                     "transitionMode": 2,
                     "transitionPoint": 463,
                   },
-                  "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                  "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                   "MosScope": "PLAYLIST",
                 },
               ],
@@ -54,12 +54,12 @@ exports[`Profile 2 onCreateRunningOrder 1`] = `
                 },
                 {
                   "Description": "WM9 750Kbps",
-                  "Target": "http://server/proxy/clipe.wmv",
+                  "Target": "https://server/proxy/clipe.wmv",
                   "Type": "PROXY PATH",
                 },
                 {
                   "Description": "MOS Object",
-                  "Target": "http://server/proxy/clipe.xml",
+                  "Target": "https://server/proxy/clipe.xml",
                   "Type": "METADATA PATH",
                 },
               ],
@@ -98,7 +98,7 @@ exports[`Profile 2 onCreateRunningOrder 1`] = `
                     "transitionMode": 2,
                     "transitionPoint": 463,
                   },
-                  "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                  "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                   "MosScope": "PLAYLIST",
                 },
               ],
@@ -243,7 +243,7 @@ exports[`Profile 2 onMetadataReplace 1`] = `
             "transitionMode": 2,
             "transitionPoint": 463,
           },
-          "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+          "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
           "MosScope": "PLAYLIST",
         },
       ],
@@ -388,12 +388,12 @@ exports[`Profile 2 onROInsertItems 1`] = `
           },
           {
             "Description": "WM9 750Kbps",
-            "Target": "http://server/proxy/clipe.wmv",
+            "Target": "https://server/proxy/clipe.wmv",
             "Type": "PROXY PATH",
           },
           {
             "Description": "MOS Object",
-            "Target": "http://server/proxy/clipe.xml",
+            "Target": "https://server/proxy/clipe.xml",
             "Type": "METADATA PATH",
           },
         ],
@@ -462,12 +462,12 @@ exports[`Profile 2 onROInsertStories 1`] = `
               },
               {
                 "Description": "WM9 750Kbps",
-                "Target": "http://server/proxy/clipe.wmv",
+                "Target": "https://server/proxy/clipe.wmv",
                 "Type": "PROXY PATH",
               },
               {
                 "Description": "MOS Object",
-                "Target": "http://server/proxy/clipe.xml",
+                "Target": "https://server/proxy/clipe.xml",
                 "Type": "METADATA PATH",
               },
             ],
@@ -679,12 +679,12 @@ exports[`Profile 2 onROReplaceItems 1`] = `
           },
           {
             "Description": "WM9 750Kbps",
-            "Target": "http://server/proxy/clipe.wmv",
+            "Target": "https://server/proxy/clipe.wmv",
             "Type": "PROXY PATH",
           },
           {
             "Description": "MOS Object",
-            "Target": "http://server/proxy/clipe.xml",
+            "Target": "https://server/proxy/clipe.xml",
             "Type": "METADATA PATH",
           },
         ],
@@ -753,12 +753,12 @@ exports[`Profile 2 onROReplaceStories 1`] = `
               },
               {
                 "Description": "WM9 750Kbps",
-                "Target": "http://server/proxy/clipe.wmv",
+                "Target": "https://server/proxy/clipe.wmv",
                 "Type": "PROXY PATH",
               },
               {
                 "Description": "MOS Object",
-                "Target": "http://server/proxy/clipe.xml",
+                "Target": "https://server/proxy/clipe.xml",
                 "Type": "METADATA PATH",
               },
             ],
@@ -951,7 +951,7 @@ exports[`Profile 2 onReplaceRunningOrder 1`] = `
                     "transitionMode": 2,
                     "transitionPoint": 463,
                   },
-                  "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                  "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                   "MosScope": "PLAYLIST",
                 },
               ],
@@ -966,12 +966,12 @@ exports[`Profile 2 onReplaceRunningOrder 1`] = `
                 },
                 {
                   "Description": "WM9 750Kbps",
-                  "Target": "http://server/proxy/clipe.wmv",
+                  "Target": "https://server/proxy/clipe.wmv",
                   "Type": "PROXY PATH",
                 },
                 {
                   "Description": "MOS Object",
-                  "Target": "http://server/proxy/clipe.xml",
+                  "Target": "https://server/proxy/clipe.xml",
                   "Type": "METADATA PATH",
                 },
               ],
@@ -1010,7 +1010,7 @@ exports[`Profile 2 onReplaceRunningOrder 1`] = `
                     "transitionMode": 2,
                     "transitionPoint": 463,
                   },
-                  "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                  "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                   "MosScope": "PLAYLIST",
                 },
               ],
@@ -1123,7 +1123,7 @@ exports[`Profile 2 onRequestRunningOrder 2`] = `
                 },
               },
               "mosSchema": {
-                "_text": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                "_text": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
               },
               "mosScope": {
                 "_text": "PLAYLIST",
@@ -1140,7 +1140,7 @@ exports[`Profile 2 onRequestRunningOrder 2`] = `
                 "_attributes": {
                   "techDescription": "MOS Object",
                 },
-                "_text": "http://server/proxy/clipe.xml",
+                "_text": "https://server/proxy/clipe.xml",
               },
               "objPath": {
                 "_attributes": {
@@ -1152,7 +1152,7 @@ exports[`Profile 2 onRequestRunningOrder 2`] = `
                 "_attributes": {
                   "techDescription": "WM9 750Kbps",
                 },
-                "_text": "http://server/proxy/clipe.wmv",
+                "_text": "https://server/proxy/clipe.wmv",
               },
             },
           },
@@ -1199,7 +1199,7 @@ exports[`Profile 2 onRequestRunningOrder 2`] = `
                 },
               },
               "mosSchema": {
-                "_text": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                "_text": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
               },
               "mosScope": {
                 "_text": "PLAYLIST",
@@ -1270,7 +1270,7 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
         <itemUserTimingDur>310</itemUserTimingDur>
         <itemTrigger>CHAINED</itemTrigger>
         <mosExternalMetadata>
-          <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+          <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
           <mosPayload>
             <Owner>SHOLMES</Owner>
             <transitionMode>2</transitionMode>
@@ -1282,8 +1282,8 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
         </mosExternalMetadata>
         <objPaths>
           <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
-          <objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
-          <objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
+          <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
+          <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
         </objPaths>
       </item>
     </story>
@@ -1299,7 +1299,7 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
         <itemEdDur>310</itemEdDur>
         <itemUserTimingDur>200</itemUserTimingDur>
         <mosExternalMetadata>
-          <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+          <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
           <mosPayload>
             <Owner>SHOLMES</Owner>
             <transitionMode>2</transitionMode>
@@ -1335,7 +1335,7 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
         <itemUserTimingDur>310</itemUserTimingDur>
         <itemTrigger>CHAINED</itemTrigger>
         <mosExternalMetadata>
-          <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+          <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
           <mosPayload>
             <Owner>SHOLMES</Owner>
             <transitionMode>2</transitionMode>
@@ -1347,8 +1347,8 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
         </mosExternalMetadata>
         <objPaths>
           <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
-          <objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
-          <objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
+          <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
+          <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
         </objPaths>
       </item>
     </story>
@@ -1364,7 +1364,7 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
         <itemEdDur>310</itemEdDur>
         <itemUserTimingDur>200</itemUserTimingDur>
         <mosExternalMetadata>
-          <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+          <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
           <mosPayload>
             <Owner>SHOLMES</Owner>
             <transitionMode>2</transitionMode>
@@ -2704,7 +2704,7 @@ exports[`Profile 2 sendRequestRunningOrder 2`] = `
                 "transitionMode": 2,
                 "transitionPoint": 463,
               },
-              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
               "MosScope": "PLAYLIST",
             },
           ],
@@ -2719,12 +2719,12 @@ exports[`Profile 2 sendRequestRunningOrder 2`] = `
             },
             {
               "Description": "WM9 750Kbps",
-              "Target": "http://server/proxy/clipe.wmv",
+              "Target": "https://server/proxy/clipe.wmv",
               "Type": "PROXY PATH",
             },
             {
               "Description": "MOS Object",
-              "Target": "http://server/proxy/clipe.xml",
+              "Target": "https://server/proxy/clipe.xml",
               "Type": "METADATA PATH",
             },
           ],
@@ -2763,7 +2763,7 @@ exports[`Profile 2 sendRequestRunningOrder 2`] = `
                 "transitionMode": 2,
                 "transitionPoint": 463,
               },
-              "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+              "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
               "MosScope": "PLAYLIST",
             },
           ],

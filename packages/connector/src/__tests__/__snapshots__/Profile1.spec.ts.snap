@@ -93,12 +93,12 @@ exports[`Profile 1 getAllMOSObjects 2`] = `
       },
       {
         "Description": "WM9 750Kbps",
-        "Target": "http://server/proxy/clipe.wmv",
+        "Target": "https://server/proxy/clipe.wmv",
         "Type": "PROXY PATH",
       },
       {
         "Description": "MOS Object",
-        "Target": "http://server/proxy/clipe.xml",
+        "Target": "https://server/proxy/clipe.xml",
         "Type": "METADATA PATH",
       },
     ],
@@ -147,7 +147,7 @@ exports[`Profile 1 getAllMOSObjects 2`] = `
           "mediaTime": 0,
           "text": 0,
         },
-        "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+        "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
         "MosScope": "STORY",
       },
     ],
@@ -159,12 +159,12 @@ exports[`Profile 1 getAllMOSObjects 2`] = `
       },
       {
         "Description": "WM9 750Kbps",
-        "Target": "http://server/proxy/clipe.wmv",
+        "Target": "https://server/proxy/clipe.wmv",
         "Type": "PROXY PATH",
       },
       {
         "Description": "MOS Object",
-        "Target": "http://server/proxy/clipe.xml",
+        "Target": "https://server/proxy/clipe.xml",
         "Type": "METADATA PATH",
       },
     ],
@@ -292,7 +292,7 @@ exports[`Profile 1 getMOSObject 2`] = `
         "mediaTime": 0,
         "text": 0,
       },
-      "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+      "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
       "MosScope": "STORY",
     },
   ],
@@ -304,12 +304,12 @@ exports[`Profile 1 getMOSObject 2`] = `
     },
     {
       "Description": "WM9 750Kbps",
-      "Target": "http://server/proxy/clipe.wmv",
+      "Target": "https://server/proxy/clipe.wmv",
       "Type": "PROXY PATH",
     },
     {
       "Description": "MOS Object",
-      "Target": "http://server/proxy/clipe.xml",
+      "Target": "https://server/proxy/clipe.xml",
       "Type": "METADATA PATH",
     },
   ],
@@ -378,7 +378,7 @@ exports[`Profile 1 onRequestAllMOSObjects 3`] = `
               "mediaTime": 0,
               "text": 0,
             },
-            "mosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>",
+            "mosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>",
             "mosScope": "STORY",
           },
           "objAir": "READY",
@@ -387,7 +387,7 @@ exports[`Profile 1 onRequestAllMOSObjects 3`] = `
           "objPaths": {
             "objMetadataPath": {
               "techDescription": "MOS Object",
-              "text": "http://server/proxy/clipe.xml",
+              "text": "https://server/proxy/clipe.xml",
             },
             "objPath": {
               "techDescription": "MPEG2 Video",
@@ -395,7 +395,7 @@ exports[`Profile 1 onRequestAllMOSObjects 3`] = `
             },
             "objProxyPath": {
               "techDescription": "WM9 750Kbps",
-              "text": "http://server/proxy/clipe.wmv",
+              "text": "https://server/proxy/clipe.wmv",
             },
           },
           "objRev": 1,
@@ -413,7 +413,7 @@ exports[`Profile 1 onRequestAllMOSObjects 3`] = `
           "objPaths": {
             "objMetadataPath": {
               "techDescription": "MOS Object",
-              "text": "http://server/proxy/clipe.xml",
+              "text": "https://server/proxy/clipe.xml",
             },
             "objPath": {
               "techDescription": "MPEG2 Video",
@@ -421,7 +421,7 @@ exports[`Profile 1 onRequestAllMOSObjects 3`] = `
             },
             "objProxyPath": {
               "techDescription": "WM9 750Kbps",
-              "text": "http://server/proxy/clipe.wmv",
+              "text": "https://server/proxy/clipe.wmv",
             },
           },
           "objRev": 1,
@@ -486,7 +486,7 @@ exports[`Profile 1 onRequestMOSObject 2`] = `
           },
         },
         "mosSchema": {
-          "_text": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>",
+          "_text": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>",
         },
         "mosScope": {
           "_text": "STORY",
@@ -506,7 +506,7 @@ exports[`Profile 1 onRequestMOSObject 2`] = `
           "_attributes": {
             "techDescription": "MOS Object",
           },
-          "_text": "http://server/proxy/clipe.xml",
+          "_text": "https://server/proxy/clipe.xml",
         },
         "objPath": {
           "_attributes": {
@@ -518,7 +518,7 @@ exports[`Profile 1 onRequestMOSObject 2`] = `
           "_attributes": {
             "techDescription": "WM9 750Kbps",
           },
-          "_text": "http://server/proxy/clipe.wmv",
+          "_text": "https://server/proxy/clipe.wmv",
         },
       },
       "objRev": {

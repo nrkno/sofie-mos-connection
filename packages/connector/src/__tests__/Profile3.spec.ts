@@ -104,7 +104,7 @@ describe('Profile 3', () => {
 		onMosReqSearchableSchema = jest.fn(async (username: string) => {
 			const response: IMOSListSearchableSchema = {
 				username,
-				mosSchema: 'http://example.com/mosSearchableSchema',
+				mosSchema: 'https://example.com/mosSearchableSchema',
 			}
 			return response
 		})
@@ -266,7 +266,7 @@ describe('Profile 3', () => {
 		checkMessageSnapshot(msg)
 
 		expect(returnedSchema.username).toEqual('myUsername')
-		expect(returnedSchema.mosSchema).toEqual('http://MOSA4.com/mos/supported_schemas/MOSAXML2.08')
+		expect(returnedSchema.mosSchema).toEqual('https://MOSA4.com/mos/supported_schemas/MOSAXML2.08')
 		expect(returnedSchema).toMatchSnapshot()
 	})
 	test('onMosReqObjectList', async () => {

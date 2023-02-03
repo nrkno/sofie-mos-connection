@@ -42,12 +42,12 @@ describe('Profile 2', () => {
 			{
 				Type: IMOSObjectPathType.PROXY_PATH,
 				Description: 'WM9 750Kbps',
-				Target: 'http://server/proxy/clipe.wmv',
+				Target: 'https://server/proxy/clipe.wmv',
 			},
 			{
 				Type: IMOSObjectPathType.METADATA_PATH,
 				Description: 'MOS Object',
-				Target: 'http://server/proxy/clipe.xml',
+				Target: 'https://server/proxy/clipe.xml',
 			},
 		],
 	})
@@ -60,8 +60,8 @@ describe('Profile 2', () => {
 <itemUserTimingDur>415</itemUserTimingDur>
 <objPaths>
 <objPath techDescription="MPEG2 Video">\\server\media\clip392028cd2320s0d.mxf</objPath>
-<objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
-<objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
+<objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
+<objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
 </objPaths>
 </item>`
 	const roItem01 = literal<IMOSItem>({

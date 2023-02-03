@@ -36,12 +36,12 @@ describe('Profile 1', () => {
 			literal<IMOSObjectPath>({
 				Type: IMOSObjectPathType.PROXY_PATH,
 				Description: 'WM9 750Kbps',
-				Target: 'http://server/proxy/clipe.wmv',
+				Target: 'https://server/proxy/clipe.wmv',
 			}),
 			literal<IMOSObjectPath>({
 				Type: IMOSObjectPathType.METADATA_PATH,
 				Description: 'MOS Object',
-				Target: 'http://server/proxy/clipe.xml',
+				Target: 'https://server/proxy/clipe.xml',
 			}),
 		],
 		CreatedBy: mosTypes.mosString128.create('Phil'),
@@ -52,7 +52,7 @@ describe('Profile 1', () => {
 		MosExternalMetaData: [
 			literal<IMOSExternalMetaData>({
 				MosScope: IMOSScope.STORY,
-				MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+				MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 				MosPayload: {
 					Owner: 'SHOLMES',
 					ModTime: 20010308142001,
@@ -76,8 +76,8 @@ describe('Profile 1', () => {
 <objAir>READY</objAir>
 <objPaths>
 <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
-<objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
-<objMetadataPath techDescription="MOS Object">http://server/proxy/clipe.xml</objMetadataPath>
+<objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
+<objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
 </objPaths>
 <createdBy>Phil</createdBy>
 <created>2009-11-01T15:19:01,000Z</created>
@@ -85,7 +85,7 @@ describe('Profile 1', () => {
 <changed>2009-11-01T15:21:15,000Z</changed>
 <description>VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.</description>
 <mosExternalMetadata>
-<mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
 <mosPayload>
 <Owner>SHOLMES</Owner>
 <ModTime>20010308142001</ModTime>
