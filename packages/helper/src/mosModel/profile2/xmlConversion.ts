@@ -68,6 +68,7 @@ export namespace XMLMosROAck {
 			if (xmlObjIDs[i] && xmlStatuses[i]) {
 				object = {
 					Status: xmlStatuses[i],
+					ID: xmlObjIDs[i],
 				}
 				if (item) item.Objects.push(object)
 			}

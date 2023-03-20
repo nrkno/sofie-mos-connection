@@ -136,6 +136,7 @@ ${roStory0XML}`
 								Objects: [
 									{
 										Status: IMOSObjectStatus.READY,
+										ID: mosTypes.mosString128.create('M000224'),
 									},
 								],
 							},
@@ -150,6 +151,7 @@ ${roStory0XML}`
 								Objects: [
 									{
 										Status: IMOSObjectStatus.NOT_READY,
+										ID: mosTypes.mosString128.create('M000133'),
 									},
 								],
 							},
