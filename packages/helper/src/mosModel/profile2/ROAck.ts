@@ -25,18 +25,19 @@ export class ROAck extends MosMessage implements IMOSROAck {
 		addTextElementInternal(root, 'roStatus', this.Status, undefined, this.strict)
 
 		// Loop over Stories, Items and Object
-		for (let storyIndex = 0; storyIndex < this.Stories.length; storyIndex++) {
-			const storyData = this.Stories[storyIndex]
-			const storyItems = storyData.Items
-			for (let itemIndex = 0; itemIndex < storyItems.length; itemIndex++) {
-				const itemData = storyItems[itemIndex]
-				addTextElementInternal(root, 'storyID', storyData.ID, undefined, this.strict)
-				addTextElementInternal(root, 'itemID', itemData.ID, undefined, this.strict)
-				addTextElementInternal(root, 'objID', itemData.Objects[0].ID, undefined, this.strict)
-				if (itemData.Channel._mosString128 !== 'undefined') {
-					addTextElementInternal(root, 'itemChannel', itemData.Channel, undefined, this.strict)
+		for (const story of this.Stories) {
+			for (const item of story.Items) {
+				for (const obj of item.Objects) {
+					addTextElementInternal(root, 'storyID', story.ID, undefined, this.strict)
+					addTextElementInternal(root, 'itemID', item.ID, undefined, this.strict)
+					addTextElementInternal(root, 'objID', obj.ID, undefined, this.strict)
+
+					const channelStr = this.mosTypes.mosString128.stringify(item.Channel)
+					if (channelStr && channelStr !== 'undefined') {
+						addTextElementInternal(root, 'itemChannel', item.Channel, undefined, this.strict)
+					}
+					addTextElementInternal(root, 'status', obj.Status, undefined, this.strict)
 				}
-				addTextElementInternal(root, 'status', itemData.Objects[0].Status, undefined, this.strict)
 			}
 		}
 		return root

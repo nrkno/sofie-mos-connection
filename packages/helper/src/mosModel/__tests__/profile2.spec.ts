@@ -121,7 +121,7 @@ ${roStory0XML}`
 </roAck>`
 		)
 	})
-	test.skip('roAck detailed', () => {
+	test('roAck detailed', () => {
 		const msg = new ROAck(
 			{
 				ID: mosTypes.mosString128.create('96857485'),
@@ -168,12 +168,12 @@ ${roStory0XML}`
 <storyID>5983A501:0049B924:8390EF2B</storyID>
 <itemID>0</itemID>
 <objID>M000224</objID>
-<status>LOADED</status>
+<status>READY</status>
 <storyID>3854737F:0003A34D:983A0B28</storyID>
 <itemID>0</itemID>
 <objID>M000133</objID>
 <itemChannel>A</itemChannel>
-<status>UNKNOWN</status>
+<status>NOT READY</status>
 </roAck>`
 		)
 	})
