@@ -1240,6 +1240,9 @@ export class MosDevice implements IMOSDevice {
 				return this._ensureReply(reply)
 			} catch (e) {
 				this.debugTrace('errored', e)
+				this.debugTrace('1', this._primaryConnection)
+				this.debugTrace('2', this._secondaryConnection)
+				this.debugTrace('3', resend)
 				if (this._primaryConnection && this._secondaryConnection && !resend) {
 					return this.switchConnectionsAndExecuteCommand(message)
 				} else {
