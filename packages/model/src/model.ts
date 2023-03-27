@@ -111,6 +111,7 @@ export interface IMOSROAckItem {
 
 export interface IMOSROAckObject {
 	Status: IMOSObjectStatus
+	ID: IMOSString128
 }
 
 export interface IProfiles {

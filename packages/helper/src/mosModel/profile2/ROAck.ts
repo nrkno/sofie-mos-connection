@@ -24,8 +24,22 @@ export class ROAck extends MosMessage implements IMOSROAck {
 		addTextElementInternal(root, 'roID', this.ID, undefined, this.strict)
 		addTextElementInternal(root, 'roStatus', this.Status, undefined, this.strict)
 
-		// TODO: Loop over Stories, Items and Object
+		// Loop over Stories, Items and Object
+		for (const story of this.Stories) {
+			for (const item of story.Items) {
+				for (const obj of item.Objects) {
+					addTextElementInternal(root, 'storyID', story.ID, undefined, this.strict)
+					addTextElementInternal(root, 'itemID', item.ID, undefined, this.strict)
+					addTextElementInternal(root, 'objID', obj.ID, undefined, this.strict)
 
+					const channelStr = this.mosTypes.mosString128.stringify(item.Channel)
+					if (channelStr && channelStr !== 'undefined') {
+						addTextElementInternal(root, 'itemChannel', item.Channel, undefined, this.strict)
+					}
+					addTextElementInternal(root, 'status', obj.Status, undefined, this.strict)
+				}
+			}
+		}
 		return root
 	}
 }
