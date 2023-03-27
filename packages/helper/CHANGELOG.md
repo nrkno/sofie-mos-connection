@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.1...v3.0.2) (2023-03-27)
+
+
+### Bug Fixes
+
+* minor improvement to RoAck ([7cb0bb6](https://github.com/nrkno/sofie-mos-connection/commit/7cb0bb68be07507a86a20615b3d0b751430e79f9))
+
+
+
+
+
 # [3.0.0](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.0-alpha.3...v3.0.0) (2023-02-03)
 
 **Note:** Version bump only for package @mos-connection/helper
