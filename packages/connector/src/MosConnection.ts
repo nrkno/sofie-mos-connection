@@ -343,7 +343,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		}
 
 		const initSocket = (port: number, portType: IncomingConnectionType) => {
-			const socketServer = new MosSocketServer(port, portType, this._debug)
+			console.log(port, this._conf.host)
+			const socketServer = new MosSocketServer(port, portType, this._debug, this._conf.host)
 			socketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) =>
 				this._registerIncomingClient(e)
 			)

@@ -4,15 +4,17 @@ import { IncomingConnectionType, SocketServerEvent } from './socketConnection'
 
 export class MosSocketServer extends EventEmitter {
 	private _port: number
+	private _host: string
 	private _portDescription: IncomingConnectionType
 	private _socketServer: Server
 	private _debug: boolean
 	private _connectedSockets: Array<Socket> = []
 
 	/** */
-	constructor(port: number, description: IncomingConnectionType, debug: boolean) {
+	constructor(port: number, description: IncomingConnectionType, debug: boolean, host = '0.0.0.0') {
 		super()
 		this._port = port
+		this._host = host
 		this._portDescription = description
 		this._debug = debug ?? false
 
@@ -82,7 +84,8 @@ export class MosSocketServer extends EventEmitter {
 					})
 				})
 
-				this._socketServer.listen(this._port)
+				this._socketServer.listen(this._port, this._host)
+				console.log('listening', this._port, this._host)
 			} catch (e) {
 				reject(e)
 			}

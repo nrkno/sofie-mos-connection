@@ -595,6 +595,7 @@ export interface IConnectionConfig {
 		/** Set MOS Query port (standard: 10542) */
 		query: number
 	}
+	host?: string
 	/** When enabled, automatically create new mos-devices on-the-fly when receiving messages to unregistered MOS-ID:s */
 	openRelay?:
 		| boolean

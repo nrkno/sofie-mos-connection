@@ -22,6 +22,7 @@ export class ConnectionConfig implements IConnectionConfig {
 		upper: number
 		query: number
 	}
+	host?: string
 
 	private _profiles: IProfiles = {
 		'0': false,
@@ -52,6 +53,7 @@ export class ConnectionConfig implements IConnectionConfig {
 		this.profiles = init.profiles
 		this.strict = init.strict
 		this.ports = init.ports
+		this.host = init.host
 	}
 
 	/** */
