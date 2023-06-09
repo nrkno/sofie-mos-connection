@@ -1,6 +1,6 @@
 {
 	"name": "@mos-connection/helper",
-	"version": "3.0.2",
+	"version": "3.0.4",
 	"description": "Helper functions for the MOS-connection library",
 	"main": "dist/index.js",
 	"typings": "dist/index.d.ts",
@@ -26,7 +26,7 @@
 		"/LICENSE"
 	],
 	"dependencies": {
-		"@mos-connection/model": "3.0.2",
+		"@mos-connection/model": "3.0.4",
 		"iconv-lite": "^0.6.2",
 		"tslib": "^2.2.0",
 		"xml-js": "^1.6.11",

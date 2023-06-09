@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/nrkno/tv-automation-mos-connection/compare/v3.0.1...v3.0.4) (2023-06-09)
+
+
+### Bug Fixes
+
+* handover logic should leave heartbearts ([d8ccca0](https://github.com/nrkno/tv-automation-mos-connection/commit/d8ccca0af14e5d3d3574fec4284b4df91336803d))
+* minor improvement to RoAck ([7cb0bb6](https://github.com/nrkno/tv-automation-mos-connection/commit/7cb0bb68be07507a86a20615b3d0b751430e79f9))
+
+
+
+
+
 ## [3.0.3](https://github.com/nrkno/tv-automation-mos-connection/compare/v3.0.2...v3.0.3) (2023-06-09)
 
 
