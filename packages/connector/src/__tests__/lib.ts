@@ -80,7 +80,11 @@ export async function getMosDevice(mos: MosConnection): Promise<MosDevice> {
 		},
 	})
 
-	await delay(10) // to allow for async timers & events to triggered
+	for (const i of SocketMock.instances) {
+		i.mockEmitConnected()
+	}
+
+	await delay(320) // to allow for async timers & events to triggered
 
 	return Promise.resolve(device)
 }
@@ -204,6 +208,10 @@ export function doBeforeAll(): {
 	serverSocketMockLower.name = 'serverLower'
 	serverSocketMockUpper.name = 'serverUpper'
 	serverSocketMockQuery.name = 'serverQuery'
+
+	socketMockLower.mockEmitConnected()
+	socketMockUpper.mockEmitConnected()
+	socketMockQuery.mockEmitConnected()
 
 	return {
 		socketMockLower,

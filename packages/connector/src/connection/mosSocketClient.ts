@@ -100,8 +100,6 @@ export class MosSocketClient extends EventEmitter {
 				}
 
 				// connect:
-				this.debugTrace(new Date(), `Socket ${this._description} attempting connection`)
-				this.debugTrace('port', this._port, 'host', this._host)
 				this._client.connect(this._port, this._host)
 				this._shouldBeConnected = true
 				this._lastConnectionAttempt = Date.now()
@@ -131,7 +129,6 @@ export class MosSocketClient extends EventEmitter {
 	}
 	processQueue(): void {
 		if (this._disposed) return
-		// this.debugTrace('this.connected', this.connected)
 		if (!this._sentMessage && this.connected) {
 			if (this.processQueueTimeout) {
 				clearTimeout(this.processQueueTimeout)
@@ -172,11 +169,20 @@ export class MosSocketClient extends EventEmitter {
 			}
 		}
 	}
+	/**
+	 * Returns a queue of messages to be executed by a different connection.
+	 * Will exclude hearbeats from the returned queue. The heartbeats must stay inside
+	 * the internal queue because they are needed for the connection lifecycle.
+	 */
 	handOverQueue(): HandedOverQueue {
-		const queue = {
-			messages: this._queueMessages,
-			callbacks: this._queueCallback,
-		}
+		const queuedHeartbeats = this._queueMessages.filter((m) => m.msg instanceof MosModel.HeartBeat)
+		const heartBeatCBs = Object.fromEntries(
+			queuedHeartbeats.map((hb) => [hb.msg.messageID + '', this._queueCallback[hb.msg.messageID]])
+		)
+		const messages = this._queueMessages.filter((m) => !(m.msg instanceof MosModel.HeartBeat))
+		const callbacks = Object.fromEntries(
+			messages.map((m) => [m.msg.messageID, this._queueCallback[m.msg.messageID]])
+		)
 		if (this._sentMessage && this._sentMessage.msg instanceof MosModel.HeartBeat) {
 			// Temporary hack, to allow heartbeats to be received after a handover:
 			this._lingeringMessage = this._sentMessage
@@ -186,14 +192,17 @@ export class MosSocketClient extends EventEmitter {
 			delete this._lingeringCallback[this._lingeringMessage.msg.messageID + '']
 			this._lingeringMessage = null
 		}
-		this._queueMessages = []
-		this._queueCallback = {}
+		this._queueMessages = queuedHeartbeats
+		this._queueCallback = heartBeatCBs
 		this._sentMessage = null
-		if (this.processQueueTimeout) {
+		if (this.processQueueTimeout && !this._queueMessages.length) {
 			clearTimeout(this.processQueueTimeout)
 			delete this.processQueueTimeout
 		}
-		return queue
+		return {
+			messages,
+			callbacks,
+		}
 	}
 
 	/** */
