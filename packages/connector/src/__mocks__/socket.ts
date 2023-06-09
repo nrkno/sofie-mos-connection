@@ -105,12 +105,6 @@ export class SocketMock extends EventEmitter implements Socket {
 		this.connectedPort = port
 		this.connectedHost = host
 
-		if (this.connectedPort === 10542) {
-			// don't reply on heartbeats on query port
-			this._autoReplyToHeartBeat = false
-		}
-
-		this.emit('connect')
 		return this
 	}
 	setEncoding(): this {
@@ -195,6 +189,14 @@ export class SocketMock extends EventEmitter implements Socket {
 
 	// ------------------------------------------------------------------------
 	// Mock methods:
+	mockEmitConnected(): void {
+		if (this.connectedPort === 10542) {
+			// don't reply on heartbeats on query port
+			this._autoReplyToHeartBeat = false
+		}
+
+		this.emit('connect')
+	}
 	mockSentMessage0(data: unknown, encoding: string): void {
 		if (this._autoReplyToHeartBeat) {
 			const str: string = typeof data === 'string' ? data : this.decode(data as any)

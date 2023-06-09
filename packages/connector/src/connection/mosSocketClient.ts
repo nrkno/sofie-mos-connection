@@ -169,6 +169,11 @@ export class MosSocketClient extends EventEmitter {
 			}
 		}
 	}
+	/**
+	 * Returns a queue of messages to be executed by a different connection.
+	 * Will exclude hearbeats from the returned queue. The heartbeats must stay inside
+	 * the internal queue because they are needed for the connection lifecycle.
+	 */
 	handOverQueue(): HandedOverQueue {
 		const queuedHeartbeats = this._queueMessages.filter((m) => m.msg instanceof MosModel.HeartBeat)
 		const heartBeatCBs = Object.fromEntries(

@@ -176,7 +176,7 @@ describe('MosDevice: General', () => {
 		expect(mosDevice).toBeTruthy()
 		expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
 
-		await new Promise<void>((resolve) => {
+		const s = new Promise<void>((resolve) => {
 			const status = mosDevice.getConnectionStatus()
 			if (status.PrimaryConnected && status.SecondaryConnected) {
 				resolve()
@@ -188,6 +188,12 @@ describe('MosDevice: General', () => {
 				})
 			}
 		})
+
+		for (const i of SocketMock.instances) {
+			i.mockEmitConnected()
+		}
+
+		await s
 
 		expect(SocketMock.instances).toHaveLength(7)
 		expect(SocketMock.instances[1].connectedHost).toEqual('192.168.0.1')
@@ -255,7 +261,10 @@ describe('MosDevice: General', () => {
 				timeout: 200,
 			},
 		})
-		await delay(10) // to allow for async timers & events to triggered
+		for (const i of SocketMock.instances) {
+			i.mockEmitConnected()
+		}
+		await delay(800) // to allow for async timers & events to triggered
 
 		expect(mosDevice).toBeTruthy()
 
@@ -333,8 +342,11 @@ describe('MosDevice: General', () => {
 		mosDevice.onConnectionChange((connectionStatus: IMOSConnectionStatus) => {
 			connectionStatusChanged(connectionStatus)
 		})
+		for (const i of SocketMock.instances) {
+			i.mockEmitConnected()
+		}
 
-		await delay(10) // to allow for async timers & events to triggered
+		await delay(800) // to allow for async timers & events to triggered
 
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: true,
@@ -362,6 +374,95 @@ describe('MosDevice: General', () => {
 			1,
 			expect.stringContaining('primary: Heartbeat error on lower: Error: Sent command timed out after')
 		)
+
+		// Test proper dispose:
+		await mosDevice.dispose()
+
+		expect(connMocks[1].destroy).toHaveBeenCalledTimes(1)
+		expect(connMocks[2].destroy).toHaveBeenCalledTimes(1)
+
+		await mos.dispose()
+	})
+	test('buddy failover - primary starts offline', async () => {
+		const mos = new MosConnection({
+			mosID: 'jestMOS',
+			acceptsConnections: false,
+			profiles: {
+				'0': true,
+				'1': true,
+			},
+		})
+		await initMosConnection(mos)
+		const mosDevice: MosDevice = await mos.connect({
+			primary: {
+				id: 'mockServer',
+				host: '127.0.0.1',
+				timeout: 200,
+			},
+			secondary: {
+				id: 'mockServer',
+				host: '127.0.0.2',
+				timeout: 200,
+			},
+		})
+
+		expect(mosDevice).toBeTruthy()
+
+		expect(SocketMock.instances).toHaveLength(7)
+		const connMocks = SocketMock.instances
+
+		expect(connMocks[1].connect).toHaveBeenCalledTimes(1)
+		expect(connMocks[1].connect.mock.calls[0][0]).toEqual(10540)
+		expect(connMocks[1].connect.mock.calls[0][1]).toEqual('127.0.0.1')
+		expect(connMocks[2].connect).toHaveBeenCalledTimes(1)
+		expect(connMocks[2].connect.mock.calls[0][0]).toEqual(10541)
+		expect(connMocks[2].connect.mock.calls[0][1]).toEqual('127.0.0.1')
+
+		connMocks[4].mockEmitConnected()
+		connMocks[5].mockEmitConnected()
+		connMocks[6].mockEmitConnected()
+
+		const connectionStatusChanged = jest.fn()
+
+		const errorReported = jest.fn()
+		mos.on('error', errorReported)
+
+		mosDevice.onConnectionChange((connectionStatus: IMOSConnectionStatus) => {
+			connectionStatusChanged(connectionStatus)
+		})
+
+		await delay(800) // to allow for async timers & events to triggered
+
+		expect(mosDevice.getConnectionStatus()).toMatchObject({
+			PrimaryConnected: false,
+			PrimaryStatus: '', // if not connected this will contain human-readable error-message
+			SecondaryConnected: true,
+			// SecondaryStatus: string // if not connected this will contain human-readable error-message
+		})
+
+		await mosDevice.requestMachineInfo().catch(() => null) // we don't care what happens, just need to trigger a handover
+
+		connectionStatusChanged.mockClear()
+
+		// test timeout:
+		connMocks[0].mockEmitConnected()
+		connMocks[1].mockEmitConnected()
+		connMocks[2].mockEmitConnected()
+		connMocks[3].mockEmitConnected()
+
+		await delay(800) // to allow for timeout:
+		expect(mosDevice.getConnectionStatus()).toMatchObject({
+			PrimaryConnected: true,
+			PrimaryStatus: '', // if not connected this will contain human-readable error-message
+			SecondaryConnected: true,
+			SecondaryStatus: '', // if not connected this will contain human-readable error-message
+		})
+
+		// expect(errorReported).toHaveBeenCalledTimes(1)
+		// expect(errorReported).nthCalledWith(
+		// 	1,
+		// 	expect.stringContaining('primary: Heartbeat error on lower: Error: Sent command timed out after')
+		// )
 
 		// Test proper dispose:
 		await mosDevice.dispose()
