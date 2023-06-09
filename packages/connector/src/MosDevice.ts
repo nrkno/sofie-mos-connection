@@ -406,8 +406,9 @@ export class MosDevice implements IMOSDevice {
 				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
 				StoryID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).storyID),
 			}
+			const sourceStories = data.roElementAction.element_source.story
 			const stories: Array<IMOSROStory> = MosModel.XMLROStories.fromXML(
-				[data.roElementAction.element_source.story],
+				Array.isArray(sourceStories) ? sourceStories : [sourceStories],
 				this.strict
 			)
 			const resp = await this._callbackOnROInsertStories(action, stories)
@@ -441,8 +442,9 @@ export class MosDevice implements IMOSDevice {
 				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
 				StoryID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).storyID),
 			}
+			const sourceStories = data.roElementAction.element_source.story
 			const stories: Array<IMOSROStory> = MosModel.XMLROStories.fromXML(
-				[data.roElementAction.element_source.story],
+				Array.isArray(sourceStories) ? sourceStories : [sourceStories],
 				this.strict
 			)
 			const resp = await this._callbackOnROReplaceStories(action, stories)
