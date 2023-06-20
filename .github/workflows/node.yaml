@@ -44,9 +44,11 @@ jobs:
     name: Test on node ${{ matrix.node_version }} and ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        node_version: ['14', '16', '18']
+        node_version: ['14', '16', '18', '20']
         os: [ubuntu-latest] # [windows-latest, macOS-latest]
+
     timeout-minutes: 3
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -69,7 +71,7 @@ jobs:
           CI: true
       - name: Run unit tests
         run: |
-          yarn test -- -- --forceExit --coverage
+          yarn test -- --forceExit --coverage
         env:
           CI: true
       - name: Send coverage
