@@ -33,7 +33,7 @@ function stringifyMosObjectInner(o: any, mosTypes: MosTypes): { modified: true; 
 	} else if (typeof o === 'object') {
 		let anythingModified = false
 		const o2: any = {}
-		for (const [key, value] of Object.entries(o)) {
+		for (const [key, value] of Object.entries<any>(o)) {
 			const stringified = stringifyMosObjectInner(value, mosTypes)
 			if (stringified.modified) {
 				anythingModified = true

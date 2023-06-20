@@ -66,7 +66,9 @@ export class MosMessageParser extends EventEmitter {
 				parsedData = xml2js(messageString) // , { compact: true, trim: true, nativeType: true })
 			}
 		} catch (err) {
+			// eslint-disable-next-line no-console
 			console.log('dataChunks-------------\n', this.dataChunks)
+			// eslint-disable-next-line no-console
 			console.log('messageString---------\n', messageString)
 			// this.emit('error', e)
 

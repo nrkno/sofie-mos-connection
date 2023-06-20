@@ -198,7 +198,7 @@ export function xmlToObject(root: XMLBuilder.XMLElement): any {
 	let hasAttribs = false
 
 	if (root.attribs) {
-		for (const attr of Object.values(root.attribs)) {
+		for (const attr of Object.values<XMLBuilder.XMLAttribute>(root.attribs)) {
 			hasAttribs = true
 			if (!obj.attributes) obj.attributes = {}
 			obj.attributes[attr.name] = attr.value

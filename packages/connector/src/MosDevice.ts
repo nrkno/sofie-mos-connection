@@ -286,6 +286,7 @@ export class MosDevice implements IMOSDevice {
 										setTimeout(sendNextObject, pause * 1000)
 									})
 									.catch((e) => {
+										// eslint-disable-next-line no-console
 										console.error('Error in async mosObj response to mosReqAll', e)
 									})
 							}
@@ -294,6 +295,7 @@ export class MosDevice implements IMOSDevice {
 					}
 				} else {
 					this._sendAllMOSObjects(mosObjects).catch((e) => {
+						// eslint-disable-next-line no-console
 						console.error('Error in async mosListAll response to mosReqAll', e)
 					})
 				}
