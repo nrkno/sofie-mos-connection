@@ -262,6 +262,6 @@ function extractList<T>(list: T[], fcn: (value: T) => number): T[] {
 	}
 	return makeDenseArray(list0)
 }
-function makeDenseArray(sparse) {
-	return sparse.filter((x) => x !== undefined && x != null)
+function makeDenseArray<T>(sparse: Array<T | undefined | null>): T[] {
+	return sparse.filter((x): x is T => x !== undefined && x != null)
 }

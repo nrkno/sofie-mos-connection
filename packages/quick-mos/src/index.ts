@@ -80,7 +80,7 @@ function triggerReload() {
 		}
 	}, DELAY_TIME)
 }
-function loadFile(requirePath) {
+function loadFile(requirePath: string) {
 	delete require.cache[require.resolve(requirePath)]
 	const mosData = require(requirePath)
 	if (
@@ -97,13 +97,13 @@ function loadFile(requirePath) {
 		!(mosData.runningOrder.EditorialDuration instanceof MosDuration)
 	) {
 		let s = mosData.runningOrder.EditorialDuration._duration
-		let hh = Math.floor(s / 3600)
+		const hh = Math.floor(s / 3600)
 		s -= hh * 3600
 
-		let mm = Math.floor(s / 60)
+		const mm = Math.floor(s / 60)
 		s -= mm * 60
 
-		let ss = Math.floor(s)
+		const ss = Math.floor(s)
 
 		mosData.runningOrder.EditorialDuration = new MosDuration(hh + ':' + mm + ':' + ss)
 	}
@@ -203,11 +203,11 @@ async function reloadInner() {
 			// mosDevice.onMosReqSearchableSchema((username: string) => Promise<IMOSSearchableSchema>): void;
 			// mosDevice.onMosReqObjectList((objList: IMosRequestObjectList) => Promise<IMosObjectList>): void;
 			// mosDevice.onMosReqObjectAction((action: string, obj: IMOSObject) => Promise<IMOSAck>): void;
-			mosDevice.onROReqAll(() => {
+			mosDevice.onROReqAll(async () => {
 				const ros = fetchRunningOrders()
 				return Promise.resolve(ros.map((r) => r.ro))
 			})
-			mosDevice.onRequestRunningOrder((roId) => {
+			mosDevice.onRequestRunningOrder(async (roId) => {
 				const ro = monitors[mosId].resendRunningOrder(roId as any as string)
 				return Promise.resolve(ro)
 			})
@@ -335,7 +335,7 @@ class MOSMonitor {
 					if (story) {
 						// send it
 						console.log('simulating edit')
-						this.commands.push(() => {
+						this.commands.push(async () => {
 							console.log('sendFullStory', story.ID)
 							return this.mosDevice.sendROStory(story)
 						})
@@ -356,7 +356,7 @@ class MOSMonitor {
 	onDeletedRunningOrder(roId: string) {
 		console.log('onDeletedRunningOrder', roId)
 		if (this.ros[roId]) {
-			this.commands.push(() => {
+			this.commands.push(async () => {
 				console.log('sendDeleteRunningOrder')
 				return this.mosDevice.sendDeleteRunningOrder(new MosString128(roId))
 			})
@@ -370,7 +370,7 @@ class MOSMonitor {
 		if (local) {
 			setTimeout(() => {
 				Object.values(local.fullStories).forEach((story) => {
-					this.commands.push(() => {
+					this.commands.push(async () => {
 						console.log('sendFullStory', story.ID)
 						return this.mosDevice.sendROStory(story)
 					})
@@ -392,7 +392,7 @@ class MOSMonitor {
 
 		if (!local) {
 			// New RO
-			this.commands.push(() => {
+			this.commands.push(async () => {
 				console.log('sendCreateRunningOrder', ro.ID)
 				return this.mosDevice.sendCreateRunningOrder(ro)
 			})
@@ -407,7 +407,7 @@ class MOSMonitor {
 				// nothing changed, do nothing
 			} else if ((!roBaseDataEqual || !metadataEqual) && roStoriesEqual) {
 				// Only RO metadata has changed
-				this.commands.push(() => {
+				this.commands.push(async () => {
 					console.log('sendMetadataReplace', ro.ID)
 					return this.mosDevice.sendMetadataReplace(ro)
 				})
@@ -418,7 +418,7 @@ class MOSMonitor {
 				for (const operation of operations) {
 					if (operation.type === OperationType.INSERT) {
 						const inserts = operation.inserts.map((i) => i.content)
-						this.commands.push(() => {
+						this.commands.push(async () => {
 							console.log('sendROInsertStories', ro.ID)
 							return this.mosDevice.sendROInsertStories(
 								{
@@ -430,7 +430,7 @@ class MOSMonitor {
 						})
 					} else if (operation.type === OperationType.UPDATE) {
 						const updatedStory = operation.content
-						this.commands.push(() => {
+						this.commands.push(async () => {
 							console.log('sendROReplaceStories', ro.ID)
 							return this.mosDevice.sendROReplaceStories(
 								{
@@ -443,7 +443,7 @@ class MOSMonitor {
 					} else if (operation.type === OperationType.REMOVE) {
 						const removeIds = operation.ids
 						console.log('sendRODeleteStories', ro.ID, removeIds)
-						this.commands.push(() => {
+						this.commands.push(async () => {
 							return this.mosDevice.sendRODeleteStories(
 								{
 									RunningOrderID: ro.ID,
@@ -455,7 +455,7 @@ class MOSMonitor {
 						const beforeId = operation.beforeId
 						const moveIds = operation.ids
 						console.log('sendROMoveStories', ro.ID, moveIds, beforeId)
-						this.commands.push(() => {
+						this.commands.push(async () => {
 							return this.mosDevice.sendROMoveStories(
 								{
 									RunningOrderID: ro.ID,
@@ -518,14 +518,14 @@ class MOSMonitor {
 				*/
 			} else {
 				// last resort: replace the whole rundown
-				this.commands.push(() => {
+				this.commands.push(async () => {
 					console.log('sendReplaceRunningOrder')
 					return this.mosDevice.sendReplaceRunningOrder(ro)
 				})
 			}
 		}
 		if (readyToAir !== local?.readyToAir) {
-			this.commands.push(() => {
+			this.commands.push(async () => {
 				console.log('sendReadyToAir', ro.ID, readyToAir)
 				return this.mosDevice.sendReadyToAir({
 					ID: ro.ID,
@@ -543,7 +543,7 @@ class MOSMonitor {
 
 			const localStory = local && local.fullStories[story.ID.toString()]
 			if (!local || !_.isEqual(localStory, story)) {
-				this.commands.push(() => {
+				this.commands.push(async () => {
 					console.log('sendFullStory', story.ID)
 					return this.mosDevice.sendROStory(story)
 				})

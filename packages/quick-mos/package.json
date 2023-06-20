@@ -1,74 +1,57 @@
 {
-  "name": "quickMos",
-  "version": "0.0.0",
-  "description": "Read rundowns from files, use mos-connection and send mos commands",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "module": "dist/module/index.js",
-  "browser": "dist/browser/index.js",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nytamin/quick-mos"
-  },
-  "author": {
-    "name": "Johan Nyman",
-    "email": "johan@superfly.tv",
-    "url": "http://superfly.tv"
-  },
-  "contributors": [],
-  "scripts": {
-    "info": "npm-scripts-info",
-    "build": "rimraf dist && yarn build:main",
-    "buildstart": "yarn build && yarn start",
-    "buildinspect": "yarn build && yarn inspect",
-    "build:main": "tsc -p tsconfig.json",
-    "unit": "jest",
-    "test": "yarn lint && yarn unit",
-    "cov": "jest --coverage && yarn cov-open",
-    "cov-open": "open-cli coverage/lcov-report/index.html",
-    "lint": "eslint . --ext .ts,.tsx",
-    "lintfix": "yarn lint --fix",
-    "inspect": "node --inspect dist/index.js",
-    "start": "ts-node src/index.ts",
-    "unlinkall": "yarn unlink mos-connection && yarn --check-files",
-    "validate:dependencies": "yarn audit && yarn license-validate",
-    "license-validate": "node-license-validator -p -d --allow-licenses MIT BSD BSD-2-Clause BSD-3-Clause ISC Apache Unlicense WTFPL --allow-packages cycle"
-  },
-  "engines": {
-    "node": ">=12"
-  },
-  "devDependencies": {
-    "@sofie-automation/code-standard-preset": "^0.2.5",
-    "@types/jest": "^26.0.23",
-    "@types/node": "^12.7.9",
-    "@types/underscore": "^1.11.4",
-    "jest": "^26.6.3",
-    "open-cli": "^6.0.1",
-    "rimraf": "^3.0.2",
-    "ts-jest": "^26.5.6",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.1.5"
-  },
-  "keywords": [
-    "broadcast",
-    "socket",
-    "typescript",
-    "javascript",
-    "open",
-    "source",
-    "automation",
-    "ncs",
-    "nrcs",
-    "rundown",
-    "production"
-  ],
-  "dependencies": {
-    "chokidar": "^3.5.3",
-    "fast-clone": "^1.5.13",
-    "mos-connection": "^2.0.1",
-    "tslib": "^2.4.0",
-    "underscore": "^1.13.6"
-  },
-  "prettier": "@sofie-automation/code-standard-preset/.prettierrc.json"
+	"name": "quick-mos",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Read rundowns from files, use mos-connection and send mos commands",
+	"main": "dist/index.js",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nrkno/sofie-mos-connection.git"
+	},
+	"homepage": "https://github.com/nrkno/sofie-mos-connection#readme",
+	"author": {
+		"name": "Johan Nyman",
+		"email": "johan@superfly.tv",
+		"url": "http://superfly.tv"
+	},
+	"contributors": [],
+	"scripts": {
+		"build": "run -T rimraf dist && run build:main",
+		"buildstart": "run build && run start",
+		"buildinspect": "run build && run inspect",
+		"build:main": "run -T tsc -p tsconfig.json",
+		"test": "run -T jest",
+		"inspect": "node --inspect dist/index.js",
+		"start": "ts-node src/index.ts"
+	},
+	"engines": {
+		"node": ">=14.18.0"
+	},
+	"devDependencies": {
+		"@types/underscore": "^1.11.5",
+		"ts-node": "^10.9.1"
+	},
+	"dependencies": {
+		"chokidar": "^3.5.3",
+		"fast-clone": "^1.5.13",
+		"mos-connection": "^2.0.1",
+		"tslib": "^2.5.3",
+		"underscore": "^1.13.6"
+	},
+	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
+	"lint-staged": {
+		"*.{css,json,md,scss}": [
+			"run -T prettier"
+		],
+		"*.{ts,tsx,js,jsx}": [
+			"run -T eslint"
+		]
+	},
+	"files": [
+		"/dist",
+		"/CHANGELOG.md",
+		"/README.md",
+		"/LICENSE"
+	]
 }
