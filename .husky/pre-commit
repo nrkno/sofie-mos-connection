@@ -3,4 +3,4 @@
 
 node scripts/update-packages.mjs
 
-yarn lint-staged
+yarn run lint-staged

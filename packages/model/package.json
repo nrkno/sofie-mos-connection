@@ -11,9 +11,9 @@
 	},
 	"homepage": "https://github.com/nrkno/sofie-mos-connection#readme",
 	"scripts": {
-		"build": "rimraf dist && yarn build:main",
-		"build:main": "tsc -p tsconfig.build.json",
-		"test": "jest"
+		"build": "run -T rimraf dist && run build:main",
+		"build:main": "run -T tsc -p tsconfig.build.json",
+		"test": "run -T jest"
 	},
 	"engines": {
 		"node": ">=14.18.0"
@@ -21,10 +21,10 @@
 	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
 	"lint-staged": {
 		"*.{css,json,md,scss}": [
-			"prettier"
+			"run -T prettier"
 		],
 		"*.{ts,tsx,js,jsx}": [
-			"eslint"
+			"run -T eslint"
 		]
 	},
 	"files": [

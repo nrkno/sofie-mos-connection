@@ -10,22 +10,24 @@
 		"prepare": "husky install",
 		"lerna": "lerna",
 		"postinstall": "node scripts/update-packages.mjs",
-		"ci": "yarn install && yarn build && yarn lint && yarn test",
+		"ci": "run build && run lint && run test",
 		"release:set-version": "lerna version --exact --no-changelog --no-push --yes",
 		"release:bump-release": "lerna version --exact --conventional-commits --conventional-graduate --tag-version-prefix='v' --no-push --force-publish=*",
 		"release:bump-prerelease": "lerna version --exact --conventional-commits --conventional-prerelease --tag-version-prefix='v' --no-push --force-publish=*",
 		"set-version": "lerna version --exact --no-changelog --no-push --yes --force-publish=*",
 		"setup": "lerna bootstrap",
 		"reset": "node scripts/reset.js",
-		"link:all": "lerna exec -- yarn link",
 		"build": "lerna run build --stream",
 		"build:changed": "lerna run build --since head --exclude-dependents --stream",
-		"lint": "lerna exec --parallel -- eslint . --ext .ts,.tsx",
-		"lintfix": "yarn lint --fix",
-		"lint:changed": "lerna exec --since origin/master --include-dependents -- eslint . --ext .js,.jsx,.ts,.tsx",
+		"lint": "lerna exec --parallel -- run -T eslint . --ext .ts,.tsx",
+		"lintfix": "run lint --fix",
+		"lint:changed": "lerna exec --since origin/master --include-dependents -- run -T eslint . --ext .js,.jsx,.ts,.tsx",
 		"test": "lerna run test --stream",
 		"test:changed": "lerna run --since origin/master --include-dependents test",
-		"test:coverage": "lerna run test --stream -- -- --coverage"
+		"test:coverage": "lerna run test --stream -- -- --coverage",
+		"lint-staged": "./node_modules/.bin/lint-staged",
+		"prettier": "cd $INIT_CWD && \"$PROJECT_CWD/node_modules/.bin/prettier\"",
+		"eslint": "cd $INIT_CWD && \"$PROJECT_CWD/node_modules/.bin/eslint\""
 	},
 	"devDependencies": {
 		"@sofie-automation/code-standard-preset": "^2.4.7",
@@ -42,6 +44,6 @@
 	"engines": {
 		"node": ">=14.18.0"
 	},
-	"dependencies": {},
-	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json"
+	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
+	"packageManager": "yarn@3.6.0"
 }

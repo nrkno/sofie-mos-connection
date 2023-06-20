@@ -8,10 +8,10 @@
 	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
 	"lint-staged": {
 		"*.{css,json,md,scss}": [
-			"prettier"
+			"run -T prettier"
 		],
 		"*.{ts,tsx,js,jsx}": [
-			"eslint"
+			"run -T eslint"
 		]
 	},
 	"files": [
