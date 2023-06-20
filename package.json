@@ -9,7 +9,7 @@
 	"scripts": {
 		"prepare": "husky install",
 		"lerna": "lerna",
-		"postinstall": "node scripts/update-packages.js",
+		"postinstall": "node scripts/update-packages.mjs",
 		"ci": "yarn install && yarn build && yarn lint && yarn test",
 		"release:set-version": "lerna version --exact --no-changelog --no-push --yes",
 		"release:bump-release": "lerna version --exact --conventional-commits --conventional-graduate --tag-version-prefix='v' --no-push --force-publish=*",

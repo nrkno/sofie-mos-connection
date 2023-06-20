@@ -1,6 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-node scripts/update-packages.js
+node scripts/update-packages.mjs
 
 yarn lint-staged
