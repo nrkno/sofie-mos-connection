@@ -16,8 +16,7 @@
 	"scripts": {
 		"build": "rimraf dist && yarn build:main",
 		"build:main": "tsc -p tsconfig.build.json",
-		"test": "jest",
-		"precommit": "lint-staged"
+		"test": "jest"
 	},
 	"files": [
 		"/dist",

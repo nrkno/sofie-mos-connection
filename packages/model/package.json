@@ -13,8 +13,7 @@
 	"scripts": {
 		"build": "rimraf dist && yarn build:main",
 		"build:main": "tsc -p tsconfig.build.json",
-		"test": "jest",
-		"precommit": "lint-staged"
+		"test": "jest"
 	},
 	"engines": {
 		"node": ">=14.18.0"

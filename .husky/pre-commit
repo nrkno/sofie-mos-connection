@@ -3,4 +3,4 @@
 
 node scripts/update-packages.js
 
-yarn lerna run --concurrency 1 --stream precommit --since HEAD --exclude-dependents
+yarn lint-staged
