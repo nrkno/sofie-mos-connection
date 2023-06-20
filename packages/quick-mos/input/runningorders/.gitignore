@@ -1,0 +1,4 @@
+*.ts
+*.json
+
+!empty.ts

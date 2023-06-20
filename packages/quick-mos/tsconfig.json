@@ -1,0 +1,10 @@
+{
+  "extends": "./config/tsconfig.base",
+  "exclude": [
+    "node_modules/**",
+    "src/**/__tests__/**",
+  ],
+  "include": [
+    "input"
+  ]
+}
