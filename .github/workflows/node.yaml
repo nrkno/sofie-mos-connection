@@ -49,7 +49,7 @@ jobs:
         node_version: ['14', '16', '18', '20']
         os: [ubuntu-latest] # [windows-latest, macOS-latest]
 
-    timeout-minutes: 3
+    timeout-minutes: 5
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
