@@ -1,9 +1,9 @@
-import { IMOSROFullStory, MosString128 } from 'mos-connection'
+import type { IMOSROFullStory, IMOSString128 } from '@mos-connection/model'
 
 export type NormalizeMosAttributes<T> = {
-	[P in keyof T]: T[P] extends MosString128
+	[P in keyof T]: T[P] extends IMOSString128
 		? string
-		: T[P] extends MosString128 | undefined
+		: T[P] extends IMOSString128 | undefined
 		? string | undefined
 		: T[P] extends string | number | null | undefined
 		? T[P]

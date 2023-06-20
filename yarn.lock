@@ -948,7 +948,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mos-connection/connector@3.0.4, @mos-connection/connector@workspace:packages/connector":
+"@mos-connection/connector@*, @mos-connection/connector@3.0.4, @mos-connection/connector@workspace:packages/connector":
   version: 0.0.0-use.local
   resolution: "@mos-connection/connector@workspace:packages/connector"
   dependencies:
@@ -981,7 +981,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@mos-connection/model@3.0.4, @mos-connection/model@workspace:packages/model":
+"@mos-connection/model@*, @mos-connection/model@3.0.4, @mos-connection/model@workspace:packages/model":
   version: 0.0.0-use.local
   resolution: "@mos-connection/model@workspace:packages/model"
   languageName: unknown
@@ -6504,13 +6504,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.29.4":
-  version: 2.29.4
-  resolution: "moment@npm:2.29.4"
-  checksum: 0ec3f9c2bcba38dc2451b1daed5daded747f17610b92427bebe1d08d48d8b7bdd8d9197500b072d14e326dd0ccf3e326b9e3d07c5895d3d49e39b6803b76e80e
-  languageName: node
-  linkType: hard
-
 "mos-connection-monorepo@workspace:.":
   version: 0.0.0-use.local
   resolution: "mos-connection-monorepo@workspace:."
@@ -6527,19 +6520,6 @@ __metadata:
     typescript: ~4.9.5
   languageName: unknown
   linkType: soft
-
-"mos-connection@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "mos-connection@npm:2.0.1"
-  dependencies:
-    iconv-lite: ^0.6.2
-    moment: ^2.29.4
-    tslib: ^2.2.0
-    xml-js: ^1.6.11
-    xmlbuilder: ^15.1.1
-  checksum: 5ab25ffeaba91f88b66c5f230ecbe8566bcdf4c50ec5e9dbd90d9ee55738bb7a15dac272943e0b1f69249a8d12c7df59ff2ef4664412be78d6ab13112ce23c78
-  languageName: node
-  linkType: hard
 
 "ms@npm:2.1.2":
   version: 2.1.2
@@ -7772,10 +7752,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "quick-mos@workspace:packages/quick-mos"
   dependencies:
+    "@mos-connection/connector": "*"
+    "@mos-connection/model": "*"
     "@types/underscore": ^1.11.5
     chokidar: ^3.5.3
     fast-clone: ^1.5.13
-    mos-connection: ^2.0.1
     ts-node: ^10.9.1
     tslib: ^2.5.3
     underscore: ^1.13.6
@@ -9052,7 +9033,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.3.0, tslib@npm:^2.4.0, tslib@npm:^2.5.3":
+"tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.4.0, tslib@npm:^2.5.3":
   version: 2.5.3
   resolution: "tslib@npm:2.5.3"
   checksum: 88902b309afaf83259131c1e13da1dceb0ad1682a213143a1346a649143924d78cf3760c448b84d796938fd76127183894f8d85cbb3bf9c4fddbfcc140c0003c

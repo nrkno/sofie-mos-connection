@@ -6,17 +6,15 @@ import * as path from 'path'
 import {
 	MosConnection,
 	IMOSRunningOrder,
-	MosString128,
 	IMOSROStory,
 	IMOSROFullStory,
 	IConnectionConfig,
 	IMOSDeviceConnectionOptions,
 	MosDevice,
 	IMOSListMachInfo,
-	MosTime,
-	MosDuration,
 	IMOSObjectAirStatus,
-} from 'mos-connection'
+	getMosTypes,
+} from '@mos-connection/connector'
 import { diffLists, ListEntry, OperationType } from './mosDiff'
 import * as crypto from 'crypto'
 
@@ -54,6 +52,8 @@ const config: Config = {
 	devices: [],
 }
 
+const mosTypes = getMosTypes(true)
+
 const mos: {
 	mosConnection?: MosConnection
 } = {}
@@ -82,19 +82,20 @@ function triggerReload() {
 }
 function loadFile(requirePath: string) {
 	delete require.cache[require.resolve(requirePath)]
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const mosData = require(requirePath)
 	if (
 		mosData.runningOrder &&
 		mosData.runningOrder.EditorialStart &&
-		!(mosData.runningOrder.EditorialStart instanceof MosTime)
+		!mosTypes.mosTime.is(mosData.runningOrder.EditorialStart)
 	) {
-		mosData.runningOrder.EditorialStart = new MosTime(mosData.runningOrder.EditorialStart._time)
+		mosData.runningOrder.EditorialStart = mosTypes.mosTime.create(mosData.runningOrder.EditorialStart._time)
 	}
 
 	if (
 		mosData.runningOrder &&
 		mosData.runningOrder.EditorialDuration &&
-		!(mosData.runningOrder.EditorialDuration instanceof MosDuration)
+		!mosTypes.mosDuration.is(mosData.runningOrder.EditorialDuration)
 	) {
 		let s = mosData.runningOrder.EditorialDuration._duration
 		const hh = Math.floor(s / 3600)
@@ -105,7 +106,7 @@ function loadFile(requirePath: string) {
 
 		const ss = Math.floor(s)
 
-		mosData.runningOrder.EditorialDuration = new MosDuration(hh + ':' + mm + ':' + ss)
+		mosData.runningOrder.EditorialDuration = mosTypes.mosDuration.create(hh + ':' + mm + ':' + ss)
 	}
 
 	return mosData
@@ -142,16 +143,16 @@ async function reloadInner() {
 
 			mosDevice.onGetMachineInfo(async () => {
 				const machineInfo: IMOSListMachInfo = {
-					manufacturer: new MosString128('<<<Mock Manufacturer>>>'),
-					model: new MosString128('<<<Mock model>>>'),
-					hwRev: new MosString128('1.0'),
-					swRev: new MosString128('1.0'),
-					DOM: new MosTime(0),
-					SN: new MosString128('<<<Mock SN>>>'),
-					ID: new MosString128(config.mosConnection.mosID),
-					time: new MosTime(Date.now()),
+					manufacturer: mosTypes.mosString128.create('<<<Mock Manufacturer>>>'),
+					model: mosTypes.mosString128.create('<<<Mock model>>>'),
+					hwRev: mosTypes.mosString128.create('1.0'),
+					swRev: mosTypes.mosString128.create('1.0'),
+					DOM: mosTypes.mosString128.create(0),
+					SN: mosTypes.mosString128.create('<<<Mock SN>>>'),
+					ID: mosTypes.mosString128.create(config.mosConnection.mosID),
+					time: mosTypes.mosTime.create(Date.now()),
 					// opTime?: MosTime;
-					mosRev: new MosString128('0'),
+					mosRev: mosTypes.mosString128.create('0'),
 					supportedProfiles: {
 						deviceType: 'NCS',
 						profile0: true,
@@ -172,7 +173,7 @@ async function reloadInner() {
 				console.log(mosDevice.ID, 'connection change', mosDevice.getConnectionStatus())
 			})
 
-			const mosId = mosDevice.ID.toString()
+			const mosId = mosTypes.mosString128.stringify(mosDevice.ID)
 
 			if (!monitors[mosId]) {
 				monitors[mosId] = new MOSMonitor(mosDevice)
@@ -235,7 +236,7 @@ function refreshFiles() {
 		const stories = r.stories
 		const readyToAir = r.readyToAir
 
-		const id = runningOrder.ID.toString()
+		const id = mosTypes.mosString128.stringify(runningOrder.ID)
 		runningOrderIds[id] = t
 		if (_.isEmpty(monitors)) {
 			fakeOnUpdatedRunningOrder(runningOrder, stories)
@@ -267,7 +268,7 @@ function fetchRunningOrders() {
 			if (filePath.match(/(\.ts|.json)$/)) {
 				const fileContents = loadFile(requirePath)
 				const ro: IMOSRunningOrder = fileContents.runningOrder
-				ro.ID = new MosString128(filePath.replace(/[\W]/g, '_'))
+				ro.ID = mosTypes.mosString128.create(filePath.replace(/[\W]/g, '_'))
 
 				runningOrders.push({
 					ro,
@@ -358,7 +359,7 @@ class MOSMonitor {
 		if (this.ros[roId]) {
 			this.commands.push(async () => {
 				console.log('sendDeleteRunningOrder')
-				return this.mosDevice.sendDeleteRunningOrder(new MosString128(roId))
+				return this.mosDevice.sendDeleteRunningOrder(mosTypes.mosString128.create(roId))
 			})
 		}
 		// At the end, store the updated RO:
@@ -369,7 +370,7 @@ class MOSMonitor {
 		const local = this.ros[roId]
 		if (local) {
 			setTimeout(() => {
-				Object.values(local.fullStories).forEach((story) => {
+				Object.values<IMOSROFullStory>(local.fullStories).forEach((story) => {
 					this.commands.push(async () => {
 						console.log('sendFullStory', story.ID)
 						return this.mosDevice.sendROStory(story)
@@ -383,7 +384,7 @@ class MOSMonitor {
 	}
 	onUpdatedRunningOrder(ro: IMOSRunningOrder, fullStories: IMOSROFullStory[], readyToAir: boolean | undefined): void {
 		// compare with
-		const roId = ro.ID.toString()
+		const roId = mosTypes.mosString128.stringify(ro.ID)
 		readyToAir = readyToAir || false
 		console.log('onUpdatedRunningOrder ----------', roId)
 
@@ -423,7 +424,7 @@ class MOSMonitor {
 							return this.mosDevice.sendROInsertStories(
 								{
 									RunningOrderID: ro.ID,
-									StoryID: new MosString128(operation.beforeId),
+									StoryID: mosTypes.mosString128.create(operation.beforeId),
 								},
 								inserts
 							)
@@ -435,7 +436,7 @@ class MOSMonitor {
 							return this.mosDevice.sendROReplaceStories(
 								{
 									RunningOrderID: ro.ID,
-									StoryID: new MosString128(operation.id),
+									StoryID: mosTypes.mosString128.create(operation.id),
 								},
 								[updatedStory]
 							)
@@ -448,7 +449,7 @@ class MOSMonitor {
 								{
 									RunningOrderID: ro.ID,
 								},
-								removeIds.map((id) => new MosString128(id))
+								removeIds.map((id) => mosTypes.mosString128.create(id))
 							)
 						})
 					} else if (operation.type === OperationType.MOVE) {
@@ -459,9 +460,9 @@ class MOSMonitor {
 							return this.mosDevice.sendROMoveStories(
 								{
 									RunningOrderID: ro.ID,
-									StoryID: new MosString128(beforeId),
+									StoryID: mosTypes.mosString128.create(beforeId),
 								},
-								moveIds.map((id) => new MosString128(id))
+								moveIds.map((id) => mosTypes.mosString128.create(id))
 							)
 						})
 					}
@@ -477,7 +478,7 @@ class MOSMonitor {
 						const story = ro.Stories[c.id]
 						return this.mosDevice.sendROReplaceStories({
 							RunningOrderID: ro.ID,
-							StoryID: new MosString128(c.id)
+							StoryID: mosTypes.mosString128.create(c.id)
 						}, [ c.story ])
 					})
 				})
@@ -497,8 +498,8 @@ class MOSMonitor {
 				// 		return this.mosDevice.sendROSwapStories({
 				// 			RunningOrderID: ro.ID
 				// 		},
-				// 		new MosString128(o.moved[0].id),
-				// 		new MosString128(o.moved[1].id)
+				// 		mosTypes.mosString128.create(o.moved[0].id),
+				// 		mosTypes.mosString128.create(o.moved[1].id)
 				// 		)
 				// 	})
 				// } else {
@@ -511,8 +512,8 @@ class MOSMonitor {
 						// const behindStory = index > 0 && ro.Stories[index - 1]
 						return this.mosDevice.sendROMoveStories({
 							RunningOrderID: ro.ID,
-							StoryID: new MosString128(m.afterId)
-						}, m.ids.map(m => new MosString128(m)))
+							StoryID: mosTypes.mosString128.create(m.afterId)
+						}, m.ids.map(m => mosTypes.mosString128.create(m)))
 					})
 				})
 				*/
@@ -537,11 +538,11 @@ class MOSMonitor {
 		console.log('stories', fullStories.length)
 		const newStories: { [id: string]: IMOSROFullStory } = {}
 		fullStories.forEach((story) => {
-			story.RunningOrderId = new MosString128(roId)
+			story.RunningOrderId = mosTypes.mosString128.create(roId)
 
-			newStories[story.ID.toString()] = story
+			newStories[mosTypes.mosString128.stringify(story.ID)] = story
 
-			const localStory = local && local.fullStories[story.ID.toString()]
+			const localStory = local && local.fullStories[mosTypes.mosString128.stringify(story.ID)]
 			if (!local || !_.isEqual(localStory, story)) {
 				this.commands.push(async () => {
 					console.log('sendFullStory', story.ID)
@@ -574,7 +575,7 @@ class MOSMonitor {
 	static prepareStories(stories: IMOSROStory[]): ListEntry<IMOSROStory>[] {
 		return stories.map((story) => {
 			return {
-				id: story.ID.toString(),
+				id: mosTypes.mosString128.stringify(story.ID),
 				changedHash: this.md5(JSON.stringify(story)),
 				content: story,
 			}
@@ -610,7 +611,7 @@ const fake: any = {
 }
 function fakeOnUpdatedRunningOrder(ro: IMOSRunningOrder, _fullStories: IMOSROFullStory[]): void {
 	// compare with
-	const roId = ro.ID.toString()
+	const roId = mosTypes.mosString128.stringify(ro.ID)
 	// console.log('fakeOnUpdatedRunningOrder', roId)
 
 	const localRo = fake.ros[roId]
@@ -659,7 +660,7 @@ function fakeOnUpdatedRunningOrder(ro: IMOSRunningOrder, _fullStories: IMOSROFul
 					// this.commands.push(() => {
 					// 	return this.mosDevice.sendROInsertStories({
 					// 		RunningOrderID: ro.ID,
-					// 		StoryID: new MosString128(operation.beforeId)
+					// 		StoryID: mosTypes.mosString128.create(operation.beforeId)
 					// 	}, inserts)
 					// })
 				} else if (operation.type === OperationType.UPDATE) {
@@ -668,7 +669,7 @@ function fakeOnUpdatedRunningOrder(ro: IMOSRunningOrder, _fullStories: IMOSROFul
 					// this.commands.push(() => {
 					// 	return this.mosDevice.sendROReplaceStories({
 					// 		RunningOrderID: ro.ID,
-					// 		StoryID: new MosString128(operation.id)
+					// 		StoryID: mosTypes.mosString128.create(operation.id)
 					// 	}, [ updatedStory ])
 					// })
 				} else if (operation.type === OperationType.REMOVE) {
@@ -677,7 +678,7 @@ function fakeOnUpdatedRunningOrder(ro: IMOSRunningOrder, _fullStories: IMOSROFul
 					// this.commands.push(() => {
 					// 	return this.mosDevice.sendRODeleteStories({
 					// 		RunningOrderID: ro.ID
-					// 	}, removeIds.map(id => new MosString128(id)))
+					// 	}, removeIds.map(id => mosTypes.mosString128.create(id)))
 					// })
 				} else if (operation.type === OperationType.MOVE) {
 					const beforeId = operation.beforeId
@@ -686,8 +687,8 @@ function fakeOnUpdatedRunningOrder(ro: IMOSRunningOrder, _fullStories: IMOSROFul
 					// this.commands.push(() => {
 					// 	return this.mosDevice.sendROMoveStories({
 					// 		RunningOrderID: ro.ID,
-					// 		StoryID: new MosString128(beforeId)
-					// 	}, moveIds.map(id => new MosString128(id)))
+					// 		StoryID: mosTypes.mosString128.create(beforeId)
+					// 	}, moveIds.map(id => mosTypes.mosString128.create(id)))
 					// })
 				}
 			}

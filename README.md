@@ -65,3 +65,5 @@ MOS-connection consists of 3 packages:
 - **@mos-connection/helper** is a library that provides various functions useful for those that prepare/handle data that will be sent to (or has been received by) the MOS-connection.
   The `model` functionality is included in this library as well.
 - **@mos-connection/model** is a library that contains types and enums, useful for applications that handles MOS-data.
+
+There is also a helper application **quickMos** designed to be a minimal mock MOS server for testing client applications.

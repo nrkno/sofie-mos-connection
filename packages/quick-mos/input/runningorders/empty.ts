@@ -1,4 +1,4 @@
-import { IMOSScope } from 'mos-connection'
+import { IMOSScope } from '@mos-connection/model'
 
 export const READY_TO_AIR = false
 

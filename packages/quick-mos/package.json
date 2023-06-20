@@ -33,9 +33,10 @@
 		"ts-node": "^10.9.1"
 	},
 	"dependencies": {
+		"@mos-connection/connector": "*",
+		"@mos-connection/model": "*",
 		"chokidar": "^3.5.3",
 		"fast-clone": "^1.5.13",
-		"mos-connection": "^2.0.1",
 		"tslib": "^2.5.3",
 		"underscore": "^1.13.6"
 	},
