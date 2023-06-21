@@ -27,7 +27,9 @@
 		"test:coverage": "lerna run test --stream -- -- --coverage",
 		"lint-staged": "./node_modules/.bin/lint-staged",
 		"prettier": "cd $INIT_CWD && \"$PROJECT_CWD/node_modules/.bin/prettier\"",
-		"eslint": "cd $INIT_CWD && \"$PROJECT_CWD/node_modules/.bin/eslint\""
+		"eslint": "cd $INIT_CWD && \"$PROJECT_CWD/node_modules/.bin/eslint\"",
+		"validate:dependencies": "yarn lerna exec --parallel yarn validate:dependencies",
+		"validate:dev-dependencies": "yarn lerna exec --parallel yarn validate:dev-dependencies"
 	},
 	"devDependencies": {
 		"@sofie-automation/code-standard-preset": "^2.4.7",
