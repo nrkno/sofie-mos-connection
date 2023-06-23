@@ -460,6 +460,18 @@ describe('Profile 2', () => {
 		expect(fixSnapshot(onROInsertStories.mock.calls)).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
+	test('onROInsertStories - simple story', async () => {
+		// Fake incoming message on socket:
+		const messageId = await fakeIncomingMessage(
+			serverSocketMockLower,
+			xmlData.roElementAction_insert_story_test_simple
+		)
+		expect(onROInsertStories).toHaveBeenCalledTimes(1)
+		expect(onROInsertStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_insert_story_Action)
+		expect(onROInsertStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_insert_story_simple_test_Stories)
+		expect(fixSnapshot(onROInsertStories.mock.calls)).toMatchSnapshot()
+		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+	})
 	test('onROInsertItems', async () => {
 		// Fake incoming message on socket:
 		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roElementAction_insert_item)
