@@ -275,6 +275,14 @@ describe('Profile 2', () => {
 		expect(fixSnapshot(onCreateRunningOrder.mock.calls)).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
+	test('onCreateRunningOrder with simple story', async () => {
+		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roCreate_simple_story)
+		expect(onCreateRunningOrder).toHaveBeenCalledTimes(1)
+		expect(onCreateRunningOrder.mock.calls[0][0]).toMatchObject(xmlApiData.roCreateSimpleStory)
+		expect(fixSnapshot(onCreateRunningOrder.mock.calls)).toMatchSnapshot()
+		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+	})
+
 	test('onReplaceRunningOrder', async () => {
 		// Fake incoming message on socket:
 		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roReplace)
@@ -490,6 +498,21 @@ describe('Profile 2', () => {
 		expect(fixSnapshot(onROReplaceStories.mock.calls)).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
+	test('onROReplaceStories - simple story', async () => {
+		// Fake incoming message on socket:
+		const messageId = await fakeIncomingMessage(
+			serverSocketMockLower,
+			xmlData.roElementAction_replace_story_simple_story
+		)
+		expect(onROReplaceStories).toHaveBeenCalledTimes(1)
+		expect(onROReplaceStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_replace_story_Action)
+		expect(onROReplaceStories.mock.calls[0][1]).toEqual(
+			xmlApiData.roElementAction_replace_story_Stories_simple_Story
+		)
+		expect(fixSnapshot(onROReplaceStories.mock.calls)).toMatchSnapshot()
+		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+	})
+
 	test('onROReplaceItems', async () => {
 		// Fake incoming message on socket:
 		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roElementAction_replace_item)
