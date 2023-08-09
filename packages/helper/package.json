@@ -60,5 +60,8 @@
 		"*.{ts,tsx,js,jsx}": [
 			"run -T eslint"
 		]
+	},
+	"devDependencies": {
+		"@sofie-automation/code-standard-preset": "*"
 	}
 }

@@ -32,6 +32,7 @@
 		"node": ">=14.18.0"
 	},
 	"devDependencies": {
+		"@sofie-automation/code-standard-preset": "*",
 		"@types/underscore": "^1.11.5",
 		"ts-node": "^10.9.1"
 	},

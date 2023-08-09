@@ -1,9 +1,12 @@
 {
-	"description": "The properties of this file are automatically copied to all packages' package.json files",
+	"description": "The properties of this file are copied to all packages' package.json files by running `yarn postinstall`",
 	"scripts": {
 		"validate:dependencies": "yarn npm audit --environment production && yarn license-validate",
 		"validate:dev-dependencies": "yarn npm audit ",
 		"license-validate": "yarn sofie-licensecheck"
+	},
+	"devDependencies": {
+		"@sofie-automation/code-standard-preset": "*"
 	},
 	"engines": {
 		"node": ">=14.18.0"

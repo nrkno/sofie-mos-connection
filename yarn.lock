@@ -954,6 +954,7 @@ __metadata:
   dependencies:
     "@mos-connection/helper": 3.0.4
     "@mos-connection/model": 3.0.4
+    "@sofie-automation/code-standard-preset": "*"
     iconv-lite: ^0.6.3
     tslib: ^2.5.3
     xml-js: ^1.6.11
@@ -966,6 +967,7 @@ __metadata:
   resolution: "@mos-connection/examples@workspace:packages/examples"
   dependencies:
     "@mos-connection/connector": 3.0.4
+    "@sofie-automation/code-standard-preset": "*"
   languageName: unknown
   linkType: soft
 
@@ -974,6 +976,7 @@ __metadata:
   resolution: "@mos-connection/helper@workspace:packages/helper"
   dependencies:
     "@mos-connection/model": 3.0.4
+    "@sofie-automation/code-standard-preset": "*"
     iconv-lite: ^0.6.3
     tslib: ^2.5.3
     xml-js: ^1.6.11
@@ -984,6 +987,8 @@ __metadata:
 "@mos-connection/model@*, @mos-connection/model@3.0.4, @mos-connection/model@workspace:packages/model":
   version: 0.0.0-use.local
   resolution: "@mos-connection/model@workspace:packages/model"
+  dependencies:
+    "@sofie-automation/code-standard-preset": "*"
   languageName: unknown
   linkType: soft
 
@@ -1553,7 +1558,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sofie-automation/code-standard-preset@npm:^2.4.7":
+"@sofie-automation/code-standard-preset@npm:*, @sofie-automation/code-standard-preset@npm:^2.4.7":
   version: 2.4.7
   resolution: "@sofie-automation/code-standard-preset@npm:2.4.7"
   dependencies:
@@ -7754,6 +7759,7 @@ __metadata:
   dependencies:
     "@mos-connection/connector": "*"
     "@mos-connection/model": "*"
+    "@sofie-automation/code-standard-preset": "*"
     "@types/underscore": ^1.11.5
     chokidar: ^3.5.3
     fast-clone: ^1.5.13
