@@ -2,18 +2,6 @@
 export function has(obj: unknown, property: string): boolean {
 	return Object.hasOwnProperty.call(obj, property)
 }
-export function isEmpty(obj: unknown): boolean {
-	if (typeof obj === 'object') {
-		for (const prop in obj) {
-			if (has(obj, prop)) {
-				return false
-			}
-		}
-		return JSON.stringify(obj) === JSON.stringify({})
-	} else {
-		return !obj
-	}
-}
 export function safeStringify(obj: unknown): string {
 	if (typeof obj === 'string') {
 		return obj
@@ -24,3 +12,10 @@ export function safeStringify(obj: unknown): string {
 		return `--Unable to stringify: ${e}--`
 	}
 }
+
+export function isTestingWithJest(): boolean {
+	return process.env.JEST_WORKER_ID !== undefined
+}
+
+// If running in Jest, wait a bit longer before checking the profile validity:
+export const PROFILE_VALIDNESS_CHECK_WAIT_TIME = isTestingWithJest() ? 500 : 100
