@@ -227,6 +227,9 @@ describe('Profile 2', () => {
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
+
+		mosConnection.checkProfileValidness()
+		mosDevice.checkProfileValidness()
 	})
 	beforeEach(() => {
 		onRequestMOSObject.mockClear()
@@ -259,6 +262,7 @@ describe('Profile 2', () => {
 		mockReplyRoAck.mockClear()
 	})
 	afterAll(async () => {
+		await mosDevice.dispose()
 		await mosConnection.dispose()
 	})
 	test('init', async () => {

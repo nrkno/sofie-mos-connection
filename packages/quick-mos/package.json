@@ -23,12 +23,16 @@
 		"build:main": "run -T tsc -p tsconfig.json",
 		"test": "run -T jest",
 		"inspect": "node --inspect dist/index.js",
-		"start": "ts-node src/index.ts"
+		"start": "ts-node src/index.ts",
+		"validate:dependencies": "yarn npm audit --environment production && yarn license-validate",
+		"validate:dev-dependencies": "yarn npm audit ",
+		"license-validate": "yarn sofie-licensecheck"
 	},
 	"engines": {
 		"node": ">=14.18.0"
 	},
 	"devDependencies": {
+		"@sofie-automation/code-standard-preset": "*",
 		"@types/underscore": "^1.11.5",
 		"ts-node": "^10.9.1"
 	},
