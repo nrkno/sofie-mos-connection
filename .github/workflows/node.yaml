@@ -77,6 +77,29 @@ jobs:
       - name: Send coverage
         uses: codecov/codecov-action@v3
 
+  validate-dependencies:
+    name: Validate production dependencies
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Prepare Environment
+        run: |
+          yarn install
+        env:
+          CI: true
+      - name: Validate dependencies
+        run: |
+          yarn validate:dependencies
+        env:
+          CI: true
+
   release:
     name: Release
     runs-on: ubuntu-latest
