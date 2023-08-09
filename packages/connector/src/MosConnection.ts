@@ -10,6 +10,7 @@ import { EventEmitter } from 'events'
 import * as iconv from 'iconv-lite'
 import { MosMessageParser } from './connection/mosMessageParser'
 import { IConnectionConfig, IMosConnection, IMOSDeviceConnectionOptions } from './api'
+import { PROFILE_VALIDNESS_CHECK_WAIT_TIME } from './lib'
 
 export class MosConnection extends EventEmitter implements IMosConnection {
 	static CONNECTION_PORT_LOWER = 10540
@@ -55,7 +56,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 					// eslint-disable-next-line no-console
 					console.error(e)
 				}
-			}, 100)
+			}, PROFILE_VALIDNESS_CHECK_WAIT_TIME)
 		}
 	}
 	/**

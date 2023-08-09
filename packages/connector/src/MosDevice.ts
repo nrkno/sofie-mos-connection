@@ -33,7 +33,7 @@ import {
 } from '@mos-connection/model'
 import { MosModel } from '@mos-connection/helper'
 import { IConnectionConfig, IMOSConnectionStatus, IMOSDevice } from './api'
-import { has, safeStringify } from './lib'
+import { PROFILE_VALIDNESS_CHECK_WAIT_TIME, has, safeStringify } from './lib'
 
 export class MosDevice implements IMOSDevice {
 	// private _host: string
@@ -196,7 +196,7 @@ export class MosDevice implements IMOSDevice {
 					// eslint-disable-next-line no-console
 					console.error(e)
 				}
-			}, 100)
+			}, PROFILE_VALIDNESS_CHECK_WAIT_TIME)
 		}
 	}
 	/** True if MOS-device has connection to server (can send messages) */
