@@ -1627,9 +1627,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sofie-automation/code-standard-preset@npm:2.5.0-nightly-fix-license-check-20230809-094809-eaf60f2.0":
-  version: 2.5.0-nightly-fix-license-check-20230809-094809-eaf60f2.0
-  resolution: "@sofie-automation/code-standard-preset@npm:2.5.0-nightly-fix-license-check-20230809-094809-eaf60f2.0"
+"@sofie-automation/code-standard-preset@npm:2.5.0":
+  version: 2.5.0
+  resolution: "@sofie-automation/code-standard-preset@npm:2.5.0"
   dependencies:
     "@sofie-automation/eslint-plugin": ^0.1.1
     "@typescript-eslint/eslint-plugin": ^5.59.11
@@ -1653,7 +1653,7 @@ __metadata:
   bin:
     sofie-licensecheck: ./bin/checkLicenses.mjs
     sofie-version: ./bin/updateVersion.mjs
-  checksum: dfc74eecaafc30e27f7828357bc522c507a935a494200896e9b2693da94b4ce0c334997504d5fa19115573984c05a2865ec1de0168c1d77ec4bdb94cbea3ddfc
+  checksum: 86e003ddf0be9876e6a2905b73bc61700d576d838219d634059d56569a73c25d21b0a1c229e17e6feb4a17a87d33b2d773a823a57e647af5e9d3fc8542544990
   languageName: node
   linkType: hard
 
@@ -6825,7 +6825,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "mos-connection-monorepo@workspace:."
   dependencies:
-    "@sofie-automation/code-standard-preset": 2.5.0-nightly-fix-license-check-20230809-094809-eaf60f2.0
+    "@sofie-automation/code-standard-preset": 2.5.0
     "@types/jest": ^29.5.2
     deep-extend: ^0.6.0
     glob: ^7.2.3
