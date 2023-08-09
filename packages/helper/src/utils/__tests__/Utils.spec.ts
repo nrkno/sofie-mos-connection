@@ -108,3 +108,41 @@ test('xml2js with clean', () => {
 		_valid: true,
 	})
 })
+
+test('xml2js with simple data', () => {
+	{
+		const data = xml2js(`
+			<element_source>
+				<story>
+					<storyID>17</storyID>
+					<secondProperty>2</secondProperty>
+				</story>
+			</element_source>
+		`)
+
+		expect(data).toEqual({
+			element_source: {
+				story: {
+					storyID: 17,
+					secondProperty: 2,
+				},
+			},
+		})
+	}
+	{
+		const data = xml2js(`
+			<element_source>
+				<story>
+					<storyID>17</storyID>
+				</story>
+			</element_source>
+		`)
+		expect(data).toEqual({
+			element_source: {
+				story: {
+					storyID: 17,
+				},
+			},
+		})
+	}
+})

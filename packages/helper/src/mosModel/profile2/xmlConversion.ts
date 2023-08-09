@@ -343,7 +343,15 @@ export namespace XMLObjectPaths {
 			return xml.techDescription || (xml.attributes ? xml.attributes.techDescription : '')
 		}
 		const getTarget = (xml: AnyXML) => {
-			return xml.text || xml.$t
+			if (has(xml, 'objPath')) {
+				return xml.objPath
+			} else if (has(xml, 'objProxyPath')) {
+				return xml.objProxyPath
+			} else if (has(xml, 'objMetadataPath')) {
+				return xml.objMetadataPath
+			} else {
+				return xml.text || xml.$t
+			}
 		}
 		const getMosObjectPath = (element: any, key?: any) => {
 			let type = getType(element)

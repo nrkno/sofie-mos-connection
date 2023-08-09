@@ -73,9 +73,8 @@ exports[`Profile 1 getAllMOSObjects 2`] = `
         },
         {
           "$name": "p",
-          "$type": "text",
+          "$type": "element",
           "em": "Clip has been doubled for pad on voice over.",
-          "text": "Clip has been doubled for pad on voice over.",
         },
       ],
     },
@@ -251,9 +250,8 @@ exports[`Profile 1 getMOSObject 2`] = `
       },
       {
         "$name": "p",
-        "$type": "text",
+        "$type": "element",
         "em": "Clip has been doubled for pad on voice over.",
-        "text": "Clip has been doubled for pad on voice over.",
       },
     ],
   },
