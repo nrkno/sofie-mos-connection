@@ -28,11 +28,12 @@
 		"lint-staged": "./node_modules/.bin/lint-staged",
 		"prettier": "cd $INIT_CWD && \"$PROJECT_CWD/node_modules/.bin/prettier\"",
 		"eslint": "cd $INIT_CWD && \"$PROJECT_CWD/node_modules/.bin/eslint\"",
-		"validate:dependencies": "yarn lerna exec --parallel yarn validate:dependencies",
-		"validate:dev-dependencies": "yarn lerna exec --parallel yarn validate:dev-dependencies"
+		"validate:dependencies": "yarn lerna exec --parallel yarn validate:dependencies && yarn license-validate",
+		"validate:dev-dependencies": "yarn lerna exec --parallel yarn validate:dev-dependencies",
+		"license-validate": "yarn sofie-licensecheck --allowPackages \"@mos-connection/examples@3.0.4;quick-mos@0.0.0\""
 	},
 	"devDependencies": {
-		"@sofie-automation/code-standard-preset": "^2.4.7",
+		"@sofie-automation/code-standard-preset": "2.5.1",
 		"@types/jest": "^29.5.2",
 		"deep-extend": "^0.6.0",
 		"glob": "^7.2.3",

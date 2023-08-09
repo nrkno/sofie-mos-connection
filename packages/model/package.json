@@ -35,5 +35,8 @@
 		"/CHANGELOG.md",
 		"/README.md",
 		"/LICENSE"
-	]
+	],
+	"devDependencies": {
+		"@sofie-automation/code-standard-preset": "*"
+	}
 }
