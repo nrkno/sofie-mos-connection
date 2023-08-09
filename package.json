@@ -33,7 +33,7 @@
 		"license-validate": "yarn sofie-licensecheck --allowPackages \"@mos-connection/examples@3.0.4;quick-mos@0.0.0\""
 	},
 	"devDependencies": {
-		"@sofie-automation/code-standard-preset": "2.5.1-nightly-fix-eslint-broken-20230809-131626-ce6ca4d.0",
+		"@sofie-automation/code-standard-preset": "2.5.1",
 		"@types/jest": "^29.5.2",
 		"deep-extend": "^0.6.0",
 		"glob": "^7.2.3",

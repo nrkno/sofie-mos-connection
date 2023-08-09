@@ -1572,9 +1572,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sofie-automation/code-standard-preset@npm:*, @sofie-automation/code-standard-preset@npm:2.5.1-nightly-fix-eslint-broken-20230809-131626-ce6ca4d.0":
-  version: 2.5.1-nightly-fix-eslint-broken-20230809-131626-ce6ca4d.0
-  resolution: "@sofie-automation/code-standard-preset@npm:2.5.1-nightly-fix-eslint-broken-20230809-131626-ce6ca4d.0"
+"@sofie-automation/code-standard-preset@npm:*, @sofie-automation/code-standard-preset@npm:2.5.1":
+  version: 2.5.1
+  resolution: "@sofie-automation/code-standard-preset@npm:2.5.1"
   dependencies:
     "@sofie-automation/eslint-plugin": ^0.1.1
     "@typescript-eslint/eslint-plugin": ^5.59.11
@@ -1598,7 +1598,7 @@ __metadata:
   bin:
     sofie-licensecheck: ./bin/checkLicenses.mjs
     sofie-version: ./bin/updateVersion.mjs
-  checksum: e6c90c4ef1cf66fff833c2367b4472e4def5fc71685654e111edd7ad7e5e9a3fae6c3bcd4f8b9de838528e68dd63010b7bdc6716a2780ee414d7cabdc4929e59
+  checksum: 0080fb4f71b9a9eb98d8f5928b210d5751fe4dc9cf29da2279810373960e4174fc83007876758e68c6d63242c109bb40204312b885209f23ee886d5b06837109
   languageName: node
   linkType: hard
 
@@ -6598,7 +6598,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "mos-connection-monorepo@workspace:."
   dependencies:
-    "@sofie-automation/code-standard-preset": 2.5.1-nightly-fix-eslint-broken-20230809-131626-ce6ca4d.0
+    "@sofie-automation/code-standard-preset": 2.5.1
     "@types/jest": ^29.5.2
     deep-extend: ^0.6.0
     glob: ^7.2.3
