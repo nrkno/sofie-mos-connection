@@ -79,6 +79,9 @@ describe('Profile 4', () => {
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
+
+		mosConnection.checkProfileValidness()
+		mosDevice.checkProfileValidness()
 	})
 	beforeEach(() => {
 		onROStory.mockClear()
@@ -88,6 +91,7 @@ describe('Profile 4', () => {
 		serverSocketMockQuery.mockClear()
 	})
 	afterAll(async () => {
+		await mosDevice.dispose()
 		await mosConnection.dispose()
 	})
 	test('init', async () => {

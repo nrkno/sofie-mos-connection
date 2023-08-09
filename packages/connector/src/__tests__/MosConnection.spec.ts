@@ -298,6 +298,7 @@ describe('MosDevice: General', () => {
 		// @todo: add timeout test
 		// mock cause timeout
 
+		mosConnection.checkProfileValidness()
 		await mosConnection.dispose()
 	})
 	test('buddy failover', async () => {
