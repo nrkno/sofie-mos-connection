@@ -22,6 +22,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 
 	private _conf: ConnectionConfig
 	private _debug = false
+	private _disposed = false
+	private _scheduleCheckProfileValidnessTimeout: NodeJS.Timeout | null = null
 
 	private _lowerSocketServer?: MosSocketServer
 	private _upperSocketServer?: MosSocketServer
@@ -49,14 +51,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 
 		if (this._conf.strict) {
 			const orgStack = new Error()
-			setTimeout(() => {
-				try {
-					this._checkProfileValidness(orgStack)
-				} catch (e) {
-					// eslint-disable-next-line no-console
-					console.error(e)
-				}
-			}, PROFILE_VALIDNESS_CHECK_WAIT_TIME)
+			this._scheduleCheckProfileValidness(orgStack)
 		}
 	}
 	/**
@@ -204,6 +199,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 
 	/** Close all connections and clear all data */
 	async dispose(): Promise<void> {
+		this._disposed = true
 		const sockets: Array<Socket> = []
 		for (const socketID in this._incomingSockets) {
 			const e = this._incomingSockets[socketID]
@@ -271,6 +267,19 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		} else {
 			throw new Error(`Device not found ("${id0}", "${id1}")`)
 		}
+	}
+
+	/**
+	 * Do a check if the profile is valid. Throws if not.
+	 * Optionally called after a mosConnection has been set up to ensure that all callbacks have been set up properly.
+	 */
+	checkProfileValidness(): void {
+		if (this._scheduleCheckProfileValidnessTimeout) {
+			clearTimeout(this._scheduleCheckProfileValidnessTimeout)
+			this._scheduleCheckProfileValidnessTimeout = null
+		}
+		const orgStack = new Error()
+		this._checkProfileValidness(orgStack)
 	}
 
 	/** TO BE IMPLEMENTED */
@@ -569,8 +578,23 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		// eslint-disable-next-line no-console
 		if (this._debug) console.log(...strs)
 	}
+	private _scheduleCheckProfileValidness(orgStack: Error): void {
+		if (this._scheduleCheckProfileValidnessTimeout) return
+		this._scheduleCheckProfileValidnessTimeout = setTimeout(() => {
+			this._scheduleCheckProfileValidnessTimeout = null
+			if (this._disposed) return
+			try {
+				this._checkProfileValidness(orgStack)
+			} catch (e) {
+				// eslint-disable-next-line no-console
+				console.error(e)
+			}
+		}, PROFILE_VALIDNESS_CHECK_WAIT_TIME)
+	}
 
-	/** throws if something's wrong
+	/**
+	 * Checks that all callbacks have been set up properly, according to which MOS-profile have been set in the options.
+	 * throws if something's wrong
 	 */
 	private _checkProfileValidness(orgStack: Error): void {
 		if (!this._conf.strict) return

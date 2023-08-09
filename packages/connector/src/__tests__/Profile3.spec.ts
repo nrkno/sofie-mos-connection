@@ -150,6 +150,9 @@ describe('Profile 3', () => {
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
+
+		mosConnection.checkProfileValidness()
+		mosDevice.checkProfileValidness()
 	})
 	beforeEach(() => {
 		onMosObjCreate.mockClear()
@@ -165,6 +168,7 @@ describe('Profile 3', () => {
 		serverSocketMockQuery.mockClear()
 	})
 	afterAll(async () => {
+		await mosDevice.dispose()
 		await mosConnection.dispose()
 	})
 	test('init', async () => {

@@ -94,6 +94,9 @@ describe('Profile 1', () => {
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
+
+		mosDevice.checkProfileValidness()
+		mosConnection.checkProfileValidness()
 	})
 	afterAll(async () => {
 		await mosDevice.dispose()
