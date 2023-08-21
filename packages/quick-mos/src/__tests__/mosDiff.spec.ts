@@ -7,9 +7,7 @@ function getAllPermutations(values: string[]): string[][] {
 	if (values.length === 1) return [values]
 
 	const permutations: string[][] = []
-	for (let i = 0; i < values.length; i++) {
-		const first = values[i]
-		// console.log('first',first)
+	for (const first of values) {
 		const rest = values.filter((v) => v !== first)
 
 		const restPermutations = getAllPermutations(rest)
@@ -95,17 +93,17 @@ describe('mosDiff', () => {
 			[]
 		)
 
-		expect(
-			diffLists(quickList(['a', 'b', 'c', 'd', 'e', 'f']), quickList(['a', 'c', 'b', 'd', 'e', 'f']))
-		).toEqual([{ type: 'move', ids: ['c'], beforeId: 'b' }])
+		expect(diffLists(quickList(['a', 'b', 'c', 'd', 'e', 'f']), quickList(['a', 'c', 'b', 'd', 'e', 'f']))).toEqual(
+			[{ type: 'move', ids: ['c'], beforeId: 'b' }]
+		)
 
-		expect(
-			diffLists(quickList(['a', 'b', 'c', 'd', 'e', 'f']), quickList(['a', 'd', 'e', 'b', 'c', 'f']))
-		).toEqual([{ type: 'move', ids: ['d', 'e'], beforeId: 'b' }])
+		expect(diffLists(quickList(['a', 'b', 'c', 'd', 'e', 'f']), quickList(['a', 'd', 'e', 'b', 'c', 'f']))).toEqual(
+			[{ type: 'move', ids: ['d', 'e'], beforeId: 'b' }]
+		)
 
-		expect(
-			diffLists(quickList(['a', 'b', 'c', 'd', 'e', 'f']), quickList(['e', 'd', 'a', 'b', 'c', 'f']))
-		).toEqual([{ type: 'move', ids: ['e', 'd'], beforeId: 'a' }])
+		expect(diffLists(quickList(['a', 'b', 'c', 'd', 'e', 'f']), quickList(['e', 'd', 'a', 'b', 'c', 'f']))).toEqual(
+			[{ type: 'move', ids: ['e', 'd'], beforeId: 'a' }]
+		)
 
 		expect(diffLists(quickList(['a', 'b', 'c', 'd', 'e', 'f']), quickList(['f', 'b', 'c', 'd', 'e', 'a']))).toEqual(
 			[
@@ -121,13 +119,13 @@ describe('mosDiff', () => {
 			]
 		)
 
-		expect(
-			diffLists(quickList(['a', 'b', 'c', 'd', 'e', 'f']), quickList(['f', 'a', 'b', 'c', 'd', 'e']))
-		).toEqual([{ type: 'move', ids: ['f'], beforeId: 'a' }])
+		expect(diffLists(quickList(['a', 'b', 'c', 'd', 'e', 'f']), quickList(['f', 'a', 'b', 'c', 'd', 'e']))).toEqual(
+			[{ type: 'move', ids: ['f'], beforeId: 'a' }]
+		)
 
-		expect(
-			diffLists(quickList(['a', 'b', 'c', 'd', 'e', 'f']), quickList(['b', 'c', 'd', 'e', 'f', 'a']))
-		).toEqual([{ type: 'move', ids: ['a'], beforeId: '' }])
+		expect(diffLists(quickList(['a', 'b', 'c', 'd', 'e', 'f']), quickList(['b', 'c', 'd', 'e', 'f', 'a']))).toEqual(
+			[{ type: 'move', ids: ['a'], beforeId: '' }]
+		)
 
 		expect(diffLists(quickList(['a', 'b', 'c', 'd', 'e', 'f']), quickList(['b', 'a', 'd', 'f', 'e', 'c']))).toEqual(
 			[

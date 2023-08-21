@@ -84,19 +84,11 @@ function loadFile(requirePath: string) {
 	delete require.cache[require.resolve(requirePath)]
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const mosData = require(requirePath)
-	if (
-		mosData.runningOrder &&
-		mosData.runningOrder.EditorialStart &&
-		!mosTypes.mosTime.is(mosData.runningOrder.EditorialStart)
-	) {
+	if (mosData.runningOrder?.EditorialStart && !mosTypes.mosTime.is(mosData.runningOrder.EditorialStart)) {
 		mosData.runningOrder.EditorialStart = mosTypes.mosTime.create(mosData.runningOrder.EditorialStart._time)
 	}
 
-	if (
-		mosData.runningOrder &&
-		mosData.runningOrder.EditorialDuration &&
-		!mosTypes.mosDuration.is(mosData.runningOrder.EditorialDuration)
-	) {
+	if (mosData.runningOrder?.EditorialDuration && !mosTypes.mosDuration.is(mosData.runningOrder.EditorialDuration)) {
 		let s = mosData.runningOrder.EditorialDuration._duration
 		const hh = Math.floor(s / 3600)
 		s -= hh * 3600
@@ -268,7 +260,7 @@ function fetchRunningOrders() {
 			if (filePath.match(/(\.ts|.json)$/)) {
 				const fileContents = loadFile(requirePath)
 				const ro: IMOSRunningOrder = fileContents.runningOrder
-				ro.ID = mosTypes.mosString128.create(filePath.replace(/[\W]/g, '_'))
+				ro.ID = mosTypes.mosString128.create(filePath.replace(/\W/g, '_'))
 
 				runningOrders.push({
 					ro,
@@ -385,7 +377,7 @@ class MOSMonitor {
 	onUpdatedRunningOrder(ro: IMOSRunningOrder, fullStories: IMOSROFullStory[], readyToAir: boolean | undefined): void {
 		// compare with
 		const roId = mosTypes.mosString128.stringify(ro.ID)
-		readyToAir = readyToAir || false
+		readyToAir = readyToAir ?? false
 		console.log('onUpdatedRunningOrder ----------', roId)
 
 		const local = this.ros[roId]
@@ -620,15 +612,6 @@ function fakeOnUpdatedRunningOrder(ro: IMOSRunningOrder, _fullStories: IMOSROFul
 	if (!localRo) {
 		// New RO
 		console.log('sendCreateRunningOrder', ro.ID)
-
-		// console.log('stories', fullStories.length)
-		// fullStories.forEach(story => {
-		// 	console.log('a')
-		// 	this.commands.push(() => {
-		// 		console.log('sendFullStory', story.ID)
-		// 		return this.mosDevice.sendROStory(story)
-		// 	})
-		// })
 	} else {
 		const metadataEqual = _.isEqual(localRo.ro.MosExternalMetaData, ro.MosExternalMetaData)
 		const roStoriesEqual = _.isEqual(localRo.ro.Stories, ro.Stories)

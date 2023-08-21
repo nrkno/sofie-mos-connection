@@ -53,14 +53,12 @@ export function diffLists<T>(oldList: ListEntry<T>[], newList: ListEntry<T>[]): 
 
 	// Find Inserted and Updated:
 	let currentInsertOperation: OperationInsert<T> | null = null
-	// for (let i = newList.length - 1; i >= 0; i--) {
 	for (let i = 0; i < newList.length; i++) {
 		const entry: ListEntry<T> = newList[i]
 		const nextEntry: ListEntry<T> | undefined = newList[i + 1]
 		const nextId = nextEntry ? nextEntry.id : ''
 
 		if (!entry.id) throw new Error(`An entry in newList is missing required property "id"!`)
-		// newRefs[entry.id] = { entry: entry, prev: prev, changedHash: entry.changedHash }
 		newLookup[entry.id] = { changedHash: entry.changedHash, entry: entry }
 		if (!oldLookup[entry.id]) {
 			if (currentInsertOperation) {
@@ -135,7 +133,6 @@ export function diffLists<T>(oldList: ListEntry<T>[], newList: ListEntry<T>[]): 
 		return index > 0 ? interList[index - 1].id : ''
 	}
 
-	// for (const entry of newList) {
 	for (let i = 0; i < newList.length; i++) {
 		const entry: ListEntry<T> = newList[i]
 		// const prevEntry: ListEntry<T> | undefined = newList[i - 1]
