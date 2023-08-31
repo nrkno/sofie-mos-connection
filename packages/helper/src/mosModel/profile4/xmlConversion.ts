@@ -61,7 +61,7 @@ function fromXMLStoryBody(xml: any, strict: boolean): IMOSROFullStoryBodyItem[] 
 		items.forEach((item) => {
 			const bodyItem: IMOSROFullStoryBodyItem = {
 				Type: 'storyItem',
-				Content: item,
+				Content: XMLMosItem.fromXML(item, strict),
 			}
 			body.push(bodyItem)
 		})
