@@ -43,7 +43,7 @@ jobs:
   prerelease:
     name: Publish to NPM
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
 
     needs:
       - test
@@ -72,11 +72,6 @@ jobs:
         if: ${{ steps.do-publish.outputs.publish }}
         run: |
           yarn install
-        env:
-          CI: true
-      - name: Build
-        if: ${{ steps.do-publish.outputs.publish }}
-        run: |
           yarn build
         env:
           CI: true
