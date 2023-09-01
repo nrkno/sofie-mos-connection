@@ -38,8 +38,13 @@ export function xml2js(messageString: string): { [key: string]: any } {
 				const childEl = element.elements[0]
 				const name = childEl.$name || childEl.$type || 'unknownElement'
 				if (childEl.$type && childEl.$type === 'text') {
-					element.$type = 'text'
-					element.text = childEl.text
+					if (childEl.$name === undefined) {
+						// pure text node, hoist it up:
+						element.$type = 'text'
+						element.text = childEl.text
+					} else {
+						// leave it as is
+					}
 				} else {
 					delete childEl.$name
 					delete childEl.$type

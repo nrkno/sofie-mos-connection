@@ -119,7 +119,6 @@ exports[`Profile 3 mosReqSearchableSchema 1`] = `
 exports[`Profile 3 mosReqSearchableSchema 2`] = `
 {
   "mosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
-  "text": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
   "username": "myUsername",
 }
 `;
@@ -203,9 +202,8 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
           },
           {
             "$name": "p",
-            "$type": "text",
+            "$type": "element",
             "em": "Clip has been doubled for pad on voice over.",
-            "text": "Clip has been doubled for pad on voice over.",
           },
         ],
       },
@@ -329,9 +327,8 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
           },
           {
             "$name": "p",
-            "$type": "text",
+            "$type": "element",
             "em": "Clip has been doubled for pad on voice over.",
-            "text": "Clip has been doubled for pad on voice over.",
           },
         ],
       },
@@ -455,9 +452,8 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
           },
           {
             "$name": "p",
-            "$type": "text",
+            "$type": "element",
             "em": "Clip has been doubled for pad on voice over.",
-            "text": "Clip has been doubled for pad on voice over.",
           },
         ],
       },
@@ -671,9 +667,8 @@ exports[`Profile 3 onMosObjCreate 1`] = `
           },
           {
             "$name": "p",
-            "$type": "text",
+            "$type": "element",
             "em": "Clip has been doubled for pad on voice over.",
-            "text": "Clip has been doubled for pad on voice over.",
           },
         ],
       },
@@ -833,9 +828,8 @@ exports[`Profile 3 onMosReqObjectActionNew 1`] = `
           },
           {
             "$name": "p",
-            "$type": "text",
+            "$type": "element",
             "em": "Clip has been doubled for pad on voice over.",
-            "text": "Clip has been doubled for pad on voice over.",
           },
         ],
       },
@@ -964,9 +958,8 @@ exports[`Profile 3 onMosReqObjectActionUpdate 1`] = `
           },
           {
             "$name": "p",
-            "$type": "text",
+            "$type": "element",
             "em": "Clip has been doubled for pad on voice over.",
-            "text": "Clip has been doubled for pad on voice over.",
           },
         ],
       },

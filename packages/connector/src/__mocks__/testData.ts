@@ -65,6 +65,7 @@ const xmlData = {
 	mosListAll: `<mosListAll><mosObj><objID>M000123</objID><objSlug>HOTEL FIRE</objSlug><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>      <createdBy>Chris</createdBy>      <created>2009-10-31T23:39:12</created>      <changedBy>Chris</changedBy>      <changed>2009-11-01T14:35:55</changed>      <description>         <p>                                  Exterior footage of            <em>Baley Park Hotel</em>             on fire with natural sound. Trucks are visible for the first portion of the clip.                    <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>         </p>         <p>            <tab/>            Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.         </p>         <p>            <em>Clip has been doubled for pad on voice over.</em>         </p>      </description>    </mosObj>    <mosObj>      <objID>M000224</objID>      <objSlug>COLSTAT MURDER:VO</objSlug>      <objType>VIDEO</objType>      <objTB>59.94</objTB>      <objRev>4</objRev>      <objDur>800</objDur>      <status>UPDATED</status>      <objAir>READY</objAir><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>      <createdBy>Phil</createdBy>      <created>2009-11-01T15:19:01</created>      <changedBy>Chris</changedBy>      <changed>2009-11-01T15:21:15</changed>      <description>VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.</description>      <mosExternalMetadata>         <mosScope>STORY</mosScope>           <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>         <mosPayload>            <Owner>SHOLMES</Owner>            <ModTime>20010308142001</ModTime>            <mediaTime>0</mediaTime>            <TextTime>278</TextTime>            <ModBy>LJOHNSTON</ModBy>            <Approved>0</Approved>            <Creator>SHOLMES</Creator>         </mosPayload>      </mosExternalMetadata>    </mosObj>   </mosListAll>`,
 
 	roCreate: `<roCreate><roID>96857485</roID>	  <roSlug>5PM RUNDOWN</roSlug>	  <roEdStart>2009-04-17T17:02:00</roEdStart>	  <roEdDur>00:58:25</roEdDur>	  <story>		 <storyID>5983A501:0049B924:8390EF2B</storyID>		 <storySlug>COLSTAT MURDER</storySlug>		 <storyNum>A5</storyNum>		 <item>			<itemID>0</itemID>			<itemSlug>COLSTAT MURDER:VO</itemSlug>			<objID>M000224</objID>			<mosID>testmos.enps.com</mosID>		<objPaths>	 <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>	 <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>		</objPaths>			<itemEdDur>645</itemEdDur>			<itemUserTimingDur>310</itemUserTimingDur>			<itemTrigger>CHAINED</itemTrigger>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	  <story>		 <storyID>3854737F:0003A34D:983A0B28</storyID>		 <storySlug>AIRLINE INSPECTIONS</storySlug>		 <storyNum>A6</storyNum>		 <item>			<itemID>0</itemID>			<objID>M000133</objID>			<mosID>testmos.enps.com</mosID>			<itemEdStart>55</itemEdStart>			<itemEdDur>310</itemEdDur>			 <itemUserTimingDur>200</itemUserTimingDur>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	</roCreate>`,
+	roCreate_simple_story: `<roCreate><roID>96857485</roID><roSlug>5PM RUNDOWN</roSlug><roEdStart>2009-04-17T17:02:00</roEdStart><roEdDur>00:58:25</roEdDur><story><storyID>3854737F:0003A34D:983A0B28</storyID></story></roCreate>`,
 
 	roReplace: `<roReplace>	  <roID>96857485</roID>	  <roSlug>5PM RUNDOWN</roSlug>	  <story>		 <storyID>5983A501:0049B924:8390EF2B</storyID>		 <storySlug>COLSTAT MURDER</storySlug>		 <storyNum>A1</storyNum>		 <item>			<itemID>0</itemID>			<itemSlug>COLSTAT MURDER:VO</itemSlug>			<objID>M000224</objID>			<mosID>testmos.enps.com</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>			<itemEdDur>645</itemEdDur>			<itemUserTimingDur>310</itemUserTimingDur>			<itemTrigger>CHAINED</itemTrigger>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	  <story>		 <storyID>3852737F:0013A64D:923A0B28</storyID>		 <storySlug>AIRLINE SAFETY</storySlug>		 <storyNum>A2</storyNum>		 <item>			<itemID>0</itemID>			<objID>M000295</objID>			<mosID>testmos.enps.com</mosID>			<itemEdStart>500</itemEdStart>			<itemEdDur>600</itemEdDur>			<itemUserTimingDur>310</itemUserTimingDur>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	</roReplace>`,
 
@@ -82,9 +83,12 @@ const xmlData = {
 
 	roElementAction_insert_story: `<roElementAction operation="INSERT"><roID>5PM</roID><element_target>	  <storyID>2</storyID></element_target><element_source>  <story>	  <storyID>17</storyID>	  <storySlug>Barcelona Football</storySlug>	  <storyNum>A2</storyNum>		<item>			 <itemID>27</itemID>			 <objID>M73627</objID>			 <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>					 <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>			 <itemEdStart>0</itemEdStart>			 <itemEdDur>715</itemEdDur>			 <itemUserTimingDur>415</itemUserTimingDur>		</item>		<item>			 <itemID>28</itemID>			 <objID>M73628</objID>			 <mosID>testmos</mosID>			 <itemEdStart>0</itemEdStart>			 <itemEdDur>315</itemEdDur>		</item>  </story></element_source></roElementAction>`,
 
+	roElementAction_insert_story_test_simple: `<roElementAction operation="INSERT"><roID>5PM</roID><element_target>   <storyID>2</storyID></element_target><element_source>   <story>   <storyID>17</storyID>   </story></element_source></roElementAction>`,
+
 	roElementAction_insert_item: `<roElementAction operation="INSERT"><roID>5PM</roID><element_target>	  <storyID>2</storyID>	  <itemID>23</itemID></element_target><element_source>  <item>	  <itemID>27</itemID>	  <itemSlug>NHL PKG</itemSlug>	  <objID>M19873</objID>	  <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>	  <itemEdStart>0</itemEdStart>	  <itemEdDur>700</itemEdDur>	  <itemUserTimingDur>690</itemUserTimingDur>  </item></element_source></roElementAction>`,
 
 	roElementAction_replace_story: `<roElementAction operation="REPLACE"><roID>5PM</roID><element_target>	  <storyID>2</storyID></element_target><element_source>  <story>	  <storyID>17</storyID>	  <storySlug>Porto Football</storySlug>	  <storyNum>A2</storyNum>		<item>			 <itemID>27</itemID>			 <objID>M73627</objID>			 <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>			 <itemEdStart>0</itemEdStart>			 <itemEdDur>715</itemEdDur>			 <itemUserTimingDur>415</itemUserTimingDur>		</item>		<item>			 <itemID>28</itemID>			 <objID>M73628</objID>			 <mosID>testmos</mosID>			 <itemEdStart>0</itemEdStart>			 <itemEdDur>315</itemEdDur>		</item>  </story></element_source></roElementAction>`,
+	roElementAction_replace_story_simple_story: `<roElementAction operation="REPLACE"><roID>5PM</roID><element_target><storyID>2</storyID></element_target><element_source><story><storyID>17</storyID></story></element_source></roElementAction>`,
 
 	roElementAction_replace_item: `<roElementAction operation="REPLACE"><roID>5PM</roID><element_target>	  <storyID>2</storyID>	  <itemID>23</itemID></element_target><element_source>  <item>	  <itemID>27</itemID>	  <itemSlug>NHL PKG</itemSlug>	  <objID>M19873</objID>	  <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>	  <itemEdStart>0</itemEdStart>	  <itemEdDur>700</itemEdDur>	  <itemUserTimingDur>690</itemUserTimingDur>  </item></element_source></roElementAction>`,
 
@@ -744,6 +748,23 @@ const xmlApiData = {
 			}),
 		],
 	}),
+	roCreateSimpleStory: literal<IMOSRunningOrder>({
+		ID: mosTypes.mosString128.create('96857485'),
+		Slug: mosTypes.mosString128.create('5PM RUNDOWN'),
+		// DefaultChannel?: MosString128,
+		EditorialStart: mosTypes.mosTime.create('2009-04-17T17:02:00'),
+		EditorialDuration: mosTypes.mosDuration.create('00:58:25'), // @todo: change this into a real Duration
+		// Trigger?: any // TODO: Johan frågar vad denna gör,
+		// MacroIn?: MosString128,
+		// MacroOut?: MosString128,
+		// MosExternalMetaData?: Array<IMOSExternalMetaData>,
+		Stories: [
+			literal<IMOSROStory>({
+				ID: mosTypes.mosString128.create('3854737F:0003A34D:983A0B28'),
+				Items: [],
+			}),
+		],
+	}),
 	roReplace: literal<IMOSRunningOrder>({
 		ID: mosTypes.mosString128.create('96857485'),
 		Slug: mosTypes.mosString128.create('5PM RUNDOWN'),
@@ -1046,6 +1067,13 @@ const xmlApiData = {
 			],
 		}),
 	],
+	roElementAction_insert_story_simple_test_Stories: [
+		literal<IMOSROStory>({
+			ID: mosTypes.mosString128.create('17'),
+			Items: [],
+			Slug: mosTypes.mosString128.create(undefined),
+		}),
+	],
 	roElementAction_insert_item_Action: literal<IMOSItemAction>({
 		RunningOrderID: mosTypes.mosString128.create('5PM'),
 		StoryID: mosTypes.mosString128.create('2'),
@@ -1126,6 +1154,14 @@ const xmlApiData = {
 					EditorialDuration: 315,
 				}),
 			],
+		}),
+	],
+	roElementAction_replace_story_Stories_simple_Story: [
+		literal<IMOSROStory>({
+			ID: mosTypes.mosString128.create('17'),
+			Items: [],
+			Slug: mosTypes.mosString128.create(undefined),
+			// MosExternalMetaData?: Array<IMOSExternalMetaData>,
 		}),
 	],
 	roElementAction_replace_item_Action: literal<IMOSItemAction>({
