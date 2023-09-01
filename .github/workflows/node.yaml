@@ -71,7 +71,7 @@ jobs:
           CI: true
       - name: Run unit tests
         run: |
-          yarn test -- --forceExit --coverage
+          yarn test -- --maxWorkers=2 --forceExit --coverage
         env:
           CI: true
       - name: Send coverage
