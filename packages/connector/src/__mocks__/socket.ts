@@ -101,7 +101,7 @@ export class SocketMock extends EventEmitter implements Socket {
 		return true
 	}
 	// @ts-expect-error mock
-	connect(port: number, host: string): SocketMock {
+	connect(port: number, host: string): this {
 		this.connectedPort = port
 		this.connectedHost = host
 
@@ -201,7 +201,7 @@ export class SocketMock extends EventEmitter implements Socket {
 		if (this._autoReplyToHeartBeat) {
 			const str: string = typeof data === 'string' ? data : this.decode(data as any)
 
-			if (str.match(/<heartbeat>/)) {
+			if (/<heartbeat>/.exec(str)) {
 				try {
 					const mosID = (str.match(/<mosID>([^<]+)<\/mosID>/) || [])[1]
 					const ncsID = (str.match(/<ncsID>([^<]+)<\/ncsID>/) || [])[1]

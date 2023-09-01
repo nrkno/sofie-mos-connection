@@ -186,7 +186,7 @@ export class MosDevice implements IMOSDevice {
 			this._secondaryConnection = secondaryConnection
 			this._secondaryConnection.on('connectionChanged', () => this._emitConnectionChange())
 		}
-		this._currentConnection = this._primaryConnection || this._secondaryConnection || null
+		this._currentConnection = this._primaryConnection ?? this._secondaryConnection ?? null
 		if (this.strict) {
 			const orgStack = new Error()
 			this._scheduleCheckProfileValidness(orgStack)
@@ -392,14 +392,13 @@ export class MosDevice implements IMOSDevice {
 			})
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction &&
-			data.roElementAction.operation === 'INSERT' &&
-			(data.roElementAction.element_source || {}).story &&
+			data.roElementAction?.operation === 'INSERT' &&
+			data.roElementAction.element_source?.story &&
 			typeof this._callbackOnROInsertStories === 'function'
 		) {
 			const action: IMOSStoryAction = {
 				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).storyID),
+				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
 			}
 			const sourceStories = data.roElementAction.element_source.story
 			const stories: Array<IMOSROStory> = MosModel.XMLROStories.fromXML(
@@ -410,15 +409,14 @@ export class MosDevice implements IMOSDevice {
 
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction &&
-			data.roElementAction.operation === 'INSERT' &&
-			(data.roElementAction.element_source || {}).item &&
+			data.roElementAction?.operation === 'INSERT' &&
+			data.roElementAction.element_source?.item &&
 			typeof this._callbackOnROInsertItems === 'function'
 		) {
 			const action: IMOSItemAction = {
 				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).storyID),
-				ItemID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).itemID),
+				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
+				ItemID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.itemID),
 			}
 			const items: Array<IMOSItem> = MosModel.XMLMosItems.fromXML(
 				data.roElementAction.element_source.item,
@@ -428,14 +426,13 @@ export class MosDevice implements IMOSDevice {
 
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction &&
-			data.roElementAction.operation === 'REPLACE' &&
-			(data.roElementAction.element_source || {}).story &&
+			data.roElementAction?.operation === 'REPLACE' &&
+			data.roElementAction.element_source?.story &&
 			typeof this._callbackOnROReplaceStories === 'function'
 		) {
 			const action: IMOSStoryAction = {
 				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).storyID),
+				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
 			}
 			const sourceStories = data.roElementAction.element_source.story
 			const stories: Array<IMOSROStory> = MosModel.XMLROStories.fromXML(
@@ -445,15 +442,14 @@ export class MosDevice implements IMOSDevice {
 			const resp = await this._callbackOnROReplaceStories(action, stories)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction &&
-			data.roElementAction.operation === 'REPLACE' &&
-			(data.roElementAction.element_source || {}).item &&
+			data.roElementAction?.operation === 'REPLACE' &&
+			data.roElementAction.element_source?.item &&
 			typeof this._callbackOnROReplaceItems === 'function'
 		) {
 			const action: IMOSItemAction = {
 				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).storyID),
-				ItemID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).itemID),
+				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
+				ItemID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.itemID),
 			}
 			const items: Array<IMOSItem> = MosModel.XMLMosItems.fromXML(
 				data.roElementAction.element_source.item,
@@ -463,14 +459,13 @@ export class MosDevice implements IMOSDevice {
 			resp.Stories = [] // dont return these (?)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction &&
-			data.roElementAction.operation === 'MOVE' &&
-			(data.roElementAction.element_source || {}).storyID &&
+			data.roElementAction?.operation === 'MOVE' &&
+			data.roElementAction.element_source?.storyID &&
 			typeof this._callbackOnROMoveStories === 'function'
 		) {
 			const action: IMOSStoryAction = {
 				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).storyID),
+				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
 			}
 			const storyIDs: Array<IMOSString128> = MosModel.XMLMosIDs.fromXML(
 				data.roElementAction.element_source.storyID,
@@ -479,15 +474,14 @@ export class MosDevice implements IMOSDevice {
 			const resp = await this._callbackOnROMoveStories(action, storyIDs)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction &&
-			data.roElementAction.operation === 'MOVE' &&
-			(data.roElementAction.element_source || {}).itemID &&
+			data.roElementAction?.operation === 'MOVE' &&
+			data.roElementAction.element_source?.itemID &&
 			typeof this._callbackOnROMoveItems === 'function'
 		) {
 			const action: IMOSItemAction = {
 				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).storyID),
-				ItemID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).itemID),
+				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
+				ItemID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.itemID),
 			}
 			const itemIDs: Array<IMOSString128> = MosModel.XMLMosIDs.fromXML(
 				data.roElementAction.element_source.itemID,
@@ -496,8 +490,7 @@ export class MosDevice implements IMOSDevice {
 			const resp = await this._callbackOnROMoveItems(action, itemIDs)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction &&
-			data.roElementAction.operation === 'DELETE' &&
+			data.roElementAction?.operation === 'DELETE' &&
 			data.roElementAction.element_source.storyID &&
 			typeof this._callbackOnRODeleteStories === 'function'
 		) {
@@ -514,14 +507,13 @@ export class MosDevice implements IMOSDevice {
 			)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction &&
-			data.roElementAction.operation === 'DELETE' &&
+			data.roElementAction?.operation === 'DELETE' &&
 			data.roElementAction.element_source.itemID &&
 			typeof this._callbackOnRODeleteItems === 'function'
 		) {
 			const action: IMOSStoryAction = {
 				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).storyID),
+				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
 			}
 			const items: Array<IMOSString128> = MosModel.XMLMosIDs.fromXML(
 				data.roElementAction.element_source.itemID,
@@ -531,8 +523,7 @@ export class MosDevice implements IMOSDevice {
 			const resp = await this._callbackOnRODeleteItems(action, items)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction &&
-			data.roElementAction.operation === 'SWAP' &&
+			data.roElementAction?.operation === 'SWAP' &&
 			data.roElementAction.element_source.storyID &&
 			data.roElementAction.element_source.storyID.length === 2 &&
 			typeof this._callbackOnROSwapStories === 'function'
@@ -551,8 +542,7 @@ export class MosDevice implements IMOSDevice {
 			)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction &&
-			data.roElementAction.operation === 'SWAP' &&
+			data.roElementAction?.operation === 'SWAP' &&
 			data.roElementAction.element_source.itemID &&
 			data.roElementAction.element_source.itemID.length === 2 &&
 			typeof this._callbackOnROSwapItems === 'function'
@@ -565,7 +555,7 @@ export class MosDevice implements IMOSDevice {
 			const resp = await this._callbackOnROSwapItems(
 				{
 					RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-					StoryID: this.mosTypes.mosString128.create((data.roElementAction.element_target || {}).storyID),
+					StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
 				},
 				items[0],
 				items[1]
@@ -1169,7 +1159,7 @@ export class MosDevice implements IMOSDevice {
 			const reply = await this.executeCommand(message)
 
 			if (has(reply.mos, 'roListAll')) {
-				let xmlRos: Array<any> = (reply.mos.roListAll || {}).ro
+				let xmlRos: Array<any> = reply.mos.roListAll?.ro
 				if (!Array.isArray(xmlRos)) xmlRos = [xmlRos]
 				const ros: Array<IMOSRunningOrderBase> = []
 				xmlRos.forEach((xmlRo) => {
@@ -1355,10 +1345,6 @@ export class MosDevice implements IMOSDevice {
 			if (this.supportedProfiles.deviceType !== 'MOS') return
 			requireCallback(profile, callbackName, method)
 		}
-		// const requireNCSCallback = (profile: string, callbackName: string, method: Function) => {
-		// 	if (this.supportedProfiles.deviceType !== 'NCS') return
-		// 	requireCallback(profile, callbackName, method)
-		// }
 		/** Require another profile to have been set  */
 		const requireProfile = (profile: number, requiredProfile: number) => {
 			// @ts-expect-error no index signature

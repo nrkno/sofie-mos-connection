@@ -349,7 +349,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 	/** Set up TCP-server */
 	private async _initiateIncomingConnections(): Promise<void> {
 		if (!this._conf.acceptsConnections) {
-			return Promise.reject('Not configured for accepting connections')
+			return Promise.reject(new Error('Not configured for accepting connections'))
 		}
 
 		const initSocket = (port: number, portType: IncomingConnectionType) => {
