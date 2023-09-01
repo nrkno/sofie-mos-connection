@@ -737,3 +737,58 @@ exports[`Profile 4 onRunningOrderStory: <mos>
   </roAck>
 </mos>"
 `;
+
+exports[`Profile 4 onRunningOrderStory-single 1`] = `
+[
+  [
+    {
+      "Body": [
+        {
+          "Content": {
+            "ID": {
+              "_mosString128": "item0",
+            },
+            "MOSID": "mos0",
+            "ObjectID": {
+              "_mosString128": "object0",
+            },
+            "Trigger": "CHAINED",
+          },
+          "Type": "storyItem",
+        },
+      ],
+      "ID": {
+        "_mosString128": "story0",
+      },
+      "MosExternalMetaData": undefined,
+      "Number": undefined,
+      "RunningOrderId": {
+        "_mosString128": "roID0",
+      },
+      "Slug": {
+        "_mosString128": "My Story",
+      },
+    },
+  ],
+]
+`;
+
+exports[`Profile 4 onRunningOrderStory-single: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1634</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1634</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;

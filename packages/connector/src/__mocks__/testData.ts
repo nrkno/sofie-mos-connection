@@ -118,6 +118,7 @@ const xmlData = {
    01 ett navn 1:  2:
    01 ett navn 1:  2:
    24 foto/red 1:Foto og redigering:  2:   SAK BUSKERUD;SAK-20</MOSSlugs>   <Owner>LINUXENPS</Owner>   <pubApproved>0</pubApproved>   <SourceMediaTime>0</SourceMediaTime>   <SourceTextTime>0</SourceTextTime>   <StoryProducer>DKTE</StoryProducer>   <TextTime>0</TextTime>   <mosartType>FULL</mosartType>   <ENPSItemType>3</ENPSItemType>   </mosPayload>   </mosExternalMetadata>   </roStorySend>`,
+	roStorySendSingle: `<roStorySend><roID>roID0</roID><storyID>story0</storyID><storySlug>My Story</storySlug><storyNum/><storyBody><storyItem><itemID>item0</itemID><itemSlug/><objID>object0</objID><mosID>mos0</mosID><itemTrigger>CHAINED</itemTrigger></storyItem></storyBody></roStorySend>`,
 	roListAll: `<roListAll>      <ro>   	 <roID>5PM</roID>   	 <roSlug>5PM Rundown</roSlug>   	 <roChannel></roChannel>   	 <roEdStart>2009-07-11T17:00:00</roEdStart>   	 <roEdDur>00:30:00</roEdDur>   	 <roTrigger>MANUAL</roTrigger>   	 <mosExternalMetadata>   	   <mosScope>PLAYLIST</mosScope>   	   <mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>   	   <mosPayload>   		  <Owner>SHOLMES</Owner>   		  <mediaTime>0</mediaTime>   		  <TextTime>278</TextTime>   		  <ModBy>LJOHNSTON</ModBy>   		  <Approved>0</Approved>   		  <Creator>SHOLMES</Creator>   	   </mosPayload>   	</mosExternalMetadata>      </ro>      <ro>   	 <roID>6PM</roID>   	 <roSlug>6PM Rundown</roSlug>   	 <roChannel></roChannel>   	 <roEdStart>2009-07-09T18:00:00</roEdStart>   	 <roEdDur>00:30:00</roEdDur>   	 <roTrigger>MANUAL</roTrigger>   	 <mosExternalMetadata>   	   <mosScope>PLAYLIST</mosScope>   	   <mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>   	   <mosPayload>   		  <Owner>SHOLMES</Owner>   		  <mediaTime>0</mediaTime>   		  <TextTime>350</TextTime>   		  <ModBy>BSMITH</ModBy>   		  <Approved>1</Approved>   		  <Creator>SHOLMES</Creator>   	   </mosPayload>   	</mosExternalMetadata>   	</ro>		</roListAll>`,
 	mosObjCreate: `
 		<mosObjCreate>
@@ -1397,6 +1398,24 @@ const xmlApiData = {
 			// <p> </p>			// <p> </p>
 			// <storyItem><mosID>mosart.morten.mos</mosID><mosAbstract>TIDSMARKØR IKKE RØR</mosAbstract><objID>STORYSTATUS</objID><objSlug>Story status</objSlug><itemID>8</itemID><itemSlug>SAK BUSKERUD;SAK-20</itemSlug></storyItem>
 			// <p> </p>
+		],
+	}),
+	roStorySendSingle: literal<IMOSROFullStory>({
+		ID: mosTypes.mosString128.create('story0'),
+		RunningOrderId: mosTypes.mosString128.create('roID0'),
+		Slug: mosTypes.mosString128.create('My Story'),
+		Body: [
+			literal<IMOSROFullStoryBodyItem>({
+				Type: 'storyItem',
+				Content: literal<IMOSItem>({
+					ID: mosTypes.mosString128.create('item0'),
+
+					ObjectID: mosTypes.mosString128.create('object0'),
+					MOSID: 'mos0',
+
+					Trigger: 'CHAINED',
+				}),
+			}),
 		],
 	}),
 	roListAll: [
