@@ -826,7 +826,12 @@ export class MosDevice implements IMOSDevice {
 		if (reply.mos.roList) {
 			const ro: IMOSRunningOrder = MosModel.XMLRunningOrder.fromXML(reply.mos.roList, this.strict)
 			return ro
-		} else throw new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
+		} else if (reply.mos.roAck) {
+			if (reply.mos.roAck.roStatus) {
+				throw new Error(`Reply from NRCS: ${reply.mos.roAck.roStatus}`)
+			}
+		}
+		throw new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
 	}
 	/**
 	 * @deprecated getRunningOrder is deprecated, use sendRequestRunningOrder instead
@@ -1300,6 +1305,9 @@ export class MosDevice implements IMOSDevice {
 
 		if (reply.mos.mosAck && reply.mos.mosAck.status === 'NACK') {
 			throw new Error(`Error in response: ${reply.mos.mosAck.statusDescription || 'No statusDescription given'}`)
+		}
+		if (reply.mos.roAck && reply.mos.roAck.status === 'NACK') {
+			throw new Error(`Error in response: ${reply.mos.roAck.statusDescription || 'No statusDescription given'}`)
 		}
 
 		return reply

@@ -377,6 +377,46 @@ describe('Profile 2', () => {
 		expect(returnedObj).toMatchObject(xmlApiData.roList2)
 		expect(returnedObj).toMatchSnapshot()
 	})
+	test('sendRequestRunningOrder - Not found', async () => {
+		// Prepare server response
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
+			const repl = getXMLReply(messageID, xmlData.roACKNotFound)
+			return encode(repl)
+		})
+		socketMockUpper.mockAddReply(mockReply)
+		if (!xmlApiData.roList.ID) throw new Error('xmlApiData.roList.ID not set')
+
+		let error: any = null
+		try {
+			await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID)
+		} catch (e) {
+			error = e
+		}
+		expect(error).toBeTruthy()
+		expect(`${error}`).toMatch(/Error in response/)
+	})
+	test('sendRequestRunningOrder - not under MOS control', async () => {
+		// Prepare server response
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
+			const repl = getXMLReply(messageID, xmlData.roACKNoMosControl)
+			return encode(repl)
+		})
+		socketMockUpper.mockAddReply(mockReply)
+		if (!xmlApiData.roList.ID) throw new Error('xmlApiData.roList.ID not set')
+
+		let error: any = null
+		try {
+			await mosDevice.sendRequestRunningOrder(xmlApiData.roList.ID)
+		} catch (e) {
+			error = e
+		}
+		expect(error).toBeTruthy()
+		expect(`${error}`).toMatch(/Reply from NRCS.*rundown not under MOS control/)
+	})
 	test('onMetadataReplace', async () => {
 		// Fake incoming message on socket:
 		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roMetadataReplace)
