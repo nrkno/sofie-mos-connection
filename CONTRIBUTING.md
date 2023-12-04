@@ -9,4 +9,4 @@ This repository uses the following branches:
 * **_master_** is our main branch. We consider it stable and it is used in production.
 * The **_develop_** branch is our in-development branch. When a release is ready, we decide to “freeze” that branch and merge it into **_master_** branch.
 
-We encourage you to base your contributions on the latest **develop** branch. The [_Sofie Releases_](https://nrkno.github.io/sofie-core/releases) page collects the status and timeline of the releases.
+We encourage you to base your contributions on the latest **_develop_** branch. The [_Sofie Releases_](https://nrkno.github.io/sofie-core/releases) page collects the status and timeline of the releases.
