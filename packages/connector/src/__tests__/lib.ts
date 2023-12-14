@@ -95,11 +95,24 @@ export async function fakeIncomingMessage(
 	ourMosId?: string,
 	theirMosId?: string
 ): Promise<number> {
-	fakeIncomingMessageMessageId++
-	const fullMessage = getXMLReply(fakeIncomingMessageMessageId, message, ourMosId, theirMosId)
-	socketMockLower.mockReceiveMessage(encode(fullMessage))
+	const m = makeFakeIncomingMessage(message, ourMosId, theirMosId)
+	sendFakeIncomingMessage(socketMockLower, m.message)
 
-	return Promise.resolve(fakeIncomingMessageMessageId)
+	return Promise.resolve(m.messageId)
+}
+export function makeFakeIncomingMessage(
+	message: string,
+	ourMosId?: string,
+	theirMosId?: string
+): { messageId: number; message: string } {
+	fakeIncomingMessageMessageId++
+	return {
+		message: getXMLReply(fakeIncomingMessageMessageId, message, ourMosId, theirMosId),
+		messageId: fakeIncomingMessageMessageId,
+	}
+}
+export function sendFakeIncomingMessage(socketMockLower: SocketMock, message: string): void {
+	socketMockLower.mockReceiveMessage(encode(message))
 }
 export function getXMLReply(
 	messageId: string | number,
