@@ -20,36 +20,41 @@ export function create(timestamp: AnyValue, strict: boolean): IMOSTime {
 		if (typeof timestamp === 'number') {
 			time = new Date(timestamp)
 		} else if (typeof timestamp === 'string') {
-			// formats:
-			// YYYY-MM-DD'T'hh:mm:ss[,ddd]['Z']
-			// Sun Feb 25 2018 08:59:08 GMT+0100 (CET)
-			// 2018-02-25T08:00:45.528Z
+			if (timestamp.trim()) {
+				// formats:
+				// YYYY-MM-DD'T'hh:mm:ss[,ddd]['Z']
+				// Sun Feb 25 2018 08:59:08 GMT+0100 (CET)
+				// 2018-02-25T08:00:45.528Z
 
-			let _timezoneZuluIndicator = ''
-			let _timezoneDeclaration = ''
+				let _timezoneZuluIndicator = ''
+				let _timezoneDeclaration = ''
 
-			// parse out custom Z indicator (mos-centric)
-			const customFormatParseResult = parseMosCustomFormat(timestamp)
-			// parse out custom timezones (mos local-local centric format)
-			const timezoneParseResult = parseTimeOffset(timestamp)
+				// parse out custom Z indicator (mos-centric)
+				const customFormatParseResult = parseMosCustomFormat(timestamp)
+				// parse out custom timezones (mos local-local centric format)
+				const timezoneParseResult = parseTimeOffset(timestamp)
 
-			if (customFormatParseResult !== false) {
-				_timezone = customFormatParseResult.timezoneIndicator
-				_timezoneOffset = customFormatParseResult.timezoneOffset
-				_timezoneZuluIndicator = customFormatParseResult.timezoneIndicator
+				if (customFormatParseResult !== false) {
+					_timezone = customFormatParseResult.timezoneIndicator
+					_timezoneOffset = customFormatParseResult.timezoneOffset
+					_timezoneZuluIndicator = customFormatParseResult.timezoneIndicator
 
-				const r = customFormatParseResult
-				const dateStr = `${r.yy}-${r.mm}-${r.dd}T${r.hh}:${r.ii}:${r.ss}${
-					r.ms ? '.' + r.ms : ''
-				}${_timezoneZuluIndicator}${_timezoneDeclaration}`
-				time = new Date(dateStr)
-			} else if (timezoneParseResult !== false) {
-				_timezoneDeclaration = timezoneParseResult.timezoneDeclaration
+					const r = customFormatParseResult
+					const dateStr = `${r.yy}-${r.mm}-${r.dd}T${r.hh}:${r.ii}:${r.ss}${
+						r.ms ? '.' + r.ms : ''
+					}${_timezoneZuluIndicator}${_timezoneDeclaration}`
+					time = new Date(dateStr)
+				} else if (timezoneParseResult !== false) {
+					_timezoneDeclaration = timezoneParseResult.timezoneDeclaration
 
-				time = new Date(timestamp)
+					time = new Date(timestamp)
+				} else {
+					// try to parse the time directly with Date, for Date-supported formats
+					time = new Date(timestamp)
+				}
 			} else {
-				// try to parse the time directly with Date, for Date-supported formats
-				time = new Date(timestamp)
+				// empty string, create Date now:
+				time = new Date()
 			}
 		} else if (typeof timestamp === 'object') {
 			if (timestamp instanceof Date) {
