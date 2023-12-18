@@ -27,7 +27,7 @@ export class MosSocketClient extends EventEmitter {
 	private _connected = false
 	private _lastConnectionAttempt = 0
 	private _reconnectAttempt = 0
-	private _connectionAttemptTimer: NodeJS.Timer | undefined
+	private _connectionAttemptTimer: NodeJS.Timeout | undefined
 
 	private _commandTimeout: number
 
@@ -40,7 +40,7 @@ export class MosSocketClient extends EventEmitter {
 	// private _readyToSendMessage: boolean = true
 	private _timedOutCommands: { [id: string]: number } = {}
 
-	private processQueueTimeout?: NodeJS.Timer
+	private processQueueTimeout?: NodeJS.Timeout
 	// private _startingUp: boolean = true
 	private _disposed = false
 	private messageParser: MosMessageParser

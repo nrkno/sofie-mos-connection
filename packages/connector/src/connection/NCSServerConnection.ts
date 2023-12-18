@@ -36,7 +36,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 
 	private _emittedConnected = false
 
-	private _heartBeatsTimer?: NodeJS.Timer
+	private _heartBeatsTimer?: NodeJS.Timeout
 	private _heartBeatsInterval: number
 
 	constructor(
