@@ -8,7 +8,9 @@ import {
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
+	makeFakeIncomingMessage,
 	mosTypes,
+	sendFakeIncomingMessage,
 	setupMocks,
 } from './lib'
 import {
@@ -101,6 +103,9 @@ describe('message chunking', () => {
 		serverSocketMockLower = b.serverSocketMockLower
 		serverSocketMockUpper = b.serverSocketMockUpper
 		serverSocketMockQuery = b.serverSocketMockQuery
+	})
+	afterAll(async () => {
+		await mosConnection.dispose()
 	})
 	beforeEach(() => {
 		onRunningOrderStory.mockClear()
@@ -225,5 +230,85 @@ describe('message chunking', () => {
 		checkMessageSnapshot(msg)
 		expect(returnedObj).toMatchObject(xmlApiData.roList2)
 		expect(returnedObj).toMatchSnapshot()
+	})
+
+	test('incoming chunked message', async () => {
+		let onRequestMOSObject: jest.Mock<any, any>
+		onRequestMOSObject = jest.fn(async () => {
+			return xmlApiData.mosObj
+		})
+		onRequestMOSObject.mockClear()
+		mosDevice.onRequestMOSObject(async (objId: string): Promise<IMOSObject | null> => {
+			return onRequestMOSObject(objId)
+		})
+
+		const message = makeFakeIncomingMessage(`<mosReqObj><objID>M000123</objID></mosReqObj>`)
+
+		const chunks = [message.message.slice(0, 100), message.message.slice(100)]
+
+		// Send first part of the message:
+		await sendFakeIncomingMessage(serverSocketMockLower, chunks[0])
+		expect(onRequestMOSObject).toHaveBeenCalledTimes(0)
+
+		// Send rest of the message:
+		await sendFakeIncomingMessage(serverSocketMockLower, chunks[1])
+		expect(onRequestMOSObject).toHaveBeenCalledTimes(1)
+	})
+
+	test('multiple mos tags', async () => {
+		let onRequestMOSObject: jest.Mock<any, any>
+		onRequestMOSObject = jest.fn(async () => {
+			return xmlApiData.mosObj
+		})
+		onRequestMOSObject.mockClear()
+		mosDevice.onRequestMOSObject(async (objId: string): Promise<IMOSObject | null> => {
+			return onRequestMOSObject(objId)
+		})
+
+		const message = makeFakeIncomingMessage(
+			`<mosReqObj><objID>M000123</objID><mos><test>hehehe</test></mos></mosReqObj>`
+		)
+
+		const i0 = message.message.indexOf('<mos>', 10)
+		const i1 = message.message.indexOf('</mos>', i0 + 1)
+		const i2 = message.message.indexOf('</mos>', i1 + 1)
+
+		const chunks = [
+			message.message.slice(0, i0),
+			message.message.slice(i0, i1),
+			message.message.slice(i1, i2),
+			message.message.slice(i2),
+		]
+
+		// Send the parts of the message:
+		await sendFakeIncomingMessage(serverSocketMockLower, chunks[0])
+		expect(onRequestMOSObject).toHaveBeenCalledTimes(0)
+		await sendFakeIncomingMessage(serverSocketMockLower, chunks[1])
+		expect(onRequestMOSObject).toHaveBeenCalledTimes(0)
+		await sendFakeIncomingMessage(serverSocketMockLower, chunks[2])
+		expect(onRequestMOSObject).toHaveBeenCalledTimes(0)
+		await sendFakeIncomingMessage(serverSocketMockLower, chunks[2])
+		expect(onRequestMOSObject).toHaveBeenCalledTimes(1)
+	})
+	test('multiple messages', async () => {
+		let onRequestMOSObject: jest.Mock<any, any>
+		onRequestMOSObject = jest.fn(async () => {
+			return xmlApiData.mosObj
+		})
+		onRequestMOSObject.mockClear()
+		mosDevice.onRequestMOSObject(async (objId: string): Promise<IMOSObject | null> => {
+			return onRequestMOSObject(objId)
+		})
+
+		const message0 = makeFakeIncomingMessage(
+			`<mosReqObj><objID>M000123</objID><mos><test>hehehe</test></mos></mosReqObj>`
+		)
+		const message1 = makeFakeIncomingMessage(
+			`<mosReqObj><objID>M000124</objID><mos><test>hahaha</test></mos></mosReqObj>`
+		)
+
+		// Send both messages right away:
+		await sendFakeIncomingMessage(serverSocketMockLower, message0.message + message1.message)
+		expect(onRequestMOSObject).toHaveBeenCalledTimes(2)
 	})
 })

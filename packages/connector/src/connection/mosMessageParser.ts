@@ -36,30 +36,70 @@ export class MosMessageParser extends EventEmitter {
 
 		let messageString: string | undefined
 
-		const startIndex = this.dataChunks.indexOf(startMatch)
-		if (startIndex === -1) {
+		const startIndexes = this.indexesOf(this.dataChunks, startMatch)
+		if (startIndexes.length === 0) {
 			// No start tag, so looks like we have jibberish
 			this.dataChunks = ''
 		} else {
-			if (startIndex > 0) {
-				const junkStr = this.dataChunks.slice(0, startIndex)
+			const firstStartIndex = startIndexes[0]
+			if (firstStartIndex > 0) {
+				const junkStr = this.dataChunks.slice(0, firstStartIndex)
 				this.debugTrace(`${this.description} Discarding message fragment: "${junkStr}"`)
 
 				// trim off anything before <mos>, as we'll never be able to parse that anyway.
-				this.dataChunks = this.dataChunks.slice(startIndex)
+				this.dataChunks = this.dataChunks.slice(firstStartIndex)
 			}
 
-			const endIndex = this.dataChunks.indexOf(endMatch)
-			if (endIndex >= 0) {
-				// We have an end too, so pull out the message
-				const endIndex2 = endIndex + endMatch.length
-				messageString = this.dataChunks.slice(0, endIndex2)
-				this.dataChunks = this.dataChunks.slice(endIndex2)
+			const endIndexes = this.indexesOf(this.dataChunks, endMatch)
+			if (endIndexes.length > 0) {
+				// We have an end tag too
 
-				// parse our xml
+				/** null = message is not complete */
+				let useEndIndex: number | null = null
+
+				if (startIndexes.length === 1 && endIndexes.length === 1) {
+					// fast-path:
+					useEndIndex = endIndexes[0]
+				} else {
+					const tags: { start: boolean; index: number }[] = [
+						...startIndexes.map((index) => ({
+							start: true,
+							index,
+						})),
+						...endIndexes.map((index) => ({
+							start: false,
+							index,
+						})),
+					].sort((a, b) => a.index - b.index)
+
+					// Figure out where in the message the end tag closes the start tag:
+					let tagBalance = 0
+					for (const tag of tags) {
+						if (tag.start) tagBalance++
+						else tagBalance--
+
+						if (tagBalance < 0) {
+							// Hmm, something is wrong, there should never be more end tags than start tags
+
+							// trim off anything before this end tag, we'll never be able to parse that anyway.
+							this.dataChunks = this.dataChunks.slice(tag.index + endMatch.length)
+							break
+						} else if (tagBalance === 0) {
+							// We have a complete message, so pluck it out
+							useEndIndex = tag.index
+
+							break
+						}
+					}
+				}
+
+				if (useEndIndex !== null) {
+					const endIndex2 = useEndIndex + endMatch.length
+					messageString = this.dataChunks.slice(0, endIndex2)
+					this.dataChunks = this.dataChunks.slice(endIndex2)
+				}
 			}
 		}
-
 		let parsedData: any | null = null
 		try {
 			if (messageString) {
@@ -86,5 +126,21 @@ export class MosMessageParser extends EventEmitter {
 				console.log(str)
 			}
 		}
+	}
+	/** Returns a list of indexes for the occurences of searchString in str */
+	private indexesOf(str: string, searchString: string): number[] {
+		if (!searchString.length) throw new Error('searchString cannot be empty')
+		const indexes: number[] = []
+
+		let prevIndex = 0
+		for (let i = 0; i < str.length; i++) {
+			// ^ Just to avoid an infinite loop
+
+			const index = str.indexOf(searchString, prevIndex)
+			if (index === -1) break
+			indexes.push(index)
+			prevIndex = index + searchString.length
+		}
+		return indexes
 	}
 }
