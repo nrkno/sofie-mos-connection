@@ -1,6 +1,6 @@
 {
 	"name": "quick-mos",
-	"version": "3.0.5",
+	"version": "0.0.0",
 	"private": true,
 	"description": "Read rundowns from files, use mos-connection and send mos commands",
 	"main": "dist/index.js",
