@@ -1,6 +1,6 @@
 {
 	"name": "quick-mos",
-	"version": "0.0.0",
+	"version": "3.0.5",
 	"private": true,
 	"description": "Read rundowns from files, use mos-connection and send mos commands",
 	"main": "dist/index.js",
@@ -39,8 +39,8 @@
 		"typescript": "~4.9.5"
 	},
 	"dependencies": {
-		"@mos-connection/connector": "*",
-		"@mos-connection/model": "*",
+		"@mos-connection/connector": "3.0.5",
+		"@mos-connection/model": "3.0.5",
 		"chokidar": "^3.5.3",
 		"fast-clone": "^1.5.13",
 		"tslib": "^2.5.3",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.5](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.4...3.0.5) (2023-12-18)
+
+
+### Bug Fixes
+
+* Handle empty MOS time string ([85fbc88](https://github.com/nrkno/sofie-mos-connection/commit/85fbc886d7b577db07bece23efc53f6058a92a43))
+
+
+
+
+
 ## [3.0.4](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.1...v3.0.4) (2023-06-09)
 
 **Note:** Version bump only for package @mos-connection/model

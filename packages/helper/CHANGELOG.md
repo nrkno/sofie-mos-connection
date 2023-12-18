@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.5](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.4...3.0.5) (2023-12-18)
+
+
+### Bug Fixes
+
+* better handling of single xml elements ([f96ea1a](https://github.com/nrkno/sofie-mos-connection/commit/f96ea1a61cef385435d1088acc46cd1e25c5c4bf))
+* case roStorySend one storyItem ([77dfff5](https://github.com/nrkno/sofie-mos-connection/commit/77dfff5c36c2dd7d42efa0932a561b800af636a4))
+
+
+
+
+
 ## [3.0.4](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.1...v3.0.4) (2023-06-09)
 
 

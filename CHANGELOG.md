@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.5](https://github.com/nrkno/tv-automation-mos-connection/compare/v3.0.4...3.0.5) (2023-12-18)
+
+
+### Bug Fixes
+
+* better handling of incoming data chunks. Deals with multiple <mos> and </mos> tags. ([59cacb2](https://github.com/nrkno/tv-automation-mos-connection/commit/59cacb21c178ea14c7ad4c8771198e6ec656459c))
+* better handling of single xml elements ([f96ea1a](https://github.com/nrkno/tv-automation-mos-connection/commit/f96ea1a61cef385435d1088acc46cd1e25c5c4bf))
+* case roStorySend one storyItem ([77dfff5](https://github.com/nrkno/tv-automation-mos-connection/commit/77dfff5c36c2dd7d42efa0932a561b800af636a4))
+* Handle empty MOS time string ([85fbc88](https://github.com/nrkno/tv-automation-mos-connection/commit/85fbc886d7b577db07bece23efc53f6058a92a43))
+* handle replies to roReq ([c100b4d](https://github.com/nrkno/tv-automation-mos-connection/commit/c100b4d017f21d45529c0c912754808f8a0431bc))
+
+
+
+
+
 ## [3.0.4](https://github.com/nrkno/tv-automation-mos-connection/compare/v3.0.1...v3.0.4) (2023-06-09)
 
 
