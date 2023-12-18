@@ -65,6 +65,9 @@ describe('MosTime', () => {
 		expect(toTime('2009-04-11T14:22:07+5:00')).toBe(new Date('2009-04-11T14:22:07+05:00').getTime())
 		expect(toTime('2009-04-11T14:22:07+5:30')).toBe(new Date('2009-04-11T14:22:07+05:30').getTime())
 		expect(toTime('2009-04-11T14:22:07+5:5')).toBe(new Date('2009-04-11T14:22:07+05:05').getTime())
+		
+		// Empty string
+		expect(typeof toTime('')).toBe('number')
 	})
 	test('format time strings correctly', () => {
 		const mosTypes = getMosTypes(true)
