@@ -6,7 +6,8 @@
 		"license-validate": "yarn sofie-licensecheck"
 	},
 	"devDependencies": {
-		"@sofie-automation/code-standard-preset": "*"
+		"@sofie-automation/code-standard-preset": "*",
+		"typescript": "~4.9.5"
 	},
 	"engines": {
 		"node": ">=14.18.0"

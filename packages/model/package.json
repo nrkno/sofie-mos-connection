@@ -37,6 +37,7 @@
 		"/LICENSE"
 	],
 	"devDependencies": {
-		"@sofie-automation/code-standard-preset": "*"
+		"@sofie-automation/code-standard-preset": "*",
+		"typescript": "~4.9.5"
 	}
 }

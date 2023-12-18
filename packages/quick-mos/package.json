@@ -33,8 +33,10 @@
 	},
 	"devDependencies": {
 		"@sofie-automation/code-standard-preset": "*",
+		"@types/node": "^20.10.5",
 		"@types/underscore": "^1.11.5",
-		"ts-node": "^10.9.1"
+		"ts-node": "^10.9.1",
+		"typescript": "~4.9.5"
 	},
 	"dependencies": {
 		"@mos-connection/connector": "*",

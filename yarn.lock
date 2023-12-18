@@ -971,6 +971,7 @@ __metadata:
     "@sofie-automation/code-standard-preset": "*"
     iconv-lite: ^0.6.3
     tslib: ^2.5.3
+    typescript: ~4.9.5
     xml-js: ^1.6.11
     xmlbuilder: ^15.1.1
   languageName: unknown
@@ -982,6 +983,7 @@ __metadata:
   dependencies:
     "@mos-connection/connector": 3.0.4
     "@sofie-automation/code-standard-preset": "*"
+    typescript: ~4.9.5
   languageName: unknown
   linkType: soft
 
@@ -993,6 +995,7 @@ __metadata:
     "@sofie-automation/code-standard-preset": "*"
     iconv-lite: ^0.6.3
     tslib: ^2.5.3
+    typescript: ~4.9.5
     xml-js: ^1.6.11
     xmlbuilder: ^15.1.1
   languageName: unknown
@@ -1003,6 +1006,7 @@ __metadata:
   resolution: "@mos-connection/model@workspace:packages/model"
   dependencies:
     "@sofie-automation/code-standard-preset": "*"
+    typescript: ~4.9.5
   languageName: unknown
   linkType: soft
 
@@ -1774,6 +1778,15 @@ __metadata:
   version: 20.3.1
   resolution: "@types/node@npm:20.3.1"
   checksum: 63a393ab6d947be17320817b35d7277ef03728e231558166ed07ee30b09fd7c08861be4d746f10fdc63ca7912e8cd023939d4eab887ff6580ff704ff24ed810c
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.10.5":
+  version: 20.10.5
+  resolution: "@types/node@npm:20.10.5"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: e216b679f545a8356960ce985a0e53c3a58fff0eacd855e180b9e223b8db2b5bd07b744a002b8c1f0c37f9194648ab4578533b5c12df2ec10cc02f61d20948d2
   languageName: node
   linkType: hard
 
@@ -7845,11 +7858,13 @@ __metadata:
     "@mos-connection/connector": "*"
     "@mos-connection/model": "*"
     "@sofie-automation/code-standard-preset": "*"
+    "@types/node": ^20.10.5
     "@types/underscore": ^1.11.5
     chokidar: ^3.5.3
     fast-clone: ^1.5.13
     ts-node: ^10.9.1
     tslib: ^2.5.3
+    typescript: ~4.9.5
     underscore: ^1.13.6
   languageName: unknown
   linkType: soft
@@ -9296,6 +9311,13 @@ __metadata:
   version: 1.13.6
   resolution: "underscore@npm:1.13.6"
   checksum: d5cedd14a9d0d91dd38c1ce6169e4455bb931f0aaf354108e47bd46d3f2da7464d49b2171a5cf786d61963204a42d01ea1332a903b7342ad428deaafaf70ec36
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
   languageName: node
   linkType: hard
 
