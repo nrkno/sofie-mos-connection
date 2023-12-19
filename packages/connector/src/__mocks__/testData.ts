@@ -489,6 +489,30 @@ const xmlApiData = {
 			profile1: true,
 		},
 	}),
+	machineInfoReply: literal<IMOSListMachInfo>({
+		manufacturer: mosTypes.mosString128.create('RadioVision, Ltd.'),
+		model: mosTypes.mosString128.create('TCS6000'),
+		hwRev: mosTypes.mosString128.create(''),
+		swRev: mosTypes.mosString128.create('2.1.0.37'),
+		DOM: mosTypes.mosString128.create(''),
+		SN: mosTypes.mosString128.create('927748927'),
+		ID: mosTypes.mosString128.create('airchache.newscenter.com'),
+		time: mosTypes.mosTime.create('2009-04-11T17:20:42'),
+		opTime: mosTypes.mosTime.create('2009-03-01T23:55:10'),
+		mosRev: mosTypes.mosString128.create('2.8.2'),
+
+		supportedProfiles: {
+			deviceType: 'NCS',
+			profile0: true,
+			profile1: true,
+			profile2: true,
+			profile3: true,
+			profile4: true,
+			profile5: true,
+			profile6: true,
+			profile7: true,
+		},
+	}),
 	mosObj: literal<IMOSObject>({
 		ID: mosTypes.mosString128.create('M000123'),
 		Slug: mosTypes.mosString128.create('My new object'),
@@ -1085,7 +1109,7 @@ const xmlApiData = {
 		literal<IMOSROStory>({
 			ID: mosTypes.mosString128.create('17'),
 			Items: [],
-			Slug: mosTypes.mosString128.create(undefined),
+			Slug: undefined,
 		}),
 	],
 	roElementAction_insert_item_Action: literal<IMOSItemAction>({
@@ -1174,7 +1198,7 @@ const xmlApiData = {
 		literal<IMOSROStory>({
 			ID: mosTypes.mosString128.create('17'),
 			Items: [],
-			Slug: mosTypes.mosString128.create(undefined),
+			Slug: undefined,
 			// MosExternalMetaData?: Array<IMOSExternalMetaData>,
 		}),
 	],

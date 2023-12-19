@@ -117,6 +117,15 @@ export function is(mosTime: IMOSTime | any): mosTime is IMOSTime {
 		(mosTime as IMOSTime)._timezoneOffset !== undefined
 	)
 }
+export function fallback(): IMOSTime {
+	const iMosTime: IMOSTime = {
+		_mosTime: 0,
+		_timezone: '',
+		_timezoneOffset: 0,
+	} as IMOSTime
+	validate(iMosTime, true)
+	return iMosTime
+}
 
 function parseTimeOffset(timestamp: string): false | { timeOffsetValue: number; timezoneDeclaration: string } {
 	let timeOffsetValue: number

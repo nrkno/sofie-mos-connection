@@ -1,18 +1,19 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { getMosTypes, IMOSListMachInfo, IMOSString128 } from '@mos-connection/model'
+import { IMOSListMachInfo, IMOSString128 } from '@mos-connection/model'
 import { AnyXML } from '../lib'
 import { addTextElementInternal } from '../../utils/Utils'
+import { getParseMosTypes } from '../parseMosTypes'
 
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace XMLMosIDs {
 	export function fromXML(xml: AnyXML, strict: boolean): IMOSString128[] {
-		const mosTypes = getMosTypes(strict)
+		const mosTypes = getParseMosTypes(strict)
 
 		const arr: Array<IMOSString128> = []
 		let xmlIds: Array<string> = xml as any
 		if (!Array.isArray(xmlIds)) xmlIds = [xmlIds]
 		xmlIds.forEach((id: string) => {
-			arr.push(mosTypes.mosString128.create(id))
+			arr.push(mosTypes.mosString128.createRequired(id))
 		})
 
 		return arr
@@ -22,24 +23,30 @@ export namespace XMLMosIDs {
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace XMLMosListMachInfo {
 	export function fromXML(xml: AnyXML, strict: boolean): IMOSListMachInfo {
-		const mosTypes = getMosTypes(strict)
+		const mosTypes = getParseMosTypes(strict)
 
 		const list: IMOSListMachInfo = {
-			manufacturer: mosTypes.mosString128.create(xml.manufacturer),
-			model: mosTypes.mosString128.create(xml.model),
-			hwRev: mosTypes.mosString128.create(xml.hwRev),
-			swRev: mosTypes.mosString128.create(xml.swRev),
-			DOM: mosTypes.mosString128.create(xml.DOM),
-			SN: mosTypes.mosString128.create(xml.SN),
-			ID: mosTypes.mosString128.create(xml.ID),
-			time: mosTypes.mosTime.create(xml.time),
-			opTime: mosTypes.mosTime.create(xml.opTime),
-			mosRev: mosTypes.mosString128.create(xml.mosRev),
+			manufacturer: mosTypes.mosString128.createRequired(xml.manufacturer),
+			model: mosTypes.mosString128.createRequired(xml.model),
+			hwRev: mosTypes.mosString128.createRequired(xml.hwRev),
+			swRev: mosTypes.mosString128.createRequired(xml.swRev),
+			DOM: mosTypes.mosString128.createRequired(xml.DOM),
+			SN: mosTypes.mosString128.createRequired(xml.SN),
+			ID: mosTypes.mosString128.createRequired(xml.ID),
+			time: mosTypes.mosTime.createRequired(xml.time),
+			opTime: mosTypes.mosTime.createOptional(xml.opTime),
+			mosRev: mosTypes.mosString128.createRequired(xml.mosRev),
 			supportedProfiles: {
-				deviceType: xml.supportedProfiles.deviceType,
+				deviceType: xml.supportedProfiles?.deviceType ?? 'N/A',
+				// Note: .profiles are added below
 			},
 			defaultActiveX: xml.defaultActiveX,
 			mosExternalMetaData: xml.mosExternalMetaData,
+		}
+		if (strict) {
+			if (!['NCS', 'MOS'].includes(list.supportedProfiles.deviceType)) {
+				throw new Error(`Invalid supportedProfiles.deviceType: "${list.supportedProfiles.deviceType}"`)
+			}
 		}
 
 		if (Array.isArray(xml.supportedProfiles.mosProfile)) {

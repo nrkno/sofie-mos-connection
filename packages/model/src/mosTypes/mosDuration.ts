@@ -28,7 +28,7 @@ export function create(anyValue: AnyValue, strict: boolean): IMOSDuration {
 	validate(mosDuration, strict)
 	return mosDuration
 }
-export type AnyValue = string | number
+export type AnyValue = string | number | any
 export function validate(_mosDuration: IMOSDuration, _strict: boolean): void {
 	// nothing
 }
@@ -54,4 +54,9 @@ export function is(mosDuration: IMOSDuration | any): mosDuration is IMOSDuration
 	if (typeof mosDuration !== 'object') return false
 	if (mosDuration === null) return false
 	return (mosDuration as IMOSDuration)._mosDuration !== undefined
+}
+export function fallback(): IMOSDuration {
+	const mosDuration: IMOSDuration = { _mosDuration: 0 } as IMOSDuration
+	validate(mosDuration, true)
+	return mosDuration
 }

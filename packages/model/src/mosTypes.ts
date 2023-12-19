@@ -50,17 +50,20 @@ export function stringifyMosType(
 	return { isMosType: false }
 }
 
-interface MosType<Serialized, Value, CreateValue> {
+export interface MosType<Serialized, Value, CreateValue> {
 	/** Creates a MosType using provided data. The MosType is then used in data sent into MOS-connection  */
 	create: (anyValue: CreateValue) => Serialized
 	/** (internal function) Validate the data. Throws if something is wrong with the data */
 	validate: (value: Serialized) => void
 	/** Returns the value of the MosType */
-	valueOf(value: Serialized): Value
+	valueOf: (value: Serialized) => Value
 	/** Returns a stringified representation of the MosType */
-	stringify(value: Serialized): string
+	stringify: (value: Serialized) => string
 	/** Returns true if the provided data is of this MosType */
-	is(value: Serialized | any): value is Serialized
+	is: (value: Serialized | any) => value is Serialized
+
+	/** Returns a fallback value, used to replace missing or non-parsable data in non-strict mode */
+	fallback: () => Serialized
 }
 
 interface InternalMosType<Serialized, Value> {
@@ -69,6 +72,7 @@ interface InternalMosType<Serialized, Value> {
 	valueOf(value: Serialized): Value
 	stringify(value: Serialized): string
 	is(value: Serialized | any): value is Serialized
+	fallback(): Serialized
 }
 function getMosType<Serialized, Value, CreateValue>(
 	mosType: InternalMosType<Serialized, Value>,
@@ -80,6 +84,7 @@ function getMosType<Serialized, Value, CreateValue>(
 		stringify: (value: Serialized): string => mosType.stringify(value),
 		valueOf: (value: Serialized): Value => mosType.valueOf(value),
 		is: (value: Serialized): value is Serialized => mosType.is(value),
+		fallback: (): Serialized => mosType.fallback(),
 	}
 }
 

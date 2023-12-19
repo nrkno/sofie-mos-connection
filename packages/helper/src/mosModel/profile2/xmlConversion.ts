@@ -11,22 +11,22 @@ import {
 	IMOSROAckStory,
 	IMOSROAckItem,
 	IMOSROAckObject,
-	getMosTypes,
 } from '@mos-connection/model'
 import { AnyXML, has, isEmpty, numberOrUndefined } from '../lib'
 import { ROAck } from './ROAck'
 import { XMLMosObjects } from '../profile1/xmlConversion'
 import { addTextElementInternal } from '../../utils/Utils'
+import { getParseMosTypes } from '../parseMosTypes'
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export namespace XMLMosROAck {
 	export function fromXML(xml: AnyXML, strict: boolean): ROAck {
-		const mosTypes = getMosTypes(strict)
+		const mosTypes = getParseMosTypes(strict)
 
 		const roAck: ROAck = new ROAck(
 			{
-				ID: mosTypes.mosString128.create(xml.roID),
-				Status: mosTypes.mosString128.create(xml.roStatus),
+				ID: mosTypes.mosString128.createRequired(xml.roID),
+				Status: mosTypes.mosString128.createRequired(xml.roStatus),
 				Stories: [],
 			},
 			strict
@@ -52,15 +52,15 @@ export namespace XMLMosROAck {
 		for (let i = 0; i < iMax; i++) {
 			if (xmlStoryIDs[i]) {
 				story = {
-					ID: mosTypes.mosString128.create(xmlStoryIDs[i]),
+					ID: mosTypes.mosString128.createRequired(xmlStoryIDs[i]),
 					Items: [],
 				}
 				roAck.Stories.push(story)
 			}
 			if (xmlItemIDs[i]) {
 				item = {
-					ID: mosTypes.mosString128.create(xmlStoryIDs[i]),
-					Channel: mosTypes.mosString128.create(''),
+					ID: mosTypes.mosString128.createRequired(xmlStoryIDs[i]),
+					Channel: mosTypes.mosString128.createRequired(''),
 					Objects: [],
 				}
 				if (story) story.Items.push(item)
@@ -79,20 +79,23 @@ export namespace XMLMosROAck {
 }
 export namespace XMLRunningOrderBase {
 	export function fromXML(xml: AnyXML, strict: boolean): IMOSRunningOrderBase {
-		const mosTypes = getMosTypes(strict)
+		const mosTypes = getParseMosTypes(strict)
 		const ro: IMOSRunningOrderBase = {
-			ID: mosTypes.mosString128.create(xml.roID),
-			Slug: mosTypes.mosString128.create(xml.roSlug),
+			ID: mosTypes.mosString128.createRequired(xml.roID),
+			Slug: mosTypes.mosString128.createRequired(xml.roSlug),
 		}
 
-		if (has(xml, 'roEdStart') && !isEmpty(xml.roEdStart)) ro.EditorialStart = mosTypes.mosTime.create(xml.roEdStart)
+		if (has(xml, 'roEdStart') && !isEmpty(xml.roEdStart))
+			ro.EditorialStart = mosTypes.mosTime.createOptional(xml.roEdStart)
 		if (has(xml, 'roEdDur') && !isEmpty(xml.roEdDur))
-			ro.EditorialDuration = mosTypes.mosDuration.create(xml.roEdDur)
+			ro.EditorialDuration = mosTypes.mosDuration.createOptional(xml.roEdDur)
 		if (has(xml, 'roChannel') && !isEmpty(xml.roChannel))
-			ro.DefaultChannel = mosTypes.mosString128.create(xml.roChannel)
-		if (has(xml, 'roTrigger') && !isEmpty(xml.roTrigger)) ro.Trigger = mosTypes.mosString128.create(xml.roTrigger)
-		if (has(xml, 'macroIn') && !isEmpty(xml.macroIn)) ro.MacroIn = mosTypes.mosString128.create(xml.macroIn)
-		if (has(xml, 'macroOut') && !isEmpty(xml.macroOut)) ro.MacroOut = mosTypes.mosString128.create(xml.macroOut)
+			ro.DefaultChannel = mosTypes.mosString128.createOptional(xml.roChannel)
+		if (has(xml, 'roTrigger') && !isEmpty(xml.roTrigger))
+			ro.Trigger = mosTypes.mosString128.createOptional(xml.roTrigger)
+		if (has(xml, 'macroIn') && !isEmpty(xml.macroIn)) ro.MacroIn = mosTypes.mosString128.createOptional(xml.macroIn)
+		if (has(xml, 'macroOut') && !isEmpty(xml.macroOut))
+			ro.MacroOut = mosTypes.mosString128.createOptional(xml.macroOut)
 		if (has(xml, 'mosExternalMetadata') && !isEmpty(xml.mosExternalMetadata)) {
 			// TODO: Handle an array of mosExternalMetadata
 			const meta: IMOSExternalMetaData = {
@@ -151,10 +154,10 @@ export namespace XMLROStoryBase {
 }
 export namespace XMLROStory {
 	export function fromXML(xml: AnyXML, strict: boolean): IMOSROStory {
-		const mosTypes = getMosTypes(strict)
+		const mosTypes = getParseMosTypes(strict)
 		const story: IMOSROStory = {
-			ID: mosTypes.mosString128.create(xml.storyID),
-			Slug: mosTypes.mosString128.create(xml.storySlug),
+			ID: mosTypes.mosString128.createRequired(xml.storyID),
+			Slug: mosTypes.mosString128.createOptional(xml.storySlug),
 			Items: [],
 			// TODO: Add & test Number, ObjectID, MOSID, mosAbstract, Paths
 			// Channel, EditorialStart, EditorialDuration, UserTimingDuration, Trigger, MacroIn, MacroOut, MosExternalMetaData
@@ -172,7 +175,7 @@ export namespace XMLROStory {
 			story.MosExternalMetaData = XMLMosExternalMetaData.fromXML(xml.mosExternalMetadata)
 
 		if (has(xml, 'storyNum') && !isEmpty(xml.storyNum))
-			story.Number = mosTypes.mosString128.create(xml.storyNum || '')
+			story.Number = mosTypes.mosString128.createOptional(xml.storyNum || '')
 
 		return story
 	}
@@ -197,10 +200,10 @@ export namespace XMLMosItems {
 }
 export namespace XMLMosItem {
 	export function fromXML(xml: AnyXML, strict: boolean): IMOSItem {
-		const mosTypes = getMosTypes(strict)
+		const mosTypes = getParseMosTypes(strict)
 		const item: IMOSItem = {
-			ID: mosTypes.mosString128.create(xml.itemID),
-			ObjectID: mosTypes.mosString128.create(xml.objID),
+			ID: mosTypes.mosString128.createRequired(xml.itemID),
+			ObjectID: mosTypes.mosString128.createRequired(xml.objID),
 			MOSID: xml.mosID,
 			// TODO: mosAbstract?: string,
 			// TODO: Channel?: MosString128,
@@ -208,7 +211,8 @@ export namespace XMLMosItem {
 			// TODO: MacroOut?: MosString128,
 		}
 
-		if (has(xml, 'itemSlug') && !isEmpty(xml.itemSlug)) item.Slug = mosTypes.mosString128.create(xml.itemSlug)
+		if (has(xml, 'itemSlug') && !isEmpty(xml.itemSlug))
+			item.Slug = mosTypes.mosString128.createOptional(xml.itemSlug)
 		if (has(xml, 'objPaths')) item.Paths = XMLObjectPaths.fromXML(xml.objPaths)
 		if (has(xml, 'itemEdStart')) item.EditorialStart = numberOrUndefined(xml.itemEdStart)
 		if (has(xml, 'itemEdDur')) item.EditorialDuration = numberOrUndefined(xml.itemEdDur)
@@ -217,13 +221,13 @@ export namespace XMLMosItem {
 		if (has(xml, 'mosExternalMetadata'))
 			item.MosExternalMetaData = XMLMosExternalMetaData.fromXML(xml.mosExternalMetadata)
 		if (has(xml, 'mosAbstract')) item.mosAbstract = xml.mosAbstract + ''
-		if (has(xml, 'objSlug')) item.ObjectSlug = getMosTypes(false).mosString128.create(xml.objSlug) // temporary fix for long slugs
-		if (has(xml, 'itemChannel')) item.Channel = mosTypes.mosString128.create(xml.itemChannel)
+		if (has(xml, 'objSlug')) item.ObjectSlug = getParseMosTypes(false).mosString128.createOptional(xml.objSlug) // temporary fix for long slugs
+		if (has(xml, 'itemChannel')) item.Channel = mosTypes.mosString128.createOptional(xml.itemChannel)
 		if (has(xml, 'objDur')) item.Duration = numberOrUndefined(xml.objDur)
 		if (has(xml, 'objTB')) item.TimeBase = numberOrUndefined(xml.objTB)
 
-		if (has(xml, 'macroIn')) item.MacroIn = mosTypes.mosString128.create(xml.macroIn)
-		if (has(xml, 'macroOut')) item.MacroOut = mosTypes.mosString128.create(xml.macroOut)
+		if (has(xml, 'macroIn')) item.MacroIn = mosTypes.mosString128.createOptional(xml.macroIn)
+		if (has(xml, 'macroOut')) item.MacroOut = mosTypes.mosString128.createOptional(xml.macroOut)
 
 		if (has(xml, 'mosObj')) {
 			// Note: the <mosObj> is sent in roStorySend

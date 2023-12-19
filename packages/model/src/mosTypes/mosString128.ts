@@ -17,6 +17,8 @@ export function create(anyValue: AnyValue, strict: boolean): IMOSString128 {
 		} else {
 			strValue = JSON.stringify(anyValue)
 		}
+	} else if (anyValue === undefined) {
+		strValue = ''
 	} else {
 		strValue = anyValue !== `undefined` ? String(anyValue) : ''
 	}
@@ -47,4 +49,9 @@ export function is(mosString128: IMOSString128 | any): mosString128 is IMOSStrin
 	if (typeof mosString128 !== 'object') return false
 	if (mosString128 === null) return false
 	return (mosString128 as IMOSString128)._mosString128 !== undefined
+}
+export function fallback(): IMOSString128 {
+	const mosString: IMOSString128 = { _mosString128: '' } as IMOSString128
+	validate(mosString, true)
+	return mosString
 }
