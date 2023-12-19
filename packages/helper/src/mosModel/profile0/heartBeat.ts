@@ -10,7 +10,7 @@ export class HeartBeat extends MosMessage {
 	/** */
 	constructor(port: PortType, time: IMOSTime | undefined, strict: boolean) {
 		super(port, strict)
-		if (!time) time = getMosTypes(true).mosTime.create(undefined)
+		if (!time) time = getMosTypes(true).mosTime.create(Date.now())
 		this.time = time
 	}
 

@@ -212,7 +212,7 @@ export class SocketMock extends EventEmitter implements Socket {
 <ncsID>${ncsID}</ncsID>
 <messageID>${messageId}</messageID>\
   <heartbeat>
-    <time>${mosTypes.mosTime.stringify(mosTypes.mosTime.create(undefined))}</time>
+    <time>${mosTypes.mosTime.stringify(mosTypes.mosTime.create(Date.now()))}</time>
   </heartbeat>
 </mos>\r\n`
 					this.mockReceiveMessage(this.encode(repl))
