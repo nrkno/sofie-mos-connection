@@ -648,34 +648,8 @@ export class MosDevice implements IMOSDevice {
 		const message = new MosModel.ReqMachInfo(this.strict)
 
 		const data = await this.executeCommand(message)
-		const listMachInfo = data.mos.listMachInfo
 
-		const list: IMOSListMachInfo = {
-			manufacturer: this.mosTypes.mosString128.create(listMachInfo.manufacturer),
-			model: this.mosTypes.mosString128.create(listMachInfo.model),
-			hwRev: this.mosTypes.mosString128.create(listMachInfo.hwRev),
-			swRev: this.mosTypes.mosString128.create(listMachInfo.swRev),
-			DOM: this.mosTypes.mosString128.create(listMachInfo.DOM),
-			SN: this.mosTypes.mosString128.create(listMachInfo.SN),
-			ID: this.mosTypes.mosString128.create(listMachInfo.ID),
-			time: this.mosTypes.mosTime.create(listMachInfo.time),
-			opTime: this.mosTypes.mosTime.create(listMachInfo.opTime),
-			mosRev: this.mosTypes.mosString128.create(listMachInfo.mosRev),
-			supportedProfiles: {
-				deviceType: listMachInfo.supportedProfiles.deviceType,
-			},
-			defaultActiveX: listMachInfo.defaultActiveX,
-			mosExternalMetaData: listMachInfo.mosExternalMetaData,
-		}
-
-		if (Array.isArray(listMachInfo.supportedProfiles.mosProfile)) {
-			for (const mosProfile of listMachInfo.supportedProfiles.mosProfile) {
-				// @ts-expect-error hack
-				list.supportedProfiles[`profile${mosProfile.attributes.number}`] = mosProfile.text === 'YES'
-			}
-		}
-
-		return list
+		return MosModel.XMLMosListMachInfo.fromXML(data.mos.listMachInfo, this.strict)
 	}
 
 	onRequestMachineInfo(cb: () => Promise<IMOSListMachInfo>): void {
