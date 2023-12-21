@@ -1,5 +1,846 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Profile 2 deprecated messages roItemDelete 1`] = `
+[
+  [
+    {
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+      "StoryID": {
+        "_mosString128": "2",
+      },
+    },
+    [
+      {
+        "_mosString128": "4",
+      },
+      {
+        "_mosString128": "7",
+      },
+      {
+        "_mosString128": "10",
+      },
+      {
+        "_mosString128": "6",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roItemDelete: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1667</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1667</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 deprecated messages roItemInsert 1`] = `
+[
+  [
+    {
+      "ItemID": {
+        "_mosString128": "5",
+      },
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+      "StoryID": {
+        "_mosString128": "2597609",
+      },
+    },
+    [
+      {
+        "EditorialDuration": 900,
+        "EditorialStart": 0,
+        "ID": {
+          "_mosString128": "30848",
+        },
+        "MOSID": "testmos",
+        "ObjectID": {
+          "_mosString128": "M00702",
+        },
+        "Paths": [
+          {
+            "Description": "MPEG2 Video",
+            "Target": "\\\\server\\media\\clip392028cd2320s0d.mxf",
+            "Type": "PATH",
+          },
+          {
+            "Description": "WM9 750Kbps",
+            "Target": "http://server/proxy/clipe.wmv",
+            "Type": "PROXY PATH",
+          },
+        ],
+        "Slug": {
+          "_mosString128": "Hotel Fire vo",
+        },
+        "UserTimingDuration": 310,
+      },
+      {
+        "EditorialDuration": 800,
+        "EditorialStart": 0,
+        "ID": {
+          "_mosString128": "1",
+        },
+        "MOSID": "testmos",
+        "ObjectID": {
+          "_mosString128": "M00705",
+        },
+        "Slug": {
+          "_mosString128": "Dormitory Fire vo",
+        },
+        "UserTimingDuration": 310,
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roItemInsert: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1664</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1664</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 deprecated messages roItemMoveMultiple 1`] = `
+[
+  [
+    {
+      "ItemID": {
+        "_mosString128": "1",
+      },
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+      "StoryID": {
+        "_mosString128": "Barn Fire",
+      },
+    },
+    [
+      {
+        "_mosString128": "2",
+      },
+      {
+        "_mosString128": "3",
+      },
+      {
+        "_mosString128": "5",
+      },
+      {
+        "_mosString128": "6",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roItemMoveMultiple: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1666</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1666</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 deprecated messages roItemReplace 1`] = `
+[
+  [
+    {
+      "ItemID": {
+        "_mosString128": "5",
+      },
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+      "StoryID": {
+        "_mosString128": "2597609",
+      },
+    },
+    [
+      {
+        "EditorialDuration": 900,
+        "EditorialStart": 0,
+        "ID": {
+          "_mosString128": "30848",
+        },
+        "MOSID": "testmos",
+        "ObjectID": {
+          "_mosString128": "M00702",
+        },
+        "Paths": [
+          {
+            "Description": "MPEG2 Video",
+            "Target": "\\\\server\\media\\clip392028cd2320s0d.mxf",
+            "Type": "PATH",
+          },
+          {
+            "Description": "WM9 750Kbps",
+            "Target": "http://server/proxy/clipe.wmv",
+            "Type": "PROXY PATH",
+          },
+        ],
+        "Slug": {
+          "_mosString128": "Hotel Fire vo",
+        },
+        "UserTimingDuration": 810,
+      },
+      {
+        "EditorialDuration": 800,
+        "EditorialStart": 0,
+        "ID": {
+          "_mosString128": "1",
+        },
+        "MOSID": "testmos",
+        "ObjectID": {
+          "_mosString128": "M00705",
+        },
+        "Slug": {
+          "_mosString128": "Dormitory Fire vo",
+        },
+        "UserTimingDuration": 610,
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roItemReplace: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1665</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1665</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 deprecated messages roStoryAppend 1`] = `
+[
+  [
+    {
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+      "StoryID": {
+        "_mosString128": "",
+      },
+    },
+    [
+      {
+        "ID": {
+          "_mosString128": "V: BRIDGE COLLAPSE",
+        },
+        "Items": [
+          {
+            "EditorialDuration": 815,
+            "EditorialStart": 0,
+            "ID": {
+              "_mosString128": "30848",
+            },
+            "MOSID": "testmos.enps.com",
+            "MacroIn": {
+              "_mosString128": "c01/l04/dve07",
+            },
+            "MacroOut": {
+              "_mosString128": "r00",
+            },
+            "MosExternalMetaData": [
+              {
+                "MosPayload": {
+                  "Owner": "SHOLMES",
+                  "destination": "b",
+                  "source": "a",
+                  "transitionMode": 2,
+                  "transitionPoint": 463,
+                },
+                "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                "MosScope": "PLAYLIST",
+              },
+              {
+                "MosPayload": {
+                  "background": 2,
+                  "overlay": 463,
+                  "rate": 52,
+                },
+                "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSBXML2.08",
+                "MosScope": "PLAYLIST",
+              },
+            ],
+            "ObjectID": {
+              "_mosString128": "M000627",
+            },
+            "Paths": [
+              {
+                "Description": "MPEG2 Video",
+                "Target": "\\\\server\\media\\clip392028cd2320s0d.mxf",
+                "Type": "PATH",
+              },
+              {
+                "Description": "WM9 750Kbps",
+                "Target": "http://server/proxy/clipe.wmv",
+                "Type": "PROXY PATH",
+              },
+            ],
+            "UserTimingDuration": 310,
+          },
+          {
+            "EditorialDuration": 815,
+            "EditorialStart": 0,
+            "ID": {
+              "_mosString128": "30849",
+            },
+            "MOSID": "testmos",
+            "MacroIn": {
+              "_mosString128": "c01/l04/dve07",
+            },
+            "MacroOut": {
+              "_mosString128": "r00",
+            },
+            "MosExternalMetaData": [
+              {
+                "MosPayload": {
+                  "Owner": "SHOLMES",
+                  "destination": "b",
+                  "source": "a",
+                  "transitionMode": 2,
+                  "transitionPoint": 463,
+                },
+                "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                "MosScope": "PLAYLIST",
+              },
+            ],
+            "ObjectID": {
+              "_mosString128": "M000628",
+            },
+            "UserTimingDuration": 310,
+          },
+        ],
+        "Number": {
+          "_mosString128": "B7",
+        },
+        "Slug": {
+          "_mosString128": "Bridge Collapse",
+        },
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roStoryAppend: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1657</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1657</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 deprecated messages roStoryDelete 1`] = `
+[
+  [
+    {
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+    },
+    [
+      {
+        "_mosString128": "V: BRIDGE COLLAPSE",
+      },
+      {
+        "_mosString128": "P: PHILLIPS INTERVIEW",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roStoryDelete: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1662</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1662</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 deprecated messages roStoryInsert 1`] = `
+[
+  [
+    {
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+      "StoryID": {
+        "_mosString128": "HOTEL FIRE",
+      },
+    },
+    [
+      {
+        "ID": {
+          "_mosString128": "V: BRIDGE COLLAPSE",
+        },
+        "Items": [
+          {
+            "EditorialDuration": 815,
+            "EditorialStart": 0,
+            "ID": {
+              "_mosString128": "30848",
+            },
+            "MOSID": "testmos.enps.com",
+            "MacroIn": {
+              "_mosString128": "c01/l04/dve07",
+            },
+            "MacroOut": {
+              "_mosString128": "r00",
+            },
+            "MosExternalMetaData": [
+              {
+                "MosPayload": {
+                  "Owner": "SHOLMES",
+                  "destination": "b",
+                  "source": "a",
+                  "transitionMode": 2,
+                  "transitionPoint": 463,
+                },
+                "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                "MosScope": "PLAYLIST",
+              },
+              {
+                "MosPayload": {
+                  "background": 2,
+                  "overlay": 463,
+                  "rate": 52,
+                },
+                "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSBXML2.08",
+                "MosScope": "PLAYLIST",
+              },
+            ],
+            "ObjectID": {
+              "_mosString128": "M000627",
+            },
+            "Paths": [
+              {
+                "Description": "MPEG2 Video",
+                "Target": "\\\\server\\media\\clip392028cd2320s0d.mxf",
+                "Type": "PATH",
+              },
+              {
+                "Description": "WM9 750Kbps",
+                "Target": "http://server/proxy/clipe.wmv",
+                "Type": "PROXY PATH",
+              },
+            ],
+            "UserTimingDuration": 310,
+          },
+          {
+            "EditorialDuration": 815,
+            "EditorialStart": 0,
+            "ID": {
+              "_mosString128": "30849",
+            },
+            "MOSID": "testmos",
+            "MacroIn": {
+              "_mosString128": "c01/l04/dve07",
+            },
+            "MacroOut": {
+              "_mosString128": "r00",
+            },
+            "MosExternalMetaData": [
+              {
+                "MosPayload": {
+                  "Owner": "SHOLMES",
+                  "destination": "b",
+                  "source": "a",
+                  "transitionMode": 2,
+                  "transitionPoint": 463,
+                },
+                "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                "MosScope": "PLAYLIST",
+              },
+            ],
+            "ObjectID": {
+              "_mosString128": "M000628",
+            },
+            "UserTimingDuration": 310,
+          },
+        ],
+        "Number": {
+          "_mosString128": "B7",
+        },
+        "Slug": {
+          "_mosString128": "Bridge Collapse",
+        },
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roStoryInsert: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1658</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1658</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 deprecated messages roStoryMove 1`] = `
+[
+  [
+    {
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+      "StoryID": {
+        "_mosString128": "P: PHILLIPS INTERVIEW",
+      },
+    },
+    [
+      {
+        "_mosString128": "V: BRIDGE COLLAPSE",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roStoryMove: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1660</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1660</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 deprecated messages roStoryMoveMultiple 1`] = `
+[
+  [
+    {
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+      "StoryID": {
+        "_mosString128": "1",
+      },
+    },
+    [
+      {
+        "_mosString128": "2",
+      },
+      {
+        "_mosString128": "3",
+      },
+      {
+        "_mosString128": "5",
+      },
+      {
+        "_mosString128": "6",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roStoryMoveMultiple: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1663</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1663</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 deprecated messages roStoryReplace 1`] = `
+[
+  [
+    {
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+      "StoryID": {
+        "_mosString128": "P: PHILLIPS INTERVIEW",
+      },
+    },
+    [
+      {
+        "ID": {
+          "_mosString128": "V: HOTEL FIRE",
+        },
+        "Items": [
+          {
+            "EditorialDuration": 900,
+            "EditorialStart": 0,
+            "ID": {
+              "_mosString128": "30848",
+            },
+            "MOSID": "testmos",
+            "MacroIn": {
+              "_mosString128": "c01/l04/dve07",
+            },
+            "MacroOut": {
+              "_mosString128": "r00",
+            },
+            "MosExternalMetaData": [
+              {
+                "MosPayload": {
+                  "Owner": "SHOLMES",
+                  "destination": "b",
+                  "source": "a",
+                  "transitionMode": 2,
+                  "transitionPoint": 463,
+                },
+                "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                "MosScope": "PLAYLIST",
+              },
+            ],
+            "ObjectID": {
+              "_mosString128": "M000702",
+            },
+            "Paths": [
+              {
+                "Description": "MPEG2 Video",
+                "Target": "\\\\server\\media\\clip392028cd2320s0d.mxf",
+                "Type": "PATH",
+              },
+              {
+                "Description": "WM9 750Kbps",
+                "Target": "http://server/proxy/clipe.wmv",
+                "Type": "PROXY PATH",
+              },
+            ],
+            "Slug": {
+              "_mosString128": "Hotel Fire vo",
+            },
+            "UserTimingDuration": 800,
+          },
+        ],
+        "Number": {
+          "_mosString128": "C1",
+        },
+        "Slug": {
+          "_mosString128": "Hotel Fire",
+        },
+      },
+      {
+        "ID": {
+          "_mosString128": "V: DORMITORY FIRE",
+        },
+        "Items": [
+          {
+            "EditorialDuration": 800,
+            "EditorialStart": 0,
+            "ID": {
+              "_mosString128": "1",
+            },
+            "MOSID": "testmos",
+            "MacroIn": {
+              "_mosString128": "c01/l04/dve07",
+            },
+            "MacroOut": {
+              "_mosString128": "r00",
+            },
+            "MosExternalMetaData": [
+              {
+                "MosPayload": {
+                  "Owner": "SHOLMES",
+                  "destination": "b",
+                  "source": "a",
+                  "transitionMode": 2,
+                  "transitionPoint": 463,
+                },
+                "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                "MosScope": "PLAYLIST",
+              },
+            ],
+            "ObjectID": {
+              "_mosString128": "M000705",
+            },
+            "Slug": {
+              "_mosString128": "Dormitory Fire vo",
+            },
+            "UserTimingDuration": 310,
+          },
+        ],
+        "Number": {
+          "_mosString128": "C2",
+        },
+        "Slug": {
+          "_mosString128": "Dormitory Fire",
+        },
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roStoryReplace: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1659</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1659</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 deprecated messages roStorySwap 1`] = `
+[
+  [
+    {
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+    },
+    {
+      "_mosString128": "V: BRIDGE COLLAPSE",
+    },
+    {
+      "_mosString128": "P: PHILLIPS INTERVIEW",
+    },
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roStorySwap: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1661</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1661</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
 exports[`Profile 2 onCreateRunningOrder 1`] = `
 [
   [
