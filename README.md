@@ -16,6 +16,18 @@ This is the _MOS-Connection_ library of the [**Sofie** TV Automation System](htt
 
 ## Getting Started
 
+### Installation
+
+```bash
+npm install @mos-connection/connector
+or
+yarn add @mos-connection/connector
+```
+
+### Usage
+
+_See more examples in the [examples](/packages/examples/src) folder!_
+
 ```typescript
 import { MosConnection } from '@mos-connection/connector'
 
@@ -45,6 +57,14 @@ mos.onConnection((device: MosDevice) => { // called whenever there is a new conn
 	// ...
 })
 ```
+
+### Quick-MOS
+
+"Quick-MOS" is a simple MOS application that can be used to test the MOS-connection library.
+
+It reads data-files from disk and pretends to be an NRCS, so you can connect other MOS-clients to it.
+
+See [Quick-MOS](/packages/quick-mos/README.md) for more information.
 
 ## MOS Support
 
