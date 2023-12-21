@@ -5,7 +5,6 @@ describe('MosDuration', () => {
 		const mosTypes = getMosTypes(true)
 
 		const mosDuration = mosTypes.mosDuration.create('1:23:45')
-		expect(mosTypes.mosDuration.stringify(mosDuration)).toBe('1:23:45')
 		expect(mosTypes.mosDuration.valueOf(mosDuration)).toBe(5025)
 		expect(() => mosTypes.mosDuration.validate(mosDuration)).not.toThrowError()
 
@@ -30,6 +29,15 @@ describe('MosDuration', () => {
 		expect(mosTypes.mosDuration.is(null)).toBe(false)
 		expect(mosTypes.mosDuration.is('abc')).toBe(false)
 		expect(mosTypes.mosDuration.is(123)).toBe(false)
+	})
+	test('stringify', () => {
+		const mosTypes = getMosTypes(true)
+
+		const mosDuration = mosTypes.mosDuration.create('1:23:45')
+		expect(mosTypes.mosDuration.stringify(mosDuration)).toBe('1:23:45')
+
+		// @ts-expect-error wrong input, but still:
+		expect(mosTypes.mosDuration.stringify('1:23:45')).toBe('1:23:45')
 	})
 	test('parse durations correctly', () => {
 		const mosTypes = getMosTypes(true)

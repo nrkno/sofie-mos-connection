@@ -25,6 +25,23 @@ describe('MosTime', () => {
 		expect(mosTypes.mosTime.is(null)).toBe(false)
 		expect(mosTypes.mosTime.is('abc')).toBe(false)
 		expect(mosTypes.mosTime.is(123)).toBe(false)
+		expect(
+			mosTypes.mosTime.is({
+				_mosTime: 123,
+			})
+		).toBe(false)
+		expect(
+			mosTypes.mosTime.is({
+				_mosTime: 123,
+				_timezone: 'Z',
+			})
+		).toBe(false)
+		expect(
+			mosTypes.mosTime.is({
+				_mosTime: 123,
+				_timezoneOffset: 0,
+			})
+		).toBe(false)
 	})
 	test('parse time correctly', () => {
 		const mosTypes = getMosTypes(true)
@@ -41,6 +58,8 @@ describe('MosTime', () => {
 		expect(() => mosTypes.mosTime.create({})).toThrowError(/Invalid input/)
 		// @ts-expect-error bad input
 		expect(() => mosTypes.mosTime.create(null)).toThrowError(/Invalid input/)
+		// @ts-expect-error bad input
+		expect(() => mosTypes.mosTime.create(false)).toThrowError(/Invalid input/)
 
 		// test input format date, number and various strings
 		date = new Date(2018, 1, 24, 23, 13, 52, 0) // local, zero-indexed month
@@ -65,7 +84,9 @@ describe('MosTime', () => {
 		expect(toTime('2009-04-11T14:22:07+5:00')).toBe(new Date('2009-04-11T14:22:07+05:00').getTime())
 		expect(toTime('2009-04-11T14:22:07+5:30')).toBe(new Date('2009-04-11T14:22:07+05:30').getTime())
 		expect(toTime('2009-04-11T14:22:07+5:5')).toBe(new Date('2009-04-11T14:22:07+05:05').getTime())
-		
+
+		expect(toTime('Sun Feb 25 2018 08:59:08 GMT+0100 (CET)')).toBe(new Date('2018-02-25T08:59:08+01:00').getTime())
+
 		// Empty string
 		expect(typeof toTime('')).toBe('number')
 	})
@@ -95,6 +116,9 @@ describe('MosTime', () => {
 		expect(toStr('2009-04-11T14:22:07.123-05:00')).toBe('2009-04-11T14:22:07,123-05:00')
 		expect(toStr('2009-04-11T14:22:07Z')).toBe('2009-04-11T14:22:07,000Z')
 		expect(toStr('2009-04-11T14:22:07+5:00')).toBe('2009-04-11T14:22:07,000+05:00')
+
+		// @ts-expect-error wrong input format, but still:
+		expect(mosTypes.mosTime.stringify('2009-04-11T14:22:07,000+05:00')).toBe('2009-04-11T14:22:07,000+05:00')
 	})
 	test('handles tricky (midnight, new year, summer time, leap year) corectly', () => {
 		const mosTypes = getMosTypes(true)
