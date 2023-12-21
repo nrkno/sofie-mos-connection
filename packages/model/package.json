@@ -14,6 +14,7 @@
 		"build": "run -T rimraf dist && run build:main",
 		"build:main": "run -T tsc -p tsconfig.build.json",
 		"test": "run -T jest",
+		"test:coverage": "yarn test --coverage",
 		"validate:dependencies": "yarn npm audit --environment production && yarn license-validate",
 		"validate:dev-dependencies": "yarn npm audit ",
 		"license-validate": "yarn sofie-licensecheck"

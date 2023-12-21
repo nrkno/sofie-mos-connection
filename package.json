@@ -23,7 +23,7 @@
 		"lint:changed": "lerna exec --since origin/master --include-dependents -- run -T eslint . --ext .js,.jsx,.ts,.tsx",
 		"test": "lerna run test --stream",
 		"test:changed": "lerna run --since origin/master --include-dependents test",
-		"test:coverage": "lerna run test --stream -- -- --coverage",
+		"test:coverage": "lerna run test:coverage --stream",
 		"lint-staged": "./node_modules/.bin/lint-staged",
 		"prettier": "cd $INIT_CWD && \"$PROJECT_CWD/node_modules/.bin/prettier\"",
 		"eslint": "cd $INIT_CWD && \"$PROJECT_CWD/node_modules/.bin/eslint\"",
