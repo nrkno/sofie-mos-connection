@@ -1,14 +1,16 @@
 # Sofie MOS-Connection
+
 [![Tests](https://github.com/nrkno/sofie-mos-connection/actions/workflows/node.yaml/badge.svg)](https://github.com/nrkno/sofie-mos-connection/actions/workflows/node.yaml)
 [![codecov](https://codecov.io/gh/nrkno/sofie-mos-connection/branch/master/graph/badge.svg?token=LQL02uXajF)](https://codecov.io/gh/nrkno/sofie-mos-connection)
 
 This is the _MOS-Connection_ library of the [**Sofie** TV Automation System](https://github.com/nrkno/Sofie-TV-automation/), used for connecting to a _MOS_ device using the [MOS Protocol](http://mosprotocol.com/).
 
 ## General Sofie System Information
-* [_Sofie_ Documentation](https://nrkno.github.io/sofie-core/)
-* [_Sofie_ Releases](https://nrkno.github.io/sofie-core/releases)
-* [Contribution Guidelines](CONTRIBUTING.md)
-* [License](LICENSE)
+
+- [_Sofie_ Documentation](https://nrkno.github.io/sofie-core/)
+- [_Sofie_ Releases](https://nrkno.github.io/sofie-core/releases)
+- [Contribution Guidelines](CONTRIBUTING.md)
+- [License](LICENSE)
 
 ---
 
@@ -44,7 +46,11 @@ mos.onConnection((device: MosDevice) => { // called whenever there is a new conn
 })
 ```
 
-## Supported MOS Profiles
+## MOS Support
+
+The MOS-Connection library currently supports the [MOS Protocol version **2.8.5**](https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm).
+
+### Supported MOS Profiles
 
 | Profile   | Status                |
 | --------- | --------------------- |
@@ -74,4 +80,3 @@ There is also a helper application **quickMos** designed to be a minimal mock MO
 ---
 
 _The NRK logo is a registered trademark of Norsk rikskringkasting AS. The license does not grant any right to use, in any way, any trademarks, service marks or logos of Norsk rikskringkasting AS._
-
