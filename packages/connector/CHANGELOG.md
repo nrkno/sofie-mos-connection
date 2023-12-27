@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.7](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.6...v3.0.7) (2023-12-27)
+
+
+### Bug Fixes
+
+* Add support for receiving roStoryX, roStoryY messages. ([a4c110e](https://github.com/nrkno/sofie-mos-connection/commit/a4c110e229134d11f1d7a755086d68b002281264))
+
+
+
+
+
 ## [3.0.5](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.4...3.0.5) (2023-12-18)
 
 
