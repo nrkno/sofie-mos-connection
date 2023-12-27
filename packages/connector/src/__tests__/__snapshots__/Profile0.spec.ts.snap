@@ -18,15 +18,6 @@ exports[`Profile 0 requestMachineInfo - missing <opTime> 1`] = `
 </mos>"
 `;
 
-exports[`Profile 0 requestMachineInfo - opTime missing 1`] = `
-"<mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>xx</messageID>
-  <reqMachInfo/>
-</mos>"
-`;
-
 exports[`Profile 0 requestMachineInfo 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>

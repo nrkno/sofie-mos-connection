@@ -290,7 +290,7 @@ describe('Profile 1', () => {
 						const messageID = getMessageId(str)
 						const repl = getXMLReply(messageID, xmlData.mosListAll)
 						resolve(encode(repl))
-					}, DEFAULT_TIMEOUT + 500)
+					}, DEFAULT_TIMEOUT + 1000)
 				})
 			})
 			socketMockLower.mockAddReply(mockReply)
@@ -305,6 +305,6 @@ describe('Profile 1', () => {
 			expect(error).toMatch(/Sent command timed out after \d+ ms/)
 			expect(mockReply).toHaveBeenCalledTimes(1)
 		},
-		DEFAULT_TIMEOUT + 1000
+		DEFAULT_TIMEOUT + 2000
 	)
 })
