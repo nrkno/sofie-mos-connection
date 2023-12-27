@@ -214,7 +214,7 @@ describe('Profile 0', () => {
 		expect(returnedMachineInfo).toMatchObject(xmlApiData.machineInfoReply)
 		expect(returnedMachineInfo).toMatchSnapshot()
 	})
-	test('requestMachineInfo - opTime missing', async () => {
+	test('requestMachineInfo - missing <opTime>', async () => {
 		// Prepare mock server response:
 		const mockReply = jest.fn((data) => {
 			const str = decode(data)
@@ -236,6 +236,68 @@ describe('Profile 0', () => {
 
 		expect(returnedMachineInfo).toMatchObject(replyMessage)
 		expect(returnedMachineInfo.opTime).toBeUndefined()
+	})
+	test('requestMachineInfo - empty <opTime>', async () => {
+		// Prepare mock server response:
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const replyMessage = xmlData.machineInfo.replace(/<opTime>.*<\/opTime>/, '<opTime></opTime>')
+			const repl = getXMLReply(getMessageId(str), replyMessage)
+			return encode(repl)
+		})
+		socketMockLower.mockAddReply(mockReply)
+		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
+
+		const returnedMachineInfo: IMOSListMachInfo = await mosDevice.requestMachineInfo()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		const msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<reqMachInfo\/>/)
+		checkMessageSnapshot(msg)
+
+		const replyMessage = { ...xmlApiData.machineInfoReply }
+		replyMessage.opTime = undefined
+
+		expect(returnedMachineInfo).toMatchObject(replyMessage)
+		expect(returnedMachineInfo.opTime).toBeUndefined()
+	})
+	test('requestMachineInfo - bad formatted <opTime>', async () => {
+		// Prepare mock server response:
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const messageID = getMessageId(str)
+			const replyMessage = xmlData.machineInfo.replace(/<opTime>.*<\/opTime>/, '<opTime>>BAD DATA</opTime>')
+			const repl = getXMLReply(messageID, replyMessage)
+			return encode(repl)
+		})
+		socketMockLower.mockAddReply(mockReply)
+		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
+
+		let caughtError: Error | undefined = undefined
+		await mosDevice.requestMachineInfo().catch((err) => {
+			caughtError = err
+		})
+		expect(mockReply).toHaveBeenCalledTimes(1)
+
+		expect(String(caughtError)).toMatch(/error when parsing reply.*Invalid timestamp/i)
+	})
+	test('requestMachineInfo - missing <time>', async () => {
+		// Prepare mock server response:
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+			const replyMessage = xmlData.machineInfo.replace(/<time>.*<\/time>/, '')
+			const repl = getXMLReply(getMessageId(str), replyMessage)
+			return encode(repl)
+		})
+		socketMockLower.mockAddReply(mockReply)
+		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
+
+		let caughtError: Error | undefined = undefined
+		await mosDevice.requestMachineInfo().catch((err) => {
+			caughtError = err
+		})
+		expect(mockReply).toHaveBeenCalledTimes(1)
+
+		expect(String(caughtError)).toMatch(/error when parsing reply.*Invalid input/i)
 	})
 	test('requestMachineInfo - empty <time>', async () => {
 		// Prepare mock server response:
