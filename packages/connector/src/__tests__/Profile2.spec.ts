@@ -1128,4 +1128,111 @@ describe('Profile 2', () => {
 			},
 		})
 	})
+
+	describe('deprecated messages', () => {
+		// These methods are still supported, but will be removed in future versions of the mos protocol
+		test('roStoryAppend', async () => {
+			// Note: This is equivalent to inserting a story at the end of the running order
+
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStoryAppend)
+			expect(onROInsertStories).toHaveBeenCalledTimes(1)
+			expect(onROInsertStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_roStoryAppend_action)
+			expect(onROInsertStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_roStoryAppend_stories)
+			expect(fixSnapshot(onROInsertStories.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
+		test('roStoryInsert', async () => {
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStoryInsert)
+			expect(onROInsertStories).toHaveBeenCalledTimes(1)
+			expect(onROInsertStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_roStoryInsert_action)
+			expect(onROInsertStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_roStoryInsert_stories)
+			expect(fixSnapshot(onROInsertStories.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
+
+		test('roStoryReplace', async () => {
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStoryReplace)
+			expect(onROReplaceStories).toHaveBeenCalledTimes(1)
+			expect(onROReplaceStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_roStoryReplace_action)
+			expect(onROReplaceStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_roStoryReplace_stories)
+			expect(fixSnapshot(onROReplaceStories.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
+		test('roStoryMove', async () => {
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStoryMove)
+			expect(onROMoveStories).toHaveBeenCalledTimes(1)
+			expect(onROMoveStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_roStoryMove_action)
+			expect(onROMoveStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_roStoryMove_stories)
+			expect(fixSnapshot(onROMoveStories.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
+		test('roStorySwap', async () => {
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySwap)
+			expect(onROSwapStories).toHaveBeenCalledTimes(1)
+			expect(onROSwapStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_roStorySwap_action)
+			expect(onROSwapStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_roStorySwap_story0)
+			expect(onROSwapStories.mock.calls[0][2]).toEqual(xmlApiData.roElementAction_roStorySwap_story1)
+			expect(fixSnapshot(onROSwapStories.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
+		test('roStoryDelete', async () => {
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStoryDelete)
+			expect(onRODeleteStories).toHaveBeenCalledTimes(1)
+			expect(onRODeleteStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_roStoryDelete_action)
+			expect(onRODeleteStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_roStoryDelete_stories)
+			expect(fixSnapshot(onRODeleteStories.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
+		test('roStoryMoveMultiple', async () => {
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStoryMoveMultiple)
+			expect(onROMoveStories).toHaveBeenCalledTimes(1)
+			expect(onROMoveStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_roStoryMoveMultiple_action)
+			expect(onROMoveStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_roStoryMoveMultiple_stories)
+			expect(fixSnapshot(onROMoveStories.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
+		test('roItemInsert', async () => {
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roItemInsert)
+			expect(onROInsertItems).toHaveBeenCalledTimes(1)
+			expect(onROInsertItems.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_roItemInsert_action)
+			expect(onROInsertItems.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_roItemInsert_items)
+			expect(fixSnapshot(onROInsertItems.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
+		test('roItemReplace', async () => {
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roItemReplace)
+			expect(onROReplaceItems).toHaveBeenCalledTimes(1)
+			expect(onROReplaceItems.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_roItemReplace_action)
+			expect(onROReplaceItems.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_roItemReplace_items)
+			expect(fixSnapshot(onROReplaceItems.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
+		test('roItemMoveMultiple', async () => {
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roItemMoveMultiple)
+			expect(onROMoveItems).toHaveBeenCalledTimes(1)
+			expect(onROMoveItems.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_roItemMoveMultiple_action)
+			expect(onROMoveItems.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_roItemMoveMultiple_items)
+			expect(fixSnapshot(onROMoveItems.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
+		test('roItemDelete', async () => {
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roItemDelete)
+			expect(onRODeleteItems).toHaveBeenCalledTimes(1)
+			expect(onRODeleteItems.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_roItemDelete_action)
+			expect(onRODeleteItems.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_roItemDelete_items)
+			expect(fixSnapshot(onRODeleteItems.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
+	})
 })

@@ -108,6 +108,18 @@ const xmlData = {
 
 	roElementAction_swap_items: ` <roElementAction operation="SWAP"><roID>5PM</roID><element_target>	  <storyID>2</storyID></element_target><element_source>	  <itemID>23</itemID>	  <itemID>24</itemID></element_source></roElementAction>`,
 
+	roStoryAppend: `<roStoryAppend><roID>5PM</roID>      <story>         <storyID>V: BRIDGE COLLAPSE</storyID>         <storySlug>Bridge Collapse</storySlug>         <storyNum>B7</storyNum>         <item>            <itemID>30848</itemID>            <objID>M000627</objID>            <mosID>testmos.enps.com</mosID><objPaths><objPath techDescription="MPEG2 Video">\\\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath></objPaths>             <itemEdStart>0</itemEdStart>            <itemEdDur>815</itemEdDur>            <itemUserTimingDur>310</itemUserTimingDur>            <macroIn>c01/l04/dve07</macroIn>            <macroOut>r00</macroOut>            <mosExternalMetadata>               <mosScope>PLAYLIST</mosScope>               <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>               <mosPayload>                  <Owner>SHOLMES</Owner>                  <transitionMode>2</transitionMode>                  <transitionPoint>463</transitionPoint>                  <source>a</source>                  <destination>b</destination>               </mosPayload>            </mosExternalMetadata>            <mosExternalMetadata>               <mosScope>PLAYLIST</mosScope>               <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSBXML2.08</mosSchema>               <mosPayload>                  <rate>52</rate>                  <background>2</background>                  <overlay>463</overlay>               </mosPayload>            </mosExternalMetadata>         </item>         <item>            <itemID>30849</itemID>            <objID>M000628</objID>            <mosID>testmos</mosID>            <itemEdStart>0</itemEdStart>            <itemEdDur>815</itemEdDur>            <itemUserTimingDur>310</itemUserTimingDur>            <macroIn>c01/l04/dve07</macroIn>            <macroOut>r00</macroOut>            <mosExternalMetadata>               <mosScope>PLAYLIST</mosScope>               <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>               <mosPayload>                  <Owner>SHOLMES</Owner>                  <transitionMode>2</transitionMode>                  <transitionPoint>463</transitionPoint>                  <source>a</source>                  <destination>b</destination>               </mosPayload>            </mosExternalMetadata>         </item>      </story>   </roStoryAppend>`,
+	roStoryInsert: `<roStoryInsert><roID>5PM</roID>      <storyID>HOTEL FIRE</storyID>      <story>         <storyID>V: BRIDGE COLLAPSE</storyID>         <storySlug>Bridge Collapse</storySlug>         <storyNum>B7</storyNum>         <item>            <itemID>30848</itemID>            <objID>M000627</objID>            <mosID>testmos.enps.com</mosID><objPaths><objPath techDescription="MPEG2 Video">\\\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath></objPaths>             <itemEdStart>0</itemEdStart>            <itemEdDur>815</itemEdDur>            <itemUserTimingDur>310</itemUserTimingDur>            <macroIn>c01/l04/dve07</macroIn>            <macroOut>r00</macroOut>            <mosExternalMetadata>               <mosScope>PLAYLIST</mosScope>               <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>               <mosPayload>                  <Owner>SHOLMES</Owner>                  <transitionMode>2</transitionMode>                  <transitionPoint>463</transitionPoint>                  <source>a</source>                  <destination>b</destination>               </mosPayload>            </mosExternalMetadata>            <mosExternalMetadata>               <mosScope>PLAYLIST</mosScope>               <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSBXML2.08</mosSchema>               <mosPayload>                  <rate>52</rate>                  <background>2</background>                  <overlay>463</overlay>               </mosPayload>            </mosExternalMetadata>         </item>         <item>            <itemID>30849</itemID>            <objID>M000628</objID>            <mosID>testmos</mosID>            <itemEdStart>0</itemEdStart>            <itemEdDur>815</itemEdDur>            <itemUserTimingDur>310</itemUserTimingDur>            <macroIn>c01/l04/dve07</macroIn>            <macroOut>r00</macroOut>            <mosExternalMetadata>               <mosScope>PLAYLIST</mosScope>               <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>               <mosPayload>                  <Owner>SHOLMES</Owner>                  <transitionMode>2</transitionMode>                  <transitionPoint>463</transitionPoint>                  <source>a</source>                  <destination>b</destination>               </mosPayload>            </mosExternalMetadata>         </item>      </story>   </roStoryInsert>`,
+	roStoryReplace: `<roStoryReplace><roID>5PM</roID>      <storyID>P: PHILLIPS INTERVIEW</storyID>      <story>         <storyID>V: HOTEL FIRE</storyID>         <storySlug>Hotel Fire</storySlug>         <storyNum>C1</storyNum>         <item>            <itemID>30848</itemID>            <itemSlug>Hotel Fire vo</itemSlug>            <objID>M000702</objID>            <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath></objPaths>             <itemEdStart>0</itemEdStart>            <itemEdDur>900</itemEdDur>            <itemUserTimingDur>800</itemUserTimingDur>            <macroIn>c01/l04/dve07</macroIn>            <macroOut>r00</macroOut>            <mosExternalMetadata>               <mosScope>PLAYLIST</mosScope>               <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>               <mosPayload>                  <Owner>SHOLMES</Owner>                  <transitionMode>2</transitionMode>                  <transitionPoint>463</transitionPoint>                  <source>a</source>                  <destination>b</destination>               </mosPayload>            </mosExternalMetadata>         </item>      </story>      <story>         <storyID>V: DORMITORY FIRE</storyID>         <storySlug>Dormitory Fire</storySlug>         <storyNum>C2</storyNum>         <item>            <itemID>1</itemID>            <itemSlug>Dormitory Fire vo</itemSlug>            <objID>M000705</objID>            <mosID>testmos</mosID>            <itemEdStart>0</itemEdStart>            <itemEdDur>800</itemEdDur>            <itemUserTimingDur>310</itemUserTimingDur>            <macroIn>c01/l04/dve07</macroIn>            <macroOut>r00</macroOut>            <mosExternalMetadata>               <mosScope>PLAYLIST</mosScope>               <mosSchema>http://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>               <mosPayload>                  <Owner>SHOLMES</Owner>                  <transitionMode>2</transitionMode>                  <transitionPoint>463</transitionPoint>                  <source>a</source>                  <destination>b</destination>               </mosPayload>            </mosExternalMetadata>         </item>      </story>   </roStoryReplace>`,
+	roStoryMove: `<roStoryMove><roID>5PM</roID>      <storyID>V: BRIDGE COLLAPSE</storyID>      <storyID>P: PHILLIPS INTERVIEW</storyID>   </roStoryMove>`,
+	roStorySwap: `<roStorySwap><roID>5PM</roID>      <storyID>V: BRIDGE COLLAPSE</storyID>      <storyID>P: PHILLIPS INTERVIEW</storyID>   </roStorySwap>  `,
+	roStoryDelete: `<roStoryDelete><roID>5PM</roID>      <storyID>V: BRIDGE COLLAPSE</storyID>      <storyID>P: PHILLIPS INTERVIEW</storyID>   </roStoryDelete>`,
+	roStoryMoveMultiple: `<roStoryMoveMultiple><roID>5PM</roID>            <storyID>2</storyID>            <storyID>3</storyID>            <storyID>5</storyID>            <storyID>6</storyID>            <storyID>1</storyID>      </roStoryMoveMultiple>`,
+	roItemInsert: `<roItemInsert>      <roID>5PM</roID>      <storyID>2597609</storyID>      <itemID>5</itemID>      <item>         <itemID>30848</itemID>         <itemSlug>Hotel Fire vo</itemSlug>         <objID>M00702</objID>         <mosID>testmos</mosID>    <objPaths><objPath techDescription="MPEG2 Video">\\\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>    </objPaths>         <itemEdStart>0</itemEdStart>         <itemEdDur>900</itemEdDur>         <itemUserTimingDur>310</itemUserTimingDur>      </item>      <item>         <itemID>1</itemID>         <itemSlug>Dormitory Fire vo</itemSlug>         <objID>M00705</objID>         <mosID>testmos</mosID>         <itemEdStart>0</itemEdStart>         <itemEdDur>800</itemEdDur>         <itemUserTimingDur>310</itemUserTimingDur>      </item>   </roItemInsert>`,
+	roItemReplace: `<roItemReplace>      <roID>5PM</roID>      <storyID>2597609</storyID>      <itemID>5</itemID>      <item>         <itemID>30848</itemID>         <itemSlug>Hotel Fire vo</itemSlug>         <objID>M00702</objID>         <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath></objPaths>          <itemEdStart>0</itemEdStart>         <itemEdDur>900</itemEdDur>         <itemUserTimingDur>810</itemUserTimingDur>      </item>      <item>         <itemID>1</itemID>         <itemSlug>Dormitory Fire vo</itemSlug>         <objID>M00705</objID>         <mosID>testmos</mosID>         <itemEdStart>0</itemEdStart>         <itemEdDur>800</itemEdDur>         <itemUserTimingDur>610</itemUserTimingDur>      </item>   </roItemReplace>`,
+	roItemMoveMultiple: `<roItemMoveMultiple><roID>5PM</roID>            <storyID>Barn Fire</storyID>            <itemID>2</itemID>            <itemID>3</itemID>            <itemID>5</itemID>            <itemID>6</itemID>            <itemID>1</itemID>      </roItemMoveMultiple>  `,
+	roItemDelete: `<roItemDelete><roID>5PM</roID>            <storyID>2</storyID>            <itemID>4</itemID>            <itemID>7</itemID>            <itemID>10</itemID>            <itemID>6</itemID>      </roItemDelete>`,
+
 	roReadyToAir: `<roReadyToAir><roID>5PM</roID>	  <roAir>READY</roAir>	</roReadyToAir>`,
 	roAck: `<roAck><roID>96857485</roID>      <roStatus>Unknown object M000133</roStatus>      <storyID>5983A501:0049B924:8390EF2B</storyID>      <itemID>0</itemID>      <objID>M000224</objID>      <status>LOADED</status>      <storyID>3854737F:0003A34D:983A0B28</storyID>      <itemID>0</itemID>      <objID>M000133</objID>      <itemChannel>A</itemChannel>      <status>UNKNOWN</status>   </roAck>`,
 	roReqAll: `<roReqAll/>`,
@@ -1235,6 +1247,376 @@ const xmlApiData = {
 	}),
 	roElementAction_swap_items_ItemId0: mosTypes.mosString128.create('23'),
 	roElementAction_swap_items_ItemId1: mosTypes.mosString128.create('24'),
+
+	roElementAction_roStoryAppend_action: literal<IMOSStoryAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create(''),
+	}),
+	roElementAction_roStoryAppend_stories: [
+		literal<IMOSROStory>({
+			ID: mosTypes.mosString128.create('V: BRIDGE COLLAPSE'),
+			Slug: mosTypes.mosString128.create('Bridge Collapse'),
+			Number: mosTypes.mosString128.create('B7'),
+			Items: [
+				literal<IMOSItem>({
+					ID: mosTypes.mosString128.create('30848'),
+					ObjectID: mosTypes.mosString128.create('M000627'),
+					MOSID: 'testmos.enps.com',
+					Paths: [
+						{
+							Type: IMOSObjectPathType.PATH,
+							Description: 'MPEG2 Video',
+							Target: '\\\\server\\media\\clip392028cd2320s0d.mxf',
+						},
+						{
+							Type: IMOSObjectPathType.PROXY_PATH,
+							Description: 'WM9 750Kbps',
+							Target: 'http://server/proxy/clipe.wmv',
+						},
+					],
+					EditorialStart: 0,
+					EditorialDuration: 815,
+					UserTimingDuration: 310,
+					MacroIn: mosTypes.mosString128.create('c01/l04/dve07'),
+					MacroOut: mosTypes.mosString128.create('r00'),
+					MosExternalMetaData: [
+						{
+							MosScope: IMOSScope.PLAYLIST,
+							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+							MosPayload: {
+								Owner: 'SHOLMES',
+								transitionMode: 2,
+								transitionPoint: 463,
+								source: 'a',
+								destination: 'b',
+							},
+						},
+						{
+							MosScope: IMOSScope.PLAYLIST,
+							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSBXML2.08',
+							MosPayload: {
+								rate: 52,
+								background: 2,
+								overlay: 463,
+							},
+						},
+					],
+				}),
+				literal<IMOSItem>({
+					ID: mosTypes.mosString128.create('30849'),
+					ObjectID: mosTypes.mosString128.create('M000628'),
+					MOSID: 'testmos',
+					EditorialStart: 0,
+					EditorialDuration: 815,
+					UserTimingDuration: 310,
+					MacroIn: mosTypes.mosString128.create('c01/l04/dve07'),
+					MacroOut: mosTypes.mosString128.create('r00'),
+					MosExternalMetaData: [
+						{
+							MosScope: IMOSScope.PLAYLIST,
+							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+							MosPayload: {
+								Owner: 'SHOLMES',
+								transitionMode: 2,
+								transitionPoint: 463,
+								source: 'a',
+								destination: 'b',
+							},
+						},
+					],
+				}),
+			],
+		}),
+	],
+	roElementAction_roStoryInsert_action: literal<IMOSStoryAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('HOTEL FIRE'),
+	}),
+	roElementAction_roStoryInsert_stories: [
+		literal<IMOSROStory>({
+			ID: mosTypes.mosString128.create('V: BRIDGE COLLAPSE'),
+			Slug: mosTypes.mosString128.create('Bridge Collapse'),
+			Number: mosTypes.mosString128.create('B7'),
+			// MosExternalMetaData?: Array<IMOSExternalMetaData>,
+			Items: [
+				literal<IMOSItem>({
+					ID: mosTypes.mosString128.create('30848'),
+					// Slug?: mosTypes.mosString128.create(''),
+					ObjectID: mosTypes.mosString128.create('M000627'),
+					MOSID: 'testmos.enps.com',
+					// mosAbstract?: '',
+					Paths: [
+						{
+							Type: IMOSObjectPathType.PATH,
+							Description: 'MPEG2 Video',
+							Target: '\\\\server\\media\\clip392028cd2320s0d.mxf',
+						},
+						{
+							Type: IMOSObjectPathType.PROXY_PATH,
+							Description: 'WM9 750Kbps',
+							Target: 'http://server/proxy/clipe.wmv',
+						},
+					],
+					EditorialStart: 0,
+					EditorialDuration: 815,
+					UserTimingDuration: 310,
+					MacroIn: mosTypes.mosString128.create('c01/l04/dve07'),
+					MacroOut: mosTypes.mosString128.create('r00'),
+					MosExternalMetaData: [
+						{
+							MosScope: IMOSScope.PLAYLIST,
+							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+							MosPayload: {
+								Owner: 'SHOLMES',
+								transitionMode: 2,
+								transitionPoint: 463,
+								source: 'a',
+								destination: 'b',
+							},
+						},
+						{
+							MosScope: IMOSScope.PLAYLIST,
+							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSBXML2.08',
+							MosPayload: {
+								rate: 52,
+								background: 2,
+								overlay: 463,
+							},
+						},
+					],
+				}),
+				literal<IMOSItem>({
+					ID: mosTypes.mosString128.create('30849'),
+					ObjectID: mosTypes.mosString128.create('M000628'),
+					MOSID: 'testmos',
+					EditorialStart: 0,
+					EditorialDuration: 815,
+					UserTimingDuration: 310,
+					MacroIn: mosTypes.mosString128.create('c01/l04/dve07'),
+					MacroOut: mosTypes.mosString128.create('r00'),
+					MosExternalMetaData: [
+						{
+							MosScope: IMOSScope.PLAYLIST,
+							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+							MosPayload: {
+								Owner: 'SHOLMES',
+								transitionMode: 2,
+								transitionPoint: 463,
+								source: 'a',
+								destination: 'b',
+							},
+						},
+					],
+				}),
+			],
+		}),
+	],
+	roElementAction_roStoryReplace_action: literal<IMOSStoryAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('P: PHILLIPS INTERVIEW'),
+	}),
+	roElementAction_roStoryReplace_stories: [
+		literal<IMOSROStory>({
+			ID: mosTypes.mosString128.create('V: HOTEL FIRE'),
+			Slug: mosTypes.mosString128.create('Hotel Fire'),
+			Number: mosTypes.mosString128.create('C1'),
+			// MosExternalMetaData?: Array<IMOSExternalMetaData>,
+			Items: [
+				literal<IMOSItem>({
+					ID: mosTypes.mosString128.create('30848'),
+					Slug: mosTypes.mosString128.create('Hotel Fire vo'),
+					ObjectID: mosTypes.mosString128.create('M000702'),
+					MOSID: 'testmos',
+					// mosAbstract?: '',
+					Paths: [
+						{
+							Type: IMOSObjectPathType.PATH,
+							Description: 'MPEG2 Video',
+							Target: '\\\\server\\media\\clip392028cd2320s0d.mxf',
+						},
+						{
+							Type: IMOSObjectPathType.PROXY_PATH,
+							Description: 'WM9 750Kbps',
+							Target: 'http://server/proxy/clipe.wmv',
+						},
+					],
+					EditorialStart: 0,
+					EditorialDuration: 900,
+					UserTimingDuration: 800,
+					MacroIn: mosTypes.mosString128.create('c01/l04/dve07'),
+					MacroOut: mosTypes.mosString128.create('r00'),
+					MosExternalMetaData: [
+						{
+							MosScope: IMOSScope.PLAYLIST,
+							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+							MosPayload: {
+								Owner: 'SHOLMES',
+								transitionMode: 2,
+								transitionPoint: 463,
+								source: 'a',
+								destination: 'b',
+							},
+						},
+					],
+				}),
+			],
+		}),
+		literal<IMOSROStory>({
+			ID: mosTypes.mosString128.create('V: DORMITORY FIRE'),
+			Slug: mosTypes.mosString128.create('Dormitory Fire'),
+			Number: mosTypes.mosString128.create('C2'),
+			// MosExternalMetaData?: Array<IMOSExternalMetaData>,
+			Items: [
+				literal<IMOSItem>({
+					ID: mosTypes.mosString128.create('1'),
+					Slug: mosTypes.mosString128.create('Dormitory Fire vo'),
+					ObjectID: mosTypes.mosString128.create('M000705'),
+					MOSID: 'testmos',
+					EditorialStart: 0,
+					EditorialDuration: 800,
+					UserTimingDuration: 310,
+					MacroIn: mosTypes.mosString128.create('c01/l04/dve07'),
+					MacroOut: mosTypes.mosString128.create('r00'),
+					MosExternalMetaData: [
+						{
+							MosScope: IMOSScope.PLAYLIST,
+							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+							MosPayload: {
+								Owner: 'SHOLMES',
+								transitionMode: 2,
+								transitionPoint: 463,
+								source: 'a',
+								destination: 'b',
+							},
+						},
+					],
+				}),
+			],
+		}),
+	],
+	roElementAction_roStoryMove_action: literal<IMOSStoryAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('P: PHILLIPS INTERVIEW'),
+	}),
+	roElementAction_roStoryMove_stories: [mosTypes.mosString128.create('V: BRIDGE COLLAPSE')],
+	roElementAction_roStorySwap_action: literal<IMOSROAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+	}),
+	roElementAction_roStorySwap_story0: mosTypes.mosString128.create('V: BRIDGE COLLAPSE'),
+	roElementAction_roStorySwap_story1: mosTypes.mosString128.create('P: PHILLIPS INTERVIEW'),
+
+	roElementAction_roStoryDelete_action: literal<IMOSROAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+	}),
+	roElementAction_roStoryDelete_stories: [
+		mosTypes.mosString128.create('V: BRIDGE COLLAPSE'),
+		mosTypes.mosString128.create('P: PHILLIPS INTERVIEW'),
+	],
+	roElementAction_roStoryMoveMultiple_action: literal<IMOSStoryAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('1'),
+	}),
+	roElementAction_roStoryMoveMultiple_stories: [
+		mosTypes.mosString128.create('2'),
+		mosTypes.mosString128.create('3'),
+		mosTypes.mosString128.create('5'),
+		mosTypes.mosString128.create('6'),
+	],
+	roElementAction_roItemInsert_action: literal<IMOSItemAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2597609'),
+		ItemID: mosTypes.mosString128.create('5'),
+	}),
+	roElementAction_roItemInsert_items: [
+		literal<IMOSItem>({
+			ID: mosTypes.mosString128.create('30848'),
+			Slug: mosTypes.mosString128.create('Hotel Fire vo'),
+			ObjectID: mosTypes.mosString128.create('M00702'),
+			MOSID: 'testmos',
+			Paths: [
+				{
+					Type: IMOSObjectPathType.PATH,
+					Description: 'MPEG2 Video',
+					Target: '\\\\server\\media\\clip392028cd2320s0d.mxf',
+				},
+				{
+					Type: IMOSObjectPathType.PROXY_PATH,
+					Description: 'WM9 750Kbps',
+					Target: 'http://server/proxy/clipe.wmv',
+				},
+			],
+			EditorialStart: 0,
+			EditorialDuration: 900,
+			UserTimingDuration: 310,
+		}),
+		literal<IMOSItem>({
+			ID: mosTypes.mosString128.create('1'),
+			Slug: mosTypes.mosString128.create('Dormitory Fire vo'),
+			ObjectID: mosTypes.mosString128.create('M00705'),
+			MOSID: 'testmos',
+			EditorialStart: 0,
+			EditorialDuration: 800,
+			UserTimingDuration: 310,
+		}),
+	],
+	roElementAction_roItemReplace_action: literal<IMOSItemAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2597609'),
+		ItemID: mosTypes.mosString128.create('5'),
+	}),
+	roElementAction_roItemReplace_items: [
+		literal<IMOSItem>({
+			ID: mosTypes.mosString128.create('30848'),
+			Slug: mosTypes.mosString128.create('Hotel Fire vo'),
+			ObjectID: mosTypes.mosString128.create('M00702'),
+			MOSID: 'testmos',
+			Paths: [
+				{
+					Type: IMOSObjectPathType.PATH,
+					Description: 'MPEG2 Video',
+					Target: '\\\\server\\media\\clip392028cd2320s0d.mxf',
+				},
+				{
+					Type: IMOSObjectPathType.PROXY_PATH,
+					Description: 'WM9 750Kbps',
+					Target: 'http://server/proxy/clipe.wmv',
+				},
+			],
+			EditorialStart: 0,
+			EditorialDuration: 900,
+			UserTimingDuration: 810,
+		}),
+		literal<IMOSItem>({
+			ID: mosTypes.mosString128.create('1'),
+			Slug: mosTypes.mosString128.create('Dormitory Fire vo'),
+			ObjectID: mosTypes.mosString128.create('M00705'),
+			MOSID: 'testmos',
+			EditorialStart: 0,
+			EditorialDuration: 800,
+			UserTimingDuration: 610,
+		}),
+	],
+	roElementAction_roItemMoveMultiple_action: literal<IMOSItemAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('Barn Fire'),
+		ItemID: mosTypes.mosString128.create('1'),
+	}),
+	roElementAction_roItemMoveMultiple_items: [
+		mosTypes.mosString128.create('2'),
+		mosTypes.mosString128.create('3'),
+		mosTypes.mosString128.create('5'),
+		mosTypes.mosString128.create('6'),
+	],
+	roElementAction_roItemDelete_action: literal<IMOSStoryAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2'),
+	}),
+	roElementAction_roItemDelete_items: [
+		mosTypes.mosString128.create('4'),
+		mosTypes.mosString128.create('7'),
+		mosTypes.mosString128.create('10'),
+		mosTypes.mosString128.create('6'),
+	],
 
 	roStorySend: literal<IMOSROFullStory>({
 		ID: mosTypes.mosString128.create(

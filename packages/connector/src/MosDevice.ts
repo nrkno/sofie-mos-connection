@@ -243,7 +243,7 @@ export class MosDevice implements IMOSDevice {
 		}
 
 		// Route and format data:
-		// Profile 0:
+		// Profile 0: -------------------------------------------------------------------------------------------------
 		if (data.heartbeat) {
 			// send immediate reply on the same port:
 			return new MosModel.HeartBeat(port, undefined, this.strict)
@@ -251,8 +251,9 @@ export class MosDevice implements IMOSDevice {
 			if (port === 'query') throw new Error('message "reqMachInfo" is invalid on query port')
 			const m = await this._callbackOnRequestMachineInfo()
 			return new MosModel.ListMachineInfo(m, port, this.strict)
-			// Profile 1:
-		} else if (data.mosReqObj && typeof this._callbackOnRequestMOSOBject === 'function') {
+		}
+		// Profile 1: -------------------------------------------------------------------------------------------------
+		if (data.mosReqObj && typeof this._callbackOnRequestMOSOBject === 'function') {
 			const mosObj = await this._callbackOnRequestMOSOBject(data.mosReqObj.objID)
 			if (!mosObj) return null
 			return new MosModel.MosObj(mosObj, this.strict)
@@ -304,9 +305,145 @@ export class MosDevice implements IMOSDevice {
 				},
 				this.strict
 			)
+		}
+		// Profile 2: -------------------------------------------------------------------------------------------------
+		// Translate deprecated messages into the functionally equivalent roElementActions:
+		if (data.roStoryAppend) {
+			// This is equivalent to inserting a story at the end of the running order
 
-			// Profile 2:
-		} else if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
+			data.roElementAction = {
+				roID: data.roStoryAppend.roID,
+				operation: 'INSERT',
+				element_target: {
+					storyID: '',
+				},
+				element_source: {
+					story: data.roStoryAppend.story,
+				},
+			}
+		} else if (data.roStoryInsert) {
+			data.roElementAction = {
+				roID: data.roStoryInsert.roID,
+				operation: 'INSERT',
+				element_target: {
+					storyID: data.roStoryInsert.storyID,
+				},
+				element_source: {
+					story: data.roStoryInsert.story,
+				},
+			}
+		} else if (data.roStoryReplace) {
+			data.roElementAction = {
+				roID: data.roStoryReplace.roID,
+				operation: 'REPLACE',
+				element_target: {
+					storyID: data.roStoryReplace.storyID,
+				},
+				element_source: {
+					story: data.roStoryReplace.story,
+				},
+			}
+		} else if (data.roStoryMove) {
+			data.roElementAction = {
+				roID: data.roStoryMove.roID,
+				operation: 'MOVE',
+				element_target: {
+					storyID: data.roStoryMove.storyID[1],
+				},
+				element_source: {
+					storyID: data.roStoryMove.storyID[0],
+				},
+			}
+		} else if (data.roStorySwap) {
+			data.roElementAction = {
+				roID: data.roStorySwap.roID,
+				operation: 'SWAP',
+				element_source: {
+					storyID: data.roStorySwap.storyID, // an array
+				},
+			}
+		} else if (data.roStoryDelete) {
+			data.roElementAction = {
+				roID: data.roStoryDelete.roID,
+				operation: 'DELETE',
+				// element_target: {
+				// 	storyID: data.roStoryDelete.storyID[1],
+				// },
+				element_source: {
+					storyID: data.roStoryDelete.storyID,
+				},
+			}
+		} else if (data.roStoryMoveMultiple && data.roStoryMoveMultiple.storyID.length > 1) {
+			const l = data.roStoryMoveMultiple.storyID.length
+
+			const target = data.roStoryMoveMultiple.storyID[l - 1]
+			const sources = data.roStoryMoveMultiple.storyID.slice(0, l - 1)
+
+			data.roElementAction = {
+				roID: data.roStoryMoveMultiple.roID,
+				operation: 'MOVE',
+				element_target: {
+					storyID: target,
+				},
+				element_source: {
+					storyID: sources,
+				},
+			}
+		} else if (data.roItemInsert) {
+			data.roElementAction = {
+				roID: data.roItemInsert.roID,
+				operation: 'INSERT',
+				element_target: {
+					storyID: data.roItemInsert.storyID,
+					itemID: data.roItemInsert.itemID,
+				},
+				element_source: {
+					item: data.roItemInsert.item,
+				},
+			}
+		} else if (data.roItemReplace) {
+			data.roElementAction = {
+				roID: data.roItemReplace.roID,
+				operation: 'REPLACE',
+				element_target: {
+					storyID: data.roItemReplace.storyID,
+					itemID: data.roItemReplace.itemID,
+				},
+				element_source: {
+					item: data.roItemReplace.item,
+				},
+			}
+		} else if (data.roItemDelete) {
+			data.roElementAction = {
+				roID: data.roItemDelete.roID,
+				operation: 'DELETE',
+				element_target: {
+					storyID: data.roItemDelete.storyID,
+				},
+				element_source: {
+					itemID: data.roItemDelete.itemID,
+				},
+			}
+		} else if (data.roItemMoveMultiple && data.roItemMoveMultiple.itemID.length > 1) {
+			const l = data.roItemMoveMultiple.itemID.length
+
+			const target = data.roItemMoveMultiple.itemID[l - 1]
+			const sources = data.roItemMoveMultiple.itemID.slice(0, l - 1)
+
+			data.roElementAction = {
+				roID: data.roItemMoveMultiple.roID,
+				operation: 'MOVE',
+				element_target: {
+					storyID: data.roItemMoveMultiple.storyID,
+					itemID: target,
+				},
+				element_source: {
+					itemID: sources,
+				},
+			}
+		}
+
+		if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
 			const ro = MosModel.XMLRunningOrder.fromXML(data.roCreate, this.strict)
 
 			const resp = await this._callbackOnCreateRunningOrder(ro)
@@ -561,9 +698,9 @@ export class MosDevice implements IMOSDevice {
 				items[1]
 			)
 			return new MosModel.ROAck(resp, this.strict)
-
-			// Profile 3
-		} else if (data.mosItemReplace && typeof this._callbackOnItemReplace === 'function') {
+		}
+		// Profile 3: -------------------------------------------------------------------------------------------------
+		if (data.mosItemReplace && typeof this._callbackOnItemReplace === 'function') {
 			const resp = await this._callbackOnItemReplace(
 				data.mosItemReplace.ID,
 				data.mosItemReplace.itemID,
@@ -611,9 +748,9 @@ export class MosDevice implements IMOSDevice {
 		} else if (data.mosReqSearchableSchema && typeof this._callbackOnRequestSearchableSchema === 'function') {
 			const resp = await this._callbackOnRequestSearchableSchema(data.mosReqSearchableSchema.username)
 			return new MosModel.MosListSearchableSchema(resp, this.strict)
-
-			// Profile 4
-		} else if (data.roReqAll && typeof this._callbackOnRequestAllRunningOrders === 'function') {
+		}
+		// Profile 4: -------------------------------------------------------------------------------------------------
+		if (data.roReqAll && typeof this._callbackOnRequestAllRunningOrders === 'function') {
 			const list = await this._callbackOnRequestAllRunningOrders()
 			const roListAll = new MosModel.ROListAll(this.strict)
 			roListAll.ROs = list
@@ -625,7 +762,10 @@ export class MosDevice implements IMOSDevice {
 
 			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
-		} else {
+		}
+
+		// Unsupported messages: --------------------------------------------------------------------------------------
+		{
 			this.debugTrace('Unsupported function')
 			this.debugTrace(data)
 			const keys = Object.keys(data).filter((key) => ['ncsID', 'mosID', 'messageID'].indexOf(key) === -1)
