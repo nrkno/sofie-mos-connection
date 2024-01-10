@@ -24,6 +24,8 @@ import {
 	IMOSObjectStatus,
 	IMOSObjectAirStatus,
 	IMOSObjectPathType,
+	IMOSAck,
+	IMOSAckStatus,
 } from '..'
 import { SocketMock } from '../__mocks__/socket'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
@@ -56,6 +58,8 @@ describe('Profile 1', () => {
 	let onRequestMachineInfo: jest.Mock<any, any>
 	let onRequestMOSObject: jest.Mock<any, any>
 	let onRequestAllMOSObjects: jest.Mock<any, any>
+	let onMOSObjects: jest.Mock<any, any>
+	let receivedMosObjects: Array<IMOSObject> = []
 
 	beforeAll(async () => {
 		mosConnection = await getMosConnection(
@@ -87,6 +91,19 @@ describe('Profile 1', () => {
 		mosDevice.onRequestAllMOSObjects(async (): Promise<Array<IMOSObject>> => {
 			return onRequestAllMOSObjects()
 		})
+		onMOSObjects = jest.fn(async (objs: IMOSObject[]): Promise<IMOSAck> => {
+			receivedMosObjects.push(...objs)
+
+			return {
+				ID: mosTypes.mosString128.create(''),
+				Revision: 1,
+				Status: IMOSAckStatus.ACK,
+				Description: mosTypes.mosString128.create(''),
+			}
+		})
+		mosDevice.onMOSObjects(async (objs: IMOSObject[]): Promise<IMOSAck> => {
+			return onMOSObjects(objs)
+		})
 		const b = doBeforeAll()
 		socketMockLower = b.socketMockLower
 		socketMockUpper = b.socketMockUpper
@@ -106,6 +123,8 @@ describe('Profile 1', () => {
 		// SocketMock.mockClear()
 		onRequestMOSObject.mockClear()
 		onRequestAllMOSObjects.mockClear()
+		onMOSObjects.mockClear()
+		receivedMosObjects.splice(0, 99999)
 
 		serverSocketMockLower.mockClear()
 		serverSocketMockUpper.mockClear()
@@ -256,25 +275,65 @@ describe('Profile 1', () => {
 			Status: 'ACK',
 		})
 	})
+	test('receive mosObj', async () => {
+		// Fake incoming message on socket:
+		await fakeIncomingMessage(serverSocketMockLower, xmlData.mosObj)
+		expect(onMOSObjects).toHaveBeenCalledTimes(1)
+		expect(onMOSObjects.mock.calls[0][0]).toHaveLength(1)
+		expect(fixSnapshot(onMOSObjects.mock.calls)).toMatchSnapshot()
+
+		// Check reply to socket server:
+		await serverSocketMockLower.mockWaitForSentMessages()
+		expect(serverSocketMockLower.mockSentMessage).toHaveBeenCalledTimes(1)
+		// @ts-ignore mock
+		const reply = decode(serverSocketMockLower.mockSentMessage.mock.calls[0][0])
+		const parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
+		expect(parsedReply.mos.mosAck).toBeTruthy()
+		expect(parsedReply).toMatchSnapshot()
+	})
+	test('receive mosListAll', async () => {
+		// Fake incoming message on socket:
+		await fakeIncomingMessage(serverSocketMockLower, xmlData.mosListAll)
+		expect(onMOSObjects).toHaveBeenCalledTimes(1)
+		expect(onMOSObjects.mock.calls[0][0]).toHaveLength(2)
+		expect(fixSnapshot(onMOSObjects.mock.calls)).toMatchSnapshot()
+
+		// Check reply to socket server:
+		await serverSocketMockLower.mockWaitForSentMessages()
+		expect(serverSocketMockLower.mockSentMessage).toHaveBeenCalledTimes(1)
+		// @ts-ignore mock
+		const reply = decode(serverSocketMockLower.mockSentMessage.mock.calls[0][0])
+		const parsedReply: any = xml2js(reply, { compact: true, nativeType: true, trim: true })
+		expect(parsedReply.mos.mosAck).toBeTruthy()
+		expect(parsedReply).toMatchSnapshot()
+	})
 	test('getAllMOSObjects', async () => {
 		expect(socketMockLower).toBeTruthy()
+
+		const REPLY_WAIT_TIME = 100
 		// Prepare mock server response:
 		const mockReply = jest.fn((data) => {
 			const str = decode(data)
 			const messageID = getMessageId(str)
-			const repl = getXMLReply(messageID, xmlData.mosListAll)
+			const repl = getXMLReply(messageID, xmlData.mosAck)
+
+			setTimeout(() => {
+				fakeIncomingMessage(serverSocketMockLower, xmlData.mosListAll).catch(console.error)
+			}, REPLY_WAIT_TIME)
 			return encode(repl)
 		})
 		socketMockLower.mockAddReply(mockReply)
-		const returnedObjs: Array<IMOSObject> = await mosDevice.sendRequestAllMOSObjects()
+		await mosDevice.sendRequestAllMOSObjects()
+
+		await delay(REPLY_WAIT_TIME + 100)
 
 		expect(mockReply).toHaveBeenCalledTimes(1)
 		const msg = decode(mockReply.mock.calls[0][0])
 		expect(msg).toMatch(/<mosReqAll>/)
 		checkMessageSnapshot(msg)
 
-		expect(returnedObjs).toMatchObject(xmlApiData.mosListAll)
-		expect(returnedObjs).toMatchSnapshot()
+		expect(receivedMosObjects).toMatchObject(xmlApiData.mosListAll)
+		expect(receivedMosObjects).toMatchSnapshot()
 	})
 
 	test('command timeout', async () => {

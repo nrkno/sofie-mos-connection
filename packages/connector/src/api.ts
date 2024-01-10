@@ -112,21 +112,37 @@ export interface IMOSDeviceProfile1 {
 
 	/**
 	 * Assign callback (as a MOS device) for when receiving message from NCS:
+	 * Contains information that describes a unique MOS Object to the NCS.
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosObj
+	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosListAll
+	 */
+	onMOSObjects: (cb: (objs: IMOSObject[]) => Promise<IMOSAck>) => void
+
+	/**
+	 * Assign callback (as a MOS device) for when receiving message from NCS:
 	 * Method for the NCS to request the MOS to send it a mosObj message for every Object in the MOS.
 	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqAll
 	 */
 	onRequestAllMOSObjects: (cb: () => Promise<Array<IMOSObject>>) => void
 	/**
 	 * Method for the NCS to request the MOS to send it a mosObj message for every Object in the MOS.
+	 * The replies will be sent to the callback set up in onMOSObjects()
 	 * https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS-Protocol-2.8.4-Current.htm#mosReqAll
 	 */
-	sendRequestAllMOSObjects: () => Promise<Array<IMOSObject>>
+	sendRequestAllMOSObjects: (
+		/**
+		 * Pause, when greater than zero, indicates the number of seconds to pause between individual mosObj messages.
+		 * Pause of zero indicates that all objects will be sent using the mosListAll message.
+		 * @default 0
+		 */
+		pause?: number
+	) => Promise<IMOSAck>
 
 	// Deprecated methods:
 	/** @deprecated getMOSObject is deprecated, use sendRequestMOSObject instead */
 	getMOSObject: (objId: IMOSString128) => Promise<IMOSObject>
 	/** @deprecated getAllMOSObjects is deprecated, use sendRequestAllMOSObjects instead */
-	getAllMOSObjects: () => Promise<IMOSObject[]>
+	getAllMOSObjects: () => Promise<IMOSAck>
 }
 /**
  * Method definitions for Profile 2

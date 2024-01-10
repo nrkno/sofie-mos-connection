@@ -21,6 +21,7 @@ import { xmlData, xmlApiData } from '../__mocks__/testData'
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // @ts-ignore imports are unused
 import { Socket } from 'net'
+import { IMOSAck, IMOSAckStatus } from '@mos-connection/model'
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 beforeAll(() => {
@@ -44,6 +45,7 @@ describe('Profile 0', () => {
 	let onRequestMachineInfo: jest.Mock<any, any>
 	let onRequestMOSObject: jest.Mock<any, any>
 	let onRequestAllMOSObjects: jest.Mock<any, any>
+	let onMOSObjects: jest.Mock<any, any>
 
 	beforeAll(async () => {
 		mosConnection = await getMosConnection(
@@ -74,6 +76,17 @@ describe('Profile 0', () => {
 		})
 		mosDevice.onRequestAllMOSObjects(async (): Promise<Array<IMOSObject>> => {
 			return onRequestAllMOSObjects()
+		})
+		onMOSObjects = jest.fn(async (): Promise<IMOSAck> => {
+			return {
+				ID: mosTypes.mosString128.create(''),
+				Revision: 1,
+				Status: IMOSAckStatus.ACK,
+				Description: mosTypes.mosString128.create(''),
+			}
+		})
+		mosDevice.onMOSObjects(async (objs: IMOSObject[]): Promise<IMOSAck> => {
+			return onMOSObjects(objs)
 		})
 		const b = doBeforeAll()
 		socketMockLower = b.socketMockLower

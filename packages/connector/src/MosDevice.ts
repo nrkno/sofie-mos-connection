@@ -85,7 +85,8 @@ export class MosDevice implements IMOSDevice {
 
 	// Callbacks for Profile 1:
 	private _callbackOnRequestMOSOBject?: (objId: string) => Promise<IMOSObject | null>
-	private _callbackOnRequestAllMOSObjects?: () => Promise<Array<IMOSObject>>
+	private _callbackOnRequestAllMOSObjects?: () => Promise<IMOSObject[]>
+	private _callbackOnMOSObjects?: (objs: IMOSObject[]) => Promise<IMOSAck>
 
 	// Callbacks for Profile 2:
 	private _callbackOnCreateRunningOrder?: (ro: IMOSRunningOrder) => Promise<IMOSROAck>
@@ -305,6 +306,15 @@ export class MosDevice implements IMOSDevice {
 				},
 				this.strict
 			)
+		} else if (data.mosObj && typeof this._callbackOnMOSObjects === 'function') {
+			const obj = MosModel.XMLMosObject.fromXML(data.mosObj, this.strict)
+			const resp = await this._callbackOnMOSObjects([obj])
+			return new MosModel.MOSAck(resp, this.strict)
+		} else if (data.mosListAll && typeof this._callbackOnMOSObjects === 'function') {
+			const mosObjs = Array.isArray(data.mosListAll.mosObj) ? data.mosListAll.mosObj : [data.mosListAll.mosObj]
+			const objs = mosObjs.map((mosObj: any) => MosModel.XMLMosObject.fromXML(mosObj, this.strict))
+			const resp = await this._callbackOnMOSObjects(objs)
+			return new MosModel.MOSAck(resp, this.strict)
 		}
 		// Profile 2: -------------------------------------------------------------------------------------------------
 		// Translate deprecated messages into the functionally equivalent roElementActions:
@@ -857,18 +867,22 @@ export class MosDevice implements IMOSDevice {
 		this.checkProfile('onRequestAllMOSObjects', 'profile1')
 		this._callbackOnRequestAllMOSObjects = cb
 	}
+	onMOSObjects(cb: (objs: IMOSObject[]) => Promise<IMOSAck>): void {
+		this.checkProfile('onMOSObjects', 'profile1')
+		this._callbackOnMOSObjects = cb
+	}
 
-	async sendRequestAllMOSObjects(): Promise<Array<IMOSObject>> {
-		const message = new MosModel.ReqMosObjAll(undefined, this.strict)
-		const reply = await this.executeCommand(message)
-		if (reply.mos.roAck) {
-			throw new Error(MosModel.XMLMosROAck.fromXML(reply.mos.roAck, this.strict).toString())
-		} else if (reply.mos.mosListAll) {
-			const objs: Array<IMOSObject> = MosModel.XMLMosObjects.fromXML(reply.mos.mosListAll.mosObj, this.strict)
-			return objs
-		} else {
-			throw new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
+	async sendRequestAllMOSObjects(pause?: number): Promise<IMOSAck> {
+		if (typeof this._callbackOnMOSObjects !== 'function') {
+			throw new Error('Cannot sent request, because callback onMOSObjects() is required')
 		}
+
+		const message = new MosModel.ReqMosObjAll(pause, this.strict)
+		const reply = await this.executeCommand(message)
+
+		return MosModel.XMLMosAck.fromXML(reply.mos.mosAck, this.strict)
+		// Then we'll be sent mosListAll or mosObj messages separately,
+		// handled in the callback in this.onMOSObjects(cb)
 	}
 
 	/**
@@ -892,7 +906,7 @@ export class MosDevice implements IMOSDevice {
 		return this.sendRequestMOSObject(objId)
 	}
 	/** @deprecated getAllMOSObjects is deprecated, use sendRequestAllMOSObjects instead */
-	async getAllMOSObjects(): Promise<IMOSObject[]> {
+	async getAllMOSObjects(): Promise<IMOSAck> {
 		return this.sendRequestAllMOSObjects()
 	}
 
@@ -1485,6 +1499,7 @@ export class MosDevice implements IMOSDevice {
 			requireProfile(1, 0)
 			requireMOSCallback('1', '_callbackOnRequestMOSOBject', this.onRequestMOSObject)
 			requireMOSCallback('1', '_callbackOnRequestAllMOSObjects', this.onRequestAllMOSObjects)
+			requireMOSCallback('1', '_callbackOnMOSObjects', this.onMOSObjects)
 		}
 		if (this.supportedProfiles.profile2) {
 			requireProfile(2, 0)
