@@ -1428,7 +1428,11 @@ export class MosDevice implements IMOSDevice {
 	private badRoAckReply(xmlRoAck: AnyXML) {
 		try {
 			const roAck = MosModel.XMLMosROAck.fromXML(xmlRoAck, this.strict)
-			return new Error(`Reply: ${roAck.toString()}`)
+			return new Error(
+				`Reply: ${this.mosTypes.mosString128.stringify(
+					roAck.Status
+				)}, ID: ${this.mosTypes.mosString128.stringify(roAck.ID)}`
+			)
 		} catch (e) {
 			return new Error(`Reply: Unparsable reply: ${safeStringify(xmlRoAck).slice(0, 200)}`)
 		}

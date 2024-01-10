@@ -170,7 +170,7 @@ describe('Profile 0 - non strict', () => {
 		})
 		expect(mockReply).toHaveBeenCalledTimes(1)
 
-		expect(String(caughtError)).toMatch(/error when parsing reply.*Invalid timestamp/i)
+		expect(String(caughtError)).toMatch(/Unable to parse MOS reply.*Invalid timestamp/i)
 	})
 	test('requestMachineInfo - missing <opTime>', async () => {
 		// Prepare mock server response:
@@ -236,6 +236,6 @@ describe('Profile 0 - non strict', () => {
 		})
 		expect(mockReply).toHaveBeenCalledTimes(1)
 
-		expect(String(caughtError)).toMatch(/error when parsing reply.*Invalid timestamp/i)
+		expect(String(caughtError)).toMatch(/Unable to parse MOS reply.*Invalid timestamp/i)
 	})
 })

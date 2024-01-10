@@ -283,7 +283,7 @@ describe('Profile 0', () => {
 		})
 		expect(mockReply).toHaveBeenCalledTimes(1)
 
-		expect(String(caughtError)).toMatch(/error when parsing reply.*listMachInfo.opTime.*Invalid timestamp/i)
+		expect(String(caughtError)).toMatch(/Unable to parse MOS reply.*listMachInfo.opTime.*Invalid timestamp/i)
 	})
 	test('requestMachineInfo - missing <time>', async () => {
 		// Prepare mock server response:
@@ -302,7 +302,7 @@ describe('Profile 0', () => {
 		})
 		expect(mockReply).toHaveBeenCalledTimes(1)
 
-		expect(String(caughtError)).toMatch(/error when parsing reply.*listMachInfo.time.*Invalid input/i)
+		expect(String(caughtError)).toMatch(/Unable to parse MOS reply.*listMachInfo.time.*Invalid input/i)
 	})
 	test('requestMachineInfo - empty <time>', async () => {
 		// Prepare mock server response:
@@ -321,7 +321,7 @@ describe('Profile 0', () => {
 		})
 		expect(mockReply).toHaveBeenCalledTimes(1)
 
-		expect(String(caughtError)).toMatch(/error when parsing reply.*listMachInfo.time.*Invalid input/i)
+		expect(String(caughtError)).toMatch(/Unable to parse MOS reply.*listMachInfo.time.*Invalid input/i)
 	})
 	test('requestMachineInfo - bad formatted <time>', async () => {
 		// Prepare mock server response:
@@ -340,6 +340,6 @@ describe('Profile 0', () => {
 		})
 		expect(mockReply).toHaveBeenCalledTimes(1)
 
-		expect(String(caughtError)).toMatch(/error when parsing reply.*listMachInfo.time.*Invalid timestamp/i)
+		expect(String(caughtError)).toMatch(/Unable to parse MOS reply.*listMachInfo.time.*Invalid timestamp/i)
 	})
 })
