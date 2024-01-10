@@ -123,6 +123,8 @@ describe('Profile 0', () => {
 
 		expect(msg).toMatch(/<heartbeat/)
 		expect(msg).toMatch('<messageID>' + sendMessageId)
+
+		serverSocketMockLower.setAutoReplyToHeartBeat(true) // reset
 	})
 	test('send heartbeats', async () => {
 		socketMockLower.setAutoReplyToHeartBeat(false) // Handle heartbeat manually
@@ -156,6 +158,9 @@ describe('Profile 0', () => {
 		expect(heartbeatCount.upper).toBeGreaterThanOrEqual(4)
 		expect(heartbeatCount.lower).toBeGreaterThanOrEqual(4)
 		expect(mosDevice.getConnectionStatus()).toMatchObject({ PrimaryConnected: true })
+
+		socketMockLower.setAutoReplyToHeartBeat(true) // reset
+		socketMockUpper.setAutoReplyToHeartBeat(true) // reset
 	})
 
 	test('unknown party connects', async () => {
@@ -278,7 +283,7 @@ describe('Profile 0', () => {
 		})
 		expect(mockReply).toHaveBeenCalledTimes(1)
 
-		expect(String(caughtError)).toMatch(/error when parsing reply.*Invalid timestamp/i)
+		expect(String(caughtError)).toMatch(/error when parsing reply.*listMachInfo.opTime.*Invalid timestamp/i)
 	})
 	test('requestMachineInfo - missing <time>', async () => {
 		// Prepare mock server response:
@@ -297,7 +302,7 @@ describe('Profile 0', () => {
 		})
 		expect(mockReply).toHaveBeenCalledTimes(1)
 
-		expect(String(caughtError)).toMatch(/error when parsing reply.*Invalid input/i)
+		expect(String(caughtError)).toMatch(/error when parsing reply.*listMachInfo.time.*Invalid input/i)
 	})
 	test('requestMachineInfo - empty <time>', async () => {
 		// Prepare mock server response:
@@ -316,7 +321,7 @@ describe('Profile 0', () => {
 		})
 		expect(mockReply).toHaveBeenCalledTimes(1)
 
-		expect(String(caughtError)).toMatch(/error when parsing reply.*Invalid input/i)
+		expect(String(caughtError)).toMatch(/error when parsing reply.*listMachInfo.time.*Invalid input/i)
 	})
 	test('requestMachineInfo - bad formatted <time>', async () => {
 		// Prepare mock server response:
@@ -335,6 +340,6 @@ describe('Profile 0', () => {
 		})
 		expect(mockReply).toHaveBeenCalledTimes(1)
 
-		expect(String(caughtError)).toMatch(/error when parsing reply.*Invalid timestamp/i)
+		expect(String(caughtError)).toMatch(/error when parsing reply.*listMachInfo.time.*Invalid timestamp/i)
 	})
 })

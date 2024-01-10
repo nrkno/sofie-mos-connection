@@ -27,3 +27,19 @@ export type AnyXML = { [key: string]: any }
 export function has(obj: unknown, property: string): boolean {
 	return Object.hasOwnProperty.call(obj, property)
 }
+export function getHandleError(basePath: string): <V, R>(func: (val: V) => R, value: V, path: string) => R {
+	const handleError = <V, R>(func: (val: V) => R, value: V, path: string): R => {
+		try {
+			return func(value)
+		} catch (org) {
+			// is Error?
+			const orgMessage = org instanceof Error ? org.message : `${org}`
+			const newPath = [basePath, path].filter(Boolean).join('.')
+			const error = new Error(`Error parsing "${newPath}": ${orgMessage}`)
+			if (org instanceof Error) error.stack = org.stack
+			throw error
+		}
+	}
+
+	return handleError
+}

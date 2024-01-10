@@ -45,6 +45,16 @@ function wrapParseMethods<Serialized, Value, CreateValue>(
 function wrapParseMethodCreateOptional<Serialized, Value, CreateValue>(
 	mosType: MosType<Serialized, Value, CreateValue>
 ): MosTypeParse<Serialized, Value, CreateValue>['createOptional'] {
+	return parseOptional(mosType.create)
+}
+function wrapParseMethodCreateRequired<Serialized, Value, CreateValue>(
+	mosType: MosType<Serialized, Value, CreateValue>,
+	strict: boolean
+): MosTypeParse<Serialized, Value, CreateValue>['createRequired'] {
+	return parseRequired(mosType.create, mosType.fallback, strict)
+}
+
+export function parseOptional<V, R>(parser: (value: V) => R): (value: V) => R | undefined {
 	return (value: any) => {
 		// handle empty string:
 		if (typeof value === 'string' && !value.trim()) value = undefined
@@ -52,13 +62,10 @@ function wrapParseMethodCreateOptional<Serialized, Value, CreateValue>(
 		if (typeof value === 'object' && Object.keys(value).length === 0) value = undefined
 
 		if (value === undefined) return undefined
-		return mosType.create(value)
+		return parser(value)
 	}
 }
-function wrapParseMethodCreateRequired<Serialized, Value, CreateValue>(
-	mosType: MosType<Serialized, Value, CreateValue>,
-	strict: boolean
-): MosTypeParse<Serialized, Value, CreateValue>['createRequired'] {
+export function parseRequired<V, R>(parser: (value: V) => R, fallback: () => R, strict: boolean): (value: V) => R {
 	return (value: any) => {
 		// handle empty string:
 		if (typeof value === 'string' && !value.trim()) value = undefined
@@ -69,12 +76,12 @@ function wrapParseMethodCreateRequired<Serialized, Value, CreateValue>(
 			// Something might be wrong. value is undefined, but should not be (?)
 			if (strict) {
 				// This will throw if the mosType doesn't handle undefined:
-				return mosType.create(value)
+				return parser(value)
 			} else {
-				return mosType.fallback()
+				return fallback()
 			}
 		} else {
-			return mosType.create(value)
+			return parser(value)
 		}
 	}
 }

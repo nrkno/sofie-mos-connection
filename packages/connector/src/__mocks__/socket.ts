@@ -285,6 +285,9 @@ export class SocketMock extends EventEmitter implements Socket {
 	setAutoReplyToHeartBeat(autoReplyToHeartBeat: boolean): void {
 		this._autoReplyToHeartBeat = autoReplyToHeartBeat
 	}
+	get autoReplyToHeartBeat(): boolean {
+		return this._autoReplyToHeartBeat
+	}
 }
 
 type SimpleTypes = string | string[] | false | Buffer | Buffer[]

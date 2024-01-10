@@ -56,6 +56,9 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		this._connected = false
 		this._debug = debug ?? false
 	}
+	get timeout(): number {
+		return this._timeout
+	}
 	/** Create a MOS client, which talks to  */
 	createClient(clientID: string, port: number, clientDescription: ConnectionType, useHeartbeats: boolean): void {
 		const client = new MosSocketClient(this._host, port, clientDescription, this._timeout, this._debug)
