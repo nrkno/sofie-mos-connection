@@ -36,11 +36,13 @@ export class MosSocketClient extends EventEmitter {
 	private _queueMessages: Array<QueueMessage> = []
 
 	private _sentMessage: QueueMessage | null = null // sent message, waiting for reply
+	private _sentMessageTimeout?: NodeJS.Timeout
 	private _lingeringMessage: QueueMessage | null = null // sent message, NOT waiting for reply
 	// private _readyToSendMessage: boolean = true
 	private _timedOutCommands: { [id: string]: number } = {}
 
 	private processQueueTimeout?: NodeJS.Timeout
+	private queueCleanupTimeout?: NodeJS.Timeout
 	// private _startingUp: boolean = true
 	private _disposed = false
 	private messageParser: MosMessageParser
@@ -235,6 +237,14 @@ export class MosSocketClient extends EventEmitter {
 			clearTimeout(this.processQueueTimeout)
 			delete this.processQueueTimeout
 		}
+		if (this.queueCleanupTimeout) {
+			clearTimeout(this.queueCleanupTimeout)
+			delete this.queueCleanupTimeout
+		}
+		if (this._sentMessageTimeout) {
+			clearTimeout(this._sentMessageTimeout)
+			this._sentMessageTimeout
+		}
 		if (this._client) {
 			const client = this._client
 			client.once('close', () => {
@@ -278,6 +288,10 @@ export class MosSocketClient extends EventEmitter {
 			this.emit('error', `Error: No callback found for messageId ${messageId}`)
 		}
 		this._sentMessage = null
+		if (this._sentMessageTimeout) {
+			clearTimeout(this._sentMessageTimeout)
+			delete this._sentMessageTimeout
+		}
 		this._lingeringMessage = null
 		delete this._queueCallback[messageId + '']
 		delete this._lingeringCallback[messageId + '']
@@ -288,6 +302,7 @@ export class MosSocketClient extends EventEmitter {
 		if (this._sentMessage && !isRetry) throw Error('executeCommand: there already is a sent Command!')
 		if (!this._client) throw Error('executeCommand: No client socket connection set up!')
 
+		if (this._sentMessageTimeout) clearTimeout(this._sentMessageTimeout)
 		this._sentMessage = message
 		this._lingeringMessage = null
 
@@ -301,7 +316,7 @@ export class MosSocketClient extends EventEmitter {
 
 		const sendTime = Date.now()
 		// Command timeout:
-		global.setTimeout(() => {
+		this._sentMessageTimeout = global.setTimeout(() => {
 			if (this._disposed) return
 			if (this._sentMessage && this._sentMessage.msg.messageID === sentMessageId) {
 				this.debugTrace('timeout ' + sentMessageId + ' after ' + this._commandTimeout)
@@ -454,7 +469,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 	private _triggerQueueCleanup() {
 		// in case we're in unsync with messages, prevent deadlock:
-		setTimeout(() => {
+		this.queueCleanupTimeout = setTimeout(() => {
 			if (this._disposed) return
 			this.debugTrace('QueueCleanup')
 			for (let i = this._queueMessages.length - 1; i >= 0; i--) {
