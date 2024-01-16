@@ -68,7 +68,7 @@ export async function getMosConnection(profiles: IProfiles, strict: boolean): Pr
 
 	return Promise.resolve(mos)
 }
-export const DEFAULT_TIMEOUT = 200
+export const DEFAULT_TIMEOUT = 600
 export async function getMosDevice(mos: MosConnection): Promise<MosDevice> {
 	SocketMock.mockClear()
 

@@ -72,6 +72,11 @@ describe('MosDevice: General', () => {
 			})
 		)
 
+		const onError = jest.fn((e) => console.log(e))
+		const onWarning = jest.fn((e) => console.log(e))
+		mos.on('error', onError)
+		mos.on('warning', onWarning)
+
 		expect(mos.profiles).toMatchObject({
 			'0': true,
 			'1': true,
@@ -82,6 +87,9 @@ describe('MosDevice: General', () => {
 			'6': false,
 			'7': false,
 		})
+
+		expect(onError).toHaveBeenCalledTimes(0)
+		expect(onWarning).toHaveBeenCalledTimes(0)
 
 		await mos.dispose()
 	})
@@ -94,10 +102,17 @@ describe('MosDevice: General', () => {
 				'1': true,
 			},
 		})
+		const onError = jest.fn((e) => console.log(e))
+		const onWarning = jest.fn((e) => console.log(e))
+		mos.on('error', onError)
+		mos.on('warning', onWarning)
 		expect(mos.acceptsConnections).toBe(true)
 		await initMosConnection(mos)
 		expect(mos.isListening).toBe(true)
 		expect(SocketMock.instances).toHaveLength(0)
+
+		expect(onError).toHaveBeenCalledTimes(0)
+		expect(onWarning).toHaveBeenCalledTimes(0)
 
 		// close sockets after test
 		await mos.dispose()
@@ -111,6 +126,11 @@ describe('MosDevice: General', () => {
 				'1': true,
 			},
 		})
+		const onError = jest.fn((e) => console.log(e))
+		const onWarning = jest.fn((e) => console.log(e))
+		mos.on('error', onError)
+		mos.on('warning', onWarning)
+
 		expect(mos.acceptsConnections).toBe(true)
 		await initMosConnection(mos)
 		expect(mos.isListening).toBe(true)
@@ -146,6 +166,9 @@ describe('MosDevice: General', () => {
 		expect(SocketMock.instances[2].destroy).toHaveBeenCalledTimes(1)
 		expect(SocketMock.instances[3].destroy).toHaveBeenCalledTimes(1)
 
+		expect(onError).toHaveBeenCalledTimes(0)
+		expect(onWarning).toHaveBeenCalledTimes(0)
+
 		expect(mosDevice.hasConnection).toEqual(false)
 	})
 	test('MosDevice secondary', async () => {
@@ -157,6 +180,11 @@ describe('MosDevice: General', () => {
 				'1': true,
 			},
 		})
+		const onError = jest.fn((e) => console.log(e))
+		const onWarning = jest.fn((e) => console.log(e))
+		mos.on('error', onError)
+		mos.on('warning', onWarning)
+
 		expect(mos.acceptsConnections).toBe(true)
 		await initMosConnection(mos)
 		expect(mos.isListening).toBe(true)
@@ -236,6 +264,9 @@ describe('MosDevice: General', () => {
 		returnedObj = await mosDevice.sendRequestMOSObject(xmlApiData.mosObj.ID)
 		expect(returnedObj).toBeTruthy()
 
+		expect(onError).toHaveBeenCalledTimes(0)
+		expect(onWarning).toHaveBeenCalledTimes(0)
+
 		await mos.dispose()
 	})
 	test('init and connectionStatusChanged', async () => {
@@ -252,6 +283,11 @@ describe('MosDevice: General', () => {
 				},
 			})
 		)
+		const onError = jest.fn((e) => console.log(e))
+		const onWarning = jest.fn((e) => console.log(e))
+		mosConnection.on('error', onError)
+		mosConnection.on('warning', onWarning)
+
 		await initMosConnection(mosConnection)
 
 		const mosDevice = await mosConnection.connect({
@@ -299,6 +335,10 @@ describe('MosDevice: General', () => {
 		// mock cause timeout
 
 		mosConnection.checkProfileValidness()
+
+		expect(onError).toHaveBeenCalledTimes(0)
+		expect(onWarning).toHaveBeenCalledTimes(0)
+
 		await mosConnection.dispose()
 	})
 	test('buddy failover', async () => {
@@ -310,6 +350,14 @@ describe('MosDevice: General', () => {
 				'1': true,
 			},
 		})
+		const onError = jest.fn((e) => console.log(e))
+		const onWarning = jest.fn((e) => console.log(e))
+		mos.on('error', (e) => {
+			// filter out heartbeat errors:
+			if (!(e + '').match(/heartbeat.*timed out/i)) onError(e)
+		})
+		mos.on('warning', onWarning)
+
 		await initMosConnection(mos)
 		const mosDevice: MosDevice = await mos.connect({
 			primary: {
@@ -382,6 +430,9 @@ describe('MosDevice: General', () => {
 		expect(connMocks[1].destroy).toHaveBeenCalledTimes(1)
 		expect(connMocks[2].destroy).toHaveBeenCalledTimes(1)
 
+		expect(onError).toHaveBeenCalledTimes(0)
+		expect(onWarning).toHaveBeenCalledTimes(0)
+
 		await mos.dispose()
 	})
 	test('buddy failover - primary starts offline', async () => {
@@ -393,6 +444,14 @@ describe('MosDevice: General', () => {
 				'1': true,
 			},
 		})
+		const onError = jest.fn((e) => console.log(e))
+		const onWarning = jest.fn((e) => console.log(e))
+		mos.on('error', (e) => {
+			// filter out heartbeat errors:
+			if (!(e + '').match(/heartbeat.*timed out/i)) onError(e)
+		})
+		mos.on('warning', onWarning)
+
 		await initMosConnection(mos)
 		const mosDevice: MosDevice = await mos.connect({
 			primary: {
@@ -470,6 +529,9 @@ describe('MosDevice: General', () => {
 
 		expect(connMocks[1].destroy).toHaveBeenCalledTimes(1)
 		expect(connMocks[2].destroy).toHaveBeenCalledTimes(1)
+
+		expect(onError).toHaveBeenCalledTimes(0)
+		expect(onWarning).toHaveBeenCalledTimes(0)
 
 		await mos.dispose()
 	})

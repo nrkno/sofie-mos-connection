@@ -93,8 +93,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 		primary.on('warning', (str: string) => {
 			this.emit('warning', 'primary: ' + str)
 		})
-		primary.on('error', (str: string) => {
-			this.emit('error', 'primary: ' + str)
+		primary.on('error', (error: Error) => {
+			this.emit('error', 'primary: ' + error + ' ' + (typeof error === 'object' ? error.stack : ''))
 		})
 		primary.on('info', (str: string) => {
 			this.emit('info', 'primary: ' + str)
@@ -137,8 +137,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			secondary.on('warning', (str: string) => {
 				this.emit('warning', 'secondary: ' + str)
 			})
-			secondary.on('error', (str: string) => {
-				this.emit('error', 'secondary: ' + str)
+			secondary.on('error', (error: Error) => {
+				this.emit('error', 'secondary: ' + error + ' ' + (typeof error === 'object' ? error.stack : ''))
 			})
 			secondary.on('info', (str: string) => {
 				this.emit('info', 'secondary: ' + str)

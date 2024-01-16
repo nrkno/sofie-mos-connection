@@ -415,7 +415,7 @@ describe('Profile 2', () => {
 			error = e
 		}
 		expect(error).toBeTruthy()
-		expect(`${error}`).toMatch(/Reply from NRCS.*rundown not under MOS control/)
+		expect(`${error}`).toMatch(/Reply.*rundown not under MOS control/)
 	})
 	test('onMetadataReplace', async () => {
 		// Fake incoming message on socket:

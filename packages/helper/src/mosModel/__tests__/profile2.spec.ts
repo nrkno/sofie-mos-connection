@@ -37,7 +37,7 @@ describe('Profile 2', () => {
 			{
 				Type: IMOSObjectPathType.PATH,
 				Description: 'MPEG2 Video',
-				Target: '\\servermediaclip392028cd2320s0d.mxf',
+				Target: '\\server\\media\\clip392028cd2320s0d.mxf',
 			},
 			{
 				Type: IMOSObjectPathType.PROXY_PATH,
@@ -59,7 +59,7 @@ describe('Profile 2', () => {
 <itemEdDur>715</itemEdDur>
 <itemUserTimingDur>415</itemUserTimingDur>
 <objPaths>
-<objPath techDescription="MPEG2 Video">\\server\media\clip392028cd2320s0d.mxf</objPath>
+<objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
 <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
 <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
 </objPaths>
