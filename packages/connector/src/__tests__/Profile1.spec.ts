@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import {
+	DEFAULT_TIMEOUT,
 	checkMessageSnapshot,
 	clearMocks,
 	decode,
@@ -336,29 +337,33 @@ describe('Profile 1', () => {
 		expect(receivedMosObjects).toMatchSnapshot()
 	})
 
-	test('command timeout', async () => {
-		expect(socketMockLower).toBeTruthy()
-		// Prepare mock server response:
-		const mockReply = jest.fn(async (data) => {
-			return new Promise<Buffer>((resolve) => {
-				setTimeout(() => {
-					const str = decode(data)
-					const messageID = getMessageId(str)
-					const repl = getXMLReply(messageID, xmlData.mosListAll)
-					resolve(encode(repl))
-				}, 500)
+	test(
+		'command timeout',
+		async () => {
+			expect(socketMockLower).toBeTruthy()
+			// Prepare mock server response:
+			const mockReply = jest.fn(async (data) => {
+				return new Promise<Buffer>((resolve) => {
+					setTimeout(() => {
+						const str = decode(data)
+						const messageID = getMessageId(str)
+						const repl = getXMLReply(messageID, xmlData.mosListAll)
+						resolve(encode(repl))
+					}, DEFAULT_TIMEOUT + 1000)
+				})
 			})
-		})
-		socketMockLower.mockAddReply(mockReply)
+			socketMockLower.mockAddReply(mockReply)
 
-		let error
-		try {
-			await mosDevice.sendRequestAllMOSObjects()
-		} catch (e) {
-			error = `${e}`
-		}
+			let error = undefined
+			try {
+				await mosDevice.sendRequestAllMOSObjects()
+			} catch (e) {
+				error = `${e}`
+			}
 
-		expect(error).toMatch(/Sent command timed out after \d+ ms/)
-		expect(mockReply).toHaveBeenCalledTimes(1)
-	}, 500)
+			expect(error).toMatch(/Sent command timed out after \d+ ms/)
+			expect(mockReply).toHaveBeenCalledTimes(1)
+		},
+		DEFAULT_TIMEOUT + 2000
+	)
 })

@@ -24,7 +24,7 @@ export class ROElementStat extends MosMessage {
 	constructor(options: ROElementStatOptions, strict: boolean) {
 		super('upper', strict)
 		this.options = options
-		this.time = getMosTypes(strict).mosTime.create(undefined)
+		this.time = getMosTypes(strict).mosTime.create(Date.now())
 	}
 
 	/** */

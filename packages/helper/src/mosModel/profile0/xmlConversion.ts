@@ -1,18 +1,19 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { getMosTypes, IMOSListMachInfo, IMOSString128 } from '@mos-connection/model'
-import { AnyXML } from '../lib'
+import { IMOSListMachInfo, IMOSString128 } from '@mos-connection/model'
+import { AnyXML, getHandleError } from '../lib'
 import { addTextElementInternal } from '../../utils/Utils'
+import { getParseMosTypes, parseOptional } from '../parseMosTypes'
 
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace XMLMosIDs {
 	export function fromXML(xml: AnyXML, strict: boolean): IMOSString128[] {
-		const mosTypes = getMosTypes(strict)
+		const mosTypes = getParseMosTypes(strict)
 
 		const arr: Array<IMOSString128> = []
 		let xmlIds: Array<string> = xml as any
 		if (!Array.isArray(xmlIds)) xmlIds = [xmlIds]
 		xmlIds.forEach((id: string) => {
-			arr.push(mosTypes.mosString128.create(id))
+			arr.push(mosTypes.mosString128.createRequired(id))
 		})
 
 		return arr
@@ -22,31 +23,32 @@ export namespace XMLMosIDs {
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace XMLMosListMachInfo {
 	export function fromXML(xml: AnyXML, strict: boolean): IMOSListMachInfo {
-		const mosTypes = getMosTypes(strict)
+		const { mosString128, mosTime } = getParseMosTypes(strict)
+
+		const handleError = getHandleError('listMachInfo')
 
 		const list: IMOSListMachInfo = {
-			manufacturer: mosTypes.mosString128.create(xml.manufacturer),
-			model: mosTypes.mosString128.create(xml.model),
-			hwRev: mosTypes.mosString128.create(xml.hwRev),
-			swRev: mosTypes.mosString128.create(xml.swRev),
-			DOM: mosTypes.mosString128.create(xml.DOM),
-			SN: mosTypes.mosString128.create(xml.SN),
-			ID: mosTypes.mosString128.create(xml.ID),
-			time: mosTypes.mosTime.create(xml.time),
-			opTime: mosTypes.mosTime.create(xml.opTime),
-			mosRev: mosTypes.mosString128.create(xml.mosRev),
-			supportedProfiles: {
-				deviceType: xml.supportedProfiles.deviceType,
-			},
-			defaultActiveX: xml.defaultActiveX,
-			mosExternalMetaData: xml.mosExternalMetaData,
-		}
-
-		if (Array.isArray(xml.supportedProfiles.mosProfile)) {
-			for (const mosProfile of xml.supportedProfiles.mosProfile) {
-				// @ts-expect-error hack
-				list.supportedProfiles[`profile${mosProfile.attributes.number}`] = mosProfile.text === 'YES'
-			}
+			manufacturer: handleError(mosString128.createRequired, xml.manufacturer, 'manufacturer'),
+			model: handleError(mosString128.createRequired, xml.model, 'model'),
+			hwRev: handleError(mosString128.createRequired, xml.hwRev, 'hwRev'),
+			swRev: handleError(mosString128.createRequired, xml.swRev, 'swRev'),
+			DOM: handleError(mosString128.createRequired, xml.DOM, 'DOM'),
+			SN: handleError(mosString128.createRequired, xml.SN, 'SN'),
+			ID: handleError(mosString128.createRequired, xml.ID, 'ID'),
+			time: handleError(mosTime.createRequired, xml.time, 'time'),
+			opTime: handleError(mosTime.createOptional, xml.opTime, 'opTime'),
+			mosRev: handleError(mosString128.createRequired, xml.mosRev, 'mosRev'),
+			supportedProfiles: handleError(
+				(v) => parseSupportedProfiles(v, strict),
+				xml.supportedProfiles,
+				'supportedProfiles'
+			),
+			defaultActiveX: handleError(
+				parseOptional((v) => v),
+				xml.defaultActiveX,
+				'defaultActiveX'
+			),
+			mosExternalMetaData: handleError((v) => v, xml.mosExternalMetaData, 'mosExternalMetaData'),
 		}
 
 		return list
@@ -79,4 +81,26 @@ export namespace XMLMosListMachInfo {
 		}
 		xmlListMachInfo.importDocument(xmlSupportedProfiles)
 	}
+}
+
+function parseSupportedProfiles(xmlSupportedProfiles: any, strict: boolean): IMOSListMachInfo['supportedProfiles'] {
+	const parsed: IMOSListMachInfo['supportedProfiles'] = {
+		deviceType: xmlSupportedProfiles?.deviceType ?? 'N/A',
+		// Note: .profiles are added below
+	}
+
+	if (strict) {
+		if (!['NCS', 'MOS'].includes(parsed.deviceType)) {
+			throw new Error(`Invalid supportedProfiles.deviceType: "${parsed.deviceType}"`)
+		}
+	}
+
+	if (Array.isArray(xmlSupportedProfiles.mosProfile)) {
+		for (const mosProfile of xmlSupportedProfiles.mosProfile) {
+			// @ts-expect-error hack
+			parsed[`profile${mosProfile.attributes.number}`] = mosProfile.text === 'YES'
+		}
+	}
+
+	return parsed
 }

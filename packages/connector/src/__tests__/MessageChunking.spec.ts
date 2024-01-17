@@ -247,11 +247,11 @@ describe('message chunking', () => {
 		const chunks = [message.message.slice(0, 100), message.message.slice(100)]
 
 		// Send first part of the message:
-		await sendFakeIncomingMessage(serverSocketMockLower, chunks[0])
+		sendFakeIncomingMessage(serverSocketMockLower, chunks[0])
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(0)
 
 		// Send rest of the message:
-		await sendFakeIncomingMessage(serverSocketMockLower, chunks[1])
+		sendFakeIncomingMessage(serverSocketMockLower, chunks[1])
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(1)
 	})
 
@@ -281,13 +281,13 @@ describe('message chunking', () => {
 		]
 
 		// Send the parts of the message:
-		await sendFakeIncomingMessage(serverSocketMockLower, chunks[0])
+		sendFakeIncomingMessage(serverSocketMockLower, chunks[0])
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(0)
-		await sendFakeIncomingMessage(serverSocketMockLower, chunks[1])
+		sendFakeIncomingMessage(serverSocketMockLower, chunks[1])
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(0)
-		await sendFakeIncomingMessage(serverSocketMockLower, chunks[2])
+		sendFakeIncomingMessage(serverSocketMockLower, chunks[2])
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(0)
-		await sendFakeIncomingMessage(serverSocketMockLower, chunks[2])
+		sendFakeIncomingMessage(serverSocketMockLower, chunks[2])
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(1)
 	})
 	test('multiple messages', async () => {
@@ -308,7 +308,7 @@ describe('message chunking', () => {
 		)
 
 		// Send both messages right away:
-		await sendFakeIncomingMessage(serverSocketMockLower, message0.message + message1.message)
+		sendFakeIncomingMessage(serverSocketMockLower, message0.message + message1.message)
 		expect(onRequestMOSObject).toHaveBeenCalledTimes(2)
 	})
 })

@@ -9,3 +9,4 @@ export {
 } from './utils/Utils'
 export * as MosModel from './mosModel'
 export * from './stringify/stringifyMosObject'
+export * from './utils/Errors'

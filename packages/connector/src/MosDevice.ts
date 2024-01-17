@@ -31,9 +31,10 @@ import {
 	getMosTypes,
 	MosTypes,
 } from '@mos-connection/model'
-import { MosModel } from '@mos-connection/helper'
+import { MosModel, MosReplyError } from '@mos-connection/helper'
 import { IConnectionConfig, IMOSConnectionStatus, IMOSDevice } from './api'
 import { PROFILE_VALIDNESS_CHECK_WAIT_TIME, has, safeStringify } from './lib'
+import { AnyXML } from '@mos-connection/helper/dist/mosModel'
 
 export class MosDevice implements IMOSDevice {
 	// private _host: string
@@ -151,11 +152,11 @@ export class MosDevice implements IMOSDevice {
 		this.model = this.mosTypes.mosString128.create('TCS6000')
 		this.hwRev = this.mosTypes.mosString128.create('0.1') // empty string returnes <hwRev/>
 		this.swRev = this.mosTypes.mosString128.create('0.1')
-		this.DOM = this.mosTypes.mosTime.create(undefined)
+		this.DOM = this.mosTypes.mosTime.create(Date.now())
 		this.SN = this.mosTypes.mosString128.create('927748927')
 		this.ID = this.mosTypes.mosString128.create(connectionConfig ? connectionConfig.mosID : '')
-		this.time = this.mosTypes.mosTime.create(undefined)
-		this.opTime = this.mosTypes.mosTime.create(undefined)
+		this.time = this.mosTypes.mosTime.create(Date.now())
+		this.opTime = this.mosTypes.mosTime.create(Date.now())
 		this.mosRev = this.mosTypes.mosString128.create('2.8.5')
 
 		if (connectionConfig) {
@@ -797,9 +798,8 @@ export class MosDevice implements IMOSDevice {
 	async requestMachineInfo(): Promise<IMOSListMachInfo> {
 		const message = new MosModel.ReqMachInfo(this.strict)
 
-		const data = await this.executeCommand(message)
-
-		return MosModel.XMLMosListMachInfo.fromXML(data.mos.listMachInfo, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosListMachInfo.fromXML(reply.mos.listMachInfo, strict))
 	}
 
 	onRequestMachineInfo(cb: () => Promise<IMOSListMachInfo>): void {
@@ -840,8 +840,7 @@ export class MosDevice implements IMOSDevice {
 
 		const reply = await this.executeCommand(message)
 
-		const ack: IMOSAck = MosModel.XMLMosAck.fromXML(reply.mos.mosAck, this.strict)
-		return ack
+		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML(reply.mos.mosAck, strict))
 	}
 
 	onRequestMOSObject(cb: (objId: string) => Promise<IMOSObject | null>): void {
@@ -854,12 +853,11 @@ export class MosDevice implements IMOSDevice {
 
 		const reply = await this.executeCommand(message)
 		if (reply.mos.roAck) {
-			throw new Error(MosModel.XMLMosROAck.fromXML(reply.mos.roAck, this.strict).toString())
+			throw this.badRoAckReply(reply.mos.roAck)
 		} else if (reply.mos.mosObj) {
-			const obj: IMOSObject = MosModel.XMLMosObject.fromXML(reply.mos.mosObj, this.strict)
-			return obj
+			return this.handleParseReply((strict) => MosModel.XMLMosObject.fromXML(reply.mos.mosObj, strict))
 		} else {
-			throw new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
+			throw this.unknownReply(reply)
 		}
 	}
 
@@ -880,7 +878,7 @@ export class MosDevice implements IMOSDevice {
 		const message = new MosModel.ReqMosObjAll(pause, this.strict)
 		const reply = await this.executeCommand(message)
 
-		return MosModel.XMLMosAck.fromXML(reply.mos.mosAck, this.strict)
+		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML(reply.mos.mosAck, strict))
 		// Then we'll be sent mosListAll or mosObj messages separately,
 		// handled in the callback in this.onMOSObjects(cb)
 	}
@@ -895,7 +893,7 @@ export class MosDevice implements IMOSDevice {
 			const ack: IMOSAck = MosModel.XMLMosAck.fromXML(reply.mos.mosAck, this.strict)
 			return ack
 		} else {
-			throw new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
+			throw this.unknownReply(reply)
 		}
 	}
 
@@ -919,8 +917,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendCreateRunningOrder(ro: IMOSRunningOrder): Promise<IMOSROAck> {
 		const message = new MosModel.ROCreate(ro, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 
 	onReplaceRunningOrder(cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>): void {
@@ -929,8 +927,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendReplaceRunningOrder(ro: IMOSRunningOrder): Promise<IMOSROAck> {
 		const message = new MosModel.ROReplace(ro, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 
 	onDeleteRunningOrder(cb: (runningOrderId: IMOSString128) => Promise<IMOSROAck>): void {
@@ -939,8 +937,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendDeleteRunningOrder(runningOrderId: IMOSString128): Promise<IMOSROAck> {
 		const message = new MosModel.RODelete(runningOrderId, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 
 	onRequestRunningOrder(cb: (runningOrderId: IMOSString128) => Promise<IMOSRunningOrder | null>): void {
@@ -952,14 +950,11 @@ export class MosDevice implements IMOSDevice {
 		const message = new MosModel.ROReq(runningOrderId, this.strict)
 		const reply = await this.executeCommand(message)
 		if (reply.mos.roList) {
-			const ro: IMOSRunningOrder = MosModel.XMLRunningOrder.fromXML(reply.mos.roList, this.strict)
-			return ro
+			return this.handleParseReply((strict) => MosModel.XMLRunningOrder.fromXML(reply.mos.roList, strict))
 		} else if (reply.mos.roAck) {
-			if (reply.mos.roAck.roStatus) {
-				throw new Error(`Reply from NRCS: ${reply.mos.roAck.roStatus}`)
-			}
+			throw this.badRoAckReply(reply.mos.roAck)
 		}
-		throw new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
+		throw this.unknownReply(reply)
 	}
 	/**
 	 * @deprecated getRunningOrder is deprecated, use sendRequestRunningOrder instead
@@ -974,8 +969,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendMetadataReplace(metadata: IMOSRunningOrderBase): Promise<IMOSROAck> {
 		const message = new MosModel.ROMetadataReplace(metadata, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 
 	onRunningOrderStatus(cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>): void {
@@ -1015,7 +1010,7 @@ export class MosDevice implements IMOSDevice {
 			this.strict
 		)
 		const reply = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(reply.mos.roAck, this.strict)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 
 	async sendStoryStatus(status: IMOSStoryStatus): Promise<IMOSROAck> {
@@ -1029,7 +1024,7 @@ export class MosDevice implements IMOSDevice {
 			this.strict
 		)
 		const reply = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(reply.mos.roAck, this.strict)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 	async sendItemStatus(status: IMOSItemStatus): Promise<IMOSROAck> {
 		const message = new MosModel.ROElementStat(
@@ -1045,7 +1040,7 @@ export class MosDevice implements IMOSDevice {
 			this.strict
 		)
 		const reply = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(reply.mos.roAck, this.strict)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 	onReadyToAir(cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>): void {
 		this.checkProfile('onReadyToAir', 'profile2')
@@ -1061,7 +1056,7 @@ export class MosDevice implements IMOSDevice {
 		)
 
 		const reply = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(reply.mos.roAck, this.strict)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 	onROInsertStories(cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROInsertStories', 'profile2')
@@ -1069,8 +1064,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendROInsertStories(Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> {
 		const message = new MosModel.ROInsertStories(Action, Stories, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 	onROInsertItems(cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROInsertItems', 'profile2')
@@ -1078,8 +1073,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendROInsertItems(Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> {
 		const message = new MosModel.ROInsertItems(Action, Items, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 	onROReplaceStories(cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROReplaceStories', 'profile2')
@@ -1087,8 +1082,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendROReplaceStories(Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> {
 		const message = new MosModel.ROReplaceStories(Action, Stories, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 	onROReplaceItems(cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROReplaceItems', 'profile2')
@@ -1096,8 +1091,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendROReplaceItems(Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> {
 		const message = new MosModel.ROReplaceItems(Action, Items, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 	onROMoveStories(cb: (Action: IMOSStoryAction, Stories: Array<IMOSString128>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROMoveStories', 'profile2')
@@ -1105,8 +1100,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendROMoveStories(Action: IMOSStoryAction, Stories: Array<IMOSString128>): Promise<IMOSROAck> {
 		const message = new MosModel.ROMoveStories(Action, Stories, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 	onROMoveItems(cb: (Action: IMOSItemAction, Items: Array<IMOSString128>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROMoveItems', 'profile2')
@@ -1114,8 +1109,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendROMoveItems(Action: IMOSItemAction, Items: Array<IMOSString128>): Promise<IMOSROAck> {
 		const message = new MosModel.ROMoveItems(Action, Items, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 	onRODeleteStories(cb: (Action: IMOSROAction, Stories: Array<IMOSString128>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onRODeleteStories', 'profile2')
@@ -1123,8 +1118,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendRODeleteStories(Action: IMOSROAction, Stories: Array<IMOSString128>): Promise<IMOSROAck> {
 		const message = new MosModel.RODeleteStories(Action, Stories, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 	onRODeleteItems(cb: (Action: IMOSStoryAction, Items: Array<IMOSString128>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onRODeleteItems', 'profile2')
@@ -1132,8 +1127,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendRODeleteItems(Action: IMOSStoryAction, Items: Array<IMOSString128>): Promise<IMOSROAck> {
 		const message = new MosModel.RODeleteItems(Action, Items, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 	onROSwapStories(
 		cb: (Action: IMOSROAction, StoryID0: IMOSString128, StoryID1: IMOSString128) => Promise<IMOSROAck>
@@ -1147,8 +1142,8 @@ export class MosDevice implements IMOSDevice {
 		StoryID1: IMOSString128
 	): Promise<IMOSROAck> {
 		const message = new MosModel.ROSwapStories(Action, StoryID0, StoryID1, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 	onROSwapItems(
 		cb: (Action: IMOSStoryAction, ItemID0: IMOSString128, ItemID1: IMOSString128) => Promise<IMOSROAck>
@@ -1158,8 +1153,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendROSwapItems(Action: IMOSStoryAction, ItemID0: IMOSString128, ItemID1: IMOSString128): Promise<IMOSROAck> {
 		const message = new MosModel.ROSwapItems(Action, ItemID0, ItemID1, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 
 	// ============================================================================================================
@@ -1172,8 +1167,8 @@ export class MosDevice implements IMOSDevice {
 
 	async sendObjectCreate(object: IMOSObject): Promise<IMOSAck> {
 		const message = new MosModel.MosObjCreate(object, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosAck.fromXML(data.mos.mosAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML(reply.mos.mosAck, strict))
 	}
 
 	onItemReplace(cb: (roID: IMOSString128, storyID: IMOSString128, item: IMOSItem) => Promise<IMOSROAck>): void {
@@ -1183,8 +1178,8 @@ export class MosDevice implements IMOSDevice {
 
 	async sendItemReplace(options: MosItemReplaceOptions): Promise<IMOSROAck> {
 		const message = new MosModel.MosItemReplace(options, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 
 	onRequestSearchableSchema(cb: (username: string) => Promise<IMOSListSearchableSchema>): void {
@@ -1194,8 +1189,8 @@ export class MosDevice implements IMOSDevice {
 
 	async sendRequestSearchableSchema(username: string): Promise<IMOSListSearchableSchema> {
 		const message = new MosModel.MosReqSearchableSchema({ username }, this.strict)
-		const response = await this.executeCommand(message)
-		return response.mos.mosListSearchableSchema
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply(() => reply.mos.mosListSearchableSchema)
 	}
 
 	onRequestObjectList(cb: (objList: IMOSRequestObjectList) => Promise<IMOSObjectList>): void {
@@ -1205,10 +1200,13 @@ export class MosDevice implements IMOSDevice {
 
 	async sendRequestObjectList(reqObjList: IMOSRequestObjectList): Promise<IMOSObjectList> {
 		const message = new MosModel.MosReqObjList(reqObjList, this.strict)
-		const response = await this.executeCommand(message)
-		const objList = response.mos.mosObjList
-		if (objList.list) objList.list = MosModel.XMLMosObjects.fromXML(objList.list.mosObj, this.strict)
-		return objList
+		const reply = await this.executeCommand(message)
+
+		return this.handleParseReply((strict) => {
+			const objList = reply.mos.mosObjList
+			if (objList.list) objList.list = MosModel.XMLMosObjects.fromXML(objList.list.mosObj, strict)
+			return objList
+		})
 	}
 
 	onRequestObjectActionNew(cb: (obj: IMOSObject) => Promise<IMOSAck>): void {
@@ -1217,8 +1215,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendRequestObjectActionNew(obj: IMOSObject): Promise<IMOSAck> {
 		const message = new MosModel.MosReqObjActionNew({ object: obj }, this.strict)
-		const response = await this.executeCommand(message)
-		return MosModel.XMLMosAck.fromXML(response.mos.mosAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML(reply.mos.mosAck, strict))
 	}
 
 	onRequestObjectActionUpdate(cb: (objId: IMOSString128, obj: IMOSObject) => Promise<IMOSAck>): void {
@@ -1227,8 +1225,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendRequestObjectActionUpdate(objId: IMOSString128, obj: IMOSObject): Promise<IMOSAck> {
 		const message = new MosModel.MosReqObjActionUpdate({ object: obj, objectId: objId }, this.strict)
-		const response = await this.executeCommand(message)
-		return MosModel.XMLMosAck.fromXML(response.mos.mosAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML(reply.mos.mosAck, strict))
 	}
 	onRequestObjectActionDelete(cb: (objId: IMOSString128) => Promise<IMOSAck>): void {
 		this.checkProfile('onRequestObjectActionDelete', 'profile3')
@@ -1236,8 +1234,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendRequestObjectActionDelete(objId: IMOSString128): Promise<IMOSAck> {
 		const message = new MosModel.MosReqObjActionDelete({ objectId: objId }, this.strict)
-		const response = await this.executeCommand(message)
-		return MosModel.XMLMosAck.fromXML(response.mos.mosAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML(reply.mos.mosAck, strict))
 	}
 
 	// Deprecated methods:
@@ -1291,17 +1289,19 @@ export class MosDevice implements IMOSDevice {
 		if (this._currentConnection) {
 			const reply = await this.executeCommand(message)
 
-			if (has(reply.mos, 'roListAll')) {
-				let xmlRos: Array<any> = reply.mos.roListAll?.ro
-				if (!Array.isArray(xmlRos)) xmlRos = [xmlRos]
-				const ros: Array<IMOSRunningOrderBase> = []
-				xmlRos.forEach((xmlRo) => {
-					if (xmlRo) {
-						ros.push(MosModel.XMLRunningOrderBase.fromXML(xmlRo, this.strict))
-					}
-				})
-				return ros
-			} else throw new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
+			return this.handleParseReply((strict) => {
+				if (has(reply.mos, 'roListAll')) {
+					let xmlRos: Array<any> = reply.mos.roListAll?.ro
+					if (!Array.isArray(xmlRos)) xmlRos = [xmlRos]
+					const ros: Array<IMOSRunningOrderBase> = []
+					xmlRos.forEach((xmlRo) => {
+						if (xmlRo) {
+							ros.push(MosModel.XMLRunningOrderBase.fromXML(xmlRo, strict))
+						}
+					})
+					return ros
+				} else throw this.unknownReply(reply)
+			})
 		} else throw new Error(`Unable to send message due to no current connection`)
 	}
 	onRunningOrderStory(cb: (story: IMOSROFullStory) => Promise<IMOSROAck>): void {
@@ -1310,8 +1310,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	async sendRunningOrderStory(story: IMOSROFullStory): Promise<IMOSROAck> {
 		const message = new MosModel.ROStory(story, this.strict)
-		const data = await this.executeCommand(message)
-		return MosModel.XMLMosROAck.fromXML(data.mos.roAck, this.strict)
+		const reply = await this.executeCommand(message)
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
 	}
 
 	// Deprecated methods:
@@ -1419,6 +1419,38 @@ export class MosDevice implements IMOSDevice {
 	}
 	private _emitConnectionChange(): void {
 		if (this._callbackOnConnectionChange) this._callbackOnConnectionChange(this.getConnectionStatus())
+	}
+	private handleParseReply<T>(fcn: (strict: boolean) => T): T {
+		try {
+			return fcn(this.strict)
+		} catch (orgError) {
+			let nonStrictReturnValue: any = undefined
+			if (this.strict) {
+				// Try again in non-strict mode, to append a sidecar to the thrown error if possible:
+				try {
+					nonStrictReturnValue = fcn(false)
+				} catch (e2) {
+					// ignore error
+					nonStrictReturnValue = undefined
+				}
+			}
+			throw new MosReplyError(orgError, nonStrictReturnValue)
+		}
+	}
+	private unknownReply(reply: MosReply) {
+		return new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
+	}
+	private badRoAckReply(xmlRoAck: AnyXML) {
+		try {
+			const roAck = MosModel.XMLMosROAck.fromXML(xmlRoAck, this.strict)
+			return new Error(
+				`Reply: ${this.mosTypes.mosString128.stringify(
+					roAck.Status
+				)}, ID: ${this.mosTypes.mosString128.stringify(roAck.ID)}`
+			)
+		} catch (e) {
+			return new Error(`Reply: Unparsable reply: ${safeStringify(xmlRoAck).slice(0, 200)}`)
+		}
 	}
 	/** throws if there is an error */
 	private _ensureReply(reply: any): MosReply {

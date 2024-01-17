@@ -20,41 +20,36 @@ export function create(timestamp: AnyValue, strict: boolean): IMOSTime {
 		if (typeof timestamp === 'number') {
 			time = new Date(timestamp)
 		} else if (typeof timestamp === 'string') {
-			if (timestamp.trim()) {
-				// formats:
-				// YYYY-MM-DD'T'hh:mm:ss[,ddd]['Z']
-				// Sun Feb 25 2018 08:59:08 GMT+0100 (CET)
-				// 2018-02-25T08:00:45.528Z
+			// formats:
+			// YYYY-MM-DD'T'hh:mm:ss[,ddd]['Z']
+			// Sun Feb 25 2018 08:59:08 GMT+0100 (CET)
+			// 2018-02-25T08:00:45.528Z
 
-				let _timezoneZuluIndicator = ''
-				let _timezoneDeclaration = ''
+			let _timezoneZuluIndicator = ''
+			let _timezoneDeclaration = ''
 
-				// parse out custom Z indicator (mos-centric)
-				const customFormatParseResult = parseMosCustomFormat(timestamp)
-				// parse out custom timezones (mos local-local centric format)
-				const timezoneParseResult = parseTimeOffset(timestamp)
+			// parse out custom Z indicator (mos-centric)
+			const customFormatParseResult = parseMosCustomFormat(timestamp)
+			// parse out custom timezones (mos local-local centric format)
+			const timezoneParseResult = parseTimeOffset(timestamp)
 
-				if (customFormatParseResult !== false) {
-					_timezone = customFormatParseResult.timezoneIndicator
-					_timezoneOffset = customFormatParseResult.timezoneOffset
-					_timezoneZuluIndicator = customFormatParseResult.timezoneIndicator
+			if (customFormatParseResult !== false) {
+				_timezone = customFormatParseResult.timezoneIndicator
+				_timezoneOffset = customFormatParseResult.timezoneOffset
+				_timezoneZuluIndicator = customFormatParseResult.timezoneIndicator
 
-					const r = customFormatParseResult
-					const dateStr = `${r.yy}-${r.mm}-${r.dd}T${r.hh}:${r.ii}:${r.ss}${
-						r.ms ? '.' + r.ms : ''
-					}${_timezoneZuluIndicator}${_timezoneDeclaration}`
-					time = new Date(dateStr)
-				} else if (timezoneParseResult !== false) {
-					_timezoneDeclaration = timezoneParseResult.timezoneDeclaration
+				const r = customFormatParseResult
+				const dateStr = `${r.yy}-${r.mm}-${r.dd}T${r.hh}:${r.ii}:${r.ss}${
+					r.ms ? '.' + r.ms : ''
+				}${_timezoneZuluIndicator}${_timezoneDeclaration}`
+				time = new Date(dateStr)
+			} else if (timezoneParseResult !== false) {
+				_timezoneDeclaration = timezoneParseResult.timezoneDeclaration
 
-					time = new Date(timestamp)
-				} else {
-					// try to parse the time directly with Date, for Date-supported formats
-					time = new Date(timestamp)
-				}
+				time = new Date(timestamp)
 			} else {
-				// empty string, create Date now:
-				time = new Date()
+				// try to parse the time directly with Date, for Date-supported formats
+				time = new Date(timestamp)
 			}
 		} else if (typeof timestamp === 'object') {
 			if (timestamp instanceof Date) {
@@ -68,8 +63,7 @@ export function create(timestamp: AnyValue, strict: boolean): IMOSTime {
 			throw new Error(`MosTime: Invalid input: "${timestamp}"`)
 		}
 	} else {
-		// no timestamp, create Date now:
-		time = new Date()
+		throw new Error(`MosTime: Invalid input: "${timestamp}"`)
 	}
 
 	if (isNaN(time.getTime())) {
@@ -122,6 +116,15 @@ export function is(mosTime: IMOSTime | any): mosTime is IMOSTime {
 		(mosTime as IMOSTime)._timezone !== undefined &&
 		(mosTime as IMOSTime)._timezoneOffset !== undefined
 	)
+}
+export function fallback(): IMOSTime {
+	const iMosTime: IMOSTime = {
+		_mosTime: 0,
+		_timezone: '',
+		_timezoneOffset: 0,
+	} as IMOSTime
+	validate(iMosTime, true)
+	return iMosTime
 }
 
 function parseTimeOffset(timestamp: string): false | { timeOffsetValue: number; timezoneDeclaration: string } {

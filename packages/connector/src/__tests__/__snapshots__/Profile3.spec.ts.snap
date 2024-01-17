@@ -47,6 +47,7 @@ exports[`Profile 3 mosItemReplace 2`] = `
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
+      "fallback": [Function],
       "is": [Function],
       "stringify": [Function],
       "validate": [Function],
@@ -54,6 +55,7 @@ exports[`Profile 3 mosItemReplace 2`] = `
     },
     "mosString128": {
       "create": [Function],
+      "fallback": [Function],
       "is": [Function],
       "stringify": [Function],
       "validate": [Function],
@@ -61,6 +63,7 @@ exports[`Profile 3 mosItemReplace 2`] = `
     },
     "mosTime": {
       "create": [Function],
+      "fallback": [Function],
       "is": [Function],
       "stringify": [Function],
       "validate": [Function],
@@ -607,19 +610,9 @@ exports[`Profile 3 onMosObjCreate 1`] = `
   [
     {
       "AirStatus": undefined,
-      "Changed": {
-        "_mosTime": 1609459200000,
-        "_timezone": "",
-        "_timezoneOffset": 0,
-      },
-      "ChangedBy": {
-        "_mosString128": "undefined",
-      },
-      "Created": {
-        "_mosTime": 1609459200000,
-        "_timezone": "",
-        "_timezoneOffset": 0,
-      },
+      "Changed": undefined,
+      "ChangedBy": undefined,
+      "Created": undefined,
       "CreatedBy": {
         "_mosString128": "Chris",
       },
@@ -675,7 +668,7 @@ exports[`Profile 3 onMosObjCreate 1`] = `
       "Duration": 1800,
       "Group": "Show 7",
       "ID": {
-        "_mosString128": "undefined",
+        "_mosString128": "",
       },
       "MosAbstract": undefined,
       "MosExternalMetaData": [
@@ -768,19 +761,9 @@ exports[`Profile 3 onMosReqObjectActionNew 1`] = `
   [
     {
       "AirStatus": undefined,
-      "Changed": {
-        "_mosTime": 1609459200000,
-        "_timezone": "",
-        "_timezoneOffset": 0,
-      },
-      "ChangedBy": {
-        "_mosString128": "undefined",
-      },
-      "Created": {
-        "_mosTime": 1609459200000,
-        "_timezone": "",
-        "_timezoneOffset": 0,
-      },
+      "Changed": undefined,
+      "ChangedBy": undefined,
+      "Created": undefined,
       "CreatedBy": {
         "_mosString128": "Chris",
       },
@@ -836,7 +819,7 @@ exports[`Profile 3 onMosReqObjectActionNew 1`] = `
       "Duration": 1800,
       "Group": "Show 7",
       "ID": {
-        "_mosString128": "undefined",
+        "_mosString128": "",
       },
       "MosAbstract": undefined,
       "MosExternalMetaData": [
@@ -898,19 +881,9 @@ exports[`Profile 3 onMosReqObjectActionUpdate 1`] = `
     "1EFA3009233F8329C1",
     {
       "AirStatus": undefined,
-      "Changed": {
-        "_mosTime": 1609459200000,
-        "_timezone": "",
-        "_timezoneOffset": 0,
-      },
-      "ChangedBy": {
-        "_mosString128": "undefined",
-      },
-      "Created": {
-        "_mosTime": 1609459200000,
-        "_timezone": "",
-        "_timezoneOffset": 0,
-      },
+      "Changed": undefined,
+      "ChangedBy": undefined,
+      "Created": undefined,
       "CreatedBy": {
         "_mosString128": "Chris",
       },
