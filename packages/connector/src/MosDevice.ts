@@ -345,14 +345,18 @@ export class MosDevice implements IMOSDevice {
 				},
 			}
 		} else if (data.roStoryMove) {
+			const storyIDs: string[] = Array.isArray(data.roStoryMove.storyID)
+				? (data.roStoryMove.storyID as string[])
+				: [data.roStoryMove.storyID as string]
+
 			data.roElementAction = {
 				roID: data.roStoryMove.roID,
 				operation: 'MOVE',
 				element_target: {
-					storyID: data.roStoryMove.storyID[1],
+					storyID: storyIDs[1],
 				},
 				element_source: {
-					storyID: data.roStoryMove.storyID[0],
+					storyID: storyIDs[0],
 				},
 			}
 		} else if (data.roStorySwap) {
