@@ -32,26 +32,6 @@ exports[`Profile 2 deprecated messages roItemDelete 1`] = `
 exports[`Profile 2 deprecated messages roItemDelete: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1667</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos> 1`] = `
-"<mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>1667</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos>"
-`;
-
-exports[`Profile 2 deprecated messages roItemDelete: <mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
   <messageID>1670</messageID>
   <roAck>
     <roID>runningOrderId</roID>
@@ -134,26 +114,6 @@ exports[`Profile 2 deprecated messages roItemInsert 1`] = `
 exports[`Profile 2 deprecated messages roItemInsert: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1664</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos> 1`] = `
-"<mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>1664</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos>"
-`;
-
-exports[`Profile 2 deprecated messages roItemInsert: <mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
   <messageID>1667</messageID>
   <roAck>
     <roID>runningOrderId</roID>
@@ -201,26 +161,6 @@ exports[`Profile 2 deprecated messages roItemMoveMultiple 1`] = `
     ],
   ],
 ]
-`;
-
-exports[`Profile 2 deprecated messages roItemMoveMultiple: <mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>1666</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos> 1`] = `
-"<mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>1666</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos>"
 `;
 
 exports[`Profile 2 deprecated messages roItemMoveMultiple: <mos>
@@ -303,26 +243,6 @@ exports[`Profile 2 deprecated messages roItemReplace 1`] = `
     ],
   ],
 ]
-`;
-
-exports[`Profile 2 deprecated messages roItemReplace: <mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>1665</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos> 1`] = `
-"<mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>1665</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos>"
 `;
 
 exports[`Profile 2 deprecated messages roItemReplace: <mos>
@@ -496,26 +416,6 @@ exports[`Profile 2 deprecated messages roStoryDelete 1`] = `
     ],
   ],
 ]
-`;
-
-exports[`Profile 2 deprecated messages roStoryDelete: <mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>1662</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos> 1`] = `
-"<mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>1662</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos>"
 `;
 
 exports[`Profile 2 deprecated messages roStoryDelete: <mos>
@@ -839,26 +739,6 @@ exports[`Profile 2 deprecated messages roStoryMoveMultiple with single storyId: 
 exports[`Profile 2 deprecated messages roStoryMoveMultiple: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1663</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos> 1`] = `
-"<mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>1663</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos>"
-`;
-
-exports[`Profile 2 deprecated messages roStoryMoveMultiple: <mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
   <messageID>1665</messageID>
   <roAck>
     <roID>runningOrderId</roID>
@@ -1035,26 +915,6 @@ exports[`Profile 2 deprecated messages roStorySwap 1`] = `
     },
   ],
 ]
-`;
-
-exports[`Profile 2 deprecated messages roStorySwap: <mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>1661</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos> 1`] = `
-"<mos>
-  <ncsID>their.mos.id</ncsID>
-  <mosID>our.mos.id</mosID>
-  <messageID>1661</messageID>
-  <roAck>
-    <roID>runningOrderId</roID>
-    <roStatus>OK</roStatus>
-  </roAck>
-</mos>"
 `;
 
 exports[`Profile 2 deprecated messages roStorySwap: <mos>
