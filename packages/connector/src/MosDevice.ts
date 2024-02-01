@@ -378,20 +378,25 @@ export class MosDevice implements IMOSDevice {
 					storyID: data.roStoryDelete.storyID,
 				},
 			}
-		} else if (data.roStoryMoveMultiple && data.roStoryMoveMultiple.storyID.length > 1) {
-			const l = data.roStoryMoveMultiple.storyID.length
+		} else if (data.roStoryMoveMultiple && data.roStoryMoveMultiple.storyID) {
+			const stories: string[] = Array.isArray(data.roStoryMoveMultiple.storyID)
+				? (data.roStoryMoveMultiple.storyID as string[])
+				: [data.roStoryMoveMultiple.storyID as string]
 
-			const target = data.roStoryMoveMultiple.storyID[l - 1]
-			const sources = data.roStoryMoveMultiple.storyID.slice(0, l - 1)
+			// An aditional validation checking the length of stories can be added
+			const l = stories.length
+
+			const target = stories[l - 1]
+			const sources = stories.slice(0, l - 1)
 
 			data.roElementAction = {
 				roID: data.roStoryMoveMultiple.roID,
 				operation: 'MOVE',
 				element_target: {
-					storyID: target,
+					storyID: l === 1 ? undefined : target,
 				},
 				element_source: {
-					storyID: sources,
+					storyID: l === 1 ? stories : sources,
 				},
 			}
 		} else if (data.roItemInsert) {
@@ -429,21 +434,26 @@ export class MosDevice implements IMOSDevice {
 					itemID: data.roItemDelete.itemID,
 				},
 			}
-		} else if (data.roItemMoveMultiple && data.roItemMoveMultiple.itemID.length > 1) {
-			const l = data.roItemMoveMultiple.itemID.length
+		} else if (data.roItemMoveMultiple && data.roItemMoveMultiple.itemID && data.roItemMoveMultiple.storyID) {
+			const items: string[] = Array.isArray(data.roItemMoveMultiple.itemID)
+				? (data.roItemMoveMultiple.itemID as string[])
+				: [data.roItemMoveMultiple.itemID as string]
 
-			const target = data.roItemMoveMultiple.itemID[l - 1]
-			const sources = data.roItemMoveMultiple.itemID.slice(0, l - 1)
+			// An aditional validation checking the length of items can be added
+			const l = items.length
+
+			const target = items[l - 1]
+			const sources = items.slice(0, l - 1)
 
 			data.roElementAction = {
 				roID: data.roItemMoveMultiple.roID,
 				operation: 'MOVE',
 				element_target: {
 					storyID: data.roItemMoveMultiple.storyID,
-					itemID: target,
+					itemID: l === 1 ? undefined : target,
 				},
 				element_source: {
-					itemID: sources,
+					itemID: l === 1 ? items : sources,
 				},
 			}
 		}
