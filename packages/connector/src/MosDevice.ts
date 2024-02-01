@@ -345,9 +345,32 @@ export class MosDevice implements IMOSDevice {
 				},
 			}
 		} else if (data.roStoryMove) {
-			const storyIDs: string[] = Array.isArray(data.roStoryMove.storyID)
-				? (data.roStoryMove.storyID as string[])
-				: [data.roStoryMove.storyID as string]
+			// From documentation:
+			// **Note**: If the second <storyID> tag is blank move the story to the bottom of the Running Order.
+
+			let storyIDs: string[]
+
+			if (Array.isArray(data.roStoryMove.storyID)) {
+				storyIDs = data.roStoryMove.storyID
+			} else {
+				if (this.strict) {
+					// The storyID is xml-converted to a string if the second tag is missing.
+					// The spec says that there must be two storyID tags, so we'll throw an error here:
+					return new MosModel.ROAck(
+						{
+							ID: this.mosTypes.mosString128.create(data.roStoryMove.roID),
+							Status: this.mosTypes.mosString128.create(
+								`The second <storyID> tag is missing in <roStoryMove>.`
+							),
+							Stories: [],
+						},
+						this.strict
+					)
+				} else {
+					// Non strict mode: This is technically out of spec, but it's a common mistake, so we'll handle it like so:
+					storyIDs = [data.roStoryMove.storyID as string, '']
+				}
+			}
 
 			data.roElementAction = {
 				roID: data.roStoryMove.roID,

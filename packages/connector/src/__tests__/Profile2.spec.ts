@@ -1170,6 +1170,27 @@ describe('Profile 2', () => {
 			expect(fixSnapshot(onROMoveStories.mock.calls)).toMatchSnapshot()
 			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 		})
+		test('roStoryMove with blank', async () => {
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStoryMove_blank)
+			expect(onROMoveStories).toHaveBeenCalledTimes(1)
+			expect(onROMoveStories.mock.calls[0][0]).toEqual(xmlApiData.roElementAction_roStoryMove_blank_action)
+			expect(onROMoveStories.mock.calls[0][1]).toEqual(xmlApiData.roElementAction_roStoryMove_stories)
+			expect(fixSnapshot(onROMoveStories.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
+		test('roStoryMove - missing second <storyID>', async () => {
+			// Note: from documentation:
+			// https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#roStoryMove
+			// **Note**: If the second <storyID> tag is blank move the story to the bottom of the Running Order.
+
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStoryMove_offspec_missing)
+			expect(onROMoveStories).toHaveBeenCalledTimes(0)
+
+			// This is out of spec:
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>', 'The second', 'tag is missing')
+		})
 		test('roStorySwap', async () => {
 			// Fake incoming message on socket:
 			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySwap)

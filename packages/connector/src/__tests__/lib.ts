@@ -141,7 +141,11 @@ export function decode(data: Buffer): string {
 export function encode(str: string): Buffer {
 	return iconv.encode(str, 'utf16-be')
 }
-export async function checkReplyToServer(socket: SocketMock, messageId: number, replyString: string): Promise<void> {
+export async function checkReplyToServer(
+	socket: SocketMock,
+	messageId: number,
+	...replyStrings: string[]
+): Promise<void> {
 	// check reply to server:
 	await socket.mockWaitForSentMessages()
 
@@ -149,7 +153,9 @@ export async function checkReplyToServer(socket: SocketMock, messageId: number, 
 	// @ts-ignore mock
 	const reply = decode(socket.mockSentMessage.mock.calls[0][0])
 	expect(reply).toContain('<messageID>' + messageId + '</messageID>')
-	expect(reply).toContain(replyString)
+	for (const replyString of Array.isArray(replyStrings) ? replyStrings : [replyStrings]) {
+		expect(reply).toContain(replyString)
+	}
 	expect(reply).toMatchSnapshot(reply)
 }
 export async function getReplyToServer(socket: SocketMock, messageId: number): Promise<any> {
