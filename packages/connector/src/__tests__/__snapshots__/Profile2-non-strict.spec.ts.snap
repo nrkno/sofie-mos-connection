@@ -39,3 +39,43 @@ exports[`Profile 2 - non strict deprecated messages roStoryMove - missing second
   </roAck>
 </mos>"
 `;
+
+exports[`Profile 2 - non strict deprecated messages roStoryMoveMultiple with single storyId 1`] = `
+[
+  [
+    {
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+      "StoryID": {
+        "_mosString128": "",
+      },
+    },
+    [
+      {
+        "_mosString128": "2",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 - non strict deprecated messages roStoryMoveMultiple with single storyId: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1634</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1634</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;

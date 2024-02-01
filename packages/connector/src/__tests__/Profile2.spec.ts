@@ -1219,6 +1219,22 @@ describe('Profile 2', () => {
 			expect(fixSnapshot(onROMoveStories.mock.calls)).toMatchSnapshot()
 			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 		})
+		test('roStoryMoveMultiple with single storyId', async () => {
+			// Fake incoming message on socket:
+			const messageId = await fakeIncomingMessage(
+				serverSocketMockLower,
+				xmlData.roStoryMoveMultiple_single_storyId
+			)
+			expect(onROMoveStories).toHaveBeenCalledTimes(1)
+			expect(onROMoveStories.mock.calls[0][0]).toEqual(
+				xmlApiData.roElementAction_roStoryMoveMultiple_single_storyId_action
+			)
+			expect(onROMoveStories.mock.calls[0][1]).toEqual(
+				xmlApiData.roElementAction_roStoryMoveMultiple_single_storyId_stories
+			)
+			expect(fixSnapshot(onROMoveStories.mock.calls)).toMatchSnapshot()
+			await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+		})
 		test('roItemInsert', async () => {
 			// Fake incoming message on socket:
 			const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roItemInsert)

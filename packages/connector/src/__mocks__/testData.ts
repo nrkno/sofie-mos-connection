@@ -117,6 +117,7 @@ const xmlData = {
 	roStorySwap: `<roStorySwap><roID>5PM</roID>      <storyID>V: BRIDGE COLLAPSE</storyID>      <storyID>P: PHILLIPS INTERVIEW</storyID>   </roStorySwap>  `,
 	roStoryDelete: `<roStoryDelete><roID>5PM</roID>      <storyID>V: BRIDGE COLLAPSE</storyID>      <storyID>P: PHILLIPS INTERVIEW</storyID>   </roStoryDelete>`,
 	roStoryMoveMultiple: `<roStoryMoveMultiple><roID>5PM</roID>            <storyID>2</storyID>            <storyID>3</storyID>            <storyID>5</storyID>            <storyID>6</storyID>            <storyID>1</storyID>      </roStoryMoveMultiple>`,
+	roStoryMoveMultiple_single_storyId: `<roStoryMoveMultiple><roID>5PM</roID>            <storyID>2</storyID> </roStoryMoveMultiple>`,
 	roItemInsert: `<roItemInsert>      <roID>5PM</roID>      <storyID>2597609</storyID>      <itemID>5</itemID>      <item>         <itemID>30848</itemID>         <itemSlug>Hotel Fire vo</itemSlug>         <objID>M00702</objID>         <mosID>testmos</mosID>    <objPaths><objPath techDescription="MPEG2 Video">\\\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>    </objPaths>         <itemEdStart>0</itemEdStart>         <itemEdDur>900</itemEdDur>         <itemUserTimingDur>310</itemUserTimingDur>      </item>      <item>         <itemID>1</itemID>         <itemSlug>Dormitory Fire vo</itemSlug>         <objID>M00705</objID>         <mosID>testmos</mosID>         <itemEdStart>0</itemEdStart>         <itemEdDur>800</itemEdDur>         <itemUserTimingDur>310</itemUserTimingDur>      </item>   </roItemInsert>`,
 	roItemReplace: `<roItemReplace>      <roID>5PM</roID>      <storyID>2597609</storyID>      <itemID>5</itemID>      <item>         <itemID>30848</itemID>         <itemSlug>Hotel Fire vo</itemSlug>         <objID>M00702</objID>         <mosID>testmos</mosID><objPaths><objPath techDescription="MPEG2 Video">\\\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath></objPaths>          <itemEdStart>0</itemEdStart>         <itemEdDur>900</itemEdDur>         <itemUserTimingDur>810</itemUserTimingDur>      </item>      <item>         <itemID>1</itemID>         <itemSlug>Dormitory Fire vo</itemSlug>         <objID>M00705</objID>         <mosID>testmos</mosID>         <itemEdStart>0</itemEdStart>         <itemEdDur>800</itemEdDur>         <itemUserTimingDur>610</itemUserTimingDur>      </item>   </roItemReplace>`,
 	roItemMoveMultiple: `<roItemMoveMultiple><roID>5PM</roID>            <storyID>Barn Fire</storyID>            <itemID>2</itemID>            <itemID>3</itemID>            <itemID>5</itemID>            <itemID>6</itemID>            <itemID>1</itemID>      </roItemMoveMultiple>  `,
@@ -1552,6 +1553,18 @@ const xmlApiData = {
 		mosTypes.mosString128.create('5'),
 		mosTypes.mosString128.create('6'),
 	],
+	// Thechnically a no-op, but if reading the docs literally...:
+	roElementAction_roStoryMoveMultiple_single_storyId_action: literal<IMOSStoryAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create('2'),
+	}),
+	roElementAction_roStoryMoveMultiple_single_storyId_stories: [],
+	// Assuming that the single storyId is the story to be moved:
+	roElementAction_roStoryMoveMultiple_single_storyId_offspec_action: literal<IMOSStoryAction>({
+		RunningOrderID: mosTypes.mosString128.create('5PM'),
+		StoryID: mosTypes.mosString128.create(''),
+	}),
+	roElementAction_roStoryMoveMultiple_single_storyId_offspec_stories: [mosTypes.mosString128.create('2')],
 	roElementAction_roItemInsert_action: literal<IMOSItemAction>({
 		RunningOrderID: mosTypes.mosString128.create('5PM'),
 		StoryID: mosTypes.mosString128.create('2597609'),

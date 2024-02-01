@@ -406,20 +406,57 @@ export class MosDevice implements IMOSDevice {
 				? (data.roStoryMoveMultiple.storyID as string[])
 				: [data.roStoryMoveMultiple.storyID as string]
 
-			// An aditional validation checking the length of stories can be added
-			const l = stories.length
+			{
+				// From documentation:
+				// Validation: Duplicate storyIDs are not permitted with in the storyID list.
+				// This prevents the move from being ambiguous; if two IDs are the same, it is unclear
+				// where in the playlist the story with duplicate ID must be placed.
+				const uniqueStoryIds = new Set<string>()
+				for (const storyId of stories) {
+					if (uniqueStoryIds.has(storyId))
+						return new MosModel.ROAck(
+							{
+								ID: this.mosTypes.mosString128.create(data.roStoryMoveMultiple.roID),
+								Status: this.mosTypes.mosString128.create(
+									`Duplicate storyIDs are not permitted with in the storyID list.`
+								),
+								Stories: [],
+							},
+							this.strict
+						)
+					uniqueStoryIds.add(storyId)
+				}
+			}
 
-			const target = stories[l - 1]
-			const sources = stories.slice(0, l - 1)
+			let target: string
+			let sources: string[]
+
+			if (stories.length > 1) {
+				target = stories[stories.length - 1]
+				sources = stories.slice(0, stories.length - 1)
+			} else {
+				if (this.strict) {
+					// Technically a no-op:
+					target = stories[0]
+					sources = []
+				} else {
+					// Handling of edge-case:
+					// If there is only a single storyId, we assume that the single mentioned story should be moved to the end of the playlist
+					// (ie that there is supposed to be a second, blank storyId that was just omitted by the sender)
+
+					target = ''
+					sources = stories
+				}
+			}
 
 			data.roElementAction = {
 				roID: data.roStoryMoveMultiple.roID,
 				operation: 'MOVE',
 				element_target: {
-					storyID: l === 1 ? undefined : target,
+					storyID: target,
 				},
 				element_source: {
-					storyID: l === 1 ? stories : sources,
+					storyID: sources,
 				},
 			}
 		} else if (data.roItemInsert) {
