@@ -11,6 +11,7 @@ import {
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
+	mosTypes,
 	setupMocks,
 } from './lib'
 import { MosConnection, MosDevice, IMOSObject, IMOSListMachInfo } from '..'
