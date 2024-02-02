@@ -356,4 +356,27 @@ describe('Profile 0', () => {
 
 		expect(String(caughtError)).toMatch(/Unable to parse MOS reply.*listMachInfo.time.*Invalid timestamp/i)
 	})
+
+	test('numeric data', async () => {
+		// Ensure that strings that look like numbers are parsed correctly, and not parsed as numbers
+
+		// Prepare mock server response:
+		const mockReply = jest.fn((data) => {
+			const str = decode(data)
+
+			const replyMessage = xmlData.machineInfo.replace(/<swRev>.*<\/swRev>/, '<swRev>2.10</swRev>')
+
+			const repl = getXMLReply(getMessageId(str), replyMessage)
+			return encode(repl)
+		})
+		socketMockLower.mockAddReply(mockReply)
+		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
+
+		const returnedMachineInfo: IMOSListMachInfo = await mosDevice.requestMachineInfo()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		const msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<reqMachInfo\/>/)
+
+		expect(returnedMachineInfo.swRev).toBe(mosTypes.mosString128.create('2.10'))
+	})
 })
