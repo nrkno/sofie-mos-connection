@@ -887,12 +887,14 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	getConnectionStatus(): IMOSConnectionStatus {
-		// TODO: Implement this
+		const primary = this._primaryConnection && this._primaryConnection.getConnectedStatus()
+		const secondary = this._secondaryConnection && this._secondaryConnection.getConnectedStatus()
+
 		return {
-			PrimaryConnected: this._primaryConnection ? this._primaryConnection.connected : false,
-			PrimaryStatus: '',
-			SecondaryConnected: this._secondaryConnection ? this._secondaryConnection.connected : false,
-			SecondaryStatus: '',
+			PrimaryConnected: primary ? primary.connected : false,
+			PrimaryStatus: primary ? `Primary: ${primary.status}` : 'No primary connection',
+			SecondaryConnected: secondary ? secondary.connected : false,
+			SecondaryStatus: secondary ? `Secondary: ${secondary.status}` : 'No secondary connection',
 		}
 	}
 

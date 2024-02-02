@@ -324,7 +324,7 @@ describe('MosDevice: General', () => {
 
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: true,
-			PrimaryStatus: '', // if not connected this will contain human-readable error-message
+			PrimaryStatus: 'Primary: Connected', // if not connected this will contain human-readable error-message
 			SecondaryConnected: false,
 			// SecondaryStatus: string // if not connected this will contain human-readable error-message
 		})
@@ -399,7 +399,7 @@ describe('MosDevice: General', () => {
 
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: true,
-			PrimaryStatus: '', // if not connected this will contain human-readable error-message
+			PrimaryStatus: 'Primary: Connected', // if not connected this will contain human-readable error-message
 			SecondaryConnected: true,
 			// SecondaryStatus: string // if not connected this will contain human-readable error-message
 		})
@@ -413,9 +413,9 @@ describe('MosDevice: General', () => {
 		await delay(800) // to allow for timeout:
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: false,
-			PrimaryStatus: '', // if not connected this will contain human-readable error-message
+			PrimaryStatus: 'Primary: No heartbeats on port lower', // if not connected this will contain human-readable error-message
 			SecondaryConnected: true,
-			SecondaryStatus: '', // if not connected this will contain human-readable error-message
+			SecondaryStatus: 'Secondary: Connected', // if not connected this will contain human-readable error-message
 		})
 
 		expect(errorReported).toHaveBeenCalledTimes(1)
@@ -495,9 +495,9 @@ describe('MosDevice: General', () => {
 
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: false,
-			PrimaryStatus: '', // if not connected this will contain human-readable error-message
+			PrimaryStatus: 'Primary: No heartbeats on port upper', // if not connected this will contain human-readable error-message
 			SecondaryConnected: true,
-			// SecondaryStatus: string // if not connected this will contain human-readable error-message
+			SecondaryStatus: 'Secondary: Connected', // if not connected this will contain human-readable error-message
 		})
 
 		await mosDevice.requestMachineInfo().catch(() => null) // we don't care what happens, just need to trigger a handover
@@ -513,9 +513,9 @@ describe('MosDevice: General', () => {
 		await delay(800) // to allow for timeout:
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: true,
-			PrimaryStatus: '', // if not connected this will contain human-readable error-message
+			PrimaryStatus: 'Primary: Connected', // if not connected this will contain human-readable error-message
 			SecondaryConnected: true,
-			SecondaryStatus: '', // if not connected this will contain human-readable error-message
+			SecondaryStatus: 'Secondary: Connected', // if not connected this will contain human-readable error-message
 		})
 
 		// expect(errorReported).toHaveBeenCalledTimes(1)

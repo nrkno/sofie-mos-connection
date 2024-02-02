@@ -152,15 +152,34 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		})
 	}
 	get connected(): boolean {
-		if (!this._connected) return false
-		let connected = true
-		Object.keys(this._clients).forEach((key) => {
-			const client = this._clients[key]
+		return this.getConnectedStatus().connected
+	}
+	getConnectedStatus(): {
+		connected: boolean
+		status: string
+	} {
+		if (!this._connected)
+			return {
+				connected: false,
+				status: 'Not connected',
+			}
+		let notConnectedStatus: string | undefined = undefined
+		Object.values<ClientDescription>(this._clients).forEach((client) => {
 			if (client.useHeartbeats && !client.heartbeatConnected) {
-				connected = false
+				notConnectedStatus = `No heartbeats on port ${client.clientDescription}`
 			}
 		})
-		return connected
+		if (!notConnectedStatus) {
+			return {
+				connected: true,
+				status: 'Connected',
+			}
+		} else {
+			return {
+				connected: false,
+				status: notConnectedStatus,
+			}
+		}
 	}
 
 	private _getClients(clientDescription: string): MosSocketClient[] {
