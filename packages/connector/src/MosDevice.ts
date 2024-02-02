@@ -355,14 +355,41 @@ export class MosDevice implements IMOSDevice {
 				},
 			}
 		} else if (data.roStoryMove) {
+			// From documentation:
+			// **Note**: If the second <storyID> tag is blank move the story to the bottom of the Running Order.
+
+			let storyIDs: string[]
+
+			if (Array.isArray(data.roStoryMove.storyID)) {
+				storyIDs = data.roStoryMove.storyID
+			} else {
+				if (this.strict) {
+					// The storyID is xml-converted to a string if the second tag is missing.
+					// The spec says that there must be two storyID tags, so we'll throw an error here:
+					return new MosModel.ROAck(
+						{
+							ID: this.mosTypes.mosString128.create(data.roStoryMove.roID),
+							Status: this.mosTypes.mosString128.create(
+								`The second <storyID> tag is missing in <roStoryMove>.`
+							),
+							Stories: [],
+						},
+						this.strict
+					)
+				} else {
+					// Non strict mode: This is technically out of spec, but it's a common mistake, so we'll handle it like so:
+					storyIDs = [data.roStoryMove.storyID as string, '']
+				}
+			}
+
 			data.roElementAction = {
 				roID: data.roStoryMove.roID,
 				operation: 'MOVE',
 				element_target: {
-					storyID: data.roStoryMove.storyID[1],
+					storyID: storyIDs[1],
 				},
 				element_source: {
-					storyID: data.roStoryMove.storyID[0],
+					storyID: storyIDs[0],
 				},
 			}
 		} else if (data.roStorySwap) {
@@ -384,11 +411,53 @@ export class MosDevice implements IMOSDevice {
 					storyID: data.roStoryDelete.storyID,
 				},
 			}
-		} else if (data.roStoryMoveMultiple && data.roStoryMoveMultiple.storyID.length > 1) {
-			const l = data.roStoryMoveMultiple.storyID.length
+		} else if (data.roStoryMoveMultiple && data.roStoryMoveMultiple.storyID) {
+			const stories: string[] = Array.isArray(data.roStoryMoveMultiple.storyID)
+				? (data.roStoryMoveMultiple.storyID as string[])
+				: [data.roStoryMoveMultiple.storyID as string]
 
-			const target = data.roStoryMoveMultiple.storyID[l - 1]
-			const sources = data.roStoryMoveMultiple.storyID.slice(0, l - 1)
+			{
+				// From documentation:
+				// Validation: Duplicate storyIDs are not permitted with in the storyID list.
+				// This prevents the move from being ambiguous; if two IDs are the same, it is unclear
+				// where in the playlist the story with duplicate ID must be placed.
+				const uniqueStoryIds = new Set<string>()
+				for (const storyId of stories) {
+					if (uniqueStoryIds.has(storyId))
+						return new MosModel.ROAck(
+							{
+								ID: this.mosTypes.mosString128.create(data.roStoryMoveMultiple.roID),
+								Status: this.mosTypes.mosString128.create(
+									`Duplicate storyIDs are not permitted with in the storyID list.`
+								),
+								Stories: [],
+							},
+							this.strict
+						)
+					uniqueStoryIds.add(storyId)
+				}
+			}
+
+			let target: string
+			let sources: string[]
+
+			if (stories.length > 1) {
+				target = stories[stories.length - 1]
+				sources = stories.slice(0, stories.length - 1)
+			} else {
+				if (this.strict) {
+					// Technically a no-op:
+					target = stories[0]
+					sources = []
+				} else {
+					// Handling of edge-case:
+					// If there is only a single storyId, we assume that the single mentioned story should be moved to the end of the playlist
+					// (ie that there is supposed to be a second, blank storyId that was just omitted by the sender)
+
+					target = ''
+					sources = stories
+				}
+			}
 
 			data.roElementAction = {
 				roID: data.roStoryMoveMultiple.roID,
@@ -435,21 +504,26 @@ export class MosDevice implements IMOSDevice {
 					itemID: data.roItemDelete.itemID,
 				},
 			}
-		} else if (data.roItemMoveMultiple && data.roItemMoveMultiple.itemID.length > 1) {
-			const l = data.roItemMoveMultiple.itemID.length
+		} else if (data.roItemMoveMultiple && data.roItemMoveMultiple.itemID && data.roItemMoveMultiple.storyID) {
+			const items: string[] = Array.isArray(data.roItemMoveMultiple.itemID)
+				? (data.roItemMoveMultiple.itemID as string[])
+				: [data.roItemMoveMultiple.itemID as string]
 
-			const target = data.roItemMoveMultiple.itemID[l - 1]
-			const sources = data.roItemMoveMultiple.itemID.slice(0, l - 1)
+			// An aditional validation checking the length of items can be added
+			const l = items.length
+
+			const target = items[l - 1]
+			const sources = items.slice(0, l - 1)
 
 			data.roElementAction = {
 				roID: data.roItemMoveMultiple.roID,
 				operation: 'MOVE',
 				element_target: {
 					storyID: data.roItemMoveMultiple.storyID,
-					itemID: target,
+					itemID: l === 1 ? undefined : target,
 				},
 				element_source: {
-					itemID: sources,
+					itemID: l === 1 ? items : sources,
 				},
 			}
 		}

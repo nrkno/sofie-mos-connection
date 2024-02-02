@@ -32,7 +32,7 @@ exports[`Profile 2 deprecated messages roItemDelete 1`] = `
 exports[`Profile 2 deprecated messages roItemDelete: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1667</messageID>
+  <messageID>1670</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -41,7 +41,7 @@ exports[`Profile 2 deprecated messages roItemDelete: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1667</messageID>
+  <messageID>1670</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -114,7 +114,7 @@ exports[`Profile 2 deprecated messages roItemInsert 1`] = `
 exports[`Profile 2 deprecated messages roItemInsert: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1664</messageID>
+  <messageID>1667</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -123,7 +123,7 @@ exports[`Profile 2 deprecated messages roItemInsert: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1664</messageID>
+  <messageID>1667</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -166,7 +166,7 @@ exports[`Profile 2 deprecated messages roItemMoveMultiple 1`] = `
 exports[`Profile 2 deprecated messages roItemMoveMultiple: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1666</messageID>
+  <messageID>1669</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -175,7 +175,7 @@ exports[`Profile 2 deprecated messages roItemMoveMultiple: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1666</messageID>
+  <messageID>1669</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -248,7 +248,7 @@ exports[`Profile 2 deprecated messages roItemReplace 1`] = `
 exports[`Profile 2 deprecated messages roItemReplace: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1665</messageID>
+  <messageID>1668</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -257,7 +257,7 @@ exports[`Profile 2 deprecated messages roItemReplace: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1665</messageID>
+  <messageID>1668</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -421,7 +421,7 @@ exports[`Profile 2 deprecated messages roStoryDelete 1`] = `
 exports[`Profile 2 deprecated messages roStoryDelete: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1662</messageID>
+  <messageID>1664</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -430,7 +430,7 @@ exports[`Profile 2 deprecated messages roStoryDelete: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1662</messageID>
+  <messageID>1664</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -571,6 +571,26 @@ exports[`Profile 2 deprecated messages roStoryInsert: <mos>
 </mos>"
 `;
 
+exports[`Profile 2 deprecated messages roStoryMove - missing second <storyID>: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1662</messageID>
+  <roAck>
+    <roID>5PM</roID>
+    <roStatus>The second &lt;storyID&gt; tag is missing in &lt;roStoryMove&gt;.</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1662</messageID>
+  <roAck>
+    <roID>5PM</roID>
+    <roStatus>The second &lt;storyID&gt; tag is missing in &lt;roStoryMove&gt;.</roStatus>
+  </roAck>
+</mos>"
+`;
+
 exports[`Profile 2 deprecated messages roStoryMove 1`] = `
 [
   [
@@ -589,6 +609,46 @@ exports[`Profile 2 deprecated messages roStoryMove 1`] = `
     ],
   ],
 ]
+`;
+
+exports[`Profile 2 deprecated messages roStoryMove with blank 1`] = `
+[
+  [
+    {
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+      "StoryID": {
+        "_mosString128": "",
+      },
+    },
+    [
+      {
+        "_mosString128": "V: BRIDGE COLLAPSE",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roStoryMove with blank: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1661</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1661</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
 `;
 
 exports[`Profile 2 deprecated messages roStoryMove: <mos>
@@ -640,10 +700,26 @@ exports[`Profile 2 deprecated messages roStoryMoveMultiple 1`] = `
 ]
 `;
 
-exports[`Profile 2 deprecated messages roStoryMoveMultiple: <mos>
+exports[`Profile 2 deprecated messages roStoryMoveMultiple with single storyId 1`] = `
+[
+  [
+    {
+      "RunningOrderID": {
+        "_mosString128": "5PM",
+      },
+      "StoryID": {
+        "_mosString128": "2",
+      },
+    },
+    [],
+  ],
+]
+`;
+
+exports[`Profile 2 deprecated messages roStoryMoveMultiple with single storyId: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1663</messageID>
+  <messageID>1666</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -652,7 +728,27 @@ exports[`Profile 2 deprecated messages roStoryMoveMultiple: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1663</messageID>
+  <messageID>1666</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
+exports[`Profile 2 deprecated messages roStoryMoveMultiple: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1665</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1665</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -824,7 +920,7 @@ exports[`Profile 2 deprecated messages roStorySwap 1`] = `
 exports[`Profile 2 deprecated messages roStorySwap: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1661</messageID>
+  <messageID>1663</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
@@ -833,7 +929,7 @@ exports[`Profile 2 deprecated messages roStorySwap: <mos>
 "<mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>
-  <messageID>1661</messageID>
+  <messageID>1663</messageID>
   <roAck>
     <roID>runningOrderId</roID>
     <roStatus>OK</roStatus>
