@@ -3,78 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.7...v4.0.0) (2024-02-02)
+
+### Bug Fixes
+
+- change how data fields is parsed, better handling of missing data. ([bf4a084](https://github.com/nrkno/sofie-mos-connection/commit/bf4a0845a7f836015aa452db45c023debef94480))
+- revert mosTime support of empty string. ([cfc036f](https://github.com/nrkno/sofie-mos-connection/commit/cfc036f5c2604ae193bc2d683e02ad2a9d6bb477))
+
 ## [3.0.7](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.6...v3.0.7) (2023-12-27)
 
 **Note:** Version bump only for package @mos-connection/model
 
-
-
-
-
 ## [3.0.5](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.4...3.0.5) (2023-12-18)
-
 
 ### Bug Fixes
 
-* Handle empty MOS time string ([85fbc88](https://github.com/nrkno/sofie-mos-connection/commit/85fbc886d7b577db07bece23efc53f6058a92a43))
-
-
-
-
+- Handle empty MOS time string ([85fbc88](https://github.com/nrkno/sofie-mos-connection/commit/85fbc886d7b577db07bece23efc53f6058a92a43))
 
 ## [3.0.4](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.1...v3.0.4) (2023-06-09)
 
 **Note:** Version bump only for package @mos-connection/model
 
-
-
-
-
 ## [3.0.2](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.1...v3.0.2) (2023-03-27)
 
 **Note:** Version bump only for package @mos-connection/model
-
-
-
-
 
 # [3.0.0](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.0-alpha.3...v3.0.0) (2023-02-03)
 
 **Note:** Version bump only for package @mos-connection/model
 
-
-
-
-
 # [3.0.0-alpha.3](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.0-alpha.2...v3.0.0-alpha.3) (2023-01-27)
 
 **Note:** Version bump only for package @mos-connection/model
 
-
-
-
-
 # [3.0.0-alpha.2](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.0-alpha.0...v3.0.0-alpha.2) (2023-01-27)
-
 
 ### Bug Fixes
 
-* add stringifyMosObject, an utility-function used to convert objects containing IMOSString128 etc to strings ([f3806ab](https://github.com/nrkno/sofie-mos-connection/commit/f3806ab4e72a02b450e91ab19fbbfca34c605caa))
-
-
-
-
+- add stringifyMosObject, an utility-function used to convert objects containing IMOSString128 etc to strings ([f3806ab](https://github.com/nrkno/sofie-mos-connection/commit/f3806ab4e72a02b450e91ab19fbbfca34c605caa))
 
 # [3.0.0-alpha.1](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.0-alpha.0...3.0.0-alpha.1) (2023-01-27)
 
-
 ### Bug Fixes
 
-* add stringifyMosObject, an utility-function used to convert objects containing IMOSString128 etc to strings ([f3806ab](https://github.com/nrkno/sofie-mos-connection/commit/f3806ab4e72a02b450e91ab19fbbfca34c605caa))
-
-
-
-
+- add stringifyMosObject, an utility-function used to convert objects containing IMOSString128 etc to strings ([f3806ab](https://github.com/nrkno/sofie-mos-connection/commit/f3806ab4e72a02b450e91ab19fbbfca34c605caa))
 
 # [v3.0.0-alpha.0](https://github.com/nrkno/sofie-mos-connection/compare/2.0.1...v3.0.0-alpha.0) (2022-12-09)
 

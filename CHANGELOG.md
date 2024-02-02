@@ -3,6 +3,43 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/nrkno/tv-automation-mos-connection/compare/v3.0.7...v4.0.0) (2024-02-02)
+
+### ⚠ BREAKING CHANGES
+
+- Changes to `mosDevice.sendRequestAllMOSObjects()`. MosObjects are now returned to the `mosDevice.onMOSObjects()` callback.
+
+**Migration guide:**
+
+```typescript
+// Before:
+const mosObjs = await mosDevice.sendRequestAllMOSObjects()
+
+// After:
+mosDevice.onMOSObjects((mosObjs: IMOSObject[]) => {
+  //
+})
+const ack = await mosDevice.sendRequestAllMOSObjects()
+```
+
+### Bug Fixes
+
+* better handling of non-spec errors. ([4b1f97c](https://github.com/nrkno/tv-automation-mos-connection/commit/4b1f97cf4112f465c353b482b35201fcaef9864e))
+* change how data fields is parsed, better handling of missing data. ([bf4a084](https://github.com/nrkno/tv-automation-mos-connection/commit/bf4a0845a7f836015aa452db45c023debef94480))
+* connectionStatus now returns textual status, not just empty strings, addressing [#93](https://github.com/nrkno/tv-automation-mos-connection/issues/93) ([23d9b16](https://github.com/nrkno/tv-automation-mos-connection/commit/23d9b161d597223ed750a61dc7d87bacec4def51))
+* revert mosTime support of empty string. ([cfc036f](https://github.com/nrkno/tv-automation-mos-connection/commit/cfc036f5c2604ae193bc2d683e02ad2a9d6bb477))
+* roStoryMove: off-spec support of single storyID tag ([58ff304](https://github.com/nrkno/tv-automation-mos-connection/commit/58ff30429976655b30596181041449b3e8060ff9))
+* roStoryMoveMultiple: handle edge case of single storyID ([4684116](https://github.com/nrkno/tv-automation-mos-connection/commit/46841160704e11e6ac00bcdee0e3bbf828c54393))
+
+
+### Features
+
+* support for receiving Profile 1 <mosObj> and <mosListAll> messages. ([786710a](https://github.com/nrkno/tv-automation-mos-connection/commit/786710ad1d71015b76dc7e01cdc7a286a02c96a4))
+
+
+
+
+
 ## [3.0.7](https://github.com/nrkno/tv-automation-mos-connection/compare/v3.0.6...v3.0.7) (2023-12-27)
 
 
