@@ -542,6 +542,367 @@ exports[`Profile 1 onRequestMOSObject 2`] = `
 }
 `;
 
+exports[`Profile 1 receive mosListAll 1`] = `
+[
+  [
+    [
+      {
+        "AirStatus": undefined,
+        "Changed": {
+          "_mosTime": 1257086155000,
+          "_timezone": "Z",
+          "_timezoneOffset": 0,
+        },
+        "ChangedBy": {
+          "_mosString128": "Chris",
+        },
+        "Created": {
+          "_mosTime": 1257032352000,
+          "_timezone": "Z",
+          "_timezoneOffset": 0,
+        },
+        "CreatedBy": {
+          "_mosString128": "Chris",
+        },
+        "Description": {
+          "elements": [
+            {
+              "$name": "p",
+              "$type": "element",
+              "elements": [
+                {
+                  "$type": "text",
+                  "text": "Exterior footage of",
+                },
+                {
+                  "$name": "em",
+                  "$type": "text",
+                  "text": "Baley Park Hotel",
+                },
+                {
+                  "$type": "text",
+                  "text": "on fire with natural sound. Trucks are visible for the first portion of the clip.",
+                },
+                {
+                  "$name": "em",
+                  "$type": "text",
+                  "text": "CG locator at 0:04 and duration 0:05, Baley Park Hotel.",
+                },
+              ],
+            },
+            {
+              "$name": "p",
+              "$type": "element",
+              "elements": [
+                {
+                  "$name": "tab",
+                  "$type": "element",
+                },
+                {
+                  "$type": "text",
+                  "text": "Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.",
+                },
+              ],
+            },
+            {
+              "$name": "p",
+              "$type": "element",
+              "em": "Clip has been doubled for pad on voice over.",
+            },
+          ],
+        },
+        "Duration": undefined,
+        "Group": undefined,
+        "ID": {
+          "_mosString128": "M000123",
+        },
+        "MosAbstract": undefined,
+        "Paths": [
+          {
+            "Description": "MPEG2 Video",
+            "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
+            "Type": "PATH",
+          },
+          {
+            "Description": "WM9 750Kbps",
+            "Target": "https://server/proxy/clipe.wmv",
+            "Type": "PROXY PATH",
+          },
+          {
+            "Description": "MOS Object",
+            "Target": "https://server/proxy/clipe.xml",
+            "Type": "METADATA PATH",
+          },
+        ],
+        "Revision": undefined,
+        "Slug": {
+          "_mosString128": "HOTEL FIRE",
+        },
+        "Status": undefined,
+        "TimeBase": undefined,
+        "Type": undefined,
+      },
+      {
+        "AirStatus": "READY",
+        "Changed": {
+          "_mosTime": 1257088875000,
+          "_timezone": "Z",
+          "_timezoneOffset": 0,
+        },
+        "ChangedBy": {
+          "_mosString128": "Chris",
+        },
+        "Created": {
+          "_mosTime": 1257088741000,
+          "_timezone": "Z",
+          "_timezoneOffset": 0,
+        },
+        "CreatedBy": {
+          "_mosString128": "Phil",
+        },
+        "Description": "VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.",
+        "Duration": 800,
+        "Group": undefined,
+        "ID": {
+          "_mosString128": "M000224",
+        },
+        "MosAbstract": undefined,
+        "MosExternalMetaData": [
+          {
+            "MosPayload": {
+              "Approved": 0,
+              "Creator": "SHOLMES",
+              "ModBy": "LJOHNSTON",
+              "ModTime": 20010308142001,
+              "Owner": "SHOLMES",
+              "TextTime": 278,
+              "mediaTime": 0,
+              "text": 0,
+            },
+            "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+            "MosScope": "STORY",
+          },
+        ],
+        "Paths": [
+          {
+            "Description": "MPEG2 Video",
+            "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
+            "Type": "PATH",
+          },
+          {
+            "Description": "WM9 750Kbps",
+            "Target": "https://server/proxy/clipe.wmv",
+            "Type": "PROXY PATH",
+          },
+          {
+            "Description": "MOS Object",
+            "Target": "https://server/proxy/clipe.xml",
+            "Type": "METADATA PATH",
+          },
+        ],
+        "Revision": 4,
+        "Slug": {
+          "_mosString128": "COLSTAT MURDER:VO",
+        },
+        "Status": "UPDATED",
+        "TimeBase": 59.94,
+        "Type": "VIDEO",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 1 receive mosListAll 2`] = `
+{
+  "mos": {
+    "messageID": {
+      "_text": 1636,
+    },
+    "mosAck": {
+      "objID": {},
+      "objRev": {
+        "_text": 1,
+      },
+      "status": {
+        "_text": "ACK",
+      },
+      "statusDescription": {},
+    },
+    "mosID": {
+      "_text": "our.mos.id",
+    },
+    "ncsID": {
+      "_text": "their.mos.id",
+    },
+  },
+}
+`;
+
+exports[`Profile 1 receive mosObj 1`] = `
+[
+  [
+    [
+      {
+        "AirStatus": "READY",
+        "Changed": {
+          "_mosTime": 1257032352000,
+          "_timezone": "Z",
+          "_timezoneOffset": 0,
+        },
+        "ChangedBy": {
+          "_mosString128": "Chris",
+        },
+        "Created": {
+          "_mosTime": 1257032352000,
+          "_timezone": "Z",
+          "_timezoneOffset": 0,
+        },
+        "CreatedBy": {
+          "_mosString128": "Chris",
+        },
+        "Description": {
+          "elements": [
+            {
+              "$name": "p",
+              "$type": "element",
+              "elements": [
+                {
+                  "$type": "text",
+                  "text": "Exterior footage of",
+                },
+                {
+                  "$name": "em",
+                  "$type": "text",
+                  "text": "Baley Park Hotel",
+                },
+                {
+                  "$type": "text",
+                  "text": "on fire with natural sound. Trucks are visible for the first portion of the clip.",
+                },
+                {
+                  "$name": "em",
+                  "$type": "text",
+                  "text": "CG locator at 0:04 and duration 0:05, Baley Park Hotel.",
+                },
+              ],
+            },
+            {
+              "$name": "p",
+              "$type": "element",
+              "elements": [
+                {
+                  "$name": "tab",
+                  "$type": "element",
+                },
+                {
+                  "$type": "text",
+                  "text": "Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.",
+                },
+              ],
+            },
+            {
+              "$name": "p",
+              "$type": "element",
+              "em": "Clip has been doubled for pad on voice over.",
+            },
+          ],
+        },
+        "Duration": 1800,
+        "Group": "Show 7",
+        "ID": {
+          "_mosString128": "M000123",
+        },
+        "MosAbstract": {
+          "elements": [
+            {
+              "$name": "b",
+              "$type": "text",
+              "text": "Hotel Fire",
+            },
+            {
+              "$name": "em",
+              "$type": "text",
+              "text": "vo",
+            },
+            {
+              "$type": "text",
+              "text": ":30",
+            },
+          ],
+        },
+        "MosExternalMetaData": [
+          {
+            "MosPayload": {
+              "Approved": 0,
+              "Creator": "SHOLMES",
+              "ModBy": "LJOHNSTON",
+              "ModTime": 20010308142001,
+              "Owner": "SHOLMES",
+              "TextTime": 278,
+              "mediaTime": 0,
+              "text": 0,
+            },
+            "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+            "MosScope": "STORY",
+          },
+        ],
+        "Paths": [
+          {
+            "Description": "MPEG2 Video",
+            "Target": "\\server\\media\\clip392028cd2320s0d.mxf",
+            "Type": "PATH",
+          },
+          {
+            "Description": "WM9 750Kbps",
+            "Target": "https://server/proxy/clipe.wmv",
+            "Type": "PROXY PATH",
+          },
+          {
+            "Description": "MOS Object",
+            "Target": "https://server/proxy/clipe.xml",
+            "Type": "METADATA PATH",
+          },
+        ],
+        "Revision": 1,
+        "Slug": {
+          "_mosString128": "Hotel Fire",
+        },
+        "Status": "NEW",
+        "TimeBase": 59.94,
+        "Type": "VIDEO",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`Profile 1 receive mosObj 2`] = `
+{
+  "mos": {
+    "messageID": {
+      "_text": 1635,
+    },
+    "mosAck": {
+      "objID": {},
+      "objRev": {
+        "_text": 1,
+      },
+      "status": {
+        "_text": "ACK",
+      },
+      "statusDescription": {},
+    },
+    "mosID": {
+      "_text": "our.mos.id",
+    },
+    "ncsID": {
+      "_text": "their.mos.id",
+    },
+  },
+}
+`;
+
 exports[`Profile 1 sendMOSObject 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>

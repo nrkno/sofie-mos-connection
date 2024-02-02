@@ -117,7 +117,10 @@ test('api & exports', () => {
 			f = function (cb: () => Promise<Array<IMOSObject>>): void {
 				return mosDevice.onRequestAllMOSObjects(cb)
 			}
-			f = function (): Promise<Array<IMOSObject>> {
+			f = function (cb: (objs: IMOSObject[]) => Promise<IMOSAck>): void {
+				return mosDevice.onMOSObjects(cb)
+			}
+			f = function (): Promise<IMOSAck> {
 				return mosDevice.sendRequestAllMOSObjects()
 			}
 
