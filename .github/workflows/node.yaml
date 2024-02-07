@@ -76,6 +76,8 @@ jobs:
           CI: true
       - name: Send coverage
         uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   validate-dependencies:
     name: Validate production dependencies
