@@ -273,7 +273,7 @@ export interface IMOSListMachInfo {
 	mosRev: IMOSString128
 
 	supportedProfiles: {
-		deviceType: 'NCS' | 'MOS'
+		deviceType: 'NCS' | 'MOS' | 'N/A'
 		profile0?: boolean
 		profile1?: boolean
 		profile2?: boolean
