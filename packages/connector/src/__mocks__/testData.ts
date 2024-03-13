@@ -59,6 +59,18 @@ const xmlData = {
 	<mosProfile number="7">YES</mosProfile>
 	</supportedProfiles>
 	</listMachInfo>`,
+	machineInfoOpenMedia: `<listMachInfo>
+	<manufacturer>Annova</manufacturer>
+	<model>1</model>
+	<hwRev>1</hwRev>
+	<swRev>1</swRev>
+	<DOM>1</DOM>
+	<SN>1</SN>
+	<ID>NCS.ID.MOS</ID>
+	<time></time>
+	<opTime></opTime>
+	<mosRev>2.84</mosRev>
+	</listMachInfo>`,
 	reqObj: `<mosReqObj>		<objID>M000123</objID>		 </mosReqObj>`,
 	mosReqAll: `<mosReqAll>		 <pause>0</pause>		  </mosReqAll>`,
 	mosObj: `<mosObj>	<objID>M000123</objID>	<objSlug>Hotel Fire</objSlug>	<mosAbstract>		<b>Hotel Fire</b>		<em>vo</em>		:30	</mosAbstract>	<objGroup>Show 7</objGroup>	<objType>VIDEO</objType>	<objTB>59.94</objTB>	<objRev>1</objRev>	<objDur>1800</objDur>	<status>NEW</status>	<objAir>READY</objAir><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>	<createdBy>Chris</createdBy>	<created>2009-10-31T23:39:12</created>	<changedBy>Chris</changedBy>	<changed>2009-10-31T23:39:12</changed>	<description>		<p>		  Exterior footage of		  <em>Baley Park Hotel</em>			on fire with natural sound. Trucks are visible for the first portion of the clip.		  <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>		</p>		<p>		  <tab/>		  Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.		</p>		<p>		  <em>Clip has been doubled for pad on voice over.</em>		</p>	</description>	<mosExternalMetadata>		<mosScope>STORY</mosScope>		<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>		<mosPayload>		  <Owner>SHOLMES</Owner>		  <ModTime>20010308142001</ModTime>		  <mediaTime>0</mediaTime>		  <TextTime>278</TextTime>		  <ModBy>LJOHNSTON</ModBy>		  <Approved>0</Approved>		  <Creator>SHOLMES</Creator>		</mosPayload>	</mosExternalMetadata></mosObj>`,
@@ -514,6 +526,22 @@ const xmlApiData = {
 			profile5: true,
 			profile6: true,
 			profile7: true,
+		},
+	}),
+	machineInfoOpenMediaReply: literal<IMOSListMachInfo>({
+		manufacturer: mosTypes.mosString128.create('Annova'),
+		model: mosTypes.mosString128.create('1'),
+		hwRev: mosTypes.mosString128.create('1'),
+		swRev: mosTypes.mosString128.create('1'),
+		DOM: mosTypes.mosString128.create('1'),
+		SN: mosTypes.mosString128.create('1'),
+		ID: mosTypes.mosString128.create('NCS.ID.MOS'),
+		time: mosTypes.mosTime.create('0'),
+		opTime: mosTypes.mosTime.create('0'),
+		mosRev: mosTypes.mosString128.create('2.84'),
+
+		supportedProfiles: {
+			deviceType: 'N/A',
 		},
 	}),
 	mosObj: literal<IMOSObject>({
