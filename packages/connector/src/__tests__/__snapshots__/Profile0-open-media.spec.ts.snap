@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Profile 0 - non strict requestMachineInfo - empty <time> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <reqMachInfo/>
+</mos>"
+`;
+
+exports[`Profile 0 - non strict requestMachineInfo - missing <opTime> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <reqMachInfo/>
+</mos>"
+`;
+
+exports[`Profile 0 - non strict requestMachineInfo - missing <time> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <reqMachInfo/>
+</mos>"
+`;

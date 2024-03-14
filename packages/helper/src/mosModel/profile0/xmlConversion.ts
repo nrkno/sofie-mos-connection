@@ -95,7 +95,7 @@ function parseSupportedProfiles(xmlSupportedProfiles: any, strict: boolean): IMO
 		}
 	}
 
-	if (Array.isArray(xmlSupportedProfiles.mosProfile)) {
+	if (Array.isArray(xmlSupportedProfiles?.mosProfile)) {
 		for (const mosProfile of xmlSupportedProfiles.mosProfile) {
 			// @ts-expect-error hack
 			parsed[`profile${mosProfile.attributes.number}`] = mosProfile.text === 'YES'

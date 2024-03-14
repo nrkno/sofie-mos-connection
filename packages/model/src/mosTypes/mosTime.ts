@@ -56,6 +56,8 @@ export function create(timestamp: AnyValue, strict: boolean): IMOSTime {
 				time = timestamp
 			} else if (timestamp?._mosTime !== undefined) {
 				time = new Date(timestamp._mosTime)
+			} else if (!strict) {
+				time = new Date()
 			} else {
 				throw new Error(`MosTime: Invalid input: "${timestamp}"`)
 			}
