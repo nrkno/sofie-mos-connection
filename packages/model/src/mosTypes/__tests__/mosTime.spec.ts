@@ -12,6 +12,16 @@ describe('MosTime', () => {
 		expect(() => mosTypes.mosTime.validate(mosTime)).not.toThrowError()
 		// @ts-expect-error wrong input, but still:
 		expect(mosTypes.mosTime.valueOf(123456)).toBe(123456)
+
+		const nonStrictMosTypes = getMosTypes(false)
+		// @ts-expect-error wrong input, but happens when using OpenMedia MOS:
+		const newTime = nonStrictMosTypes.mosTime.create({})
+		newTime._mosTime = 1710748094984
+		expect(newTime).toStrictEqual({
+			_mosTime: 1710748094984,
+			_timezone: '',
+			_timezoneOffset: 0,
+		})
 	})
 	test('is', () => {
 		const mosTypes = getMosTypes(true)
