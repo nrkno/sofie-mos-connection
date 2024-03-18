@@ -8,6 +8,7 @@ import {
 	getMosConnection,
 	getMosDevice,
 	getXMLReply,
+	nonStrictMosTypes,
 	setupMocks,
 } from './lib'
 import { MosConnection, MosDevice, IMOSObject, IMOSListMachInfo } from '..'
@@ -122,8 +123,8 @@ describe('Profile 0 - non strict', () => {
 		checkMessageSnapshot(msg)
 
 		const replyMessage = { ...xmlApiData.machineInfoOpenMediaReply }
-		replyMessage.time = returnedMachineInfo.time
-		replyMessage.opTime = returnedMachineInfo.opTime
+		replyMessage.time = nonStrictMosTypes.mosTime.fallback()
+		replyMessage.opTime = undefined
 
 		expect(returnedMachineInfo).toMatchObject(replyMessage)
 		// expect(returnedMachineInfo.opTime).toBeUndefined()
@@ -147,8 +148,8 @@ describe('Profile 0 - non strict', () => {
 		checkMessageSnapshot(msg)
 
 		const replyMessage = { ...xmlApiData.machineInfoOpenMediaReply }
-		replyMessage.time = returnedMachineInfo.time
-		replyMessage.opTime = returnedMachineInfo.opTime
+		replyMessage.time = nonStrictMosTypes.mosTime.fallback()
+		replyMessage.opTime = undefined
 
 		expect(returnedMachineInfo).toMatchObject(replyMessage)
 		// expect(returnedMachineInfo.opTime).toBeUndefined()
@@ -191,8 +192,8 @@ describe('Profile 0 - non strict', () => {
 		checkMessageSnapshot(msg)
 
 		const replyMessage = { ...xmlApiData.machineInfoOpenMediaReply }
-		replyMessage.opTime = returnedMachineInfo.opTime
-		replyMessage.time = returnedMachineInfo.time
+		replyMessage.opTime = undefined
+		replyMessage.time = nonStrictMosTypes.mosTime.fallback()
 
 		expect(returnedMachineInfo).toMatchObject(replyMessage)
 		expect(returnedMachineInfo.opTime).toBeUndefined()
