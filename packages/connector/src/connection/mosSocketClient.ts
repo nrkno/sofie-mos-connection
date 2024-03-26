@@ -20,6 +20,7 @@ export class MosSocketClient extends EventEmitter {
 	private _reconnectDelay = 3000
 	private _reconnectAttempts = 0
 	private _debug: boolean
+	private _strict: boolean
 
 	private _description: string
 	private _client: Socket | undefined
@@ -48,13 +49,14 @@ export class MosSocketClient extends EventEmitter {
 	private messageParser: MosMessageParser
 
 	/** */
-	constructor(host: string, port: number, description: string, timeout: number, debug: boolean) {
+	constructor(host: string, port: number, description: string, timeout: number, debug: boolean, strict: boolean) {
 		super()
 		this._host = host
 		this._port = port
 		this._description = description
 		this._commandTimeout = timeout || DEFAULT_COMMAND_TIMEOUT
 		this._debug = debug ?? false
+		this._strict = strict ?? false
 
 		this.messageParser = new MosMessageParser(description)
 		this.messageParser.debug = this._debug

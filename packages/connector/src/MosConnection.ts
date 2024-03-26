@@ -82,7 +82,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			this._conf.mosID,
 			connectionOptions.primary.timeout,
 			connectionOptions.primary.heartbeatInterval,
-			this._debug
+			this._debug,
+			this.mosTypes.strict
 		)
 		let secondary = null
 		this._ncsConnections[connectionOptions.primary.host] = primary
@@ -128,7 +129,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				this._conf.mosID,
 				connectionOptions.secondary.timeout,
 				connectionOptions.secondary.heartbeatInterval,
-				this._debug
+				this._debug,
+				this.mosTypes.strict
 			)
 			this._ncsConnections[connectionOptions.secondary.host] = secondary
 			secondary.on('rawMessage', (type: string, message: string) => {
@@ -459,7 +461,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 						this._conf.mosID,
 						undefined,
 						undefined,
-						this._debug
+						this._debug,
+						this.mosTypes.strict
 					)
 					this._ncsConnections[remoteAddress] = primary
 
