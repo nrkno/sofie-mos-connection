@@ -392,7 +392,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 
 	private _handleMessage(parsedData: any, messageString: string) {
-		const messageId = parsedData.mos.messageID
+		const messageId = this._getMessageId(parsedData, messageString)
 		if (messageId) {
 			const sentMessage = this._sentMessage || this._lingeringMessage
 			if (sentMessage) {
@@ -442,6 +442,29 @@ export class MosSocketClient extends EventEmitter {
 		// this._readyToSendMessage = true
 		this.processQueue()
 	}
+
+	private _getMessageId(parsedData : any, messageString: string): string | undefined{
+        let messageId = parsedData.mos.messageID;
+
+        if(!messageId){
+			if(this._strict){
+				this.debugTrace(`Reply with no messageId: ${messageString}. Try non-strict mode.`)
+			}
+			else{
+				if(this._sentMessage && this._sentMessage.msg.toString().search("<heartbeat>") >= 0 && parsedData.mos.heartbeat){  
+					messageId = this._sentMessage.msg.messageID
+				}
+				else if(this._sentMessage && this._sentMessage.msg.toString().search("<reqMachInfo/>") >= 0 && parsedData.mos.listMachInfo  ){
+					messageId = this._sentMessage.msg.messageID
+				}
+				else{
+					this.debugTrace(`Invalid reply with no messageId in non-strict mode: ${messageString}`)
+				}
+			}
+        }
+
+        return messageId
+    }
 
 	/** */
 	private _onError(error: Error) {
