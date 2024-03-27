@@ -2,6 +2,8 @@ import {
 	checkMessageSnapshot,
 	clearMocks,
 	decode,
+	DEFAULT_TIMEOUT,
+	delay,
 	doBeforeAll,
 	encode,
 	getMessageId,
@@ -104,6 +106,41 @@ describe('Profile 0 - non strict', () => {
 		expect(socketMockUpper).toBeTruthy()
 		expect(serverSocketMockLower).toBeTruthy()
 	})
+	test('send heartbeats - no messageId', async () => {
+		socketMockLower.setAutoReplyToHeartBeat(false) // Handle heartbeat manually
+		socketMockUpper.setAutoReplyToHeartBeat(false) // Handle heartbeat manually
+
+		const heartbeatCount = {
+			upper: 0,
+			lower: 0,
+		}
+
+		const mockReply = (portType: 'upper' | 'lower') => {
+			return (data: any) => {
+				const str = decode(data)
+
+				if (str.match(/<heartbeat/)) {
+					const repl = getXMLReply('', xmlData.heartbeat)
+					heartbeatCount[portType]++
+					return encode(repl)
+				} else throw new Error('Mock: Unhandled message: ' + str)
+			}
+		}
+
+		for (let i = 0; i < 100; i++) {
+			socketMockUpper.mockAddReply(mockReply('upper'))
+			socketMockLower.mockAddReply(mockReply('lower'))
+		}
+
+		// During this time, there should have been sent a few heartbeats to the server:
+		await delay(DEFAULT_TIMEOUT * 4.5)
+		expect(heartbeatCount.upper).toBeGreaterThanOrEqual(4)
+		expect(heartbeatCount.lower).toBeGreaterThanOrEqual(4)
+		expect(mosDevice.getConnectionStatus()).toMatchObject({ PrimaryConnected: true })
+
+		socketMockLower.setAutoReplyToHeartBeat(true) // reset
+		socketMockUpper.setAutoReplyToHeartBeat(true) // reset
+	})
 	test('requestMachineInfo - missing <time>', async () => {
 		// Prepare mock server response:
 		const mockReply = jest.fn((data) => {
@@ -135,6 +172,28 @@ describe('Profile 0 - non strict', () => {
 			const messageID = getMessageId(str)
 			const replyMessage = xmlData.machineInfo.replace(/<time>.*<\/time>/, '<time></time>')
 			const repl = getXMLReply(messageID, replyMessage)
+			return encode(repl)
+		})
+		socketMockLower.mockAddReply(mockReply)
+		if (!xmlApiData.mosObj.ID) throw new Error('xmlApiData.mosObj.ID not set')
+
+		const returnedMachineInfo: IMOSListMachInfo = await mosDevice.requestMachineInfo()
+		expect(mockReply).toHaveBeenCalledTimes(1)
+		const msg = decode(mockReply.mock.calls[0][0])
+		expect(msg).toMatch(/<reqMachInfo\/>/)
+		checkMessageSnapshot(msg)
+
+		const replyMessage = { ...xmlApiData.machineInfoReply }
+		replyMessage.time = mosTypes.mosTime.fallback()
+
+		expect(returnedMachineInfo).toMatchObject(replyMessage)
+		// expect(returnedMachineInfo.opTime).toBeUndefined()
+	})
+	test('requestMachineInfo - empty <time>, no messageId', async () => {
+		// Prepare mock server response:
+		const mockReply = jest.fn((_data) => {
+			const replyMessage = xmlData.machineInfo.replace(/<time>.*<\/time>/, '<time></time>')
+			const repl = getXMLReply('', replyMessage)
 			return encode(repl)
 		})
 		socketMockLower.mockAddReply(mockReply)

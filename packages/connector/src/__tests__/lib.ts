@@ -120,6 +120,8 @@ export function getXMLReply(
 	ourMosId?: string,
 	theirMosId?: string
 ): string {
+	//add field only if messageId exist
+	if(messageId) messageId = '<messageID>' + messageId + '</messageID>'
 	return (
 		'<mos>' +
 		'<mosID>' +
@@ -128,9 +130,7 @@ export function getXMLReply(
 		'<ncsID>' +
 		(theirMosId || 'their.mos.id') +
 		'</ncsID>' +
-		'<messageID>' +
 		messageId +
-		'</messageID>' +
 		content +
 		'</mos>\r\n'
 	)
