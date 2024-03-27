@@ -443,28 +443,33 @@ export class MosSocketClient extends EventEmitter {
 		this.processQueue()
 	}
 
-	private _getMessageId(parsedData : any, messageString: string): string | undefined{
-        let messageId = parsedData.mos.messageID;
+	private _getMessageId(parsedData: any, messageString: string): string | undefined {
+		let messageId = parsedData.mos.messageID
 
-        if(!messageId){
-			if(this._strict){
+		if (!messageId) {
+			if (this._strict) {
 				this.debugTrace(`Reply with no messageId: ${messageString}. Try non-strict mode.`)
-			}
-			else{
-				if(this._sentMessage && this._sentMessage.msg.toString().search("<heartbeat>") >= 0 && parsedData.mos.heartbeat){  
+			} else {
+				if (
+					this._sentMessage &&
+					this._sentMessage.msg.toString().search('<heartbeat>') >= 0 &&
+					parsedData.mos.heartbeat
+				) {
 					messageId = this._sentMessage.msg.messageID
-				}
-				else if(this._sentMessage && this._sentMessage.msg.toString().search("<reqMachInfo/>") >= 0 && parsedData.mos.listMachInfo  ){
+				} else if (
+					this._sentMessage &&
+					this._sentMessage.msg.toString().search('<reqMachInfo/>') >= 0 &&
+					parsedData.mos.listMachInfo
+				) {
 					messageId = this._sentMessage.msg.messageID
-				}
-				else{
+				} else {
 					this.debugTrace(`Invalid reply with no messageId in non-strict mode: ${messageString}`)
 				}
 			}
-        }
+		}
 
-        return messageId
-    }
+		return messageId
+	}
 
 	/** */
 	private _onError(error: Error) {
