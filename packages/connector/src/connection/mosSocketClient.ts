@@ -440,8 +440,11 @@ export class MosSocketClient extends EventEmitter {
 
 	private _getMessageId(parsedData: any, messageString: string): string | undefined {
 		// If there is a messageID, just return it:
-		if (typeof parsedData.mos.messageID === 'string' && parsedData.mos.messageID !== '')
-			return parsedData.mos.messageID
+		if (
+			(typeof parsedData.mos.messageID === 'string' || typeof parsedData.mos.messageID === 'number') &&
+			parsedData.mos.messageID !== ''
+		)
+			return `${parsedData.mos.messageID}`
 
 		if (this._strict) {
 			this.debugTrace(`Reply with no messageId: ${messageString}. Try non-strict mode.`)
