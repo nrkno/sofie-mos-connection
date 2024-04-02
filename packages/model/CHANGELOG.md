@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/nrkno/sofie-mos-connection/compare/v4.0.0...v4.1.0) (2024-04-02)
+
+
+### Bug Fixes
+
+* add 'N/A' to supported profiles ([c56007a](https://github.com/nrkno/sofie-mos-connection/commit/c56007a161b034ebe411b9848fa079f684bc9d51))
+* OpenMedia returns an empty object {} as time, will be set as current time instead. ([7a2531a](https://github.com/nrkno/sofie-mos-connection/commit/7a2531afd711f1d62d3bb121592b6f6194c42a91))
+
+
+
+
+
 # [4.0.0](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.7...v4.0.0) (2024-02-02)
 
 ### Bug Fixes

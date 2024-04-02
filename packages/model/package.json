@@ -1,6 +1,6 @@
 {
 	"name": "@mos-connection/model",
-	"version": "4.0.0",
+	"version": "4.1.0",
 	"description": "Types and enums for the mos-connection library",
 	"main": "dist/index.js",
 	"typings": "dist/index.d.ts",

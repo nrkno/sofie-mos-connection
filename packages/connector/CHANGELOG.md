@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/nrkno/sofie-mos-connection/compare/v4.0.0...v4.1.0) (2024-04-02)
+
+
+### Bug Fixes
+
+* add .snap file for open media test ([9bb6825](https://github.com/nrkno/sofie-mos-connection/commit/9bb6825cb2986d3ce3ac90a8c7ef2c7f3a6f5adc))
+* lint fix and Porfile0-non-strict snapsot ([dfbc4c1](https://github.com/nrkno/sofie-mos-connection/commit/dfbc4c1fccf66b717aec16ea033b81e28a68455e))
+
+
+### Features
+
+* add access to stric t value un mosSocketClient ([c85b837](https://github.com/nrkno/sofie-mos-connection/commit/c85b837cbfb0b7b7367f9ca0bf402e70d181930e))
+* add test for opem media ([18362f7](https://github.com/nrkno/sofie-mos-connection/commit/18362f74f2362eac650bddd257e3d2ef391f6c5d))
+* new function _getMessageId to manage when no messageId ([19f8231](https://github.com/nrkno/sofie-mos-connection/commit/19f82311252c9b5e8c1a0ba8b901438c42e3c9d3))
+
+
+
+
+
 # [4.0.0](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.7...v4.0.0) (2024-02-02)
 
 ### ⚠ BREAKING CHANGES

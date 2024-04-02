@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/nrkno/sofie-mos-connection/compare/v4.0.0...v4.1.0) (2024-04-02)
+
+
+### Bug Fixes
+
+* optional on xmlSupportedProfiles as OpemMedia has this undefined ([b0ed480](https://github.com/nrkno/sofie-mos-connection/commit/b0ed48051134c39f105ed15e5c660d2c9819d4ef))
+
+
+
+
+
 # [4.0.0](https://github.com/nrkno/sofie-mos-connection/compare/v3.0.7...v4.0.0) (2024-02-02)
 
 ### Bug Fixes
