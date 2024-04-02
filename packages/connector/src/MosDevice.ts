@@ -411,7 +411,7 @@ export class MosDevice implements IMOSDevice {
 					storyID: data.roStoryDelete.storyID,
 				},
 			}
-		} else if (data.roStoryMoveMultiple && data.roStoryMoveMultiple.storyID) {
+		} else if (data.roStoryMoveMultiple?.storyID) {
 			const stories: string[] = Array.isArray(data.roStoryMoveMultiple.storyID)
 				? (data.roStoryMoveMultiple.storyID as string[])
 				: [data.roStoryMoveMultiple.storyID as string]
@@ -504,7 +504,7 @@ export class MosDevice implements IMOSDevice {
 					itemID: data.roItemDelete.itemID,
 				},
 			}
-		} else if (data.roItemMoveMultiple && data.roItemMoveMultiple.itemID && data.roItemMoveMultiple.storyID) {
+		} else if (data.roItemMoveMultiple?.itemID && data.roItemMoveMultiple?.storyID) {
 			const items: string[] = Array.isArray(data.roItemMoveMultiple.itemID)
 				? (data.roItemMoveMultiple.itemID as string[])
 				: [data.roItemMoveMultiple.itemID as string]
@@ -887,8 +887,8 @@ export class MosDevice implements IMOSDevice {
 	}
 
 	getConnectionStatus(): IMOSConnectionStatus {
-		const primary = this._primaryConnection && this._primaryConnection.getConnectedStatus()
-		const secondary = this._secondaryConnection && this._secondaryConnection.getConnectedStatus()
+		const primary = this._primaryConnection?.getConnectedStatus()
+		const secondary = this._secondaryConnection?.getConnectedStatus()
 
 		return {
 			PrimaryConnected: primary ? primary.connected : false,
@@ -946,7 +946,7 @@ export class MosDevice implements IMOSDevice {
 		this._callbackOnMOSObjects = cb
 	}
 
-	async sendRequestAllMOSObjects(pause?: number): Promise<IMOSAck> {
+	async sendRequestAllMOSObjects(pause = 0): Promise<IMOSAck> {
 		if (typeof this._callbackOnMOSObjects !== 'function') {
 			throw new Error('Cannot sent request, because callback onMOSObjects() is required')
 		}

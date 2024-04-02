@@ -1,7 +1,6 @@
 export * from '@mos-connection/model'
 
 export {
-	pad,
 	xml2js,
 	addTextElement,
 	// not addTextElementInternal

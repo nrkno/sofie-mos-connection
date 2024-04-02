@@ -52,8 +52,8 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		super()
 		this._id = id
 		this._host = host
-		this._timeout = timeout || DEFAULT_COMMAND_TIMEOUT
-		this._heartBeatsInterval = Math.max(heartbeatsInterval || 0, this._timeout)
+		this._timeout = timeout ?? DEFAULT_COMMAND_TIMEOUT
+		this._heartBeatsInterval = Math.max(heartbeatsInterval ?? 0, this._timeout)
 		this._mosID = mosID
 		this._connected = false
 		this._debug = debug ?? false
@@ -118,6 +118,10 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		// if (this._callbackOnConnectionChange) this._callbackOnConnectionChange()
 	}
 
+	/**
+	 * Sends a mos message.
+	 * Returns a Promise which resolves when a MOS reply has been received.
+	 */
 	async executeCommand(message: MosModel.MosMessage): Promise<any> {
 		// Fill with clients
 		let clients: Array<MosSocketClient>
@@ -137,7 +141,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 			throw Error(`No "${message.port}" ports found`)
 		}
 		return new Promise((resolve, reject) => {
-			if (clients && clients.length) {
+			if (clients?.length) {
 				clients[0].queueCommand(message, (err, data) => {
 					if (err) {
 						reject(err)
@@ -146,7 +150,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 					}
 				})
 			} else {
-				reject('executeCommand: No clients found for ' + message.port)
+				reject(new Error('executeCommand: No clients found for ' + message.port))
 			}
 		})
 	}

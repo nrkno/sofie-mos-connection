@@ -29,7 +29,6 @@ export abstract class MosMessage {
 	prepare(messageID?: number): void {
 		if (!this.mosID) throw new Error(`Can't prepare message: mosID missing`)
 		if (!this.ncsID) throw new Error(`Can't prepare message: ncsID missing`)
-		// if (!this.port) throw new Error(`Can't prepare message: port missing`)
 		this._messageID = messageID ? messageID : MosMessage.getNewMessageID()
 	}
 

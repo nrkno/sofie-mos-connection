@@ -33,5 +33,6 @@ describe('Index', () => {
 		expect(typeof MOS.xml2js).toBe('function')
 		expect(MOS.MosModel.XMLMosItem.fromXML).toBeTruthy()
 		expect(MOS.MosModel.XMLMosItem.toXML).toBeTruthy()
+		expect(MOS.pad).toBeTruthy()
 	})
 })

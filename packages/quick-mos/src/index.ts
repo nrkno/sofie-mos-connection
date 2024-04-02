@@ -534,7 +534,7 @@ class MOSMonitor {
 
 			newStories[mosTypes.mosString128.stringify(story.ID)] = story
 
-			const localStory = local && local.fullStories[mosTypes.mosString128.stringify(story.ID)]
+			const localStory = local?.fullStories[mosTypes.mosString128.stringify(story.ID)]
 			if (!local || !_.isEqual(localStory, story)) {
 				this.commands.push(async () => {
 					console.log('sendFullStory', story.ID)

@@ -6,7 +6,7 @@ export { ConnectionConfig } from './config/connectionConfig'
 
 export { MosDevice } from './MosDevice'
 
-// Backwards comppatibility
+// Backwards compatibility
 import { xml2js, pad, addTextElement, xmlToObject } from '@mos-connection/helper'
 export const Utils = {
 	pad,

@@ -121,14 +121,14 @@ export function getXMLReply(
 	theirMosId?: string
 ): string {
 	//add field only if messageId exist
-	if(messageId) messageId = '<messageID>' + messageId + '</messageID>'
+	if (messageId) messageId = '<messageID>' + messageId + '</messageID>'
 	return (
 		'<mos>' +
 		'<mosID>' +
-		(ourMosId || 'our.mos.id') +
+		(ourMosId ?? 'our.mos.id') +
 		'</mosID>' +
 		'<ncsID>' +
-		(theirMosId || 'their.mos.id') +
+		(theirMosId ?? 'their.mos.id') +
 		'</ncsID>' +
 		messageId +
 		content +

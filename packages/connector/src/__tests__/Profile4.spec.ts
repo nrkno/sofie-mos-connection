@@ -106,7 +106,7 @@ describe('Profile 4', () => {
 		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySend)
 		expect(onROStory).toHaveBeenCalledTimes(1)
 
-		const o = Object.assign({}, xmlApiData.roStorySend)
+		const o = { ...xmlApiData.roStorySend }
 		// @ts-ignore optional property
 		delete o.Body
 		expect(onROStory.mock.calls[0][0]).toMatchObject(o)
@@ -134,7 +134,7 @@ describe('Profile 4', () => {
 		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySendSingle)
 		expect(onROStory).toHaveBeenCalledTimes(1)
 
-		const o = Object.assign({}, xmlApiData.roStorySendSingle)
+		const o = { ...xmlApiData.roStorySendSingle }
 		// @ts-ignore optional property
 		delete o.Body
 		expect(onROStory.mock.calls[0][0]).toMatchObject(o)

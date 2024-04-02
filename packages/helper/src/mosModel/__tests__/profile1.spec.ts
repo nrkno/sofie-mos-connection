@@ -135,7 +135,7 @@ ${mosObjForTest0XML}
 </mosReqObj>`)
 	})
 	test('mosReqObjAll', () => {
-		const msg = new ReqMosObjAll(undefined, true)
+		const msg = new ReqMosObjAll(0, true)
 		expect(getXMLString(msg)).toBe(`<mosReqAll>
 <pause>0</pause>
 </mosReqAll>`)

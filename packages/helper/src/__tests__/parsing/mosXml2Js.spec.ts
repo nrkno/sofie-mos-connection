@@ -7,13 +7,13 @@ import { IMOSItem, MosModel, stringifyMosObject } from '../..'
 function parseMosPluginMessageXml(xmlString: string): any | undefined {
 	const doc: any = xml2js(xmlString)
 
-	if (doc && doc.mos) {
+	if (doc?.mos) {
 		const res: any = {}
 		if (doc.mos.ncsReqAppInfo) {
 			res.ncsReqAppInfo = true
 		}
 
-		if (doc.mos.ncsItem && doc.mos.ncsItem.item) {
+		if (doc.mos.ncsItem?.item) {
 			res.item = MosModel.XMLMosItem.fromXML(doc.mos.ncsItem.item, true)
 		}
 

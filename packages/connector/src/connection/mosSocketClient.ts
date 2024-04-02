@@ -54,7 +54,7 @@ export class MosSocketClient extends EventEmitter {
 		this._host = host
 		this._port = port
 		this._description = description
-		this._commandTimeout = timeout || DEFAULT_COMMAND_TIMEOUT
+		this._commandTimeout = timeout ?? DEFAULT_COMMAND_TIMEOUT
 		this._debug = debug ?? false
 		this._strict = strict ?? false
 
@@ -127,7 +127,7 @@ export class MosSocketClient extends EventEmitter {
 		message.prepare()
 		// this.debugTrace('queueing', message.messageID, message.constructor.name )
 		this._queueCallback[message.messageID + ''] = cb
-		this._queueMessages.push({ time: time || Date.now(), msg: message })
+		this._queueMessages.push({ time: time ?? Date.now(), msg: message })
 
 		this.processQueue()
 	}
@@ -245,7 +245,7 @@ export class MosSocketClient extends EventEmitter {
 		}
 		if (this._sentMessageTimeout) {
 			clearTimeout(this._sentMessageTimeout)
-			this._sentMessageTimeout
+			delete this._sentMessageTimeout
 		}
 		if (this._client) {
 			const client = this._client
@@ -310,11 +310,8 @@ export class MosSocketClient extends EventEmitter {
 
 		const sentMessageId = message.msg.messageID
 
-		// this.debugTrace('executeCommand', message)
-		// message.prepare() // @todo, is prepared? is sent already? logic needed
 		const messageString: string = message.msg.toString()
 		const buf = iconv.encode(messageString, 'utf16-be')
-		// this.debugTrace('sending',this._client.name, str)
 
 		const sendTime = Date.now()
 		// Command timeout:
@@ -371,7 +368,6 @@ export class MosSocketClient extends EventEmitter {
 	/** */
 	private _onConnected() {
 		this.emit(SocketConnectionEvent.ALIVE)
-		// global.clearInterval(this._connectionAttemptTimer)
 		this._clearConnectionAttemptTimer()
 		this.connected = true
 	}
@@ -379,7 +375,6 @@ export class MosSocketClient extends EventEmitter {
 	/** */
 	private _onData(data: Buffer) {
 		this.emit(SocketConnectionEvent.ALIVE)
-		// data = Buffer.from(data, 'ucs2').toString()
 		const messageString: string = iconv.decode(data, 'utf16-be')
 
 		this.emit('rawMessage', 'recieved', messageString)

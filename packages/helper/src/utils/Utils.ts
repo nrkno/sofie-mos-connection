@@ -2,13 +2,6 @@ import { xml2js as xmlParser } from 'xml-js'
 import * as XMLBuilder from 'xmlbuilder'
 import { getMosTypes, IMOSDuration, IMOSString128, IMOSTime, stringifyMosType } from '@mos-connection/model'
 
-/** */
-export function pad(n: string, width: number, z?: string): string {
-	z = z || '0'
-	n = n + ''
-	return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n
-}
-
 export function xml2js(messageString: string): { [key: string]: any } {
 	const object = xmlParser(messageString, { compact: false, trim: true, nativeType: true })
 	// common tags we typically want to know the order of the contents of:
@@ -36,7 +29,7 @@ export function xml2js(messageString: string): { [key: string]: any } {
 				concatChildrenAndTraverseObject(element.elements[0])
 
 				const childEl = element.elements[0]
-				const name = childEl.$name || childEl.$type || 'unknownElement'
+				const name = childEl.$name ?? childEl.$type ?? 'unknownElement'
 				if (childEl.$type && childEl.$type === 'text') {
 					if (childEl.$name === undefined) {
 						// pure text node, hoist it up:

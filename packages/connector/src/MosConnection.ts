@@ -13,9 +13,9 @@ import { IConnectionConfig, IMosConnection, IMOSDeviceConnectionOptions } from '
 import { PROFILE_VALIDNESS_CHECK_WAIT_TIME } from './lib'
 
 export class MosConnection extends EventEmitter implements IMosConnection {
-	static CONNECTION_PORT_LOWER = 10540
-	static CONNECTION_PORT_UPPER = 10541
-	static CONNECTION_PORT_QUERY = 10542
+	static readonly CONNECTION_PORT_LOWER = 10540
+	static readonly CONNECTION_PORT_UPPER = 10541
+	static readonly CONNECTION_PORT_QUERY = 10542
 	static _nextSocketID = 0
 
 	public readonly mosTypes: MosTypes

@@ -5,7 +5,7 @@ import { MosMessage } from '../MosMessage'
 export class ReqMosObjAll extends MosMessage {
 	private pause: number
 	/** */
-	constructor(pause = 0, strict: boolean) {
+	constructor(pause: number, strict: boolean) {
 		super('lower', strict)
 		this.pause = pause
 	}

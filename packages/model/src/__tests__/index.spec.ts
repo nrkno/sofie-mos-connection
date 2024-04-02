@@ -2,25 +2,30 @@ import * as MOS from '../index'
 
 describe('Index', () => {
 	test('ensure that types and enums are exposed', () => {
-		let a: any
 		// Type checks:
-		a = (_: MOS.IMOSItem) => null
-		a = (_: MOS.IMOSRunningOrder) => null
-		a = (_: MOS.IMOSRunningOrderBase) => null
-		a = (_: MOS.IMOSRunningOrderStatus) => null
-		a = (_: MOS.IMOSStoryStatus) => null
-		a = (_: MOS.IMOSItemStatus) => null
-		a = (_: MOS.IMOSStoryAction) => null
-		a = (_: MOS.IMOSROStory) => null
-		a = (_: MOS.IMOSItemAction) => null
-		a = (_: MOS.IMOSItem) => null
-		a = (_: MOS.IMOSROAction) => null
-		a = (_: MOS.IMOSROReadyToAir) => null
-		a = (_: MOS.IMOSROFullStory) => null
+		const fcn = (
+			_exposedTypes: [
+				MOS.IMOSItem,
+				MOS.IMOSRunningOrder,
+				MOS.IMOSRunningOrderBase,
+				MOS.IMOSRunningOrderStatus,
+				MOS.IMOSStoryStatus,
+				MOS.IMOSItemStatus,
+				MOS.IMOSStoryAction,
+				MOS.IMOSROStory,
+				MOS.IMOSItemAction,
+				MOS.IMOSItem,
+				MOS.IMOSROAction,
+				MOS.IMOSROReadyToAir,
+				MOS.IMOSROFullStory,
+				MOS.IMOSAck
+			],
+			// @ts-expect-error types test
+			_falsePositiveTest: MOS.ThisDoesNotExist
+		) => null
 
-		// @ts-expect-error types test
-		a = (_: MOS.ThisDoesNotExist) => null
-		if (a) a()
+		// @ts-expect-error
+		fcn()
 
 		expect(MOS.getMosTypes).toBeTruthy()
 
@@ -36,5 +41,8 @@ describe('Index', () => {
 		expect(mosTypes.mosString128).toBeTruthy()
 		expect(mosTypes.mosDuration).toBeTruthy()
 		expect(mosTypes.mosTime).toBeTruthy()
+	})
+	test('ensure that helper functions are exposed', () => {
+		expect(MOS.pad).toBeTruthy()
 	})
 })
