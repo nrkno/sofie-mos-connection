@@ -20,6 +20,7 @@ export class MosSocketClient extends EventEmitter {
 	private _reconnectDelay = 3000
 	private _reconnectAttempts = 0
 	private _debug: boolean
+	private _strict: boolean
 
 	private _description: string
 	private _client: Socket | undefined
@@ -48,13 +49,14 @@ export class MosSocketClient extends EventEmitter {
 	private messageParser: MosMessageParser
 
 	/** */
-	constructor(host: string, port: number, description: string, timeout: number, debug: boolean) {
+	constructor(host: string, port: number, description: string, timeout: number, debug: boolean, strict: boolean) {
 		super()
 		this._host = host
 		this._port = port
 		this._description = description
 		this._commandTimeout = timeout || DEFAULT_COMMAND_TIMEOUT
 		this._debug = debug ?? false
+		this._strict = strict ?? false
 
 		this.messageParser = new MosMessageParser(description)
 		this.messageParser.debug = this._debug
@@ -390,7 +392,7 @@ export class MosSocketClient extends EventEmitter {
 	}
 
 	private _handleMessage(parsedData: any, messageString: string) {
-		const messageId = parsedData.mos.messageID
+		const messageId = this._getMessageId(parsedData, messageString)
 		if (messageId) {
 			const sentMessage = this._sentMessage || this._lingeringMessage
 			if (sentMessage) {
@@ -439,6 +441,42 @@ export class MosSocketClient extends EventEmitter {
 
 		// this._readyToSendMessage = true
 		this.processQueue()
+	}
+
+	private _getMessageId(parsedData: any, messageString: string): string | undefined {
+		// If there is a messageID, just return it:
+		if (typeof parsedData.mos.messageID === 'string' && parsedData.mos.messageID !== '')
+			return parsedData.mos.messageID
+
+		if (this._strict) {
+			this.debugTrace(`Reply with no messageId: ${messageString}. Try non-strict mode.`)
+			return undefined
+		} else {
+			// In non-strict mode: handle special cases:
+
+			// <heartbeat> response doesn't contain messageId (compliant with MOS version 2.8)
+			// we can assume it's the same as our sent message:
+			if (
+				this._sentMessage &&
+				this._sentMessage.msg.toString().search('<heartbeat>') >= 0 &&
+				parsedData.mos.heartbeat
+			) {
+				return `${this._sentMessage.msg.messageID}`
+			}
+
+			// <reqMachInfo> response doesn't contain messageId (compliant with MOS version 2.8)
+			// we can assume it's the same as our sent message:
+			if (
+				this._sentMessage &&
+				this._sentMessage.msg.toString().search('<reqMachInfo/>') >= 0 &&
+				parsedData.mos.listMachInfo
+			) {
+				return `${this._sentMessage.msg.messageID}`
+			} else {
+				this.debugTrace(`Invalid reply with no messageId in non-strict mode: ${messageString}`)
+				return undefined
+			}
+		}
 	}
 
 	/** */
