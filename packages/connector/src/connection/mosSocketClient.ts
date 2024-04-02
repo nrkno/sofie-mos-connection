@@ -444,31 +444,39 @@ export class MosSocketClient extends EventEmitter {
 	}
 
 	private _getMessageId(parsedData: any, messageString: string): string | undefined {
-		let messageId = parsedData.mos.messageID
+		// If there is a messageID, just return it:
+		if (typeof parsedData.mos.messageID === 'string' && parsedData.mos.messageID !== '')
+			return parsedData.mos.messageID
 
-		if (!messageId) {
-			if (this._strict) {
-				this.debugTrace(`Reply with no messageId: ${messageString}. Try non-strict mode.`)
+		if (this._strict) {
+			this.debugTrace(`Reply with no messageId: ${messageString}. Try non-strict mode.`)
+			return undefined
+		} else {
+			// In non-strict mode: handle special cases:
+
+			// <heartbeat> response doesn't contain messageId (compliant with MOS version 2.8)
+			// we can assume it's the same as our sent message:
+			if (
+				this._sentMessage &&
+				this._sentMessage.msg.toString().search('<heartbeat>') >= 0 &&
+				parsedData.mos.heartbeat
+			) {
+				return `${this._sentMessage.msg.messageID}`
+			}
+
+			// <reqMachInfo> response doesn't contain messageId (compliant with MOS version 2.8)
+			// we can assume it's the same as our sent message:
+			if (
+				this._sentMessage &&
+				this._sentMessage.msg.toString().search('<reqMachInfo/>') >= 0 &&
+				parsedData.mos.listMachInfo
+			) {
+				return `${this._sentMessage.msg.messageID}`
 			} else {
-				if (
-					this._sentMessage &&
-					this._sentMessage.msg.toString().search('<heartbeat>') >= 0 &&
-					parsedData.mos.heartbeat
-				) {
-					messageId = this._sentMessage.msg.messageID
-				} else if (
-					this._sentMessage &&
-					this._sentMessage.msg.toString().search('<reqMachInfo/>') >= 0 &&
-					parsedData.mos.listMachInfo
-				) {
-					messageId = this._sentMessage.msg.messageID
-				} else {
-					this.debugTrace(`Invalid reply with no messageId in non-strict mode: ${messageString}`)
-				}
+				this.debugTrace(`Invalid reply with no messageId in non-strict mode: ${messageString}`)
+				return undefined
 			}
 		}
-
-		return messageId
 	}
 
 	/** */
