@@ -59,6 +59,8 @@ describe('MosTime', () => {
 		// @ts-expect-error bad input
 		expect(() => mosTypes.mosTime.create(null)).toThrowError(/Invalid input/)
 		// @ts-expect-error bad input
+		expect(() => mosTypes.mosTime.create(undefined)).toThrowError(/Invalid input/)
+		// @ts-expect-error bad input
 		expect(() => mosTypes.mosTime.create(false)).toThrowError(/Invalid input/)
 
 		// test input format date, number and various strings
