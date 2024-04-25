@@ -536,8 +536,8 @@ const xmlApiData = {
 		DOM: mosTypes.mosString128.create('1'),
 		SN: mosTypes.mosString128.create('1'),
 		ID: mosTypes.mosString128.create('NCS.ID.MOS'),
-		time: mosTypes.mosTime.create(946681200000),
-		opTime: mosTypes.mosTime.create(0),
+		time: mosTypes.mosTime.create(0),
+		opTime: undefined,
 		mosRev: mosTypes.mosString128.create('2.84'),
 
 		supportedProfiles: {
