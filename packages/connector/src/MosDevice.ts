@@ -1539,6 +1539,13 @@ export class MosDevice implements IMOSDevice {
 			throw new Error('Buddy server cannot respond because main server is available')
 		}
 
+		if (
+			reply.mos.roAck &&
+			reply.mos.roAck.roStatus === 'Main server back on line but not yet updated with most recent data'
+		) {
+			throw new Error('Main server back on line but not yet updated with most recent data')
+		}
+
 		if (reply.mos.mosAck && reply.mos.mosAck.status === 'NACK') {
 			throw new Error(`Error in response: ${reply.mos.mosAck.statusDescription || 'No statusDescription given'}`)
 		}
