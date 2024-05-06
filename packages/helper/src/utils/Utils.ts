@@ -10,6 +10,20 @@ export function pad(n: string, width: number, z?: string): string {
 }
 
 export function xml2js(messageString: string): { [key: string]: any } {
+	/**
+	 * objId should be handled as a string, not as a number
+	 * so we need to force it as text in the messageString
+	 * and reconvert it after it has been parsed by xmlParser
+	 * all objects in this set will be forced to be strings:
+	 */
+	const forcedStringObject = new Set(['objId', 'objID'])
+	for (const object of forcedStringObject) {
+		const regex = new RegExp(`<${object}>(.*?)</${object}>`, 'g')
+		messageString = messageString.replace(regex, (_match, p1) => {
+			return `<${object}>_str_${p1}</${object}>`
+		})
+	}
+
 	const object = xmlParser(messageString, { compact: false, trim: true, nativeType: true })
 	// common tags we typically want to know the order of the contents of:
 	const orderedTags = new Set(['storyBody', 'mosAbstract', 'description', 'p', 'em', 'span', 'h1', 'h2', 'i', 'b'])
@@ -37,6 +51,15 @@ export function xml2js(messageString: string): { [key: string]: any } {
 
 				const childEl = element.elements[0]
 				const name = childEl.$name || childEl.$type || 'unknownElement'
+
+				/**
+				 * forcedStringObjects has been forced to be strings, not numbers
+				 * use the original value by removing _str_
+				 */
+				if (typeof childEl.text === 'string' && childEl.text.includes('_str_')) {
+					childEl.text = childEl.text.replace(/_str_/, '')
+				}
+
 				if (childEl.$type && childEl.$type === 'text') {
 					if (childEl.$name === undefined) {
 						// pure text node, hoist it up:
@@ -75,6 +98,14 @@ export function xml2js(messageString: string): { [key: string]: any } {
 						// make array compact:
 						const array: any = []
 						for (const childEl of element.elements) {
+							/**
+							 * forcedStringObjects has been forced to be strings, not numbers
+							 * use the original value by removing _str_
+							 */
+							if (typeof childEl.text === 'string' && childEl.text.includes('_str_')) {
+								childEl.text = childEl.text.replace(/_str_/, '')
+							}
+
 							if (childEl.$type && childEl.$type === 'text') {
 								if (Object.keys(childEl).length > 2) {
 									array.push(childEl)

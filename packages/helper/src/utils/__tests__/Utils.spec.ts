@@ -146,3 +146,25 @@ test('xml2js with simple data', () => {
 		})
 	}
 })
+
+test('xml2js handle objID with nubmerformatting as string', () => {
+	const o: any = xml2js(`
+<content>
+	<navn>Jon Gelius</navn>
+	<objId>000987.6540</objId>
+	<tittel/>
+	<tematekst/>
+	<infotekst/>
+	<_valid>true</_valid>
+</content>
+	`)
+
+	expect(o.content).toEqual({
+		navn: 'Jon Gelius',
+		objId: '000987.6540',
+		tittel: {},
+		tematekst: {},
+		infotekst: {},
+		_valid: true,
+	})
+})
