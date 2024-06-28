@@ -1,10 +1,10 @@
 import { IMOSROFullStoryBodyItem, IMOSROFullStory, getMosTypes } from '@mos-connection/model'
 import { XMLROStory, XMLMosItem } from '../profile2/xmlConversion'
-import { AnyXML } from '../lib'
+import { AnyXMLObject } from '../lib'
 
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace XMLROFullStory {
-	export function fromXML(xml: AnyXML, strict: boolean): IMOSROFullStory {
+	export function fromXML(xml: AnyXMLObject, strict: boolean): IMOSROFullStory {
 		if (typeof xml !== 'object') throw new Error('XML is not an object')
 		const mosTypes = getMosTypes(strict)
 

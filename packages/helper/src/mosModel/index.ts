@@ -1,6 +1,6 @@
 export * from './MosMessage'
 
-export { AnyXML } from './lib'
+export { AnyXMLObject as AnyXML } from './lib'
 export * from './profile0'
 export * from './profile1'
 export * from './profile2'

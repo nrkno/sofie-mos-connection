@@ -7,10 +7,10 @@ export interface IMOSString128 {
 export function create(anyValue: AnyValue, strict: boolean): IMOSString128 {
 	let strValue: string
 	if (typeof anyValue === 'object' && anyValue) {
-		if ((anyValue as IMOSString128)._mosString128) {
-			strValue = (anyValue as IMOSString128)._mosString128
-		} else if (anyValue.text) {
-			strValue = anyValue.text.toString()
+		if ('_mosString128' in anyValue && anyValue._mosString128 !== undefined) {
+			strValue = anyValue._mosString128
+		} else if ('text' in anyValue && anyValue.text) {
+			strValue = `${anyValue.text}`
 		} else if (Object.keys(anyValue).length === 0) {
 			// is empty?
 			strValue = ''
@@ -26,7 +26,7 @@ export function create(anyValue: AnyValue, strict: boolean): IMOSString128 {
 	validate(mosString, strict)
 	return mosString
 }
-export type AnyValue = string | { text: string; type: string } | IMOSString128 | any
+export type AnyValue = string | { text: string; type: string } | IMOSString128 | undefined
 
 export function validate(mosString128: IMOSString128, strict: boolean): void {
 	if (!strict) return

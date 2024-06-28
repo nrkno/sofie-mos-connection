@@ -12,7 +12,7 @@ import {
 	IMOSROAckItem,
 	IMOSROAckObject,
 } from '@mos-connection/model'
-import { AnyXML, has, isEmpty, numberOrUndefined } from '../lib'
+import { AnyXMLObject, has, isEmpty, numberOrUndefined } from '../lib'
 import { ROAck } from './ROAck'
 import { XMLMosObjects } from '../profile1/xmlConversion'
 import { addTextElementInternal } from '../../utils/Utils'
@@ -20,7 +20,7 @@ import { getParseMosTypes } from '../parseMosTypes'
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export namespace XMLMosROAck {
-	export function fromXML(xml: AnyXML, strict: boolean): ROAck {
+	export function fromXML(xml: AnyXMLObject, strict: boolean): ROAck {
 		const mosTypes = getParseMosTypes(strict)
 
 		const roAck: ROAck = new ROAck(
@@ -78,7 +78,7 @@ export namespace XMLMosROAck {
 	}
 }
 export namespace XMLRunningOrderBase {
-	export function fromXML(xml: AnyXML, strict: boolean): IMOSRunningOrderBase {
+	export function fromXML(xml: AnyXMLObject, strict: boolean): IMOSRunningOrderBase {
 		const mosTypes = getParseMosTypes(strict)
 		const ro: IMOSRunningOrderBase = {
 			ID: mosTypes.mosString128.createRequired(xml.roID),
@@ -120,7 +120,7 @@ export namespace XMLRunningOrderBase {
 	}
 }
 export namespace XMLRunningOrder {
-	export function fromXML(xml: AnyXML, strict: boolean): IMOSRunningOrder {
+	export function fromXML(xml: AnyXMLObject, strict: boolean): IMOSRunningOrder {
 		const stories: Array<IMOSROStory> = XMLROStories.fromXML(xml.story, strict)
 		const ro: IMOSRunningOrder = {
 			...XMLRunningOrderBase.fromXML(xml, strict),
@@ -153,7 +153,7 @@ export namespace XMLROStoryBase {
 	}
 }
 export namespace XMLROStory {
-	export function fromXML(xml: AnyXML, strict: boolean): IMOSROStory {
+	export function fromXML(xml: AnyXMLObject, strict: boolean): IMOSROStory {
 		const mosTypes = getParseMosTypes(strict)
 		const story: IMOSROStory = {
 			ID: mosTypes.mosString128.createRequired(xml.storyID),
@@ -199,7 +199,7 @@ export namespace XMLMosItems {
 	}
 }
 export namespace XMLMosItem {
-	export function fromXML(xml: AnyXML, strict: boolean): IMOSItem {
+	export function fromXML(xml: AnyXMLObject, strict: boolean): IMOSItem {
 		const mosTypes = getParseMosTypes(strict)
 		const item: IMOSItem = {
 			ID: mosTypes.mosString128.createRequired(xml.itemID),
@@ -261,36 +261,7 @@ export namespace XMLMosItem {
 		XMLObjectPaths.toXML(xmlItem, item.Paths, strict)
 	}
 }
-export namespace XMLMosExternalMetaData {
-	export function fromXML(xml: AnyXML): IMOSExternalMetaData[] {
-		if (!xml) return []
-		let xmlMetadata: Array<any> = xml as any
-		if (!Array.isArray(xml)) xmlMetadata = [xmlMetadata]
-		return xmlMetadata.map((xmlmd) => {
-			const md: IMOSExternalMetaData = {
-				MosScope: has(xmlmd, 'mosScope') ? xmlmd.mosScope : null,
-				MosSchema: xmlmd.mosSchema + '',
-				MosPayload: _fixPayload(xmlmd.mosPayload),
-			}
-			return md
-		})
-	}
 
-	export function toXML(xml: XMLBuilder.XMLElement, metadatas?: IMOSExternalMetaData[]): void {
-		if (metadatas) {
-			metadatas.forEach((metadata) => {
-				const xmlMetadata = XMLBuilder.create({
-					mosExternalMetadata: {
-						mosSchema: metadata.MosSchema,
-						mosPayload: metadata.MosPayload,
-						mosScope: metadata.MosScope,
-					},
-				})
-				xml.importDocument(xmlMetadata)
-			})
-		}
-	}
-}
 function _handlePayloadProperties(prop: any): any {
 	// prop is string, can be a mis-typing of number - if it contains numbers and comma
 	// strings with numbers and , grouped will trigger
@@ -328,113 +299,4 @@ function _fixPayload(obj: any): any {
 		obj = _handlePayloadProperties(obj)
 	}
 	return obj
-}
-export namespace XMLObjectPaths {
-	export function fromXML(xml: AnyXML): IMOSObjectPath[] {
-		if (!xml) return []
-		const getType = (xml: AnyXML) => {
-			let type: IMOSObjectPathType | null = null
-			if (has(xml, 'objPath') || xml.$name === 'objPath') {
-				type = IMOSObjectPathType.PATH
-			} else if (has(xml, 'objProxyPath') || xml.$name === 'objProxyPath') {
-				type = IMOSObjectPathType.PROXY_PATH
-			} else if (has(xml, 'objMetadataPath') || xml.$name === 'objMetadataPath') {
-				type = IMOSObjectPathType.METADATA_PATH
-			}
-			return type
-		}
-		const getDescription = (xml: AnyXML) => {
-			return xml.techDescription || (xml.attributes ? xml.attributes.techDescription : '')
-		}
-		const getTarget = (xml: AnyXML) => {
-			if (has(xml, 'objPath')) {
-				return xml.objPath
-			} else if (has(xml, 'objProxyPath')) {
-				return xml.objProxyPath
-			} else if (has(xml, 'objMetadataPath')) {
-				return xml.objMetadataPath
-			} else {
-				return xml.text || xml.$t
-			}
-		}
-		const getMosObjectPath = (element: any, key?: any) => {
-			let type = getType(element)
-			if (!type && key) {
-				type = getType({ $name: key })
-			}
-			const target = getTarget(element)
-			const description = getDescription(element)
-			if (type && target) {
-				return {
-					Type: type,
-					Description: description,
-					Target: target,
-				}
-			}
-			return undefined
-		}
-		const xmlToArray = (obj: any) => {
-			let paths: Array<IMOSObjectPath> = []
-			if (has(obj, 'techDescription')) {
-				const mosObj = getMosObjectPath(obj)
-				if (mosObj) {
-					paths.push(mosObj)
-				}
-			} else {
-				Object.keys(obj).forEach((key) => {
-					const element = obj[key]
-					if (Array.isArray(element)) {
-						paths = paths.concat(xmlToArray(element))
-					} else {
-						const mosObj = getMosObjectPath(element, key)
-						if (mosObj) {
-							paths.push(mosObj)
-						}
-					}
-				})
-			}
-			return paths
-		}
-		const xmlPaths = xmlToArray(xml)
-		return xmlPaths
-	}
-
-	export function toXML(xmlItem: XMLBuilder.XMLElement, paths: IMOSObjectPath[] | undefined, strict: boolean): void {
-		if (paths) {
-			const xmlObjPaths = addTextElementInternal(xmlItem, 'objPaths', undefined, undefined, strict)
-			paths.forEach((path: IMOSObjectPath) => {
-				if (path.Type === IMOSObjectPathType.PATH) {
-					addTextElementInternal(
-						xmlObjPaths,
-						'objPath',
-						path.Target,
-						{
-							techDescription: path.Description,
-						},
-						strict
-					)
-				} else if (path.Type === IMOSObjectPathType.PROXY_PATH) {
-					addTextElementInternal(
-						xmlObjPaths,
-						'objProxyPath',
-						path.Target,
-						{
-							techDescription: path.Description,
-						},
-						strict
-					)
-				} else if (path.Type === IMOSObjectPathType.METADATA_PATH) {
-					addTextElementInternal(
-						xmlObjPaths,
-						'objMetadataPath',
-						path.Target,
-						{
-							techDescription: path.Description,
-						},
-						strict
-					)
-				}
-			})
-		}
-	}
 }

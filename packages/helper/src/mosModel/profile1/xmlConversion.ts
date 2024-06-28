@@ -1,13 +1,20 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { IMOSRequestObjectList, IMOSObject, IMOSAck, IMOSAckStatus } from '@mos-connection/model'
-import { XMLObjectPaths, XMLMosExternalMetaData } from '../profile2/xmlConversion'
-import { AnyXML, has } from '../lib'
+import {
+	IMOSRequestObjectList,
+	IMOSObject,
+	IMOSAck,
+	IMOSAckStatus,
+	IMOSObjectPath,
+	IMOSObjectPathType,
+	IMOSExternalMetaData,
+} from '@mos-connection/model'
+import { AnyXMLObject, has, isEmpty } from '../lib'
 import { addTextElementInternal } from '../../utils/Utils'
 import { getParseMosTypes } from '../parseMosTypes'
 
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace XMLMosAck {
-	export function fromXML(xml: AnyXML, strict: boolean): IMOSAck {
+	export function fromXML(xml: AnyXMLObject, strict: boolean): IMOSAck {
 		const mosTypes = getParseMosTypes(strict)
 		const ack: IMOSAck = {
 			ID: mosTypes.mosString128.createRequired(xml.objID),
@@ -21,9 +28,9 @@ export namespace XMLMosAck {
 	}
 }
 export namespace XMLMosObjects {
-	export function fromXML(xml: AnyXML, strict: boolean): Array<IMOSObject> {
+	export function fromXML(xml: AnyXMLObject, strict: boolean): Array<IMOSObject> {
 		if (!xml) return []
-		let xmlObjs: Array<any> = xml as any
+		let xmlObjs = xml
 		if (!Array.isArray(xmlObjs)) xmlObjs = [xmlObjs]
 
 		return xmlObjs.map((xmlObj) => {
@@ -41,7 +48,7 @@ export namespace XMLMosObjects {
 	}
 }
 export namespace XMLMosObject {
-	export function fromXML(xml: AnyXML, strict: boolean): IMOSObject {
+	export function fromXML(xml: AnyXMLObject, strict: boolean): IMOSObject {
 		const mosTypes = getParseMosTypes(strict)
 		const mosObj: IMOSObject = {
 			ID: mosTypes.mosString128.createRequired(xml.objID),
@@ -92,7 +99,7 @@ export namespace XMLMosObject {
 	}
 }
 export namespace XMLMosRequestObjectList {
-	export function fromXML(xml: AnyXML): IMOSRequestObjectList {
+	export function fromXML(xml: AnyXMLObject): IMOSRequestObjectList {
 		const list: IMOSRequestObjectList = {
 			username: xml.username,
 			queryID: xml.queryID,
@@ -116,4 +123,181 @@ export namespace XMLMosRequestObjectList {
 
 		return list
 	}
+}
+export namespace XMLObjectPaths {
+	export function fromXML(xml: AnyXMLObject): IMOSObjectPath[] {
+		if (!xml) return []
+		const getType = (xml: AnyXMLObject) => {
+			let type: IMOSObjectPathType | null = null
+			if (has(xml, 'objPath') || xml.$name === 'objPath') {
+				type = IMOSObjectPathType.PATH
+			} else if (has(xml, 'objProxyPath') || xml.$name === 'objProxyPath') {
+				type = IMOSObjectPathType.PROXY_PATH
+			} else if (has(xml, 'objMetadataPath') || xml.$name === 'objMetadataPath') {
+				type = IMOSObjectPathType.METADATA_PATH
+			}
+			return type
+		}
+		const getDescription = (xml: AnyXMLObject) => {
+			return xml.techDescription || (xml.attributes ? xml.attributes.techDescription : '')
+		}
+		const getTarget = (xml: AnyXMLObject) => {
+			if (has(xml, 'objPath')) {
+				return xml.objPath
+			} else if (has(xml, 'objProxyPath')) {
+				return xml.objProxyPath
+			} else if (has(xml, 'objMetadataPath')) {
+				return xml.objMetadataPath
+			} else {
+				return xml.text || xml.$t
+			}
+		}
+		const getMosObjectPath = (element: any, key?: any) => {
+			let type = getType(element)
+			if (!type && key) {
+				type = getType({ $name: key })
+			}
+			const target = getTarget(element)
+			const description = getDescription(element)
+			if (type && target) {
+				return {
+					Type: type,
+					Description: description,
+					Target: target,
+				}
+			}
+			return undefined
+		}
+		const xmlToArray = (obj: any) => {
+			let paths: Array<IMOSObjectPath> = []
+			if (has(obj, 'techDescription')) {
+				const mosObj = getMosObjectPath(obj)
+				if (mosObj) {
+					paths.push(mosObj)
+				}
+			} else {
+				Object.keys(obj).forEach((key) => {
+					const element = obj[key]
+					if (Array.isArray(element)) {
+						paths = paths.concat(xmlToArray(element))
+					} else {
+						const mosObj = getMosObjectPath(element, key)
+						if (mosObj) {
+							paths.push(mosObj)
+						}
+					}
+				})
+			}
+			return paths
+		}
+		const xmlPaths = xmlToArray(xml)
+		return xmlPaths
+	}
+
+	export function toXML(xmlItem: XMLBuilder.XMLElement, paths: IMOSObjectPath[] | undefined, strict: boolean): void {
+		if (paths) {
+			const xmlObjPaths = addTextElementInternal(xmlItem, 'objPaths', undefined, undefined, strict)
+			paths.forEach((path: IMOSObjectPath) => {
+				if (path.Type === IMOSObjectPathType.PATH) {
+					addTextElementInternal(
+						xmlObjPaths,
+						'objPath',
+						path.Target,
+						{
+							techDescription: path.Description,
+						},
+						strict
+					)
+				} else if (path.Type === IMOSObjectPathType.PROXY_PATH) {
+					addTextElementInternal(
+						xmlObjPaths,
+						'objProxyPath',
+						path.Target,
+						{
+							techDescription: path.Description,
+						},
+						strict
+					)
+				} else if (path.Type === IMOSObjectPathType.METADATA_PATH) {
+					addTextElementInternal(
+						xmlObjPaths,
+						'objMetadataPath',
+						path.Target,
+						{
+							techDescription: path.Description,
+						},
+						strict
+					)
+				}
+			})
+		}
+	}
+}
+export namespace XMLMosExternalMetaData {
+	export function fromXML(xml: AnyXMLObject): IMOSExternalMetaData[] {
+		if (!xml) return []
+		let xmlMetadata = xml
+		if (!Array.isArray(xml)) xmlMetadata = [xmlMetadata]
+		return xmlMetadata.map((xmlmd) => {
+			const md: IMOSExternalMetaData = {
+				MosScope: has(xmlmd, 'mosScope') ? xmlmd.mosScope : null,
+				MosSchema: xmlmd.mosSchema + '',
+				MosPayload: _fixPayload(xmlmd.mosPayload),
+			}
+			return md
+		})
+	}
+
+	export function toXML(xml: XMLBuilder.XMLElement, metadatas?: IMOSExternalMetaData[]): void {
+		if (metadatas) {
+			metadatas.forEach((metadata) => {
+				const xmlMetadata = XMLBuilder.create({
+					mosExternalMetadata: {
+						mosSchema: metadata.MosSchema,
+						mosPayload: metadata.MosPayload,
+						mosScope: metadata.MosScope,
+					},
+				})
+				xml.importDocument(xmlMetadata)
+			})
+		}
+	}
+}
+function _fixPayload(obj: any): any {
+	if (typeof obj === 'object') {
+		for (const key in obj) {
+			const o = obj[key]
+			if (typeof o === 'object') {
+				if (isEmpty(o)) {
+					obj[key] = ''
+				} else {
+					_fixPayload(o)
+				}
+			} else {
+				// do property-check on certain props (like MediaTime)
+				obj[key] = _handlePayloadProperties(o)
+			}
+		}
+	} else {
+		// do property-check on certain props (like MediaTime)
+		obj = _handlePayloadProperties(obj)
+	}
+	return obj
+}
+function _handlePayloadProperties(prop: any): any {
+	// prop is string, can be a mis-typing of number - if it contains numbers and comma
+	// strings with numbers and , grouped will trigger
+	if (prop && typeof prop === 'string' && prop.match(/\d+,\d+/)) {
+		// here is the fix for replacing and casting
+		const commaCast = prop.replace(/,/, '.')
+		const floatCast = parseFloat(commaCast)
+
+		// ensure that the float hasn't changed value or content by checking it in reverse before returning the altered one
+		if (floatCast.toString() === commaCast) {
+			return floatCast
+		}
+	}
+
+	// return the original content if we failed to identify and mutate the content
+	return prop
 }

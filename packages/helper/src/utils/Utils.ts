@@ -3,11 +3,11 @@ import * as XMLBuilder from 'xmlbuilder'
 import { getMosTypes, IMOSDuration, IMOSString128, IMOSTime, stringifyMosType } from '@mos-connection/model'
 import { MosModel } from '..'
 
-export function xml2js(messageString: string): { [key: string]: MosModel.AnyXML } {
+export function xml2js(messageString: string): MosModel.AnyXML {
 	const object = xmlParser(messageString, {
 		compact: false,
 		trim: true,
-		nativeType: true,
+		nativeType: false, // we want to NOT auto-convert types, to avoid ambiguity
 	}) as unknown as MosModel.AnyXML
 	// common tags we typically want to know the order of the contents of:
 	const orderedTags = new Set(['storyBody', 'mosAbstract', 'description', 'p', 'em', 'span', 'h1', 'h2', 'i', 'b'])

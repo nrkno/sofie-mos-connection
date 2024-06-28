@@ -20,8 +20,7 @@ export function numberOrUndefined(value: unknown): number | undefined {
 	return num
 }
 
-/** Just a generic type to use instead of "any", for xml objects */
-export type AnyXML = { [key: string]: any }
+export { AnyXMLObject, AnyXMLValue, AnyXMLValueSingular } from '@mos-connection/model'
 
 /** Return true if the object has a property */
 export function has(obj: unknown, property: string): boolean {
@@ -42,4 +41,9 @@ export function getHandleError(basePath: string): <V, R>(func: (val: V) => R, va
 	}
 
 	return handleError
+}
+
+export function ensureArray<T>(v: T | T[]): T[] {
+	if (typeof v === 'object' && Array.isArray(v)) return v
+	else return [v]
 }
