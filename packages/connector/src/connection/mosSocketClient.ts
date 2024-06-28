@@ -1,4 +1,4 @@
-import { EventEmitter } from 'events'
+import { EventEmitter } from 'eventemitter3'
 import { Socket } from 'net'
 import { SocketConnectionEvent } from './socketConnection'
 import { MosModel } from '@mos-connection/helper'
@@ -13,7 +13,20 @@ export interface QueueMessage {
 	msg: MosModel.MosMessage
 }
 
-export class MosSocketClient extends EventEmitter {
+export interface MosSocketClientEvents {
+	[SocketConnectionEvent.CONNECTED]: () => void
+	[SocketConnectionEvent.DISCONNECTED]: () => void
+	[SocketConnectionEvent.DISPOSED]: () => void
+	[SocketConnectionEvent.ALIVE]: () => void
+	// [SocketConnectionEvent.TIMEOUT]: () => void
+	// [SocketConnectionEvent.REGISTER]: () => void
+	// [SocketConnectionEvent.UNREGISTER]: () => void
+
+	error: (error: Error) => void
+	warning: (warning: string) => void
+	rawMessage: (...args: any[]) => void
+}
+export class MosSocketClient extends EventEmitter<MosSocketClientEvents> {
 	private _host: string
 	private _port: number
 	private _autoReconnect = true
@@ -60,7 +73,7 @@ export class MosSocketClient extends EventEmitter {
 
 		this.messageParser = new MosMessageParser(description)
 		this.messageParser.debug = this._debug
-		this.messageParser.on('message', (message: any, messageString: string) => {
+		this.messageParser.on('message', (message: MosModel.AnyXML, messageString: string) => {
 			this._handleMessage(message, messageString)
 		})
 	}
@@ -287,7 +300,7 @@ export class MosSocketClient extends EventEmitter {
 			cb(err, res)
 		} else {
 			// this._onUnhandledCommandTimeout()
-			this.emit('error', `Error: No callback found for messageId ${messageId}`)
+			this.emit('error', new Error(`Error: No callback found for messageId ${messageId}`))
 		}
 		this._sentMessage = null
 		if (this._sentMessageTimeout) {
@@ -382,7 +395,7 @@ export class MosSocketClient extends EventEmitter {
 		try {
 			this.messageParser.parseMessage(messageString)
 		} catch (err) {
-			this.emit('error', err)
+			this.emit('error', err instanceof Error ? err : new Error(`${err}`))
 		}
 	}
 
@@ -426,11 +439,11 @@ export class MosSocketClient extends EventEmitter {
 					this._sendReply(this._sentMessage.msg.messageID, 'Main server available', parsedData)
 				} else {
 					this.debugTrace('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
-					this.emit('error', 'Error message: ' + parsedData.mos.mosAck.statusDescription)
+					this.emit('error', new Error('Error message: ' + parsedData.mos.mosAck.statusDescription))
 				}
 			} else {
 				// unknown message..
-				this.emit('error', 'Unknown message: ' + messageString)
+				this.emit('error', new Error('Unknown message: ' + messageString))
 			}
 		}
 
@@ -480,7 +493,7 @@ export class MosSocketClient extends EventEmitter {
 	/** */
 	private _onError(error: Error) {
 		// dispatch error!!!!!
-		this.emit('error', `Socket ${this._description} ${this._port} event error: ${error.message}`)
+		this.emit('error', new Error(`Socket ${this._description} ${this._port} event error: ${error.message}`))
 		this.debugTrace(`Socket event error: ${error.message}`)
 	}
 

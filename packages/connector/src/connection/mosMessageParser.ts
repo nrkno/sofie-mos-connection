@@ -1,7 +1,10 @@
-import { EventEmitter } from 'events'
-import { xml2js } from '@mos-connection/helper'
+import { EventEmitter } from 'eventemitter3'
+import { MosModel, xml2js } from '@mos-connection/helper'
 
-export class MosMessageParser extends EventEmitter {
+export interface MosMessageParserEvents {
+	message: (parsedData: MosModel.AnyXML, messageString: string) => void
+}
+export class MosMessageParser extends EventEmitter<MosMessageParserEvents> {
 	private dataChunks = ''
 
 	public debug = false
@@ -100,10 +103,17 @@ export class MosMessageParser extends EventEmitter {
 				}
 			}
 		}
-		let parsedData: any | null = null
+		let parsed: {
+			data: MosModel.AnyXML
+			messageString: string
+		} | null = null
+
 		try {
 			if (messageString) {
-				parsedData = xml2js(messageString) // , { compact: true, trim: true, nativeType: true })
+				parsed = {
+					data: xml2js(messageString), // , { compact: true, trim: true, nativeType: true })
+					messageString,
+				}
 			}
 		} catch (err) {
 			// eslint-disable-next-line no-console
@@ -114,8 +124,8 @@ export class MosMessageParser extends EventEmitter {
 
 			throw err
 		}
-		if (parsedData) {
-			this.emit('message', parsedData, messageString)
+		if (parsed) {
+			this.emit('message', parsed.data, parsed.messageString)
 		}
 	}
 	private debugTrace(str: string) {

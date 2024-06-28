@@ -6,13 +6,20 @@ import { MosDevice } from './MosDevice'
 import { SocketServerEvent, SocketDescription, IncomingConnectionType } from './connection/socketConnection'
 import { NCSServerConnection } from './connection/NCSServerConnection'
 import { MosModel } from '@mos-connection/helper'
-import { EventEmitter } from 'events'
+import { EventEmitter } from 'eventemitter3'
 import * as iconv from 'iconv-lite'
 import { MosMessageParser } from './connection/mosMessageParser'
 import { IConnectionConfig, IMosConnection, IMOSDeviceConnectionOptions } from './api'
 import { PROFILE_VALIDNESS_CHECK_WAIT_TIME } from './lib'
 
-export class MosConnection extends EventEmitter implements IMosConnection {
+export interface MosConnectionEvents {
+	// Note: These match the events defined in IMosConnection
+	rawMessage: (source: string, type: string, message: string) => void
+	info: (message: string, data?: any) => void
+	warning: (message: string) => void
+	error: (error: Error) => void
+}
+export class MosConnection extends EventEmitter<MosConnectionEvents> implements IMosConnection {
 	static readonly CONNECTION_PORT_LOWER = 10540
 	static readonly CONNECTION_PORT_UPPER = 10541
 	static readonly CONNECTION_PORT_QUERY = 10542
@@ -95,7 +102,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			this.emit('warning', 'primary: ' + str)
 		})
 		primary.on('error', (error: Error) => {
-			this.emit('error', 'primary: ' + error + ' ' + (typeof error === 'object' ? error.stack : ''))
+			error.message = `primary: ${error.message}`
+			this.emit('error', error)
 		})
 		primary.on('info', (str: string) => {
 			this.emit('info', 'primary: ' + str)
@@ -140,7 +148,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				this.emit('warning', 'secondary: ' + str)
 			})
 			secondary.on('error', (error: Error) => {
-				this.emit('error', 'secondary: ' + error + ' ' + (typeof error === 'object' ? error.stack : ''))
+				error.message = `secondary: ${error.message}`
+				this.emit('error', error)
 			})
 			secondary.on('info', (str: string) => {
 				this.emit('info', 'secondary: ' + str)
@@ -359,9 +368,9 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			socketServer.on(SocketServerEvent.CLIENT_CONNECTED, (e: SocketDescription) =>
 				this._registerIncomingClient(e)
 			)
-			socketServer.on(SocketServerEvent.ERROR, (e) => {
+			socketServer.on(SocketServerEvent.ERROR, (err) => {
 				// handle error
-				this.emit('error', e)
+				this.emit('error', err)
 			})
 
 			return socketServer
@@ -398,7 +407,7 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			`${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}`
 		)
 		// messageParser.debug = this._debug
-		messageParser.on('message', (message: any, messageString: string) => {
+		messageParser.on('message', (message: MosModel.AnyXML, messageString: string) => {
 			// Handle incoming data
 			handleMessage(message, messageString).catch((err) => this.emit('error', err))
 		})
@@ -423,10 +432,10 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 				messageParser.debug = this._debug
 				messageParser.parseMessage(messageString)
 			} catch (err) {
-				this.emit('error', err)
+				this.emit('error', err instanceof Error ? err : new Error(`${err}`))
 			}
 		})
-		const handleMessage = async (parsed: any, _messageString: string) => {
+		const handleMessage = async (parsed: MosModel.AnyXML, _messageString: string) => {
 			const remoteAddressContent = client.socket.remoteAddress
 				? client.socket.remoteAddress.split(':')
 				: undefined
@@ -472,8 +481,9 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 					primary.on('warning', (str: string) => {
 						this.emit('warning', 'primary: ' + str)
 					})
-					primary.on('error', (str: string) => {
-						this.emit('error', 'primary: ' + str)
+					primary.on('error', (err: Error) => {
+						err.message = `primary: ${err.message}`
+						this.emit('error', err)
 					})
 					const openRelayOptions: IMOSDeviceConnectionOptions['primary'] | undefined =
 						typeof this._conf.openRelay === 'object' ? this._conf.openRelay.options : undefined
@@ -550,10 +560,8 @@ export class MosConnection extends EventEmitter implements IMosConnection {
 			}
 		}
 		client.socket.on('error', (e: Error) => {
-			this.emit(
-				'error',
-				`Socket had error (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${e}`
-			)
+			e.message = `Socket had error (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${e.message}`
+			this.emit('error', e)
 			this.debugTrace(
 				`Socket had error (${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}): ${e}`
 			)
