@@ -1,7 +1,7 @@
 import { ConnectionType } from './socketConnection'
 import { MosSocketClient, CallBackFunction, QueueMessage } from '../connection/mosSocketClient'
 import { MosModel } from '@mos-connection/helper'
-import { EventEmitter } from 'events'
+import { EventEmitter } from 'eventemitter3'
 
 export const DEFAULT_COMMAND_TIMEOUT = 5000
 
@@ -20,9 +20,16 @@ export interface HandedOverQueue {
 	messages: QueueMessage[]
 	callbacks: { [messageId: string]: CallBackFunction }
 }
+export interface NCSServerConnectionEvents {
+	rawMessage: (...args: any[]) => void
+	warning: (str: string) => void
+	error: (err: Error) => void
+	info: (str: string) => void
+	connectionChanged: () => void
+}
 
 /** Handles connections to a NCS (server) */
-export class NCSServerConnection extends EventEmitter implements INCSServerConnection {
+export class NCSServerConnection extends EventEmitter<NCSServerConnectionEvents> implements INCSServerConnection {
 	private _connected: boolean
 	// private _lastSeen: number
 	private _id: string
@@ -86,8 +93,9 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		client.on('warning', (str: string) => {
 			this.emit('warning', 'MosSocketClient: ' + str)
 		})
-		client.on('error', (str: string) => {
-			this.emit('error', 'MosSocketClient: ' + str)
+		client.on('error', (err: Error) => {
+			err.message = 'MosSocketClient: ' + err.message
+			this.emit('error', err)
 		})
 	}
 
@@ -299,11 +307,14 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 					try {
 						await this.executeCommand(heartbeat)
 						client.heartbeatConnected = true
-					} catch (e) {
+					} catch (err0) {
 						// probably a timeout
 						client.heartbeatConnected = false
-						this.emit('error', `Heartbeat error on ${this._clients[key].clientDescription}: ${e}`)
-						this.debugTrace(`Heartbeat on ${this._clients[key].clientDescription}: ${e}`)
+
+						const err = err0 instanceof Error ? err0 : new Error(`${err0}`)
+						err.message = `Heartbeat error on ${this._clients[key].clientDescription}: ${err.message}`
+						this.emit('error', err)
+						this.debugTrace(`Heartbeat on ${this._clients[key].clientDescription}: ${err0}`)
 					}
 				}
 			})

@@ -43,6 +43,7 @@ export interface IMosConnection {
 	onConnection: (cb: (mosDevice: MosDevice) => void) => void
 
 	on(event: 'error', listener: (error: Error) => void): this
+	on(event: 'warning', listener: (message: string) => void): this
 	on(event: 'info', listener: (message: string, data?: any) => void): this
 	on(event: 'rawMessage', listener: (source: string, type: string, message: string) => void): this
 }
