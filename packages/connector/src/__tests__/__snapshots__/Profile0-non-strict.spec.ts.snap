@@ -9,6 +9,15 @@ exports[`Profile 0 - non strict requestMachineInfo - empty <opTime> 1`] = `
 </mos>"
 `;
 
+exports[`Profile 0 - non strict requestMachineInfo - empty <time> - as returned by OpenMedia  1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>xx</messageID>
+  <reqMachInfo/>
+</mos>"
+`;
+
 exports[`Profile 0 - non strict requestMachineInfo - empty <time> 1`] = `
 "<mos>
   <ncsID>their.mos.id</ncsID>

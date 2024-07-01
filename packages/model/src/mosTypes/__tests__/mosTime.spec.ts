@@ -118,7 +118,7 @@ describe('MosTime', () => {
 		// @ts-expect-error wrong input format, but still:
 		expect(mosTypes.mosTime.stringify('2009-04-11T14:22:07,000+05:00')).toBe('2009-04-11T14:22:07,000+05:00')
 	})
-	test('handles tricky (midnight, new year, summer time, leap year) corectly', () => {
+	test('handles tricky (midnight, new year, summer time, leap year) correctly', () => {
 		const mosTypes = getMosTypes(true)
 		function toTime(input: any) {
 			return mosTypes.mosTime.valueOf(mosTypes.mosTime.create(input))
@@ -163,5 +163,16 @@ describe('MosTime', () => {
 		// @todo: daylight savings fall
 
 		// @todo: leap year
+	})
+	test('Non expected inputs', () => {
+		const nonStrictMosTypes = getMosTypes(false)
+
+		// @ts-expect-error wrong input, but happens when using OpenMedia MOS:
+		const newTime = nonStrictMosTypes.mosTime.create({}) // This should not throw an error
+		expect(newTime).toStrictEqual({
+			_mosTime: expect.any(Number),
+			_timezone: '',
+			_timezoneOffset: 0,
+		})
 	})
 })
