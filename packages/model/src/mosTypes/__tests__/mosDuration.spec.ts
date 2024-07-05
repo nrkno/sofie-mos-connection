@@ -11,6 +11,7 @@ describe('MosDuration', () => {
 		expect(() => mosTypes.mosDuration.create('asdf')).toThrowError(/Invalid input/)
 		expect(() => mosTypes.mosDuration.create('1:23:xx')).toThrowError(/Invalid input/)
 		expect(() => mosTypes.mosDuration.create('0:00:00')).not.toThrowError()
+		// @ts-expect-error wrong input type
 		expect(() => mosTypes.mosDuration.create([])).toThrowError(/Invalid input/)
 
 		// @ts-expect-error wrong input, but still:

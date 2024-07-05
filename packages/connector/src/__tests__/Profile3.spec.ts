@@ -329,7 +329,7 @@ describe('Profile 3', () => {
 	test('onMosReqObjectActionUpdate', async () => {
 		const messageId = await fakeIncomingMessage(serverSocketMockQuery, xmlData.mosReqObjActionUpdate)
 		expect(onRequestObjectActionUpdate).toHaveBeenCalledTimes(1)
-		expect(onRequestObjectActionUpdate.mock.calls[0][0]).toBe(xmlApiData.mosObjReqObjActionUpdateObjId)
+		expect(onRequestObjectActionUpdate.mock.calls[0][0]).toMatchObject(xmlApiData.mosObjReqObjActionUpdateObjId)
 		expect(onRequestObjectActionUpdate.mock.calls[0][1]).toMatchObject(xmlApiData.mosObjReqObjActionUpdate)
 		expect(fixSnapshot(onRequestObjectActionUpdate.mock.calls)).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockQuery, messageId, '<mosAck>')
@@ -337,7 +337,7 @@ describe('Profile 3', () => {
 	test('onMosReqObjectActionDelete', async () => {
 		const messageId = await fakeIncomingMessage(serverSocketMockQuery, xmlData.mosReqObjActionDelete)
 		expect(onRequestObjectActionDelete).toHaveBeenCalledTimes(1)
-		expect(onRequestObjectActionDelete.mock.calls[0][0]).toBe(xmlApiData.mosObjReqObjActionDeleteObjId)
+		expect(onRequestObjectActionDelete.mock.calls[0][0]).toMatchObject(xmlApiData.mosObjReqObjActionDeleteObjId)
 		expect(fixSnapshot(onRequestObjectActionDelete.mock.calls)).toMatchSnapshot()
 		await checkReplyToServer(serverSocketMockQuery, messageId, '<mosAck>')
 	})

@@ -1,24 +1,51 @@
 {
-	"ID": "2",
-	"ObjectID": "41cfc641849c417eaa10e4f3c377f181",
-	"MOSID": "quantelplugin.sofie",
-	"Slug": "bts-finnmark-bil_navnekonflikt(2)",
-	"Paths": [
+	"items": [
 		{
-			"Description": "VIDEO",
-			"Target": "41cfc641849c417eaa10e4f3c377f181",
-			"Type": "PATH"
-		}
-	],
-	"MosExternalMetaData": [
+			"ID": "2",
+			"ObjectID": "41cfc641849c417eaa10e4f3c377f181",
+			"MOSID": "quantelplugin.sofie",
+			"Slug": "bts-finnmark-bil_navnekonflikt(2)",
+			"Paths": [
+				{
+					"Description": "VIDEO",
+					"Target": "41cfc641849c417eaa10e4f3c377f181",
+					"Type": "PATH"
+				}
+			],
+			"MosExternalMetaData": [
+				{
+					"MosScope": "OBJECT",
+					"MosSchema": "http://mos-connection/unit-test",
+					"MosPayload": {
+						"objType": "VIDEO"
+					}
+				}
+			],
+			"ObjectSlug": "bts-finnmark-bil_navnekonflikt(2)"
+		},
 		{
-			"MosScope": "OBJECT",
-			"MosSchema": "undefined",
-			"MosPayload": {
-				"objType": "VIDEO"
-			}
+			"ID": "3",
+			"ObjectID": "41cfc641849c417eaa10e4f3c377f181",
+			"MOSID": "quantelplugin.sofie",
+			"Slug": "bts-finnmark-bil_navnekonflikt(2)",
+			"Paths": [
+				{
+					"Description": "VIDEO",
+					"Target": "aaaaaa",
+					"Type": "PATH"
+				},
+				{
+					"Description": "MYVIDEO",
+					"Target": "abc123.mp4",
+					"Type": "PATH"
+				},
+				{
+					"Description": "WM9 750Kbps",
+					"Target": "http://server/proxy/clipe.wmv",
+					"Type": "PROXY PATH"
+				}
+			],
+			"ObjectSlug": "bts-finnmark-bil_navnekonflikt(2)"
 		}
-	],
-	"mosAbstract": "[object Object]",
-	"ObjectSlug": "bts-finnmark-bil_navnekonflikt(2)"
+	]
 }

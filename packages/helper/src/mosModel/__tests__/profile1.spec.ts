@@ -10,8 +10,9 @@ import {
 	IMOSObjectType,
 	IMOSScope,
 } from '@mos-connection/model'
-import { getXMLString, literal } from './lib'
+import { getXMLString } from './lib'
 import { MOSAck, MosListAll, MosObj, ReqMosObj, ReqMosObjAll } from '../profile1'
+import { literal } from '../lib'
 
 describe('Profile 1', () => {
 	const mosTypes = getMosTypes(true)
@@ -55,11 +56,11 @@ describe('Profile 1', () => {
 				MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 				MosPayload: {
 					Owner: 'SHOLMES',
-					ModTime: 20010308142001,
-					mediaTime: 0,
-					TextTime: 278,
+					ModTime: '20010308142001',
+					mediaTime: '0',
+					TextTime: '278',
 					ModBy: 'LJOHNSTON',
-					Approved: 0,
+					Approved: '0',
 					Creator: 'SHOLMES',
 				},
 			}),
@@ -85,6 +86,7 @@ describe('Profile 1', () => {
 <changed>2009-11-01T15:21:15,000Z</changed>
 <description>VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.</description>
 <mosExternalMetadata>
+<mosScope>STORY</mosScope>
 <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
 <mosPayload>
 <Owner>SHOLMES</Owner>
@@ -95,7 +97,6 @@ describe('Profile 1', () => {
 <Approved>0</Approved>
 <Creator>SHOLMES</Creator>
 </mosPayload>
-<mosScope>STORY</mosScope>
 </mosExternalMetadata>
 </mosObj>`
 

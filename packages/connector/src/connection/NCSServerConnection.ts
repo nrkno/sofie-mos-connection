@@ -1,7 +1,8 @@
 import { ConnectionType } from './socketConnection'
 import { MosSocketClient, CallBackFunction, QueueMessage } from '../connection/mosSocketClient'
 import { MosModel } from '@mos-connection/helper'
-import { EventEmitter } from 'events'
+import { EventEmitter } from 'eventemitter3'
+import { ParsedMosMessage } from './mosMessageParser'
 
 export const DEFAULT_COMMAND_TIMEOUT = 5000
 
@@ -20,9 +21,16 @@ export interface HandedOverQueue {
 	messages: QueueMessage[]
 	callbacks: { [messageId: string]: CallBackFunction }
 }
+export interface NCSServerConnectionEvents {
+	rawMessage: (...args: any[]) => void
+	warning: (str: string) => void
+	error: (err: Error) => void
+	info: (str: string) => void
+	connectionChanged: () => void
+}
 
 /** Handles connections to a NCS (server) */
-export class NCSServerConnection extends EventEmitter implements INCSServerConnection {
+export class NCSServerConnection extends EventEmitter<NCSServerConnectionEvents> implements INCSServerConnection {
 	private _connected: boolean
 	// private _lastSeen: number
 	private _id: string
@@ -86,8 +94,9 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		client.on('warning', (str: string) => {
 			this.emit('warning', 'MosSocketClient: ' + str)
 		})
-		client.on('error', (str: string) => {
-			this.emit('error', 'MosSocketClient: ' + str)
+		client.on('error', (err: Error) => {
+			err.message = 'MosSocketClient: ' + err.message
+			this.emit('error', err)
 		})
 	}
 
@@ -122,7 +131,7 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 	 * Sends a mos message.
 	 * Returns a Promise which resolves when a MOS reply has been received.
 	 */
-	async executeCommand(message: MosModel.MosMessage): Promise<any> {
+	async executeCommand(message: MosModel.MosMessage): Promise<ParsedMosMessage> {
 		// Fill with clients
 		let clients: Array<MosSocketClient>
 
@@ -140,13 +149,13 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 		} else {
 			throw Error(`No "${message.port}" ports found`)
 		}
-		return new Promise((resolve, reject) => {
+		return new Promise<ParsedMosMessage>((resolve, reject) => {
 			if (clients?.length) {
-				clients[0].queueCommand(message, (err, data) => {
-					if (err) {
-						reject(err)
+				clients[0].queueCommand(message, (response) => {
+					if ('error' in response) {
+						reject(response.error)
 					} else {
-						resolve(data)
+						resolve(response.reply)
 					}
 				})
 			} else {
@@ -247,15 +256,11 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 				this.executeCommand(msg.msg).then(
 					(data) => {
 						const cb = queue[clientId].callbacks[msg.msg.messageID]
-						if (cb) {
-							cb(null, data)
-						}
+						if (cb) cb({ reply: data })
 					},
-					(err) => {
+					(error) => {
 						const cb = queue[clientId].callbacks[msg.msg.messageID]
-						if (cb) {
-							cb(null, err)
-						}
+						if (cb) cb({ error })
 					}
 				)
 			}
@@ -299,11 +304,14 @@ export class NCSServerConnection extends EventEmitter implements INCSServerConne
 					try {
 						await this.executeCommand(heartbeat)
 						client.heartbeatConnected = true
-					} catch (e) {
+					} catch (err0) {
 						// probably a timeout
 						client.heartbeatConnected = false
-						this.emit('error', `Heartbeat error on ${this._clients[key].clientDescription}: ${e}`)
-						this.debugTrace(`Heartbeat on ${this._clients[key].clientDescription}: ${e}`)
+
+						const err = err0 instanceof Error ? err0 : new Error(`${err0}`)
+						err.message = `Heartbeat error on ${this._clients[key].clientDescription}: ${err.message}`
+						this.emit('error', err)
+						this.debugTrace(`Heartbeat on ${this._clients[key].clientDescription}: ${err0}`)
 					}
 				}
 			})

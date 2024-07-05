@@ -419,9 +419,8 @@ describe('MosDevice: General', () => {
 		})
 
 		expect(errorReported).toHaveBeenCalledTimes(1)
-		expect(errorReported).nthCalledWith(
-			1,
-			expect.stringContaining('primary: Heartbeat error on lower: Error: Sent command timed out after')
+		expect(`${errorReported.mock.calls[0][0]}`).toMatch(
+			/primary: Heartbeat error on lower: Sent command timed out after/
 		)
 
 		// Test proper dispose:

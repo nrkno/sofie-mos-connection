@@ -38,7 +38,7 @@ function stringifyMosObjectInner(o: any, mosTypes: MosTypes): { modified: true; 
 			if (stringified.modified) {
 				anythingModified = true
 				o2[key] = stringified.value
-			} else o2[key] = value
+			} else if (value !== undefined) o2[key] = value // Omit undefined values
 		}
 
 		if (anythingModified) return { modified: true, value: o2 }

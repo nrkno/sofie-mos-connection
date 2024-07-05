@@ -301,17 +301,17 @@ exports[`Profile 2 deprecated messages roStoryAppend 1`] = `
                   "Owner": "SHOLMES",
                   "destination": "b",
                   "source": "a",
-                  "transitionMode": 2,
-                  "transitionPoint": 463,
+                  "transitionMode": "2",
+                  "transitionPoint": "463",
                 },
                 "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                 "MosScope": "PLAYLIST",
               },
               {
                 "MosPayload": {
-                  "background": 2,
-                  "overlay": 463,
-                  "rate": 52,
+                  "background": "2",
+                  "overlay": "463",
+                  "rate": "52",
                 },
                 "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSBXML2.08",
                 "MosScope": "PLAYLIST",
@@ -353,8 +353,8 @@ exports[`Profile 2 deprecated messages roStoryAppend 1`] = `
                   "Owner": "SHOLMES",
                   "destination": "b",
                   "source": "a",
-                  "transitionMode": 2,
-                  "transitionPoint": 463,
+                  "transitionMode": "2",
+                  "transitionPoint": "463",
                 },
                 "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                 "MosScope": "PLAYLIST",
@@ -474,17 +474,17 @@ exports[`Profile 2 deprecated messages roStoryInsert 1`] = `
                   "Owner": "SHOLMES",
                   "destination": "b",
                   "source": "a",
-                  "transitionMode": 2,
-                  "transitionPoint": 463,
+                  "transitionMode": "2",
+                  "transitionPoint": "463",
                 },
                 "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                 "MosScope": "PLAYLIST",
               },
               {
                 "MosPayload": {
-                  "background": 2,
-                  "overlay": 463,
-                  "rate": 52,
+                  "background": "2",
+                  "overlay": "463",
+                  "rate": "52",
                 },
                 "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSBXML2.08",
                 "MosScope": "PLAYLIST",
@@ -526,8 +526,8 @@ exports[`Profile 2 deprecated messages roStoryInsert 1`] = `
                   "Owner": "SHOLMES",
                   "destination": "b",
                   "source": "a",
-                  "transitionMode": 2,
-                  "transitionPoint": 463,
+                  "transitionMode": "2",
+                  "transitionPoint": "463",
                 },
                 "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                 "MosScope": "PLAYLIST",
@@ -792,8 +792,8 @@ exports[`Profile 2 deprecated messages roStoryReplace 1`] = `
                   "Owner": "SHOLMES",
                   "destination": "b",
                   "source": "a",
-                  "transitionMode": 2,
-                  "transitionPoint": 463,
+                  "transitionMode": "2",
+                  "transitionPoint": "463",
                 },
                 "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                 "MosScope": "PLAYLIST",
@@ -851,8 +851,8 @@ exports[`Profile 2 deprecated messages roStoryReplace 1`] = `
                   "Owner": "SHOLMES",
                   "destination": "b",
                   "source": "a",
-                  "transitionMode": 2,
-                  "transitionPoint": 463,
+                  "transitionMode": "2",
+                  "transitionPoint": "463",
                 },
                 "MosSchema": "http://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                 "MosScope": "PLAYLIST",
@@ -973,8 +973,8 @@ exports[`Profile 2 onCreateRunningOrder 1`] = `
                     "Owner": "SHOLMES",
                     "destination": "b",
                     "source": "a",
-                    "transitionMode": 2,
-                    "transitionPoint": 463,
+                    "transitionMode": "2",
+                    "transitionPoint": "463",
                   },
                   "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                   "MosScope": "PLAYLIST",
@@ -1032,8 +1032,8 @@ exports[`Profile 2 onCreateRunningOrder 1`] = `
                     "Owner": "SHOLMES",
                     "destination": "b",
                     "source": "a",
-                    "transitionMode": 2,
-                    "transitionPoint": 463,
+                    "transitionMode": "2",
+                    "transitionPoint": "463",
                   },
                   "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                   "MosScope": "PLAYLIST",
@@ -1082,7 +1082,6 @@ exports[`Profile 2 onCreateRunningOrder with simple story 1`] = `
             "_mosString128": "3854737F:0003A34D:983A0B28",
           },
           "Items": [],
-          "Slug": undefined,
         },
       ],
     },
@@ -1133,7 +1132,9 @@ exports[`Profile 2 onCreateRunningOrder: <mos>
 exports[`Profile 2 onDeleteRunningOrder 1`] = `
 [
   [
-    49478285,
+    {
+      "_mosString128": "49478285",
+    },
   ],
 ]
 `;
@@ -1229,8 +1230,8 @@ exports[`Profile 2 onMetadataReplace 1`] = `
             "Owner": "SHOLMES",
             "destination": "b",
             "source": "a",
-            "transitionMode": 2,
-            "transitionPoint": 463,
+            "transitionMode": "2",
+            "transitionPoint": "463",
           },
           "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
           "MosScope": "PLAYLIST",
@@ -1433,7 +1434,6 @@ exports[`Profile 2 onROInsertStories - simple story 1`] = `
           "_mosString128": "17",
         },
         "Items": [],
-        "Slug": undefined,
       },
     ],
   ],
@@ -1768,7 +1768,6 @@ exports[`Profile 2 onROReplaceStories - simple story 1`] = `
           "_mosString128": "17",
         },
         "Items": [],
-        "Slug": undefined,
       },
     ],
   ],
@@ -2025,8 +2024,8 @@ exports[`Profile 2 onReplaceRunningOrder 1`] = `
                     "Owner": "SHOLMES",
                     "destination": "b",
                     "source": "a",
-                    "transitionMode": 2,
-                    "transitionPoint": 463,
+                    "transitionMode": "2",
+                    "transitionPoint": "463",
                   },
                   "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                   "MosScope": "PLAYLIST",
@@ -2084,8 +2083,8 @@ exports[`Profile 2 onReplaceRunningOrder 1`] = `
                     "Owner": "SHOLMES",
                     "destination": "b",
                     "source": "a",
-                    "transitionMode": 2,
-                    "transitionPoint": 463,
+                    "transitionMode": "2",
+                    "transitionPoint": "463",
                   },
                   "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
                   "MosScope": "PLAYLIST",
@@ -2133,7 +2132,9 @@ exports[`Profile 2 onReplaceRunningOrder: <mos>
 exports[`Profile 2 onRequestRunningOrder 1`] = `
 [
   [
-    96857485,
+    {
+      "_mosString128": "96857485",
+    },
   ],
 ]
 `;
@@ -2343,10 +2344,16 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
         <objID>M000224</objID>
         <mosID>testmos.enps.com</mosID>
         <itemSlug>COLSTAT MURDER:VO</itemSlug>
+        <objPaths>
+          <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
+          <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
+          <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
+        </objPaths>
         <itemEdDur>645</itemEdDur>
         <itemUserTimingDur>310</itemUserTimingDur>
         <itemTrigger>CHAINED</itemTrigger>
         <mosExternalMetadata>
+          <mosScope>PLAYLIST</mosScope>
           <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
           <mosPayload>
             <Owner>SHOLMES</Owner>
@@ -2355,13 +2362,7 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
             <source>a</source>
             <destination>b</destination>
           </mosPayload>
-          <mosScope>PLAYLIST</mosScope>
         </mosExternalMetadata>
-        <objPaths>
-          <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
-          <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
-          <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
-        </objPaths>
       </item>
     </story>
     <story>
@@ -2376,6 +2377,7 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
         <itemEdDur>310</itemEdDur>
         <itemUserTimingDur>200</itemUserTimingDur>
         <mosExternalMetadata>
+          <mosScope>PLAYLIST</mosScope>
           <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
           <mosPayload>
             <Owner>SHOLMES</Owner>
@@ -2384,7 +2386,6 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
             <source>a</source>
             <destination>b</destination>
           </mosPayload>
-          <mosScope>PLAYLIST</mosScope>
         </mosExternalMetadata>
       </item>
     </story>
@@ -2408,10 +2409,16 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
         <objID>M000224</objID>
         <mosID>testmos.enps.com</mosID>
         <itemSlug>COLSTAT MURDER:VO</itemSlug>
+        <objPaths>
+          <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
+          <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
+          <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
+        </objPaths>
         <itemEdDur>645</itemEdDur>
         <itemUserTimingDur>310</itemUserTimingDur>
         <itemTrigger>CHAINED</itemTrigger>
         <mosExternalMetadata>
+          <mosScope>PLAYLIST</mosScope>
           <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
           <mosPayload>
             <Owner>SHOLMES</Owner>
@@ -2420,13 +2427,7 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
             <source>a</source>
             <destination>b</destination>
           </mosPayload>
-          <mosScope>PLAYLIST</mosScope>
         </mosExternalMetadata>
-        <objPaths>
-          <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
-          <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
-          <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
-        </objPaths>
       </item>
     </story>
     <story>
@@ -2441,6 +2442,7 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
         <itemEdDur>310</itemEdDur>
         <itemUserTimingDur>200</itemUserTimingDur>
         <mosExternalMetadata>
+          <mosScope>PLAYLIST</mosScope>
           <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
           <mosPayload>
             <Owner>SHOLMES</Owner>
@@ -2449,7 +2451,6 @@ exports[`Profile 2 onRequestRunningOrder: <mos>
             <source>a</source>
             <destination>b</destination>
           </mosPayload>
-          <mosScope>PLAYLIST</mosScope>
         </mosExternalMetadata>
       </item>
     </story>
@@ -2573,17 +2574,50 @@ exports[`Profile 2 sendCreateRunningOrder, sendReplaceRunningOrder 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -2611,7 +2645,6 @@ exports[`Profile 2 sendCreateRunningOrder, sendReplaceRunningOrder 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -2654,17 +2687,50 @@ exports[`Profile 2 sendCreateRunningOrder, sendReplaceRunningOrder 4`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -2692,7 +2758,6 @@ exports[`Profile 2 sendCreateRunningOrder, sendReplaceRunningOrder 4`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -2722,17 +2787,50 @@ exports[`Profile 2 sendDeleteRunningOrder 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -2760,7 +2858,6 @@ exports[`Profile 2 sendDeleteRunningOrder 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -2796,17 +2893,50 @@ exports[`Profile 2 sendItemStatus 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -2834,7 +2964,6 @@ exports[`Profile 2 sendItemStatus 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -2853,20 +2982,20 @@ exports[`Profile 2 sendMetadataReplace 1`] = `
     <roEdDur>1:23:45</roEdDur>
     <roTrigger>A</roTrigger>
     <mosExternalMetadata>
+      <mosScope>PLAYLIST</mosScope>
       <mosSchema>http://localhost/mySchema0</mosSchema>
       <mosPayload>
         <prop0>a</prop0>
         <prop1>b</prop1>
       </mosPayload>
-      <mosScope>PLAYLIST</mosScope>
     </mosExternalMetadata>
     <mosExternalMetadata>
+      <mosScope>PLAYLIST</mosScope>
       <mosSchema>http://localhost/mySchema1</mosSchema>
       <mosPayload>
         <prop2>x</prop2>
         <prop3>y</prop3>
       </mosPayload>
-      <mosScope>PLAYLIST</mosScope>
     </mosExternalMetadata>
   </roMetadataReplace>
 </mos>"
@@ -2885,17 +3014,50 @@ exports[`Profile 2 sendMetadataReplace 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -2923,7 +3085,6 @@ exports[`Profile 2 sendMetadataReplace 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -2962,17 +3123,50 @@ exports[`Profile 2 sendRODeleteItems 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -3000,7 +3194,6 @@ exports[`Profile 2 sendRODeleteItems 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -3036,17 +3229,50 @@ exports[`Profile 2 sendRODeleteStories 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -3074,7 +3300,6 @@ exports[`Profile 2 sendRODeleteStories 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -3122,17 +3347,50 @@ exports[`Profile 2 sendROInsertItems 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -3160,7 +3418,6 @@ exports[`Profile 2 sendROInsertItems 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -3205,17 +3462,50 @@ exports[`Profile 2 sendROInsertStories 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -3243,7 +3533,6 @@ exports[`Profile 2 sendROInsertStories 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -3283,17 +3572,50 @@ exports[`Profile 2 sendROMoveItems 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -3321,7 +3643,6 @@ exports[`Profile 2 sendROMoveItems 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -3360,17 +3681,50 @@ exports[`Profile 2 sendROMoveStories 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -3398,7 +3752,6 @@ exports[`Profile 2 sendROMoveStories 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -3446,17 +3799,50 @@ exports[`Profile 2 sendROReplaceItems 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -3484,7 +3870,6 @@ exports[`Profile 2 sendROReplaceItems 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -3529,17 +3914,50 @@ exports[`Profile 2 sendROReplaceStories 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -3567,7 +3985,6 @@ exports[`Profile 2 sendROReplaceStories 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -3604,17 +4021,50 @@ exports[`Profile 2 sendROSwapItems 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -3642,7 +4092,6 @@ exports[`Profile 2 sendROSwapItems 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -3676,17 +4125,50 @@ exports[`Profile 2 sendROSwapStories 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -3714,7 +4196,6 @@ exports[`Profile 2 sendROSwapStories 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -3745,17 +4226,50 @@ exports[`Profile 2 sendReadyToAir 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -3783,7 +4297,6 @@ exports[`Profile 2 sendReadyToAir 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -3826,8 +4339,8 @@ exports[`Profile 2 sendRequestRunningOrder 2`] = `
                 "Owner": "SHOLMES",
                 "destination": "b",
                 "source": "a",
-                "transitionMode": 2,
-                "transitionPoint": 463,
+                "transitionMode": "2",
+                "transitionPoint": "463",
               },
               "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
               "MosScope": "PLAYLIST",
@@ -3885,8 +4398,8 @@ exports[`Profile 2 sendRequestRunningOrder 2`] = `
                 "Owner": "SHOLMES",
                 "destination": "b",
                 "source": "a",
-                "transitionMode": 2,
-                "transitionPoint": 463,
+                "transitionMode": "2",
+                "transitionPoint": "463",
               },
               "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
               "MosScope": "PLAYLIST",
@@ -3935,17 +4448,50 @@ exports[`Profile 2 sendRunningOrderStatus 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -3973,7 +4519,6 @@ exports[`Profile 2 sendRunningOrderStatus 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }
@@ -4006,17 +4551,50 @@ exports[`Profile 2 sendStoryStatus 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -4044,7 +4622,6 @@ exports[`Profile 2 sendStoryStatus 2`] = `
     },
     "strict": true,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": true,
 }

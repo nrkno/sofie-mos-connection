@@ -1,4 +1,5 @@
 import { IMOSTime, IMOSString128, IMOSDuration, IMOSExternalMetaData } from './mosTypes'
+import { AnyXMLValue } from './xmlParse'
 
 export interface IMOSROAction {
 	RunningOrderID: IMOSString128
@@ -60,10 +61,17 @@ export interface IMOSROFullStory extends IMOSStory {
 	RunningOrderId: IMOSString128
 	Body: Array<IMOSROFullStoryBodyItem>
 }
-export interface IMOSROFullStoryBodyItem {
-	Type: string // enum, whatever?
-	Content: any | IMOSItem // maybe not, maybe something else? IMOSItemObject??
-}
+export type IMOSROFullStoryBodyItem =
+	| {
+			itemType: 'storyItem'
+			Type: 'storyItem'
+			Content: IMOSItem // TODO: Make this stricter? IMOSItemObject??
+	  }
+	| {
+			itemType: 'other'
+			Type: string // e.g. 'p'
+			Content: AnyXMLValue
+	  }
 export interface IMOSItem {
 	ID: IMOSString128
 	Slug?: IMOSString128
@@ -78,7 +86,7 @@ export interface IMOSItem {
 	Duration?: number
 	TimeBase?: number
 	UserTimingDuration?: number
-	Trigger?: any
+	Trigger?: AnyXMLValue
 	MacroIn?: IMOSString128
 	MacroOut?: IMOSString128
 	MosExternalMetaData?: Array<IMOSExternalMetaData>
@@ -110,7 +118,7 @@ export interface IMOSROAckItem {
 }
 
 export interface IMOSROAckObject {
-	Status: IMOSObjectStatus
+	Status: 'OK' | string
 	ID: IMOSString128
 }
 
@@ -130,7 +138,9 @@ export interface IProfiles {
 export interface IMOSObject {
 	ID?: IMOSString128
 	Slug: IMOSString128
-	MosAbstract?: string
+	MosAbstract?: AnyXMLValue // xml json
+	/** A stringified version of MosAbstract, where all HTML have been flattened */
+	MosAbstractStr?: string
 	Group?: string
 	Type: IMOSObjectType
 	TimeBase: number
@@ -143,7 +153,9 @@ export interface IMOSObject {
 	Created?: IMOSTime
 	ChangedBy?: IMOSString128 // if not present, defaults to CreatedBy
 	Changed?: IMOSTime // if not present, defaults to Created
-	Description?: any // xml json
+	Description?: AnyXMLValue // xml json
+	/** A stringified version of Description, where all HTML have been flattened */
+	DescriptionStr?: string
 	MosExternalMetaData?: Array<IMOSExternalMetaData>
 	MosItemEditorProgID?: IMOSString128
 }
@@ -197,7 +209,7 @@ export enum IMOSObjectType {
 	STILL = 'STILL',
 	AUDIO = 'AUDIO',
 	VIDEO = 'VIDEO',
-	OTHER = 'OTHER', // unknown/not speficied
+	OTHER = 'OTHER', // unknown/not specified
 }
 
 export enum IMOSObjectStatus {
@@ -294,7 +306,7 @@ export interface IMOSDefaultActiveX {
 	controlFileLocation: string
 	/** Defined by MOS 128 characters max */
 	controlSlug: IMOSString128
-	/** This value represents the key/classid key used to load the ActiveX from the registry., ex: "contained.containedCTRL.1" */
+	/** This value represents the key/classId key used to load the ActiveX from the registry., ex: "contained.containedCTRL.1" */
 	controlName: string
 	/** This value represents the parameters that can be passed to an ActiveX. ex "URL=http:" */
 	controlDefaultParams: string

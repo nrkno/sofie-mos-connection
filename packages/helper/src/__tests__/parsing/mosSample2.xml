@@ -7,17 +7,33 @@
 			<objSlug>bts-finnmark-bil_navnekonflikt(2)</objSlug>
 			<mosID>quantelplugin.sofie</mosID>
 			<mosPlugInID>Sofie.QuantelPlugin</mosPlugInID>
-			<mosAbstract/>
+			<mosAbstract />
 			<objPaths>
 				<objPath techDescription="VIDEO">41cfc641849c417eaa10e4f3c377f181</objPath>
 			</objPaths>
-			<itemEdDur/>
+			<itemEdDur />
 			<mosExternalMetadata>
 				<mosScope>OBJECT</mosScope>
+				<mosSchema>http://mos-connection/unit-test</mosSchema>
 				<mosPayload>
 					<objType>VIDEO</objType>
 				</mosPayload>
 			</mosExternalMetadata>
 		</item>
+		<item>
+			<itemID>3</itemID>
+			<itemSlug>bts-finnmark-bil_navnekonflikt(2)</itemSlug>
+			<objID>41cfc641849c417eaa10e4f3c377f181</objID>
+			<objSlug>bts-finnmark-bil_navnekonflikt(2)</objSlug>
+			<mosID>quantelplugin.sofie</mosID>
+			<mosPlugInID>Sofie.QuantelPlugin</mosPlugInID>
+			<mosAbstract />
+			<objPaths>
+				<objPath techDescription="VIDEO">aaaaaa</objPath>
+				<objPath techDescription="MYVIDEO">abc123.mp4</objPath>
+				<objProxyPath techDescription="WM9 750Kbps">http://server/proxy/clipe.wmv</objProxyPath>
+			</objPaths>
+			<itemEdDur />
+		</item>
 	</ncsItem>
-</mos> 
+</mos>

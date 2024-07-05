@@ -1,6 +1,7 @@
 import * as MosString128 from './mosTypes/mosString128'
 import * as MosDuration from './mosTypes/mosDuration'
 import * as MosTime from './mosTypes/mosTime'
+import { AnyXMLObject } from './xmlParse'
 
 export { IMOSString128 } from './mosTypes/mosString128'
 export { IMOSDuration } from './mosTypes/mosDuration'
@@ -91,7 +92,7 @@ function getMosType<Serialized, Value, CreateValue>(
 export interface IMOSExternalMetaData {
 	MosScope?: IMOSScope
 	MosSchema: string
-	MosPayload: any
+	MosPayload: AnyXMLObject
 }
 export enum IMOSScope {
 	OBJECT = 'OBJECT',

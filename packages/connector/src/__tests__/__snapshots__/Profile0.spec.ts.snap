@@ -38,7 +38,6 @@ exports[`Profile 0 requestMachineInfo 2`] = `
   "SN": {
     "_mosString128": "927748927",
   },
-  "defaultActiveX": undefined,
   "hwRev": {
     "_mosString128": "",
   },
@@ -48,7 +47,6 @@ exports[`Profile 0 requestMachineInfo 2`] = `
   "model": {
     "_mosString128": "TCS6000",
   },
-  "mosExternalMetaData": undefined,
   "mosRev": {
     "_mosString128": "2.8.2",
   },

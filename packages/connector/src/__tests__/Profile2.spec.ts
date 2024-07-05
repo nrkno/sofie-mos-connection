@@ -326,7 +326,7 @@ describe('Profile 2', () => {
 		const messageId = await fakeIncomingMessage(serverSocketMockUpper, xmlData.roReq)
 		expect(onRequestRunningOrder).toHaveBeenCalledTimes(1)
 
-		expect(onRequestRunningOrder.mock.calls[0][0]).toEqual(96857485)
+		expect(onRequestRunningOrder.mock.calls[0][0]).toEqual(mosTypes.mosString128.create('96857485'))
 		expect(fixSnapshot(onRequestRunningOrder.mock.calls)).toMatchSnapshot()
 		// Check reply to socket server:
 		await serverSocketMockUpper.mockWaitForSentMessages()

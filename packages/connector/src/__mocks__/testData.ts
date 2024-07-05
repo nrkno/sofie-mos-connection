@@ -23,6 +23,7 @@ import {
 	IMOSScope,
 	IMOSExternalMetaData,
 	getMosTypes,
+	IMOSRequestObjectList,
 } from '@mos-connection/model'
 
 const mosTypes = getMosTypes(true)
@@ -74,7 +75,7 @@ const xmlData = {
 	reqObj: `<mosReqObj>		<objID>M000123</objID>		 </mosReqObj>`,
 	mosReqAll: `<mosReqAll>		 <pause>0</pause>		  </mosReqAll>`,
 	mosObj: `<mosObj>	<objID>M000123</objID>	<objSlug>Hotel Fire</objSlug>	<mosAbstract>		<b>Hotel Fire</b>		<em>vo</em>		:30	</mosAbstract>	<objGroup>Show 7</objGroup>	<objType>VIDEO</objType>	<objTB>59.94</objTB>	<objRev>1</objRev>	<objDur>1800</objDur>	<status>NEW</status>	<objAir>READY</objAir><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>	<createdBy>Chris</createdBy>	<created>2009-10-31T23:39:12</created>	<changedBy>Chris</changedBy>	<changed>2009-10-31T23:39:12</changed>	<description>		<p>		  Exterior footage of		  <em>Baley Park Hotel</em>			on fire with natural sound. Trucks are visible for the first portion of the clip.		  <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>		</p>		<p>		  <tab/>		  Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.		</p>		<p>		  <em>Clip has been doubled for pad on voice over.</em>		</p>	</description>	<mosExternalMetadata>		<mosScope>STORY</mosScope>		<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>		<mosPayload>		  <Owner>SHOLMES</Owner>		  <ModTime>20010308142001</ModTime>		  <mediaTime>0</mediaTime>		  <TextTime>278</TextTime>		  <ModBy>LJOHNSTON</ModBy>		  <Approved>0</Approved>		  <Creator>SHOLMES</Creator>		</mosPayload>	</mosExternalMetadata></mosObj>`,
-	mosListAll: `<mosListAll><mosObj><objID>M000123</objID><objSlug>HOTEL FIRE</objSlug><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>      <createdBy>Chris</createdBy>      <created>2009-10-31T23:39:12</created>      <changedBy>Chris</changedBy>      <changed>2009-11-01T14:35:55</changed>      <description>         <p>                                  Exterior footage of            <em>Baley Park Hotel</em>             on fire with natural sound. Trucks are visible for the first portion of the clip.                    <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>         </p>         <p>            <tab/>            Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.         </p>         <p>            <em>Clip has been doubled for pad on voice over.</em>         </p>      </description>    </mosObj>    <mosObj>      <objID>M000224</objID>      <objSlug>COLSTAT MURDER:VO</objSlug>      <objType>VIDEO</objType>      <objTB>59.94</objTB>      <objRev>4</objRev>      <objDur>800</objDur>      <status>UPDATED</status>      <objAir>READY</objAir><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>      <createdBy>Phil</createdBy>      <created>2009-11-01T15:19:01</created>      <changedBy>Chris</changedBy>      <changed>2009-11-01T15:21:15</changed>      <description>VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.</description>      <mosExternalMetadata>         <mosScope>STORY</mosScope>           <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>         <mosPayload>            <Owner>SHOLMES</Owner>            <ModTime>20010308142001</ModTime>            <mediaTime>0</mediaTime>            <TextTime>278</TextTime>            <ModBy>LJOHNSTON</ModBy>            <Approved>0</Approved>            <Creator>SHOLMES</Creator>         </mosPayload>      </mosExternalMetadata>    </mosObj>   </mosListAll>`,
+	mosListAll: `<mosListAll><mosObj><objTB>59.94</objTB><objDur>1234</objDur><objID>M000123</objID><objSlug>HOTEL FIRE</objSlug><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>      <createdBy>Chris</createdBy>      <created>2009-10-31T23:39:12</created>      <changedBy>Chris</changedBy>      <changed>2009-11-01T14:35:55</changed>      <description>         <p>                                  Exterior footage of            <em>Baley Park Hotel</em>             on fire with natural sound. Trucks are visible for the first portion of the clip.                    <em>CG locator at 0:04 and duration 0:05, Baley Park Hotel.</em>         </p>         <p>            <tab/>            Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.         </p>         <p>            <em>Clip has been doubled for pad on voice over.</em>         </p>      </description>    </mosObj>    <mosObj>      <objID>M000224</objID>      <objSlug>COLSTAT MURDER:VO</objSlug>      <objType>VIDEO</objType>      <objTB>59.94</objTB>      <objRev>4</objRev>      <objDur>800</objDur>      <status>UPDATED</status>      <objAir>READY</objAir><objPaths><objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath><objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath></objPaths>      <createdBy>Phil</createdBy>      <created>2009-11-01T15:19:01</created>      <changedBy>Chris</changedBy>      <changed>2009-11-01T15:21:15</changed>      <description>VOICE OVER MATERIAL OF COLSTAT MURDER SITES SHOT ON 1-NOV.</description>      <mosExternalMetadata>         <mosScope>STORY</mosScope>           <mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>         <mosPayload>            <Owner>SHOLMES</Owner>            <ModTime>20010308142001</ModTime>            <mediaTime>0</mediaTime>            <TextTime>278</TextTime>            <ModBy>LJOHNSTON</ModBy>            <Approved>0</Approved>            <Creator>SHOLMES</Creator>         </mosPayload>      </mosExternalMetadata>    </mosObj>   </mosListAll>`,
 
 	roCreate: `<roCreate><roID>96857485</roID>	  <roSlug>5PM RUNDOWN</roSlug>	  <roEdStart>2009-04-17T17:02:00</roEdStart>	  <roEdDur>00:58:25</roEdDur>	  <story>		 <storyID>5983A501:0049B924:8390EF2B</storyID>		 <storySlug>COLSTAT MURDER</storySlug>		 <storyNum>A5</storyNum>		 <item>			<itemID>0</itemID>			<itemSlug>COLSTAT MURDER:VO</itemSlug>			<objID>M000224</objID>			<mosID>testmos.enps.com</mosID>		<objPaths>	 <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>	 <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath><objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>		</objPaths>			<itemEdDur>645</itemEdDur>			<itemUserTimingDur>310</itemUserTimingDur>			<itemTrigger>CHAINED</itemTrigger>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	  <story>		 <storyID>3854737F:0003A34D:983A0B28</storyID>		 <storySlug>AIRLINE INSPECTIONS</storySlug>		 <storyNum>A6</storyNum>		 <item>			<itemID>0</itemID>			<objID>M000133</objID>			<mosID>testmos.enps.com</mosID>			<itemEdStart>55</itemEdStart>			<itemEdDur>310</itemEdDur>			 <itemUserTimingDur>200</itemUserTimingDur>			<mosExternalMetadata>				<mosScope>PLAYLIST</mosScope>				<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>				<mosPayload>				  <Owner>SHOLMES</Owner>				  <transitionMode>2</transitionMode>				  <transitionPoint>463</transitionPoint>				  <source>a</source>				  <destination>b</destination>				</mosPayload>			</mosExternalMetadata>		 </item>	  </story>	</roCreate>`,
 	roCreate_simple_story: `<roCreate><roID>96857485</roID><roSlug>5PM RUNDOWN</roSlug><roEdStart>2009-04-17T17:02:00</roEdStart><roEdDur>00:58:25</roEdDur><story><storyID>3854737F:0003A34D:983A0B28</storyID></story></roCreate>`,
@@ -584,11 +585,11 @@ const xmlApiData = {
 				MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>',
 				MosPayload: {
 					Owner: 'SHOLMES',
-					ModTime: 20010308142001,
-					mediaTime: 0,
-					TextTime: 278,
+					ModTime: '20010308142001',
+					mediaTime: '0',
+					TextTime: '278',
 					ModBy: 'LJOHNSTON',
-					Approved: 0,
+					Approved: '0',
 					Creator: 'SHOLMES',
 				},
 			}),
@@ -631,17 +632,17 @@ const xmlApiData = {
 	}),
 
 	mosListAll: [
-		{
+		literal<IMOSObject>({
 			ID: mosTypes.mosString128.create('M000123'),
 			Slug: mosTypes.mosString128.create('HOTEL FIRE'),
 			// MosAbstract: ''
 			// Group?: '
-			Type: undefined,
-			TimeBase: undefined,
-			Revision: undefined,
-			Duration: undefined,
-			Status: undefined,
-			AirStatus: undefined,
+			Type: IMOSObjectType.OTHER,
+			TimeBase: 59.94,
+			// Revision: undefined,
+			Duration: 1234,
+			// Status: undefined,
+			// AirStatus: undefined,
 			Paths: [
 				literal<IMOSObjectPath>({
 					Type: IMOSObjectPathType.PATH,
@@ -664,7 +665,7 @@ const xmlApiData = {
 			ChangedBy: mosTypes.mosString128.create('Chris'),
 			Changed: mosTypes.mosTime.create('2009-11-01T14:35:55'),
 			Description: {},
-		},
+		}),
 		literal<IMOSObject>({
 			ID: mosTypes.mosString128.create('M000224'),
 			Slug: mosTypes.mosString128.create('COLSTAT MURDER:VO'),
@@ -704,11 +705,11 @@ const xmlApiData = {
 					MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 					MosPayload: {
 						Owner: 'SHOLMES',
-						ModTime: 20010308142001,
-						mediaTime: 0,
-						TextTime: 278,
+						ModTime: '20010308142001',
+						mediaTime: '0',
+						TextTime: '278',
 						ModBy: 'LJOHNSTON',
-						Approved: 0,
+						Approved: '0',
 						Creator: 'SHOLMES',
 					},
 				}),
@@ -770,8 +771,8 @@ const xmlApiData = {
 								MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 								MosPayload: {
 									Owner: 'SHOLMES',
-									transitionMode: 2,
-									transitionPoint: 463,
+									transitionMode: '2',
+									transitionPoint: '463',
 									source: 'a',
 									destination: 'b',
 								},
@@ -805,8 +806,8 @@ const xmlApiData = {
 								MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 								MosPayload: {
 									Owner: 'SHOLMES',
-									transitionMode: 2,
-									transitionPoint: 463,
+									transitionMode: '2',
+									transitionPoint: '463',
 									source: 'a',
 									destination: 'b',
 								},
@@ -910,7 +911,7 @@ const xmlApiData = {
 			}),
 		],
 	}),
-	roDelete: 49478285,
+	roDelete: mosTypes.mosString128.create('49478285'),
 	roList: literal<IMOSObject>({
 		ID: mosTypes.mosString128.create('M000123'),
 		Slug: mosTypes.mosString128.create('Hotel Fire'),
@@ -993,8 +994,8 @@ const xmlApiData = {
 								MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 								MosPayload: {
 									Owner: 'SHOLMES',
-									transitionMode: 2,
-									transitionPoint: 463,
+									transitionMode: '2',
+									transitionPoint: '463',
 									source: 'a',
 									destination: 'b',
 								},
@@ -1028,8 +1029,8 @@ const xmlApiData = {
 								MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 								MosPayload: {
 									Owner: 'SHOLMES',
-									transitionMode: 2,
-									transitionPoint: 463,
+									transitionMode: '2',
+									transitionPoint: '463',
 									source: 'a',
 									destination: 'b',
 								},
@@ -1057,8 +1058,8 @@ const xmlApiData = {
 					Owner: 'SHOLMES',
 					destination: 'b',
 					source: 'a',
-					transitionMode: 2,
-					transitionPoint: 463,
+					transitionMode: '2',
+					transitionPoint: '463',
 				},
 			},
 		],
@@ -1340,8 +1341,8 @@ const xmlApiData = {
 							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 							MosPayload: {
 								Owner: 'SHOLMES',
-								transitionMode: 2,
-								transitionPoint: 463,
+								transitionMode: '2',
+								transitionPoint: '463',
 								source: 'a',
 								destination: 'b',
 							},
@@ -1350,9 +1351,9 @@ const xmlApiData = {
 							MosScope: IMOSScope.PLAYLIST,
 							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSBXML2.08',
 							MosPayload: {
-								rate: 52,
-								background: 2,
-								overlay: 463,
+								rate: '52',
+								background: '2',
+								overlay: '463',
 							},
 						},
 					],
@@ -1372,8 +1373,8 @@ const xmlApiData = {
 							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 							MosPayload: {
 								Owner: 'SHOLMES',
-								transitionMode: 2,
-								transitionPoint: 463,
+								transitionMode: '2',
+								transitionPoint: '463',
 								source: 'a',
 								destination: 'b',
 							},
@@ -1423,8 +1424,8 @@ const xmlApiData = {
 							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 							MosPayload: {
 								Owner: 'SHOLMES',
-								transitionMode: 2,
-								transitionPoint: 463,
+								transitionMode: '2',
+								transitionPoint: '463',
 								source: 'a',
 								destination: 'b',
 							},
@@ -1433,9 +1434,9 @@ const xmlApiData = {
 							MosScope: IMOSScope.PLAYLIST,
 							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSBXML2.08',
 							MosPayload: {
-								rate: 52,
-								background: 2,
-								overlay: 463,
+								rate: '52',
+								background: '2',
+								overlay: '463',
 							},
 						},
 					],
@@ -1455,8 +1456,8 @@ const xmlApiData = {
 							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 							MosPayload: {
 								Owner: 'SHOLMES',
-								transitionMode: 2,
-								transitionPoint: 463,
+								transitionMode: '2',
+								transitionPoint: '463',
 								source: 'a',
 								destination: 'b',
 							},
@@ -1506,8 +1507,8 @@ const xmlApiData = {
 							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 							MosPayload: {
 								Owner: 'SHOLMES',
-								transitionMode: 2,
-								transitionPoint: 463,
+								transitionMode: '2',
+								transitionPoint: '463',
 								source: 'a',
 								destination: 'b',
 							},
@@ -1538,8 +1539,8 @@ const xmlApiData = {
 							MosSchema: 'http://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 							MosPayload: {
 								Owner: 'SHOLMES',
-								transitionMode: 2,
-								transitionPoint: 463,
+								transitionMode: '2',
+								transitionPoint: '463',
 								source: 'a',
 								destination: 'b',
 							},
@@ -1705,10 +1706,12 @@ const xmlApiData = {
 		// Body: []
 		Body: [
 			literal<IMOSROFullStoryBodyItem>({
+				itemType: 'other',
 				Type: 'p',
 				Content: '',
 			}),
 			literal<IMOSROFullStoryBodyItem>({
+				itemType: 'storyItem',
 				Type: 'storyItem',
 				Content: literal<IMOSItem>({
 					ID: mosTypes.mosString128.create('2'),
@@ -1754,24 +1757,27 @@ const xmlApiData = {
 				}),
 			}),
 			literal<IMOSROFullStoryBodyItem>({
+				itemType: 'other',
 				Type: 'p',
 				Content: '',
 			}),
 			literal<IMOSROFullStoryBodyItem>({
+				itemType: 'other',
 				Type: 'p',
 				Content: '',
 			}),
 			literal<IMOSROFullStoryBodyItem>({
+				itemType: 'other',
 				Type: 'p',
 				Content: '',
 			}),
 			// literal<IMOSROFullStoryBodyItem>({
 			literal<IMOSROFullStoryBodyItem>({
+				itemType: 'storyItem',
 				Type: 'storyItem',
-				Content: {
+				Content: literal<IMOSItem>({
 					ID: mosTypes.mosString128.create('3'),
-					// Slug: mosTypes.mosString128.create(''),
-					// ObjectID: mosTypes.mosString128.create(''),
+					ObjectID: mosTypes.mosString128.create(''),
 					MOSID: 'chyron.techycami02.ndte.nrk.mos',
 					mosAbstract: '_00:00:02:00 | @M=Auto Timed | 01 ett navn | 1: | 2: | 3: | 4: | 00:00:05:00',
 					Slug: mosTypes.mosString128.create('01 ett navn 1:\xa0\xa02:'), // &nbsp = 160
@@ -1813,12 +1819,12 @@ const xmlApiData = {
 					// 	}
 					// })],
 					MosObjects: [
-						{
+						literal<IMOSObject>({
 							ID: mosTypes.mosString128.create('NYHETER\\00039287?version=1'),
 							Slug: mosTypes.mosString128.create('01 ett navn 1:\xa0\xa02:'), // &nbsp = 160
 							// MosAbstract?: '',
 							// Group?: '',
-							Type: undefined,
+							Type: IMOSObjectType.OTHER,
 							TimeBase: 0,
 							// Revision: number, // max 999
 							Duration: 0,
@@ -1855,11 +1861,12 @@ const xmlApiData = {
 								}),
 							],
 							MosItemEditorProgID: mosTypes.mosString128.create('Chymox.AssetBrowser.1'),
-						},
+						}),
 					],
-				},
+				}),
 			}),
 			literal<IMOSROFullStoryBodyItem>({
+				itemType: 'other',
 				Type: 'p',
 				Content: '',
 			}),
@@ -1868,6 +1875,7 @@ const xmlApiData = {
 				// Content: {},
 			} as IMOSROFullStoryBodyItem), // tmp
 			literal<IMOSROFullStoryBodyItem>({
+				itemType: 'other',
 				Type: 'p',
 				Content: '',
 			}),
@@ -1876,6 +1884,7 @@ const xmlApiData = {
 				// Content: {},
 			} as IMOSROFullStoryBodyItem), // tmp
 			literal<IMOSROFullStoryBodyItem>({
+				itemType: 'other',
 				Type: 'p',
 				Content: '',
 			}),
@@ -1897,6 +1906,7 @@ const xmlApiData = {
 		Slug: mosTypes.mosString128.create('My Story'),
 		Body: [
 			literal<IMOSROFullStoryBodyItem>({
+				itemType: 'storyItem',
 				Type: 'storyItem',
 				Content: literal<IMOSItem>({
 					ID: mosTypes.mosString128.create('item0'),
@@ -1925,10 +1935,10 @@ const xmlApiData = {
 					MosSchema: 'https://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
 					MosPayload: {
 						Owner: 'SHOLMES',
-						mediaTime: 0,
-						TextTime: 278,
+						mediaTime: '0',
+						TextTime: '278',
 						ModBy: 'LJOHNSTON',
-						Approved: 0,
+						Approved: '0',
 						Creator: 'SHOLMES',
 					},
 				}),
@@ -1949,10 +1959,10 @@ const xmlApiData = {
 					MosSchema: 'https://ncsA4.com/mos/supported_schemas/NCSAXML2.08',
 					MosPayload: {
 						Owner: 'SHOLMES',
-						mediaTime: 0,
-						TextTime: 350,
+						mediaTime: '0',
+						TextTime: '350',
 						ModBy: 'BSMITH',
-						Approved: 1,
+						Approved: '1',
 						Creator: 'SHOLMES',
 					},
 				}),
@@ -1974,10 +1984,10 @@ const xmlApiData = {
 				MosPayload: {
 					Owner: 'SHOLMES',
 					// modTime: 20010308142001,
-					mediaTime: 0,
-					TextTime: 278,
+					mediaTime: '0',
+					TextTime: '278',
 					ModBy: 'LJOHNSTON',
-					Approved: 0,
+					Approved: '0',
 					Creator: 'SHOLMES',
 				},
 			}),
@@ -1997,10 +2007,10 @@ const xmlApiData = {
 				MosScope: IMOSScope.PLAYLIST,
 				MosSchema: 'https://VENDOR/MOS/supportedSchemas/vvend280',
 				MosPayload: {
-					trigger: 837,
-					key: 110,
-					fade: 17,
-					efxTime: 15,
+					trigger: '837',
+					key: '110',
+					fade: '17',
+					efxTime: '15',
 				},
 			}),
 		],
@@ -2023,12 +2033,12 @@ const xmlApiData = {
 		],
 	}),
 	mosReqSearchableSchema: 'jbob',
-	mosReqObjList: {
+	mosReqObjList: literal<IMOSRequestObjectList>({
 		username: 'jbob',
-		queryID: '123439392039393ade0393zdkdls',
+		queryID: mosTypes.mosString128.create('123439392039393ade0393zdkdls'),
 		listReturnStart: 1,
 		listReturnEnd: null,
-		generalSearch: 'man bites dog',
+		generalSearch: mosTypes.mosString128.create('man bites dog'),
 		mosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
 		searchGroups: [
 			{
@@ -2072,7 +2082,7 @@ const xmlApiData = {
 				],
 			},
 		],
-	},
+	}),
 	mosObjReqObjActionNew: literal<IMOSObject>({
 		Slug: mosTypes.mosString128.create('Hotel Fire'),
 		Group: 'Show 7',
@@ -2081,7 +2091,7 @@ const xmlApiData = {
 		Duration: 1800,
 		CreatedBy: mosTypes.mosString128.create('Chris'),
 	}),
-	mosObjReqObjActionUpdateObjId: '1EFA3009233F8329C1',
+	mosObjReqObjActionUpdateObjId: mosTypes.mosString128.create('1EFA3009233F8329C1'),
 	mosObjReqObjActionUpdate: literal<IMOSObject>({
 		Slug: mosTypes.mosString128.create('Hotel Fire'),
 		Group: 'Show 7',
@@ -2090,12 +2100,13 @@ const xmlApiData = {
 		Duration: 1800,
 		CreatedBy: mosTypes.mosString128.create('Chris'),
 	}),
-	mosObjReqObjActionDeleteObjId: '1EFA3009233F8329C1',
+	mosObjReqObjActionDeleteObjId: mosTypes.mosString128.create('1EFA3009233F8329C1'),
 	sendRunningOrderStory: literal<IMOSROFullStory>({
 		ID: mosTypes.mosString128.create('5983A501:0049B924:8390EF1F'),
 		RunningOrderId: mosTypes.mosString128.create('96857485'),
 		Body: [
 			{
+				itemType: 'storyItem',
 				Type: 'storyItem',
 				Content: literal<IMOSItem>({
 					ID: mosTypes.mosString128.create('ID'),
@@ -2125,7 +2136,7 @@ const xmlApiData = {
 							MosScope: IMOSScope.PLAYLIST,
 							MosSchema: 'schema://mock',
 							MosPayload: {
-								attr0: 1,
+								attr0: '1',
 								attr1: {
 									inner: 'two',
 								},
@@ -2161,7 +2172,7 @@ const xmlApiData = {
 									MosScope: IMOSScope.STORY,
 									MosSchema: 'schema://mock',
 									MosPayload: {
-										attr0: 1,
+										attr0: '1',
 										attr1: {
 											inner: 'two',
 										},

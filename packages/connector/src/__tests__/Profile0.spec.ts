@@ -251,7 +251,7 @@ describe('Profile 0', () => {
 		checkMessageSnapshot(msg)
 
 		const replyMessage = { ...xmlApiData.machineInfoReply }
-		replyMessage.opTime = undefined
+		delete replyMessage.opTime
 
 		expect(returnedMachineInfo).toMatchObject(replyMessage)
 		expect(returnedMachineInfo.opTime).toBeUndefined()
@@ -274,7 +274,7 @@ describe('Profile 0', () => {
 		checkMessageSnapshot(msg)
 
 		const replyMessage = { ...xmlApiData.machineInfoReply }
-		replyMessage.opTime = undefined
+		delete replyMessage.opTime
 
 		expect(returnedMachineInfo).toMatchObject(replyMessage)
 		expect(returnedMachineInfo.opTime).toBeUndefined()

@@ -3,18 +3,24 @@ import { join } from 'path'
 import * as XMLBuilder from 'xmlbuilder'
 import { xml2js } from '../../utils/Utils'
 import { IMOSItem, MosModel, stringifyMosObject } from '../..'
+import { ensureArray, ensureXMLObject, isXMLObject } from '../../mosModel'
 
-function parseMosPluginMessageXml(xmlString: string): any | undefined {
-	const doc: any = xml2js(xmlString)
+function parseMosPluginMessageXml(xmlString: string) {
+	const doc = xml2js(xmlString)
 
-	if (doc?.mos) {
-		const res: any = {}
-		if (doc.mos.ncsReqAppInfo) {
-			res.ncsReqAppInfo = true
+	if (isXMLObject(doc.mos)) {
+		const res: {
+			ncsReqAppInfo: boolean
+			items: IMOSItem[]
+		} = {
+			ncsReqAppInfo: !!doc.mos.ncsReqAppInfo,
+			items: [],
 		}
 
-		if (doc.mos.ncsItem?.item) {
-			res.item = MosModel.XMLMosItem.fromXML(doc.mos.ncsItem.item, true)
+		if (isXMLObject(doc.mos.ncsItem) && doc.mos.ncsItem.item) {
+			res.items = ensureArray(doc.mos.ncsItem.item).map((item) =>
+				MosModel.XMLMosItem.fromXML('ncsItem.item', ensureXMLObject(item, true), true)
+			)
 		}
 
 		return res
@@ -39,17 +45,17 @@ describe('MOS XML to JavaScript object parser', () => {
 
 			it('should match the json representation', () => {
 				const actual = parseMosPluginMessageXml(sample1XmlStr)
-				const actualJson = actual && stringifyMosObject(actual.item, true) // Strip out any MosString etc
+				const actualJson = actual && stringifyMosObject(actual.items, true) // Strip out any MosString etc
 
-				expect(actualJson).toEqual(jsonDoc)
+				expect(actualJson).toEqual(jsonDoc.items)
 			})
 
 			it('converting via xml should be lossless', () => {
-				const generatedXml = generateMosPluginItemXml(jsonDoc)
+				const generatedXml = generateMosPluginItemXml(jsonDoc.items[0])
 				const actual = parseMosPluginMessageXml(generatedXml)
-				const actualJson = actual && stringifyMosObject(actual.item, true) // Strip out any MosString etc
+				const actualJson = actual && stringifyMosObject(actual.items, true) // Strip out any MosString etc
 
-				expect(actualJson).toEqual(jsonDoc)
+				expect(actualJson).toEqual(jsonDoc.items)
 			})
 		})
 
@@ -61,17 +67,20 @@ describe('MOS XML to JavaScript object parser', () => {
 
 			it('should match the json representation', () => {
 				const actual = parseMosPluginMessageXml(sampleXmlStr)
-				const actualJson = actual && stringifyMosObject(actual.item, true) // Strip out any MosString etc
+				const actualJson = actual && stringifyMosObject(actual.items, true) // Strip out any MosString etc
 
-				expect(actualJson).toEqual(jsonDoc)
+				expect(actualJson).toEqual(jsonDoc.items)
 			})
 
 			it('converting via xml should be lossless', () => {
-				const generatedXml = generateMosPluginItemXml(jsonDoc)
-				const actual = parseMosPluginMessageXml(generatedXml)
-				const actualJson = actual && stringifyMosObject(actual.item, true) // Strip out any MosString etc
+				for (let i = 0; i < jsonDoc.items.length; i++) {
+					const generatedXml = generateMosPluginItemXml(jsonDoc.items[i])
+					const actual = parseMosPluginMessageXml(generatedXml)
 
-				expect(actualJson).toEqual(jsonDoc)
+					const actualJson = actual && stringifyMosObject(actual.items[0], true) // Strip out any MosString etc
+
+					expect(actualJson).toEqual(jsonDoc.items[i])
+				}
 			})
 		})
 	})

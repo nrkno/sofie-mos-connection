@@ -33,17 +33,50 @@ exports[`Profile 3 mosItemReplace 2`] = `
       "ID": {
         "_mosString128": "5983A501:0049B924:8390EF2B",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000224",
+              },
+              "Status": "LOADED",
+            },
+          ],
+        },
+      ],
     },
     {
       "ID": {
         "_mosString128": "3854737F:0003A34D:983A0B28",
       },
-      "Items": [],
+      "Items": [
+        {
+          "Channel": {
+            "_mosString128": "",
+          },
+          "ID": {
+            "_mosString128": "0",
+          },
+          "Objects": [
+            {
+              "ID": {
+                "_mosString128": "M000133",
+              },
+              "Status": "UNKNOWN",
+            },
+          ],
+        },
+      ],
     },
   ],
   "_messageID": 0,
-  "mosID": undefined,
   "mosTypes": {
     "mosDuration": {
       "create": [Function],
@@ -71,7 +104,6 @@ exports[`Profile 3 mosItemReplace 2`] = `
     },
     "strict": false,
   },
-  "ncsID": undefined,
   "port": "upper",
   "strict": false,
 }
@@ -210,6 +242,9 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
           },
         ],
       },
+      "DescriptionStr": "Exterior footage of Baley Park Hotel on fire with natural sound. Trucks are visible for the first portion of the clip. CG locator at 0:04 and duration 0:05, Baley Park Hotel.
+Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.
+Clip has been doubled for pad on voice over.",
       "Duration": 1800,
       "Group": "Show 7",
       "ID": {
@@ -229,17 +264,17 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
           },
         ],
       },
+      "MosAbstractStr": "Hotel Fire vo",
       "MosExternalMetaData": [
         {
           "MosPayload": {
-            "Approved": 0,
+            "Approved": "0",
             "Creator": "SHOLMES",
             "ModBy": "LJOHNSTON",
-            "ModTime": 20010308142001,
+            "ModTime": "20010308142001",
             "Owner": "SHOLMES",
-            "TextTime": 278,
-            "mediaTime": 0,
-            "text": 0,
+            "TextTime": "278",
+            "mediaTime": "0",
           },
           "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
           "MosScope": "STORY",
@@ -335,6 +370,9 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
           },
         ],
       },
+      "DescriptionStr": "Exterior footage of Baley Park Hotel on fire with natural sound. Trucks are visible for the first portion of the clip. CG locator at 0:04 and duration 0:05, Baley Park Hotel.
+Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.
+Clip has been doubled for pad on voice over.",
       "Duration": 1800,
       "Group": "Show 7",
       "ID": {
@@ -354,17 +392,17 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
           },
         ],
       },
+      "MosAbstractStr": "Hotel Fire vo",
       "MosExternalMetaData": [
         {
           "MosPayload": {
-            "Approved": 0,
+            "Approved": "0",
             "Creator": "SHOLMES",
             "ModBy": "LJOHNSTON",
-            "ModTime": 20010308142001,
+            "ModTime": "20010308142001",
             "Owner": "SHOLMES",
-            "TextTime": 278,
-            "mediaTime": 0,
-            "text": 0,
+            "TextTime": "278",
+            "mediaTime": "0",
           },
           "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
           "MosScope": "STORY",
@@ -460,6 +498,9 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
           },
         ],
       },
+      "DescriptionStr": "Exterior footage of Baley Park Hotel on fire with natural sound. Trucks are visible for the first portion of the clip. CG locator at 0:04 and duration 0:05, Baley Park Hotel.
+Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.
+Clip has been doubled for pad on voice over.",
       "Duration": 1800,
       "Group": "Show 7",
       "ID": {
@@ -479,17 +520,17 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
           },
         ],
       },
+      "MosAbstractStr": "Hotel Fire vo",
       "MosExternalMetaData": [
         {
           "MosPayload": {
-            "Approved": 0,
+            "Approved": "0",
             "Creator": "SHOLMES",
             "ModBy": "LJOHNSTON",
-            "ModTime": 20010308142001,
+            "ModTime": "20010308142001",
             "Owner": "SHOLMES",
-            "TextTime": 278,
-            "mediaTime": 0,
-            "text": 0,
+            "TextTime": "278",
+            "mediaTime": "0",
           },
           "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
           "MosScope": "STORY",
@@ -532,8 +573,12 @@ exports[`Profile 3 mosRequestObjectList 2`] = `
 exports[`Profile 3 onMosItemReplace 1`] = `
 [
   [
-    undefined,
-    undefined,
+    {
+      "_mosString128": "",
+    },
+    {
+      "_mosString128": "",
+    },
     {
       "EditorialDuration": 815,
       "EditorialStart": 0,
@@ -550,10 +595,10 @@ exports[`Profile 3 onMosItemReplace 1`] = `
       "MosExternalMetaData": [
         {
           "MosPayload": {
-            "efxTime": 15,
-            "fade": 17,
-            "key": 110,
-            "trigger": 837,
+            "efxTime": "15",
+            "fade": "17",
+            "key": "110",
+            "trigger": "837",
           },
           "MosSchema": "https://VENDOR/MOS/supportedSchemas/vvend280",
           "MosScope": "PLAYLIST",
@@ -609,10 +654,6 @@ exports[`Profile 3 onMosObjCreate 1`] = `
 [
   [
     {
-      "AirStatus": undefined,
-      "Changed": undefined,
-      "ChangedBy": undefined,
-      "Created": undefined,
       "CreatedBy": {
         "_mosString128": "Chris",
       },
@@ -665,34 +706,33 @@ exports[`Profile 3 onMosObjCreate 1`] = `
           },
         ],
       },
+      "DescriptionStr": "Exterior footage of Baley Park Hotel on fire with natural sound. Trucks are
+				 visible for the first portion of the clip. CG locator at 0:04 and duration 0:05, Baley Park
+				 Hotel.
+Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.
+Clip has been doubled for pad on voice over.",
       "Duration": 1800,
       "Group": "Show 7",
-      "ID": {
-        "_mosString128": "",
-      },
-      "MosAbstract": undefined,
+      "MosAbstractStr": "",
       "MosExternalMetaData": [
         {
           "MosPayload": {
-            "Approved": 0,
+            "Approved": "0",
             "Creator": "SHOLMES",
             "ModBy": "LJOHNSTON",
-            "ModTime": 20010308142001,
+            "ModTime": "20010308142001",
             "Owner": "SHOLMES",
-            "TextTime": 278,
-            "mediaTime": 0,
-            "text": 0,
+            "TextTime": "278",
+            "mediaTime": "0",
           },
           "MosSchema": "https://ncsA4.com/mos/supported_schemas/NCSAXML2.08",
           "MosScope": "STORY",
         },
       ],
       "Paths": [],
-      "Revision": undefined,
       "Slug": {
         "_mosString128": "Hotel Fire",
       },
-      "Status": undefined,
       "TimeBase": 59.94,
       "Type": "VIDEO",
     },
@@ -727,7 +767,9 @@ exports[`Profile 3 onMosObjCreate: <mos>
 exports[`Profile 3 onMosReqObjectActionDelete 1`] = `
 [
   [
-    "1EFA3009233F8329C1",
+    {
+      "_mosString128": "1EFA3009233F8329C1",
+    },
   ],
 ]
 `;
@@ -760,10 +802,6 @@ exports[`Profile 3 onMosReqObjectActionNew 1`] = `
 [
   [
     {
-      "AirStatus": undefined,
-      "Changed": undefined,
-      "ChangedBy": undefined,
-      "Created": undefined,
       "CreatedBy": {
         "_mosString128": "Chris",
       },
@@ -816,34 +854,33 @@ exports[`Profile 3 onMosReqObjectActionNew 1`] = `
           },
         ],
       },
+      "DescriptionStr": "Exterior footage of Baley Park Hotel on fire with natural sound. Trucks are
+				visible for the first portion of the clip. CG locator at 0:04 and duration 0:05, Baley Park
+				Hotel.
+Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.
+Clip has been doubled for pad on voice over.",
       "Duration": 1800,
       "Group": "Show 7",
-      "ID": {
-        "_mosString128": "",
-      },
-      "MosAbstract": undefined,
+      "MosAbstractStr": "",
       "MosExternalMetaData": [
         {
           "MosPayload": {
-            "Approved": 0,
+            "Approved": "0",
             "Creator": "SHOLMES",
             "ModBy": "LJOHNSTON",
-            "ModTime": 20010308142001,
+            "ModTime": "20010308142001",
             "Owner": "SHOLMES",
-            "TextTime": 278,
-            "mediaTime": 0,
-            "text": 0,
+            "TextTime": "278",
+            "mediaTime": "0",
           },
           "MosSchema": "https://ncsA4.com/mos/supported_schemas/NCSAXML2.08",
           "MosScope": "STORY",
         },
       ],
       "Paths": [],
-      "Revision": undefined,
       "Slug": {
         "_mosString128": "Hotel Fire",
       },
-      "Status": undefined,
       "TimeBase": 59.94,
       "Type": "VIDEO",
     },
@@ -878,12 +915,10 @@ exports[`Profile 3 onMosReqObjectActionNew: <mos>
 exports[`Profile 3 onMosReqObjectActionUpdate 1`] = `
 [
   [
-    "1EFA3009233F8329C1",
     {
-      "AirStatus": undefined,
-      "Changed": undefined,
-      "ChangedBy": undefined,
-      "Created": undefined,
+      "_mosString128": "1EFA3009233F8329C1",
+    },
+    {
       "CreatedBy": {
         "_mosString128": "Chris",
       },
@@ -936,34 +971,36 @@ exports[`Profile 3 onMosReqObjectActionUpdate 1`] = `
           },
         ],
       },
+      "DescriptionStr": "Exterior footage of Baley Park Hotel on fire with natural sound. Trucks are
+			visible for the first portion of the clip. CG locator at 0:04 and duration 0:05, Baley Park
+			Hotel.
+Cuts to view of fire personnel exiting hotel lobby and cleaning up after the fire is out.
+Clip has been doubled for pad on voice over.",
       "Duration": 1800,
       "Group": "Show 7",
       "ID": {
         "_mosString128": "1EFA3009233F8329C1",
       },
-      "MosAbstract": undefined,
+      "MosAbstractStr": "",
       "MosExternalMetaData": [
         {
           "MosPayload": {
-            "Approved": 0,
+            "Approved": "0",
             "Creator": "SHOLMES",
             "ModBy": "LJOHNSTON",
-            "ModTime": 20010308142001,
+            "ModTime": "20010308142001",
             "Owner": "SHOLMES",
-            "TextTime": 278,
-            "mediaTime": 0,
-            "text": 0,
+            "TextTime": "278",
+            "mediaTime": "0",
           },
           "MosSchema": "https://ncsA4.com/mos/supported_schemas/NCSAXML2.08",
           "MosScope": "STORY",
         },
       ],
       "Paths": [],
-      "Revision": undefined,
       "Slug": {
         "_mosString128": "Hotel Fire",
       },
-      "Status": undefined,
       "TimeBase": 59.94,
       "Type": "VIDEO",
     },
@@ -999,11 +1036,15 @@ exports[`Profile 3 onMosReqObjectList 1`] = `
 [
   [
     {
-      "generalSearch": "man bites dog",
+      "generalSearch": {
+        "_mosString128": "man bites dog",
+      },
       "listReturnEnd": null,
       "listReturnStart": 1,
       "mosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
-      "queryID": "123439392039393ade0393zdkdls",
+      "queryID": {
+        "_mosString128": "123439392039393ade0393zdkdls",
+      },
       "searchGroups": [
         {
           "searchFields": [
@@ -1166,6 +1207,7 @@ exports[`Profile 3 sendRunningOrderStory 1`] = `
           <objPath techDescription="The one true path">/asdfasdf/asdf/asdf/qwerty</objPath>
         </objPaths>
         <mosExternalMetadata>
+          <mosScope>PLAYLIST</mosScope>
           <mosSchema>schema://mock</mosSchema>
           <mosPayload>
             <attr0>1</attr0>
@@ -1173,7 +1215,6 @@ exports[`Profile 3 sendRunningOrderStory 1`] = `
               <inner>two</inner>
             </attr1>
           </mosPayload>
-          <mosScope>PLAYLIST</mosScope>
         </mosExternalMetadata>
         <itemSlug>Slug</itemSlug>
         <itemEdStart>1</itemEdStart>
@@ -1206,7 +1247,9 @@ exports[`Profile 3 sendRunningOrderStory 1`] = `
           <changedBy>ChangedBy</changedBy>
           <changed>1970-01-01T00:02:03,457</changed>
           <description>this is a description</description>
+          <mosItemEditorProgID>MosItemEditorProgID</mosItemEditorProgID>
           <mosExternalMetadata>
+            <mosScope>STORY</mosScope>
             <mosSchema>schema://mock</mosSchema>
             <mosPayload>
               <attr0>1</attr0>
@@ -1214,7 +1257,6 @@ exports[`Profile 3 sendRunningOrderStory 1`] = `
                 <inner>two</inner>
               </attr1>
             </mosPayload>
-            <mosScope>STORY</mosScope>
           </mosExternalMetadata>
         </mosObj>
       </storyItem>

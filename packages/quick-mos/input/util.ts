@@ -1,3 +1,4 @@
+import { MosModel } from '@mos-connection/connector'
 import type { IMOSROFullStory, IMOSString128 } from '@mos-connection/model'
 
 export type NormalizeMosAttributes<T> = {
@@ -15,7 +16,7 @@ export function fixStoryBody(
 ): Array<NormalizeMosAttributes<IMOSROFullStory>> {
 	stories.forEach((story) => {
 		story.Body.forEach((item) => {
-			if (item.Type === 'p' && item.Content) {
+			if (item.Type === 'p' && MosModel.isXMLObject(item.Content)) {
 				if (item.Content['@type'] === 'element') {
 					delete item.Content
 				} else if (item.Content['@type'] === 'text') {
