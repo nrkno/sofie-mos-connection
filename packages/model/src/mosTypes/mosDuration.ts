@@ -21,6 +21,8 @@ export function create(anyValue: AnyValue, strict: boolean): IMOSDuration {
 		if (isNaN(hh) || isNaN(mm) || isNaN(ss)) throw new Error(`MosDuration: Bad input format "${anyValue}"!`)
 
 		value = hh * 3600 + mm * 60 + ss
+	} else if (typeof anyValue === 'object' && anyValue?._mosDuration !== undefined) {
+		value = anyValue._mosDuration
 	} else {
 		throw new Error(`MosDuration: Invalid input: "${anyValue}"`)
 	}

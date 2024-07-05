@@ -8,7 +8,7 @@ import { NCSServerConnection } from './connection/NCSServerConnection'
 import { MosModel } from '@mos-connection/helper'
 import { EventEmitter } from 'eventemitter3'
 import * as iconv from 'iconv-lite'
-import { MosMessageParser } from './connection/mosMessageParser'
+import { ParsedMosMessage, MosMessageParser } from './connection/mosMessageParser'
 import { IConnectionConfig, IMosConnection, IMOSDeviceConnectionOptions } from './api'
 import { PROFILE_VALIDNESS_CHECK_WAIT_TIME } from './lib'
 
@@ -407,7 +407,7 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 			`${socketID}, ${client.socket.remoteAddress}, ${client.portDescription}`
 		)
 		// messageParser.debug = this._debug
-		messageParser.on('message', (message: MosModel.AnyXML, messageString: string) => {
+		messageParser.on('message', (message: ParsedMosMessage, messageString: string) => {
 			// Handle incoming data
 			handleMessage(message, messageString).catch((err) => this.emit('error', err))
 		})
@@ -435,7 +435,7 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 				this.emit('error', err instanceof Error ? err : new Error(`${err}`))
 			}
 		})
-		const handleMessage = async (parsed: MosModel.AnyXML, _messageString: string) => {
+		const handleMessage = async (parsed: ParsedMosMessage, _messageString: string) => {
 			const remoteAddressContent = client.socket.remoteAddress
 				? client.socket.remoteAddress.split(':')
 				: undefined
@@ -443,7 +443,7 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 
 			const ncsID = parsed.mos.ncsID
 			const mosID = parsed.mos.mosID
-			const mosMessageId: number = parsed.mos.messageID
+			const mosMessageId = parsed.mos.messageID ? parseInt(parsed.mos.messageID, 10) : undefined
 
 			let mosDevice = this._mosDevices[ncsID + '_' + mosID] || this._mosDevices[mosID + '_' + ncsID]
 
@@ -513,16 +513,28 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 			}
 			if (mosDevice) {
 				mosDevice
-					.routeData(parsed, client.portDescription)
+					.routeData(parsed.mos, client.portDescription)
+					.catch((err) => {
+						if (MosModel.ParseError.isParseError(err)) {
+							// Try to add the main mos message key to the error:
+							const breadcrumbs = Object.keys(parsed.mos).filter(
+								(key) =>
+									!['messageID', 'mosID', 'ncsID'].includes(key) &&
+									typeof parsed.mos[key] === 'object'
+							)
+							throw MosModel.ParseError.handleCaughtError(breadcrumbs.join('/'), err)
+						} else throw err
+					})
 					.then((message: MosModel.MosMessage) => {
 						sendReply(message)
 					})
-					.catch((err: Error | MosModel.MosMessage) => {
+					.catch((err: Error | MosModel.MosMessage | MosModel.ParseError) => {
 						// Something went wrong
 						if (err instanceof MosModel.MosMessage) {
 							sendReply(err)
 						} else {
-							// Unknown / internal error
+							// Internal/parsing error
+
 							// Log error:
 							this.emit('warning', `Error when handling incoming data: ${err} ${err?.stack}`)
 							// reply with NACK:
@@ -530,7 +542,7 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 							// https://mosprotocol.com/wp-content/MOS-Protocol-Documents/MOS_Protocol_Version_2.8.5_Final.htm#mosAck
 							const msg = new MosModel.MOSAck(
 								{
-									ID: this.mosTypes.mosString128.create(0),
+									ID: this.mosTypes.mosString128.create('0'),
 									Revision: 0,
 									Description: this.mosTypes.mosString128.create(
 										`MosDevice "${ncsID + '_' + mosID}" not found`
@@ -548,7 +560,7 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 				// We can't handle the message, reply with a NACK:
 				const msg = new MosModel.MOSAck(
 					{
-						ID: this.mosTypes.mosString128.create(0),
+						ID: this.mosTypes.mosString128.create('0'),
 						Revision: 0,
 						Description: this.mosTypes.mosString128.create('MosDevice not found'),
 						Status: IMOSAckStatus.NACK,

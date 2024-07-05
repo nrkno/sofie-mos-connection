@@ -4,9 +4,9 @@ import { SocketConnectionEvent } from './socketConnection'
 import { MosModel } from '@mos-connection/helper'
 import { DEFAULT_COMMAND_TIMEOUT, HandedOverQueue } from './NCSServerConnection'
 import * as iconv from 'iconv-lite'
-import { MosMessageParser } from './mosMessageParser'
+import { ParsedMosMessage, MosMessageParser } from './mosMessageParser'
 
-export type CallBackFunction = (err: any, data: unknown) => void
+export type CallBackFunction = (data: { error: Error | string } | { reply: ParsedMosMessage }) => void
 
 export interface QueueMessage {
 	time: number
@@ -73,7 +73,7 @@ export class MosSocketClient extends EventEmitter<MosSocketClientEvents> {
 
 		this.messageParser = new MosMessageParser(description)
 		this.messageParser.debug = this._debug
-		this.messageParser.on('message', (message: MosModel.AnyXML, messageString: string) => {
+		this.messageParser.on('message', (message: ParsedMosMessage, messageString: string) => {
 			this._handleMessage(message, messageString)
 		})
 	}
@@ -164,10 +164,9 @@ export class MosSocketClient extends EventEmitter<MosSocketClientEvents> {
 				if (timeSinceQueued > this._commandTimeout) {
 					const msg = this._queueMessages.shift()
 					if (msg) {
-						this._queueCallback[msg.msg.messageID](
-							`Command timed out in queue after ${timeSinceQueued} ms`,
-							{}
-						)
+						this._queueCallback[msg.msg.messageID]({
+							error: `Command timed out in queue after ${timeSinceQueued} ms`,
+						})
 						delete this._queueCallback[msg.msg.messageID]
 						this.processQueue()
 					}
@@ -293,11 +292,11 @@ export class MosSocketClient extends EventEmitter<MosSocketClientEvents> {
 		return this._connected
 	}
 
-	private _sendReply(messageId: number, err: any, res: any) {
+	private _sendReply(messageId: number, response: { error: Error | string } | { reply: ParsedMosMessage }) {
 		const cb: CallBackFunction | undefined =
 			this._queueCallback[messageId + ''] || this._lingeringCallback[messageId + '']
 		if (cb) {
-			cb(err, res)
+			cb(response)
 		} else {
 			// this._onUnhandledCommandTimeout()
 			this.emit('error', new Error(`Error: No callback found for messageId ${messageId}`))
@@ -334,7 +333,9 @@ export class MosSocketClient extends EventEmitter<MosSocketClientEvents> {
 				this.debugTrace('timeout ' + sentMessageId + ' after ' + this._commandTimeout)
 				if (isRetry) {
 					const timeSinceSend = Date.now() - sendTime
-					this._sendReply(sentMessageId, Error(`Sent command timed out after ${timeSinceSend} ms`), null)
+					this._sendReply(sentMessageId, {
+						error: new Error(`Sent command timed out after ${timeSinceSend} ms`),
+					})
 					this._timedOutCommands[sentMessageId] = Date.now()
 					this.processQueue()
 				} else {
@@ -399,13 +400,13 @@ export class MosSocketClient extends EventEmitter<MosSocketClientEvents> {
 		}
 	}
 
-	private _handleMessage(parsedData: any, messageString: string) {
+	private _handleMessage(parsedData: ParsedMosMessage, messageString: string) {
 		const messageId = this._getMessageId(parsedData, messageString)
 		if (messageId) {
 			const sentMessage = this._sentMessage || this._lingeringMessage
 			if (sentMessage) {
 				if (sentMessage.msg.messageID.toString() === messageId + '') {
-					this._sendReply(sentMessage.msg.messageID, null, parsedData)
+					this._sendReply(sentMessage.msg.messageID, { reply: parsedData })
 				} else {
 					this.debugTrace('Mos reply id diff: ' + messageId + ', ' + sentMessage.msg.messageID)
 					this.debugTrace(parsedData)
@@ -430,13 +431,13 @@ export class MosSocketClient extends EventEmitter<MosSocketClientEvents> {
 			}
 		} else {
 			// error message?
-			if (parsedData.mos.mosAck && parsedData.mos.mosAck.status === 'NACK') {
+			if (MosModel.isXMLObject(parsedData.mos.mosAck) && parsedData.mos.mosAck.status === 'NACK') {
 				if (
 					this._sentMessage &&
 					parsedData.mos.mosAck.statusDescription ===
 						'Buddy server cannot respond because main server is available'
 				) {
-					this._sendReply(this._sentMessage.msg.messageID, 'Main server available', parsedData)
+					this._sendReply(this._sentMessage.msg.messageID, { reply: parsedData })
 				} else {
 					this.debugTrace('Mos Error message:' + parsedData.mos.mosAck.statusDescription)
 					this.emit('error', new Error('Error message: ' + parsedData.mos.mosAck.statusDescription))
@@ -451,13 +452,26 @@ export class MosSocketClient extends EventEmitter<MosSocketClientEvents> {
 		this.processQueue()
 	}
 
-	private _getMessageId(parsedData: any, messageString: string): string | undefined {
-		// If there is a messageID, just return it:
-		if (
-			(typeof parsedData.mos.messageID === 'string' || typeof parsedData.mos.messageID === 'number') &&
-			parsedData.mos.messageID !== ''
-		)
-			return `${parsedData.mos.messageID}`
+	private _getMessageId(parsedData: ParsedMosMessage, messageString: string): string | undefined {
+		if (typeof parsedData.mos.messageID === 'string' && parsedData.mos.messageID !== '') {
+			// If there is a messageID:
+
+			const messageID = parseInt(`${parsedData.mos.messageID}`)
+
+			if (isNaN(messageID)) {
+				if (this._strict) {
+					this.debugTrace(`Reply with a bad (NaN) messageId: ${messageString}. Try non-strict mode.`)
+					return undefined
+				}
+			} else if (messageID < 1) {
+				if (this._strict) {
+					this.debugTrace(`Reply with a bad (<1) messageId: ${messageString}. Try non-strict mode.`)
+					return undefined
+				}
+			} else {
+				return `${messageID}`
+			}
+		}
 
 		if (this._strict) {
 			this.debugTrace(`Reply with no messageId: ${messageString}. Try non-strict mode.`)
@@ -524,7 +538,7 @@ export class MosSocketClient extends EventEmitter<MosSocketClientEvents> {
 			for (let i = this._queueMessages.length - 1; i >= 0; i--) {
 				const message = this._queueMessages[i]
 				if (Date.now() - message.time > this._commandTimeout) {
-					this._sendReply(message.msg.messageID, Error('Command Timeout'), null)
+					this._sendReply(message.msg.messageID, { error: new Error('Command Timeout') })
 					this._queueMessages.splice(i, 1)
 				}
 			}

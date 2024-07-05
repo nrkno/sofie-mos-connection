@@ -2,6 +2,7 @@ import { ConnectionType } from './socketConnection'
 import { MosSocketClient, CallBackFunction, QueueMessage } from '../connection/mosSocketClient'
 import { MosModel } from '@mos-connection/helper'
 import { EventEmitter } from 'eventemitter3'
+import { ParsedMosMessage } from './mosMessageParser'
 
 export const DEFAULT_COMMAND_TIMEOUT = 5000
 
@@ -130,7 +131,7 @@ export class NCSServerConnection extends EventEmitter<NCSServerConnectionEvents>
 	 * Sends a mos message.
 	 * Returns a Promise which resolves when a MOS reply has been received.
 	 */
-	async executeCommand(message: MosModel.MosMessage): Promise<any> {
+	async executeCommand(message: MosModel.MosMessage): Promise<ParsedMosMessage> {
 		// Fill with clients
 		let clients: Array<MosSocketClient>
 
@@ -148,13 +149,13 @@ export class NCSServerConnection extends EventEmitter<NCSServerConnectionEvents>
 		} else {
 			throw Error(`No "${message.port}" ports found`)
 		}
-		return new Promise((resolve, reject) => {
+		return new Promise<ParsedMosMessage>((resolve, reject) => {
 			if (clients?.length) {
-				clients[0].queueCommand(message, (err, data) => {
-					if (err) {
-						reject(err)
+				clients[0].queueCommand(message, (response) => {
+					if ('error' in response) {
+						reject(response.error)
 					} else {
-						resolve(data)
+						resolve(response.reply)
 					}
 				})
 			} else {
@@ -255,15 +256,11 @@ export class NCSServerConnection extends EventEmitter<NCSServerConnectionEvents>
 				this.executeCommand(msg.msg).then(
 					(data) => {
 						const cb = queue[clientId].callbacks[msg.msg.messageID]
-						if (cb) {
-							cb(null, data)
-						}
+						if (cb) cb({ reply: data })
 					},
-					(err) => {
+					(error) => {
 						const cb = queue[clientId].callbacks[msg.msg.messageID]
-						if (cb) {
-							cb(null, err)
-						}
+						if (cb) cb({ error })
 					}
 				)
 			}

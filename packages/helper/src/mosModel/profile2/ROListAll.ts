@@ -7,8 +7,9 @@ export class ROListAll extends MosMessage {
 	public ROs: IMOSRunningOrder[] = []
 
 	/** */
-	constructor(strict: boolean) {
+	constructor(list: IMOSRunningOrder[], strict: boolean) {
 		super('upper', strict)
+		this.ROs = list
 	}
 
 	/** */

@@ -81,7 +81,6 @@ describe('stringifyMosObject', () => {
 			time: mosTypes.mosTime.create('2001-01-01T01:23:45'),
 			num: 42,
 			nul: null,
-			undef: undefined,
 			bool: false,
 			date: new Date('2001-01-01T12:34:56'),
 			map: new Map([
@@ -96,7 +95,6 @@ describe('stringifyMosObject', () => {
 					time: mosTypes.mosTime.create('2001-01-01T01:23:45'),
 					num: 42,
 					nul: null,
-					undef: undefined,
 					bool: false,
 					date: new Date('2001-01-01T12:34:56'),
 					map: new Map([
@@ -131,7 +129,6 @@ describe('stringifyMosObject', () => {
 			time: '2001-01-01T01:23:45,000Z',
 			num: 42,
 			nul: null,
-			undef: undefined,
 			bool: false,
 			date: new Date('2001-01-01T12:34:56'),
 			map: new Map([
@@ -146,7 +143,6 @@ describe('stringifyMosObject', () => {
 					time: '2001-01-01T01:23:45,000Z',
 					num: 42,
 					nul: null,
-					undef: undefined,
 					bool: false,
 					date: new Date('2001-01-01T12:34:56'),
 					map: new Map([
@@ -164,7 +160,6 @@ describe('stringifyMosObject', () => {
 					time: '2001-01-01T01:23:45,000Z',
 					num: 42,
 					nul: null,
-					undef: undefined,
 					bool: false,
 					date: new Date('2001-01-01T12:34:56'),
 					map: new Map([

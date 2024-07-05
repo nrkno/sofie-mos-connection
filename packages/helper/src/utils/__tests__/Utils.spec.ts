@@ -31,8 +31,8 @@ test('xml2js with junk', () => {
 				navn: {},
 			},
 		],
-		sami: false,
-		_valid: true,
+		sami: 'false',
+		_valid: 'true',
 	})
 })
 test('xml2js with simple array', () => {
@@ -85,7 +85,7 @@ test('xml2js with array', () => {
 				navn: 'Johan',
 			},
 		],
-		_valid: true,
+		_valid: 'true',
 	})
 })
 
@@ -105,7 +105,7 @@ test('xml2js with clean', () => {
 		tittel: {},
 		tematekst: {},
 		infotekst: {},
-		_valid: true,
+		_valid: 'true',
 	})
 })
 
@@ -123,8 +123,8 @@ test('xml2js with simple data', () => {
 		expect(data).toEqual({
 			element_source: {
 				story: {
-					storyID: 17,
-					secondProperty: 2,
+					storyID: '17',
+					secondProperty: '2',
 				},
 			},
 		})
@@ -140,7 +140,7 @@ test('xml2js with simple data', () => {
 		expect(data).toEqual({
 			element_source: {
 				story: {
-					storyID: 17,
+					storyID: '17',
 				},
 			},
 		})

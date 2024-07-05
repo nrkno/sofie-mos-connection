@@ -25,6 +25,7 @@ export function create(timestamp: AnyValue, strict: boolean): IMOSTime {
 		// YYYY-MM-DD'T'hh:mm:ss[,ddd]['Z']
 		// Sun Feb 25 2018 08:59:08 GMT+0100 (CET)
 		// 2018-02-25T08:00:45.528Z
+		if (timestamp === '') throw new Error(`MosTime: Invalid input: "${timestamp}"`)
 
 		let _timezoneZuluIndicator = ''
 		let _timezoneDeclaration = ''

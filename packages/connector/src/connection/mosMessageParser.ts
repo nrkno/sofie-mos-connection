@@ -2,7 +2,7 @@ import { EventEmitter } from 'eventemitter3'
 import { MosModel, xml2js } from '@mos-connection/helper'
 
 export interface MosMessageParserEvents {
-	message: (parsedData: MosModel.AnyXML, messageString: string) => void
+	message: (parsedData: ParsedMosMessage, messageString: string) => void
 }
 export class MosMessageParser extends EventEmitter<MosMessageParserEvents> {
 	private dataChunks = ''
@@ -104,14 +104,22 @@ export class MosMessageParser extends EventEmitter<MosMessageParserEvents> {
 			}
 		}
 		let parsed: {
-			data: MosModel.AnyXML
+			data: ParsedMosMessage
 			messageString: string
 		} | null = null
 
 		try {
 			if (messageString) {
+				const data = xml2js(messageString) as any as ParsedMosMessage // , { compact: true, trim: true, nativeType: true })
+
+				if (typeof data.mos !== 'object') throw Error(`Bad mos message, <mos> missing`)
+				if (typeof data.mos.mosID !== 'string') throw Error(`Bad mos message, <mosID> missing`)
+				if (typeof data.mos.ncsID !== 'string') throw Error(`Bad mos message, <ncsID> missing`)
+				if (data.mos.messageID && typeof data.mos.messageID !== 'string')
+					throw Error(`Bad mos message, <messageID> missing`)
+
 				parsed = {
-					data: xml2js(messageString), // , { compact: true, trim: true, nativeType: true })
+					data: data,
 					messageString,
 				}
 			}
@@ -152,5 +160,16 @@ export class MosMessageParser extends EventEmitter<MosMessageParserEvents> {
 			prevIndex = index + searchString.length
 		}
 		return indexes
+	}
+}
+
+/** Definition of an incoming MOS Message */
+export interface ParsedMosMessage {
+	mos: {
+		ncsID: string
+		mosID: string
+		messageID?: string // Note: messageID is optional for some messages in older versions of the MOS Protocol
+
+		[key: string]: MosModel.AnyXMLValue
 	}
 }

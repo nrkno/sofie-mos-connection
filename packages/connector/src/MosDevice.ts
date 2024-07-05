@@ -30,11 +30,17 @@ import {
 	IMOSTime,
 	getMosTypes,
 	MosTypes,
+	AnyXMLObject,
+	AnyXMLValueSingular,
+	IMOSObjectAirStatus,
 } from '@mos-connection/model'
 import { MosModel, MosReplyError } from '@mos-connection/helper'
 import { IConnectionConfig, IMOSConnectionStatus, IMOSDevice } from './api'
 import { PROFILE_VALIDNESS_CHECK_WAIT_TIME, has, safeStringify } from './lib'
-import { AnyXML } from '@mos-connection/helper/dist/mosModel'
+import { ParsedMosMessage } from './connection/mosMessageParser'
+import { XMLMosListSearchableSchema, XMLMosObjectList, isXMLObject } from '@mos-connection/helper/dist/mosModel'
+
+const { ensureXMLObject, ensureArray, ensureSingular, ensureSingularArray } = MosModel
 
 export class MosDevice implements IMOSDevice {
 	// private _host: string
@@ -73,6 +79,7 @@ export class MosDevice implements IMOSDevice {
 	/** If set, will do more checks that mos-protocol is properly implemented */
 	public readonly strict: boolean
 	public readonly mosTypes: MosTypes
+	public readonly parseMosTypes: MosModel.MosParseTypes
 	private _disposed = false
 	private _scheduleCheckProfileValidnessTimeout: NodeJS.Timeout | null = null
 
@@ -147,6 +154,7 @@ export class MosDevice implements IMOSDevice {
 
 		this.strict = strict
 		this.mosTypes = getMosTypes(this.strict)
+		this.parseMosTypes = MosModel.getParseMosTypes(this.strict)
 		// Add params to this in MosConnection/MosDevice
 		this.manufacturer = this.mosTypes.mosString128.create('RadioVision, Ltd.')
 		this.model = this.mosTypes.mosString128.create('TCS6000')
@@ -235,9 +243,7 @@ export class MosDevice implements IMOSDevice {
 		await Promise.all(ps)
 	}
 
-	async routeData(data: MosModel.AnyXML, port: MosModel.PortType): Promise<any> {
-		if (data && has(data, 'mos')) data = data['mos']
-
+	async routeData(data: AnyXMLObject, port: MosModel.PortType): Promise<any> {
 		// Suppress console spam:
 		if (!has(data, 'heartbeat')) {
 			this.debugTrace('parsedData', data)
@@ -256,11 +262,15 @@ export class MosDevice implements IMOSDevice {
 		}
 		// Profile 1: -------------------------------------------------------------------------------------------------
 		if (data.mosReqObj && typeof this._callbackOnRequestMOSOBject === 'function') {
-			const mosObj = await this._callbackOnRequestMOSOBject(data.mosReqObj.objID)
+			const mosReqObj = ensureXMLObject(data.mosReqObj, this.strict)
+			const mosObj = await this._callbackOnRequestMOSOBject(
+				this.parseMosTypes.string.createRequired(mosReqObj.objID, 'objID')
+			)
 			if (!mosObj) return null
 			return new MosModel.MosObj(mosObj, this.strict)
 		} else if (data.mosReqAll && typeof this._callbackOnRequestAllMOSObjects === 'function') {
-			const pause = data.mosReqAll.pause || 0
+			const mosReqAll = ensureXMLObject(data.mosReqAll, this.strict)
+			const pause = this.parseMosTypes.number.createOptional(mosReqAll.pause, 'pause') || 0
 			const mosObjects = await this._callbackOnRequestAllMOSObjects()
 
 			setImmediate(() => {
@@ -300,7 +310,7 @@ export class MosDevice implements IMOSDevice {
 			// What this should contain isn't well defined in the protocol
 			return new MosModel.MOSAck(
 				{
-					ID: this.mosTypes.mosString128.create(0),
+					ID: this.mosTypes.mosString128.create('0'),
 					Revision: 0,
 					Description: this.mosTypes.mosString128.create(''),
 					Status: IMOSAckStatus.ACK,
@@ -308,12 +318,11 @@ export class MosDevice implements IMOSDevice {
 				this.strict
 			)
 		} else if (data.mosObj && typeof this._callbackOnMOSObjects === 'function') {
-			const obj = MosModel.XMLMosObject.fromXML(data.mosObj, this.strict)
+			const obj = MosModel.XMLMosObject.fromXML('mosObj', data.mosObj, this.strict)
 			const resp = await this._callbackOnMOSObjects([obj])
 			return new MosModel.MOSAck(resp, this.strict)
 		} else if (data.mosListAll && typeof this._callbackOnMOSObjects === 'function') {
-			const mosObjs = Array.isArray(data.mosListAll.mosObj) ? data.mosListAll.mosObj : [data.mosListAll.mosObj]
-			const objs = mosObjs.map((mosObj: any) => MosModel.XMLMosObject.fromXML(mosObj, this.strict))
+			const objs = MosModel.XMLMosObjects.fromXML('mosListAll', data.mosListAll, this.strict)
 			const resp = await this._callbackOnMOSObjects(objs)
 			return new MosModel.MOSAck(resp, this.strict)
 		}
@@ -322,53 +331,58 @@ export class MosDevice implements IMOSDevice {
 		if (data.roStoryAppend) {
 			// This is equivalent to inserting a story at the end of the running order
 
+			const roStoryAppend = ensureXMLObject(data.roStoryAppend, this.strict)
+
 			data.roElementAction = {
-				roID: data.roStoryAppend.roID,
+				roID: roStoryAppend.roID,
 				operation: 'INSERT',
 				element_target: {
 					storyID: '',
 				},
 				element_source: {
-					story: data.roStoryAppend.story,
+					story: roStoryAppend.story,
 				},
 			}
 		} else if (data.roStoryInsert) {
+			const roStoryInsert = ensureXMLObject(data.roStoryInsert, this.strict)
 			data.roElementAction = {
-				roID: data.roStoryInsert.roID,
+				roID: roStoryInsert.roID,
 				operation: 'INSERT',
 				element_target: {
-					storyID: data.roStoryInsert.storyID,
+					storyID: roStoryInsert.storyID,
 				},
 				element_source: {
-					story: data.roStoryInsert.story,
+					story: roStoryInsert.story,
 				},
 			}
 		} else if (data.roStoryReplace) {
+			const roStoryReplace = ensureXMLObject(data.roStoryReplace, this.strict)
 			data.roElementAction = {
-				roID: data.roStoryReplace.roID,
+				roID: roStoryReplace.roID,
 				operation: 'REPLACE',
 				element_target: {
-					storyID: data.roStoryReplace.storyID,
+					storyID: roStoryReplace.storyID,
 				},
 				element_source: {
-					story: data.roStoryReplace.story,
+					story: roStoryReplace.story,
 				},
 			}
 		} else if (data.roStoryMove) {
 			// From documentation:
 			// **Note**: If the second <storyID> tag is blank move the story to the bottom of the Running Order.
+			const roStoryMove = ensureXMLObject(data.roStoryMove, this.strict)
 
-			let storyIDs: string[]
+			let storyIDs: AnyXMLValueSingular[]
 
-			if (Array.isArray(data.roStoryMove.storyID)) {
-				storyIDs = data.roStoryMove.storyID
+			if (Array.isArray(roStoryMove.storyID)) {
+				storyIDs = ensureSingularArray(roStoryMove.storyID, this.strict)
 			} else {
 				if (this.strict) {
 					// The storyID is xml-converted to a string if the second tag is missing.
 					// The spec says that there must be two storyID tags, so we'll throw an error here:
 					return new MosModel.ROAck(
 						{
-							ID: this.mosTypes.mosString128.create(data.roStoryMove.roID),
+							ID: this.parseMosTypes.mosString128.createRequired(roStoryMove.roID, 'roID'),
 							Status: this.mosTypes.mosString128.create(
 								`The second <storyID> tag is missing in <roStoryMove>.`
 							),
@@ -378,12 +392,13 @@ export class MosDevice implements IMOSDevice {
 					)
 				} else {
 					// Non strict mode: This is technically out of spec, but it's a common mistake, so we'll handle it like so:
-					storyIDs = [data.roStoryMove.storyID as string, '']
+					const storyID = ensureSingular(roStoryMove.storyID, this.strict)
+					storyIDs = [storyID, '']
 				}
 			}
 
 			data.roElementAction = {
-				roID: data.roStoryMove.roID,
+				roID: roStoryMove.roID,
 				operation: 'MOVE',
 				element_target: {
 					storyID: storyIDs[1],
@@ -393,29 +408,33 @@ export class MosDevice implements IMOSDevice {
 				},
 			}
 		} else if (data.roStorySwap) {
+			const roStorySwap = ensureXMLObject(data.roStorySwap, this.strict)
 			data.roElementAction = {
-				roID: data.roStorySwap.roID,
+				roID: roStorySwap.roID,
 				operation: 'SWAP',
 				element_source: {
-					storyID: data.roStorySwap.storyID, // an array
+					storyID: roStorySwap.storyID, // an array
 				},
 			}
 		} else if (data.roStoryDelete) {
+			const roStoryDelete = ensureXMLObject(data.roStoryDelete, this.strict)
 			data.roElementAction = {
-				roID: data.roStoryDelete.roID,
+				roID: roStoryDelete.roID,
 				operation: 'DELETE',
 				// element_target: {
-				// 	storyID: data.roStoryDelete.storyID[1],
+				// 	storyID: roStoryDelete.storyID[1],
 				// },
 				element_source: {
-					storyID: data.roStoryDelete.storyID,
+					storyID: roStoryDelete.storyID,
 				},
 			}
-		} else if (data.roStoryMoveMultiple?.storyID) {
-			const stories: string[] = Array.isArray(data.roStoryMoveMultiple.storyID)
-				? (data.roStoryMoveMultiple.storyID as string[])
-				: [data.roStoryMoveMultiple.storyID as string]
-
+		} else if (isXMLObject(data.roStoryMoveMultiple) && data.roStoryMoveMultiple.storyID) {
+			const roStoryMoveMultiple = ensureXMLObject(data.roStoryMoveMultiple, this.strict)
+			const stories: string[] = (
+				Array.isArray(roStoryMoveMultiple.storyID)
+					? ensureSingularArray(roStoryMoveMultiple.storyID, this.strict)
+					: [ensureSingular(roStoryMoveMultiple.storyID, this.strict)]
+			).map((s) => this.parseMosTypes.string.createRequired(s, 'storyID'))
 			{
 				// From documentation:
 				// Validation: Duplicate storyIDs are not permitted with in the storyID list.
@@ -426,7 +445,7 @@ export class MosDevice implements IMOSDevice {
 					if (uniqueStoryIds.has(storyId))
 						return new MosModel.ROAck(
 							{
-								ID: this.mosTypes.mosString128.create(data.roStoryMoveMultiple.roID),
+								ID: this.parseMosTypes.mosString128.createRequired(roStoryMoveMultiple.roID, 'roID'),
 								Status: this.mosTypes.mosString128.create(
 									`Duplicate storyIDs are not permitted with in the storyID list.`
 								),
@@ -460,7 +479,7 @@ export class MosDevice implements IMOSDevice {
 			}
 
 			data.roElementAction = {
-				roID: data.roStoryMoveMultiple.roID,
+				roID: roStoryMoveMultiple.roID,
 				operation: 'MOVE',
 				element_target: {
 					storyID: target,
@@ -470,56 +489,66 @@ export class MosDevice implements IMOSDevice {
 				},
 			}
 		} else if (data.roItemInsert) {
+			const roItemInsert = ensureXMLObject(data.roItemInsert, this.strict)
 			data.roElementAction = {
-				roID: data.roItemInsert.roID,
+				roID: roItemInsert.roID,
 				operation: 'INSERT',
 				element_target: {
-					storyID: data.roItemInsert.storyID,
-					itemID: data.roItemInsert.itemID,
+					storyID: roItemInsert.storyID,
+					itemID: roItemInsert.itemID,
 				},
 				element_source: {
-					item: data.roItemInsert.item,
+					item: roItemInsert.item,
 				},
 			}
 		} else if (data.roItemReplace) {
+			const roItemReplace = ensureXMLObject(data.roItemReplace, this.strict)
 			data.roElementAction = {
-				roID: data.roItemReplace.roID,
+				roID: roItemReplace.roID,
 				operation: 'REPLACE',
 				element_target: {
-					storyID: data.roItemReplace.storyID,
-					itemID: data.roItemReplace.itemID,
+					storyID: roItemReplace.storyID,
+					itemID: roItemReplace.itemID,
 				},
 				element_source: {
-					item: data.roItemReplace.item,
+					item: roItemReplace.item,
 				},
 			}
 		} else if (data.roItemDelete) {
+			const roItemDelete = ensureXMLObject(data.roItemDelete, this.strict)
 			data.roElementAction = {
-				roID: data.roItemDelete.roID,
+				roID: roItemDelete.roID,
 				operation: 'DELETE',
 				element_target: {
-					storyID: data.roItemDelete.storyID,
+					storyID: roItemDelete.storyID,
 				},
 				element_source: {
-					itemID: data.roItemDelete.itemID,
+					itemID: roItemDelete.itemID,
 				},
 			}
-		} else if (data.roItemMoveMultiple?.itemID && data.roItemMoveMultiple?.storyID) {
-			const items: string[] = Array.isArray(data.roItemMoveMultiple.itemID)
-				? (data.roItemMoveMultiple.itemID as string[])
-				: [data.roItemMoveMultiple.itemID as string]
+		} else if (
+			isXMLObject(data.roItemMoveMultiple) &&
+			data.roItemMoveMultiple?.itemID &&
+			data.roItemMoveMultiple?.storyID
+		) {
+			const roItemMoveMultiple = ensureXMLObject(data.roItemMoveMultiple, this.strict)
+			const items: string[] = (
+				Array.isArray(roItemMoveMultiple.itemID)
+					? ensureSingularArray(roItemMoveMultiple.itemID, this.strict)
+					: [ensureSingular(roItemMoveMultiple.itemID, this.strict)]
+			).map((s) => this.parseMosTypes.string.createRequired(s, 'itemID'))
 
-			// An aditional validation checking the length of items can be added
+			// An additional validation checking the length of items can be added
 			const l = items.length
 
 			const target = items[l - 1]
 			const sources = items.slice(0, l - 1)
 
 			data.roElementAction = {
-				roID: data.roItemMoveMultiple.roID,
+				roID: roItemMoveMultiple.roID,
 				operation: 'MOVE',
 				element_target: {
-					storyID: data.roItemMoveMultiple.storyID,
+					storyID: roItemMoveMultiple.storyID,
 					itemID: l === 1 ? undefined : target,
 				},
 				element_source: {
@@ -529,28 +558,30 @@ export class MosDevice implements IMOSDevice {
 		}
 
 		if (data.roCreate && typeof this._callbackOnCreateRunningOrder === 'function') {
-			const ro = MosModel.XMLRunningOrder.fromXML(data.roCreate, this.strict)
-
+			const ro = MosModel.XMLRunningOrder.fromXML('roCreate', data.roCreate, this.strict)
 			const resp = await this._callbackOnCreateRunningOrder(ro)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (data.roReplace && typeof this._callbackOnReplaceRunningOrder === 'function') {
-			const ro: IMOSRunningOrder = MosModel.XMLRunningOrder.fromXML(data.roReplace, this.strict)
-
+			const ro: IMOSRunningOrder = MosModel.XMLRunningOrder.fromXML('roReplace', data.roReplace, this.strict)
 			const resp = await this._callbackOnReplaceRunningOrder(ro)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (data.roDelete && typeof this._callbackOnDeleteRunningOrder === 'function') {
-			// TODO: Change runningOrderId to RunningOrderID in interface?
-			const resp = await this._callbackOnDeleteRunningOrder(data.roDelete.roID)
+			const roDelete = ensureXMLObject(data.roDelete, this.strict)
+			const resp = await this._callbackOnDeleteRunningOrder(
+				this.parseMosTypes.mosString128.createRequired(roDelete.roID, 'roID')
+			)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (data.roReq && typeof this._callbackOnRequestRunningOrder === 'function') {
-			const ro = await this._callbackOnRequestRunningOrder(data.roReq.roID)
+			const roReq = ensureXMLObject(data.roReq, this.strict)
+			const roId = this.parseMosTypes.mosString128.createRequired(roReq.roID, 'roID')
+			const ro = await this._callbackOnRequestRunningOrder(roId)
 			if (ro) {
 				return new MosModel.ROList(ro, this.strict)
 			} else {
 				// RO not found
 				return new MosModel.ROAck(
 					{
-						ID: data.roReq.roID,
+						ID: roId,
 						Status: this.mosTypes.mosString128.create(IMOSAckStatus.NACK),
 						Stories: [],
 					},
@@ -558,89 +589,133 @@ export class MosDevice implements IMOSDevice {
 				)
 			}
 		} else if (data.roMetadataReplace && typeof this._callbackOnMetadataReplace === 'function') {
-			const ro: IMOSRunningOrderBase = MosModel.XMLRunningOrderBase.fromXML(data.roMetadataReplace, this.strict)
+			const ro: IMOSRunningOrderBase = MosModel.XMLRunningOrderBase.fromXML(
+				'roMetadataReplace',
+				data.roMetadataReplace,
+				this.strict
+			)
 			const resp = await this._callbackOnMetadataReplace(ro)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementStat &&
+			isXMLObject(data.roElementStat) &&
 			data.roElementStat.element === 'RO' &&
 			typeof this._callbackOnRunningOrderStatus === 'function'
 		) {
 			const status: IMOSRunningOrderStatus = {
-				ID: this.mosTypes.mosString128.create(data.roElementStat.roID),
-				Status: data.roElementStat.status,
-				Time: this.mosTypes.mosTime.create(data.roElementStat.time),
+				ID: this.parseMosTypes.mosString128.createRequired(data.roElementStat.roID, 'roID'),
+				Status: this.parseMosTypes.stringEnum.createRequired(
+					{
+						value: data.roElementStat.status,
+						enum: IMOSObjectStatus,
+					},
+					'status'
+				),
+				Time: this.parseMosTypes.mosTime.createRequired(data.roElementStat.time, 'time'),
 			}
 
 			const resp = await this._callbackOnRunningOrderStatus(status)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementStat &&
+			isXMLObject(data.roElementStat) &&
 			data.roElementStat.element === 'STORY' &&
 			typeof this._callbackOnStoryStatus === 'function'
 		) {
 			const status: IMOSStoryStatus = {
-				RunningOrderId: this.mosTypes.mosString128.create(data.roElementStat.roID),
-				ID: this.mosTypes.mosString128.create(data.roElementStat.storyID),
-				Status: data.roElementStat.status as IMOSObjectStatus,
-				Time: this.mosTypes.mosTime.create(data.roElementStat.time),
+				RunningOrderId: this.parseMosTypes.mosString128.createRequired(data.roElementStat.roID, 'roID'),
+				ID: this.parseMosTypes.mosString128.createRequired(data.roElementStat.storyID, 'storyID'),
+				Status: this.parseMosTypes.stringEnum.createRequired(
+					{
+						value: data.roElementStat.status,
+						enum: IMOSObjectStatus,
+					},
+					'status'
+				),
+				Time: this.parseMosTypes.mosTime.createRequired(data.roElementStat.time, 'time'),
 			}
 
 			const resp = await this._callbackOnStoryStatus(status)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementStat &&
+			isXMLObject(data.roElementStat) &&
 			data.roElementStat.element === 'ITEM' &&
 			typeof this._callbackOnItemStatus === 'function'
 		) {
 			const status: IMOSItemStatus = {
-				RunningOrderId: this.mosTypes.mosString128.create(data.roElementStat.roID),
-				StoryId: this.mosTypes.mosString128.create(data.roElementStat.storyID),
-				ID: this.mosTypes.mosString128.create(data.roElementStat.itemID),
-				Status: data.roElementStat.status as IMOSObjectStatus,
-				Time: this.mosTypes.mosTime.create(data.roElementStat.time),
+				RunningOrderId: this.parseMosTypes.mosString128.createRequired(data.roElementStat.roID, 'roID'),
+				StoryId: this.parseMosTypes.mosString128.createRequired(data.roElementStat.storyID, 'storyID'),
+				ID: this.parseMosTypes.mosString128.createRequired(data.roElementStat.itemID, 'itemID'),
+				Status: this.parseMosTypes.stringEnum.createRequired(
+					{
+						value: data.roElementStat.status,
+						enum: IMOSObjectStatus,
+					},
+					'status'
+				),
+				Time: this.parseMosTypes.mosTime.createRequired(data.roElementStat.time, 'time'),
+				ObjectId: this.parseMosTypes.mosString128.createOptional(data.roElementStat.objID, 'objID'),
+				Channel: this.parseMosTypes.mosString128.createOptional(data.roElementStat.itemChannel, 'itemChannel'),
 			}
-			if (has(data.roElementStat, 'objID'))
-				status.ObjectId = this.mosTypes.mosString128.create(data.roElementStat.objID)
-			if (has(data.roElementStat, 'itemChannel'))
-				status.Channel = this.mosTypes.mosString128.create(data.roElementStat.itemChannel)
 
 			const resp = await this._callbackOnItemStatus(status)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (data.roReadyToAir && typeof this._callbackOnReadyToAir === 'function') {
+			const roReadyToAir = ensureXMLObject(data.roReadyToAir, this.strict)
 			const resp = await this._callbackOnReadyToAir({
-				ID: this.mosTypes.mosString128.create(data.roReadyToAir.roID),
-				Status: data.roReadyToAir.roAir,
+				ID: this.parseMosTypes.mosString128.createRequired(roReadyToAir.roID, 'roID'),
+				Status: this.parseMosTypes.stringEnum.createRequired(
+					{
+						value: roReadyToAir.roAir,
+						enum: IMOSObjectAirStatus,
+					},
+					'roAir'
+				),
 			})
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction?.operation === 'INSERT' &&
-			data.roElementAction.element_source?.story &&
+			isXMLObject(data.roElementAction) &&
+			data.roElementAction.operation === 'INSERT' &&
+			isXMLObject(data.roElementAction.element_source) &&
+			data.roElementAction.element_source.story &&
+			isXMLObject(data.roElementAction.element_target) &&
 			typeof this._callbackOnROInsertStories === 'function'
 		) {
 			const action: IMOSStoryAction = {
-				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
+				RunningOrderID: this.parseMosTypes.mosString128.createRequired(data.roElementAction.roID, 'roID'),
+				StoryID: this.parseMosTypes.mosString128.createRequired(
+					data.roElementAction.element_target.storyID,
+					'element_target.storyID'
+				),
 			}
-			const sourceStories = data.roElementAction.element_source.story
+
 			const stories: Array<IMOSROStory> = MosModel.XMLROStories.fromXML(
-				Array.isArray(sourceStories) ? sourceStories : [sourceStories],
+				'element_source.story',
+				data.roElementAction.element_source.story,
 				this.strict
 			)
 			const resp = await this._callbackOnROInsertStories(action, stories)
 
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction?.operation === 'INSERT' &&
-			data.roElementAction.element_source?.item &&
+			isXMLObject(data.roElementAction) &&
+			data.roElementAction.operation === 'INSERT' &&
+			isXMLObject(data.roElementAction.element_source) &&
+			data.roElementAction.element_source.item &&
+			isXMLObject(data.roElementAction.element_target) &&
 			typeof this._callbackOnROInsertItems === 'function'
 		) {
 			const action: IMOSItemAction = {
-				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
-				ItemID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.itemID),
+				RunningOrderID: this.parseMosTypes.mosString128.createRequired(data.roElementAction.roID, 'roID'),
+				StoryID: this.parseMosTypes.mosString128.createRequired(
+					data.roElementAction.element_target.storyID,
+					'element_target.storyID'
+				),
+				ItemID: this.parseMosTypes.mosString128.createRequired(
+					data.roElementAction.element_target.itemID,
+					'element_target.itemID'
+				),
 			}
-			const items: Array<IMOSItem> = MosModel.XMLMosItems.fromXML(
+			const items: IMOSItem[] = MosModel.XMLMosItems.fromXML(
+				'element_source.item',
 				data.roElementAction.element_source.item,
 				this.strict
 			)
@@ -648,32 +723,49 @@ export class MosDevice implements IMOSDevice {
 
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction?.operation === 'REPLACE' &&
-			data.roElementAction.element_source?.story &&
+			isXMLObject(data.roElementAction) &&
+			data.roElementAction.operation === 'REPLACE' &&
+			isXMLObject(data.roElementAction.element_source) &&
+			data.roElementAction.element_source.story &&
+			isXMLObject(data.roElementAction.element_target) &&
 			typeof this._callbackOnROReplaceStories === 'function'
 		) {
 			const action: IMOSStoryAction = {
-				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
+				RunningOrderID: this.parseMosTypes.mosString128.createRequired(data.roElementAction.roID, 'roID'),
+				StoryID: this.parseMosTypes.mosString128.createRequired(
+					data.roElementAction.element_target.storyID,
+					'element_target.storyID'
+				),
 			}
-			const sourceStories = data.roElementAction.element_source.story
+
 			const stories: Array<IMOSROStory> = MosModel.XMLROStories.fromXML(
-				Array.isArray(sourceStories) ? sourceStories : [sourceStories],
+				'element_source.story',
+				data.roElementAction.element_source.story,
 				this.strict
 			)
 			const resp = await this._callbackOnROReplaceStories(action, stories)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction?.operation === 'REPLACE' &&
-			data.roElementAction.element_source?.item &&
+			isXMLObject(data.roElementAction) &&
+			data.roElementAction.operation === 'REPLACE' &&
+			isXMLObject(data.roElementAction.element_source) &&
+			data.roElementAction.element_source.item &&
+			isXMLObject(data.roElementAction.element_target) &&
 			typeof this._callbackOnROReplaceItems === 'function'
 		) {
 			const action: IMOSItemAction = {
-				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
-				ItemID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.itemID),
+				RunningOrderID: this.parseMosTypes.mosString128.createRequired(data.roElementAction.roID, 'roID'),
+				StoryID: this.parseMosTypes.mosString128.createRequired(
+					data.roElementAction.element_target.storyID,
+					'element_target.storyID'
+				),
+				ItemID: this.parseMosTypes.mosString128.createRequired(
+					data.roElementAction.element_target.itemID,
+					'element_target.itemID'
+				),
 			}
-			const items: Array<IMOSItem> = MosModel.XMLMosItems.fromXML(
+			const items: IMOSItem[] = MosModel.XMLMosItems.fromXML(
+				'element_source.item',
 				data.roElementAction.element_source.item,
 				this.strict
 			)
@@ -681,63 +773,90 @@ export class MosDevice implements IMOSDevice {
 			resp.Stories = [] // dont return these (?)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction?.operation === 'MOVE' &&
-			data.roElementAction.element_source?.storyID &&
+			isXMLObject(data.roElementAction) &&
+			data.roElementAction.operation === 'MOVE' &&
+			isXMLObject(data.roElementAction.element_source) &&
+			data.roElementAction.element_source.storyID &&
+			isXMLObject(data.roElementAction.element_target) &&
 			typeof this._callbackOnROMoveStories === 'function'
 		) {
 			const action: IMOSStoryAction = {
-				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
+				RunningOrderID: this.parseMosTypes.mosString128.createRequired(data.roElementAction.roID, 'roID'),
+				StoryID: this.parseMosTypes.mosString128.createRequired(
+					data.roElementAction.element_target.storyID,
+					'element_target.storyID'
+				),
 			}
 			const storyIDs: Array<IMOSString128> = MosModel.XMLMosIDs.fromXML(
+				'element_source.storyID',
 				data.roElementAction.element_source.storyID,
 				this.strict
 			)
 			const resp = await this._callbackOnROMoveStories(action, storyIDs)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction?.operation === 'MOVE' &&
-			data.roElementAction.element_source?.itemID &&
+			isXMLObject(data.roElementAction) &&
+			data.roElementAction.operation === 'MOVE' &&
+			isXMLObject(data.roElementAction.element_source) &&
+			data.roElementAction.element_source.itemID &&
+			isXMLObject(data.roElementAction.element_target) &&
 			typeof this._callbackOnROMoveItems === 'function'
 		) {
 			const action: IMOSItemAction = {
-				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
-				ItemID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.itemID),
+				RunningOrderID: this.parseMosTypes.mosString128.createRequired(data.roElementAction.roID, 'roID'),
+				StoryID: this.parseMosTypes.mosString128.createRequired(
+					data.roElementAction.element_target.storyID,
+					'element_target.storyID'
+				),
+				ItemID: this.parseMosTypes.mosString128.createRequired(
+					data.roElementAction.element_target.itemID,
+					'element_target.itemID'
+				),
 			}
 			const itemIDs: Array<IMOSString128> = MosModel.XMLMosIDs.fromXML(
+				'element_source.itemID',
 				data.roElementAction.element_source.itemID,
 				this.strict
 			)
 			const resp = await this._callbackOnROMoveItems(action, itemIDs)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction?.operation === 'DELETE' &&
+			isXMLObject(data.roElementAction) &&
+			data.roElementAction.operation === 'DELETE' &&
+			isXMLObject(data.roElementAction.element_source) &&
 			data.roElementAction.element_source.storyID &&
 			typeof this._callbackOnRODeleteStories === 'function'
 		) {
 			const stories: Array<IMOSString128> = MosModel.XMLMosIDs.fromXML(
+				'element_source.storyID',
 				data.roElementAction.element_source.storyID,
 				this.strict
 			)
 
 			const resp = await this._callbackOnRODeleteStories(
 				{
-					RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
+					RunningOrderID: this.parseMosTypes.mosString128.createRequired(data.roElementAction.roID, 'roID'),
 				},
 				stories
 			)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction?.operation === 'DELETE' &&
+			isXMLObject(data.roElementAction) &&
+			data.roElementAction.operation === 'DELETE' &&
+			isXMLObject(data.roElementAction.element_source) &&
 			data.roElementAction.element_source.itemID &&
+			isXMLObject(data.roElementAction.element_target) &&
 			typeof this._callbackOnRODeleteItems === 'function'
 		) {
 			const action: IMOSStoryAction = {
-				RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-				StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
+				RunningOrderID: this.parseMosTypes.mosString128.createRequired(data.roElementAction.roID, 'roID'),
+				StoryID: this.parseMosTypes.mosString128.createRequired(
+					data.roElementAction.element_target.storyID,
+					'element_target.storyID'
+				),
 			}
 			const items: Array<IMOSString128> = MosModel.XMLMosIDs.fromXML(
+				'element_source.itemID',
 				data.roElementAction.element_source.itemID,
 				this.strict
 			)
@@ -745,39 +864,49 @@ export class MosDevice implements IMOSDevice {
 			const resp = await this._callbackOnRODeleteItems(action, items)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction?.operation === 'SWAP' &&
+			isXMLObject(data.roElementAction) &&
+			data.roElementAction.operation === 'SWAP' &&
+			isXMLObject(data.roElementAction.element_source) &&
 			data.roElementAction.element_source.storyID &&
 			data.roElementAction.element_source.storyID.length === 2 &&
 			typeof this._callbackOnROSwapStories === 'function'
 		) {
 			const stories: Array<IMOSString128> = MosModel.XMLMosIDs.fromXML(
+				'element_source.storyID',
 				data.roElementAction.element_source.storyID,
 				this.strict
 			)
 
 			const resp = await this._callbackOnROSwapStories(
 				{
-					RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
+					RunningOrderID: this.parseMosTypes.mosString128.createRequired(data.roElementAction.roID, 'roID'),
 				},
 				stories[0],
 				stories[1]
 			)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (
-			data.roElementAction?.operation === 'SWAP' &&
+			isXMLObject(data.roElementAction) &&
+			data.roElementAction.operation === 'SWAP' &&
+			isXMLObject(data.roElementAction.element_source) &&
 			data.roElementAction.element_source.itemID &&
 			data.roElementAction.element_source.itemID.length === 2 &&
+			isXMLObject(data.roElementAction.element_target) &&
 			typeof this._callbackOnROSwapItems === 'function'
 		) {
 			const items: Array<IMOSString128> = MosModel.XMLMosIDs.fromXML(
+				'element_source.itemID',
 				data.roElementAction.element_source.itemID,
 				this.strict
 			)
 
 			const resp = await this._callbackOnROSwapItems(
 				{
-					RunningOrderID: this.mosTypes.mosString128.create(data.roElementAction.roID),
-					StoryID: this.mosTypes.mosString128.create(data.roElementAction.element_target?.storyID),
+					RunningOrderID: this.parseMosTypes.mosString128.createRequired(data.roElementAction.roID, 'roID'),
+					StoryID: this.parseMosTypes.mosString128.createRequired(
+						data.roElementAction.element_target.storyID,
+						'element_target.storyID'
+					),
 				},
 				items[0],
 				items[1]
@@ -786,66 +915,72 @@ export class MosDevice implements IMOSDevice {
 		}
 		// Profile 3: -------------------------------------------------------------------------------------------------
 		if (data.mosItemReplace && typeof this._callbackOnItemReplace === 'function') {
+			const mosItemReplace = ensureXMLObject(data.mosItemReplace, this.strict)
 			const resp = await this._callbackOnItemReplace(
-				data.mosItemReplace.ID,
-				data.mosItemReplace.itemID,
-				MosModel.XMLMosItem.fromXML(data.mosItemReplace.item, this.strict)
+				this.parseMosTypes.mosString128.createRequired(mosItemReplace.ID, 'ID'),
+				this.parseMosTypes.mosString128.createRequired(mosItemReplace.itemID, 'itemID'),
+				MosModel.XMLMosItem.fromXML('item', mosItemReplace.item, this.strict)
 			)
 			return new MosModel.ROAck(resp, this.strict)
 		} else if (data.mosObjCreate && typeof this._callbackOnObjectCreate === 'function') {
+			const mosObjCreate = ensureXMLObject(data.mosObjCreate, this.strict)
 			const resp = await this._callbackOnObjectCreate(
-				MosModel.XMLMosObject.fromXML(data.mosObjCreate, this.strict)
+				MosModel.XMLMosObject.fromXML('mosObjCreate', mosObjCreate, this.strict)
 			)
 
 			const ack = new MosModel.MOSAck(resp, this.strict)
 			return ack
 		} else if (
-			data.mosReqObjAction &&
+			isXMLObject(data.mosReqObjAction) &&
 			data.mosReqObjAction.operation === 'NEW' &&
 			typeof this._callbackOnRequestObjectActionNew === 'function'
 		) {
 			const resp = await this._callbackOnRequestObjectActionNew(
-				MosModel.XMLMosObject.fromXML(data.mosReqObjAction, this.strict)
+				MosModel.XMLMosObject.fromXML('mosReqObjAction', data.mosReqObjAction, this.strict)
 			)
 			return new MosModel.MOSAck(resp, this.strict)
 		} else if (
-			data.mosReqObjAction &&
+			isXMLObject(data.mosReqObjAction) &&
 			data.mosReqObjAction.operation === 'UPDATE' &&
 			typeof this._callbackOnRequestObjectActionUpdate === 'function'
 		) {
 			const resp = await this._callbackOnRequestObjectActionUpdate(
-				data.mosReqObjAction.objID,
-				MosModel.XMLMosObject.fromXML(data.mosReqObjAction, this.strict)
+				this.parseMosTypes.mosString128.createRequired(data.mosReqObjAction.objID, 'objID'),
+				MosModel.XMLMosObject.fromXML('mosReqObjAction', data.mosReqObjAction, this.strict)
 			)
 			return new MosModel.MOSAck(resp, this.strict)
 		} else if (
-			data.mosReqObjAction &&
+			isXMLObject(data.mosReqObjAction) &&
 			data.mosReqObjAction.operation === 'DELETE' &&
 			typeof this._callbackOnRequestObjectActionDelete === 'function'
 		) {
-			const resp = await this._callbackOnRequestObjectActionDelete(data.mosReqObjAction.objID)
+			const resp = await this._callbackOnRequestObjectActionDelete(
+				this.parseMosTypes.mosString128.createRequired(data.mosReqObjAction.objID, 'objID')
+			)
 			return new MosModel.MOSAck(resp, this.strict)
 		} else if (data.mosReqObjList && typeof this._callbackOnRequestObjectList === 'function') {
 			const resp = await this._callbackOnRequestObjectList(
-				MosModel.XMLMosRequestObjectList.fromXML(data.mosReqObjList)
+				MosModel.XMLMosRequestObjectList.fromXML('mosReqObjList', data.mosReqObjList, this.strict)
 			)
 			return new MosModel.MosObjList(resp, this.strict)
 		} else if (data.mosReqSearchableSchema && typeof this._callbackOnRequestSearchableSchema === 'function') {
-			const resp = await this._callbackOnRequestSearchableSchema(data.mosReqSearchableSchema.username)
+			const mosReqSearchableSchema = ensureXMLObject(data.mosReqSearchableSchema, this.strict)
+			const resp = await this._callbackOnRequestSearchableSchema(
+				this.parseMosTypes.string.createRequired(mosReqSearchableSchema.username, 'username')
+			)
 			return new MosModel.MosListSearchableSchema(resp, this.strict)
 		}
 		// Profile 4: -------------------------------------------------------------------------------------------------
+
 		if (data.roReqAll && typeof this._callbackOnRequestAllRunningOrders === 'function') {
 			const list = await this._callbackOnRequestAllRunningOrders()
-			const roListAll = new MosModel.ROListAll(this.strict)
-			roListAll.ROs = list
+			const roListAll = new MosModel.ROListAll(list, this.strict)
 			return roListAll
 		} else if (data.roStorySend && typeof this._callbackOnRunningOrderStory === 'function') {
-			const story: IMOSROFullStory = MosModel.XMLROFullStory.fromXML(data.roStorySend, this.strict)
+			const story = MosModel.XMLROFullStory.fromXML('roStorySend', data.roStorySend, this.strict)
 			const resp = await this._callbackOnRunningOrderStory(story)
 			return new MosModel.ROAck(resp, this.strict)
 
-			// TODO: Use MosMessage instead of string
 			// TODO: Use reject if function dont exists? Put Nack in ondata
 		}
 
@@ -856,7 +991,7 @@ export class MosDevice implements IMOSDevice {
 			const keys = Object.keys(data).filter((key) => ['ncsID', 'mosID', 'messageID'].indexOf(key) === -1)
 			return new MosModel.MOSAck(
 				{
-					ID: this.mosTypes.mosString128.create(0), // Depends on type of message, needs logic
+					ID: this.mosTypes.mosString128.create('0'), // TODO: Depends on type of message, needs logic
 					Revision: 0,
 					Description: this.mosTypes.mosString128.create(`Unsupported function: "${keys.join(', ')}"`),
 					Status: IMOSAckStatus.NACK,
@@ -873,7 +1008,10 @@ export class MosDevice implements IMOSDevice {
 		const message = new MosModel.ReqMachInfo(this.strict)
 
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosListMachInfo.fromXML(reply.mos.listMachInfo, strict))
+
+		return this.handleParseReply((strict) =>
+			MosModel.XMLMosListMachInfo.fromXML('listMachInfo', reply.mos.listMachInfo, strict)
+		)
 	}
 
 	onRequestMachineInfo(cb: () => Promise<IMOSListMachInfo>): void {
@@ -916,7 +1054,7 @@ export class MosDevice implements IMOSDevice {
 
 		const reply = await this.executeCommand(message)
 
-		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML(reply.mos.mosAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML('mosAck', reply.mos.mosAck, strict))
 	}
 
 	onRequestMOSObject(cb: (objId: string) => Promise<IMOSObject | null>): void {
@@ -929,9 +1067,9 @@ export class MosDevice implements IMOSDevice {
 
 		const reply = await this.executeCommand(message)
 		if (reply.mos.roAck) {
-			throw this.badRoAckReply(reply.mos.roAck)
+			throw this.badRoAckReply(ensureXMLObject(reply.mos.roAck, this.strict))
 		} else if (reply.mos.mosObj) {
-			return this.handleParseReply((strict) => MosModel.XMLMosObject.fromXML(reply.mos.mosObj, strict))
+			return this.handleParseReply((strict) => MosModel.XMLMosObject.fromXML('mosObj', reply.mos.mosObj, strict))
 		} else {
 			throw this.unknownReply(reply)
 		}
@@ -954,7 +1092,7 @@ export class MosDevice implements IMOSDevice {
 		const message = new MosModel.ReqMosObjAll(pause, this.strict)
 		const reply = await this.executeCommand(message)
 
-		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML(reply.mos.mosAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML('mosAck', reply.mos.mosAck, strict))
 		// Then we'll be sent mosListAll or mosObj messages separately,
 		// handled in the callback in this.onMOSObjects(cb)
 	}
@@ -966,7 +1104,7 @@ export class MosDevice implements IMOSDevice {
 		const message = new MosModel.MosListAll(objs, this.strict)
 		const reply = await this.executeCommand(message)
 		if (reply.mos) {
-			const ack: IMOSAck = MosModel.XMLMosAck.fromXML(reply.mos.mosAck, this.strict)
+			const ack: IMOSAck = MosModel.XMLMosAck.fromXML('mosAck', reply.mos.mosAck, this.strict)
 			return ack
 		} else {
 			throw this.unknownReply(reply)
@@ -994,7 +1132,7 @@ export class MosDevice implements IMOSDevice {
 	async sendCreateRunningOrder(ro: IMOSRunningOrder): Promise<IMOSROAck> {
 		const message = new MosModel.ROCreate(ro, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 
 	onReplaceRunningOrder(cb: (ro: IMOSRunningOrder) => Promise<IMOSROAck>): void {
@@ -1004,7 +1142,7 @@ export class MosDevice implements IMOSDevice {
 	async sendReplaceRunningOrder(ro: IMOSRunningOrder): Promise<IMOSROAck> {
 		const message = new MosModel.ROReplace(ro, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 
 	onDeleteRunningOrder(cb: (runningOrderId: IMOSString128) => Promise<IMOSROAck>): void {
@@ -1014,7 +1152,7 @@ export class MosDevice implements IMOSDevice {
 	async sendDeleteRunningOrder(runningOrderId: IMOSString128): Promise<IMOSROAck> {
 		const message = new MosModel.RODelete(runningOrderId, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 
 	onRequestRunningOrder(cb: (runningOrderId: IMOSString128) => Promise<IMOSRunningOrder | null>): void {
@@ -1026,9 +1164,11 @@ export class MosDevice implements IMOSDevice {
 		const message = new MosModel.ROReq(runningOrderId, this.strict)
 		const reply = await this.executeCommand(message)
 		if (reply.mos.roList) {
-			return this.handleParseReply((strict) => MosModel.XMLRunningOrder.fromXML(reply.mos.roList, strict))
+			return this.handleParseReply((strict) =>
+				MosModel.XMLRunningOrder.fromXML('roList', ensureXMLObject(reply.mos.roList, strict), strict)
+			)
 		} else if (reply.mos.roAck) {
-			throw this.badRoAckReply(reply.mos.roAck)
+			throw this.badRoAckReply(ensureXMLObject(reply.mos.roAck, this.strict))
 		}
 		throw this.unknownReply(reply)
 	}
@@ -1046,7 +1186,7 @@ export class MosDevice implements IMOSDevice {
 	async sendMetadataReplace(metadata: IMOSRunningOrderBase): Promise<IMOSROAck> {
 		const message = new MosModel.ROMetadataReplace(metadata, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 
 	onRunningOrderStatus(cb: (status: IMOSRunningOrderStatus) => Promise<IMOSROAck>): void {
@@ -1080,43 +1220,43 @@ export class MosDevice implements IMOSDevice {
 		const message = new MosModel.ROElementStat(
 			{
 				type: MosModel.ROElementStatType.RO,
-				roId: this.mosTypes.mosString128.create(status.ID),
+				roId: status.ID,
 				status: status.Status,
 			},
 			this.strict
 		)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 
 	async sendStoryStatus(status: IMOSStoryStatus): Promise<IMOSROAck> {
 		const message = new MosModel.ROElementStat(
 			{
 				type: MosModel.ROElementStatType.STORY,
-				roId: this.mosTypes.mosString128.create(status.RunningOrderId),
-				storyId: this.mosTypes.mosString128.create(status.ID),
+				roId: status.RunningOrderId,
+				storyId: status.ID,
 				status: status.Status,
 			},
 			this.strict
 		)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 	async sendItemStatus(status: IMOSItemStatus): Promise<IMOSROAck> {
 		const message = new MosModel.ROElementStat(
 			{
 				type: MosModel.ROElementStatType.ITEM,
-				roId: this.mosTypes.mosString128.create(status.RunningOrderId),
-				storyId: this.mosTypes.mosString128.create(status.StoryId),
-				itemId: this.mosTypes.mosString128.create(status.ID),
-				objId: this.mosTypes.mosString128.create(status.ObjectId),
-				itemChannel: this.mosTypes.mosString128.create(status.Channel),
+				roId: status.RunningOrderId,
+				storyId: status.StoryId,
+				itemId: status.ID,
+				objId: status.ObjectId,
+				itemChannel: status.Channel,
 				status: status.Status,
 			},
 			this.strict
 		)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 	onReadyToAir(cb: (Action: IMOSROReadyToAir) => Promise<IMOSROAck>): void {
 		this.checkProfile('onReadyToAir', 'profile2')
@@ -1132,7 +1272,7 @@ export class MosDevice implements IMOSDevice {
 		)
 
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 	onROInsertStories(cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROInsertStories', 'profile2')
@@ -1141,7 +1281,7 @@ export class MosDevice implements IMOSDevice {
 	async sendROInsertStories(Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> {
 		const message = new MosModel.ROInsertStories(Action, Stories, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 	onROInsertItems(cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROInsertItems', 'profile2')
@@ -1150,7 +1290,7 @@ export class MosDevice implements IMOSDevice {
 	async sendROInsertItems(Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> {
 		const message = new MosModel.ROInsertItems(Action, Items, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 	onROReplaceStories(cb: (Action: IMOSStoryAction, Stories: Array<IMOSROStory>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROReplaceStories', 'profile2')
@@ -1159,7 +1299,7 @@ export class MosDevice implements IMOSDevice {
 	async sendROReplaceStories(Action: IMOSStoryAction, Stories: Array<IMOSROStory>): Promise<IMOSROAck> {
 		const message = new MosModel.ROReplaceStories(Action, Stories, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 	onROReplaceItems(cb: (Action: IMOSItemAction, Items: Array<IMOSItem>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROReplaceItems', 'profile2')
@@ -1168,7 +1308,7 @@ export class MosDevice implements IMOSDevice {
 	async sendROReplaceItems(Action: IMOSItemAction, Items: Array<IMOSItem>): Promise<IMOSROAck> {
 		const message = new MosModel.ROReplaceItems(Action, Items, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 	onROMoveStories(cb: (Action: IMOSStoryAction, Stories: Array<IMOSString128>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROMoveStories', 'profile2')
@@ -1177,7 +1317,7 @@ export class MosDevice implements IMOSDevice {
 	async sendROMoveStories(Action: IMOSStoryAction, Stories: Array<IMOSString128>): Promise<IMOSROAck> {
 		const message = new MosModel.ROMoveStories(Action, Stories, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 	onROMoveItems(cb: (Action: IMOSItemAction, Items: Array<IMOSString128>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onROMoveItems', 'profile2')
@@ -1186,7 +1326,7 @@ export class MosDevice implements IMOSDevice {
 	async sendROMoveItems(Action: IMOSItemAction, Items: Array<IMOSString128>): Promise<IMOSROAck> {
 		const message = new MosModel.ROMoveItems(Action, Items, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 	onRODeleteStories(cb: (Action: IMOSROAction, Stories: Array<IMOSString128>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onRODeleteStories', 'profile2')
@@ -1195,7 +1335,7 @@ export class MosDevice implements IMOSDevice {
 	async sendRODeleteStories(Action: IMOSROAction, Stories: Array<IMOSString128>): Promise<IMOSROAck> {
 		const message = new MosModel.RODeleteStories(Action, Stories, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 	onRODeleteItems(cb: (Action: IMOSStoryAction, Items: Array<IMOSString128>) => Promise<IMOSROAck>): void {
 		this.checkProfile('onRODeleteItems', 'profile2')
@@ -1204,7 +1344,7 @@ export class MosDevice implements IMOSDevice {
 	async sendRODeleteItems(Action: IMOSStoryAction, Items: Array<IMOSString128>): Promise<IMOSROAck> {
 		const message = new MosModel.RODeleteItems(Action, Items, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 	onROSwapStories(
 		cb: (Action: IMOSROAction, StoryID0: IMOSString128, StoryID1: IMOSString128) => Promise<IMOSROAck>
@@ -1219,7 +1359,7 @@ export class MosDevice implements IMOSDevice {
 	): Promise<IMOSROAck> {
 		const message = new MosModel.ROSwapStories(Action, StoryID0, StoryID1, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 	onROSwapItems(
 		cb: (Action: IMOSStoryAction, ItemID0: IMOSString128, ItemID1: IMOSString128) => Promise<IMOSROAck>
@@ -1230,7 +1370,7 @@ export class MosDevice implements IMOSDevice {
 	async sendROSwapItems(Action: IMOSStoryAction, ItemID0: IMOSString128, ItemID1: IMOSString128): Promise<IMOSROAck> {
 		const message = new MosModel.ROSwapItems(Action, ItemID0, ItemID1, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 
 	// ============================================================================================================
@@ -1244,7 +1384,7 @@ export class MosDevice implements IMOSDevice {
 	async sendObjectCreate(object: IMOSObject): Promise<IMOSAck> {
 		const message = new MosModel.MosObjCreate(object, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML(reply.mos.mosAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML('mosAck', reply.mos.mosAck, strict))
 	}
 
 	onItemReplace(cb: (roID: IMOSString128, storyID: IMOSString128, item: IMOSItem) => Promise<IMOSROAck>): void {
@@ -1255,7 +1395,7 @@ export class MosDevice implements IMOSDevice {
 	async sendItemReplace(options: MosItemReplaceOptions): Promise<IMOSROAck> {
 		const message = new MosModel.MosItemReplace(options, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 
 	onRequestSearchableSchema(cb: (username: string) => Promise<IMOSListSearchableSchema>): void {
@@ -1266,7 +1406,10 @@ export class MosDevice implements IMOSDevice {
 	async sendRequestSearchableSchema(username: string): Promise<IMOSListSearchableSchema> {
 		const message = new MosModel.MosReqSearchableSchema({ username }, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply(() => reply.mos.mosListSearchableSchema)
+
+		return this.handleParseReply((strict) =>
+			XMLMosListSearchableSchema.fromXML('mosListSearchableSchema', reply.mos.mosListSearchableSchema, strict)
+		)
 	}
 
 	onRequestObjectList(cb: (objList: IMOSRequestObjectList) => Promise<IMOSObjectList>): void {
@@ -1278,11 +1421,7 @@ export class MosDevice implements IMOSDevice {
 		const message = new MosModel.MosReqObjList(reqObjList, this.strict)
 		const reply = await this.executeCommand(message)
 
-		return this.handleParseReply((strict) => {
-			const objList = reply.mos.mosObjList
-			if (objList.list) objList.list = MosModel.XMLMosObjects.fromXML(objList.list.mosObj, strict)
-			return objList
-		})
+		return this.handleParseReply((strict) => XMLMosObjectList.fromXML('mosObjList', reply.mos.mosObjList, strict))
 	}
 
 	onRequestObjectActionNew(cb: (obj: IMOSObject) => Promise<IMOSAck>): void {
@@ -1292,7 +1431,7 @@ export class MosDevice implements IMOSDevice {
 	async sendRequestObjectActionNew(obj: IMOSObject): Promise<IMOSAck> {
 		const message = new MosModel.MosReqObjActionNew({ object: obj }, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML(reply.mos.mosAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML('mosAck', reply.mos.mosAck, strict))
 	}
 
 	onRequestObjectActionUpdate(cb: (objId: IMOSString128, obj: IMOSObject) => Promise<IMOSAck>): void {
@@ -1302,7 +1441,7 @@ export class MosDevice implements IMOSDevice {
 	async sendRequestObjectActionUpdate(objId: IMOSString128, obj: IMOSObject): Promise<IMOSAck> {
 		const message = new MosModel.MosReqObjActionUpdate({ object: obj, objectId: objId }, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML(reply.mos.mosAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML('mosAck', reply.mos.mosAck, strict))
 	}
 	onRequestObjectActionDelete(cb: (objId: IMOSString128) => Promise<IMOSAck>): void {
 		this.checkProfile('onRequestObjectActionDelete', 'profile3')
@@ -1311,7 +1450,7 @@ export class MosDevice implements IMOSDevice {
 	async sendRequestObjectActionDelete(objId: IMOSString128): Promise<IMOSAck> {
 		const message = new MosModel.MosReqObjActionDelete({ objectId: objId }, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML(reply.mos.mosAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosAck.fromXML('mosAck', reply.mos.mosAck, strict))
 	}
 
 	// Deprecated methods:
@@ -1366,17 +1505,10 @@ export class MosDevice implements IMOSDevice {
 			const reply = await this.executeCommand(message)
 
 			return this.handleParseReply((strict) => {
-				if (has(reply.mos, 'roListAll')) {
-					let xmlRos: Array<any> = reply.mos.roListAll?.ro
-					if (!Array.isArray(xmlRos)) xmlRos = [xmlRos]
-					const ros: Array<IMOSRunningOrderBase> = []
-					xmlRos.forEach((xmlRo) => {
-						if (xmlRo) {
-							ros.push(MosModel.XMLRunningOrderBase.fromXML(xmlRo, strict))
-						}
-					})
-					return ros
-				} else throw this.unknownReply(reply)
+				const roListAll = ensureXMLObject(reply.mos.roListAll, strict)
+				return ensureArray(roListAll.ro).map((xmlRo) =>
+					MosModel.XMLRunningOrderBase.fromXML('roListAll.ro', xmlRo, strict)
+				)
 			})
 		} else throw new Error(`Unable to send message due to no current connection`)
 	}
@@ -1387,7 +1519,7 @@ export class MosDevice implements IMOSDevice {
 	async sendRunningOrderStory(story: IMOSROFullStory): Promise<IMOSROAck> {
 		const message = new MosModel.ROStory(story, this.strict)
 		const reply = await this.executeCommand(message)
-		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML(reply.mos.roAck, strict))
+		return this.handleParseReply((strict) => MosModel.XMLMosROAck.fromXML('roAck', reply.mos.roAck, strict))
 	}
 
 	// Deprecated methods:
@@ -1498,7 +1630,8 @@ export class MosDevice implements IMOSDevice {
 	}
 	private handleParseReply<T>(fcn: (strict: boolean) => T): T {
 		try {
-			return fcn(this.strict)
+			const returnValue = fcn(this.strict)
+			return returnValue
 		} catch (orgError) {
 			let nonStrictReturnValue: any = undefined
 			if (this.strict) {
@@ -1516,9 +1649,9 @@ export class MosDevice implements IMOSDevice {
 	private unknownReply(reply: MosReply) {
 		return new Error(`Unknown response: ${safeStringify(reply).slice(0, 200)}`)
 	}
-	private badRoAckReply(xmlRoAck: AnyXML) {
+	private badRoAckReply(xmlRoAck: AnyXMLObject) {
 		try {
-			const roAck = MosModel.XMLMosROAck.fromXML(xmlRoAck, this.strict)
+			const roAck = MosModel.XMLMosROAck.fromXML('roAck', xmlRoAck, this.strict)
 			return new Error(
 				`Reply: ${this.mosTypes.mosString128.stringify(
 					roAck.Status
@@ -1529,28 +1662,29 @@ export class MosDevice implements IMOSDevice {
 		}
 	}
 	/** throws if there is an error */
-	private _ensureReply(reply: any): MosReply {
-		if (!reply.mos) throw new Error(`Unknown data: <mos> missing from message`)
+	private _ensureReply(reply: ParsedMosMessage): MosReply {
+		if (!reply.mos) throw new Error(`Unknown data: <mos> missing from reply message`)
 
-		if (
-			reply.mos.roAck &&
-			reply.mos.roAck.roStatus === 'Buddy server cannot respond because main server is available'
-		) {
-			throw new Error('Buddy server cannot respond because main server is available')
+		const replyMos = MosModel.ensureXMLObject(reply.mos, this.strict)
+
+		if (replyMos.roAck) {
+			const roAck = MosModel.ensureXMLObject(replyMos.roAck, this.strict)
+			if (roAck.roStatus === 'Buddy server cannot respond because main server is available') {
+				throw new Error('Buddy server cannot respond because main server is available')
+			}
+			if (roAck.roStatus === 'Main server back on line but not yet updated with most recent data') {
+				throw new Error('Main server back on line but not yet updated with most recent data')
+			}
+			if (roAck.status === 'NACK') {
+				throw new Error(`Error in response: ${roAck.statusDescription || 'No statusDescription given'}`)
+			}
 		}
 
-		if (
-			reply.mos.roAck &&
-			reply.mos.roAck.roStatus === 'Main server back on line but not yet updated with most recent data'
-		) {
-			throw new Error('Main server back on line but not yet updated with most recent data')
-		}
-
-		if (reply.mos.mosAck && reply.mos.mosAck.status === 'NACK') {
-			throw new Error(`Error in response: ${reply.mos.mosAck.statusDescription || 'No statusDescription given'}`)
-		}
-		if (reply.mos.roAck && reply.mos.roAck.status === 'NACK') {
-			throw new Error(`Error in response: ${reply.mos.roAck.statusDescription || 'No statusDescription given'}`)
+		if (replyMos.mosAck) {
+			const mosAck = MosModel.ensureXMLObject(replyMos.mosAck, this.strict)
+			if (mosAck.status === 'NACK') {
+				throw new Error(`Error in response: ${mosAck.statusDescription || 'No statusDescription given'}`)
+			}
 		}
 
 		return reply
@@ -1694,6 +1828,4 @@ export interface IProfiles {
 	profile7: boolean
 }
 
-interface MosReply {
-	mos: any
-}
+type MosReply = ParsedMosMessage
