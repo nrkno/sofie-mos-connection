@@ -26,7 +26,7 @@ export function create(anyValue: AnyValue, strict: boolean): IMOSString128 {
 	validate(mosString, strict)
 	return mosString
 }
-export type AnyValue = string | { text: string; type: string } | IMOSString128 | any
+export type AnyValue = string | { text: string; type: string } | IMOSString128 | undefined
 
 export function validate(mosString128: IMOSString128, strict: boolean): void {
 	if (!strict) return

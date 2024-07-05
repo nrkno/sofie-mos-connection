@@ -28,7 +28,7 @@ export function create(anyValue: AnyValue, strict: boolean): IMOSDuration {
 	validate(mosDuration, strict)
 	return mosDuration
 }
-export type AnyValue = string | number | any
+export type AnyValue = string | number | IMOSDuration
 export function validate(_mosDuration: IMOSDuration, _strict: boolean): void {
 	// nothing
 }
