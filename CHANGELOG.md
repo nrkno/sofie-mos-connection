@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/nrkno/tv-automation-mos-connection/compare/v4.1.0...v4.1.1) (2024-08-20)
+
+
+### Bug Fixes
+
+* failover to buddy when main not up to date ([8554f60](https://github.com/nrkno/tv-automation-mos-connection/commit/8554f6051c277be7d254bdcd9e3aa1b3ab801a10))
+* update typings for mosTime, undefined was allowed in types, but not in code. ([fb2369a](https://github.com/nrkno/tv-automation-mos-connection/commit/fb2369abb3a876675c7e941092f96460e2da45f8))
+
+
+
+
+
 # [4.1.0](https://github.com/nrkno/tv-automation-mos-connection/compare/v4.0.0...v4.1.0) (2024-04-02)
 
 
