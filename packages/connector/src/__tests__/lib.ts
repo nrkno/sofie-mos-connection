@@ -249,6 +249,7 @@ export function fixSnapshot(data: unknown): any {
 	return fixSnapshotInner(data)[1]
 }
 export const mosTypes = getMosTypes(true)
+export const nonStrictMosTypes = getMosTypes(false)
 function fixSnapshotInner(data: any): [boolean, any] {
 	let changed = false
 
