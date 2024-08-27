@@ -5,7 +5,7 @@ describe('ParseError', () => {
 		throw new Error('test')
 	}
 	function throwsParseError(path: string) {
-		throw new ParseError(path, 'test')
+		throw ParseError.handleCaughtError(path, 'test')
 	}
 	function handleError(fcn: () => any) {
 		try {

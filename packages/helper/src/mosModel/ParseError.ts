@@ -48,7 +48,7 @@ export class ParseError {
 	public orgStack: string | undefined = undefined
 	public breadcrumbs: string[] = []
 
-	constructor(path: string, message: string, stack?: string) {
+	private constructor(path: string, message: string, stack?: string) {
 		this.orgMessage = message.replace(/^Error: /, '')
 		this.message = '' // Updated in updateVars()
 		this.orgStack = `${stack ?? new Error(message).stack}`.replace(/^Error: /, '')
