@@ -101,7 +101,7 @@ export class MosSocketClient extends EventEmitter<MosSocketClientEvents> {
 			if (!this._lastConnectionAttempt || Date.now() - this._lastConnectionAttempt >= this._reconnectDelay) {
 				// !_lastReconnectionAttempt (means first attempt) OR time > _reconnectionDelay since last attempt
 				// recreate client if new attempt:
-				if (this._client && this._client.connecting) {
+				if (this._client?.connecting) {
 					this._client.destroy()
 					this._client.removeAllListeners()
 					delete this._client
@@ -274,8 +274,8 @@ export class MosSocketClient extends EventEmitter<MosSocketClientEvents> {
 	/**
 	 * convenience wrapper to expose all logging calls to parent object
 	 */
-	log(args: string | number | any): void {
-		this.debugTrace(args)
+	log(...args: any[]): void {
+		this.debugTrace(...args)
 	}
 	public setDebug(debug: boolean): void {
 		this._debug = debug
@@ -544,8 +544,8 @@ export class MosSocketClient extends EventEmitter<MosSocketClientEvents> {
 			}
 		}, this._commandTimeout)
 	}
-	private debugTrace(...strs: any[]) {
+	private debugTrace(...args: any[]) {
 		// eslint-disable-next-line no-console
-		if (this._debug) console.log(...strs)
+		if (this._debug) console.log(...args)
 	}
 }

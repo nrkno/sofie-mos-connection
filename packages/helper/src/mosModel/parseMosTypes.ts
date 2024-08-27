@@ -215,7 +215,7 @@ function getSpecialMosTypes(strict: boolean) {
 		validate: (_value: string) => true,
 		valueOf: (value: string) => value,
 		stringify: (value: string) => value,
-		is: (value: string | any): value is string => typeof value !== 'string',
+		is: (value: any): value is string => typeof value !== 'string',
 		fallback: () => '',
 	}
 	const stringEnum: MosType<string, string, { enum: { [key: string]: string }; value: AnyXMLValue }> = {
@@ -237,7 +237,7 @@ function getSpecialMosTypes(strict: boolean) {
 		validate: (_value: string) => true,
 		valueOf: (value: string) => value,
 		stringify: (value: string) => value,
-		is: (value: string | any): value is string => typeof value !== 'string',
+		is: (value: any): value is string => typeof value !== 'string',
 		fallback: () => '',
 	}
 	const number: MosType<number, number, AnyXMLValue> = {
@@ -248,7 +248,7 @@ function getSpecialMosTypes(strict: boolean) {
 		validate: (_value: number) => true,
 		valueOf: (value: number) => value,
 		stringify: (value: number) => `${value}`,
-		is: (value: number | any): value is number => typeof value !== 'number',
+		is: (value: any): value is number => typeof value !== 'number',
 		fallback: () => 0,
 	}
 

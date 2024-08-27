@@ -27,7 +27,7 @@ export namespace XMLMosAck {
 
 			const ack: IMOSAck = {
 				ID: mosTypes.mosString128.createRequired(xml.objID, 'objID'),
-				Revision: mosTypes.number.createOptional(xml.objRev, 'objRev') || 0,
+				Revision: mosTypes.number.createOptional(xml.objRev, 'objRev') ?? 0,
 				Status:
 					mosTypes.stringEnum.createOptional({ value: xml.status, enum: IMOSAckStatus }, 'status') ||
 					IMOSAckStatus.ACK,

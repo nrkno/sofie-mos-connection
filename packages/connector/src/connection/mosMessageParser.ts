@@ -138,8 +138,8 @@ export class MosMessageParser extends EventEmitter<MosMessageParserEvents> {
 	}
 	private debugTrace(str: string) {
 		if (this.debug) {
-			// Supress console spam:
-			if (!`${str}`.match(/<heartbeat>/)) {
+			// Suppress console spam:
+			if (!/<heartbeat>/.exec(`${str}`)) {
 				// eslint-disable-next-line no-console
 				console.log(str)
 			}

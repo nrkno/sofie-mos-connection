@@ -11,7 +11,7 @@ export function create(anyValue: AnyValue, strict: boolean): IMOSDuration {
 	if (typeof anyValue === 'number') {
 		value = anyValue
 	} else if (typeof anyValue === 'string') {
-		const m = anyValue.match(/(\d+):(\d+):(\d+)/)
+		const m = /(\d+):(\d+):(\d+)/.exec(anyValue)
 		if (!m) throw new Error(`MosDuration: Invalid input format: "${anyValue}"!`)
 
 		const hh: number = parseInt(m[1], 10)
