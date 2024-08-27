@@ -98,18 +98,16 @@ describe('XMLMosItem', () => {
 	<objID>ObjectID</objID>
 	<mosID>MOSID</mosID>
 	<itemSlug>Slug</itemSlug>
-	<objSlug>ObjectSlug</objSlug>
-	<objDur>3</objDur>
-	<objTB>4</objTB>
-	<mosAbstract>mosAbstract</mosAbstract>
-	<itemChannel>Channel</itemChannel>
+	<objPaths>
+		<objPath techDescription="asdfasdf">asdfasdf</objPath>
+		<objMetadataPath techDescription="skdjhfb">8372h4fv</objMetadataPath>
+	</objPaths>
 	<itemEdStart>1</itemEdStart>
 	<itemEdDur>2</itemEdDur>
 	<itemUserTimingDur>5</itemUserTimingDur>
 	<itemTrigger>Trigger</itemTrigger>
-	<macroIn>MacroIn</macroIn>
-	<macroOut>MacroOut</macroOut>
 	<mosExternalMetadata>
+		<mosScope>PLAYLIST</mosScope>
 		<mosSchema>asdf123</mosSchema>
 		<mosPayload>
 			<a>1</a>
@@ -118,21 +116,23 @@ describe('XMLMosItem', () => {
 				<d>three</d>
 			</c>
 		</mosPayload>
-		<mosScope>PLAYLIST</mosScope>
 	</mosExternalMetadata>
 	<mosExternalMetadata>
+		<mosScope>OBJECT</mosScope>
 		<mosSchema>asdf1234</mosSchema>
 		<mosPayload>
 			<hello>
 				<brave>new world</brave>
 			</hello>
 		</mosPayload>
-		<mosScope>OBJECT</mosScope>
 	</mosExternalMetadata>
-	<objPaths>
-		<objPath techDescription="asdfasdf">asdfasdf</objPath>
-		<objMetadataPath techDescription="skdjhfb">8372h4fv</objMetadataPath>
-	</objPaths>
+	<mosAbstract>mosAbstract</mosAbstract>
+	<objSlug>ObjectSlug</objSlug>
+	<itemChannel>Channel</itemChannel>
+	<objDur>3</objDur>
+	<objTB>4</objTB>
+	<macroIn>MacroIn</macroIn>
+	<macroOut>MacroOut</macroOut>
 </item>
 </myItem>`
 
@@ -145,7 +145,7 @@ describe('XMLMosItem', () => {
 
 		const itemObj = xmlToObject(xmlItem)
 
-		const item2 = XMLMosItem.fromXML(itemObj.item, true)
+		const item2 = XMLMosItem.fromXML('item', itemObj.item, true)
 		expect(item2).toEqual(refItem)
 	})
 })

@@ -1,8 +1,8 @@
 import * as XMLBuilder from 'xmlbuilder'
 import { MosMessage } from '../MosMessage'
 import { IMOSROFullStory, IMOSItem } from '@mos-connection/model'
-import { XMLROStoryBase, XMLObjectPaths, XMLMosExternalMetaData } from '../profile2/xmlConversion'
-import { XMLMosObjects } from '../profile1/xmlConversion'
+import { XMLROStoryBase } from '../profile2/xmlConversion'
+import { XMLMosExternalMetaData, XMLMosObjects, XMLObjectPaths } from '../profile1/xmlConversion'
 import { addTextElementInternal } from '../../utils/Utils'
 
 export class ROStory extends MosMessage {
@@ -20,9 +20,10 @@ export class ROStory extends MosMessage {
 
 		const xmlStoryBody = addTextElementInternal(xmlStory, 'storyBody', undefined, undefined, this.strict)
 		this.fullStory.Body.forEach((bodyItem) => {
-			if (bodyItem.Type === 'storyItem') {
+			if (bodyItem.itemType === 'storyItem') {
 				const xmlItem = addTextElementInternal(xmlStoryBody, 'storyItem', undefined, undefined, this.strict)
-				const item: IMOSItem = bodyItem.Content as IMOSItem
+
+				const item: IMOSItem = bodyItem.Content
 
 				addTextElementInternal(xmlItem, 'itemID', item.ID, undefined, this.strict)
 				addTextElementInternal(xmlItem, 'objID', item.ObjectID, undefined, this.strict)
@@ -33,7 +34,7 @@ export class ROStory extends MosMessage {
 				// TODO: MacroOut?: MosString128?
 
 				XMLObjectPaths.toXML(xmlItem, item.Paths, this.strict)
-				XMLMosExternalMetaData.toXML(xmlItem, item.MosExternalMetaData)
+				if (item.MosExternalMetaData) XMLMosExternalMetaData.toXML(xmlItem, item.MosExternalMetaData)
 
 				if (item.Slug) addTextElementInternal(xmlItem, 'itemSlug', item.Slug, undefined, this.strict)
 				if (item.EditorialStart)
@@ -60,8 +61,9 @@ export class ROStory extends MosMessage {
 				if (item.MacroOut) addTextElementInternal(xmlItem, 'macroOut', item.MacroOut, undefined, this.strict)
 
 				// Note: the <mosObj> is sent in roStorySend
-				XMLMosObjects.toXML(xmlItem, item.MosObjects, this.strict)
+				if (item.MosObjects) XMLMosObjects.toXML(xmlItem, item.MosObjects, this.strict)
 			} else {
+				// TODO: what is this?
 				addTextElementInternal(xmlStoryBody, bodyItem.Type, bodyItem.Content, undefined, this.strict)
 			}
 		})

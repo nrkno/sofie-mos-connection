@@ -139,7 +139,7 @@ async function reloadInner() {
 					model: mosTypes.mosString128.create('<<<Mock model>>>'),
 					hwRev: mosTypes.mosString128.create('1.0'),
 					swRev: mosTypes.mosString128.create('1.0'),
-					DOM: mosTypes.mosString128.create(0),
+					DOM: mosTypes.mosString128.create('0'),
 					SN: mosTypes.mosString128.create('<<<Mock SN>>>'),
 					ID: mosTypes.mosString128.create(config.mosConnection.mosID),
 					time: mosTypes.mosTime.create(Date.now()),

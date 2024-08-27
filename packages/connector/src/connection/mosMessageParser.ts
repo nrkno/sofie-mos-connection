@@ -1,7 +1,10 @@
-import { EventEmitter } from 'events'
-import { xml2js } from '@mos-connection/helper'
+import { EventEmitter } from 'eventemitter3'
+import { MosModel, xml2js } from '@mos-connection/helper'
 
-export class MosMessageParser extends EventEmitter {
+export interface MosMessageParserEvents {
+	message: (parsedData: ParsedMosMessage, messageString: string) => void
+}
+export class MosMessageParser extends EventEmitter<MosMessageParserEvents> {
 	private dataChunks = ''
 
 	public debug = false
@@ -100,10 +103,25 @@ export class MosMessageParser extends EventEmitter {
 				}
 			}
 		}
-		let parsedData: any | null = null
+		let parsed: {
+			data: ParsedMosMessage
+			messageString: string
+		} | null = null
+
 		try {
 			if (messageString) {
-				parsedData = xml2js(messageString) // , { compact: true, trim: true, nativeType: true })
+				const data = xml2js(messageString) as any as ParsedMosMessage // , { compact: true, trim: true, nativeType: true })
+
+				if (typeof data.mos !== 'object') throw Error(`Bad mos message, <mos> missing`)
+				if (typeof data.mos.mosID !== 'string') throw Error(`Bad mos message, <mosID> missing`)
+				if (typeof data.mos.ncsID !== 'string') throw Error(`Bad mos message, <ncsID> missing`)
+				if (data.mos.messageID && typeof data.mos.messageID !== 'string')
+					throw Error(`Bad mos message, <messageID> missing`)
+
+				parsed = {
+					data: data,
+					messageString,
+				}
 			}
 		} catch (err) {
 			// eslint-disable-next-line no-console
@@ -114,8 +132,8 @@ export class MosMessageParser extends EventEmitter {
 
 			throw err
 		}
-		if (parsedData) {
-			this.emit('message', parsedData, messageString)
+		if (parsed) {
+			this.emit('message', parsed.data, parsed.messageString)
 		}
 	}
 	private debugTrace(str: string) {
@@ -142,5 +160,16 @@ export class MosMessageParser extends EventEmitter {
 			prevIndex = index + searchString.length
 		}
 		return indexes
+	}
+}
+
+/** Definition of an incoming MOS Message */
+export interface ParsedMosMessage {
+	mos: {
+		ncsID: string
+		mosID: string
+		messageID?: string // Note: messageID is optional for some messages in older versions of the MOS Protocol
+
+		[key: string]: MosModel.AnyXMLValue
 	}
 }

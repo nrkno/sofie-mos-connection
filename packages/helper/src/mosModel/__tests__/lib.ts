@@ -23,6 +23,3 @@ export function getXMLString(msg: MosMessage): string {
 			.trim()
 	)
 }
-export function literal<T>(o: T) {
-	return o
-}

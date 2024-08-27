@@ -1,9 +1,21 @@
 import { xml2js as xmlParser } from 'xml-js'
 import * as XMLBuilder from 'xmlbuilder'
-import { getMosTypes, IMOSDuration, IMOSString128, IMOSTime, stringifyMosType } from '@mos-connection/model'
+import {
+	AnyXMLValue,
+	getMosTypes,
+	IMOSDuration,
+	IMOSString128,
+	IMOSTime,
+	stringifyMosType,
+} from '@mos-connection/model'
+import { MosModel } from '..'
 
-export function xml2js(messageString: string): { [key: string]: any } {
-	const object = xmlParser(messageString, { compact: false, trim: true, nativeType: true })
+export function xml2js(messageString: string): MosModel.AnyXMLObject {
+	const object = xmlParser(messageString, {
+		compact: false,
+		trim: true,
+		nativeType: false, // we want to NOT auto-convert types, to avoid ambiguity
+	}) as unknown as MosModel.AnyXMLObject
 	// common tags we typically want to know the order of the contents of:
 	const orderedTags = new Set(['storyBody', 'mosAbstract', 'description', 'p', 'em', 'span', 'h1', 'h2', 'i', 'b'])
 
@@ -169,18 +181,18 @@ export function addTextElement(
 export function addTextElementInternal(
 	root: XMLBuilder.XMLElement,
 	elementName: string,
-	text: string | number | null | IMOSString128 | IMOSTime | IMOSDuration | undefined,
-	attributes: { [key: string]: string } | undefined,
+	content: AnyXMLValue | number | null | IMOSString128 | IMOSTime | IMOSDuration,
+	attributes: { [key: string]: string | undefined } | undefined,
 	strict: boolean
 ): XMLBuilder.XMLElement {
 	const mosTypes = getMosTypes(strict)
 	let txt
-	if (text === null) {
+	if (content === null) {
 		txt = null
-	} else if (text !== undefined) {
-		const stringified = stringifyMosType(text, mosTypes)
+	} else if (content !== undefined) {
+		const stringified = stringifyMosType(content, mosTypes)
 		if (stringified.isMosType) txt = stringified.stringValue
-		else txt = text.toString()
+		else txt = content.toString()
 	} else {
 		txt = undefined
 	}

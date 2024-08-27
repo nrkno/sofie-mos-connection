@@ -1,8 +1,13 @@
 import { Server, Socket } from 'net'
-import { EventEmitter } from 'events'
+import { EventEmitter } from 'eventemitter3'
 import { IncomingConnectionType, SocketServerEvent } from './socketConnection'
 
-export class MosSocketServer extends EventEmitter {
+export interface MosSocketServerEvents {
+	[SocketServerEvent.CLIENT_CONNECTED]: (options: { socket: Socket; portDescription: IncomingConnectionType }) => void
+	[SocketServerEvent.ERROR]: (err: Error) => void
+	[SocketServerEvent.CLOSE]: () => void
+}
+export class MosSocketServer extends EventEmitter<MosSocketServerEvents> {
 	private _port: number
 	private _portDescription: IncomingConnectionType
 	private _socketServer: Server

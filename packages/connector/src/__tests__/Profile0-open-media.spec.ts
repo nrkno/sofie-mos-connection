@@ -25,7 +25,7 @@ beforeAll(() => {
 beforeEach(() => {
 	clearMocks()
 })
-describe('Profile 0 - non strict', () => {
+describe('Profile 0 - Open Media (non strict)', () => {
 	let mosDevice: MosDevice
 	let mosConnection: MosConnection
 
@@ -123,7 +123,7 @@ describe('Profile 0 - non strict', () => {
 
 		const replyMessage = { ...xmlApiData.machineInfoOpenMediaReply }
 		replyMessage.time = returnedMachineInfo.time
-		replyMessage.opTime = returnedMachineInfo.opTime
+		delete replyMessage.opTime
 
 		expect(returnedMachineInfo).toMatchObject(replyMessage)
 		// expect(returnedMachineInfo.opTime).toBeUndefined()
@@ -148,7 +148,7 @@ describe('Profile 0 - non strict', () => {
 
 		const replyMessage = { ...xmlApiData.machineInfoOpenMediaReply }
 		replyMessage.time = returnedMachineInfo.time
-		replyMessage.opTime = returnedMachineInfo.opTime
+		delete replyMessage.opTime
 
 		expect(returnedMachineInfo).toMatchObject(replyMessage)
 		// expect(returnedMachineInfo.opTime).toBeUndefined()
@@ -191,7 +191,7 @@ describe('Profile 0 - non strict', () => {
 		checkMessageSnapshot(msg)
 
 		const replyMessage = { ...xmlApiData.machineInfoOpenMediaReply }
-		replyMessage.opTime = returnedMachineInfo.opTime
+		delete replyMessage.opTime
 		replyMessage.time = returnedMachineInfo.time
 
 		expect(returnedMachineInfo).toMatchObject(replyMessage)

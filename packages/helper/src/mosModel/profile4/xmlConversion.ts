@@ -1,28 +1,37 @@
-import { IMOSROFullStoryBodyItem, IMOSROFullStory, getMosTypes } from '@mos-connection/model'
+import { IMOSROFullStoryBodyItem, IMOSROFullStory, AnyXMLValue } from '@mos-connection/model'
 import { XMLROStory, XMLMosItem } from '../profile2/xmlConversion'
-import { AnyXML } from '../lib'
+import { omitUndefined } from '../lib'
+import { ensureXMLObject, ensureXMLObjectArray, getParseMosTypes } from '../parseMosTypes'
+import { ParseError } from '../ParseError'
 
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace XMLROFullStory {
-	export function fromXML(xml: AnyXML, strict: boolean): IMOSROFullStory {
-		if (typeof xml !== 'object') throw new Error('XML is not an object')
-		const mosTypes = getMosTypes(strict)
+	export function fromXML(path: string, xml0: AnyXMLValue, strict: boolean): IMOSROFullStory {
+		try {
+			const xml = ensureXMLObject(xml0, strict)
+			const mosTypes = getParseMosTypes(strict)
 
-		const story0 = XMLROStory.fromXML(xml, strict)
-		const story: IMOSROFullStory = {
-			ID: story0.ID,
-			Slug: story0.Slug,
-			Number: story0.Number,
-			MosExternalMetaData: story0.MosExternalMetaData,
-			RunningOrderId: mosTypes.mosString128.create(xml.roID),
-			Body: fromXMLStoryBody(xml.storyBody, strict),
+			const story0 = XMLROStory.fromXML('', xml, strict)
+			const story: IMOSROFullStory = {
+				ID: story0.ID,
+				Slug: story0.Slug,
+				Number: story0.Number,
+				MosExternalMetaData: story0.MosExternalMetaData,
+				RunningOrderId: mosTypes.mosString128.createRequired(xml.roID, 'roID'),
+				Body: ParseError.handleError(() => fromXMLStoryBody(xml.storyBody, strict), 'storyBody'),
+			}
+			omitUndefined(story)
+			return story
+		} catch (e) {
+			throw ParseError.handleCaughtError(path, e)
 		}
-
-		return story
 	}
 }
-function fromXMLStoryBody(xml: any, strict: boolean): IMOSROFullStoryBodyItem[] {
+function fromXMLStoryBody(xml: AnyXMLValue, strict: boolean): IMOSROFullStoryBodyItem[] {
 	const body: IMOSROFullStoryBodyItem[] = []
+	const mosTypes = getParseMosTypes(strict)
+
+	xml = ensureXMLObject(xml, strict)
 
 	/*
 	// Not able to implement this currently, need to change {arrayNotation: true} in xml2json option
@@ -43,28 +52,37 @@ function fromXMLStoryBody(xml: any, strict: boolean): IMOSROFullStoryBodyItem[] 
 	})
 	*/
 	if (xml.elements && Array.isArray(xml.elements)) {
-		for (const item of xml.elements) {
-			const bodyItem: IMOSROFullStoryBodyItem = {
-				Type: item.$name || item.$type,
-				Content: item,
+		for (const item of ensureXMLObjectArray(xml.elements, strict)) {
+			const type = mosTypes.string.createRequired(item.$name || item.$type, 'name/type')
+
+			let bodyItem: IMOSROFullStoryBodyItem
+			if (type === 'storyItem') {
+				bodyItem = {
+					itemType: 'storyItem',
+					Type: 'storyItem',
+					Content: XMLMosItem.fromXML('elements', item, strict),
+				}
+			} else {
+				bodyItem = {
+					itemType: 'other',
+					Type: type,
+					Content: item,
+				}
 			}
-			if (item.$name === 'storyItem') {
-				bodyItem.Content = XMLMosItem.fromXML(item, strict)
-			}
+
 			body.push(bodyItem)
 		}
 	}
 	// Temporary implementation:
 	if (xml.storyItem) {
-		let items: Array<any> = xml.storyItem
-		if (!Array.isArray(items)) items = [items]
-		items.forEach((item) => {
+		for (const item of ensureXMLObjectArray(xml.storyItem, strict)) {
 			const bodyItem: IMOSROFullStoryBodyItem = {
+				itemType: 'storyItem',
 				Type: 'storyItem',
-				Content: XMLMosItem.fromXML(item, strict),
+				Content: XMLMosItem.fromXML('storyItem', item, strict),
 			}
 			body.push(bodyItem)
-		})
+		}
 	}
 	return body
 }

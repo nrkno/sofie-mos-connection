@@ -1,57 +1,62 @@
 import * as XMLBuilder from 'xmlbuilder'
-import { IMOSListMachInfo, IMOSString128 } from '@mos-connection/model'
-import { AnyXML, getHandleError } from '../lib'
+import {
+	AnyXMLValue,
+	IMOSDefaultActiveX,
+	IMOSListMachInfo,
+	IMOSListMachInfoDefaultActiveXMode,
+	IMOSString128,
+} from '@mos-connection/model'
+import { ensureArray, ensureStringLiteral, has, omitUndefined } from '../lib'
 import { addTextElementInternal } from '../../utils/Utils'
-import { getParseMosTypes, parseOptional } from '../parseMosTypes'
+import { ensureXMLObject, getParseMosTypes, getXMLAttributes } from '../parseMosTypes'
+import { XMLMosExternalMetaData } from '../profile1'
+import { ParseError } from '../ParseError'
 
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace XMLMosIDs {
-	export function fromXML(xml: AnyXML, strict: boolean): IMOSString128[] {
-		const mosTypes = getParseMosTypes(strict)
-
-		const arr: Array<IMOSString128> = []
-		let xmlIds: Array<string> = xml as any
-		if (!Array.isArray(xmlIds)) xmlIds = [xmlIds]
-		xmlIds.forEach((id: string) => {
-			arr.push(mosTypes.mosString128.createRequired(id))
-		})
-
-		return arr
+	export function fromXML(path: string, xml: AnyXMLValue, strict: boolean): IMOSString128[] {
+		try {
+			const mosTypes = getParseMosTypes(strict)
+			return ensureArray(xml).map((id, index) => mosTypes.mosString128.createRequired(id, `[${index}]`))
+		} catch (e) {
+			throw ParseError.handleCaughtError(path, e)
+		}
 	}
 }
 
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace XMLMosListMachInfo {
-	export function fromXML(xml: AnyXML, strict: boolean): IMOSListMachInfo {
-		const { mosString128, mosTime } = getParseMosTypes(strict)
+	export function fromXML(path: string, xml: AnyXMLValue, strict: boolean): IMOSListMachInfo {
+		try {
+			xml = ensureXMLObject(xml, strict)
+			const { mosString128, mosTime } = getParseMosTypes(strict)
 
-		const handleError = getHandleError('listMachInfo')
+			const list: IMOSListMachInfo = {
+				manufacturer: mosString128.createRequired(xml.manufacturer, 'manufacturer'),
+				model: mosString128.createRequired(xml.model, 'model'),
+				hwRev: mosString128.createRequired(xml.hwRev, 'hwRev'),
+				swRev: mosString128.createRequired(xml.swRev, 'swRev'),
+				DOM: mosString128.createRequired(xml.DOM, 'DOM'),
+				SN: mosString128.createRequired(xml.SN, 'SN'),
+				ID: mosString128.createRequired(xml.ID, 'ID'),
+				time: mosTime.createRequired(xml.time, 'time'),
+				opTime: mosTime.createOptional(xml.opTime, 'opTime'),
+				mosRev: mosString128.createRequired(xml.mosRev, 'mosRev'),
 
-		const list: IMOSListMachInfo = {
-			manufacturer: handleError(mosString128.createRequired, xml.manufacturer, 'manufacturer'),
-			model: handleError(mosString128.createRequired, xml.model, 'model'),
-			hwRev: handleError(mosString128.createRequired, xml.hwRev, 'hwRev'),
-			swRev: handleError(mosString128.createRequired, xml.swRev, 'swRev'),
-			DOM: handleError(mosString128.createRequired, xml.DOM, 'DOM'),
-			SN: handleError(mosString128.createRequired, xml.SN, 'SN'),
-			ID: handleError(mosString128.createRequired, xml.ID, 'ID'),
-			time: handleError(mosTime.createRequired, xml.time, 'time'),
-			opTime: handleError(mosTime.createOptional, xml.opTime, 'opTime'),
-			mosRev: handleError(mosString128.createRequired, xml.mosRev, 'mosRev'),
-			supportedProfiles: handleError(
-				(v) => parseSupportedProfiles(v, strict),
-				xml.supportedProfiles,
-				'supportedProfiles'
-			),
-			defaultActiveX: handleError(
-				parseOptional((v) => v),
-				xml.defaultActiveX,
-				'defaultActiveX'
-			),
-			mosExternalMetaData: handleError((v) => v, xml.mosExternalMetaData, 'mosExternalMetaData'),
+				supportedProfiles: XMLSupportedProfiles.fromXML('supportedProfiles', xml.supportedProfiles, strict),
+				defaultActiveX: has(xml, 'defaultActiveX')
+					? XMLDefaultActiveX.fromXML('defaultActiveX', xml.defaultActiveX, strict)
+					: undefined,
+
+				mosExternalMetaData: has(xml, 'mosExternalMetadata')
+					? XMLMosExternalMetaData.fromXML('mosExternalMetaData', xml.mosExternalMetaData, strict)
+					: undefined,
+			}
+			omitUndefined(list)
+			return list
+		} catch (e) {
+			throw ParseError.handleCaughtError(path, e)
 		}
-
-		return list
 	}
 	export function toXML(xmlListMachInfo: XMLBuilder.XMLElement, info: IMOSListMachInfo, strict: boolean): void {
 		addTextElementInternal(xmlListMachInfo, 'manufacturer', info.manufacturer, undefined, strict)
@@ -65,42 +70,132 @@ export namespace XMLMosListMachInfo {
 		if (info.opTime) addTextElementInternal(xmlListMachInfo, 'opTime', info.opTime, undefined, strict)
 		addTextElementInternal(xmlListMachInfo, 'mosRev', info.mosRev, undefined, strict)
 
-		// TODO: the supportedProfiles should be changed to an Array
+		XMLSupportedProfiles.toXML(xmlListMachInfo, info.supportedProfiles, strict)
+		if (info.defaultActiveX) XMLDefaultActiveX.toXML(xmlListMachInfo, info.defaultActiveX, strict)
+		if (info.mosExternalMetaData) XMLMosExternalMetaData.toXML(xmlListMachInfo, info.mosExternalMetaData)
+	}
+}
 
+export namespace XMLSupportedProfiles {
+	export function fromXML(
+		path: string,
+		xmlSupportedProfiles: AnyXMLValue,
+		strict: boolean
+	): IMOSListMachInfo['supportedProfiles'] {
+		try {
+			if (typeof xmlSupportedProfiles !== 'object')
+				if (strict)
+					throw new Error(`Invalid supportedProfiles! Expected object, got: "${xmlSupportedProfiles}"`)
+				else return { deviceType: 'N/A' }
+			if (Array.isArray(xmlSupportedProfiles))
+				throw new Error(
+					`Invalid supportedProfiles! Expected object, got array: "${JSON.stringify(xmlSupportedProfiles)}"`
+				)
+
+			const parsed: IMOSListMachInfo['supportedProfiles'] = {
+				deviceType: ensureStringLiteral(xmlSupportedProfiles.deviceType, ['NCS', 'MOS', 'N/A'], 'N/A', strict),
+				// Note: .profiles are added below
+			}
+
+			for (const mosProfile of ensureArray(xmlSupportedProfiles.mosProfile)) {
+				if (typeof mosProfile === 'string')
+					throw new Error(`Invalid mosProfile! Expected object, got: "${mosProfile}"`)
+				if (mosProfile === undefined) continue
+
+				const attrs = getXMLAttributes(mosProfile)
+
+				if (typeof attrs.number !== 'string') {
+					if (strict) throw new Error(`attributes.number missing`)
+					else continue
+				}
+				if (typeof mosProfile.text !== 'string') {
+					if (strict) throw new Error(`mosProfile.text missing`)
+					else continue
+				}
+
+				// @ts-expect-error hack
+				parsed[`profile${attrs.number}`] = mosProfile.text === 'YES'
+			}
+			omitUndefined(parsed)
+			return parsed
+		} catch (e) {
+			throw ParseError.handleCaughtError(path, e)
+		}
+	}
+	export function toXML(
+		xml: XMLBuilder.XMLElement,
+		supportedProfiles: IMOSListMachInfo['supportedProfiles'],
+		strict: boolean
+	): void {
 		const xmlSupportedProfiles = XMLBuilder.create('supportedProfiles')
-		xmlSupportedProfiles.att('deviceType', info.supportedProfiles.deviceType)
+		xmlSupportedProfiles.att('deviceType', supportedProfiles.deviceType)
 		// let p = addTextElement(root, 'supportedProfiles').att('deviceType', info.supportedProfiles.deviceType)
 		for (let i = 0; i < 8; i++) {
 			addTextElementInternal(
 				xmlSupportedProfiles,
 				'mosProfile',
-				(info.supportedProfiles as any)['profile' + i] ? 'YES' : 'NO',
+				(supportedProfiles as any)['profile' + i] ? 'YES' : 'NO',
 				undefined,
 				strict
 			).att('number', i)
 		}
-		xmlListMachInfo.importDocument(xmlSupportedProfiles)
+		xml.importDocument(xmlSupportedProfiles)
 	}
 }
 
-function parseSupportedProfiles(xmlSupportedProfiles: any, strict: boolean): IMOSListMachInfo['supportedProfiles'] {
-	const parsed: IMOSListMachInfo['supportedProfiles'] = {
-		deviceType: xmlSupportedProfiles?.deviceType ?? 'N/A',
-		// Note: .profiles are added below
-	}
+export namespace XMLDefaultActiveX {
+	export function fromXML(path: string, xml: AnyXMLValue, strict: boolean): IMOSDefaultActiveX[] {
+		try {
+			const mosTypes = getParseMosTypes(strict)
 
-	if (strict) {
-		if (!['NCS', 'MOS'].includes(parsed.deviceType)) {
-			throw new Error(`Invalid supportedProfiles.deviceType: "${parsed.deviceType}"`)
+			const defaultActiveX: IMOSDefaultActiveX[] = []
+			for (const xmlObj of ensureArray(xml)) {
+				if (!xmlObj) continue
+
+				if (typeof xmlObj !== 'object') {
+					if (strict) throw new Error(`defaultActiveX: Expected an object, got: "${xmlObj}"`)
+					else continue
+				}
+				if (typeof xmlObj === 'object' && Array.isArray(xmlObj)) {
+					if (strict)
+						throw new Error(`defaultActiveX: Expected an object, got an array: "${JSON.stringify(xmlObj)}"`)
+					else continue
+				}
+
+				const parsedObj: IMOSDefaultActiveX = {
+					mode: mosTypes.stringEnum.createRequired(
+						{ enum: IMOSListMachInfoDefaultActiveXMode, value: xmlObj.mode },
+						'mode'
+					),
+					controlFileLocation: mosTypes.string.createRequired(
+						xmlObj.controlFileLocation,
+						'controlFileLocation'
+					),
+					controlSlug: mosTypes.mosString128.createRequired(xmlObj.controlSlug, 'controlSlug'),
+					controlName: mosTypes.string.createRequired(xmlObj.controlName, 'controlName'),
+					controlDefaultParams: mosTypes.string.createRequired(
+						xmlObj.controlDefaultParams,
+						'controlDefaultParams'
+					),
+				}
+
+				defaultActiveX.push(parsedObj)
+			}
+			omitUndefined(defaultActiveX)
+			return defaultActiveX
+		} catch (e) {
+			throw ParseError.handleCaughtError(path, e)
 		}
 	}
+	export function toXML(xml: XMLBuilder.XMLElement, objs: IMOSDefaultActiveX[], strict: boolean): void {
+		for (const obj of objs) {
+			const xmlItem = addTextElementInternal(xml, 'defaultActiveX', undefined, undefined, strict)
 
-	if (Array.isArray(xmlSupportedProfiles?.mosProfile)) {
-		for (const mosProfile of xmlSupportedProfiles.mosProfile) {
-			// @ts-expect-error hack
-			parsed[`profile${mosProfile.attributes.number}`] = mosProfile.text === 'YES'
+			addTextElementInternal(xmlItem, 'mode', obj.mode, undefined, strict)
+			addTextElementInternal(xmlItem, 'controlFileLocation', obj.controlFileLocation, undefined, strict)
+			addTextElementInternal(xmlItem, 'controlSlug', obj.controlSlug, undefined, strict)
+			addTextElementInternal(xmlItem, 'controlName', obj.controlName, undefined, strict)
+			addTextElementInternal(xmlItem, 'controlDefaultParams', obj.controlDefaultParams, undefined, strict)
 		}
 	}
-
-	return parsed
 }

@@ -6,7 +6,7 @@ import {
 	IMOSROStory,
 	IMOSRunningOrder,
 } from '@mos-connection/model'
-import { getXMLString, literal } from './lib'
+import { getXMLString } from './lib'
 import {
 	ROAck,
 	ROInsertStories,
@@ -22,6 +22,7 @@ import {
 	ROCreate,
 	RODelete,
 } from '../profile2'
+import { literal } from '../lib'
 
 describe('Profile 2', () => {
 	const mosTypes = getMosTypes(true)
@@ -55,14 +56,14 @@ describe('Profile 2', () => {
 <itemID>27</itemID>
 <objID>M73627</objID>
 <mosID>testmos</mosID>
-<itemEdStart>0</itemEdStart>
-<itemEdDur>715</itemEdDur>
-<itemUserTimingDur>415</itemUserTimingDur>
 <objPaths>
 <objPath techDescription="MPEG2 Video">\\server\\media\\clip392028cd2320s0d.mxf</objPath>
 <objProxyPath techDescription="WM9 750Kbps">https://server/proxy/clipe.wmv</objProxyPath>
 <objMetadataPath techDescription="MOS Object">https://server/proxy/clipe.xml</objMetadataPath>
 </objPaths>
+<itemEdStart>0</itemEdStart>
+<itemEdDur>715</itemEdDur>
+<itemUserTimingDur>415</itemUserTimingDur>
 </item>`
 	const roItem01 = literal<IMOSItem>({
 		ID: mosTypes.mosString128.create('28'),
