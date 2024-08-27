@@ -146,14 +146,3 @@ function flattenXMLTextInner(strings: string[], xml: AnyXMLValue, strict: boolea
 	// else
 	if (strict) throw new Error(`flattenXMLText, unhandled value: ${JSON.stringify(xml)}`)
 }
-
-// type XMLElement =
-// 	| {
-// 			$name: string
-// 			$type: 'element'
-// 			elements?: XMLElement[]
-// 	  }
-// 	| {
-// 			$type: 'text'
-// 			text: string
-// 	  }
