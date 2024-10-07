@@ -663,5 +663,11 @@ export interface IMOSDeviceConnectionOptions {
 		 * Set this to true to not use that port (will cause some methods to stop working)
 		 */
 		dontUseQueryPort?: boolean
+
+		/** (Optional) OpenMedia has a term called hot standby.
+		 *  Set this to true to treat the secondary server as OpenMedia hot-standby.
+		 *  And thus ignore the standby state unless the primary server is down.
+		 */
+		openMediaHotStandby?: boolean
 	}
 }

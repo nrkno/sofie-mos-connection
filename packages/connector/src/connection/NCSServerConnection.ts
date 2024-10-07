@@ -106,6 +106,20 @@ export class NCSServerConnection extends EventEmitter<NCSServerConnectionEvents>
 		delete this._clients[clientID]
 	}
 
+	/** */
+	disableHeartbeats(): void {
+		for (const i in this._clients) {
+			this._clients[i].useHeartbeats = false
+		}
+	}
+	
+	/** */
+	enableHeartbeats(): void {
+		for (const i in this._clients) {
+			this._clients[i].useHeartbeats = true
+		}
+	}
+
 	connect(): void {
 		for (const i in this._clients) {
 			// Connect client
