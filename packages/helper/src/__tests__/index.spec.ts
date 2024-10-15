@@ -44,7 +44,7 @@ describe('Index', () => {
 
 			testType<object>(MOS.ensureXMLObject(anyData.objA, true))
 			// @ts-expect-error wrong return type
-			testType<string>(MOS.ensureObject(anyData.objA, true))
+			testType<string>(MOS.ensureXMLObject(anyData.objA, true))
 
 			testType<string>(MOS.ensureString(MOS.ensureXMLObject(anyData.objA, true).strValue, true))
 
