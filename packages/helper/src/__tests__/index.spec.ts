@@ -35,4 +35,38 @@ describe('Index', () => {
 		expect(MOS.MosModel.XMLMosItem.toXML).toBeTruthy()
 		expect(MOS.pad).toBeTruthy()
 	})
+	test('manipulate xml data', () => {
+		// The ensure* methods are useful when reading the XML data
+
+		const testTypes = (anyData: MOS.AnyXMLObject) => {
+			// ensureString
+			testType<string>(MOS.ensureString(anyData.strValue, true))
+
+			testType<object>(MOS.ensureXMLObject(anyData.objA, true))
+			// @ts-expect-error wrong return type
+			testType<string>(MOS.ensureObject(anyData.objA, true))
+
+			testType<string>(MOS.ensureString(MOS.ensureXMLObject(anyData.objA, true).strValue, true))
+
+			testType<string>(MOS.ensureString(MOS.ensureXMLObjectArray(anyData.arrayA, true)[0].strValue, true))
+
+			expect(1).toBeTruthy()
+		}
+
+		const testType = <T>(_a: T) => {
+			return
+		}
+
+		testTypes({
+			strValue: 'test',
+			objA: {
+				strValue: 'test',
+			},
+			arrayA: [
+				{
+					strValue: 'test',
+				},
+			],
+		})
+	})
 })
