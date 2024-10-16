@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unpublished-import */
 import * as chokidar from 'chokidar'
 
 import * as fs from 'fs'
