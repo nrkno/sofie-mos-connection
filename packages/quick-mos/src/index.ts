@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unpublished-import */
 import * as chokidar from 'chokidar'
 
 import * as fs from 'fs'
@@ -17,12 +18,11 @@ import {
 } from '@mos-connection/connector'
 import { diffLists, ListEntry, OperationType } from './mosDiff'
 import * as crypto from 'crypto'
+import { convertFromSofieSnapshot } from './convertFromSofieSnapshot'
 
 console.log('Starting Quick-MOS')
 
 const DELAY_TIME = 300 // ms
-
-// const tsr = new TSRHandler(console.log)
 
 const watcher = chokidar.watch('input/**', { ignored: /^\./, persistent: true })
 
@@ -80,31 +80,15 @@ function triggerReload() {
 		}
 	}, DELAY_TIME)
 }
-function loadFile(requirePath: string) {
+function loadFile(requirePath: string): any {
 	delete require.cache[require.resolve(requirePath)]
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
-	const mosData = require(requirePath)
-	if (mosData.runningOrder?.EditorialStart && !mosTypes.mosTime.is(mosData.runningOrder.EditorialStart)) {
-		mosData.runningOrder.EditorialStart = mosTypes.mosTime.create(mosData.runningOrder.EditorialStart._time)
-	}
+	const content = require(requirePath)
 
-	if (mosData.runningOrder?.EditorialDuration && !mosTypes.mosDuration.is(mosData.runningOrder.EditorialDuration)) {
-		let s = mosData.runningOrder.EditorialDuration._duration
-		const hh = Math.floor(s / 3600)
-		s -= hh * 3600
-
-		const mm = Math.floor(s / 60)
-		s -= mm * 60
-
-		const ss = Math.floor(s)
-
-		mosData.runningOrder.EditorialDuration = mosTypes.mosDuration.create(hh + ':' + mm + ':' + ss)
-	}
-
-	return mosData
+	return content
 }
 const monitors: { [id: string]: MOSMonitor } = {}
-const runningOrderIds: { [id: string]: number } = {}
+const runningOrderIds: { [id: string]: string } = {}
 
 async function reloadInner() {
 	const newConfig: Config = loadFile('../input/config.ts').config
@@ -133,7 +117,7 @@ async function reloadInner() {
 		mos.mosConnection.onConnection((mosDevice: MosDevice) => {
 			console.log('new mos connection', mosDevice.ID)
 
-			mosDevice.onGetMachineInfo(async () => {
+			mosDevice.onRequestMachineInfo(async () => {
 				const machineInfo: IMOSListMachInfo = {
 					manufacturer: mosTypes.mosString128.create('<<<Mock Manufacturer>>>'),
 					model: mosTypes.mosString128.create('<<<Mock model>>>'),
@@ -196,13 +180,14 @@ async function reloadInner() {
 			// mosDevice.onMosReqSearchableSchema((username: string) => Promise<IMOSSearchableSchema>): void;
 			// mosDevice.onMosReqObjectList((objList: IMosRequestObjectList) => Promise<IMosObjectList>): void;
 			// mosDevice.onMosReqObjectAction((action: string, obj: IMOSObject) => Promise<IMOSAck>): void;
-			mosDevice.onROReqAll(async () => {
+			mosDevice.onRequestAllRunningOrders(async () => {
 				const ros = fetchRunningOrders()
-				return Promise.resolve(ros.map((r) => r.ro))
+				if (!ros) return []
+				return ros.map((r) => r.ro)
 			})
 			mosDevice.onRequestRunningOrder(async (roId) => {
-				const ro = monitors[mosId].resendRunningOrder(roId as any as string)
-				return Promise.resolve(ro)
+				const ro = monitors[mosId].resendRunningOrder(mosTypes.mosString128.stringify(roId))
+				return ro
 			})
 			// mosDevice.onROStory((story: IMOSROFullStory) => Promise<IMOSROAck>): void;
 			setTimeout(() => {
@@ -222,14 +207,14 @@ async function reloadInner() {
 }
 function refreshFiles() {
 	// Check data
-	const t = Date.now()
-	_.each(fetchRunningOrders(), (r) => {
+	const timestamp = `${Date.now()}`
+	for (const r of fetchRunningOrders() || []) {
 		const runningOrder = r.ro
 		const stories = r.stories
 		const readyToAir = r.readyToAir
 
 		const id = mosTypes.mosString128.stringify(runningOrder.ID)
-		runningOrderIds[id] = t
+		runningOrderIds[id] = timestamp
 		if (_.isEmpty(monitors)) {
 			fakeOnUpdatedRunningOrder(runningOrder, stories)
 		} else {
@@ -237,42 +222,69 @@ function refreshFiles() {
 				monitor.onUpdatedRunningOrder(runningOrder, stories, readyToAir)
 			})
 		}
-	})
-	_.each(runningOrderIds, (oldT, id) => {
-		if (oldT !== t) {
+	}
+	for (const [oldT, id] of Object.entries<string>(runningOrderIds)) {
+		if (oldT !== timestamp) {
 			_.each(monitors, (monitor) => {
 				monitor.onDeletedRunningOrder(id)
 			})
 		}
-	})
+	}
 }
 function fetchRunningOrders() {
 	const runningOrders: { ro: IMOSRunningOrder; stories: IMOSROFullStory[]; readyToAir: boolean }[] = []
-	_.each(getAllFilesInDirectory('input/runningorders'), (filePath) => {
+	for (const filePath of getAllFilesInDirectory('input/runningorders')) {
 		const requirePath = '../' + filePath.replace(/\\/g, '/')
 		try {
 			if (
 				requirePath.match(/[/\\]_/) || // ignore and folders files that begin with "_"
 				requirePath.match(/[/\\]lib\.ts/) // ignore lib files
 			) {
-				return
+				continue
 			}
 			if (filePath.match(/(\.ts|.json)$/)) {
 				const fileContents = loadFile(requirePath)
-				const ro: IMOSRunningOrder = fileContents.runningOrder
-				ro.ID = mosTypes.mosString128.create(filePath.replace(/\W/g, '_'))
 
-				runningOrders.push({
-					ro,
-					stories: fileContents.fullStories,
-					readyToAir: fileContents.READY_TO_AIR,
-				})
+				if (fileContents.runningOrder) {
+					const ro = fileContents.runningOrder
+					ro.ID = mosTypes.mosString128.create(filePath.replace(/\W/g, '_'))
+
+					if (ro.EditorialStart && !mosTypes.mosTime.is(ro.EditorialStart)) {
+						ro.EditorialStart = mosTypes.mosTime.create(ro.EditorialStart._time)
+					}
+
+					if (
+						ro.EditorialDuration &&
+						!mosTypes.mosDuration.is(ro.EditorialDuration) &&
+						typeof ro.EditorialDuration._duration === 'number'
+					) {
+						ro.EditorialDuration = mosTypes.mosDuration.create(ro.EditorialDuration._duration)
+					}
+
+					runningOrders.push({
+						ro,
+						stories: fileContents.stories,
+						readyToAir: fileContents.READY_TO_AIR,
+					})
+				} else if (fileContents.snapshot && fileContents.snapshot.type === 'rundownplaylist') {
+					// Is a Sofie snapshot
+					convertFromSofieSnapshot(filePath, fileContents).forEach(({ ro, stories, readyToAir }) => {
+						runningOrders.push({
+							ro,
+							stories,
+							readyToAir,
+						})
+					})
+				} else {
+					throw new Error('Unsupported file')
+				}
 			}
 		} catch (err) {
 			console.log(`Error when parsing file "${requirePath}"`)
 			throw err
 		}
-	})
+	}
+
 	return runningOrders
 }
 function getAllFilesInDirectory(dir: string): string[] {
@@ -372,7 +384,10 @@ class MOSMonitor {
 				this.triggerCheckQueue()
 			}, 100)
 			return local.ro
-		} else throw new Error(`ro ${roId} not found`)
+		} else {
+			console.log('ros', Object.keys(this.ros))
+			throw new Error(`ro ${roId} not found`)
+		}
 	}
 	onUpdatedRunningOrder(ro: IMOSRunningOrder, fullStories: IMOSROFullStory[], readyToAir: boolean | undefined): void {
 		// compare with
