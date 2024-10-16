@@ -544,9 +544,7 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 								{
 									ID: this.mosTypes.mosString128.create('0'),
 									Revision: 0,
-									Description: this.mosTypes.mosString128.create(
-										`MosDevice "${ncsID + '_' + mosID}" not found`
-									),
+									Description: this.mosTypes.mosString128.create(`Internal error: ${err}`),
 									Status: IMOSAckStatus.NACK,
 								},
 								this.mosTypes.strict
