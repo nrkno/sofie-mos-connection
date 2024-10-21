@@ -664,10 +664,12 @@ export interface IMOSDeviceConnectionOptions {
 		 */
 		dontUseQueryPort?: boolean
 
-		/** (Optional) OpenMedia has a term called hot standby.
-		 *  Set this to true to treat the secondary server as OpenMedia hot-standby.
-		 *  And thus ignore the standby state unless the primary server is down.
+		/** (Optional) Treat the secondary server as a "hot standby".
+		 * A "hot standby" is a server that is powered down / in standby while the primary server is up.
+		 * Set this to true to defer checking the connection status to the secondary server while the primary is up.
+		 *
+		 * (This was added to support the hot standby feature of OpenMedia NRCS.)
 		 */
-		openMediaHotStandby?: boolean
+		isHotStandby?: boolean
 	}
 }

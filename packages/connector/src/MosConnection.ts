@@ -174,10 +174,10 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 					false
 				)
 			}
-			// Handle that openMediaHotStandby should not check for heartbeats on
+			// Handle that .isHotStandby should not check for heartbeats on
 			// the secondary connection when the primary is connected
 			// And disable heartbeats on the primary when the primary is disconnected
-			if (connectionOptions.secondary?.openMediaHotStandby) {
+			if (connectionOptions.secondary?.isHotStandby) {
 				primary.on('connectionChanged', () => {
 					if (secondary) {
 						if (primary.connected) {
