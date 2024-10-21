@@ -51,6 +51,7 @@ export class SocketMock extends EventEmitter implements Socket {
 
 	private _responses: Array<ReplyTypes> = []
 	private _autoReplyToHeartBeat = true
+	public mockConnectCount = 0
 
 	constructor() {
 		super()
@@ -102,6 +103,7 @@ export class SocketMock extends EventEmitter implements Socket {
 	}
 	// @ts-expect-error mock
 	connect(port: number, host: string): this {
+		this.mockConnectCount++
 		this.connectedPort = port
 		this.connectedHost = host
 
@@ -197,6 +199,10 @@ export class SocketMock extends EventEmitter implements Socket {
 
 		this.emit('connect')
 	}
+	mockEmitClose(): void {
+		this.emit('close')
+	}
+
 	mockSentMessage0(data: unknown, encoding: string): void {
 		if (this._autoReplyToHeartBeat) {
 			const str: string = typeof data === 'string' ? data : this.decode(data as any)

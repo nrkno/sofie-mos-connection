@@ -534,4 +534,154 @@ describe('MosDevice: General', () => {
 
 		await mos.dispose()
 	})
+	test('Hot standby', async () => {
+		const mos = new MosConnection({
+			mosID: 'jestMOS',
+			acceptsConnections: true,
+			profiles: {
+				'0': true,
+				'1': true,
+			},
+		})
+		const onError = jest.fn((e) => console.log(e))
+		const onWarning = jest.fn((e) => console.log(e))
+		mos.on('error', onError)
+		mos.on('warning', onWarning)
+
+		expect(mos.acceptsConnections).toBe(true)
+		await initMosConnection(mos)
+		expect(mos.isListening).toBe(true)
+
+		const mosDevice = await mos.connect({
+			primary: {
+				id: 'primary',
+				host: '192.168.0.1',
+				timeout: 200,
+			},
+			secondary: {
+				id: 'secondary',
+				host: '192.168.0.2',
+				timeout: 200,
+				isHotStandby: true,
+			},
+		})
+
+		expect(mosDevice).toBeTruthy()
+		expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
+
+		expect(mosDevice.connections.primary).toBeTruthy()
+		expect(mosDevice.connections.secondary).toBeTruthy()
+		mosDevice.connections.primary?.setAutoReconnectInterval(300)
+		mosDevice.connections.secondary?.setAutoReconnectInterval(300)
+
+		const onConnectionChange = jest.fn()
+		mosDevice.onConnectionChange((connectionStatus: IMOSConnectionStatus) => {
+			onConnectionChange(connectionStatus)
+		})
+
+		expect(SocketMock.instances).toHaveLength(7)
+		expect(SocketMock.instances[1].connectedHost).toEqual('192.168.0.1')
+		expect(SocketMock.instances[1].connectedPort).toEqual(10540)
+		expect(SocketMock.instances[2].connectedHost).toEqual('192.168.0.1')
+		expect(SocketMock.instances[2].connectedPort).toEqual(10541)
+		expect(SocketMock.instances[3].connectedHost).toEqual('192.168.0.1')
+		expect(SocketMock.instances[3].connectedPort).toEqual(10542)
+
+		// TODO: Perhaps the hot-standby should not be connected at all at this point?
+		expect(SocketMock.instances[4].connectedHost).toEqual('192.168.0.2')
+		expect(SocketMock.instances[4].connectedPort).toEqual(10540)
+		expect(SocketMock.instances[5].connectedHost).toEqual('192.168.0.2')
+		expect(SocketMock.instances[5].connectedPort).toEqual(10541)
+		expect(SocketMock.instances[6].connectedHost).toEqual('192.168.0.2')
+		expect(SocketMock.instances[6].connectedPort).toEqual(10542)
+
+		// Simulate primary connected:
+		for (const i of SocketMock.instances) {
+			if (i.connectedHost === '192.168.0.1') i.mockEmitConnected()
+		}
+		// Wait for the primary to be initially connected:
+		await waitFor(() => mosDevice.getConnectionStatus().PrimaryConnected, 1000)
+
+		// Check that the connection status is as we expect:
+		expect(mosDevice.getConnectionStatus()).toMatchObject({
+			PrimaryConnected: true,
+			PrimaryStatus: 'Primary: Connected',
+			SecondaryConnected: true, // Is a hot standby, so we pretend that it is connected
+			SecondaryStatus: 'Secondary: Is hot Standby',
+		})
+		expect(onConnectionChange).toHaveBeenCalled()
+		expect(onConnectionChange).toHaveBeenLastCalledWith({
+			PrimaryConnected: true,
+			PrimaryStatus: 'Primary: Connected',
+			SecondaryConnected: true, // Is a hot standby, so we pretend that it is connected
+			SecondaryStatus: 'Secondary: Is hot Standby',
+		})
+		onConnectionChange.mockClear()
+
+		// Simulate primary disconnect, secondary hot standby takes over:
+		for (const i of SocketMock.instances) {
+			i.mockConnectCount = 0
+			if (i.connectedHost === '192.168.0.1') i.mockEmitClose()
+			if (i.connectedHost === '192.168.0.2') i.mockEmitConnected()
+		}
+
+		// Wait for the secondary to be connected:
+		await waitFor(() => mosDevice.getConnectionStatus().SecondaryConnected, 1000)
+
+		// Check that the connection status is as we expect:
+		expect(mosDevice.getConnectionStatus()).toMatchObject({
+			PrimaryConnected: false,
+			PrimaryStatus: expect.stringContaining('Primary'),
+			SecondaryConnected: true,
+			SecondaryStatus: 'Secondary: Connected',
+		})
+		expect(onConnectionChange).toHaveBeenCalled()
+		expect(onConnectionChange).toHaveBeenLastCalledWith({
+			PrimaryConnected: false,
+			PrimaryStatus: expect.stringContaining('Primary'),
+			SecondaryConnected: true,
+			SecondaryStatus: 'Secondary: Connected',
+		})
+		onConnectionChange.mockClear()
+
+		// Simulate that the primary comes back online:
+		for (const i of SocketMock.instances) {
+			if (i.connectedHost === '192.168.0.1') {
+				expect(i.mockConnectCount).toBeGreaterThanOrEqual(1) // should have tried to reconnect
+				i.mockEmitConnected()
+			}
+
+			if (i.connectedHost === '192.168.0.2') i.mockEmitClose()
+		}
+
+		// Wait for the primary to be connected:
+		await waitFor(() => mosDevice.getConnectionStatus().PrimaryConnected, 1000)
+
+		// Check that the connection status is as we expect:
+		expect(mosDevice.getConnectionStatus()).toMatchObject({
+			PrimaryConnected: true,
+			PrimaryStatus: 'Primary: Connected',
+			SecondaryConnected: true, // Is a hot standby, so we pretend that it is connected
+			SecondaryStatus: 'Secondary: Is hot Standby',
+		})
+		expect(onConnectionChange).toHaveBeenCalled()
+		expect(onConnectionChange).toHaveBeenLastCalledWith({
+			PrimaryConnected: true,
+			PrimaryStatus: 'Primary: Connected',
+			SecondaryConnected: true, // Is a hot standby, so we pretend that it is connected
+			SecondaryStatus: 'Secondary: Is hot Standby',
+		})
+
+		await mos.dispose()
+	})
 })
+async function waitFor(fcn: () => boolean, timeout: number): Promise<void> {
+	const startTime = Date.now()
+
+	while (Date.now() - startTime < timeout) {
+		await delay(10)
+
+		if (fcn()) return
+	}
+	throw new Error('Timeout in waitFor')
+}
