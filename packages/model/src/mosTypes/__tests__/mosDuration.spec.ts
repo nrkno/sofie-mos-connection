@@ -29,6 +29,8 @@ describe('MosDuration', () => {
 		expect(mosTypes.mosDuration.is(null)).toBe(false)
 		expect(mosTypes.mosDuration.is('abc')).toBe(false)
 		expect(mosTypes.mosDuration.is(123)).toBe(false)
+
+		expect(mosTypes.mosDuration.is({ _mosDuration: 1234 })).toBe(true)
 	})
 	test('stringify', () => {
 		const mosTypes = getMosTypes(true)

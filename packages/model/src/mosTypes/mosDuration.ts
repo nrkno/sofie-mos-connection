@@ -9,7 +9,7 @@ export interface IMOSDuration {
 export function create(anyValue: AnyValue, strict: boolean): IMOSDuration {
 	let value: number
 	if (typeof anyValue === 'number') {
-		value = anyValue
+		value = anyValue // seconds
 	} else if (typeof anyValue === 'string') {
 		const m = /(\d+):(\d+):(\d+)/.exec(anyValue)
 		if (!m) throw new Error(`MosDuration: Invalid input format: "${anyValue}"!`)

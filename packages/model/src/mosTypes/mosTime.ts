@@ -61,14 +61,14 @@ export function create(timestamp: AnyValue, strict: boolean): IMOSTime {
 		} else if (!strict) {
 			time = new Date()
 		} else {
-			throw new Error(`MosTime: Invalid input: "${timestamp}"`)
+			throw new Error(`MosTime: Invalid input: ${JSON.stringify(timestamp)}`)
 		}
 	} else {
 		throw new Error(`MosTime: Invalid input: "${timestamp}"`)
 	}
 
 	if (isNaN(time.getTime())) {
-		throw new Error(`MosTime: Invalid timestamp: "${timestamp}"`)
+		throw new Error(`MosTime: Invalid timestamp: ${JSON.stringify(timestamp)}`)
 	}
 
 	const iMosTime: IMOSTime = {
