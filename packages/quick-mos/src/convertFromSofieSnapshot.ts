@@ -60,7 +60,7 @@ export function convertFromSofieSnapshot(
 		output.push({
 			ro: runningOrder,
 			stories: fixStoryBody(fullStories),
-			readyToAir: rundown.data.readyToAir || false,
+			readyToAir: snapShotData?.playlist?.name === 'READY ON AIR' || false,
 		})
 	})
 	return output
