@@ -1,10 +1,23 @@
-# Sofie MOS-Connection
+# MOS-Connection
 
 [![Tests](https://github.com/nrkno/sofie-mos-connection/actions/workflows/node.yaml/badge.svg)](https://github.com/nrkno/sofie-mos-connection/actions/workflows/node.yaml)
 [![codecov](https://codecov.io/gh/nrkno/sofie-mos-connection/branch/master/graph/badge.svg?token=LQL02uXajF)](https://codecov.io/gh/nrkno/sofie-mos-connection)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nrkno_tv-automation-mos-connection&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=nrkno_tv-automation-mos-connection)
 
-This is the _MOS-Connection_ library of the [**Sofie** TV Automation System](https://github.com/nrkno/Sofie-TV-automation/), used for connecting to a _MOS_ device using the [MOS Protocol](http://mosprotocol.com/).
+[![@mos-connection/connector NPM Version](https://img.shields.io/npm/v/%40mos-connection%2Fconnector)](https://www.npmjs.com/package/@mos-connection/connector)
+[![@mos-connection/helper NPM Version](https://img.shields.io/npm/v/%40mos-connection%2Fhelper)](https://www.npmjs.com/package/@mos-connection/helper)
+[![@mos-connection/model NPM Version](https://img.shields.io/npm/v/%40mos-connection%2Fmodel)](https://www.npmjs.com/package/@mos-connection/model)
+
+_MOS-Connection_ is a Node.js library to communicate, using the [MOS Protocol](http://mosprotocol.com/), with systems such as Newsroom Computer Systems (NRCS) or other MOS devices.
+
+Features include:
+
+- Acting as a _MOS Device_ (ie a client), connecting to an NRCS.
+- Acting as a _NRCS_ (ie a server), allowing other MOS Devices to connect to it.
+- Helpful tools for developing _MOS Plugins_ and parsing MOS data.
+- A simple tool for testing MOS connections, called _Quick-MOS_.
+
+This library is developed as a part of the [**Sofie** TV Automation System](https://github.com/nrkno/Sofie-TV-automation/).
 
 ## General Sofie System Information
 
@@ -15,19 +28,28 @@ This is the _MOS-Connection_ library of the [**Sofie** TV Automation System](htt
 
 ---
 
+## Packages
+
+MOS-Connection consists of 4 packages:
+
+- **@mos-connection/connector** is a Node.js library is used to connect to MOS devices or act as a MOS Server/NCS.
+  The `helper` and `model` functionality is included in this library as well.
+- **@mos-connection/helper** is a library that provides various functions useful for those that prepare/handle data that will be sent to (or has been received by) the MOS-connection.
+  The `model` functionality is included in this library as well.
+- **@mos-connection/model** is a library that contains types and enums, useful for applications that handles MOS-data.
+- There is also a helper application **QuickMos** designed to be a minimal mock MOS server for testing client applications.
+
 ## Getting Started
 
 ### Installation
 
 ```bash
 npm install @mos-connection/connector
-or
-yarn add @mos-connection/connector
 ```
 
 ### Usage
 
-_See more examples in the [examples](/packages/examples/src) folder!_
+\_See more examples in the [examples](/packages/examples/src) folder, or the [QuickMos](/packages/quick-mos/src/index.ts) implementation!
 
 ```typescript
 import { MosConnection } from '@mos-connection/connector'
@@ -85,18 +107,6 @@ The MOS-Connection library currently supports the [MOS Protocol version **2.8.5*
 | Profile 7 | Not implemented (yet) |
 
 Pull Requests for the remaining profiles would be happily accepted!
-
-## Packages
-
-MOS-Connection consists of 3 packages:
-
-- **@mos-connection/connector** is a Node.js library is used to connect to MOS devices or act as a MOS Server/NCS.
-  The `helper` and `model` functionality is included in this library as well.
-- **@mos-connection/helper** is a library that provides various functions useful for those that prepare/handle data that will be sent to (or has been received by) the MOS-connection.
-  The `model` functionality is included in this library as well.
-- **@mos-connection/model** is a library that contains types and enums, useful for applications that handles MOS-data.
-
-There is also a helper application **quickMos** designed to be a minimal mock MOS server for testing client applications.
 
 ---
 
