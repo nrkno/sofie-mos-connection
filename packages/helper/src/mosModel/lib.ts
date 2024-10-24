@@ -1,5 +1,4 @@
 import { AnyXMLValue } from '@mos-connection/model'
-import { ensureSingular } from './parseMosTypes'
 
 export function isEmpty(obj: unknown): boolean {
 	if (typeof obj === 'object') {
@@ -22,16 +21,6 @@ export function has(obj: unknown, property: string): boolean {
 }
 
 /**
- * Ensures that the returned value is an array.
- * If the input is not an array, it will be wrapped in an array.
- */
-export function ensureArray<A, B>(v: A | B | B[]): (A | B)[]
-export function ensureArray<T>(v: T | T[]): T[]
-export function ensureArray<T>(v: T | T[]): T[] {
-	if (typeof v === 'object' && Array.isArray(v)) return v
-	else return [v]
-}
-/**
  * Asserts that a string type is of a certain literal.
  * Example usage: const str = assertStringLiteral('foo', ['foo', 'bar']) // str is of type 'foo' | 'bar'
  */
@@ -39,36 +28,6 @@ export function assertStringLiteral<T extends string>(value: string, options: T[
 	return options.includes(value as T)
 }
 
-export function ensureStringLiteral<T extends string>(
-	xmlValue: AnyXMLValue,
-	options: T[],
-	fallback: T,
-	strict: boolean
-): T {
-	const value = ensureSingular(xmlValue, strict)
-
-	if (!value) {
-		if (strict) {
-			throw new Error(`Expected a string, got: "${value}"`)
-		} else {
-			return fallback
-		}
-	}
-
-	if (assertStringLiteral(value, options)) {
-		return value
-	} else if (strict) {
-		throw new Error(`Invalid literal value: "${value}" (valid values: ${options.join(', ')})`)
-	} else {
-		return fallback
-	}
-}
-export function ensureString(value: AnyXMLValue, strict: boolean): string {
-	if (typeof value === 'string') {
-		return value
-	} else if (strict) throw new Error(`Expected a string, got: ${JSON.stringify(value)}`)
-	else return ''
-}
 /** Type assertion */
 export function literal<T>(o: T): T {
 	return o

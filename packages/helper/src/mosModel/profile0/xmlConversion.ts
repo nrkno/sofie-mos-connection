@@ -6,9 +6,10 @@ import {
 	IMOSListMachInfoDefaultActiveXMode,
 	IMOSString128,
 } from '@mos-connection/model'
-import { ensureArray, ensureStringLiteral, has, omitUndefined } from '../lib'
+import { has, omitUndefined } from '../lib'
+import { ensureArray, ensureStringLiteral, ensureXMLObject } from '../../utils/ensureMethods'
 import { addTextElementInternal } from '../../utils/Utils'
-import { ensureXMLObject, getParseMosTypes, getXMLAttributes } from '../parseMosTypes'
+import { getParseMosTypes, getXMLAttributes } from '../parseMosTypes'
 import { XMLMosExternalMetaData } from '../profile1'
 import { ParseError } from '../ParseError'
 
@@ -93,7 +94,7 @@ export namespace XMLSupportedProfiles {
 				)
 
 			const parsed: IMOSListMachInfo['supportedProfiles'] = {
-				deviceType: ensureStringLiteral(xmlSupportedProfiles.deviceType, ['NCS', 'MOS', 'N/A'], 'N/A', strict),
+				deviceType: ensureStringLiteral(xmlSupportedProfiles.deviceType, ['NCS', 'MOS', 'N/A'], strict, 'N/A'),
 				// Note: .profiles are added below
 			}
 

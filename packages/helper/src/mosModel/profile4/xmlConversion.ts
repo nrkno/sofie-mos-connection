@@ -1,8 +1,9 @@
 import { IMOSROFullStoryBodyItem, IMOSROFullStory, AnyXMLValue } from '@mos-connection/model'
 import { XMLROStory, XMLMosItem } from '../profile2/xmlConversion'
 import { omitUndefined } from '../lib'
-import { ensureXMLObject, ensureXMLObjectArray, getParseMosTypes } from '../parseMosTypes'
+import { getParseMosTypes } from '../parseMosTypes'
 import { ParseError } from '../ParseError'
+import { ensureXMLObject, ensureXMLObjectArray } from '../../utils/ensureMethods'
 
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace XMLROFullStory {

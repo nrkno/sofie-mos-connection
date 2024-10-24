@@ -13,9 +13,10 @@ import {
 	IMOSObjectAirStatus,
 	IMOSScope,
 } from '@mos-connection/model'
-import { AnyXMLObject, ensureArray, flattenXMLText, has, isEmpty, literal, omitUndefined } from '../lib'
+import { AnyXMLObject, flattenXMLText, has, isEmpty, literal, omitUndefined } from '../lib'
+import { ensureArray, ensureXMLObject, ensureXMLObjectArray, isXMLObject } from '../../utils/ensureMethods'
 import { addTextElementInternal } from '../../utils/Utils'
-import { ensureXMLObject, ensureXMLObjectArray, getParseMosTypes, isXMLObject } from '../parseMosTypes'
+import { getParseMosTypes } from '../parseMosTypes'
 import { ParseError } from '../ParseError'
 
 /* eslint-disable @typescript-eslint/no-namespace */
