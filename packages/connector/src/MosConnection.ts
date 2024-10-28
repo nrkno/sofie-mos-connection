@@ -178,15 +178,16 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 			// the secondary connection when the primary is connected
 			// And disable heartbeats on the primary when the primary is disconnected
 			if (connectionOptions.secondary?.openMediaHotStandby) {
+				// Initially disable heartbeats on secondary since primary should be attempted first
+				secondary.disableHeartbeats()
+
 				primary.on('connectionChanged', () => {
-					if (secondary) {
-						if (primary.connected) {
-							secondary.disableHeartbeats()
-							primary.enableHeartbeats()
-						} else {
-							secondary.enableHeartbeats()
-							primary.disableHeartbeats()
-						}
+					if (primary.connected) {
+						secondary?.disableHeartbeats()
+						primary.enableHeartbeats()
+					} else {
+						secondary?.enableHeartbeats()
+						primary.disableHeartbeats()
 					}
 				})
 			}
