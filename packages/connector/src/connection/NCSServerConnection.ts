@@ -112,12 +112,20 @@ export class NCSServerConnection extends EventEmitter<NCSServerConnectionEvents>
 			this._clients[i].useHeartbeats = false
 		}
 	}
-	
+
 	/** */
 	enableHeartbeats(): void {
 		for (const i in this._clients) {
 			this._clients[i].useHeartbeats = true
 		}
+	}
+
+	/** */
+	isHearbeatEnabled(): boolean {
+		for (const i in this._clients) {
+			if (this._clients[i].useHeartbeats) return true
+		}
+		return false
 	}
 
 	connect(): void {
