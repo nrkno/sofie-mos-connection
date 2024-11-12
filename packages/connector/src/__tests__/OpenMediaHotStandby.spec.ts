@@ -25,7 +25,7 @@ describe('Hot Standby Feature', () => {
             secondary: {
                 id: 'secondary',
                 host: '127.0.0.2',
-                openMediaHotStandby: true
+                isHotStandby: true
             }
         });
 
