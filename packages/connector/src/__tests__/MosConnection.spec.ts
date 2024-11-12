@@ -1,5 +1,15 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { clearMocks, decode, delay, encode, getMessageId, getXMLReply, initMosConnection, setupMocks } from './lib'
+import {
+	clearMocks,
+	decode,
+	delay,
+	encode,
+	getConnectionsFromDevice,
+	getMessageId,
+	getXMLReply,
+	initMosConnection,
+	setupMocks,
+} from './lib'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
@@ -569,10 +579,11 @@ describe('MosDevice: General', () => {
 		expect(mosDevice).toBeTruthy()
 		expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
 
-		expect(mosDevice.connections.primary).toBeTruthy()
-		expect(mosDevice.connections.secondary).toBeTruthy()
-		mosDevice.connections.primary?.setAutoReconnectInterval(300)
-		mosDevice.connections.secondary?.setAutoReconnectInterval(300)
+		const connections = getConnectionsFromDevice(mosDevice)
+		expect(connections.primary).toBeTruthy()
+		expect(connections.secondary).toBeTruthy()
+		connections.primary?.setAutoReconnectInterval(300)
+		connections.secondary?.setAutoReconnectInterval(300)
 
 		const onConnectionChange = jest.fn()
 		mosDevice.onConnectionChange((connectionStatus: IMOSConnectionStatus) => {
@@ -606,15 +617,15 @@ describe('MosDevice: General', () => {
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: true,
 			PrimaryStatus: 'Primary: Connected',
-			SecondaryConnected: true, // Is a hot standby, so we pretend that it is connected
-			SecondaryStatus: 'Secondary: Is hot Standby',
+			SecondaryConnected: false, // This is expected behaviour from a hot standby - we leave it up to the library consumer to decide if this is bad or not
+			SecondaryStatus: 'Secondary: No heartbeats on port query',
 		})
 		expect(onConnectionChange).toHaveBeenCalled()
 		expect(onConnectionChange).toHaveBeenLastCalledWith({
 			PrimaryConnected: true,
 			PrimaryStatus: 'Primary: Connected',
-			SecondaryConnected: true, // Is a hot standby, so we pretend that it is connected
-			SecondaryStatus: 'Secondary: Is hot Standby',
+			SecondaryConnected: false, // This is expected from a hot standby
+			SecondaryStatus: 'Secondary: No heartbeats on port query',
 		})
 		onConnectionChange.mockClear()
 
@@ -661,15 +672,15 @@ describe('MosDevice: General', () => {
 		expect(mosDevice.getConnectionStatus()).toMatchObject({
 			PrimaryConnected: true,
 			PrimaryStatus: 'Primary: Connected',
-			SecondaryConnected: true, // Is a hot standby, so we pretend that it is connected
-			SecondaryStatus: 'Secondary: Is hot Standby',
+			SecondaryConnected: false, // This is expected from a hot standby
+			SecondaryStatus: 'Secondary: No heartbeats on port query',
 		})
 		expect(onConnectionChange).toHaveBeenCalled()
 		expect(onConnectionChange).toHaveBeenLastCalledWith({
 			PrimaryConnected: true,
 			PrimaryStatus: 'Primary: Connected',
-			SecondaryConnected: true, // Is a hot standby, so we pretend that it is connected
-			SecondaryStatus: 'Secondary: Is hot Standby',
+			SecondaryConnected: false, // This is expected from a hot standby
+			SecondaryStatus: 'Secondary: No heartbeats on port query',
 		})
 
 		await mos.dispose()

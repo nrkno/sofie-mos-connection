@@ -9,6 +9,7 @@ import { Socket, Server } from 'net'
 import { xml2js } from 'xml-js'
 
 import * as iconv from 'iconv-lite'
+import { NCSServerConnection } from '../connection/NCSServerConnection'
 iconv.encodingExists('utf16-be')
 
 // breaks net.Server, disabled for now
@@ -283,4 +284,19 @@ function fixSnapshotInner(data: any): [boolean, any] {
 		// nothing
 	}
 	return [changed, data]
+}
+
+export function getConnectionsFromDevice(device: MosDevice): {
+	primary: NCSServerConnection | null
+	secondary: NCSServerConnection | null
+	current: NCSServerConnection | null
+} {
+	return {
+		// @ts-expect-error private property
+		primary: device._primaryConnection,
+		// @ts-expect-error private property
+		secondary: device._secondaryConnection,
+		// @ts-expect-error private property
+		current: device._currentConnection,
+	}
 }
