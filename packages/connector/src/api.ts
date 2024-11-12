@@ -666,7 +666,9 @@ export interface IMOSDeviceConnectionOptions {
 
 		/** (Optional) Treat the secondary server as a "hot standby".
 		 * A "hot standby" is a server that is powered down / in standby while the primary server is up.
-		 * Set this to true to defer checking the connection status to the secondary server while the primary is up.
+		 * When a server is a hot standby it is expected to be disconnected and hence we will not send
+		 * heartbeat messages. The connection status will still be reported as disconnected however as we
+		 * do not pretend to be connected to something that is powered down.
 		 *
 		 * (This was added to support the hot standby feature of OpenMedia NRCS.)
 		 */
