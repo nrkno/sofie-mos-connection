@@ -174,10 +174,10 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 					false
 				)
 			}
-			// Handle that openMediaHotStandby should not check for heartbeats on
+			// Handle that .isHotStandby should not check for heartbeats on
 			// the secondary connection when the primary is connected
 			// And disable heartbeats on the primary when the primary is disconnected
-			if (connectionOptions.secondary?.openMediaHotStandby) {
+			if (connectionOptions.secondary?.isHotStandby) {
 				// Initially disable heartbeats on secondary since primary should be attempted first
 				secondary.disableHeartbeats()
 
@@ -561,9 +561,7 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 								{
 									ID: this.mosTypes.mosString128.create('0'),
 									Revision: 0,
-									Description: this.mosTypes.mosString128.create(
-										`MosDevice "${ncsID + '_' + mosID}" not found`
-									),
+									Description: this.mosTypes.mosString128.create(`Internal error: ${err}`),
 									Status: IMOSAckStatus.NACK,
 								},
 								this.mosTypes.strict

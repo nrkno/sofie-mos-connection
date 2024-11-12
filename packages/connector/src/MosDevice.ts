@@ -231,6 +231,19 @@ export class MosDevice implements IMOSDevice {
 		return this._secondaryConnection ? this._secondaryConnection.id : null
 	}
 
+	/** @deprecated This is for unit tests only */
+	get connections(): {
+		primary: NCSServerConnection | null
+		secondary: NCSServerConnection | null
+		current: NCSServerConnection | null
+	} {
+		return {
+			primary: this._primaryConnection,
+			secondary: this._secondaryConnection,
+			current: this._currentConnection,
+		}
+	}
+
 	connect(): void {
 		if (this._primaryConnection) this._primaryConnection.connect()
 		if (this._secondaryConnection) this._secondaryConnection.connect()

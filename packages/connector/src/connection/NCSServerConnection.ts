@@ -128,6 +128,12 @@ export class NCSServerConnection extends EventEmitter<NCSServerConnectionEvents>
 		return false
 	}
 
+	setAutoReconnectInterval(interval: number): void {
+		for (const i in this._clients) {
+			this._clients[i].client.autoReconnectInterval = interval
+		}
+	}
+
 	connect(): void {
 		for (const i in this._clients) {
 			// Connect client
