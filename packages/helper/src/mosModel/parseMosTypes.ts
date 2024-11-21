@@ -1,6 +1,7 @@
 import { MosTypes, getMosTypes, MosType, AnyXMLObject } from '@mos-connection/model'
-import { AnyXMLValue, AnyXMLValueSingular, ensureArray, isEmpty } from './lib'
+import { AnyXMLValue } from './lib'
 import { ParseError } from './ParseError'
+import { ensureSingular } from '../utils/ensureMethods'
 
 export function getParseMosTypes(strict: boolean): MosParseTypes {
 	const mosTypes = getMosTypes(strict)
@@ -127,85 +128,6 @@ export function parseRequired<V, R>(
 	}
 }
 
-export function ensureSingular(value: AnyXMLValue, strict: boolean): AnyXMLValueSingular {
-	// Quick-fix if it is in a xml element:
-	if (isXMLTextElement(value)) value = value.text
-	// Quick-fix for empty object
-	if (isEmpty(value)) value = ''
-
-	if (typeof value === 'object') {
-		if (Array.isArray(value)) {
-			if (value.length === 0) return undefined
-			if (value.length > 1) {
-				if (strict)
-					throw new Error(`Expected only one value, got ${value.length} values: ${JSON.stringify(value)}`)
-				else return undefined
-			}
-			return ensureSingular(value[0], strict)
-		} else if (strict) throw new Error(`Expected only one value, got object: ${JSON.stringify(value)}`)
-		else return undefined
-	} else {
-		return value
-	}
-}
-export function ensureSingularArray(value: AnyXMLValue, strict: boolean): AnyXMLValueSingular[] {
-	if (typeof value === 'object' && Array.isArray(value)) {
-		for (let i = 0; i < value.length; i++) {
-			value[i] = ensureSingular(value[i], strict)
-		}
-		return value as AnyXMLValueSingular[]
-	} else if (strict) throw new Error(`Expected an Array, got: ${JSON.stringify(value)}`)
-	else return []
-}
-export function ensureXMLObject(value: AnyXMLValue, strict: boolean): AnyXMLObject {
-	if (typeof value === 'object') {
-		if (Array.isArray(value)) {
-			if (value.length === 0) return {}
-			if (value.length > 1) {
-				if (strict)
-					throw new Error(`Expected only one value, got ${value.length} values: ${JSON.stringify(value)}`)
-				else return {}
-			}
-			return ensureXMLObject(value[0], strict)
-		} else {
-			return value
-		}
-	} else if (strict) throw new Error(`Expected an object, got: ${value}`)
-	else return {}
-}
-
-export function ensureXMLObjectArray(value: AnyXMLValue, strict: boolean): AnyXMLObject[] {
-	const objs: AnyXMLObject[] = []
-	for (const obj of ensureArray(value)) {
-		objs.push(ensureXMLObject(obj, strict))
-	}
-	return objs
-}
-export function isSingular(value: AnyXMLValue): value is AnyXMLValueSingular {
-	try {
-		ensureSingular(value, true)
-		return true
-	} catch {
-		return false
-	}
-}
-export function isSingularArray(value: AnyXMLValue): value is AnyXMLValueSingular[] {
-	try {
-		ensureSingularArray(value, true)
-		return true
-	} catch {
-		return false
-	}
-}
-export function isXMLObject(value: AnyXMLValue): value is AnyXMLObject {
-	try {
-		ensureXMLObject(value, true)
-		return true
-	} catch {
-		return false
-	}
-}
-
 function getSpecialMosTypes(strict: boolean) {
 	const string: MosType<string, string, AnyXMLValue> = {
 		create: (anyValue: AnyXMLValue) => {
@@ -262,17 +184,4 @@ export function getXMLAttributes(obj: AnyXMLObject): { [key: string]: string } {
 	if (obj.attributes && typeof obj.attributes === 'object' && !Array.isArray(obj.attributes))
 		return obj.attributes as any
 	else return {}
-}
-
-interface TextElement {
-	$type: 'text'
-	$name: string
-	text: string
-}
-function isXMLTextElement(xml: any): xml is TextElement {
-	return (
-		typeof xml === 'object' &&
-		(xml as TextElement).$type === 'text' &&
-		typeof (xml as TextElement).text === 'string'
-	)
 }

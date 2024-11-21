@@ -10,11 +10,12 @@ import {
 	IMOSROAckObject,
 	AnyXMLValue,
 } from '@mos-connection/model'
-import { ensureArray, has, omitUndefined } from '../lib'
+import { has, omitUndefined } from '../lib'
+import { ensureArray, ensureXMLObject } from '../../utils/ensureMethods'
 import { ROAck } from './ROAck'
 import { XMLMosExternalMetaData, XMLMosObjects, XMLObjectPaths } from '../profile1/xmlConversion'
 import { addTextElementInternal } from '../../utils/Utils'
-import { ensureXMLObject, getParseMosTypes } from '../parseMosTypes'
+import { getParseMosTypes } from '../parseMosTypes'
 import { ParseError } from '../ParseError'
 /* eslint-disable @typescript-eslint/no-namespace */
 

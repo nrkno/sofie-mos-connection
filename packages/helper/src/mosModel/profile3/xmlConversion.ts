@@ -7,16 +7,11 @@ import {
 	IMOSSearchField,
 } from '@mos-connection/model'
 import { omitUndefined } from '../lib'
-import {
-	getParseMosTypes,
-	ensureXMLObject,
-	getXMLAttributes,
-	isXMLObject,
-	ensureXMLObjectArray,
-} from '../parseMosTypes'
+import { getParseMosTypes, getXMLAttributes } from '../parseMosTypes'
 import { addTextElementInternal } from '../../utils/Utils'
 import { XMLMosObjects } from '../profile1'
 import { ParseError } from '../ParseError'
+import { ensureXMLObject, ensureXMLObjectArray, isXMLObject } from '../../utils/ensureMethods'
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export namespace XMLMosRequestObjectList {

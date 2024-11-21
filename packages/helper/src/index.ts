@@ -9,3 +9,4 @@ export {
 export * as MosModel from './mosModel'
 export * from './stringify/stringifyMosObject'
 export * from './utils/Errors'
+export * from './utils/ensureMethods'
