@@ -572,7 +572,7 @@ describe('MosDevice: General', () => {
 				id: 'secondary',
 				host: '192.168.0.2',
 				timeout: 200,
-				isHotStandby: true,
+				openMediaHotStandby: true,
 			},
 		})
 

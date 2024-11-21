@@ -672,6 +672,6 @@ export interface IMOSDeviceConnectionOptions {
 		 *
 		 * (This was added to support the hot standby feature of OpenMedia NRCS.)
 		 */
-		isHotStandby?: boolean
+		openMediaHotStandby?: boolean
 	}
 }
