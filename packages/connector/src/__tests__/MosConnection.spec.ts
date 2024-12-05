@@ -1,5 +1,15 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { clearMocks, decode, delay, encode, getMessageId, getXMLReply, initMosConnection, setupMocks } from './lib'
+import {
+	clearMocks,
+	decode,
+	delay,
+	encode,
+	getConnectionsFromDevice,
+	getMessageId,
+	getXMLReply,
+	initMosConnection,
+	setupMocks,
+} from './lib'
 import { SocketMock } from '../__mocks__/socket'
 import { ServerMock } from '../__mocks__/server'
 import { xmlData, xmlApiData } from '../__mocks__/testData'
@@ -534,4 +544,155 @@ describe('MosDevice: General', () => {
 
 		await mos.dispose()
 	})
+	test('Hot standby', async () => {
+		const mos = new MosConnection({
+			mosID: 'jestMOS',
+			acceptsConnections: true,
+			profiles: {
+				'0': true,
+				'1': true,
+			},
+		})
+		const onError = jest.fn((e) => console.log(e))
+		const onWarning = jest.fn((e) => console.log(e))
+		mos.on('error', onError)
+		mos.on('warning', onWarning)
+
+		expect(mos.acceptsConnections).toBe(true)
+		await initMosConnection(mos)
+		expect(mos.isListening).toBe(true)
+
+		const mosDevice = await mos.connect({
+			primary: {
+				id: 'primary',
+				host: '192.168.0.1',
+				timeout: 200,
+			},
+			secondary: {
+				id: 'secondary',
+				host: '192.168.0.2',
+				timeout: 200,
+				openMediaHotStandby: true,
+			},
+		})
+
+		expect(mosDevice).toBeTruthy()
+		expect(mosDevice.idPrimary).toEqual('jestMOS_primary')
+
+		const connections = getConnectionsFromDevice(mosDevice)
+		expect(connections.primary).toBeTruthy()
+		expect(connections.secondary).toBeTruthy()
+		connections.primary?.setAutoReconnectInterval(300)
+		connections.secondary?.setAutoReconnectInterval(300)
+
+		const onConnectionChange = jest.fn()
+		mosDevice.onConnectionChange((connectionStatus: IMOSConnectionStatus) => {
+			onConnectionChange(connectionStatus)
+		})
+
+		expect(SocketMock.instances).toHaveLength(7)
+		expect(SocketMock.instances[1].connectedHost).toEqual('192.168.0.1')
+		expect(SocketMock.instances[1].connectedPort).toEqual(10540)
+		expect(SocketMock.instances[2].connectedHost).toEqual('192.168.0.1')
+		expect(SocketMock.instances[2].connectedPort).toEqual(10541)
+		expect(SocketMock.instances[3].connectedHost).toEqual('192.168.0.1')
+		expect(SocketMock.instances[3].connectedPort).toEqual(10542)
+
+		// TODO: Perhaps the hot-standby should not be connected at all at this point?
+		expect(SocketMock.instances[4].connectedHost).toEqual('192.168.0.2')
+		expect(SocketMock.instances[4].connectedPort).toEqual(10540)
+		expect(SocketMock.instances[5].connectedHost).toEqual('192.168.0.2')
+		expect(SocketMock.instances[5].connectedPort).toEqual(10541)
+		expect(SocketMock.instances[6].connectedHost).toEqual('192.168.0.2')
+		expect(SocketMock.instances[6].connectedPort).toEqual(10542)
+
+		// Simulate primary connected:
+		for (const i of SocketMock.instances) {
+			if (i.connectedHost === '192.168.0.1') i.mockEmitConnected()
+		}
+		// Wait for the primary to be initially connected:
+		await waitFor(() => mosDevice.getConnectionStatus().PrimaryConnected, 1000)
+
+		// Check that the connection status is as we expect:
+		expect(mosDevice.getConnectionStatus()).toMatchObject({
+			PrimaryConnected: true,
+			PrimaryStatus: 'Primary: Connected',
+			SecondaryConnected: false, // This is expected behaviour from a hot standby - we leave it up to the library consumer to decide if this is bad or not
+			SecondaryStatus: 'Secondary: No heartbeats on port query',
+		})
+		expect(onConnectionChange).toHaveBeenCalled()
+		expect(onConnectionChange).toHaveBeenLastCalledWith({
+			PrimaryConnected: true,
+			PrimaryStatus: 'Primary: Connected',
+			SecondaryConnected: false, // This is expected from a hot standby
+			SecondaryStatus: 'Secondary: No heartbeats on port query',
+		})
+		onConnectionChange.mockClear()
+
+		// Simulate primary disconnect, secondary hot standby takes over:
+		for (const i of SocketMock.instances) {
+			i.mockConnectCount = 0
+			if (i.connectedHost === '192.168.0.1') i.mockEmitClose()
+			if (i.connectedHost === '192.168.0.2') i.mockEmitConnected()
+		}
+
+		// Wait for the secondary to be connected:
+		await waitFor(() => mosDevice.getConnectionStatus().SecondaryConnected, 1000)
+
+		// Check that the connection status is as we expect:
+		expect(mosDevice.getConnectionStatus()).toMatchObject({
+			PrimaryConnected: false,
+			PrimaryStatus: expect.stringContaining('Primary'),
+			SecondaryConnected: true,
+			SecondaryStatus: 'Secondary: Connected',
+		})
+		expect(onConnectionChange).toHaveBeenCalled()
+		expect(onConnectionChange).toHaveBeenLastCalledWith({
+			PrimaryConnected: false,
+			PrimaryStatus: expect.stringContaining('Primary'),
+			SecondaryConnected: true,
+			SecondaryStatus: 'Secondary: Connected',
+		})
+		onConnectionChange.mockClear()
+
+		// Simulate that the primary comes back online:
+		for (const i of SocketMock.instances) {
+			if (i.connectedHost === '192.168.0.1') {
+				expect(i.mockConnectCount).toBeGreaterThanOrEqual(1) // should have tried to reconnect
+				i.mockEmitConnected()
+			}
+
+			if (i.connectedHost === '192.168.0.2') i.mockEmitClose()
+		}
+
+		// Wait for the primary to be connected:
+		await waitFor(() => mosDevice.getConnectionStatus().PrimaryConnected, 1000)
+
+		// Check that the connection status is as we expect:
+		expect(mosDevice.getConnectionStatus()).toMatchObject({
+			PrimaryConnected: true,
+			PrimaryStatus: 'Primary: Connected',
+			SecondaryConnected: false, // This is expected from a hot standby
+			SecondaryStatus: 'Secondary: No heartbeats on port query',
+		})
+		expect(onConnectionChange).toHaveBeenCalled()
+		expect(onConnectionChange).toHaveBeenLastCalledWith({
+			PrimaryConnected: true,
+			PrimaryStatus: 'Primary: Connected',
+			SecondaryConnected: false, // This is expected from a hot standby
+			SecondaryStatus: 'Secondary: No heartbeats on port query',
+		})
+
+		await mos.dispose()
+	})
 })
+async function waitFor(fcn: () => boolean, timeout: number): Promise<void> {
+	const startTime = Date.now()
+
+	while (Date.now() - startTime < timeout) {
+		await delay(10)
+
+		if (fcn()) return
+	}
+	throw new Error('Timeout in waitFor')
+}

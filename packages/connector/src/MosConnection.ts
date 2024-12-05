@@ -92,7 +92,7 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 			this._debug,
 			this.mosTypes.strict
 		)
-		let secondary = null
+		let secondary: NCSServerConnection | null = null
 		this._ncsConnections[connectionOptions.primary.host] = primary
 
 		primary.on('rawMessage', (type: string, message: string) => {
@@ -173,6 +173,23 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 					'query',
 					false
 				)
+			}
+			// Handle that .openMediaHotStandby should not check for heartbeats on
+			// the secondary connection when the primary is connected
+			// And disable heartbeats on the primary when the primary is disconnected
+			if (connectionOptions.secondary?.openMediaHotStandby) {
+				// Initially disable heartbeats on secondary since primary should be attempted first
+				secondary.disableHeartbeats()
+
+				primary.on('connectionChanged', () => {
+					if (primary.connected) {
+						secondary?.disableHeartbeats()
+						primary.enableHeartbeats()
+					} else {
+						secondary?.enableHeartbeats()
+						primary.disableHeartbeats()
+					}
+				})
 			}
 		}
 

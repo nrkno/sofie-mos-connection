@@ -663,5 +663,15 @@ export interface IMOSDeviceConnectionOptions {
 		 * Set this to true to not use that port (will cause some methods to stop working)
 		 */
 		dontUseQueryPort?: boolean
+
+		/** (Optional) Treat the secondary server as a "hot standby".
+		 * A "hot standby" is a server that is powered down / in standby while the primary server is up.
+		 * When a server is a hot standby it is expected to be disconnected and hence we will not send
+		 * heartbeat messages. The connection status will still be reported as disconnected however as we
+		 * do not pretend to be connected to something that is powered down.
+		 *
+		 * (This was added to support the hot standby feature of OpenMedia NRCS.)
+		 */
+		openMediaHotStandby?: boolean
 	}
 }
