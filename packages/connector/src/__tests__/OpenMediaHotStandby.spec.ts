@@ -14,8 +14,6 @@ describe('Hot Standby Feature', () => {
 
 	beforeAll(() => {
 		setupMocks()
-		// Increase test timeout to 10 seconds
-		jest.setTimeout(10000)
 	})
 
 	beforeEach(async () => {
@@ -50,7 +48,6 @@ describe('Hot Standby Feature', () => {
 				socket.setAutoReplyToHeartBeat(true)
 			}
 		})
-
 		await new Promise((resolve) => setTimeout(resolve, 500))
 	})
 
@@ -60,7 +57,6 @@ describe('Hot Standby Feature', () => {
 		socketMocks.forEach((socket) => {
 			if (socket.connectedHost === PRIMARY_IP) {
 				socket.setAutoReplyToHeartBeat(false)
-				socket.mockClear()
 
 				// Get the MosSocketClient bound to this socket
 				const listeners = socket.listeners('close')
@@ -83,12 +79,7 @@ describe('Hot Standby Feature', () => {
 		// Simulate socket disconnection
 		socketMocks.forEach((socket) => {
 			if (socket.connectedHost === PRIMARY_IP) {
-				socket.destroyed = true
-				socket.connecting = false
-				socket.writable = false
-				socket.readable = false
-
-				socket.emit('close')
+				socket.destroy()
 			}
 		})
 		await new Promise((resolve) => setTimeout(resolve, 100))
@@ -100,7 +91,6 @@ describe('Hot Standby Feature', () => {
         socketMocks.forEach((socket) => {
             if (socket.connectedHost === SECONDARY_IP) {
                 socket.setAutoReplyToHeartBeat(false)
-                socket.mockClear()
 
                 // Get the MosSocketClient bound to this socket
                 const listeners = socket.listeners('close')
@@ -123,12 +113,7 @@ describe('Hot Standby Feature', () => {
         // Simulate socket disconnection
         socketMocks.forEach((socket) => {
             if (socket.connectedHost === SECONDARY_IP) {
-                socket.destroyed = true
-                socket.connecting = false
-                socket.writable = false
-                socket.readable = false
-
-                socket.emit('close')
+                socket.destroy()
             }
         })
         await new Promise((resolve) => setTimeout(resolve, 100))
@@ -139,14 +124,8 @@ describe('Hot Standby Feature', () => {
 		expect(secondary).toBeTruthy()
 
 		if (primary && secondary) {
-			// Verify primary connection state
-			const primaryStatus = primary.getConnectedStatus()
-			expect(primaryStatus.connected).toBe(true)
-			expect(primaryStatus.status).toBe('Connected')
-
-			// Verify secondary connection state
-			const secondaryStatus = secondary.getConnectedStatus()
-			expect(secondaryStatus.connected).toBe(true)
+			expect(primary.getConnectedStatus()).toBe(true)
+			expect(secondary.getConnectedStatus()).toBe(true)
 
 			// Verify heartbeat states
 			expect(primary.isHearbeatEnabled()).toBe(true)
@@ -166,9 +145,7 @@ describe('Hot Standby Feature', () => {
 			await discconnectPrimary()
 
 			// Verify primary is properly disconnected
-			const primaryStatus = primary.getConnectedStatus()
-			expect(primaryStatus.connected).toBe(false)
-			expect(primaryStatus.status).toBe('Not connected')
+            expect(primary.getConnectedStatus()).toBe(false)
 
 			// connect secondary
 			socketMocks.forEach((socket) => {
@@ -179,7 +156,7 @@ describe('Hot Standby Feature', () => {
 			})
 			await new Promise((resolve) => setTimeout(resolve, 100))
 
-			// 9. Verify heartbeat states
+			// Verify heartbeat states
 			expect(primary.isHearbeatEnabled()).toBe(false)
 			expect(secondary.isHearbeatEnabled()).toBe(true)
 		}
@@ -209,9 +186,7 @@ describe('Hot Standby Feature', () => {
             await new Promise((resolve) => setTimeout(resolve, 100))
 
             // Verify primary is properly disconnected
-            const primaryStatus = primary.getConnectedStatus()
-            expect(primaryStatus.connected).toBe(false)
-            expect(primaryStatus.status).toBe('Not connected')
+            expect(primary.getConnectedStatus()).toBe(false)
 
             // Verify heartbeat states after primary disconnect and secondary connect
             expect(primary.isHearbeatEnabled()).toBe(false)
@@ -243,9 +218,7 @@ describe('Hot Standby Feature', () => {
             await discconnectPrimary()
 
             // Verify state after primary disconnect
-            const primaryStatus = primary.getConnectedStatus()
-            expect(primaryStatus.connected).toBe(false)
-            expect(primaryStatus.status).toBe('Not connected')
+            expect(primary.getConnectedStatus()).toBe(false)
 
             // Verify secondary heartbeats are enabled after primary disconnect
             expect(primary.isHearbeatEnabled()).toBe(false)
