@@ -124,8 +124,8 @@ describe('Hot Standby Feature', () => {
 		expect(secondary).toBeTruthy()
 
 		if (primary && secondary) {
-			expect(primary.getConnectedStatus()).toBe(true)
-			expect(secondary.getConnectedStatus()).toBe(true)
+			expect(primary.getConnectedStatus().connected).toBe(true)
+			expect(secondary.getConnectedStatus().connected).toBe(true)
 
 			// Verify heartbeat states
 			expect(primary.isHearbeatEnabled()).toBe(true)
@@ -145,7 +145,7 @@ describe('Hot Standby Feature', () => {
 			await discconnectPrimary()
 
 			// Verify primary is properly disconnected
-            expect(primary.getConnectedStatus()).toBe(false)
+            expect(primary.getConnectedStatus().connected).toBe(false)
 
 			// connect secondary
 			socketMocks.forEach((socket) => {
@@ -186,7 +186,7 @@ describe('Hot Standby Feature', () => {
             await new Promise((resolve) => setTimeout(resolve, 100))
 
             // Verify primary is properly disconnected
-            expect(primary.getConnectedStatus()).toBe(false)
+            expect(primary.getConnectedStatus().connected).toBe(false)
 
             // Verify heartbeat states after primary disconnect and secondary connect
             expect(primary.isHearbeatEnabled()).toBe(false)
@@ -218,7 +218,7 @@ describe('Hot Standby Feature', () => {
             await discconnectPrimary()
 
             // Verify state after primary disconnect
-            expect(primary.getConnectedStatus()).toBe(false)
+            expect(primary.getConnectedStatus().connected).toBe(false)
 
             // Verify secondary heartbeats are enabled after primary disconnect
             expect(primary.isHearbeatEnabled()).toBe(false)
