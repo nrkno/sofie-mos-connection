@@ -158,13 +158,13 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 				MosConnection.nextSocketID,
 				connectionOptions.secondary.ports?.lower ?? MosConnection.CONNECTION_PORT_LOWER,
 				'lower',
-				true
+				!connectionOptions.secondary.openMediaHotStandby
 			)
 			secondary.createClient(
 				MosConnection.nextSocketID,
 				connectionOptions.secondary.ports?.upper ?? MosConnection.CONNECTION_PORT_UPPER,
 				'upper',
-				true
+				!connectionOptions.secondary.openMediaHotStandby
 			)
 			if (!connectionOptions.primary.dontUseQueryPort) {
 				secondary.createClient(
@@ -180,6 +180,7 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 			if (connectionOptions.secondary?.openMediaHotStandby) {
 				// Initially disable heartbeats on secondary since primary should be attempted first
 				secondary.disableHeartbeats()
+				primary.enableHeartbeats()
 
 				primary.on('connectionChanged', () => {
 					if (primary.connected) {
@@ -190,6 +191,23 @@ export class MosConnection extends EventEmitter<MosConnectionEvents> implements 
 						primary.disableHeartbeats()
 					}
 				})
+
+				// Handle secondary connection changes
+				setTimeout(() => {
+					secondary?.on('connectionChanged', () => {
+						if (!primary.connected) {
+							// Secondary is active
+							if (secondary?.connected) {
+								secondary.enableHeartbeats()
+								primary.disableHeartbeats()
+							} else {
+								// Secondary disconnected - try to re-enable primary
+								primary.enableHeartbeats()
+								secondary?.disableHeartbeats()
+							}
+						}
+					})
+				}, 50)
 			}
 		}
 
