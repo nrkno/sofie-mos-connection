@@ -1,0 +1,36 @@
+{
+	"items": [
+		{
+			"ID": "2",
+			"ObjectID": "cfc641849c417eaa10e4f3c377f181",
+			"MOSID": "parsing-text.sofie",
+			"Slug": "bts-finnmark-bil_with_attr(3)",
+			"Paths": [
+				{
+					"Description": "VIDEO",
+					"Target": "41cfc641849c417eaa10e4f3c377f181",
+					"Type": "PATH"
+				}
+			],
+			"MosExternalMetaData": [
+				{
+					"MosScope": "OBJECT",
+					"MosSchema": "http://mos-connection/unit-test",
+					"MosPayload": {
+						"objType": "VIDEO",
+						"zone": {
+							"name": "graphics",
+							"sequence": "weather-tower",
+							"variableNoAttr": "1,2,3,4",
+							"variable": {
+								"name": "locations",
+								"text": "1,2,3,4"
+							}
+						}
+					}
+				}
+			],
+			"ObjectSlug": "bts-finnmark-bil_with_attr(3)"
+		}
+	]
+}

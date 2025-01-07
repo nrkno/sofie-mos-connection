@@ -1,0 +1,28 @@
+<mos>
+	<ncsItem>
+		<item>
+			<itemID>2</itemID>
+			<itemSlug>bts-finnmark-bil_with_attr(3)</itemSlug>
+			<objID>cfc641849c417eaa10e4f3c377f181</objID>
+			<objSlug>bts-finnmark-bil_with_attr(3)</objSlug>
+			<mosID>parsing-text.sofie</mosID>
+			<mosPlugInID>Sofie.QuantelPlugin</mosPlugInID>
+			<mosAbstract />
+			<objPaths>
+				<objPath techDescription="VIDEO">41cfc641849c417eaa10e4f3c377f181</objPath>
+			</objPaths>
+			<itemEdDur />
+			<mosExternalMetadata>
+				<mosScope>OBJECT</mosScope>
+				<mosSchema>http://mos-connection/unit-test</mosSchema>
+				<mosPayload>
+					<objType>VIDEO</objType>
+					<zone name="graphics" sequence="weather-tower">
+						<variableNoAttr>1,2,3,4</variableNoAttr>
+						<variable name="locations">1,2,3,4</variable>
+					</zone>
+				</mosPayload>
+			</mosExternalMetadata>
+		</item>
+	</ncsItem>
+</mos>

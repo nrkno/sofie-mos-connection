@@ -83,5 +83,29 @@ describe('MOS XML to JavaScript object parser', () => {
 				}
 			})
 		})
+		describe('Sample3 - test for singlepath with and without attributes', () => {
+			const sampleXmlStr = readFileSync(join(__dirname, './mosSample3.xml'), 'utf-8')
+			const sampleJsonStr = readFileSync(join(__dirname, './mosSample3.json'), 'utf-8')
+
+			const jsonDoc = JSON.parse(sampleJsonStr)
+
+			it('should match the json representation', () => {
+				const actual = parseMosPluginMessageXml(sampleXmlStr)
+				const actualJson = actual && stringifyMosObject(actual.items, true) // Strip out any MosString etc
+
+				expect(actualJson).toEqual(jsonDoc.items)
+			})
+
+			it('converting via xml should be lossless', () => {
+				for (let i = 0; i < jsonDoc.items.length; i++) {
+					const generatedXml = generateMosPluginItemXml(jsonDoc.items[i])
+					const actual = parseMosPluginMessageXml(generatedXml)
+
+					const actualJson = actual && stringifyMosObject(actual.items[0], true) // Strip out any MosString etc
+
+					expect(actualJson).toEqual(jsonDoc.items[i])
+				}
+			})
+		})
 	})
 })
