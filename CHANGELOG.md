@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1-alpha.0](https://github.com/nrkno/tv-automation-mos-connection/compare/v4.2.0...v4.2.1-alpha.0) (2025-01-10)
+
+
+### Bug Fixes
+
+* add helper functions for dealing with AnyXmlValue and export them ([e4a5f48](https://github.com/nrkno/tv-automation-mos-connection/commit/e4a5f482efb1bd07ce0a9f07d1bdfd9a1ed8063d))
+
+
+
+
+
+# [4.2.0](https://github.com/nrkno/tv-automation-mos-connection/compare/v4.1.0...v4.2.0) (2024-12-05)
+
+
+### Bug Fixes
+
+* bug fix in quick-mos ([7fd531b](https://github.com/nrkno/tv-automation-mos-connection/commit/7fd531bc3149d357291388f20e0e9503d3b63f30))
+* Disable heartbeat on primary if secondary is active in openMediaHotStandby mode. ([f550bd5](https://github.com/nrkno/tv-automation-mos-connection/commit/f550bd54cbd48cda0ab1becab011d4af5ff72658))
+* failover to buddy when main not up to date ([8554f60](https://github.com/nrkno/tv-automation-mos-connection/commit/8554f6051c277be7d254bdcd9e3aa1b3ab801a10))
+* hotStandby - set heartbeats state no matter secondary's state ([c2b35be](https://github.com/nrkno/tv-automation-mos-connection/commit/c2b35bec5db5c85ab91e97f09db2d33bb104589e))
+* parse incoming data as strings (Big Refactor) ([0f0f8d3](https://github.com/nrkno/tv-automation-mos-connection/commit/0f0f8d3986b3fe80153971d271742cc46c0301d1))
+* Quick-MOS: Add support for Sofie Snapshots ([ab2d17e](https://github.com/nrkno/tv-automation-mos-connection/commit/ab2d17e01b2459aacce283387602c5ab86bbc02d))
+* rename new test ([248a4f8](https://github.com/nrkno/tv-automation-mos-connection/commit/248a4f8e8e8bf550dde35e06ce86689298d57256))
+* revert renaming to isHotStandby to avoid conflict with MOS-Gateway ([562d74b](https://github.com/nrkno/tv-automation-mos-connection/commit/562d74badae2a17feceddbe43b590390c7ac8015))
+* update typings for mosTime, undefined was allowed in types, but not in code. ([fb2369a](https://github.com/nrkno/tv-automation-mos-connection/commit/fb2369abb3a876675c7e941092f96460e2da45f8))
+
+
+### Features
+
+* Add tests for openMediaHotStandby ([5985b19](https://github.com/nrkno/tv-automation-mos-connection/commit/5985b191fcaea9d54d2bec73d4abf87b02f8bd26))
+* Support for openMediaHotStandby disable heartbeat on secondary when not used ([ab04e49](https://github.com/nrkno/tv-automation-mos-connection/commit/ab04e4900f1a73324a0ff7de6363421ad579bf26))
+
+
+
+
+
 # [4.2.0-alpha.1](https://github.com/nrkno/tv-automation-mos-connection/compare/v4.1.1...v4.2.0-alpha.1) (2024-08-27)
 
 

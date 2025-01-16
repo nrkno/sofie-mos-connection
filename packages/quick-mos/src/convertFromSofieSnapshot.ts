@@ -31,6 +31,11 @@ export function convertFromSofieSnapshot(
 		let segments = segments0.map((s: any) => s.data)
 		segments = segments.sort((a: any, b: any) => b.rank - a.rank)
 
+		const storyIDs = new Set<string>()
+		for (const rundownStory of rundown.data.payload.Stories) {
+			storyIDs.add(rundownStory.ID)
+		}
+
 		const fullStories: IMOSROFullStory[] = []
 		const stories: IMOSROStory[] = []
 
@@ -40,6 +45,8 @@ export function convertFromSofieSnapshot(
 			segment.parts.sort((a: any, b: any) => (a.rank || 0) - (b.rank || 0))
 
 			for (const part of segment.parts) {
+				if (!storyIDs.has(part.payload.ID)) continue
+
 				fullStories.push(part.payload)
 				stories.push({
 					ID: part.payload.ID,
@@ -60,7 +67,7 @@ export function convertFromSofieSnapshot(
 		output.push({
 			ro: runningOrder,
 			stories: fixStoryBody(fullStories),
-			readyToAir: rundown.data.readyToAir || false,
+			readyToAir: snapShotData?.playlist?.name === 'READY ON AIR' || false,
 		})
 	})
 	return output

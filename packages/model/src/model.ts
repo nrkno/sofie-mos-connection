@@ -61,17 +61,18 @@ export interface IMOSROFullStory extends IMOSStory {
 	RunningOrderId: IMOSString128
 	Body: Array<IMOSROFullStoryBodyItem>
 }
-export type IMOSROFullStoryBodyItem =
-	| {
-			itemType: 'storyItem'
-			Type: 'storyItem'
-			Content: IMOSItem // TODO: Make this stricter? IMOSItemObject??
-	  }
-	| {
-			itemType: 'other'
-			Type: string // e.g. 'p'
-			Content: AnyXMLValue
-	  }
+
+export type IMOSROFullStoryBodyItem = IMOSROFullStoryBodyStoryItem | IMOSROFullStoryBodyOtherItem
+export type IMOSROFullStoryBodyStoryItem = {
+	itemType: 'storyItem'
+	Type: 'storyItem'
+	Content: IMOSItem // TODO: Make this stricter? IMOSItemObject??
+}
+export type IMOSROFullStoryBodyOtherItem = {
+	itemType: 'other'
+	Type: string // e.g. 'p'
+	Content: AnyXMLValue
+}
 export interface IMOSItem {
 	ID: IMOSString128
 	Slug?: IMOSString128

@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1-alpha.0](https://github.com/nrkno/sofie-mos-connection/compare/v4.2.0...v4.2.1-alpha.0) (2025-01-10)
+
+
+### Bug Fixes
+
+* add helper functions for dealing with AnyXmlValue and export them ([e4a5f48](https://github.com/nrkno/sofie-mos-connection/commit/e4a5f482efb1bd07ce0a9f07d1bdfd9a1ed8063d))
+
+
+
+
+
+# [4.2.0](https://github.com/nrkno/sofie-mos-connection/compare/v4.1.0...v4.2.0) (2024-12-05)
+
+
+### Bug Fixes
+
+* parse incoming data as strings (Big Refactor) ([0f0f8d3](https://github.com/nrkno/sofie-mos-connection/commit/0f0f8d3986b3fe80153971d271742cc46c0301d1))
+
+
+
+
+
 # [4.2.0-alpha.1](https://github.com/nrkno/sofie-mos-connection/compare/v4.1.1...v4.2.0-alpha.1) (2024-08-27)
 
 

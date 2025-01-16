@@ -263,7 +263,7 @@ function fetchRunningOrders() {
 
 					runningOrders.push({
 						ro,
-						stories: fileContents.stories,
+						stories: fileContents.stories ?? [],
 						readyToAir: fileContents.READY_TO_AIR,
 					})
 				} else if (fileContents.snapshot && fileContents.snapshot.type === 'rundownplaylist') {
