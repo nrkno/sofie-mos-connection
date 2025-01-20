@@ -22,7 +22,10 @@ describe('Hot Standby Feature', () => {
 				'0': true,
 				'1': true,
 			},
-			false
+			false,
+			{
+				openMediaHotStandby: true,
+			}
 		)
 
 		const device = await mosConnection.connect({
