@@ -43,17 +43,34 @@ export async function delay(ms: number): Promise<void> {
 		setTimeoutOrg(resolve, ms)
 	})
 }
-export async function initMosConnection(mos: MosConnection): Promise<void> {
+export async function initMosConnection(
+	mos: MosConnection,
+	testOptions?: {
+		openMediaHotStandby?: boolean
+	}
+): Promise<void> {
 	mos.on('error', (err) => {
 		if (!(err + '').match(/heartbeat/i)) {
 			console.error(err)
 		}
 	})
-	mos.on('warning', console.error)
+	mos.on('warning', (warning) => {
+		if (testOptions?.openMediaHotStandby && `${warning}`.match(/Socket should reconnect/)) {
+			// Ignore this when testing hot-standby
+			return
+		}
+		console.error('Warning emitted from MosConnection', warning)
+	})
 	await mos.init()
 }
 
-export async function getMosConnection(profiles: IProfiles, strict: boolean): Promise<MosConnection> {
+export async function getMosConnection(
+	profiles: IProfiles,
+	strict: boolean,
+	testOptions?: {
+		openMediaHotStandby?: boolean
+	}
+): Promise<MosConnection> {
 	ServerMock.mockClear()
 
 	const mos = new MosConnection({
@@ -63,7 +80,7 @@ export async function getMosConnection(profiles: IProfiles, strict: boolean): Pr
 		strict: strict,
 		debug: false,
 	})
-	await initMosConnection(mos)
+	await initMosConnection(mos, testOptions)
 
 	expect(ServerMock.instances).toHaveLength(3)
 
