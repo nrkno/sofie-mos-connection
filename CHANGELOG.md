@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.2](https://github.com/nrkno/tv-automation-mos-connection/compare/v4.2.2-alpha.0...v4.2.2) (2025-01-22)
+
+
+### Bug Fixes
+
+* ExternalMetadata.MosPayload wasn't passed through when containing string. Changed MosPayload to be AnyXMLValue instead of AnyXMLObject. ([d5cfec5](https://github.com/nrkno/tv-automation-mos-connection/commit/d5cfec50b3a1ccfeb60c4992f0e8ce50c4043bf1))
+
+
+
+
+
 ## [4.2.1-alpha.0](https://github.com/nrkno/tv-automation-mos-connection/compare/v4.2.0...v4.2.1-alpha.0) (2025-01-10)
 
 

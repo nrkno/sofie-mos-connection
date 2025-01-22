@@ -23,7 +23,7 @@
 		"node": ">=14.18.0"
 	},
 	"dependencies": {
-		"@mos-connection/connector": "4.2.2-alpha.0"
+		"@mos-connection/connector": "4.2.2"
 	},
 	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
 	"lint-staged": {
