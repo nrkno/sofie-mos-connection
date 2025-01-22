@@ -153,6 +153,33 @@ const xmlData = {
    01 ett navn 1:  2:
    24 foto/red 1:Foto og redigering:  2:   SAK BUSKERUD;SAK-20</MOSSlugs>   <Owner>LINUXENPS</Owner>   <pubApproved>0</pubApproved>   <SourceMediaTime>0</SourceMediaTime>   <SourceTextTime>0</SourceTextTime>   <StoryProducer>DKTE</StoryProducer>   <TextTime>0</TextTime>   <mosartType>FULL</mosartType>   <ENPSItemType>3</ENPSItemType>   </mosPayload>   </mosExternalMetadata>   </roStorySend>`,
 	roStorySendSingle: `<roStorySend><roID>roID0</roID><storyID>story0</storyID><storySlug>My Story</storySlug><storyNum/><storyBody><storyItem><itemID>item0</itemID><itemSlug/><objID>object0</objID><mosID>mos0</mosID><itemTrigger>CHAINED</itemTrigger></storyItem></storyBody></roStorySend>`,
+	roStorySendStringMosPayload: `<roStorySend>
+<roID>2012R2ENPS8VM;P_ENPSNEWS\\W;696297DF-1568-4B36-B43B3B79514B40D4</roID>
+<storyID>2012R2ENPS8VM;P_ENPSNEWS\\W\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB</storyID>
+<storySlug>KRITIKK ETTER BRANN KONGSBERG;SAK</storySlug>
+<storyNum></storyNum>
+<storyBody>
+	<storyItem>
+		<itemID>2</itemID>
+		<objID>N11580_1412594672</objID>
+		<mosID>METADATA.NRK.MOS</mosID>
+		<mosAbstract>METADATA</mosAbstract>
+		<objSlug>M: </objSlug>
+		<mosExternalMetadata>
+			<mosScope>PLAYLIST</mosScope>
+			<mosSchema>https://MOSA4.com/mos/supported_schemas/MOSAXML2.08</mosSchema>
+			<mosPayload>THIS IS A STRING</mosPayload>
+		</mosExternalMetadata>
+		<itemSlug>SAK BUSKERUD;SAK-14</itemSlug>
+	</storyItem>
+	<p>a text</p>
+</storyBody>
+<mosExternalMetadata>
+	<mosScope>PLAYLIST</mosScope>
+	<mosSchema>https://2012R2ENPS8VM:10505/schema/enps.dtd</mosSchema>
+	<mosPayload>THIS IS ANOTHER STRING</mosPayload>
+</mosExternalMetadata>
+</roStorySend>`,
 	roListAll: `<roListAll>      <ro>   	 <roID>5PM</roID>   	 <roSlug>5PM Rundown</roSlug>   	 <roChannel></roChannel>   	 <roEdStart>2009-07-11T17:00:00</roEdStart>   	 <roEdDur>00:30:00</roEdDur>   	 <roTrigger>MANUAL</roTrigger>   	 <mosExternalMetadata>   	   <mosScope>PLAYLIST</mosScope>   	   <mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>   	   <mosPayload>   		  <Owner>SHOLMES</Owner>   		  <mediaTime>0</mediaTime>   		  <TextTime>278</TextTime>   		  <ModBy>LJOHNSTON</ModBy>   		  <Approved>0</Approved>   		  <Creator>SHOLMES</Creator>   	   </mosPayload>   	</mosExternalMetadata>      </ro>      <ro>   	 <roID>6PM</roID>   	 <roSlug>6PM Rundown</roSlug>   	 <roChannel></roChannel>   	 <roEdStart>2009-07-09T18:00:00</roEdStart>   	 <roEdDur>00:30:00</roEdDur>   	 <roTrigger>MANUAL</roTrigger>   	 <mosExternalMetadata>   	   <mosScope>PLAYLIST</mosScope>   	   <mosSchema>https://ncsA4.com/mos/supported_schemas/NCSAXML2.08</mosSchema>   	   <mosPayload>   		  <Owner>SHOLMES</Owner>   		  <mediaTime>0</mediaTime>   		  <TextTime>350</TextTime>   		  <ModBy>BSMITH</ModBy>   		  <Approved>1</Approved>   		  <Creator>SHOLMES</Creator>   	   </mosPayload>   	</mosExternalMetadata>   	</ro>		</roListAll>`,
 	mosObjCreate: `
 		<mosObjCreate>
@@ -1916,6 +1943,48 @@ const xmlApiData = {
 
 					Trigger: 'CHAINED',
 				}),
+			}),
+		],
+	}),
+	roStorySendStringMosPayload: literal<IMOSROFullStory>({
+		ID: mosTypes.mosString128.create(
+			'2012R2ENPS8VM;P_ENPSNEWS\\W\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB'
+		),
+		RunningOrderId: mosTypes.mosString128.create('2012R2ENPS8VM;P_ENPSNEWS\\W;696297DF-1568-4B36-B43B3B79514B40D4'),
+		Slug: mosTypes.mosString128.create('KRITIKK ETTER BRANN KONGSBERG;SAK'),
+		Body: [
+			literal<IMOSROFullStoryBodyItem>({
+				itemType: 'storyItem',
+				Type: 'storyItem',
+				Content: literal<IMOSItem>({
+					ID: mosTypes.mosString128.create('2'),
+					Slug: mosTypes.mosString128.create('SAK BUSKERUD;SAK-14'),
+					ObjectID: mosTypes.mosString128.create('N11580_1412594672'),
+					MOSID: 'METADATA.NRK.MOS',
+					mosAbstract: 'METADATA',
+					ObjectSlug: mosTypes.mosString128.create('M:'),
+					MosExternalMetaData: [
+						literal<IMOSExternalMetaData>({
+							MosScope: IMOSScope.PLAYLIST,
+							MosSchema: 'https://MOSA4.com/mos/supported_schemas/MOSAXML2.08',
+							MosPayload: 'THIS IS A STRING',
+						}),
+					],
+				}),
+			}),
+			literal<IMOSROFullStoryBodyItem>({
+				itemType: 'other',
+				Type: 'p',
+				Content: {
+					text: 'a text',
+				},
+			}),
+		],
+		MosExternalMetaData: [
+			literal<IMOSExternalMetaData>({
+				MosScope: IMOSScope.PLAYLIST,
+				MosSchema: 'https://2012R2ENPS8VM:10505/schema/enps.dtd',
+				MosPayload: 'THIS IS ANOTHER STRING',
 			}),
 		],
 	}),

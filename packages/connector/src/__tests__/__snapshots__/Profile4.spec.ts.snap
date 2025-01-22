@@ -627,6 +627,89 @@ exports[`Profile 4 onRunningOrderStory 1`] = `
 ]
 `;
 
+exports[`Profile 4 onRunningOrderStory, string MosPayload 1`] = `
+[
+  [
+    {
+      "Body": [
+        {
+          "Content": {
+            "ID": {
+              "_mosString128": "2",
+            },
+            "MOSID": "METADATA.NRK.MOS",
+            "MosExternalMetaData": [
+              {
+                "MosPayload": "THIS IS A STRING",
+                "MosSchema": "https://MOSA4.com/mos/supported_schemas/MOSAXML2.08",
+                "MosScope": "PLAYLIST",
+              },
+            ],
+            "ObjectID": {
+              "_mosString128": "N11580_1412594672",
+            },
+            "ObjectSlug": {
+              "_mosString128": "M:",
+            },
+            "Slug": {
+              "_mosString128": "SAK BUSKERUD;SAK-14",
+            },
+            "mosAbstract": "METADATA",
+          },
+          "Type": "storyItem",
+          "itemType": "storyItem",
+        },
+        {
+          "Content": {
+            "$name": "p",
+            "$type": "text",
+            "text": "a text",
+          },
+          "Type": "p",
+          "itemType": "other",
+        },
+      ],
+      "ID": {
+        "_mosString128": "2012R2ENPS8VM;P_ENPSNEWS\\W\\R_696297DF-1568-4B36-B43B3B79514B40D4;1DAF0044-CA12-47BA-9F6CEFF33B3874FB",
+      },
+      "MosExternalMetaData": [
+        {
+          "MosPayload": "THIS IS ANOTHER STRING",
+          "MosSchema": "https://2012R2ENPS8VM:10505/schema/enps.dtd",
+          "MosScope": "PLAYLIST",
+        },
+      ],
+      "RunningOrderId": {
+        "_mosString128": "2012R2ENPS8VM;P_ENPSNEWS\\W;696297DF-1568-4B36-B43B3B79514B40D4",
+      },
+      "Slug": {
+        "_mosString128": "KRITIKK ETTER BRANN KONGSBERG;SAK",
+      },
+    },
+  ],
+]
+`;
+
+exports[`Profile 4 onRunningOrderStory, string MosPayload: <mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1635</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos> 1`] = `
+"<mos>
+  <ncsID>their.mos.id</ncsID>
+  <mosID>our.mos.id</mosID>
+  <messageID>1635</messageID>
+  <roAck>
+    <roID>runningOrderId</roID>
+    <roStatus>OK</roStatus>
+  </roAck>
+</mos>"
+`;
+
 exports[`Profile 4 onRunningOrderStory: <mos>
   <ncsID>their.mos.id</ncsID>
   <mosID>our.mos.id</mosID>

@@ -156,6 +156,34 @@ describe('Profile 4', () => {
 		})
 		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
 	})
+	test('onRunningOrderStory, string MosPayload', async () => {
+		// Fake incoming message on socket:
+
+		const messageId = await fakeIncomingMessage(serverSocketMockLower, xmlData.roStorySendStringMosPayload)
+		expect(onROStory).toHaveBeenCalledTimes(1)
+
+		const o = { ...xmlApiData.roStorySendStringMosPayload }
+		// @ts-expect-error optional property
+		delete o.Body
+		expect(onROStory.mock.calls[0][0]).toMatchObject(o)
+
+		expect(fixSnapshot(onROStory.mock.calls)).toMatchSnapshot()
+		xmlApiData.roStorySendStringMosPayload.Body.forEach((testItem, key) => {
+			let item: any
+			try {
+				item = onROStory.mock.calls[0][0].Body[key]
+				if (!testItem.Content) delete testItem.Content
+
+				expect(item).toMatchObject(testItem)
+			} catch (e) {
+				console.error(key)
+				console.error('item', item)
+				console.error('testItem', testItem)
+				throw e
+			}
+		})
+		await checkReplyToServer(serverSocketMockLower, messageId, '<roAck>')
+	})
 	test('onRequestAllRunningOrders', async () => {
 		const onRoReqAll = jest.fn(async (): Promise<IMOSRunningOrder[]> => {
 			return [

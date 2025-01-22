@@ -361,7 +361,7 @@ export namespace XMLMosExternalMetaData {
 						'mosScope'
 					),
 					MosSchema: mosTypes.string.createRequired(xmlMetadata.mosSchema, 'mosSchema'),
-					MosPayload: fixXMLMosPayload(ensureXMLObject(xmlMetadata.mosPayload, strict)),
+					MosPayload: fixXMLMosPayload(xmlMetadata.mosPayload),
 				})
 			}
 			omitUndefined(metadata)
@@ -384,6 +384,8 @@ export namespace XMLMosExternalMetaData {
 		}
 	}
 }
+
+/** Replace any empty objects with "" */
 function fixXMLMosPayload(value: AnyXMLValueSingular): AnyXMLValueSingular
 function fixXMLMosPayload(value: AnyXMLObject): AnyXMLObject
 function fixXMLMosPayload(value: AnyXMLValue): AnyXMLValue
