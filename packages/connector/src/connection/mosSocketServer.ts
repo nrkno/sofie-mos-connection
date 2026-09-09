@@ -2,6 +2,10 @@ import { Server, Socket } from 'net'
 import { EventEmitter } from 'eventemitter3'
 import { IncomingConnectionType, SocketServerEvent } from './socketConnection.js'
 
+/** Idle time before the OS starts sending TCP keepalive probes on incoming sockets. Without them, a connection
+ * silently dropped by a firewall/NAT stays ESTABLISHED here forever and the peer's next message is lost. */
+const INCOMING_SOCKET_KEEPALIVE_DELAY = 30 * 1000
+
 export interface MosSocketServerEvents {
 	[SocketServerEvent.CLIENT_CONNECTED]: (options: { socket: Socket; portDescription: IncomingConnectionType }) => void
 	[SocketServerEvent.ERROR]: (err: Error) => void
@@ -105,6 +109,8 @@ export class MosSocketServer extends EventEmitter<MosSocketServerEvents> {
 
 	/** */
 	private _onClientConnection(socket: Socket) {
+		socket.setKeepAlive(true, INCOMING_SOCKET_KEEPALIVE_DELAY)
+
 		this._connectedSockets.push(socket)
 		socket.on('close', () => {
 			const i = this._connectedSockets.indexOf(socket)
