@@ -118,6 +118,27 @@ describe('MosDevice: General', () => {
 		// close sockets after test
 		await mos.dispose()
 	})
+	test('Incoming connections have TCP keepalive enabled', async () => {
+		ServerMock.mockClear()
+		const mos = new MosConnection({
+			mosID: 'jestMOS',
+			acceptsConnections: true,
+			profiles: {
+				'0': true,
+				'1': true,
+			},
+		})
+		await initMosConnection(mos)
+		expect(ServerMock.instances).toHaveLength(3)
+
+		for (const server of ServerMock.instances) {
+			const socket = server.mockNewConnection()
+			expect(socket.setKeepAlive).toHaveBeenCalledWith(true, expect.any(Number))
+		}
+
+		// close sockets after test
+		await mos.dispose()
+	})
 	test('MosDevice primary', async () => {
 		const mos = new MosConnection({
 			mosID: 'jestMOS',
